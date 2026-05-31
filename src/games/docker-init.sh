@@ -1,9 +1,9 @@
 #!/bin/bash
 
-IMAGE_NAME="rc1-decomp"
+IMAGE_NAME="projectryno"
 
-usage() {
-    echo "Usage: bash docker-init.sh [OPTION]"
+show_usage() {
+    echo "Usage: ./docker-init.sh [OPTION]"
     echo ""
     echo "  (no args)   Build image if it doesn't exist, then open a container shell"
     echo "  --rebuild   Force a fresh image build, then open a container shell"
@@ -11,36 +11,51 @@ usage() {
     echo "  --help      Show this help message"
 }
 
+test_docker_available() {
+    if ! command -v docker > /dev/null 2>&1; then
+        echo "[Project RYNO] Error: 'docker' command not found."
+        echo "               Make sure Docker Desktop is installed and running, then try again."
+        echo "               https://www.docker.com/products/docker-desktop/"
+        exit 1
+    fi
+}
+
+test_image_exists() {
+    docker image inspect "$IMAGE_NAME" > /dev/null 2>&1
+}
+
+test_docker_available
+
 case "$1" in
     --rebuild)
-        echo "[rc1] Rebuilding image..."
+        echo "[Project RYNO] Rebuilding image..."
         docker build --no-cache -t "$IMAGE_NAME" .
-        docker compose run rc1
+        docker compose run projectryno
         ;;
     --delete)
-        if docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
-            echo "[rc1] Deleting image '$IMAGE_NAME'..."
+        if test_image_exists; then
+            echo "[Project RYNO] Deleting image '$IMAGE_NAME'..."
             docker image rm "$IMAGE_NAME"
-            echo "[rc1] Done."
+            echo "[Project RYNO] Done."
         else
-            echo "[rc1] Image '$IMAGE_NAME' not found, nothing to delete."
+            echo "[Project RYNO] Image '$IMAGE_NAME' not found, nothing to delete."
         fi
         ;;
     --help)
-        usage
+        show_usage
         ;;
     "")
-        if ! docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
-            echo "[rc1] Image not found, building..."
+        if ! test_image_exists; then
+            echo "[Project RYNO] Image not found, building..."
             docker build -t "$IMAGE_NAME" .
         else
-            echo "[rc1] Image already exists, skipping build."
+            echo "[Project RYNO] Image already exists, skipping build."
         fi
-        docker compose run rc1
+        docker compose run projectryno
         ;;
     *)
-        echo "[rc1] Unknown argument: $1"
-        usage
+        echo "[Project RYNO] Unknown argument: $1"
+        show_usage
         exit 1
         ;;
 esac

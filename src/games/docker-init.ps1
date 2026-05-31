@@ -1,7 +1,7 @@
 param (
-    [switch]$Rebuild,
-    [switch]$Delete,
-    [switch]$Help
+    [switch]$rebuild,
+    [switch]$delete,
+    [switch]$help
 )
 
 $ImageName = "projectryno"
@@ -10,9 +10,9 @@ function Show-Usage {
     Write-Host "Usage: .\docker-init.ps1 [OPTION]"
     Write-Host ""
     Write-Host "  (no args)   Build image if it doesn't exist, then open a container shell"
-    Write-Host "  -Rebuild    Force a fresh image build, then open a container shell"
-    Write-Host "  -Delete     Remove the image and exit"
-    Write-Host "  -Help       Show this help message"
+    Write-Host "  -rebuild    Force a fresh image build, then open a container shell"
+    Write-Host "  -delete     Remove the image and exit"
+    Write-Host "  -help       Show this help message"
 }
 
 function Test-DockerAvailable {
@@ -31,13 +31,13 @@ function Test-ImageExists {
 
 Test-DockerAvailable
 
-if ($Help) {
+if ($help) {
     Show-Usage
-} elseif ($Rebuild) {
+} elseif ($rebuild) {
     Write-Host "[Project RYNO] Rebuilding image..."
     docker build --no-cache -t $ImageName .
     docker compose run projectryno
-} elseif ($Delete) {
+} elseif ($delete) {
     if (Test-ImageExists) {
         Write-Host "[Project RYNO] Deleting image '$ImageName'..."
         docker image rm $ImageName
