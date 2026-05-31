@@ -2,10 +2,14 @@
 ee-gcc2.95.2-SN-v2.73a.tar.gz
 src/games/tools/cc/*
 
-src/games/assets/dl/*
-src/games/assets/uya/*
-src/games/assets/gc/*
 src/games/assets/rac/*
+src/games/assets/gc/*
+src/games/assets/uya/*
+src/games/assets/dl/*
+!src/games/assets/rac/.gitkeep
+!src/games/assets/gc/.gitkeep
+!src/games/assets/uya/.gitkeep
+!src/games/assets/dl/.gitkeep
 
 src/games/rac/code/asm/
 src/games/gc/code/asm/
