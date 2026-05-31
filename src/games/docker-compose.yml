@@ -1,0 +1,14 @@
+services:
+  projectryno:
+    build: .
+    image: projectryno
+    container_name: projectryno
+
+    # Mount your local project folder into the container so edits are reflected
+    # immediately and build outputs persist on your host machine.
+    volumes:
+      - .:/ProjectRYNO
+
+    # Keep stdin open so `docker compose run projectryno` gives you a shell
+    stdin_open: true
+    tty: true

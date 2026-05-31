@@ -1,0 +1,143 @@
+name: Ratchet and Clank (USA)
+sha1: ab94bc128ad37ebfb45a7a365b58b71d9fda495a
+options:
+  basename: SCUS_971.99
+  target_path: config/SCUS_971.99.rom
+  elf_path: build/SCUS_971.99
+  base_path: .
+  platform: ps2
+  compiler: EEGCC
+
+  gp_value: 0x00166C00
+  # ld_gp_expression:
+
+  # asm_path: asm
+  # src_path: src
+  # build_path: build
+
+  ld_script_path: config/SCUS_971.99.ld
+  ld_dependencies: True
+  ld_wildcard_sections: True
+  ld_bss_contains_common: True
+
+  create_asm_dependencies: True
+
+  find_file_boundaries: False
+
+  o_as_suffix: True
+
+  symbol_addrs_path:
+    - symbol_addrs.txt
+  reloc_addrs_path:
+    - reloc_addrs.txt
+
+  # undefined_funcs_auto_path: undefined_funcs_auto.txt
+  # undefined_syms_auto_path: undefined_syms_auto.txt
+
+  extensions_path: tools/splat_ext
+
+  string_encoding: ASCII
+  data_string_encoding: ASCII
+  rodata_string_guesser_level: 2
+  data_string_guesser_level: 2
+
+  named_regs_for_c_funcs: False
+
+  section_order:
+    # - .vutext
+    # - .lit
+    # - .bss
+    # - .data
+    # - .text
+
+  auto_link_sections:
+    # - .lit
+    # - .bss
+    # - .data
+
+segments:
+  - name: cod
+    type: code
+    start: 0x000000
+    vram: 0x00100080
+    bss_size: 0xAB28
+    subalign: null
+    subsegments:
+      - [0x000000, textbin, cod/000000] # .vutext
+      - [0x012300, asm, cod/012300] # core.text
+      - [0x02F400, data, cod/02F400] # core.data
+      - [0x052180, rodata, cod/052180] # core.rdata
+      - { type: bss, vram: 0x00154100, name: cod/00154100 } # core.bss
+
+  - name: core.lit
+    type: code
+    start: 0x05EC00
+    vram: 0x0015EC80
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x05EC00, data, core.lit/05EC00] # core.lit
+
+  - name: lit
+    type: code
+    start: 0x05EE80
+    vram: 0x0015EF00
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x05EE80, data, lit/05EE80] # .lit
+
+  - name: bss
+    type: code
+    start: 0x061200
+    vram: 0x00161280
+    bss_size: 0x41B0
+    subalign: null
+    subsegments:
+      - { type: bss, vram: 0x00161280, name: bss/00161280 } # .bss
+
+  - name: data
+    type: code
+    start: 0x065400
+    vram: 0x00165480
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x065400, data, data/065400] # .data
+
+  - name: lvl.vtbl
+    type: code
+    start: 0x0E8B00
+    vram: 0x001E8B80
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x0E8B00, rodata, lvl.vtbl/0E8B00] # lvl.vtbl
+
+  - name: lvl.camvtbl
+    type: code
+    start: 0x0E8B80
+    vram: 0x001E8C00
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x0E8B80, rodata, lvl.camvtbl/0E8B80] # lvl.camvtbl
+
+  - name: lvl.sndvtbl
+    type: code
+    start: 0x0E8C00
+    vram: 0x001E8C80
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x0E8C00, rodata, lvl.sndvtbl/0E8C00] # lvl.sndvtbl
+
+  - name: text
+    type: code
+    start: 0x0E8C80
+    vram: 0x001E8D00
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x0E8C80, asm, text/0E8C80] # .text
+  - [0x13D2E0]

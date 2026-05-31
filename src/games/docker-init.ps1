@@ -1,0 +1,56 @@
+param (
+    [switch]$Rebuild,
+    [switch]$Delete,
+    [switch]$Help
+)
+
+$ImageName = "projectryno"
+
+function Show-Usage {
+    Write-Host "Usage: .\docker-init.ps1 [OPTION]"
+    Write-Host ""
+    Write-Host "  (no args)   Build image if it doesn't exist, then open a container shell"
+    Write-Host "  -Rebuild    Force a fresh image build, then open a container shell"
+    Write-Host "  -Delete     Remove the image and exit"
+    Write-Host "  -Help       Show this help message"
+}
+
+function Test-DockerAvailable {
+    if (-not (Get-Command docker -ErrorAction SilentlyContinue)) {
+        Write-Host "[Project RYNO] Error: 'docker' command not found."
+        Write-Host "               Make sure Docker Desktop is installed and running, then try again."
+        Write-Host "               https://www.docker.com/products/docker-desktop/"
+        exit 1
+    }
+}
+
+function Test-ImageExists {
+    docker image inspect $ImageName 2>&1 | Out-Null
+    return $LASTEXITCODE -eq 0
+}
+
+Test-DockerAvailable
+
+if ($Help) {
+    Show-Usage
+} elseif ($Rebuild) {
+    Write-Host "[Project RYNO] Rebuilding image..."
+    docker build --no-cache -t $ImageName .
+    docker compose run projectryno
+} elseif ($Delete) {
+    if (Test-ImageExists) {
+        Write-Host "[Project RYNO] Deleting image '$ImageName'..."
+        docker image rm $ImageName
+        Write-Host "[Project RYNO] Done."
+    } else {
+        Write-Host "[Project RYNO] Image '$ImageName' not found, nothing to delete."
+    }
+} else {
+    if (-not (Test-ImageExists)) {
+        Write-Host "[Project RYNO] Image not found, building..."
+        docker build -t $ImageName .
+    } else {
+        Write-Host "[Project RYNO] Image already exists, skipping build."
+    }
+    docker compose run projectryno
+}
