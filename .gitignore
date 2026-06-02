@@ -21,10 +21,25 @@ src/games/gc/config/*.rom
 src/games/uya/config/*.rom
 src/games/dl/config/*.rom
 
+src/games/rac/config/*.d
+src/games/gc/config/*.d
+src/games/uya/config/*.d
+src/games/dl/config/*.d
+
 src/games/rac/config/*.ld
 src/games/gc/config/*.ld
 src/games/uya/config/*.ld
 src/games/dl/config/*.ld
+
+src/games/rac/include/
+src/games/gc/include/
+src/games/uya/include/
+src/games/dl/include/
+
+src/games/rac/assets/
+src/games/gc/assets/
+src/games/uya/assets/
+src/games/dl/assets/
 
 disc/
 build/
