@@ -1,19 +1,20 @@
-name: Ratchet and Clank - Up your Arsenal (UYA)
+name: Ratchet and Clank - Up Your Arsenal (USA)
 sha1: c57bf8503a9ee44d0bffe002109d301a764e46e4
 options:
   basename: SCUS_973.53
   target_path: config/SCUS_973.53.rom
   elf_path: build/SCUS_973.53
-  base_path: .
+  base_path: ../
   platform: ps2
   compiler: EEGCC
 
   gp_value: 0x001DC8B0
   # ld_gp_expression:
 
-  # asm_path: asm
-  # src_path: src
-  # build_path: build
+  asm_path: code/asm
+  src_path: code
+  build_path: build
+  data_path: build/data
 
   ld_script_path: config/SCUS_973.53.ld
   ld_dependencies: True
@@ -27,12 +28,12 @@ options:
   o_as_suffix: True
 
   symbol_addrs_path:
-    - symbol_addrs.txt
+    - config/symbols.txt
   reloc_addrs_path:
-    - reloc_addrs.txt
+    - config/reloc_addrs.txt
 
-  # undefined_funcs_auto_path: undefined_funcs_auto.txt
-  # undefined_syms_auto_path: undefined_syms_auto.txt
+  undefined_funcs_auto_path: undefined_funcs_auto.txt
+  undefined_syms_auto_path: undefined_syms_auto.txt
 
   extensions_path: tools/splat_ext
 
@@ -43,17 +44,17 @@ options:
 
   named_regs_for_c_funcs: False
 
-  section_order:
-    # - .vutext
-    # - .lit
-    # - .bss
-    # - .data
-    # - .text
+  # section_order:
+  #   - .vutext
+  #   - .lit
+  #   - .bss
+  #   - .data
+  #   - .text
 
-  auto_link_sections:
-    # - .lit
-    # - .bss
-    # - .data
+  # auto_link_sections:
+  #   - .lit
+  #   - .bss
+  #   - .data
 
 segments:
   - name: cod

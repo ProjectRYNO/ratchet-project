@@ -11,9 +11,10 @@ options:
   gp_value: 0x00166C00
   # ld_gp_expression:
 
-  # asm_path: asm
-  # src_path: src
-  # build_path: build
+  asm_path: code/asm
+  src_path: code
+  build_path: build
+  data_path: build/data
 
   ld_script_path: config/SCUS_971.99.ld
   ld_dependencies: True
@@ -27,12 +28,12 @@ options:
   o_as_suffix: True
 
   symbol_addrs_path:
-    - symbol_addrs.txt
+    - config/symbols.txt
   reloc_addrs_path:
-    - reloc_addrs.txt
+    - config/reloc_addrs.txt
 
-  # undefined_funcs_auto_path: undefined_funcs_auto.txt
-  # undefined_syms_auto_path: undefined_syms_auto.txt
+  undefined_funcs_auto_path: build/undefined_funcs_auto.txt
+  undefined_syms_auto_path: build/undefined_syms_auto.txt
 
   extensions_path: tools/splat_ext
 
@@ -43,17 +44,17 @@ options:
 
   named_regs_for_c_funcs: False
 
-  section_order:
-    # - .vutext
-    # - .lit
-    # - .bss
-    # - .data
-    # - .text
+  # section_order:
+  #   - .vutext
+  #   - .lit
+  #   - .bss
+  #   - .data
+  #   - .text
 
-  auto_link_sections:
-    # - .lit
-    # - .bss
-    # - .data
+  # auto_link_sections:
+  #   - .lit
+  #   - .bss
+  #   - .data
 
 segments:
   - name: cod
