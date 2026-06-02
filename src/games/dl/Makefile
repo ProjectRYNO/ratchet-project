@@ -18,7 +18,7 @@ FOLDER_DL = dl
 CONTAINER_ROT = /ProjectRYNO
 GAME := $(notdir $(CURDIR))
 ASSETS = $(CONTAINER_ROT)/assets/$(GAME)
-CURRENT_GAME = $(CONTAINER_ROT)/$(GAME)
+CURRENT_GAME = $(CONTAINER_ROOT)/$(GAME)
 CONFIG = $(CONTAINER_ROT)/$(GAME)/config
 TOOLS = $(CONTAINER_ROT)/tools
 REQUIREMENTS = $(CONTAINER_ROT)/requirements.txt
@@ -92,12 +92,10 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 all: $(TARGET)
 
 dump:
-ifndef ISO
-	$(error ISO is not set. Usage: make dump ISO=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
+ifndef iso
+	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
 endif
-	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(ISO)")" -o $(ASSETS)/
-
-CURRENT_GAME = $(CONTAINER_ROT)/$(GAME)
+	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
 
 rom:
 	@echo "[Project RYNO] Extracting ROM only..."
@@ -125,7 +123,7 @@ full-clean: clean
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
+	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)$(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
 	$(CROSS)-objcopy $(TARGET) build/boot_elf.elf -O binary
 
 $(OBJ_DIR)/%.o: code/%.s
