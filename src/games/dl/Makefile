@@ -60,6 +60,7 @@ WRENCH_DIR = /opt/wrench
 WRENCHBUILD = /usr/lib/wine/wine64 /opt/wrench
 PS2DEV_DIR = /opt/ps2dev
 PS2DEV_OBJCOPY = $(PS2DEV_DIR)/ee/bin/ee-objcopy
+PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # -include userconfig.mk
 
@@ -94,7 +95,7 @@ endif
 	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(ISO)")" -o $(ASSETS)/
 
 config:
-	@if [ ! -f "$(EE_OBJCOPY)" ]; then \
+	@if [ ! -f "$(PS2DEV_OBJCOPY)" ]; then \
 		echo "[Project RYNO] Downloading ps2dev v1.2.0..."; \
 		curl -L -o /tmp/ps2dev.tar.gz https://github.com/ps2dev/ps2dev/releases/download/v1.2.0/ps2dev-ubuntu-latest.tar.gz && \
 		$(MKDIR) -p $(PS2DEV_DIR) && \
@@ -103,7 +104,7 @@ config:
 		echo "[Project RYNO] ps2dev installed."; \
 	fi
 # 	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(ASSETS)/$(BASENAME)
-	$(PYTHON) -m splat create_config $(ASSETS)/$(BASENAME) --objcopy $(PS2DEV_OBJCOPY)
+	$(PYTHON) -m splat create_config $(ASSETS)/boot_elf.elf --objcopy $(PS2DEV_OBJCOPY)
 
 split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
