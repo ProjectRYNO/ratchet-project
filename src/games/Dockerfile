@@ -20,6 +20,8 @@ RUN dpkg --add-architecture i386 && \
 
 # ── Python dependencies ───────────────────────────────────────────────────────
 WORKDIR /ProjectRYNO
+
+# install requirements.txt
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
