@@ -18,9 +18,12 @@ FOLDER_DL = dl
 CONTAINER_ROT = /ProjectRYNO
 GAME := $(notdir $(CURDIR))
 ASSETS = $(CONTAINER_ROT)/assets/$(GAME)
+CURRENT_GAME = $(CONTAINER_ROT)/$(GAME)
 CONFIG = $(CONTAINER_ROT)/$(GAME)/config
 TOOLS = $(CONTAINER_ROT)/tools
 REQUIREMENTS = $(CONTAINER_ROT)/requirements.txt
+
+
 ifeq ($(GAME),$(FOLDER_RAC))
 
     BASENAME = SCUS_971.99
@@ -94,17 +97,11 @@ ifndef ISO
 endif
 	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(ISO)")" -o $(ASSETS)/
 
-config:
-	@if [ ! -f "$(PS2DEV_OBJCOPY)" ]; then \
-		echo "[Project RYNO] Downloading ps2dev v1.2.0..."; \
-		curl -L -o /tmp/ps2dev.tar.gz https://github.com/ps2dev/ps2dev/releases/download/v1.2.0/ps2dev-ubuntu-latest.tar.gz && \
-		$(MKDIR) -p $(PS2DEV_DIR) && \
-		tar -xzf /tmp/ps2dev.tar.gz -C $(PS2DEV_DIR) --strip-components=1 && \
-		rm /tmp/ps2dev.tar.gz && \
-		echo "[Project RYNO] ps2dev installed."; \
-	fi
-# 	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(ASSETS)/$(BASENAME)
-	$(PYTHON) -m splat create_config $(ASSETS)/boot_elf.elf --objcopy $(PS2DEV_OBJCOPY)
+CURRENT_GAME = $(CONTAINER_ROT)/$(GAME)
+
+rom:
+	@echo "[Project RYNO] Extracting ROM only..."
+	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(CONFIG)/$(BASENAME).rom
 
 split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
@@ -112,10 +109,18 @@ split:
 iso:
 	$(WRENCHBUILD)/wrenchbuild.exe  pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
 
+# Clean all but .rom for quick rebuild
 clean:
 	rm -rf build
-	rm -rf code/_generated
-	rm -rf $(BASENAME).ld
+	rm -rf code/asm
+	rm -rf assets
+	rm -rf cache
+	rm -rf config/$(BASENAME).d
+	rm -rf config/$(BASENAME).ld
+
+# start from scratch
+full-clean: clean
+	rm -rf config/$(BASENAME).rom
 	
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
