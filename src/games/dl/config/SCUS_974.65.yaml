@@ -4,7 +4,7 @@ options:
   basename: SCUS_974.65
   target_path: config/SCUS_974.65.rom
   elf_path: build/SCUS_974.65
-  base_path: .
+  base_path: ../
   platform: ps2
   compiler: EEGCC
 
@@ -16,7 +16,7 @@ options:
   build_path: build
   data_path: build/data
 
-  ld_script_path: config/SCUS_974.65.ld
+  ld_script_path:  config/SCUS_974.65.ld
   ld_dependencies: True
   ld_wildcard_sections: True
   ld_bss_contains_common: True
@@ -28,9 +28,9 @@ options:
   o_as_suffix: True
 
   symbol_addrs_path:
-    - config/symbols.txt
+    -  config/symbols.txt
   reloc_addrs_path:
-    - reloc_addrs.txt
+    -  config/reloc_addrs.txt
 
   undefined_funcs_auto_path: build/undefined_funcs_auto.txt
   undefined_syms_auto_path: build/undefined_syms_auto.txt
@@ -44,17 +44,17 @@ options:
 
   named_regs_for_c_funcs: False
 
-  section_order:
-    - .vutext
-    - .lit
-    - .bss
-    - .data
-    - .text
+  # section_order:
+  #   - .vutext
+  #   - .lit
+  #   - .bss
+  #   - .data
+  #   - .text
 
-  auto_link_sections:
-    # - .lit
-    # - .bss
-    # - .data
+  # auto_link_sections:
+  #   - .lit
+  #   - .bss
+  #   - .data
 
 segments:
   - name: cod
