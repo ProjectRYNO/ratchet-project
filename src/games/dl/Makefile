@@ -98,6 +98,14 @@ endif
 	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
 
 rom:
+	@if [ ! -f "$(PS2DEV_OBJCOPY)" ]; then \
+		echo "[Project RYNO] Downloading ps2dev v1.2.0..."; \
+		curl -L -o /tmp/ps2dev.tar.gz https://github.com/ps2dev/ps2dev/releases/download/v1.2.0/ps2dev-ubuntu-latest.tar.gz && \
+		$(MKDIR) -p $(PS2DEV_DIR) && \
+		tar -xzf /tmp/ps2dev.tar.gz -C $(PS2DEV_DIR) --strip-components=1 && \
+		rm /tmp/ps2dev.tar.gz && \
+		echo "[Project RYNO] ps2dev installed."; \
+	fi
 	@echo "[Project RYNO] Extracting ROM only..."
 	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(CONFIG)/$(BASENAME).rom
 
