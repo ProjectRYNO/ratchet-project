@@ -120,6 +120,7 @@ clean:
 	rm -rf build
 	rm -rf code/asm
 	rm -rf assets
+	rm -rf include
 	rm -rf cache
 	rm -rf config/$(BASENAME).d
 	rm -rf config/$(BASENAME).ld
