@@ -22,12 +22,7 @@
         ".section .text" \
     )
 #endif
-
-#if INCLUDE_ASM_USE_MACRO_INC
-__asm__(".include \"/ProjectRYNO/dl/include/macro.inc\"\n");
-#else
-__asm__(".include \"/ProjectRYNO/dl/include/labels.inc\"\n");
-#endif
+__asm__(".include \"code/include/labels.inc\"\n");
 
 #else
 
