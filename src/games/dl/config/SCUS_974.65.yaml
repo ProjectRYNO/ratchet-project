@@ -12,20 +12,28 @@ options:
   # ld_gp_expression:
 
   asm_path: code/asm
-  src_path: code
+  src_path: code/
   build_path: build
   data_path: build/data
 
   ld_script_path:  config/SCUS_974.65.ld
-  ld_dependencies: True
-  ld_wildcard_sections: True
-  ld_bss_contains_common: True
-
-  create_asm_dependencies: True
+  # ld_dependencies: True
+  # ld_wildcard_sections: True
+  # ld_bss_contains_common: True
+  # create_asm_dependencies: True
 
   find_file_boundaries: False
 
   o_as_suffix: True
+
+
+  disasm_unknown: True
+  pair_rodata_to_text: False
+  generate_asm_macros_files: false
+
+  check_consecutive_segment_types: False
+
+  subalign: 8
 
   symbol_addrs_path:
     -  config/symbols.txt
@@ -65,8 +73,13 @@ segments:
     subalign: null
     subsegments:
       - [0x000000, textbin, cod/000000] # .vutext
-      - [0x01A100, asm, cod/01A100] # core.text
-      - [0x063B00, data, cod/063B00] # core.data
+      - [0x01A100, asm, cod/01A100] # core.text (TODO: replace with mapped subsegments below)
+
+      # cod.text mapped subsegments:
+      - [0x57bd8, cpp, game/boot]
+
+
+      - [0x063B00, bin, cod/063B00] # core.data
       - [0x091E80, rodata, cod/091E80] # core.rdata
       - { type: bss, vram: 0x001A5180, name: cod/001A5180 } # core.bss
 
