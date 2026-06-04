@@ -1,0 +1,5045 @@
+game\FXRegistry.cpp
+======================================
+size: 00000164 FXRegistrySystemInternal::PrepForEffectsRendering
+size: 00000054 FXRegistrySystemInternal::CleanUpAfterEffectsRendering
+size: 00000008 FXRegistrySystemInternal::IsTrackingRegisters
+size: 00000080 FXRegistrySystemInternal::ResetRegisterZBuf
+size: 00000080 FXRegistrySystemInternal::ResetRegisterTex1
+size: 0000027C FXRegistrySystemInterface::SetBlendMode
+size: 00000094 FXRegistrySystemInterface::SetTexture
+size: 00000094 FXRegistrySystemInterface::SetIconTexture
+size: 00000068 FXRegistrySystemInterface::SetTextureDirect
+size: 00000148 FXRegistrySystemInterface::SetTextureClamp
+size: 00000118 FXRegistrySystemInterface::SetFogMode
+size: 000000AC FXRegistrySystemInterface::DrawStrip
+size: 000000C4 FXRegistrySystemInterface::DrawStrip
+size: 00000094 FXRegistrySystemInterface::DrawQuad
+size: 00000238 FXRegistrySystemInterface::DrawQuad
+size: 000000C8 FXRegistrySystemInterface::STScale
+size: 00000084 FXRegistrySystemInterface::ZAddGSRegister
+size: 00000144 FXRegistrySystemInterface::ZUpdateRegisterValue
+
+
+game\FXSpawn.cpp
+===================================
+size: 00000088 FXSpawningInterface::Teleport_VehiclePlayer
+size: 000000BC FXSpawningInterface::Lightning_SimpleTwoPoint
+size: 000003B8 FXS_DrawFrozen
+size: 0000023C FXSpawningInterface::ShadowVolume_Ice
+size: 000004B8 FXSpawningInterface::ShadowVolume_Electric
+size: 00000A58 FXSpawningInterface::ShadowVolume_Fire
+
+
+game\FXUtil.cpp
+==================================
+size: 000000A4 FXUtilsInterface::CalcCycleFade
+size: 000008D4 FXUtilsInterface::DrawShellEdgeFaded
+size: 00000750 FXUtilsInterface::DrawAlphaMaskPoly
+size: 00000540 FXUtilsInterface::DrawPinchDistort
+size: 00000114 FXU_SetupRingStripVerts
+size: 00000268 FXUtilsInterface::DrawLayeredRing
+size: 000000A0 FXUtilsInterface::AttachPointToJoint
+size: 00000200 FXUtilsInterface::CubicLine_Init
+size: 0000005C FXUtilsInterface::CubicLine_Update
+size: 00000400 FXU_BuildCubicLineGeometry
+size: 00000C5C FXUtilsInterface::CubicLine_Draw
+size: 00000100 FXUtilsInterface::CubicLineSet_Init
+size: 00000044 FXUtilsInterface::CubicLineSet_SetEndPointPos
+size: 000000AC FXUtilsInterface::CubicLineSet_SetStyle
+size: 000001C8 FXUtilsInterface::CubicLineSet_Update
+size: 00000130 FXUtilsInterface::CubicLineSet_Draw
+size: 0000021C FXUtilsInterface::CubicLineSet_InitAsLightning
+size: 000000B8 FXUtilsInterface::Contrail_Init
+size: 0000006C FXUtilsInterface::IsDrawOK
+
+
+game\actuator.cpp
+====================================
+size: 0000003C actuator_dbgplaywave
+size: 00000060 actuator_dbgstopwave
+size: 0000021C actuator_SetWave
+size: 0000005C actuator_killWave
+size: 00000404 actuator_CalcPower
+
+
+game\astrm\ee\src\astrm.cpp
+==============================================
+size: 00000014 astrmFreeCallback
+size: 00000010 astrmCompleteProc_GetSpu2CoreStatus
+size: 00000090 Process
+size: 000000D0 StopAll
+size: 00000048 BankLoadFromEE_SpuLoc_CB
+
+
+game\astrm\ee\src\gadgetcache.cpp
+====================================================
+size: 00000130 gadgetCacheUpdateSlot
+size: 000000EC gadgetCacheCallback_Load
+size: 0000002C gadgetCacheCallback_Unload
+size: 0000011C GadgetCache::Initialize
+size: 0000006C GadgetCache::UnInitialize
+size: 0000015C GadgetCache::Reset
+size: 00000028 GadgetCache::Load
+size: 000001FC GadgetCache::Process
+size: 000000B4 GadgetCache::IsLoaded
+
+
+game\bloaders.cpp
+====================================
+size: 000001D4 LoadPifAsPSMT8H
+size: 00000084 LoadDebugFont
+
+
+game\bmain.cpp
+=================================
+size: 00000008 LevelTScene_VoxShuttle_UpdateMonitors
+size: 00000008 LevelTScene_VoxShuttle_UpdateFX
+size: 00000008 UpdateSceneMonitors
+size: 00000008 InitForCheats
+size: 00001044 Level_PostTransitionFX
+size: 00000030 Level_TransitionFX
+size: 00000008 GetCurrentFrameRateMode
+size: 0000001C mode_creditsInit
+size: 0000001C mode_creditsUnInit
+size: 00000008 mode_lobbyUnInit
+size: 00000008 mode_lobbyInit
+size: 0000002C GetBootMemoryMap
+size: 00000034 GetBootPlate
+size: 0000089C startlevel
+size: 000005F4 UpdateBoot
+size: 00000008 Boot_ResetTimeOutCounter
+
+
+game\boot.cpp
+================================
+size: 0000014C unpackbuff
+size: 00000114 ParsePatch
+size: 0000004C ParseBin
+size: 00000140 GetBootOptionsFromSettings
+size: 00000124 ApplyBootOptionsToSettings
+size: 00000104 main
+
+
+game\bootutil.cpp
+====================================
+size: 00000044 MB_IsPntInCuboid
+size: 0000002C MB_rand
+size: 00000044 MB_randRangeInt
+size: 00000054 MB_randRange
+size: 00000060 MB_randRange2
+size: 00000048 MB_randRot
+size: 000000C0 MB_randVector
+size: 00000080 MB_randSphere
+
+
+game\camera.cpp
+==================================
+size: 000000B0 Camera_InitFovSystem
+size: 000000C4 Camera_SetFov
+size: 000001E8 Camera_UpdateFov
+size: 00000094 BackupCurrentCam
+size: 000000A4 ExecuteCamPostUpdFuncs
+size: 00000040 Camera_FindCameraOfType
+size: 00000208 Cam_InterpVecs
+size: 000000B8 Cam_InterpValues
+size: 000000B4 Cam_InterpAngles
+size: 0000002C Camera_DeactivateCurrent
+size: 00000078 Camera_handleCollWithHero
+size: 00000044 Camera_runSetupToNewCam
+size: 0000032C Camera_switchToNewCam
+size: 000001F4 Camera_ActivationCheckPriority
+size: 00000044 Camera_Exit
+size: 0000015C UpdateAllCameras
+size: 00000414 Camera_Pos2Polar3d
+size: 00000190 Camera_InitBlenderPolarHero
+size: 00000050 Camera_CopyLastQuatToPolar
+size: 00000038 Camera_CopyLastPolarToQuat
+size: 000002EC Camera_InitBlender
+size: 00000190 Camera_BlendCamsPosQuat
+size: 00000C40 Camera_BlendCamsPolQuat
+size: 000000A8 Camera_BlendCams
+size: 00000354 HandleCameraShake
+size: 00000398 Camera_UpdateHeroInfo
+size: 0000001C HandleCameraUnderWaterOverlay
+size: 0000020C Cam_HandleHotspots
+size: 000000E8 Camera_HandleScreenFade
+size: 00000110 Camera_HandleScreenFlash
+size: 0000015C Camera_CopyGameCameraToRenderCamera
+size: 000002C0 UpdateCamera
+size: 00000168 Camera_resetToFollow
+size: 0000000C Camera_DestroyReticule
+size: 00000008 Camera_UpdateFog
+size: 00000150 Camera_StartShake
+
+
+game\chunk.cpp
+=================================
+size: 0000041C CS_SpawnChunk
+size: 0000021C CS_InitChunk
+size: 000001F4 CS_UpdateChunk
+size: 000001D8 CS_BlockType_Move
+size: 00000408 CS_SphereType_Move
+size: 00000008 CS_RodType_Move
+size: 00000008 CS_BallsType_Move
+size: 000000F0 CS_MoveFree
+size: 000000F0 CS_MoveFree_Sphere
+size: 000002B4 CS_MovePivot
+size: 000003F4 CS_DoCollision
+size: 0000009C CS_DoCollision_Sphere
+size: 000000C0 CS_AttachPivot
+size: 00000374 CS_RemoveUnusedPivots
+size: 00000234 CS_AddRotationVel
+size: 0000010C CS_RemoveRotationAroundAxis
+size: 00000170 CS_ReflectVector
+size: 000000F4 CS_UnPackCollData
+
+
+game\config_util.cpp
+=======================================
+size: 00000834 ConfigUtil_ParseLine
+size: 000000A8 ConfigUtil_ReadLine
+size: 00000128 ConfigUtil_ReadWord
+size: 00000074 ConfigUtil_ReadNumber
+
+
+game\credits.cpp
+===================================
+size: 000000C8 _mode_creditsInit
+size: 0000004C _mode_creditsUnInit
+size: 00000038 setArrayContents
+size: 000011E4 _credits_update
+size: 000000E4 Credit_AddSequence
+size: 00000060 Credit_InitializeMessagePool
+size: 00000068 Credit_PageForLine
+size: 00000020 Credit_SequenceTrigger
+size: 000000F8 Credit_AdvancePage
+size: 000000E8 Credit_SeekNextLines
+
+
+game\dead_reckon.cpp
+=======================================
+size: 00000090 DR_InitVars
+
+
+game\draw.cpp
+================================
+size: 00000008 DrawIOPInfo
+size: 00000204 SetupUVMatrix
+size: 0000044C ComposeCameraMatrix
+size: 000000E0 UpdateFog
+size: 000000D4 ParseOcclGrid
+size: 000000B8 GetOcclGridFromPair
+size: 000003E8 BuildOcclVisibility
+size: 00000050 UpdateOcclusion
+size: 00000088 CalcAdditionalScrnInfo
+size: 00000194 InitViewContext
+size: 00000798 UpdateViewContext
+size: 000003CC SetPalMode
+size: 00000068 ResetDrawGlobals
+size: 000001D4 ResetGsRegisters
+size: 00000078 ResetGsRegistersPr
+size: 00000044 GetFrustumDef
+size: 000000D8 GetScreenFrustumIndex
+size: 000000D0 GetScreenFrustumCoords
+size: 00000040 GetScreenFrustumScales
+size: 00000130 SetupGifPaging
+size: 00000108 DoGifPaging
+size: 000000E8 CalcWorldSpaceUV
+size: 00000184 GetEffectTex
+size: 00000178 LoadTexToGs
+size: 000000B8 LoadPalToGs
+size: 0000005C ConstructEffectTex0
+size: 00000038 CleanRegisteredDraws
+size: 0000005C RegisterDrawFunction
+size: 000000A0 ExecuteDrawFunctions
+size: 000001F8 FadeToBlack
+size: 00000160 DrawLogoAndStart
+size: 000003A0 DrawSubtitles
+size: 0000029C DrawScreenOverlay
+size: 000001D4 DrawRectOverlay
+size: 000001B8 DrawSprite
+size: 000001CC DrawSprite
+size: 000001B4 DrawSpriteFont
+size: 00000204 DrawSpriteFontGouraud
+size: 00000280 DrawSpriteFontWithShadow
+size: 000000C8 DrawScreenGQuad
+size: 0000009C DrawScreenGQuad
+size: 0000013C DrawTextShadow
+size: 0000032C FastDrawStripInit
+size: 00000088 Screen_FadeOut
+
+
+game\draw2d.cpp
+==================================
+size: 00000014 Draw2D::SetZ
+size: 00000010 Draw2D::ResetZ
+size: 0000003C Draw2D::TranslatePoints
+size: 0000003C Draw2D::ScalePoints
+size: 00000098 Draw2D::RotatePoints
+size: 00000024 Draw2D::PackQuadLTRB
+size: 00000408 Draw2D::DrawQuad
+size: 00000030 Draw2D::DrawQuad
+size: 0000014C Draw2D::CalcMapUvs
+size: 00000510 Draw2D::DrawQuadMap
+
+
+game\effects.cpp
+===================================
+size: 00000578 FX_DrawCamFacingPoly
+
+
+game\fonts.cpp
+=================================
+size: 000000B4 FontLoad
+size: 000001E4 LoadFontToGS
+size: 0000003C GetCharacterIndex
+size: 00000090 FontInitialize
+size: 00000014 FontForceInitialize
+size: 0000009C FontSet
+size: 0000001C FontGetCharacterCount
+size: 000001D4 FontGetMaxHeight
+size: 00000008 FontEnableColors
+size: 0000017C FontStringHeight
+size: 000002E0 FontStringLength
+size: 00000008 FontGetClampScale
+size: 00000008 FontClampScale
+size: 00000968 FontPrint
+size: 00000A64 FontPrint
+size: 00000038 FontSetWindow
+size: 00000A88 FontPrintWindow
+size: 000008A4 FontPrintWindowList
+size: 0000001C GetFontMaxHeight
+size: 0000001C EnableFontColors
+size: 0000001C DisableFontColors
+size: 00000024 FontLen
+size: 0000001C FontLenScaled
+size: 000000A8 FontPrintCenter
+size: 000000E0 FontPrintCenterSmall
+size: 0000005C FontPrintCenterScaledLarge
+size: 000000B8 FontPrintRightSmall
+size: 000000B8 FontPrintSmall
+size: 00000034 FontPrintScaled
+size: 00000020 SetFontWindow
+size: 00000088 FontPrintWindowSmall
+size: 0000002C FontPrintWindowScaledGenericList
+size: 0000001C LoadFontToGs
+size: 00000240 FontGetUnicodeCharacter
+
+
+game\fpsmode.cpp
+===================================
+size: 000002AC FPSCam_Init
+size: 000001C8 FPSCam_Reset
+size: 00000764 FPSCam_HandleExtension
+
+
+game\framebuf.cpp
+====================================
+size: 00000070 SetVideoMode
+size: 000001D4 SetMovieDrawSmallVIFChain
+size: 00000B08 SetupFS_AA_buffer
+size: 00000028 SetBackgroundColor
+size: 00000024 PutDispBuffer
+size: 00000094 PutDrawBufferLarge
+size: 00000214 ClearDrawBufferLarge
+size: 0000006C PutDrawBufferSmall
+size: 0000005C AA_BlurPass
+size: 0000011C AA_DisplayPass
+
+
+game\freeze.cpp
+==================================
+size: 00000008 GetLastFreezeDialogType
+size: 00000074 UpdateProgressiveScan
+size: 00000070 mode_freezeUnInit
+size: 0000000C Freeze_SetFreezeOcclusion
+size: 00000208 mode_freezeInit
+size: 00000BEC DrawDialogText
+size: 000017B0 UpdateModeFreeze
+size: 00000400 Freeze_SphereMap_OrientDown
+size: 00000128 Freeze_SphereMap_Spin
+size: 000000B0 Freeze_SphereMap_Strafe
+size: 0000000C Freeze_ClearLastUserResponse
+size: 00000074 Freeze_DisplayMessage
+size: 0000001C Freeze_MessageCallback
+size: 0000003C Freeze_KillMessage
+
+
+game\fs.cpp
+==============================
+size: 00000060 cb_cdComplete
+size: 00000044 Fs::Sync
+size: 000002E0 Fs::Update
+size: 00000020 Fs::Initialize
+size: 00000014 Fs::Reset
+size: 00000034 Fs::Load
+size: 000000A8 Fs::LoadAsync
+size: 0000003C Fs::Abort
+size: 00000030 Fs::IsLoading
+size: 00000008 Fs::GetBuffer
+
+
+game\fs_handlers.cpp
+=======================================
+size: 00000020 cb_missionBankLoadComplete
+size: 0000006C load_file
+size: 00000008 is_complete_file
+size: 0000001C abort_file
+size: 00000008 load_complete_file
+size: 00000098 load_mission_bank
+size: 00000014 is_complete_mission_bank
+size: 00000008 abort_mission_bank
+size: 00000030 load_complete_mission_bank
+
+
+game\gameglobals.cpp
+=======================================
+size: 00000008 SetFrontEndState
+size: 0000002C nwKbdTimerFunc
+size: 00000094 InitMultiplayerProfiles
+
+
+game\gearmenu.cpp
+====================================
+size: 00000064 PM_Malloc
+size: 00000008 SetPmMemory
+
+
+game\globals.cpp
+===================================
+size: 0000007C RebootToFrontEnd
+size: 00000048 MovieQueue::Construct
+size: 0000009C MovieQueue::DeQueueMovie
+size: 00000074 MovieQueue::QueueMovie
+size: 0000001C MovieQueue::Flush
+size: 00000078 MovieQueue::TagMoviesAsPlayed
+size: 00000030 MovieQueue::Abort
+size: 000000C8 MovieQueue::PlayNextQueuedMovie
+size: 00000008 HandleSpecialSwitchLevelCases
+size: 000000C0 SwitchToLevel
+size: 0000000C SwitchingLevels
+size: 00000010 IsGameInChallengeMode
+size: 0000000C GetGameCompleted
+size: 00000008 Global_ClearSaveErrorInSpaceTransition
+size: 000000A0 InitializeLobbyControllerSettingsToDefaults
+size: 0000025C ControllerSettingsToLobbyStorage
+size: 0000002C GetCurrentThreadPriority
+size: 000000BC GetMobySkinBase
+
+
+game\group_control.cpp
+=========================================
+size: 00000034 MB_GetRoleVars
+
+
+game\guber\GadgetBox.cpp
+===========================================
+size: 00000054 GadgetBox::AddToQuickSelect
+size: 0000002C GadgetBox::IsGadgetCoopOnly
+size: 00000040 GadgetBox::IsGadgetQuickSelectable
+size: 00000088 GB_QueuePrintMsg
+size: 0000004C GadgetBox::GetGadgetLevelID
+size: 0000000C GadgetBox::IsValidGadgetID
+size: 0000007C GadgetBox::FindMaxGadgetLevel
+size: 000000A8 GadgetBox::SetGadgetLevel
+size: 00000014 GadgetBox::GetGadgetLevel
+size: 00000028 GadgetBox::GetGadgetNextLevel
+size: 0000002C GadgetBox::GetGadgetPrevLevel
+size: 00000038 GadgetBox::SetGadgetAmmo
+size: 0000002C GadgetBox::GetGadgetAmmo
+size: 00000098 GadgetBox::GetGadgetMaxAmmo
+size: 00000090 GadgetBox::GadgetHasAmmo
+size: 000000A0 GadgetBox::GadgetAmmoAdd
+size: 0000001C GadgetBox::GadgetAmmoSub
+size: 00000024 GadgetBox::GadgetHasInfiniteAmmo
+size: 00000038 GadgetBox::SetGadgetXP
+size: 0000002C GadgetBox::GetGadgetXP
+size: 000000EC GadgetBox::GetLevelUpXP
+size: 000000D8 GadgetBox::AddGadgetXP
+size: 00000114 GadgetBox::GetGadgetLevelProgress
+size: 000000E0 GadgetBox::GetGadgetDamageDirectly
+size: 00000050 GadgetBox::GetGadgetDamage
+size: 00000050 GadgetBox::GetGadgetPowerDirectly
+size: 00000030 GadgetBox::GetGadgetPower
+size: 00000030 GadgetBox::GetGadgetSpeed
+size: 000000A0 GadgetBox::GetGadgetRefireRate
+size: 000003EC GadgetBox::QueueGadgetEvent
+size: 00000008 GadgetBox_ShouldDebrisGadgetsBail
+size: 000000E4 GadgetBox::PeekGadgetEvent
+size: 000001BC GadgetBox::GetGadgetEvent
+size: 0000003C GadgetBox::GetGadgetDef
+size: 00000038 GadgetBox::GetGadgetLevelDef
+size: 00000034 GadgetBox::HasGadget
+size: 00000020 GadgetBox::IsGadgetUpgraded
+size: 0000013C GadgetBox::MakeAvailable
+size: 00000090 GadgetBox::RemoveGadget
+size: 00000054 GadgetBox::StripGadgets
+size: 000000C4 GB_QueueUpgradeMsg
+size: 0000032C GadgetBox::UpgradeGadget
+size: 00000028 GadgetBox::UpgradeGadget
+size: 000003E4 GadgetBox::MPUpgradeGadget
+size: 000001F4 GadgetBox::BangelizeWeapons
+size: 000000B0 GB_QueueGiveModMsg
+size: 00000018 GadgetBox::GetModBasicDefDirectly
+size: 00000018 GadgetBox::GetModPostFXDefDirectly
+size: 00000018 GadgetBox::GetModWeaponDefDirectly
+size: 00000080 GadgetBox::HasMod
+size: 00000020 GadgetBox::NumPoolMod
+size: 0000003C GadgetBox::NumPoolMod
+size: 00000088 GadgetBox::NumPoolMod
+size: 00000080 GadgetBox::NumModTotal
+size: 0000009C GadgetBox::AddPoolMod
+size: 00000148 GadgetBox::AddPoolMod
+size: 000000C8 GadgetBox::AddPoolMod
+size: 00000060 GadgetBox::RemovePoolMod
+size: 00000088 GadgetBox::RemovePoolMod
+size: 000000CC GadgetBox::GadgetIsModSupported
+size: 000000CC GadgetBox::GadgetIsModSupported
+size: 00000024 GadgetBox::GetDefaultBasicMod
+size: 000000E0 GadgetBox::ActivateMod
+size: 0000008C GadgetBox::ActivateMod
+size: 000000A0 GadgetBox::ActivateMod
+size: 00000070 GadgetBox::DeactivateBasicMod
+size: 0000003C GadgetBox::DeactivateBasicMods
+size: 0000007C GadgetBox::DeactivatePostFXMod
+size: 0000007C GadgetBox::DeactivateWeaponMod
+size: 00000080 GadgetBox::StripMods
+size: 00000054 GadgetBox::NumModActive
+size: 0000002C GadgetBox::GetActivePostFXMod
+size: 00000040 GadgetBox::GetActiveWeaponMod
+size: 00000020 GadgetBox::GrindRailAttach
+size: 0000001C GadgetBox::GrindRailDetach
+size: 0000001C GadgetBox::GrindRailIsAttached
+size: 000000CC GadgetBox::Init
+
+
+game\guber\GameController.cpp
+================================================
+size: 00000514 GB_SendGameStateCallback
+size: 0000023C GB_DisplayFragMess
+size: 0000072C GB_DisplayGameOverMsg
+size: 00000168 GB_DisplayDroppedPlayerMsg
+size: 00000030 ClearJuggernaut
+size: 00000304 GB_UpdateJuggernaut
+size: 00000244 GB_CheckForCheaters
+size: 00000098 GB_GetNumStartPlayersAndTeams
+size: 00001030 GB_UpdateGameController
+size: 00000168 GB_GameControllerDisplayKillMessage
+size: 0000005C GB_GameControllerHandleReceivedKillMessages
+size: 00000044 GB_GameControllerKillReceieved
+size: 00000BD0 _GameControllerHandleReceivedKillMessage
+size: 00000594 GB_GameControllerSessionMasterEndGame
+size: 00000E5C GB_GameControllerEndGame
+size: 000000B8 GB_CheckResurrectionSpot
+size: 0000029C GB_FindValidResurrectionSpot
+size: 0000023C GB_GetRandomFirstRez
+size: 00000F84 GB_GetResurrectionSpot
+size: 00000078 GB_GadgetIdToIndex
+size: 00000064 GB_IndexToGadgetId
+size: 0000003C GB_IsWeaponEnabled
+size: 00000150 GB_StartGameStatsAdjust
+size: 00000008 GB_EndGameStatsAdjust
+size: 0000007C GB_GetPlayerScore
+size: 00000140 GB_UpdateNodesOwnedList
+size: 00000218 GB_UpdatePlayerHillReward
+size: 00000204 GB_UpdatePlayerHillTimeList
+size: 000001D0 GB_UpdateNodeLockDown
+size: 000002F0 GB_SetupMPHud
+size: 00000380 GB_UpdateMPHud
+
+
+game\guber\Guber.cpp
+=======================================
+size: 000000F0 Guber::GetObject
+size: 0000007C Guber::ReserveObject
+size: 000000C8 Guber::CreateReservedObject
+size: 0000002C Guber::GetUID
+size: 00000044 Guber::GetObject
+size: 00000008 Guber::SetMobyObjectPtrToMe
+size: 00000058 NewUniqueId
+size: 00000008 Guber::NotifyChildSpawned
+size: 00000008 Guber::GetTeam
+size: 00000008 Vehicle::InitInstance
+size: 00000008 Vehicle::Update
+
+
+game\guber\GuberEvent.cpp
+============================================
+size: 000000C8 GuberEvent::CreateEvent
+size: 0000004C GuberEvent::FindEvent
+size: 00000020 GuberEvent::EventExists
+size: 00000020 GuberEvent::AllocEvent
+size: 00000078 GuberEvent::write
+size: 0000004C GuberEvent::read
+size: 00000060 GuberEvent::setEventTimes
+
+
+game\guber\GuberFunc.cpp
+===========================================
+size: 00000018 GB_GetLocalHeroFromSlot
+size: 0000000C GB_GetSingleHero
+size: 00000008 GB_GetLocalBotFromSlot
+size: 00000018 GB_GetHeroFromPlayerIndex
+size: 00000020 GB_GetLocalHeroFromHero
+size: 00000050 GB_GetHeroFromUID
+size: 0000006C GB_IsMobyAHero
+size: 00000088 GB_GetDistSquaredToClosestPlayer3D
+size: 00000044 GB_GetHeroMobyController
+size: 00000080 GB_AssignLocalPlayerToWeapon
+size: 00000014 GB_IsCoopLevel
+size: 0000009C GB_GetDamager
+size: 00000044 GB_GetHeroDamager
+size: 00000048 GB_IsClientAlive
+
+
+game\guber\GuberMoby.cpp
+===========================================
+size: 000000F4 GuberMoby::CreateSpawned
+size: 000000A8 GuberMoby::SpawnInit
+size: 0000004C GuberMoby::InitInstance
+size: 00000104 GuberMoby::GetMasterHandler
+size: 0000021C GuberMoby::Update
+size: 000001D4 GuberMoby::GetBestMaster
+size: 0000005C GuberMoby::HandleEvent
+size: 00000348 GuberMoby::HandleClassEvent
+size: 000000B0 GuberMoby::isNewMessage
+size: 0000006C GuberMoby::OnBecomeMasterEvent
+size: 00000068 GuberMoby::OnNoMasterEvent
+size: 0000007C GuberMoby::OnTransferMasterEvent
+size: 000000BC GuberMoby::MakeNewMasterEvent
+size: 000000D4 GuberMoby::MakeNewTransferMasterEvent
+size: 000000A0 GuberMoby::MakeNewNoMasterEvent
+size: 00000008 GuberMoby::GetMoby
+size: 00000024 GuberMoby::FriendlyToTeam
+size: 00000008 GuberMoby::GetTeam
+
+
+game\guber\Hero.cpp
+======================================
+size: 00001004 Hero::ResetHero
+size: 0000003C Hero::IsTired
+size: 000000F8 Hero::CoreIdle
+size: 0000005C Hero::GetJuggSafeTeam
+size: 00000108 Hero::DecHitPoints
+size: 00000058 Hero::IncHitPoints
+size: 00000038 Hero::TweakerMoby
+size: 000000B0 Hero::ResetTweakers
+size: 00000310 Hero::InitTweakers
+size: 00000048 Hero::PlayJumpLandSound
+size: 0000006C Hero::PlayFootStep
+size: 000001AC Hero::FeetSounds
+size: 000000A8 Hero::KillLoopingSounds
+size: 00000260 Hero::UpdateCameraData
+size: 0000007C Hero::PosEffects
+size: 000000B8 Hero::RotEffects
+size: 0000019C Hero::MapToMoby
+size: 000000B8 Hero::GetPadFly
+size: 000000BC Hero::ScaleAnim
+size: 00000064 Hero::GetAnimScaledVal
+size: 00000324 Hero::RotateAroundPoint
+size: 00000030 Hero::RotateAroundCG
+size: 000000D0 Hero::SpawnWaterRings
+size: 00000210 Hero::SpawnWaterWake
+size: 00000210 Hero::SpawnWaterDrops
+size: 00000324 Hero::SpawnWaterBubbles
+size: 000002A0 Hero::SpawnWaterSplash
+size: 0000033C Hero::SpawnLavaAssParticles
+size: 000001A0 Hero::CheckWall
+size: 00000030 Hero::ClearIdleTweakVals
+size: 00000970 Hero::UpdateLedge
+size: 00000300 Hero::CheckGrindAtPos
+size: 00000020 Hero::HandGadgetID
+size: 00000048 Hero::IsSwimming
+size: 00000050 Hero::RotZRingVal
+size: 0000030C Hero::ComputeTargetScore
+size: 00000334 Hero::ComputeTargetScoreSpherical
+size: 000002B0 Hero::GetAutoTargetMoby
+size: 00000064 Hero::SendConvertToJuggernaut
+size: 000000C4 Hero::UnconvertJuggernaut
+size: 00000314 Hero::ConvertToJuggernaut
+size: 000002D0 Hero::PlayFiringAnim
+size: 000001C8 Hero::EndFiringAnim
+size: 00000174 Hero::KillGadget
+size: 00000E8C Hero::HandleGadgetSwitching
+size: 00000034 Hero::ZeroMovement
+size: 00000084 Hero::ScaleGetHitMomentum
+size: 0000037C Hero::WhoHitMe
+size: 0000001C Hero::ResetWhoHitMe
+size: 00000674 Hero::UpdateReactionEffects
+size: 000012C0 Hero::HandleDamage
+size: 00000098 Hero::SendGetHitMessage
+size: 000007B4 Hero::Death
+size: 00000510 Hero::Resurrect
+size: 00000150 Hero::WeaponStripMe
+size: 0000008C Hero::DeIceMe
+size: 00000174 Hero::SpawnBackpack
+size: 00000444 Hero::CreditKill
+size: 00000020 Hero::MobyIsWrench
+size: 000000C4 Hero::OutsideStrafeDirTolerance
+size: 000000E0 Hero::StrafeTurnTowardCam
+size: 00000150 Hero::HandleStrafeMovement
+size: 00000038 Hero::MayaFrameTrigger
+size: 000004FC Hero::GetIdealThrustFromPad
+size: 000000C4 Hero::GetIdealThrustForWalk
+size: 00000334 Hero::Turn3D_XYZ
+size: 000000D8 Hero::Turn3D
+size: 00000128 Hero::Turn
+size: 00000250 Hero::GunTurnWalk
+size: 0000004C Hero::ThrustModeAccel
+size: 000000E0 Hero::ThrustToMotion
+size: 00000064 Hero::ThrustToMotion
+size: 000001FC Hero::WallSloopMotion
+size: 00000500 Hero::KneeBumpMotion
+size: 000001E8 Hero::GetGroundCollTestVecs
+size: 00000CB8 Hero::GetGroundInfo
+size: 0000005C Hero::ForwardComponent
+size: 00000058 Hero::ScaleMotion
+size: 00000534 Hero::JumpTranslation
+size: 000005C0 Hero::JumpThrustGrav
+size: 00000C7C Hero::JumpTurnTrans
+size: 00000174 Hero::SetAttackRot
+size: 000009B8 Hero::SetBankTwistSway
+size: 000001FC Hero::GetHeroRelativeGroundAngs
+size: 000000B8 Hero::ApplyTaper
+size: 00000070 Hero::ZRotDiffSpherical
+size: 00000028 Hero::PlaySound
+size: 00000024 Hero::KillSoundByID
+size: 0000001C Hero::KillLongSounds
+size: 00000054 Hero::PlayLoopSound
+size: 00000044 Hero::QueueSound
+size: 00000900 Hero::Warp
+size: 0000021C Hero::EdgeStop
+size: 00000234 Hero::SpawnLavaDeathParts
+size: 00000550 Hero::ThrowWrench
+size: 00000038 Hero::GetSnapJumpSnapWindow
+size: 000001A0 Hero::GetSnapJumpDir
+size: 0000009C Hero::UpdateStateHistory
+size: 00000068 Hero::CheckStateHistory
+size: 00000158 Hero::StateChangeIsLegal
+size: 0000026C Hero::SurfBob
+size: 000000F8 Hero::JumpOrSnapJumpCheck
+size: 00000680 Hero::UpdateWalkAnim
+size: 00000260 Hero::GetSpecialIdle
+size: 00000268 Hero::JumpLandTransitions
+size: 000000B8 Hero::CrouchJumpTransitions
+size: 00000194 Hero::CheckFloorOkAhead
+size: 0000012C Hero::IdleCycleFiringTransition
+size: 00000168 Hero::HandleLockon
+size: 000000B4 Hero::RequestGadgetEquip
+size: 00000078 Hero::QueueGadgetEvent
+size: 00000040 Hero::PeekGadgetEvent
+size: 00000050 Hero::GetGadgetEvent
+size: 000000C4 GB_DisplayHelpMsgs
+size: 000000F8 Hero::MakeGadgetAvailable
+size: 00000074 Hero::DropFlag
+size: 0000008C Hero::PlayBackpackIdle
+size: 00000114 Hero::TransBackpackAnim
+size: 00000018 Hero::GetBackpackAnim
+size: 00000258 Hero::TransAnim
+size: 00000180 Hero::IsLoopingAnim
+size: 000000AC Hero::SnapAnim
+size: 000004BC Hero::PredictLand
+size: 00000244 Hero::MakeInvisible
+size: 00000138 Hero::MakeVisible
+size: 0000003C Hero::SetDust
+size: 00000680 Hero::RelativeZAngle
+size: 000001C4 Hero::AddGravity
+size: 000000B8 Hero::GetHeroRelativePolarVector
+size: 00000240 Hero::ForwardThrust
+size: 000001B8 Hero::VerticalThrust
+size: 0000012C Hero::CancelGravity
+size: 0000021C Hero::RelativeXYComponent
+size: 00000068 Hero::RelativeZComponent
+size: 000000AC Hero::ScaleRelativeZ
+size: 00000120 Hero::ScaleRelativeXY
+size: 000000AC Hero::MulScalarRelativeZ
+size: 000000CC Hero::MulScalarRelativeXY
+size: 000000FC Hero::GetJumpPeak
+size: 000000D4 Hero::Slope
+size: 0000004C Hero::WalkToPosStatus
+size: 000000BC Hero::IsFPSModeActive
+size: 000003FC Hero::FPS_SetCamera
+size: 00000090 Hero::FPS_ResetCameraHeight
+size: 00000228 Hero::ToggleFPSMode
+size: 000002E8 Hero::PlayGetHitSound
+size: 00000008 Hero::GetPlayerInput
+size: 000000A0 Hero::CalcProgressToNextHpLevel
+size: 00000050 Hero::DeleteGadgets
+size: 00000180 Hero::QueueRespawnHelpMess
+size: 000000AC Hero::GetStartWeaponGadgetId
+size: 000001B0 Hero::GiveMeRandomWeapons
+size: 00000350 Hero::HandleEvent
+size: 00000088 Hero::CreateSheepDeathEvent
+size: 000000A8 Hero::IsPlayerLinkHealthy
+size: 00000800 mpFPSCam_NetTargeting
+size: 00000088 mpFPSCam_NetTargetingAnnoyingSpecialCases
+size: 000000BC mp_IsHelpPlayed
+size: 0000009C mp_MarkHelpPlayed
+size: 000000B4 mp_PlayHelp
+size: 00000070 mp_PlayControllerHelp
+size: 00000158 Hero::InitGadgetBox
+size: 00000028 Hero::IsOnHoverBike
+size: 00000114 Hero::CleanTemporaryWeapons
+size: 00000030 Hero::VoidTemporaryWeaponList
+size: 00000040 Hero::IsWeaponTemp
+size: 00000024 Hero::FriendlyToTeam
+size: 00000008 Hero::GetTeam
+size: 00000008 Hero::InitInstance
+size: 00000008 Hero::GetMoby
+size: 00000008 Hero::GetVehicleMoby
+size: 00000008 Hero::getSlot
+size: 00000028 Hero::IsMyLookCamDisabled
+size: 00000008 Hero::AllowRemoteLedgeGrab
+size: 00000008 Hero::AllowRemoteDeath
+
+
+game\guber\HeroBehavior.cpp
+==============================================
+size: 00004654 Hero::DoBehavior
+size: 00000748 Hero::DoBehavior_NonMoving
+size: 00000964 Hero::DoBehavior_Walk
+size: 00000880 Hero::DoBehavior_Jump
+size: 00000BF0 Hero::DoBehavior_Swing
+size: 0000067C Hero::DoBehavior_JumpAttack
+size: 000005DC Hero::DoBehavior_ComboAttack
+size: 00000668 Hero::DoBehavior_FlailAttack
+size: 00000194 Hero::DoBehavior_IceCube
+size: 00000C10 Hero::DoBehavior_Swim
+
+
+game\guber\HeroInitBodyState.cpp
+===================================================
+size: 000047D8 Hero::InitBodyState
+size: 000001C4 Hero::CheckForSquattingYourAss
+
+
+game\guber\HeroTransitions.cpp
+=================================================
+size: 00000130 Hero::LookmodeTransition
+size: 000066BC Hero::Transitions
+size: 000000B4 Hero::TryFlailAttack
+size: 00000E5C Hero::GadgetTransitions
+size: 00000428 Hero::SwimSurfTransition
+size: 000000C0 Hero::UnderwaterTransitions
+
+
+game\guber\LevelBox.cpp
+==========================================
+size: 00000018 LevelBox::GetLevelDef
+size: 00000018 LevelBox::GetMissionDef
+size: 00000018 LevelBox::GetSkillPointDef
+size: 00000024 LevelBox::GetCurrentLevelIndex
+size: 0000002C LevelBox::GetCurrentMissionIndex
+size: 00000024 LevelBox::GetCurrentMissionDef
+size: 00000048 LevelBox::GetLevelMissionCount
+size: 00000030 LevelBox::ConvertLevelIndex
+size: 00000034 LevelBox::ConvertMissionIndex
+size: 00000038 LevelBox::ConvertSkillPointIndex
+size: 00000020 LevelBox::ConvertToLevelIndex
+size: 00000050 LevelBox::ConvertToMissionIndex
+size: 00000034 LevelBox::CheckVisibleLevel
+size: 00000034 LevelBox::CheckUnlockLevel
+size: 00000090 LevelBox::CheckUnlockMission
+size: 000000E0 LevelBox::CheckBasicUnlock
+size: 000000D0 LevelBox::CheckBadgeUnlock
+
+
+game\guber\LocalHero.cpp
+===========================================
+size: 00000008 LocalHero::UpdateCommand
+
+
+game\guber\Master.cpp
+========================================
+size: 000000B0 Master::GetMaster
+size: 000000CC Master::CreateMaster
+size: 000000C8 Master::DeleteMaster
+
+
+game\guber\MessageHandlers.cpp
+=================================================
+size: 00000044 GB_ConvertToJuggernautMsgCB
+
+
+game\guber\Targeting.cpp
+===========================================
+size: 000000A8 GB_SetGunpointMobyIfTarget
+
+
+game\guber\Team.cpp
+======================================
+size: 000000A0 Team::GetTeamCount
+size: 0000002C Team::GetTeamColorStr
+
+
+game\guber\Vehicle.cpp
+=========================================
+size: 00000008 GB_GetNumVehicles
+size: 0000002C GB_GetVehicle
+size: 00000054 GB_GetVehicleForMoby
+size: 000000B8 GB_VehicleSendMessage
+size: 000001B4 GB_VehicleAssignPassenger
+size: 0000026C GB_VehicleExitPassenger
+size: 0000027C GB_VehicleAssignDriver
+size: 00000290 GB_VehicleExitDriver
+size: 00000104 ClearLocalPlayersWithThisFlag
+size: 000008D4 VehicleBase::HandleEvent
+size: 00000040 GB_GetVehicleFromUID
+size: 00000038 GB_VehicleCheckBadHotSpot
+size: 00000E2C GB_VehicleHandleDamage
+size: 000002C4 GB_VehicleCheckAllowDriver
+size: 000002E0 GB_VehicleCheckAllowPassenger
+size: 00000040 GB_VehicleIsHeroInDeadVehicle
+size: 0000003C GB_VehicleCleanModReactions
+size: 000000B0 GB_VehicleShouldBeTargetedByTeam
+size: 00000318 GB_GetCOOPRespawnHoverBike
+size: 00000094 GB_VehicleHasPlayerLockedIn
+size: 00000024 VehicleBase::FriendlyToTeam
+size: 00000008 VehicleBase::GetTeam
+size: 00000008 VehicleBase::GetMoby
+
+
+game\gui\behaviors.cpp
+=========================================
+size: 00000030 Insomniac::Gui::iBehavior::~iBehavior
+size: 00000074 Insomniac::Gui::TestKeyFramer::UpdateChannel
+size: 00000028 Insomniac::Gui::KeyFrameDataParser::~KeyFrameDataParser
+size: 00000164 Insomniac::Gui::KeyFrameDataParser::UpdateChannel
+size: 00000030 Insomniac::Gui::iInterpolator3f::~iInterpolator3f
+size: 00000070 Insomniac::Gui::LinearInterpolator3f::UpdateChannel
+size: 00000090 Insomniac::Gui::LinearColorInterpolator3f::UpdateChannel
+size: 0000003C Insomniac::Gui::HermiteTimeEnvelope::UpdateChannel
+size: 00000050 Insomniac::Gui::SimpleKeyFramer::~SimpleKeyFramer
+size: 00000070 Insomniac::Gui::SimpleKeyFramer::UpdateChannel
+size: 0000001C Insomniac::Gui::TestKeyFramer::~TestKeyFramer
+size: 0000001C Insomniac::Gui::HermiteTimeEnvelope::~HermiteTimeEnvelope
+size: 00000028 Insomniac::Gui::LinearInterpolator3f::~LinearInterpolator3f
+size: 00000028 Insomniac::Gui::LinearColorInterpolator3f::~LinearColorInterpolator3f
+
+
+game\gui\mathUtil.cpp
+========================================
+size: 000000E4 Insomniac::Gui::Hermite1f
+
+
+game\gui\memoryManagement.cpp
+================================================
+size: 0000001C Insomniac::Gui::ConstantBlockSizeMemoryManager::Free
+
+
+game\help.cpp
+================================
+size: 0000005C Help_Reset
+size: 00000638 Help_Update
+size: 000000D8 Help_QueueMessage
+size: 000000C4 Help_IsMessageInQueue
+size: 00000074 Help_QueueMessageOnce
+size: 00000098 Help_QueueMessageOncePerLevel
+size: 00000050 Help_QueueMessageDelay
+size: 000000B4 Help_QueueMessageRepeatDelay
+size: 000000E4 Help_QueueMessageEveryNTimes
+size: 0000019C Help_QueueMenuMessage
+size: 00000034 Help_KillMenuMessage
+size: 00000050 Help_ShutDown
+size: 0000004C Help_Kill
+size: 0000000C Help_Resume
+size: 00000038 Help_ClearUsedSinceDeath
+size: 0000002C Help_CheckIfEmptyText
+size: 0000009C Help_DontAddToHelpLogException
+size: 0000000C Help_DoAddToHelpLogException
+size: 0000003C msg_string
+size: 00000050 msg_string_mtap
+size: 0000008C Help_MessageCancelled
+size: 0000007C Help_MessageCompleted
+size: 00000014 Help_SetState
+size: 00000058 Help_StopVoice
+size: 0000010C Help_AddToLog
+size: 0000006C Help_FindIndex
+size: 00000284 HelpQueue_Insert
+size: 000000B4 HelpQueue_GetInsertIndex
+size: 00000034 HelpQueue_Advance
+size: 00000034 HelpQueue_GetNextIndex
+size: 00000010 HelpQueue_IsEmpty
+
+
+game\hud.cpp
+===============================
+size: 00000074 Hud_HeapAlloc
+size: 00000028 Hud_HeapReset
+size: 0000002C Hud_GsStashFreeRam
+size: 00000160 LinkHudBank
+size: 0000013C Hud_SendResidentBank
+size: 00000054 Hud_GetIconIndex
+size: 000000C8 GetIconFrame
+size: 00000240 GetFrameTex
+size: 00000354 Hud_DrawRotatedSprite16
+size: 00000170 Hud_sendTexture
+
+
+game\ige\Events\Event.cpp
+============================================
+size: 00000014 Event::SetEventData
+size: 00000014 Event::Event
+size: 000000A4 EventArray::EventArray
+size: 000000CC EventResponseTOC::~EventResponseTOC
+
+
+game\ige\Events\EventQue.cpp
+===============================================
+size: 0000006C EventQue::EventQue
+size: 000000A0 EventQue::Enqueue
+size: 00000060 EventQue::Dequeue
+size: 0000005C EventQue::Dequeue
+
+
+game\ige\behaviors\KeyFramerBehavior2f.cpp
+=============================================================
+size: 00000008 KeyFramerBehavior2f::GetId
+size: 0000010C KeyFramerBehavior2f::DeserializeDataPtrs
+size: 0000010C KeyFramerBehavior2f::KeyFramerBehavior2f
+size: 000000C0 KeyFramerBehavior2f::SetCurrentFrame
+size: 0000036C KeyFramerBehavior2f::SetCurrentTime
+size: 00000030 KeyFramerBehavior2f::IsATypeOf
+size: 00000044 SafeDownCast<Widget3d_2D>
+size: 00000030 KeyFramerBehavior2f::~KeyFramerBehavior2f
+size: 00000008 KeyFramerBehavior2f::CopyFrom
+
+
+game\ige\behaviors\TimeLine.cpp
+==================================================
+size: 000002F8 TimeLine::Update
+size: 00000024 ArrayList<int>::GetCell
+
+
+game\ige\behaviors\iBehavior.cpp
+===================================================
+size: 00000064 iBehavior::ValidateExistance
+size: 00000030 iObject::~iObject
+
+
+game\ige\core\Canvas.cpp
+===========================================
+size: 0000000C Canvas::SetIgeData
+size: 0000000C Canvas::GetIgeData
+size: 0000000C Canvas::SetIgeDataLayer
+size: 0000000C Canvas::GetIgeDataLayer
+size: 00000020 Canvas::IsObjectIdInUse
+size: 0000000C Canvas::Canvas
+size: 00000108 GetCanvasData
+size: 00000124 Canvas::InitCanvas
+size: 0000000C Canvas::GetCanvasId
+size: 0000002C Canvas::ResetTimeLineMemory
+size: 000000A0 Canvas::ResetStatesAndTheirMemory
+size: 0000000C Canvas::GetCurrentThread
+size: 000000D8 Canvas::SetLayer
+size: 00000090 Canvas::ClearLayer
+size: 0000002C Canvas::ResetFrameLayerMemory
+size: 00000060 Canvas::ResetCanvasRect
+size: 00000058 Canvas::Reset
+size: 000003C8 Canvas::Update
+size: 000001C8 Canvas::Render
+size: 000000B4 Canvas::StartThread
+size: 00000074 Canvas::SwapTo
+size: 0000002C Canvas::AddObject
+size: 0000000C Canvas::GetEventQue
+size: 00000020 Canvas::GetObject
+size: 00000020 Canvas::GetTimeline
+size: 000001F0 DestroyCB
+size: 00000134 GetGarbageCollector
+size: 00000034 HashTable<iObject,1024>::Init
+size: 00000030 HashTable<iObject,1024>::HashTable
+size: 00000034 HashTable<TimeLine,48>::Init
+size: 00000030 HashTable<TimeLine,48>::HashTable
+size: 00000080 HashTable<TimeLine,48>::Find
+size: 00000044 SafeDownCast<iFrame>
+size: 00000070 HashTable<iObject,1024>::Find
+size: 000000C8 HashTable<iObject,1024>::Insert
+size: 00000080 HashTable<iObject,1024>::Remove
+
+
+game\ige\core\Channels.cpp
+=============================================
+size: 00000040 Channel2f::Interpolate
+size: 0000001C Channel1f::Interpolate
+size: 00000030 ChannelARGB::Interpolate
+
+
+game\ige\core\Engine.cpp
+===========================================
+size: 00000088 GetEngineHeap
+size: 0000000C Engine::GetCurrentFps
+size: 00000020 Engine::SetFps
+size: 00000048 Engine::RegisterDataSource
+size: 00000068 Engine::Update
+size: 0000002C Engine::GetCurrentEventQueue
+size: 00000070 Engine::UpdateCurrentCanvas
+size: 0000008C Engine::RenderPreDraws
+size: 0000008C Engine::RenderPostDraws
+size: 00000050 Engine::RenderCurrentCanvas
+size: 000000B4 Engine::InitInstance
+size: 00000014 Engine::GetHeap
+size: 00000034 Engine::RegisterCanvas
+size: 000000CC Engine::InitHeap
+size: 00000068 Engine::SetCurrentCanvas
+
+
+game\ige\core\GarbageCollector.cpp
+=====================================================
+size: 0000001C GarbageCollector::GarbageCollector
+size: 00000074 GarbageCollector::ForceFullGarbageCollect
+size: 00000088 GarbageCollector::GarbageCollect
+
+
+game\ige\core\GuiState.cpp
+=============================================
+size: 0000003C GuiState::GuiState
+size: 00000008 GuiState::ResetState
+size: 00000008 GuiState::GetEngineState
+size: 00000008 GuiState::SetEngineState
+size: 0000001C GuiState::ExitState
+size: 00000028 GuiState::Init
+size: 00000028 GuiState::DeInit
+size: 00000028 GuiState::Update
+size: 00000028 GuiState::PreRender
+size: 00000028 GuiState::PostRender
+
+
+game\ige\core\Panel.cpp
+==========================================
+size: 00000038 Panel::SetID
+size: 000000F8 Panel::Create
+size: 000000E0 Panel::SetFrame
+size: 00000014 Panel::AllocID
+
+
+game\ige\core\iObject.cpp
+============================================
+size: 00000018 iObject::iObject
+size: 00000008 iObject::IsATypeOf
+size: 00000010 iObject::CountAsReferenced
+size: 00000018 iObject::DecreaseAsReferenced
+size: 00000010 iObject::CopyFrom
+
+
+game\ige\deserializers\deserializers.cpp
+===========================================================
+size: 00000030 IGE_GetVisitibility
+size: 00000008 IGE_GetInt
+size: 00000008 IGE_GetUInt
+size: 00000008 IGE_GetFloat
+size: 00000008 IGE_GetChar
+size: 00000008 IGE_GetUShort
+size: 0000000C IGE_GetFps
+size: 00000054 WalkLiteral
+size: 00000040 FetchControlBlock
+size: 00000224 DeserializeFrameContainer
+size: 00000098 ValidateIgeBinaryData
+size: 00000068 FindAnimationTOC
+size: 00000078 FindAnimationGroup
+size: 00000070 FindScreenParentContainer
+size: 00000090 CreateScreen
+size: 000000B0 ExtractVersion
+size: 00000330 DeserializeWidget3d
+size: 00000224 DeserializeWidgetTextArea
+size: 000001F0 DeserializeWidgetRectangle
+size: 000001FC DeserializeWidgetText
+size: 00000334 DeserializeEventStream
+size: 00000164 DeserializeHierarchy
+size: 00000138 SetAnimationId
+size: 00000090 AllocateEventBlock<EventResponseTOC>
+size: 00000070 AllocateEventBlock<EventArray>
+
+
+game\ige\driver\ps2driver\ScreenDefs.cpp
+===========================================================
+size: 00000034 IGE::DRIVER::PS2::UpdateCurrentToOriginalMaxPixelRatios
+size: 000000D8 IGE::DRIVER::PS2::InitIgeDriver
+size: 00000064 IGE::DRIVER::PS2::UpdateScreenSizes
+size: 00000020 IGE::DRIVER::PS2::SetWidgetScaleAdjusts
+size: 00000020 IGE::DRIVER::PS2::SetCanvasSizes
+
+
+game\ige\driver\ps2driver\hardware.cpp
+=========================================================
+size: 00000058 IGE::DRIVER::PS2::AdjustScissoring
+size: 00000028 IGE::DRIVER::PS2::RecordScissoring
+size: 000000EC IGE::DRIVER::PS2::ApplyScissoring
+size: 000000B4 IGE::DRIVER::PS2::ResetScissoring
+size: 0000005C IGE::DRIVER::PS2::SetScissoring
+size: 00000024 IGE::DRIVER::PS2::PushScissoring
+size: 00000024 IGE::DRIVER::PS2::PopScissoring
+size: 00000138 IGE::DRIVER::PS2::GetScissoringScreen
+
+
+game\ige\driver\ps2driver\rectangles.cpp
+===========================================================
+size: 000004A4 IGE::DRIVER::PS2::DrawQuad
+
+
+game\ige\driver\ps2driver\renderstate.cpp
+============================================================
+size: 00000028 IGE::DRIVER::PS2::TurnZBufferOff
+size: 0000007C IGE::DRIVER::PS2::GetEngineReadyToRender
+size: 0000006C IGE::DRIVER::PS2::PostEngineRender
+size: 0000001C IGE::DRIVER::PS2::SetupTextureUploadTag
+size: 0000001C IGE::DRIVER::PS2::DoTextureUploads
+
+
+game\ige\facadeapi\facadeApi.cpp
+===================================================
+size: 000000C8 SetWidgetAnimationFrame
+size: 00000108 SetWidgetAnimationFrame
+size: 00000178 Create<FrameContainer>
+size: 00000008 SetFacadeSize
+size: 00000008 GetFacadeSize
+size: 000000F4 SetPosition
+size: 000000B8 SetPosX
+size: 000000B8 SetPosY
+size: 000000A8 GetPosX
+size: 000000F4 GetPosition
+size: 000000F4 GetScale
+size: 000000F4 GetTextSizes
+size: 0000006C SetRectLTRB
+size: 000000F4 SetInsets
+size: 000000E4 SetDropShadowColor
+size: 000000E4 SetTextScale
+size: 000000E4 SetRotation
+size: 000000E4 SetArtAnimationFrame
+size: 000000F4 SetControlFlags
+size: 000000F4 SetAlignmentFlags
+size: 000000D4 SetVisibility
+size: 000000D4 SetDropShadow
+size: 00000114 GetBoundingRectangle
+size: 000000E4 SetText
+size: 000000E4 SetColor
+size: 000000E4 SetAlpha
+size: 000000E4 SetTexture
+size: 000000E4 SetFontText
+size: 00000114 SetVertexColors
+size: 000000F4 SetDataSource
+size: 000000F4 SetScale
+size: 00000048 SetCurrentCanvas
+size: 00000044 GetCurrentCanvas
+size: 0000008C SetCanvasLayer
+size: 00000080 SwapTo
+size: 00000080 StartThread
+size: 0000007C ClearCanvasLayer
+size: 000000EC AddFrameToContainer
+size: 000000C8 InsertFrameInContainerAt
+size: 000000C8 AddFrameToContainerAfter
+size: 000000BC RemoveFrameFromContainer
+size: 000000B8 SetRectangleDataSource
+size: 00000180 SetTextAreaAutoScrollControl
+size: 000000AC ResetTextAreaScroll
+size: 000000EC SetTextAreaScrollSpeeds
+size: 000000C8 SetFrameContainerControlFlags
+size: 00000020 SetFrameContainerClipping
+size: 000000C8 SetWidgetTextAreaAlignment
+size: 000000C8 SetWidgetTextAreaControlFlags
+size: 000000D0 CreateWidget3d_2D
+size: 000000D0 CreateWidgetText
+size: 00000144 CreateWidgetRectangle
+size: 000000F8 CreateWidgetTextArea
+size: 0000001C CreateFrameContainer
+size: 00000014 AlignNextLoc
+size: 00000090 IsCreated
+size: 00000D10 InitGuiFacade
+size: 00000044 SafeDownCast<FrameContainer>
+size: 00000070 HashTable<bool(iObject*,float,float),8>::Find
+size: 00000070 HashTable<bool(iObject*,float&,float&),8>::Find
+size: 00000080 HashTable<bool(iObject*,float,float),3>::Find
+size: 00000070 HashTable<bool(iObject*,unsigned_int),8>::Find
+size: 00000080 HashTable<bool(iObject*,float),3>::Find
+size: 00000070 HashTable<bool(iObject*,float),8>::Find
+size: 00000070 HashTable<bool(iObject*,float&),8>::Find
+size: 00000070 HashTable<bool(iObject*,unsigned_int,unsigned_int),8>::Find
+size: 00000070 HashTable<bool(iObject*,unsigned_int,bool&),8>::Find
+size: 00000070 HashTable<bool(iObject*,unsigned_int&,unsigned_int&),8>::Find
+size: 00000070 HashTable<bool(iObject*,float&,float&,float&,float&),8>::Find
+size: 00000070 HashTable<bool(iObject*,char*),8>::Find
+size: 00000070 HashTable<bool(iObject*,char**,short,short,unsigned_int),8>::Find
+size: 00000080 HashTable<bool(iObject*,unsigned_int),3>::Find
+size: 00000070 HashTable<bool(iObject*,unsigned_int,unsigned_int,unsigned_int,unsigned_int),8>::Find
+size: 00000070 HashTable<bool(iObject*,void*,unsigned_int),8>::Find
+size: 00000070 HashTable<bool(iObject*,float,float,float,float),8>::Find
+size: 00000070 HashTable<bool(iObject*),8>::Find
+size: 00000178 Create<Widget3d_2D>
+size: 00000064 Exec_SetPositionCommand<iFrame>
+size: 000000C0 HashTable<bool(iObject*,float,float),8>::Insert
+size: 00000068 Exec_GetPositionCommand<iFrame>
+size: 000000C0 HashTable<bool(iObject*,float&,float&),8>::Insert
+size: 00000064 Exec_SetScaleCommand<iFrame>
+size: 00000068 Exec_GetScaleCommand<iFrame>
+size: 00000054 Exec_SetRotationCommand<iFrame>
+size: 000000C0 HashTable<bool(iObject*,float),8>::Insert
+size: 00000054 Exec_GetRotationCommand<iFrame>
+size: 000000C0 HashTable<bool(iObject*,float&),8>::Insert
+size: 00000050 Exec_SetColorCommand<iFrame>
+size: 000000C0 HashTable<bool(iObject*,unsigned_int),8>::Insert
+size: 00000054 Exec_SetAlphaCommand<iFrame>
+size: 00000064 Exec_SetPositionCommand<WidgetText>
+size: 00000068 Exec_GetPositionCommand<WidgetText>
+size: 00000050 Exec_SetTextCommand<WidgetText>
+size: 000000C0 HashTable<bool(iObject*,char*),8>::Insert
+size: 00000064 Exec_SetScaleCommand<WidgetText>
+size: 00000068 Exec_GetScaleCommand<WidgetText>
+size: 00000070 Exec_SetControlFlagsCommand<WidgetText>
+size: 000000C0 HashTable<bool(iObject*,unsigned_int,unsigned_int),8>::Insert
+size: 00000068 Exec_GetControlFlagsCommand<WidgetText>
+size: 000000C0 HashTable<bool(iObject*,unsigned_int,bool&),8>::Insert
+size: 00000068 Exec_SetAlignmentFlagsCommand<WidgetText>
+size: 00000078 Exec_GetAlignmentFlagsCommand<WidgetText>
+size: 000000C0 HashTable<bool(iObject*,unsigned_int&,unsigned_int&),8>::Insert
+size: 00000064 Exec_SetDropShadowOffsetsCommand<WidgetText>
+size: 00000050 Exec_SetDropShadowColorCommand<WidgetText>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z10WidgetText_P7iObjectRfN31_b
+size: 000000C0 HashTable<bool(iObject*,float&,float&,float&,float&),8>::Insert
+size: 00000050 Exec_SetFontCommand<WidgetText>
+size: 000000D8 HashTable<bool(iObject*,unsigned_int),3>::Insert
+size: 00000064 Exec_SetPositionCommand<WidgetTextArea>
+size: 00000068 Exec_GetPositionCommand<WidgetTextArea>
+size: 00000058 Exec_SetTextCommand<WidgetTextArea>
+size: 00000090 Exec_SetListTextCommand<WidgetTextArea>
+size: 000000C0 HashTable<bool(iObject*,char**,short,short,unsigned_int),8>::Insert
+size: 00000064 Exec_SetScaleCommand<WidgetTextArea>
+size: 00000068 Exec_GetScaleCommand<WidgetTextArea>
+size: 00000068 Exec_GetTextSizesCommand<WidgetTextArea>
+size: 00000070 Exec_SetControlFlagsCommand<WidgetTextArea>
+size: 00000068 Exec_GetControlFlagsCommand<WidgetTextArea>
+size: 00000068 Exec_SetAlignmentFlagsCommand<WidgetTextArea>
+size: 00000078 Exec_GetAlignmentFlagsCommand<WidgetTextArea>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<WidgetTextArea>
+size: 00000050 Exec_SetDropShadowColorCommand<WidgetTextArea>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z14WidgetTextArea_P7iObjectRfN31_b
+size: 00000070 Exec_SetTextScrollCommand<WidgetTextArea>
+size: 000000D8 HashTable<bool(iObject*,float,float),3>::Insert
+size: 0000005C Exec_SetTextScaleCommand<WidgetTextArea>
+size: 000000D8 HashTable<bool(iObject*,float),3>::Insert
+size: 0000005C Exec_SetLineSpacingCommand<WidgetTextArea>
+size: 00000070 Exec_SetTextScrollXYCommand<WidgetTextArea>
+size: 00000058 Exec_GetLineSpacingCommand<WidgetTextArea>
+size: 00000068 Exec_GetSelectedLinePositionCommand<WidgetTextArea>
+size: 00000058 Exec_SetFontCommand<WidgetTextArea>
+size: 00000064 Exec_SetPositionCommand<WidgetRectangle>
+size: 00000068 Exec_GetPositionCommand<WidgetRectangle>
+size: 00000064 Exec_SetScaleCommand<WidgetRectangle>
+size: 00000068 Exec_GetScaleCommand<WidgetRectangle>
+size: 0000005C Exec_SetTextureCommand<WidgetRectangle>
+size: 00000070 Exec_SetControlFlagsCommand<WidgetRectangle>
+size: 00000068 Exec_GetControlFlagsCommand<WidgetRectangle>
+size: 00000068 Exec_SetAlignmentFlagsCommand<WidgetRectangle>
+size: 00000078 Exec_GetAlignmentFlagsCommand<WidgetRectangle>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<WidgetRectangle>
+size: 00000050 Exec_SetDropShadowColorCommand<WidgetRectangle>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z15WidgetRectangle_P7iObjectRfN31_b
+size: 00000088 Exec_SetVertexColorsCommand<WidgetRectangle>
+size: 000000C0 HashTable<bool(iObject*,unsigned_int,unsigned_int,unsigned_int,unsigned_int),8>::Insert
+size: 00000054 Exec_SetRotationCommand<WidgetRectangle>
+size: 00000054 Exec_GetRotationCommand<WidgetRectangle>
+size: 00000064 Exec_SetPositionCommand<WidgetHollowRectangle>
+size: 00000068 Exec_GetPositionCommand<WidgetHollowRectangle>
+size: 00000064 Exec_SetScaleCommand<WidgetHollowRectangle>
+size: 00000068 Exec_GetScaleCommand<WidgetHollowRectangle>
+size: 00000070 Exec_SetControlFlagsCommand<WidgetHollowRectangle>
+size: 00000068 Exec_GetControlFlagsCommand<WidgetHollowRectangle>
+size: 00000068 Exec_SetAlignmentFlagsCommand<WidgetHollowRectangle>
+size: 00000078 Exec_GetAlignmentFlagsCommand<WidgetHollowRectangle>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<WidgetHollowRectangle>
+size: 00000050 Exec_SetDropShadowColorCommand<WidgetHollowRectangle>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z21WidgetHollowRectangle_P7iObjectRfN31_b
+size: 00000064 Exec_SetInsetsCommand<WidgetHollowRectangle>
+size: 00000064 Exec_SetPositionCommand<Widget3d>
+size: 00000068 Exec_GetPositionCommand<Widget3d>
+size: 00000064 Exec_SetScaleCommand<Widget3d>
+size: 00000068 Exec_GetScaleCommand<Widget3d>
+size: 00000060 Exec_SetDataSourceCommand<Widget3d>
+size: 000000C0 HashTable<bool(iObject*,void*,unsigned_int),8>::Insert
+size: 00000070 Exec_SetControlFlagsCommand<Widget3d>
+size: 00000068 Exec_GetControlFlagsCommand<Widget3d>
+size: 00000068 Exec_SetAlignmentFlagsCommand<Widget3d>
+size: 00000078 Exec_GetAlignmentFlagsCommand<Widget3d>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<Widget3d>
+size: 00000050 Exec_SetDropShadowColorCommand<Widget3d>
+size: 00000054 Exec_SetArtAnimationFrameCommand<Widget3d>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z8Widget3d_P7iObjectRfN31_b
+size: 00000064 Exec_SetPositionCommand<Widget3d_2D>
+size: 00000068 Exec_GetPositionCommand<Widget3d_2D>
+size: 00000064 Exec_SetScaleCommand<Widget3d_2D>
+size: 00000068 Exec_GetScaleCommand<Widget3d_2D>
+size: 00000060 Exec_SetDataSourceCommand<Widget3d_2D>
+size: 00000070 Exec_SetControlFlagsCommand<Widget3d_2D>
+size: 00000068 Exec_GetControlFlagsCommand<Widget3d_2D>
+size: 00000068 Exec_SetAlignmentFlagsCommand<Widget3d_2D>
+size: 00000078 Exec_GetAlignmentFlagsCommand<Widget3d_2D>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<Widget3d_2D>
+size: 000000E8 Exec_GetBoundingRectangleCommand__H1Z11Widget3d_2D_P7iObjectRfN31_b
+size: 00000054 Exec_SetArtAnimationFrameCommand<Widget3d_2D>
+size: 00000054 Exec_SetRotationCommand<Widget3d_2D>
+size: 0000008C Exec_SetBoundingRectangleCommand<FrameContainer>
+size: 000000C0 HashTable<bool(iObject*,float,float,float,float),8>::Insert
+size: 00000054 Exec_AddContainerFrameCommand<FrameContainer>
+size: 0000004C Exec_RemoveAllContainerFramesCommand<FrameContainer>
+size: 000000C0 HashTable<bool(iObject*),8>::Insert
+size: 00000070 Exec_SetControlFlagsCommand<FrameContainer>
+size: 00000068 Exec_GetControlFlagsCommand<FrameContainer>
+size: 00000068 Exec_SetAlignmentFlagsCommand<FrameContainer>
+size: 00000078 Exec_GetAlignmentFlagsCommand<FrameContainer>
+size: 00000064 Exec_SetDropShadowOffsetsCommand<FrameContainer>
+size: 00000064 Exec_SetScaleCommand<FrameContainer>
+size: 00000068 Exec_GetScaleCommand<FrameContainer>
+
+
+game\ige\frames\Frame.cpp
+============================================
+size: 00000114 iFrame::iFrame
+size: 000000AC iFrame::CopyFrom
+size: 00000034 iFrame::SetAlignmentFlag
+size: 0000006C iFrame::ManageActionEvents
+size: 000001AC iFrame::ManageEvent
+size: 000000B4 iFrame::RenderFrame
+size: 00000008 iFrame::RenderDebugRectangle
+size: 00000140 iFrame::GetBoundingRectangle
+size: 00000030 iFrame::~iFrame
+size: 00000008 iFrame::GetId
+size: 00000030 iFrame::IsATypeOf
+
+
+game\ige\frames\FrameContainer.cpp
+=====================================================
+size: 00000008 FrameContainer::GetNumberChildren
+size: 0000004C FrameContainer::GetChild
+size: 00000070 FrameContainer::CopyFrom
+size: 00000008 FrameContainer::ManageActionEvents
+size: 00000108 FrameContainer::ManageEvent
+size: 0000001C FrameContainer::AddFrame
+size: 0000006C FrameContainer::RemoveAllFrames
+size: 000000F0 FrameContainer::AddFrameToContainerAfter
+size: 000000DC FrameContainer::RemoveFrameFromContainer
+size: 00000118 FrameContainer::RemoveFrameAt
+size: 000001D4 FrameContainer::InsertFrameAt
+size: 00000118 FrameContainer::FrameContainer
+size: 00000070 FrameContainer::~FrameContainer
+size: 00000024 FrameContainer::SetFrameContainerControlFlags
+size: 00000010 FrameContainer::GetFrameContainerControlFlag
+size: 00000014 FrameContainer::SetBoundingRectangle
+size: 000002BC FrameContainer::Render
+size: 0000014C FrameContainer::Update
+size: 00000008 FrameContainer::GetId
+size: 00000040 FrameContainer::IsATypeOf
+size: 0000001C IGE::DRIVER::PS2::FastMemCopy
+
+
+game\ige\frames\Widget3d.cpp
+===============================================
+size: 00000074 Widget3d_2D::Widget3d_2D
+size: 00000048 Widget3d_2D::IsATypeOf
+size: 00000008 Widget3d_2D::GetId
+size: 00000224 Widget3d_2D::Render
+size: 00000100 Widget3d_2D::GetBoundingRectangle
+size: 00000018 Widget3d_2D::Update
+size: 00000074 Widget3d_2D::CopyFrom
+size: 00000030 Widget3d_2D::~Widget3d_2D
+
+
+game\ige\frames\WidgetHollowRectangle.cpp
+============================================================
+size: 00000060 WidgetHollowRectangle::WidgetHollowRectangle
+size: 0000006C WidgetHollowRectangle::CopyFrom
+size: 00000048 WidgetHollowRectangle::IsATypeOf
+size: 00000008 WidgetHollowRectangle::GetId
+size: 00000650 WidgetHollowRectangle::Render
+size: 00000018 WidgetHollowRectangle::Update
+size: 00000034 IGE::DRIVER::ClampValue<float>
+size: 00000030 WidgetHollowRectangle::~WidgetHollowRectangle
+
+
+game\ige\frames\WidgetRectangle.cpp
+======================================================
+size: 0000009C WidgetRectangle::WidgetRectangle
+size: 000000FC WidgetRectangle::CopyFrom
+size: 00000098 WidgetRectangle::SetTexture
+size: 00000058 WidgetRectangle::ManageActionEvents
+size: 00000048 WidgetRectangle::IsATypeOf
+size: 00000008 WidgetRectangle::GetId
+size: 00000054 WidgetRectangle::SetDataSource
+size: 00000014 WidgetRectangle::SetVertexColors
+size: 000003D0 WidgetRectangle::Render
+size: 00000060 WidgetRectangle::Update
+size: 00000030 WidgetRectangle::~WidgetRectangle
+
+
+game\ige\frames\WidgetText.cpp
+=================================================
+size: 00000008 WidgetText::GetId
+size: 000000AC WidgetText::CopyFrom
+size: 00000090 WidgetText::WidgetText
+size: 0000002C WidgetText::SetWidgetTextControlFlags
+size: 00000014 WidgetText::GetWidgetTextControlFlags
+size: 0000002C WidgetText::ManageActionEvents
+size: 00000370 WidgetText::Render
+size: 0000013C WidgetText::GetBoundingRectangle
+size: 00000018 WidgetText::Update
+size: 00000048 WidgetText::IsATypeOf
+size: 00000030 WidgetText::~WidgetText
+
+
+game\ige\frames\WidgetTextArea.cpp
+=====================================================
+size: 00000008 WidgetTextArea::GetId
+size: 0000007C WidgetTextArea::CopyFrom
+size: 000001E4 WidgetTextArea::WidgetTextArea
+size: 0000009C WidgetTextArea::~WidgetTextArea
+size: 00000040 WidgetTextArea::ResetScrollState
+size: 00000060 WidgetTextArea::SetText
+size: 00000014 WidgetTextArea::SetTextScale
+size: 00000024 WidgetTextArea::SetListText
+size: 00000014 WidgetTextArea::SetLineSpacing
+size: 00000014 WidgetTextArea::GetLineSpacing
+size: 00000020 WidgetTextArea::GetSelectedLinePosition
+size: 0000003C WidgetTextArea::SetTextScroll
+size: 0000000C WidgetTextArea::SetTextScrollSpeed
+size: 0000000C WidgetTextArea::SetTextScrollFirstDelay
+size: 0000000C WidgetTextArea::SetTextScrollRepeatDelay
+size: 0000003C WidgetTextArea::SetWidgetTextAreaControlFlags
+size: 00000014 WidgetTextArea::GetWidgetTextAreaControlFlag
+size: 0000008C WidgetTextArea::SetWidgetTextAreaAlignment
+size: 00000014 WidgetTextArea::SetFont
+size: 0000004C WidgetTextArea::GetTextSizes
+size: 00000368 WidgetTextArea::UpdateTextSizes
+size: 0000015C WidgetTextArea::UpdateScrolling
+size: 00000EC0 WidgetTextArea::Render
+size: 000000D0 WidgetTextArea::Update
+size: 00000048 WidgetTextArea::IsATypeOf
+
+
+game\ige\memory\ConstantBlockSize.cpp
+========================================================
+size: 0000001C ConstantBlockSizeMemoryManager::Construct
+size: 0000002C ConstantBlockSizeMemoryManager::ConstantBlockSizeMemoryManager
+size: 00000068 ConstantBlockSizeMemoryManager::Allocate
+size: 00000034 ConstantBlockSizeMemoryManager::Allocate
+size: 00000028 ConstantBlockSizeMemoryManager::Free
+
+
+game\ige\mixins\Lockable.cpp
+===============================================
+size: 0000000C Lockable::Lockable
+size: 0000000C Lockable::IsLocked
+
+
+game\init.cpp
+================================
+size: 00000050 UnloadModule
+size: 00000034 UnloadModuleByName
+size: 00000230 BootElf
+
+
+game\initonce.cpp
+====================================
+size: 000002F4 InitMemSlots
+size: 0000001C SetMediaMode
+size: 000005A0 InitOnce
+size: 00000028 LoadFont
+size: 0000006C InitNoNetHeap
+size: 00000028 DeinitNoNetHeap
+
+
+game\iopload.cpp
+===================================
+size: 000000A0 DmaToIop
+size: 00000008 DisplayIOPInfo
+size: 0000006C UnloadIOPModule
+size: 00000024 DefaultIOPModuleUnloadCallback
+size: 0000004C AstrmCreateStreams
+size: 00000020 AstrmDestroyStreams
+size: 00000008 InitializeAstrm
+size: 00000020 PadCallback
+size: 00000020 SoundCallback
+size: 00000008 StreamerLoadCallback
+size: 0000005C Dev9Callback
+size: 0000002C EZNetCnfCallback
+size: 0000002C EZNetCnfUnloadCallback
+size: 00000020 LibNetBCallback
+size: 00000028 LibNetBUnloadCallback
+size: 00000038 LgKbmCallback
+size: 00000028 LgKbmUnloadCallback
+size: 0000003C EZNetCtlCallback
+size: 000000C4 EZNetCtlUnloadCallback
+size: 00000050 GetModuleLoadCondition
+size: 00000050 GetModuleLoadCallback
+size: 00000050 GetModuleUnloadCallback
+size: 00000068 ClearIOPModuleQueue
+size: 0000004C ClearIOPModuleQueueSet
+size: 00000158 QueueIOPModuleLoad
+size: 000001E4 LoadIOPModuleQueue
+size: 000000FC LoadIOPModuleQueueSet
+size: 000000C0 UnloadIOPModuleQueue
+size: 00000058 UnloadIOPModuleQueueSet
+size: 0000019C LoadCoreIOPModules
+size: 0000005C LoadSinglePlayerIOPModules
+size: 00000048 UnloadSinglePlayerIOPModules
+size: 000002E8 LoadMultiPlayerIOPModules
+size: 00000050 UnloadMultiPlayerIOPModules
+size: 00000024 InitializeIOP
+size: 00000054 InitializeCoreIOPModules
+size: 00000030 UninitializeCoreIOPModules
+
+
+game\lights.cpp
+==================================
+size: 0000010C CreatePointLight
+size: 00000064 DeletePointLight
+size: 0000016C DetachPointLight
+
+
+game\loaders.cpp
+===================================
+size: 00000008 IsSceneLevel
+size: 00000130 SwizzleTextureInPlace
+size: 0000011C ParseParticleTexs
+size: 000000B0 ParseEffectTexs
+size: 0000024C ParseSky
+size: 00000348 LoadArmor
+size: 00000114 RemapArmor
+size: 00000040 SwitchArmor
+size: 00000044 SwitchArmor2
+size: 00000010 SwitchMobyToCoOpArmor
+size: 000001DC AttachPaintJobTextures
+size: 000000E0 LoadBotTextures
+size: 000000E0 LoadLandStalkerTextures
+size: 000000E0 LoadDropshipTextures
+size: 00000280 LoadHudBanks
+size: 00000068 LoadCompressedHudBank
+size: 00000308 SetUpVisGif
+size: 00000164 SetUpVisGifViewer
+size: 000002EC ParsePermGsRam
+size: 00000114 ParseMobyGifs
+size: 00000338 ParseMobyClass
+size: 00000124 ParseMoby
+size: 000002DC ParseTfrag
+size: 000000F0 LoadFrontData
+size: 000003F8 LoadLevelData
+size: 000000B4 LoadNpcMobys
+size: 000000EC ParseNpcMobys
+size: 0000004C UnloadNpcMobys
+size: 000000B8 LoadNpcSubtitles
+size: 00000094 PreLoadNpcChunk
+size: 0000022C ParseNpcChunk
+size: 00000050 ParseSpaceSceneChunk
+size: 00000008 ResetGadgetBank
+size: 00000544 PushMobyStack
+size: 00000190 PopMobyStack
+size: 00000208 QueuePifLoad
+size: 000000FC ResetLevelData
+
+
+game\mathfunc.cpp
+====================================
+size: 00000108 mtx3::NormalizeColumns
+size: 000001E0 quat::SetFromMat3
+
+
+game\mathutil.cpp
+====================================
+size: 00000354 MathUtilities::VecSlerp
+size: 00000084 MathUtilities::GetVectorSphere
+size: 00000054 MathUtilities::GetVectorCircle
+size: 00000058 MathUtilities::WrapValue
+
+
+game\mcstate.cpp
+===================================
+size: 00000008 csf_prompt_create_save_overwrite
+size: 00000068 MCSTATE_TransToState
+size: 000000C0 UpdateMCState
+size: 00000050 csf_init
+size: 000000E0 csf_good_save
+size: 00000048 csf_good_load
+size: 00000034 csf_prompt_warning
+size: 00000034 csf_prompt_autosave_warning
+size: 00000048 csf_nocard
+size: 00000030 csf_changed
+size: 000000A4 csf_wait_for_card
+size: 00000070 csf_unformatted
+size: 0000008C csf_prompt_format
+size: 0000003C csf_format_pending
+size: 0000005C csf_formatting
+size: 00000050 csf_formatted
+size: 00000060 csf_check_save
+size: 000000C0 csf_checking_save
+size: 00000080 csf_nosave
+size: 00000084 csf_prompt_create_save
+size: 00000064 csf_create_save_pending
+size: 000000A4 csf_creating_save
+size: 000000DC csf_init_save
+size: 0000006C csf_init_load
+size: 000000D8 csf_newcard
+size: 0000002C csf_prompt_format_failed
+size: 00000044 csf_prompt_create_failed
+size: 0000004C csf_no_room
+size: 00000044 csf_prompt_load_failed
+size: 00000074 csf_loading
+size: 0000002C csf_prompt_save_failed
+size: 000000B0 csf_saving
+size: 000000A0 csf_auto_saving
+size: 0000004C csf_prompt_begin_unformatted
+size: 0000004C csf_prompt_begin_nosave
+size: 00000080 csf_prompt_save_overwrite
+size: 00000028 MCSTATE_SetSaveSlotUponSaveCreationTo
+size: 00000058 MCSTATE_LoadGame
+size: 000000C4 MCSTATE_SaveGame
+size: 00000008 MCSTATE_GetState
+size: 000001E8 MCSTATE_SetCommand
+size: 00000084 MCSTATE_ClearCommand
+size: 00000090 MCSTATE_CommandIsSet
+size: 00000008 MCSTATE_SetResponse
+size: 00000008 MCSTATE_ClearResponse
+
+
+game\memcard.cpp
+===================================
+size: 000001A4 memcard_GetName
+size: 000000DC memcard_RestoreGame
+size: 00000138 memcard_ResetGame
+size: 00002768 memcard_Update
+size: 000000A8 memcard_MakeWholeSave
+size: 0000001C memcard_Init
+size: 00000038 memcard_GetDataSize
+size: 00000064 _memcard_Checksum
+size: 00000058 memcard_Checksum
+size: 0000003C memcard_TestChecksum
+size: 00000114 memcard_PrepData
+size: 000000C4 memcard_RestoreInfo
+size: 0000028C memcard_RestoreData
+size: 00000030 memcard_LoadNet
+size: 000000D4 memcard_SaveNet
+size: 0000008C memcard_LoadPatch
+size: 00000034 memcard_PatchLoaded
+size: 000001E8 memcard_Save
+size: 00000008 memcard_cleanupbeforesession
+size: 00000128 DNAS_ExtractPatch
+
+
+game\menu.cpp
+================================
+size: 00000008 Gui_DrawRC1_Help_Decorator
+size: 00000180 Gui_DrawDecoratedWindow
+
+
+game\missionfunc.cpp
+=======================================
+size: 00000070 MF_SetupSwitchMissionIndex
+size: 00000030 MF_ExitPostMissionScreen
+size: 00000008 MF_GetNewLevelMask
+size: 00000008 MF_GetNewTournamentMask
+size: 000001B0 MF_UpdateProgress
+size: 000004D4 MF_UpdateLevelProgress
+size: 000000D8 MF_UpdateMissionProgress
+size: 000001BC MF_IsMissionIndexVisibleToMenu
+size: 000003C4 MF_GetNextMissionIndex
+size: 00000118 MF_AllocateXPReward
+size: 00000114 MF_AllocateBoltReward
+size: 00000098 MF_GetDepreciatedValue
+size: 00000084 MF_AllocatePointReward
+size: 000000F0 MF_AllocateMissionBoltReward
+size: 00000020 MF_ClearMissionSpecificData
+size: 000000D4 MF_GetBestSpawnPoint
+size: 00000118 MF_GetBestSpawnPointByOther
+size: 000001F0 MF_CheckSpawnPoint
+size: 0000002C MF_ClearMidMissionData
+
+
+game\missionload.cpp
+=======================================
+size: 000002B4 UpdateMissionLoad
+size: 0000000C IsMissionLoading
+size: 00000048 AbortMissionLoad
+size: 00000074 EndLoadData_CB
+size: 00000068 EndLoadSound_CB
+
+
+game\mobyanim_c.cpp
+======================================
+size: 000000E0 AnimEvaluate_LowLevel
+size: 00000104 AnimEvaluateBlend_LowLevel
+size: 00000204 AnimEvaluate
+size: 00000054 AnimEvaluateResolve
+size: 000001AC ProcessManipulators
+size: 00000084 MobyAllocAnimLayer
+size: 00000064 MobyFreeAnimLayer
+size: 00000030 MobyResetAnimLayerCache
+size: 0000011C MobyAttachAnimLayer
+size: 00000088 MobyDetachAnimLayer
+size: 00000198 MobyTransitionSequence
+size: 00000058 CleanupAnimLayers
+size: 00000044 GetMobyAnimJointOffset
+size: 00000040 GetMobyAnimJointMat
+size: 00000180 NewPostUpdateMobyBsphere
+size: 00000044 ResetMobyJointCache
+size: 0000003C InitMobyJointCache
+size: 0000006C RebuildMobyJointCache
+size: 00000120 AllocJointCache
+size: 000000CC JointCacheMarkDeleted
+size: 00000194 JointCacheCleanup
+size: 00000070 ResetPoseCache
+size: 0000016C AllocPoseCacheEntry
+size: 0000001C FreePoseCacheEntry
+
+
+game\mobyfunc.cpp
+====================================
+size: 00000130 CreateMoby
+size: 0000036C InitMobyInstance
+size: 000000F8 DeleteMoby
+size: 00000068 SetupMobyVars
+size: 00000130 MobyPlayDesiredSound
+size: 00000070 MobyMayaFrame
+size: 000000F4 SetMobyCollPill
+size: 00000044 GetMobyBangleStats
+size: 000001F4 GetMobyBangleVolume
+size: 00000030 MobyCornExists
+size: 00000144 GetMobyCornVerts
+size: 000000FC GetMobyShadowVolumes
+size: 00000088 GetMobyShadowVolumesAndJoints
+size: 000000B8 AttachManipulator
+size: 000000AC DetachManipulator
+size: 000000F8 GetMobyJointMatrix
+size: 00000090 GetMobyJointWorld
+size: 000000D0 GetMobyJointLocs
+size: 000000F0 DmaMobyTextures
+size: 000000D8 PatchMobyGifs
+size: 000001E8 ProcessMobyShadows
+size: 00000228 ProcessMobyTeamTexs
+size: 00000044 ProcessMobyAnimData
+size: 00000028 InitMobyClassDists
+size: 0000002C StashMobyClassDists
+size: 0000002C RestoreMobyClassDists
+size: 00000104 DrawMobysSetup
+size: 0000009C DrawMobyList
+size: 00000060 DrawMobysCleanup
+size: 00000068 DrawMobys
+size: 00000020 MobyGetInterface
+size: 0000005C MobyGetInterface
+size: 000000F0 MobyDynamicGroup_RemoveMoby
+size: 00000020 MobyDynamicGroup_IsDynamicGroup
+size: 00000008 CollSphereFail
+size: 00000040 CountMobyGridUsage
+size: 00000068 ValidateMobyGrids
+size: 0000003C Moby2dReset
+size: 0000005C Moby2dSetWindow
+size: 000000CC Moby2dCreate
+size: 00000044 Moby2dDelete
+size: 00000040 Moby2dGetPtr
+size: 0000023C Moby2dDraw
+size: 00000054 SetMobyLightDefault
+
+
+game\mobyupd.cpp
+===================================
+size: 000000D0 SetupMobyFunctions
+size: 000000A8 GetMobyFunctions
+size: 000000A4 GetMobyFunctions
+
+
+game\mobyutil.cpp
+====================================
+size: 00000098 MB_IsDead
+size: 0000004C MB_QueueUpgradeScene
+size: 0000003C MB_CheckQueuedUpgradeScene
+size: 00000094 MB_AddHoloshieldGadgetXP
+size: 00000940 MB_standardDeath
+size: 00000134 MB_BundleDamage
+size: 000000F0 MB_AllocateXPBundle
+size: 00000128 MB_SpawnBolts
+size: 0000006C MB_HandleBoltMultiplier
+size: 00000078 MB_snapAnim
+size: 00000114 MB_transAnim
+size: 00000100 MB_transAnim
+size: 0000003C MB_setState
+size: 00000008 Bias0
+size: 0000001C Bias1
+size: 00000038 MB_CubicInterpolate
+size: 000000BC MB_CubicInterpVec
+size: 00000070 MB_CosineInterpolate
+size: 00000040 MB_CosineInterpolateUnit
+size: 00000068 MB_getJumpPeak
+size: 0000013C MB_SetOClass
+size: 000000BC SolveQuad
+size: 0000009C GetGroundZ
+size: 00000030 GetGroundZNoWater
+size: 000000CC PointInsideComplexPoly
+size: 000000F4 SegmentIntersect2D
+size: 00000020 SetCollDamIn
+size: 0000019C DamageSphereAtPos
+size: 000000F8 CollDamageMobyDirect
+size: 0000013C CollDamageMobyDirect
+size: 0000014C CollWaterHeight
+size: 0000042C CollMovingSphere
+size: 00000154 MB_RegisterLameShadow
+size: 0000001C TweenColor
+size: 00000044 _MB_damage
+size: 000000A8 MB_computeLobVelocity
+size: 000007B8 MB_randPrimPoints
+size: 00000024 Lerp
+size: 00000010 Lerp
+size: 00000028 Lerp
+size: 0000002C SubLerp
+size: 00000058 GainDampLimit
+size: 0000002C Delt
+size: 00000074 SlideDelt
+size: 00000090 SlideDelt
+size: 0000009C AccelDelt
+size: 00000144 AccelDelt
+size: 00000198 OrganicDelt
+size: 000000B0 SubRots
+size: 0000007C DeltAng
+size: 0000015C AccelDeltAng
+size: 00000258 OrganicDeltAng
+size: 000001C4 OrganicDeltSpeed
+size: 00000130 MatAdjoint
+size: 00000064 Float_To_RGBA
+size: 0000005C ReorderRGB
+size: 00000084 ReorderRGB
+size: 00000034 MB_GetSuckVars
+size: 00000034 MB_GetMoveVars_2
+size: 00000034 MB_GetNavigationVars
+size: 0000002C MB_getReactVars
+size: 00000070 MB_getTargetVars
+size: 00000528 MB_MistDeathEffect
+size: 00000044 MB_SetDefaultLights
+size: 000000E0 CollLineValidate
+size: 000001EC DecomposeMtx4ToAng
+size: 00000038 MB_GetFlashVars
+size: 00000198 MB_StartColorFlash
+size: 0000008C MB_EndColorFlash
+size: 00000498 MB_UpdateColorFlash
+size: 00000024 MB_initMobyColorFlash
+size: 00000040 MB_WrapRot
+size: 0000000C MB_isCrateOClass
+size: 00000094 MB_isCrate
+size: 00000044 MB_isMorph
+size: 000002C8 MB_genericExplosion
+size: 00000078 MB_AddMobyToDynamicGroup
+size: 00000074 MB_DeleteMobyFromDynamicGroup
+size: 00000084 MB_RandomizeVector
+size: 0000007C MB_RandomizeVector
+size: 0000007C MB_RandomizeVectorRange
+size: 000000F8 MB_IsPntInCylinder
+size: 000000BC MB_IsPntInSphere
+size: 00000060 MB_IsPntInPath
+size: 00000038 MB_SlerpVectors
+size: 00000034 MB_getTrackVars
+size: 00000550 MB_TrackMoby_OneFrame
+size: 00000380 MB_TrackMoby_OneFrame_Vel
+size: 00000374 MB_GadgetDamageIndex
+size: 00000008 MB_MP_GadgetDamageIndex
+size: 0000019C SetNtscPalTiming
+size: 00000128 MB_compressVector
+size: 00000088 MB_decompressVector
+size: 000000B8 MB_MayaFrameTrigger
+size: 00000028 CreateMotionBlur
+size: 00000194 AddMotionBlurElem
+size: 0000026C UpdateMotionBlur
+size: 00000080 DeleteMotionBlur
+size: 0000002C MB_SetAmbientLights
+size: 0000001C MB_BobMotion
+size: 000000DC MB_BobMotion
+size: 000000C4 MB_SwingMotion
+size: 00000040 MB_AddVectorSphere
+size: 00000140 MB_AttachMobyToJoint
+size: 000001D8 MB_ComputeTargetScore
+size: 000001F0 MB_getTarget
+size: 00000C60 MB_autoTarget3D
+size: 000000A8 MB_GetLocalSpaceVector
+size: 00000038 MB_GetWorldSpaceVector
+size: 0000009C MB_scaleRelativeXY
+size: 0000004C MB_relativeXYComponent
+size: 00000098 MB_FindGravity_CageMatch
+size: 00000120 MB_FindGravity
+size: 000000B4 MB_AddGravity
+size: 000000B4 MB_SphericalHeight
+size: 0000002C MB_AlignWithGravity
+size: 00000154 MB_AlignWithNormal
+size: 000001BC MB_DrawGlowFX
+size: 00000388 MB_BlowCorn
+size: 0000013C MB_BlowFlamingCorn
+size: 00000118 MB_SetTmode
+size: 0000006C MB_SpawnInit
+size: 00000194 MB_IsPntInArea
+size: 00000034 MB_GetBogeyVars
+size: 00000028 MB_GetBogeyType
+size: 0000002C MB_SetBogeyType
+size: 00000094 MB_UnlockBogey
+size: 00000184 MB_FastBsphereCheck
+size: 000000D0 MB_PlaySoundsInSeq
+size: 00000038 MB_GetCommandVars
+size: 00000094 MB_InitializeCommandCache
+size: 000002DC MB_DrawDestroyIcon
+size: 00000A4C MB_FindVisibleContextCommand
+size: 0000003C MB_GetCommandName
+size: 000001BC MB_IssueCommand
+size: 00000204 MB_IssueCommand
+size: 00000024 Bot_GetAbilityDef
+size: 0000002C Bot_HasAbility
+size: 000000BC Bot_HasCommandAbility
+size: 00000040 Bot_GrantAbility
+size: 00000050 Bot_GrantPaintjob
+size: 00000028 Bot_HasPaintjob
+size: 00000024 Bot_GetCurrentPaintjob
+size: 00000040 Bot_GrantHead
+size: 00000028 Bot_HasHead
+size: 00000038 Bot_GetCurrentHead
+size: 00000038 Bot_GetGlobalComm
+size: 00000188 Bot_ResetGlobalComm
+size: 00000174 MB_GetShadowSurface
+size: 00000684 MB_GetRandomShadowPoints
+size: 000005F0 MB_GetRandomShadowSurfacePoint
+size: 00000674 MB_GetRandomShadowSurfacePoints
+size: 00000008 MB_HeroOnlyCollOff
+size: 00000008 MB_HeroOnlyCollOn
+size: 0000004C MB_SetMobyTeamTex
+size: 00000044 MB_SelectRespawnNode
+size: 0000006C MB_ValidateRespawnNode
+size: 00000050 MB_NumValidRespawnNodes
+size: 00000048 MB_GhostMe
+size: 00000100 MB_Level99ColorTimeBased
+size: 00000098 MB_GetXPBundle
+
+
+game\mode.cpp
+================================
+size: 00000008 RefreshPauseModeCoolDown
+size: 00000008 SetModeChangeRequestDelay
+size: 00000014 IsThisGameModePending
+size: 000001FC mode_requestChange
+size: 00000108 mode_pop
+size: 00000030 mode_peek
+
+
+game\mode_level.cpp
+======================================
+size: 0000006C MODELEVEL_HandleOcclusionExceptions
+size: 00000454 mode_doChange
+
+
+game\move.cpp
+================================
+size: 00001614 MB_Move_2
+size: 00000078 MB_Move_2
+size: 0000004C MB_Stand_2
+size: 00000144 MB_Action_2
+size: 00000140 MB_StopAction_2
+size: 00000054 MB_StopReaction_2
+size: 000015D8 MB_ProcessDamage_2
+size: 00000028 MB_ProcessDamage_2
+size: 00000A80 MB_UpdateReaction_2
+size: 00000028 MB_GetMoveAction
+size: 00000028 MB_GetMoveReaction
+size: 00000080 MVE_GetBoundArea
+size: 0000022C MVE_DrawImpactEffect
+size: 000004B4 MVE_GetGroundInfo2
+size: 00000590 MVE_Collision2
+size: 00000288 MB_MoveSystemInit
+size: 000001BC MB_InitCache
+size: 000000B8 MB_SetAnimCache
+size: 0000001C MB_IncomingAnimationMayaFrame
+size: 000000B8 MB_IncomingMayaFrameTrigger
+size: 0000009C MB_SwitchToDeathState
+size: 00000854 MB_HandleDeath
+size: 00000230 MB_MoveSystemUpdateAction
+size: 00000FE4 MB_UpdateReactionEffects
+size: 00000060 MB_MoveSystemUpdateReaction
+size: 00000208 MB_MoveSystemUpdateAttach
+size: 000005E4 MVE_SpawnWaterSplash
+size: 00000008 MVE_SpawnLavaSplash
+size: 00000378 MVE_SpawnHitGroundDust
+size: 00000110 MB_UpdateMoveEffects
+size: 00000580 MB_MoveSystemUpdate
+size: 00000718 MB_SetMoveAnim
+size: 00000404 MB_GetBestAnimSlow
+size: 00000098 MB_UseLinearAnim
+size: 00000810 MB_GetBestAnimFast
+size: 0000004C MB_SetMoveElevation
+size: 00000028 MB_GetMoveElevation
+size: 0000006C MB_SetMoveDistanceThresholds
+size: 0000009C MB_SetMoveSpeedLimits
+size: 0000005C MB_SetMoveAngularSpeeds
+size: 00000078 MB_SetMoveDamper
+size: 00000040 MB_GetMoveDamper
+
+
+game\movie\audiodec.cpp
+==========================================
+size: 00000098 audioDecCreate
+size: 00000020 audioDecDelete
+size: 000000A0 audioDecStart
+size: 00000044 audioDecReset
+size: 000000D0 audioDecBeginPut
+size: 000000C0 audioDecEndPut
+size: 00000060 audioDecIsPreset
+size: 00000064 audioDecSend
+size: 000000C0 iopGetArea
+size: 00000174 sendToIOP2area
+size: 0000007C sendToIOP
+size: 0000009C sendToSPU
+size: 00000184 sendPCM
+size: 00000270 sendADPCM
+size: 00000008 sendSPDIF
+
+
+game\movie\disp.cpp
+======================================
+size: 000001A8 setImageTag
+size: 000001EC vblankHandler
+size: 0000003C handler_endimage
+size: 0000004C startDisplay
+size: 00000010 endDisplay
+
+
+game\movie\movie.cpp
+=======================================
+size: 000001C8 movie
+size: 0000035C readMpeg
+size: 00000024 switchThread
+size: 00000024 isAudioOK
+size: 000001D8 initAll
+size: 00000098 termAll
+size: 00000008 ErrMessage
+size: 00000024 proceedAudio
+
+
+game\movie\read.cpp
+======================================
+size: 00000114 videoCallback
+size: 000000D0 pcmCallback
+size: 00000130 copy2area
+
+
+game\movie\readbuf.cpp
+=========================================
+size: 00000018 readBufCreate
+size: 00000008 readBufDelete
+size: 00000030 readBufBeginPut
+size: 0000003C readBufEndPut
+size: 00000040 readBufBeginGet
+size: 00000024 readBufEndGet
+
+
+game\movie\strfile.cpp
+=========================================
+size: 00000014 strFileOpen
+size: 00000028 strFileClose
+size: 000000EC strFileRead
+
+
+game\movie\vibuf.cpp
+=======================================
+size: 00000044 getFIFOindex
+size: 0000006C setD3_CHCR
+size: 0000006C setD4_CHCR
+size: 00000024 scTag2
+size: 00000078 viBufCreate
+size: 00000160 viBufReset
+size: 00000038 viBufBeginPut
+size: 00000020 viBufEndPut
+size: 00000038 viBufAddDMA
+size: 00000018 viBufStopDMA
+size: 0000006C viBufRestartDMA
+size: 00000058 viBufDelete
+size: 0000001C viBufCount
+size: 00000018 viBufFlush
+size: 00000130 viBufModifyPts
+size: 00000028 viBufPutTs
+size: 00000078 viBufGetTs
+
+
+game\movie\videodec.cpp
+==========================================
+size: 00000100 videoDecCreate
+size: 00000020 videoDecSetStream
+size: 0000001C videoDecBeginPut
+size: 0000001C videoDecEndPut
+size: 00000008 videoDecReset
+size: 00000034 videoDecDelete
+size: 0000000C videoDecAbort
+size: 00000008 videoDecGetState
+size: 0000000C videoDecSetState
+size: 00000040 videoDecPutTs
+size: 0000001C videoDecInputCount
+size: 000000CC videoDecFlush
+size: 00000048 videoDecIsFlushed
+size: 00000064 videoDecMain
+size: 000001A4 decBs0
+size: 00000028 mpegError
+size: 00000030 mpegNodata
+size: 00000028 mpegStopDMA
+size: 00000028 mpegRestartDMA
+size: 00000048 mpegTS
+size: 00000130 cpy2area
+
+
+game\movie\vobuf.cpp
+=======================================
+size: 00000058 voBufCreate
+size: 00000008 voBufDelete
+size: 00000010 voBufReset
+size: 00000014 voBufIsFull
+size: 00000070 voBufIncCount
+size: 00000040 voBufGetData
+size: 0000000C voBufIsEmpty
+size: 0000005C voBufGetTag
+size: 00000020 voBufDecCount
+
+
+game\movieoverlay.cpp
+========================================
+size: 00000130 UpdateMovieOverlay
+
+
+game\music.cpp
+=================================
+size: 00000018 music_LoadBankCB
+size: 00000068 music_LoadCoreBank
+size: 00000038 music_LoadBankFromEE
+size: 00000070 music_Init
+size: 000000FC music_PreseekTrack
+size: 00000100 music_StartTrack
+size: 00000144 music_StartTrackBody
+size: 000000EC music_Transition
+size: 000000F0 music_Stop
+size: 00000020 music_Pause
+size: 0000001C music_Unpause
+size: 00000040 music_UnpauseDelay
+size: 00000268 music_UpdateStream
+size: 000004DC music_Update
+size: 0000005C music_Sync
+size: 00000030 music_PreseekCB
+size: 00000070 music_PreseekTrackCB
+size: 0000004C music_StartCB
+size: 00000054 music_StartBodyCB
+size: 00000050 music_StartHeadCB
+size: 0000003C music_FreshenCB
+size: 00000018 music_QueueLengthCB
+size: 0000006C music_TimeRemainingCB
+
+
+game\navsysglobal.cpp
+========================================
+size: 000000A8 navg_CollideLineSegmentBoxLocalZeroVec
+size: 00000120 navg_CollideLineSegmentSphereLocal
+size: 0000029C navg_CollideLineSegmentCylinderLocal
+size: 000000EC navg_CollideLineSegmentPath
+size: 00000108 navg_NodeGetDistSqr
+size: 00000174 navg_TestInside
+size: 00000024 navg_AllocMemory
+size: 00000124 navg_LoadClusters
+size: 000000E4 navg_LoadNodes
+size: 000000E4 navg_LoadNeighbors
+size: 000000E4 navg_LoadEdges
+size: 000000E8 navg_LoadClusterPaths
+size: 000000E4 navg_LoadPaths
+size: 000000CC navg_LoadClusterPathLists
+size: 000000CC navg_LoadPathLists
+size: 000000E4 navg_LoadCuboids
+size: 000000E4 navg_LoadSpheres
+size: 000000E4 navg_LoadCylinders
+size: 000000E4 navg_LoadBoundPaths
+size: 0000010C navg_LoadPartitions
+size: 00000180 navg_LoadSectors
+size: 00000A68 NAVG_LoadFile
+size: 0000001C NAVG_ResetNavigationVars
+size: 000001C0 NAVG_FindClosestNode
+size: 00000108 navg_FindBestIntraClusterPath
+size: 00000428 navg_FindBestInterClusterPath
+size: 0000031C navg_FindBestInterSectorPathStep
+size: 00000250 navg_FindBestInterSectorPath
+size: 000001E8 NAVG_UpdateNavigationWpEasy
+size: 00000010 NAVG_SetTargetWp
+size: 000004EC NAVG_UpdateMe
+size: 000002A0 NAVG_UpdateNavigation
+size: 00000394 NAVG_NodeFindClosestNode
+size: 00000038 NAVG_NodeGetType
+size: 00000038 NAVG_NodeGetTraversalFlags
+size: 00000038 NAVG_NodeGetCenter
+size: 00000050 NAVG_NodeGet3DSpline
+size: 00000038 NAVG_EdgeGetType
+size: 00000050 NAVG_EdgeGetCliffSpline
+size: 00000024 NAVG_WpSet
+size: 00000048 NAVG_WpSetPos
+size: 0000004C NAVG_WpMovePos
+size: 0000000C NAVG_WpGetNode
+
+
+game\navsyslocal.cpp
+=======================================
+size: 00000390 NAVL_GetEffectorsOfType
+size: 00000424 NAVL_ProcessEffectors
+size: 00000034 MB_GetEffectorVars
+
+
+game\network\nellymoser_wrapper.cpp
+======================================================
+size: 0000001C nmsFrameInit
+size: 00000008 nmsFrameDeInit
+size: 000002B0 nmsCreate
+size: 00000044 nmsDestroy
+size: 000000C0 nmsEncode
+size: 0000005C nmsReadyForMultiDecode
+size: 000002DC nmsMultiDecode
+size: 00000034 setVad
+size: 000000FC nmsAddBlockToBuffer
+size: 00000040 nmsMultiDecodeFlush
+size: 00000074 nmsFindFreeBuffer
+size: 00000070 nmsBufferIsFree
+size: 0000006C nmsMultiDecodeUpdate
+
+
+game\network\nw.cpp
+======================================
+size: 00000014 nwSetGuiSetBusyCallback
+size: 00000014 nwSetGuiRefreshCallback
+size: 00000028 nwGuiSetBusyCallback
+size: 00000028 nwGuiRefreshCallback
+size: 000000F4 _load_microprogram
+size: 000003C0 nwConnect
+size: 00000218 nwConnectDebug
+size: 00000164 nwDisconnect
+size: 000001A4 nwJoinDebug
+size: 000001D8 nwJoin
+size: 0000013C nwSyncTime
+size: 00000038 nwFastUpdate
+size: 00000568 nwUpdate
+size: 00000008 nwLocalConnectCallback
+size: 0000000C nwLocalDisconnectCallback
+size: 00000008 nwRemoteConnectCallback
+size: 00000008 nwRemoteDisconnectConnectCallback
+size: 000000A8 nwLocalJoinCallback
+size: 0000011C nwLeaveGame
+size: 000000A8 nwPostJoin
+size: 0000000C nwSetMediusErrorCode
+size: 0000000C nwGetLastMediusError
+size: 00000010 nwForcePlayerReportNextUpdate
+size: 000000F4 nwSendPlayerReport
+size: 00000170 nwInitializeWorldReportFromGameInfo
+size: 00000028 nwSetWorldReportGamestatsFromGame
+size: 00000040 nwUpdateWorldReportFromGame
+size: 00000114 nwInitializeWorldReportForNewGame
+size: 00000010 nwForceWorldReportNextUpdate
+size: 00000098 nwSendWorldReport
+size: 000001D4 nwUpdateLadderStats
+size: 00000060 nwVoiceOnlyUpdate
+size: 00000018 nwUpdateLadderStatsCallback
+size: 00000260 nwAccountUpdateStats
+size: 00000018 nwAccountUpdateStatsCallback
+size: 00000130 nwGetLadderStats
+size: 000000DC nwGetLadderStatsCallback
+size: 000001C4 nwUpdateClanStats
+size: 00000018 nwUpdateClanStatsCallback
+size: 00000404 nwRemoteClientEventCallback
+size: 00000034 nwSMChangeCallback
+size: 0000002C nwGetUniqueId
+size: 00000008 nwSetGetPlayerTypeCallback
+size: 00000014 nwResetMyReportIntervalTimers
+size: 00000008 nwGetGleamingTheCubeClientIndex
+size: 00000010 nwEnableGleamingTheCube
+size: 00000010 nwDisableGleamingTheCube
+size: 00000008 nwIsGleamingTheCubeEnabled
+size: 000000A0 nwSystemMessageCallback
+size: 00000010 nwGotSystemMessage
+size: 00000150 nwSMQueuePush
+size: 0000017C nwSMQueuePop
+size: 00000018 nwGetMyIpCallback
+size: 00000014 nwSetIgnoreListData
+size: 00000060 nwIsIgnored
+
+
+game\network\nwAudioUtil.cpp
+===============================================
+size: 0000002C AppInitAudio
+size: 000000C8 AppAudioEnumerate
+size: 0000005C AppAudioOnFrame
+size: 00000018 AppAudioIsHeadsetAttached
+size: 00000068 AppStartRecording
+size: 0000003C AppStopRecording
+size: 00000054 StartPlayback
+size: 00000064 AppShutdownAudio
+size: 00000054 AudioInput
+size: 00000078 AudioOutput
+size: 00000070 _audioAsyncRequestOp
+size: 00000034 _voiceGetNextOp
+size: 000000DC intc_voiceReset
+size: 00000020 voiceThread
+size: 00000080 intc_voiceAlarm
+size: 00000040 VoiceGetNextOutputBuffer
+size: 0000004C VoiceGetNextInputBuffer
+size: 000000D4 VoiceReset
+size: 00000050 VoiceStart
+size: 000000B4 VoiceStop
+size: 000000CC VoiceInit
+size: 00000080 VoiceShutdown
+size: 00000170 VoiceProcess
+
+
+game\network\nwInit.cpp
+==========================================
+size: 000001E4 nwLibInit
+size: 00000018 nwResetNetErrors
+size: 00000098 nwShutdown
+size: 0000003C nwMalloc
+size: 0000003C nwRealloc
+size: 0000002C nwFree
+size: 00000008 operator.new
+size: 0000001C __builtin_delete
+size: 000001C0 nwInitializeSCERT
+size: 0000002C nwRegisterAll
+size: 00000040 nwInitAudioInfoData
+
+
+game\network\nwMGCL.cpp
+==========================================
+size: 0000000C nwMGCL_Set_MediusWorldID
+size: 0000000C nwMGCL_Get_MediusWorldID
+size: 0000000C nwMGCL_Set_WorldStatus
+size: 0000000C nwMGCL_Get_WorldStatus
+size: 000000D0 nwMGCL_Initialize_Module
+size: 00000038 nwMGCL_Initialize_API
+size: 0000000C nwMGCL_Connected
+size: 00000074 nwMGCL_Update
+size: 00000014 nwMGCL_Startup
+size: 00000010 nwMGCL_Shutdown
+size: 0000000C nwMGCL_AmICurrentHost
+size: 0000000C nwMGCL_SetAsCurrentHost
+size: 0000000C nwMGCL_IsConnected
+
+
+game\network\nwMediusCallbacks.cpp
+=====================================================
+size: 00000028 nwAccountCreateCallback
+size: 00000028 nwAccountDeleteCallback
+size: 00000028 nwAccountGetIDCallback
+size: 00000028 nwAccountLoginCallback
+size: 00000028 nwAccountLogoutCallback
+size: 00000028 nwBuddyAddBuddyCallback
+size: 00000028 nwBuddyGetBuddyListCallback
+size: 00000028 nwBuddyRemoveBuddyCallback
+size: 00000028 nwClanByNameCallback
+size: 00000028 nwClanByIDCallback
+size: 00000028 nwClanCreateClanCallback
+size: 00000028 nwClanDisbandClanCallback
+size: 00000028 nwClanTransferClanLeadershipCallback
+size: 00000028 nwClanUpdateClanTagCallback
+size: 00000028 nwClanGetAllMessagesCallback
+size: 00000028 nwClanGetClanInfoCallback
+size: 00000028 nwClanGetChallengeListCallback
+size: 00000028 nwClanGetChallengeHistoryListCallback
+size: 00000028 nwClanGetInvitesCallback
+size: 00000028 nwClanGetMembersCallback
+size: 00000028 nwClanGetMyMessagesCallback
+size: 00000028 nwClanGetSentInvitesCallback
+size: 00000028 nwClanGetLadderListCallback
+size: 00000028 nwClanInvitePlayerCallback
+size: 00000028 nwClanInviteResponseCallback
+size: 00000028 nwClanInviteRevokeCallback
+size: 00000028 nwClanLadderPositionCallback
+size: 00000028 nwClanRemovePlayerCallback
+size: 00000028 nwClanSendMessageCallback
+size: 00000028 nwClanSendChallengeCallback
+size: 00000028 nwClanRevokeChallengeCallback
+size: 00000028 nwClanRespondToChallengeCallback
+size: 00000028 nwClanModifyMessageCallback
+size: 00000028 nwClanDeleteMessageCallback
+size: 00000028 nwGameAcquireGameInfoCallback
+size: 00000028 nwGameAcquireGamePlayersCallback
+size: 00000028 nwGameJoinCallback
+size: 00000028 nwGameListClearFilterCallback
+size: 00000028 nwGameListGetGameListCallback
+size: 00000028 nwGameListSetFilterCallback
+size: 00000028 nwGameRefreshGameInfoCallback
+size: 00000028 nwGameRefreshGamePlayersCallback
+size: 00000028 nwIgnoreListAddToIgnoreListCallback
+size: 00000028 nwIgnoreListGetIgnoreListCallback
+size: 00000028 nwIgnoreListRemoveFromIgnoreListCallback
+size: 00000028 nwLadderGetLadderListCallback
+size: 00000028 nwLocationQueryLocationsCallback
+size: 00000028 nwPlayerGetPlayerInfoCallback
+size: 00000028 nwPlayerFindPlayerCallback
+size: 00000028 nwRoomClearRoomFilterCallback
+size: 00000028 nwRoomCreateCallback
+size: 00000028 nwRoomGetInfoCallback
+size: 00000028 nwRoomJoinCallback
+size: 00000028 nwRoomRefreshPlayerListCallback
+size: 00000028 nwRoomRefreshRoomListCallback
+size: 00000028 nwRoomSetRoomFilterCallback
+size: 00000028 nwSessionBeginCallback
+size: 00000028 nwSessionEndCallback
+size: 00000028 nwUtilChatToggleCallback
+size: 00000028 nwSessionGetUniversesCallback
+size: 00000028 nwSessionGetUniverseNewsCallback
+size: 00000028 nwUtilFilterCallback
+size: 00000028 nwUtilRefreshAnnouncementListCallback
+size: 00000028 nwUtilGetPolicyCallback
+size: 00000028 nwFileCreateCallback
+size: 00000028 nwFileUploadCallback
+size: 00000028 nwFileCloseCallback
+size: 00000028 nwFileDownloadCallback
+size: 00000028 nwFileListCallback
+size: 00000028 nwBinaryMsgCallback
+size: 00000028 nwChatCallback
+size: 00000028 nwErrorMessageCallback
+size: 00000034 nwReassignWorldIDCallback
+size: 00000028 nwSetLocalizationParametersCallback
+size: 00000028 nwLadderPositionCallback
+size: 00000028 nwFileDeleteCallback
+size: 00000028 nwGetTotalRankingsCallback
+size: 00000028 nwUtilUpdateServerTimeCallback
+size: 00000028 nwUtilSetAutoChatHistoryCallback
+
+
+game\network\nwMessages.cpp
+==============================================
+size: 000001E8 nwRegisterMessages
+size: 0000005C nwMessageDispatcher<0>
+size: 0000005C nwMessageDispatcher<1>
+size: 0000005C nwMessageDispatcher<2>
+size: 0000005C nwMessageDispatcher<3>
+size: 0000005C nwMessageDispatcher<4>
+size: 0000005C nwMessageDispatcher<5>
+size: 0000005C nwMessageDispatcher<6>
+size: 0000005C nwMessageDispatcher<7>
+size: 0000005C nwMessageDispatcher<8>
+size: 00000078 nwMessageDispatcher<9>
+size: 0000005C nwMessageDispatcher<10>
+size: 0000005C nwMessageDispatcher<11>
+size: 0000005C nwMessageDispatcher<12>
+size: 0000005C nwMessageDispatcher<13>
+size: 0000005C nwMessageDispatcher<14>
+size: 0000005C nwMessageDispatcher<15>
+size: 0000005C nwMessageDispatcher<16>
+size: 0000005C nwMessageDispatcher<17>
+size: 0000005C nwMessageDispatcher<18>
+
+
+game\network\nwObjects.cpp
+=============================================
+size: 00000090 nwGameOverObjectCleanUp
+size: 000000A0 nwInitGameObjsArray
+size: 000006A4 nwRegisterObjects
+size: 00000008 nwRegisterRemotePlayerCreationCallback
+size: 00000008 nwRegisterRemotePlayerDeletionCallback
+size: 00000044 nwRemoteNetPlayerCreationComplete
+size: 00000040 nwPlayerInfoCallback
+size: 0000008C nwRemoteNetPlayerDeletionComplete
+size: 00000050 nwRemoteNetGameSettingsCreationCallback
+size: 0000002C nwRemoteNetGameSettingsUpdateCallback
+size: 00000038 nwRemoteNetGameSettingsDeletionCallback
+size: 0000003C nwReleaseGameSettingsObject
+size: 000000C0 nwRemoteNetPlayerDataCreationCallback
+size: 00000058 nwRemoteNetPlayerDataUpdateCallback
+size: 00000070 nwRemoteNetPlayerDataDeletionCallback
+size: 00000060 nwCleanUp
+size: 00000070 nwGetTeam
+size: 0000004C nwIsPlayerBlocked
+size: 00000034 nwBlockPlayer
+size: 0000003C nwClearBlockedPlayers
+size: 0000006C nwUnblockPlayer
+size: 000005C8 nwCreateLocalGame
+size: 000003A4 nwCreateLocalNetPlayer
+size: 00000068 nwPlayerHasHeadSetMessageCallback
+size: 000001F0 nwPlayerSetupMessageCallback
+size: 0000071C nwClientJoinMessageCallback
+size: 000000E8 nwClientJoinResponseCallback
+size: 0000005C nwSetDefaultGameSetupFlags
+size: 0000019C nwSetGameSetupFlagsForGameType
+size: 0000004C nwSendGameOptionsCallback
+size: 00000034 nwGameOptionsMessageCallback
+size: 000004E0 tNW_Player::InsertPadMsg
+size: 00000140 tNW_Player::IncrementActivePadMsg
+
+
+game\network\nwVoice.cpp
+===========================================
+size: 00000520 nwVoiceUpdate
+size: 00000198 nwAudioPlayCallback
+size: 00000158 nwAudioRecordCallback
+size: 00000084 nwVoiceSetStreamMediaParams
+size: 0000001C nwVoiceFrameInit
+size: 0000001C nwVoiceFrameDeInit
+size: 000000DC nwVoiceEnableGlobalChat
+size: 00000028 nwVoiceIgnore
+size: 000000A0 nwVoiceIsTalking
+size: 00000058 nwVoiceClientLookup
+size: 0000000C nwVoiceSetIndexMap
+
+
+game\network\ss_poweroff.cpp
+===============================================
+size: 00000024 PowerOffThread
+size: 0000001C PowerOffHandler
+size: 000000B8 PreparePowerOff
+size: 00000080 UndoPowerOff
+
+
+game\npc.cpp
+===============================
+size: 00000320 UpdateNPCState
+
+
+game\pad.cpp
+===============================
+size: 0000001C InitPadRing
+size: 00000058 Pad_NonLaggedBits
+size: 00000090 PadRingBitsOn
+size: 0000004C PadRingAng
+size: 00000120 pad_Init
+size: 000000F0 ClearPadInput
+size: 00000884 ProcessPadInput
+size: 00000474 UpdatePad
+size: 00000054 UpdatePad
+size: 00000090 Pad_MappedPad
+
+
+game\partupd.cpp
+===================================
+size: 0000019C SpawnPart_002_Main
+size: 000000C0 SpawnPart_002
+size: 00000100 SpawnPart_004
+size: 000002E8 SpawnPart_011
+size: 00000164 SpawnPart_015
+size: 000000F0 SpawnPart_021
+size: 0000011C SpawnPart_022
+size: 000001C8 SpawnPart_023
+size: 0000018C SpawnPart_025
+size: 000002FC SpawnPart_028
+size: 00000198 SpawnPart_029
+size: 000001E8 SpawnPart_034
+size: 00000104 SpawnPart_035
+size: 00000170 SpawnPart_044
+size: 00000178 SpawnPart_045
+size: 0000010C SpawnPart_046
+size: 000001B4 SpawnPart_053
+size: 00000120 SpawnPart_064
+size: 000001B8 SpawnPart_074
+size: 000001EC SpawnPart_085
+size: 00000158 UpdatePart_085
+size: 00000480 UpdatePart_089
+size: 0000018C SpawnPart_091
+size: 0000022C SpawnPart_092
+size: 00000158 SpawnPart_097_Main
+size: 000000E8 SpawnPart_097
+size: 00000178 UpdatePart_097
+size: 00000150 SpawnPart_099
+size: 00000174 SpawnPart_102
+size: 00000124 SpawnPart_111
+size: 0000015C SpawnPart_121
+size: 00000198 SpawnPart_126
+size: 0000017C SpawnPart_127
+size: 000001AC UpdatePart_127
+size: 00000198 SpawnPart_128
+
+
+game\path.cpp
+================================
+size: 00000054 StepPathNode
+size: 00000258 GetPathPoint
+size: 000000C8 DistBetweenPoints
+size: 0000034C ClosestPointOnSegment2D
+size: 00000424 ClosestPointOnSegment
+size: 0000031C NearestPointOnPath
+
+
+game\pause.cpp
+=================================
+size: 00000008 InBootUpTopPage
+size: 000000B4 GetFormattedPlanetName
+
+
+game\permcb.cpp
+==================================
+size: 0000004C vsync_callback
+
+
+game\posteffects.cpp
+=======================================
+size: 0000001C PostEffects_LocalAlloc
+size: 0000018C PostEffects_RegisterEngine_AddStrips
+size: 00000108 PostEffects_AddStrips
+size: 000001F0 PostEffects_RegisterEngine_AddStrips
+size: 0000017C PostEffects_RegisterEngine_Clear
+size: 00000218 PostEffects_AddFilterCopy
+size: 000001F0 PostEffects_RegisterEngine_AddFilterCopy
+size: 00000110 PostEffects_RegisterEngine_AddFilterCopy
+size: 00000418 PostEffects_Blur
+size: 0000039C PostEffects_RegisterEngine_Blur
+size: 0000027C PostEffects_BlurOnce
+size: 00000024 PostEffects_Blur256
+size: 00000024 PostEffects_BlurOnce256
+size: 00000024 PostEffects_RegisterEngine_Blur256
+size: 00000024 PostEffects_RegisterEngine_Blur128
+size: 00000024 PostEffects_RegisterEngine_Blur64
+size: 00000360 PostEffects_RegisterEngine_AddBloomAccum
+size: 000000F8 PostEffects_SandStorm_Init_AlphaMappingPalette
+size: 000001FC PostEffects_SandStorm_Init_CreateB
+size: 00000044 PostEffects_SandStorm_Init_Apply
+size: 000003D8 PostEffects_SandStorm_Init_Globals
+size: 00000090 PostEffects_SandStorm_Init
+size: 0000004C PE_GetEnvironmentType
+size: 00000050 PE_UpdateEnvEffectsForCameraWarp
+size: 0000001C PostEffects_Init
+size: 000003E4 PostEffects_AddPutToScreen_imm
+size: 00000298 PostEffects_CreateFrameBufferAlphaFromDepth_imm
+size: 000000A8 PostEffects_LoadPalToGs_imm
+size: 0000008C PostEffects_SetDofRamp
+size: 000003BC PostEffects_AddRemapAlpha
+size: 00000390 PostEffects_RegisterEngine_AddRemapAlpha
+size: 000000E4 PostEffects_AddRemapAlpha_imm
+size: 00000354 PostEffects_RegisterEngine_AddMulByAlpha
+size: 00000050 PostEffects_Init_new
+size: 000001A8 PostEffects_FrameInit_new
+size: 00000074 PostEffects_CommonInit_new
+size: 000001EC PostEffects_BloomInit_new
+size: 000001D8 PostEffects_RegisterEngine_BloomInitCreateA_new
+size: 00000294 PostEffects_BloomCreateB_new
+size: 0000049C PostEffects_RegisterEngine_BloomInitCreateC_new
+size: 00000098 PostEffects_RegisterEngine_BloomInitApply_new
+size: 000001D8 PostEffects_BloomCreate_new
+size: 000000D4 PostEffects_BloomApply_new
+size: 000000B4 PostEffects_DofInit_new
+size: 000002CC PostEffects_DofCreateA_new
+size: 000000E0 PostEffects_DofInitCreateB_new
+size: 00000228 PostEffects_DofCreate_new
+size: 000002D0 PostEffects_FbCopyInit
+size: 0000037C PostEffects_GetFbTex
+size: 000000E0 PostEffects_RegisterEngineInit
+size: 00000040 PostEffects_RegisterEngineCleanup
+
+
+game\projectgui\boot\bootcampaign.cpp
+========================================================
+size: 00000008 BootCampaign_Init
+size: 0000014C BootCampaign_Start
+size: 00000024 BootCampaign_Stop
+size: 00000008 BootCampaign_SetMode
+size: 00000008 BootCampaign_GetMode
+size: 00000020 BootCampaign_CMDNewGameCB
+size: 00000020 BootCampaign_CMDLoadCB
+size: 0000002C BootCampaign_Exit
+
+
+game\projectgui\boot\bootlanguages.cpp
+=========================================================
+size: 0000013C SetLanguage
+size: 00000008 BootLanguages_Init
+size: 00000110 BootLanguages_Start
+size: 00000034 BootLanguages_Stop
+size: 00000024 BootLanguages_CMDEnglishCB
+size: 00000024 BootLanguages_CMDFrenchCB
+size: 00000024 BootLanguages_CMDSpanishCB
+size: 0000001C BootLanguages_Exit
+
+
+game\projectgui\boot\bootmain.cpp
+====================================================
+size: 00000054 GetBootMainState
+size: 00000060 Update
+size: 0000000C BootMain_Init
+size: 00000118 BootMain_Start
+size: 0000003C BootMain_Stop
+size: 00000058 BootMain_CMDSingleCB
+size: 000000D8 BootMain_CMDCoopCB
+size: 0000003C BootMain_CMDMultiCB
+size: 00000020 BootMain_CMDSettingsCB
+size: 00000020 BootMain_CMDLanguagesCB
+size: 00000008 BootMain_DCB_InsertController
+
+
+game\projectgui\boot\bootmemcard.cpp
+=======================================================
+size: 0000005C GetBootMemcardState
+size: 00000008 BootMemcard_Init
+size: 00000040 BootMemcard_Start
+size: 0000001C BootMemcard_Stop
+size: 00000008 Init
+size: 00000204 Update
+size: 00000008 Deinit
+size: 00000030 BootMemcard_DCB_ExitScreen
+
+
+game\projectgui\boot\bootpatch.cpp
+=====================================================
+size: 0000005C GetBootPatchState
+size: 00000008 BootPatch_Init
+size: 00000038 BootPatch_Start
+size: 0000001C BootPatch_Stop
+size: 00000008 Init
+size: 000001D0 Update
+size: 00000008 Deinit
+size: 0000000C BootPatch_DCB_ExitScreen
+
+
+game\projectgui\controls\ctlbox.cpp
+======================================================
+size: 0000007C CtlBox::Create
+size: 00000008 CtlBox::SetShown
+size: 00000074 CtlBox::SetTarget
+size: 00000110 CtlBox::SetTarget
+size: 000000A4 CtlBox::GetRect
+size: 00000150 CtlBox::Update
+
+
+game\projectgui\controls\ctllist.cpp
+=======================================================
+size: 00000074 CtlList::GetItemSize
+size: 0000012C CtlList::CreateItems
+size: 0000002C CtlList::Create
+size: 00000080 CtlList::Clear
+size: 00000050 CtlList::SetValidator
+size: 000000CC CtlList::SetFocus
+size: 00000048 CtlList::FocusNext
+size: 00000048 CtlList::FocusPrev
+size: 000000A0 CtlList::GetFocusRect
+size: 0000018C CtlList::Insert
+size: 000000C8 CtlList::UpdateSizes
+size: 00000094 CtlList::UpdateIdealOffset
+size: 00000330 CtlList::Update
+size: 0000000C Panel::Element
+
+
+game\projectgui\guiapi.cpp
+=============================================
+size: 0000001C GUI_Startup
+size: 0000001C GUI_GetPlayerScreenMode
+size: 0000001C GUI_NoInput
+size: 0000001C GUI_SetGadgetLock
+size: 0000001C GUI_GetGadgetLock
+size: 0000001C GUI_GetState
+size: 0000001C GUI_GoToState
+size: 0000001C GUI_PrintPrompt
+size: 00000034 GUI_PrintPrompt
+size: 0000001C GUI_PrintTimer
+size: 0000001C GUI_AddQuickselectGadget
+size: 0000001C GUI_SetMainGadget
+size: 0000001C GUI_SwapMainGadget
+size: 0000001C GUI_UnequipGadget
+size: 0000001C GUI_RadarSelect
+size: 0000001C GUI_RadarSetSelectInstructions
+size: 0000001C GUI_RadarSetSelectPrompt
+size: 0000001C GUI_CancelRadarSelect
+size: 0000001C GUI_IsRadarSelectActive
+size: 0000001C GUI_IsRadarNodeSelected
+size: 0000001C GUI_SetHudPanelVisibility
+size: 0000001C GUI_SetMap
+size: 00000024 GUI_UpdateAvailableGadgets
+size: 0000001C GUI_SetBoltMultiplier
+size: 0000001C GUI_PrintMPSpecialKill
+size: 0000001C GUI_AddMPTeam
+size: 0000001C GUI_SetMPScoreMax
+size: 0000001C GUI_SetMPTeamScore
+size: 0000001C GUI_SetMPGameTimer
+size: 0000001C GUI_SetMPNodeCount
+
+
+game\projectgui\guicutscene.cpp
+==================================================
+size: 00000040 GuiCutScene_Start
+size: 0000001C GuiCutScene_Stop
+
+
+game\projectgui\guihud.cpp
+=============================================
+size: 00000140 GetHudEnterState
+size: 00000130 GetHudState
+size: 00000140 GetHudExitState
+size: 00000070 GuiHud_SetGamePanels
+size: 00000088 GuiHud_Init
+size: 00000060 GuiHud_Start
+size: 0000001C GuiHud_Stop
+size: 00000048 Init
+size: 0000003C Enter
+size: 00000038 GuiHud_CanEnterMenu
+size: 00000058 GuiHud_WantsToEnterMenu
+size: 000001D4 Update
+size: 00000054 Exit
+size: 00000008 Deinit
+size: 00000038 GuiHud_SetPanelVisibility
+size: 00000030 GuiHud_PanelClosed
+size: 00000074 GuiHud_Lerp
+size: 000000B0 GuiHud_ShowPlayer
+size: 000000BC GuiHud_HidePlayer
+
+
+game\projectgui\guimain.cpp
+==============================================
+size: 00000054 GetGuiMainState
+size: 00000058 Update
+size: 000002E8 GuiMain_Startup
+size: 00000040 GuiMain_TransTo
+size: 00000020 GuiMain_NoInput
+size: 00000128 GuiMain_TakesInput
+size: 000000A4 GuiMain_CursorPrev
+size: 0000009C GuiMain_CursorNext
+size: 0000009C GuiMain_ChangeSelection
+size: 000000A8 GuiMain_UpdateInOut
+size: 00000034 GuiMain_GetScreenMode
+size: 0000002C GuiMain_GetBaseFrame
+size: 00000040 GuiMain_GetCanvasOffsets
+size: 00000018 GuiMain_GetSlotWeapon
+size: 00000028 GuiMain_SetModeBits
+size: 0000002C GuiMain_ClearModeBits
+size: 0000001C GuiMain_SetNextState
+size: 0000001C GuiMain_GetState
+size: 00000028 GuiMain_PlaySound
+size: 00000134 GuiMain_PrintCommaNumber
+size: 000001CC GuiMain_FillTarget
+size: 000000A4 GuiMain_StopCurrentState
+size: 000000B4 GuiMain_StartCurrentState
+size: 000000A8 GuiMain_StartNextState
+size: 00000130 GuiMain_GoToState
+size: 0000005C GuiMain_PushState
+size: 00000050 GuiMain_PopState
+size: 00000064 GuiMain_SetGadgetLock
+size: 0000001C GuiMain_GetGadgetLock
+size: 0000002C GuiMain_GetCurrentGadget
+size: 00000044 GuiMain_GetPrimaryGadget
+size: 00000064 GuiMain_IsGadgetAvailable
+size: 00000078 GuiMain_EquipGadget
+size: 000000F8 GuiMain_GetGadgetVersionName
+size: 00000080 GuiMain_GetPlayerCommand
+size: 00000008 GuiMain_GetLastCommandIssuer
+size: 000000CC GuiMain_GetMenuCommand
+size: 00000084 GuiMain_GetCommand
+size: 00000040 GuiMain_TestCommand
+size: 000000F0 GuiMain_GetPulseLerp
+size: 00000070 GuiMain_UpdatePulse
+size: 00000028 GuiMain_GetLightVariant
+size: 00000024 GuiMain_GetDarkVariant
+size: 00000160 GuiMain_GetVividVariant
+size: 00000088 GuiMain_InitTeamColors
+size: 00000038 GuiMain_GetTeamColor
+size: 00000070 GuiMain_GetPlayerHudTeam
+size: 00000030 GuiMain_GetPlayerColor
+size: 000000A8 GuiMain_GetOmegaColor
+size: 0000011C GuiMain_GetGadgetColor
+size: 0000006C GuiMain_GetBadgeColor
+size: 00000068 GuiMain_GetArmorColor
+size: 0000005C GuiMain_SetupReward
+size: 0000000C GuiMain_SetMainMenuSoundFlag
+size: 00000008 GuiMain_ClearMainMenuSoundFlag
+size: 00000008 GuiMain_CheckMainMenuSoundFlag
+size: 00000058 GuiMain_InitMPData
+size: 0000000C GuiMain_GetMPTeamCount
+size: 0000000C GuiMain_GetMPLocalTeamCount
+size: 00000020 GuiMain_IsMPDirty
+size: 00000018 GuiMain_GetMPSortedTeam
+size: 0000000C GuiMain_GetMPTime
+size: 0000000C GuiMain_GetMPMaxScore
+size: 000001D4 GuiMain_AddMPTeam
+size: 00000024 GuiMain_SetMPScoreMax
+size: 00000280 GuiMain_SetMPTeamScore
+size: 00000024 GuiMain_SetMPGameTimer
+
+
+game\projectgui\guimenu.cpp
+==============================================
+size: 00000150 GetMenuState
+size: 000000C0 GuiMenu_Init
+size: 00000070 GuiMenu_Start
+size: 00000030 GuiMenu_Stop
+size: 0000008C Init
+size: 000000CC Deinit
+size: 0000021C Update
+size: 00000058 GuiMenu_ShowPlayer
+size: 00000058 GuiMenu_HidePlayer
+size: 0000005C GuiMenu_StartCurrentScreen
+size: 0000005C GuiMenu_StopCurrentScreen
+size: 00000044 GuiMenu_StartNextScreen
+size: 0000001C GuiMenu_GetScreen
+size: 00000058 GuiMenu_GoToScreen
+size: 00000064 GuiMenu_PushScreen
+size: 000000AC GuiMenu_PopScreen
+size: 00000040 GuiMenu_CanCloseMenu
+size: 00000080 GuiMenu_CloseMenu
+
+
+game\projectgui\guipib.cpp
+=============================================
+size: 00000088 PIB_GetDSBuffer
+size: 000000B0 PIB_Alloc
+size: 00000008 PIB_Free
+size: 00000108 PIB_AllocHandle
+size: 00000054 PIB_FreeHandle
+size: 000000B8 PIB_QueueHandleLoad
+size: 000000C8 PIB_RescuePause
+size: 000000B8 PIB_FinishImageLoadCB
+size: 00000168 PIB_LoadNextImage
+size: 00000388 PIB_Init
+size: 0000001C PIB_Update
+size: 00000040 PIB_GetImage
+size: 00000050 PIB_DropImage
+size: 00000060 PIB_RefreshAll
+size: 00000064 PIB_ReloadBuffer
+
+
+game\projectgui\guisupport.cpp
+=================================================
+size: 0000005C GetGuiSupportState
+size: 00000150 GetGuiSupportState
+size: 00000040 GuiSupport_TransTo
+size: 0000006C GuiSupport_Box_s::SetTarget
+size: 00000064 GuiSupport_Box_s::GetLoc
+size: 00000038 GuiSupport_Box_s::Update
+size: 000000C0 GuiSupport_Init
+size: 000000B8 GuiSupport_Start
+size: 00000094 CommonInit
+size: 00000008 CommonDeinit
+size: 00000034 CommonUpdate
+size: 0000001C Init
+size: 0000001C Deinit
+size: 0000003C Update
+size: 00000150 GuiSupport_UpdateCursors
+size: 0000050C GuiSupport_UpdateCursorWidgets
+size: 00000198 GuiSupport_SetCursorTarget
+size: 000000A8 GuiSupport_SetCursorTarget
+size: 00000048 GuiSupport_ShowCursor
+size: 00000044 GuiSupport_HideCursor
+size: 00000098 GuiSupport_ShowCursors
+size: 00000064 GuiSupport_ActivateCursor
+size: 00000060 GuiSupport_DeactivateCursor
+size: 000000AC GuiSupport_AttachCursor
+size: 0000016C GuiSupport_DetachCursor
+size: 000001E8 GuiSupport_CreatePlayerCursors
+size: 00000180 GuiSupport_UpdateFrames
+size: 00000660 GuiSupport_UpdateFrameWidgets
+size: 00000188 GuiSupport_SetFrameTarget
+size: 00000074 GuiSupport_SetFrameTarget
+size: 0000004C GuiSupport_ShowFrame
+size: 00000048 GuiSupport_HideFrame
+size: 00000078 GuiSupport_ShowFrames
+size: 00000090 GuiSupport_AttachFrame
+size: 00000094 GuiSupport_DetachFrame
+size: 000005A4 GuiSupport_CreatePlayerFrames
+size: 0000013C GuiSupport_UpdateDFrames
+size: 0000031C GuiSupport_UpdateDFrameWidgets
+size: 000000F8 GuiSupport_SetDFrameTarget
+size: 00000074 GuiSupport_SetDFrameTarget
+size: 0000004C GuiSupport_ShowDFrame
+size: 00000048 GuiSupport_HideDFrame
+size: 000000F8 GuiSupport_CreatePlayerDFrames
+size: 00000178 GuiSupport_UpdateDialogs
+size: 00000130 GuiSupport_HandleDialogInput
+size: 00000090 GuiSupport_MakeSelection
+size: 000000FC GuiSupport_UpdateDialogWidgets
+size: 00000038 GuiSupport_DeselectButton
+size: 00000064 GuiSupport_SelectButton
+size: 000000A0 GuiSupport_ClearButtons
+size: 000000D8 GuiSupport_AddButton
+size: 0000063C GuiSupport_ShowDialog
+size: 000000B0 GuiSupport_AbortDialog
+size: 0000002C GuiSupport_IsDialogShown
+size: 0000002C GuiSupport_DialogIgnoringInput
+size: 0000028C GuiSupport_CreatePlayerDialogs
+size: 00000180 GuiSupport_ShowMenu
+size: 00000080 GuiSupport_CloseMenu
+size: 00000164 GuiSupport_UpdateMenus
+size: 000000F4 GuiSupport_SetMenuTarget
+size: 000000CC GuiSupport_GetMenuRect
+size: 000000FC GuiSupport_GetMenuButtonRect
+size: 000000C8 GuiSupport_HandleMenuInput
+size: 00000048 GuiSupport_ValidMenu
+size: 000000A4 GuiSupport_SelectMenu
+size: 00000098 GuiSupport_DeselectMenu
+size: 00000078 GuiSupport_ChangeMenu
+size: 00000450 GuiSupport_UpdateMenuWidgets
+size: 00000158 GuiSupport_SetMenuButtons
+size: 0000003C GuiSupport_SetMenuTitle
+size: 00000018 GuiSupport_SetMenuHeader
+size: 00000018 GuiSupport_SetMenuCursor
+size: 00000018 GuiSupport_GetMenuCursor
+size: 000003D0 GuiSupport_CreatePlayerMenus
+size: 000000C8 GuiSupport_CreateWidgets
+size: 0000003C GuiSupport_ClearWidgets
+size: 00000178 Create<WidgetHollowRectangle>
+size: 00000178 Create<WidgetTextArea>
+size: 00000178 Create<WidgetText>
+
+
+game\projectgui\hud\hudammo.cpp
+==================================================
+size: 00000150 GetHudAmmoState
+size: 00000028 HudAmmo_Init
+size: 00000060 HudAmmo_Show
+size: 00000020 HudAmmo_Hide
+size: 000001D0 Init
+size: 00000030 Deinit
+size: 00000C58 Update
+size: 0000009C HudAmmo_SetGadgetLock
+size: 00000094 HudAmmo_UpdateInUse
+size: 000000F0 HudAmmo_CanUseQuickselect
+size: 000000A8 HudAmmo_WantsToUseQuickselect
+size: 00000024 HudAmmo_IsQuickSelectInUse
+size: 0000001C HudAmmo_IsQuickSelectOpen
+size: 00000060 HudAmmo_ClearGadgets
+size: 00000088 HudAmmo_AddGadget
+size: 00000008 HudAmmo_SwapMainGadget
+size: 00000064 HudAmmo_UnequipGadget
+size: 00000020 HudAmmo_GetMainGadget
+size: 00000234 HudAmmo_SetMainGadget
+size: 000000A0 HudAmmo_PleaseDeprecateMe
+size: 000000DC HudAmmo_RotateGadgets
+size: 000000A4 HudAmmo_RotateGadgets
+size: 00000124 HudAmmo_UpdatePulse
+size: 00000088 HudAmmo_UpdateOpen
+size: 000000E4 HudAmmo_GetQSAngle
+size: 000000B8 HudAmmo_GetAngleSegment
+size: 0000002C HudAmmo_GetAngleSlot
+size: 000000E0 HudAmmo_GetQSCurrentSlot
+size: 00000094 HudAmmo_GetQSCurrentGadget
+size: 00000228 HudAmmo_SetAmmoMaxString
+size: 00000044 HudAmmo_SetAmmoString
+size: 0000010C HudAmmo_GetGadgetColor
+size: 000000B8 HudAmmo_SetIcon
+size: 00000058 HudAmmo_GetSwitchSize
+size: 00000040 HudAmmo_GetSwitchSize
+size: 00000050 HudAmmo_GetMainSlot
+size: 0000010C HudAmmo_UpdateInfo
+size: 000000AC HudAmmo_UpdateInfoFade
+size: 000000EC HudAmmo_UpdateAmmo
+size: 00000134 HudAmmo_UpdateXP
+size: 00000048 HudAmmo_UpdateAvailableGadgets
+size: 000001AC HudAmmo_UpdateQSIcons
+size: 0000016C HudAmmo_UpdateSWIcons
+size: 000000A4 HudAmmo_UpdateGadgetLock
+size: 000000B8 HudAmmo_UpdateSWVisibility
+size: 00000358 HudAmmo_UpdateQSCursor
+size: 000000CC HudAmmo_UpdateQSAnim
+size: 0000026C HudAmmo_CreateWidgets
+size: 0000001C HudAmmo_ClearWidgets
+
+
+game\projectgui\hud\hudbolt.cpp
+==================================================
+size: 00000150 GetBoltCounterState
+size: 00000028 HudBolt_Init
+size: 00000060 HudBolt_Show
+size: 00000020 HudBolt_Hide
+size: 00000060 Init
+size: 00000030 Deinit
+size: 000000E4 Update
+size: 00000084 BoltHud_UpdateOpen
+size: 00000188 BoltHud_UpdateMultiplier
+size: 000001D0 BoltHud_UpdateCounterString
+size: 00000074 HudBolt_SetBoltMultiplier
+size: 000001BC BoltHud_CreateWidgets
+size: 0000001C BoltHud_ClearWidgets
+
+
+game\projectgui\hud\hudbosshealth.cpp
+========================================================
+size: 0000005C GetHudBossState
+size: 00000060 HudBossHealth_Init
+size: 0000008C HudBossHealth_Show
+size: 00000068 HudBossHealth_Hide
+size: 0000008C Init
+size: 00000064 Deinit
+size: 00000140 Update
+size: 000000B4 HudBoss_UpdateDeltas
+size: 00000114 HudBoss_UpdateWidgets
+size: 0000012C HudBoss_UpdatePulse
+size: 00000008 HudBoss_UpdateFancy
+size: 000000BC HudBoss_CreateWidgets
+size: 0000001C HudBoss_ClearWidgets
+
+
+game\projectgui\hud\hudbot.cpp
+=================================================
+size: 00000150 GetBotHudState
+size: 00000038 HudBot_Init
+size: 00000060 HudBot_Show
+size: 00000020 HudBot_Hide
+size: 00000158 Init
+size: 00000260 Update
+size: 00000030 Deinit
+size: 00000098 BotHud_UpdateOpen
+size: 00000088 BotHud_IsSlotEmpty
+size: 00000064 BotHud_DPadPressed
+size: 000002E8 BotHud_UpdateCommands
+size: 00000134 BotHud_UpdateIcons
+size: 00000150 BotHud_GetIconColor
+size: 000002E8 BotHud_UpdateFlash
+size: 00000024 HudBot_UpdateAvailableGadgets
+size: 000000E4 BotHud_UpdateName
+size: 000000B8 BotHud_UpdateLimit
+size: 000001CC BotHud_ActivateCommand
+size: 00000208 BotHud_CreateWidgets
+size: 0000001C BotHud_ClearWidgets
+
+
+game\projectgui\hud\hudcomplete.cpp
+======================================================
+size: 0000005C GetHudCompleteState
+size: 00000140 HudComplete_Show
+size: 0000003C HudComplete_Hide
+size: 00000034 Init
+size: 0000006C Deinit
+size: 000001D4 Update
+size: 000000EC HudComplete_UpdateBannerIn
+size: 000000DC HudComplete_UpdateBannerPrizes
+size: 000002E4 HudComplete_UpdatePrize
+size: 00000100 HudComplete_UpdateBannerStats
+size: 000000FC HudComplete_UpdateStatsIn
+size: 00000064 HudComplete_FillStatTime
+size: 0000003C HudComplete_FillStatNumber
+size: 00000040 HudComplete_FillStatSkillpoints
+size: 000001E4 HudComplete_UpdateStat
+size: 000000E4 HudComplete_UpdateFooterIn
+size: 00000068 HudComplete_UpdateIdle
+size: 00000274 HudComplete_UpdateUnlockedIn
+size: 000004EC HudComplete_UpdatePlanet
+size: 000004E8 HudComplete_UpdateTournament
+size: 00000238 HudComplete_UpdateClose
+size: 0000003C HudComplete_UpdateFadeout
+size: 00000088 HudComplete_DropPIBs
+size: 00000050 HudComplete_KillSounds
+size: 00000154 HudComplete_FinishAll
+size: 000001A4 HudComplete_FillRewardIcon
+size: 00000674 HudComplete_ReadData
+size: 00000054 HudComplete_HandleInput
+size: 000000E8 HudComplete_ResetPanelPositions
+size: 00000498 HudComplete_CreateWidgets
+size: 0000001C HudComplete_ClearWidgets
+
+
+game\projectgui\hud\hudflyby.cpp
+===================================================
+size: 0000005C GetHudFlybyState
+size: 00000078 HudFlyby_Show
+size: 00000060 HudFlyby_Hide
+size: 00000104 Init
+size: 0000003C Deinit
+size: 000000C4 Update
+size: 000001B0 HudFlyby_CreateWidgets
+size: 0000001C HudFlyby_ClearWidgets
+
+
+game\projectgui\hud\hudhealth.cpp
+====================================================
+size: 00000150 GetHealthHudState
+size: 00000028 HudHealth_Init
+size: 00000060 HudHealth_Show
+size: 00000020 HudHealth_Hide
+size: 0000007C Init
+size: 00000030 Deinit
+size: 000000F8 Update
+size: 00000098 HealthHud_UpdateOpen
+size: 00000254 HealthHud_UpdateValues
+size: 0000019C HealthHud_UpdateDeltas
+size: 000003F0 HealthHud_UpdateWidgets
+size: 00000364 HealthHud_UpdatePulse
+size: 00000440 HealthHud_CreateWidgets
+size: 0000001C HealthHud_ClearWidgets
+
+
+game\projectgui\hud\hudinfo.cpp
+==================================================
+size: 0000005C GetHudInfoState
+size: 00000414 MasterInit
+size: 00000050 MasterDeinit
+size: 0000006C MasterUpdate
+size: 000000FC HudInfo_UpdateTicker
+size: 00000210 HudInfo_UpdateWarning
+size: 000001B4 HudMPInfo_PrintSpecialKill
+size: 000001E0 HudInfo_UpdateSpecialKill
+size: 00000150 GetHudInfoState
+size: 000009FC PlayerInit
+size: 0000007C PlayerDeinit
+size: 000000B0 PlayerUpdate
+size: 000000F4 HudInfo_UpdatePrompt
+size: 000000DC HudInfo_UpdatePickup
+size: 0000015C HudInfo_UpdateTimer
+size: 000001E0 HudInfo_UpdateScore
+size: 00000144 HudInfo_UpdatePlayerTicker
+size: 0000003C HudInfo_Init
+size: 00000058 HudInfo_Show
+size: 00000048 HudInfo_Hide
+size: 00000088 HudInfo_Show
+size: 0000007C HudInfo_Hide
+size: 0000026C HudInfo_PrintPrompt
+size: 00000150 HudInfo_PrintTimer
+size: 0000001C HudInfo_SetPromptLerp
+
+
+game\projectgui\hud\hudmpinfo.cpp
+====================================================
+size: 00000150 GetHudMPInfoState
+size: 0000003C HudMPInfo_Init
+size: 00000078 HudMPInfo_Show
+size: 0000004C HudMPInfo_Hide
+size: 0000001C Init
+size: 00000030 Deinit
+size: 00000008 Update
+size: 00000028 HudMPInfo_CreateWidgets
+size: 0000001C HudMPInfo_ClearWidgets
+
+
+game\projectgui\hud\hudmpnode.cpp
+====================================================
+size: 0000005C GetHudMPNodeState
+size: 00000084 HudMPNode_Init
+size: 0000008C HudMPNode_Show
+size: 00000054 HudMPNode_Hide
+size: 00000048 CommonInit
+size: 00000064 CommonDeinit
+size: 00000088 CommonUpdate
+size: 0000006C HudMPNode_UpdateValues
+size: 00000024 HudMPNode_UpdateDeltas
+size: 000000A0 HudMPNode_GetOrderedTeams
+size: 00000480 HudMPNode_UpdateWidgets
+size: 00000260 HudMPNode_UpdatePulse
+size: 0000008C HudMPNode_UpdateNodeCount
+size: 000000E8 HudMPNode_UpdateNumNodesFull
+size: 00000230 HudMPNode_UpdateNumNodesSplit
+size: 00000188 HudMPNode_CreateCommonWidgets
+size: 0000001C HudMPNode_ClearCommonWidgets
+size: 00000024 HudMPNode_SetNodeCount
+
+
+game\projectgui\hud\hudmpscore.cpp
+=====================================================
+size: 0000005C GetHudMPScoreState
+size: 0000003C HudMPScore_Init
+size: 0000008C HudMPScore_Show
+size: 00000054 HudMPScore_Hide
+size: 00000040 CommonInit
+size: 00000064 CommonDeinit
+size: 00000080 CommonUpdate
+size: 00000080 HudMPScore_UpdateValues
+size: 00000024 HudMPScore_UpdateDeltas
+size: 00000388 HudMPScore_UpdateWidgets
+size: 0000008C HudMPScore_UpdateTeamCount
+size: 000000E0 HudMPScore_UpdateTimer
+size: 000000F4 HudMPScore_UpdateNumTeamsFull
+size: 000006E8 HudMPScore_UpdateNumTeamsSplit
+size: 000001F4 HudMPScore_CreateCommonWidgets
+size: 0000001C HudMPScore_ClearCommonWidgets
+
+
+game\projectgui\hud\hudmpvote.cpp
+====================================================
+size: 00000150 GetHudMPVoteState
+size: 0000003C HudMPVote_Init
+size: 00000078 HudMPVote_Show
+size: 0000003C HudMPVote_Hide
+size: 00000048 Init
+size: 00000054 Deinit
+size: 00000094 Update
+size: 00000040 HudMPVote_UpdateOptions
+size: 00000038 HudMPVote_CreateWidgets
+size: 0000001C HudMPVote_ClearWidgets
+
+
+game\projectgui\hud\hudradar.cpp
+===================================================
+size: 0000005C GetHudRadarState
+size: 00000008 InitCommon
+size: 00000038 DeinitCommon
+size: 00000114 UpdateCommon
+size: 00000068 HudRadar_GetBlipColor
+size: 00000150 GetRadarHudState
+size: 000000C4 Init
+size: 00000044 Deinit
+size: 00000930 Update
+size: 00000078 HudRadar_UpdateOpen
+size: 00000130 HudRadar_ProjectMapPoint
+size: 00000124 HudRadar_ClipPointRectangular
+size: 0000017C HudRadar_ClipPointOctagonal
+size: 0000010C HudRadar_SetSelectInstructions
+size: 000000BC HudRadar_SetSelectPrompt
+size: 00000054 HudRadar_StartSelect
+size: 000000C4 HudRadar_StopSelect
+size: 00000048 HudRadar_IsActive
+size: 00000024 HudRadar_IsNodeSelected
+size: 00000090 HudRadar_ValidSelection
+size: 000001E4 HudRadar_UpdateCursor
+size: 000003AC HudRadar_MoveCursor
+size: 000000F4 HudRadar_SelectResponse
+size: 00000034 HudRadar_SlideTo
+size: 00000544 HudRadar_UpdateMap
+size: 000000FC HudRadar_UpdateImage
+size: 000001BC HudRadar_UpdateBlips
+size: 000005E8 HudRadar_UpdateBlip
+size: 00000114 HudRadar_ValidObjective
+size: 000000EC HudRadar_UpdateNearest
+size: 00000184 HudRadar_UpdateTransition
+size: 00000750 HudRadar_CreateWidgets
+size: 0000001C HudRadar_ClearWidgets
+size: 000000DC HudRadar_Init
+size: 00000058 HudRadar_Show
+size: 00000048 HudRadar_Hide
+size: 00000088 HudRadar_Show
+size: 00000068 HudRadar_Hide
+size: 0000023C HudRadar_SetMap
+
+
+game\projectgui\menu\dialogdifficulty.cpp
+============================================================
+size: 00000150 GetDialogDifficultyState
+size: 00000050 DialogDifficulty_Init
+size: 00000094 DialogDifficulty_Show
+size: 0000007C DialogDifficulty_Hide
+size: 00000020 DialogDifficulty_IsShown
+size: 00000334 Init
+size: 00000070 Deinit
+size: 000000B0 Update
+size: 0000009C DialogDifficulty_UpdateDifficultyInfo
+size: 00000048 DialogDifficulty_Valid
+size: 000000A8 DialogDifficulty_Deselect
+size: 000000F8 DialogDifficulty_Select
+size: 0000003C DialogDifficulty_CMDDifficulty0
+size: 0000003C DialogDifficulty_CMDDifficulty1
+size: 0000003C DialogDifficulty_CMDDifficulty2
+size: 0000003C DialogDifficulty_CMDDifficulty3
+size: 0000003C DialogDifficulty_CMDDifficulty4
+size: 00000174 DialogDifficulty_HandleInput
+size: 000002F0 DialogDifficulty_CreateWidgets
+size: 0000001C DialogDifficulty_ClearWidgets
+
+
+game\projectgui\menu\menuarena.cpp
+=====================================================
+size: 00000150 GetMenuArenaState
+size: 0000014C Init
+size: 0000008C Deinit
+size: 00000180 Update
+size: 00000058 MenuArena_SwitchFromHere
+size: 0000006C MenuArena_ValidItem
+size: 000001FC MenuArena_UpdateArenaCB
+size: 000001DC MenuArena_HandleMissionStarCount
+size: 000000A4 MenuArena_UpdateCursors
+size: 00000148 MenuArena_SetupArenaGroups
+size: 000005B0 MenuArena_UpdateArenaList
+size: 0000006C MenuArena_GetArenaFocus
+size: 00000090 MenuArena_IsCurrentTournmentComplete
+size: 000000A4 MenuArena_DetermineCurrentTournament
+size: 00000054 MenuArena_GetTournamentHubMission
+size: 00000008 MenuArena_IsMissionInHub
+size: 00000170 MenuArena_DetermineTournamentFocus
+size: 000000BC MenuArena_TestForCurrentBonusMatch
+size: 0000011C MenuArena_TestForIncompleteBonusMatch
+size: 00000110 MenuArena_TestForNewBonusMatch
+size: 000002F0 MenuArena_UpdateCurrentArena
+size: 0000005C MenuArena_GetStatusColor
+size: 00000040 MenuArena_GetStatusIcon
+size: 000000D4 MenuArena_ChangeArena
+size: 0000009C MenuArena_HandleInput
+size: 000000C4 MenuArena_Cancel
+size: 0000003C MenuArena_CancelConfirmationCMD
+size: 000000F8 MenuArena_SystemCancel
+size: 00000054 MenuArena_SystemCancelConfirmationCMD
+size: 00000138 MenuArena_ChangeMission
+size: 00000038 MenuArena_ChangeMissionCMD
+size: 00000140 MenuArena_HandleSelect
+size: 00000040 MenuArena_HandleSkillsButton
+size: 00000668 MenuArena_CreateWidgets
+size: 00000284 MenuArena_SetupStanding
+size: 00000070 MenuArena_ClearWidgets
+size: 00000028 MenuArena_Init
+size: 000000A4 MenuArena_Start
+size: 00000064 MenuArena_Stop
+
+
+game\projectgui\menu\menuaudiovisual.cpp
+===========================================================
+size: 00000150 GetMenuAudioVisualState
+size: 00000028 MenuAudioVisual_Init
+size: 00000068 MenuAudioVisual_Start
+size: 00000038 MenuAudioVisual_Stop
+size: 0000020C Init
+size: 000000B4 Deinit
+size: 000001A0 Update
+size: 0000007C MenuAudioVisual_CMDSound
+size: 00000074 MenuAudioVisual_CMDSubtitles
+size: 000000F8 MenuAudioVisual_CMDMusicVolume
+size: 000000F8 MenuAudioVisual_CMDEffectsVolume
+size: 00000074 MenuAudioVisual_CMDWideScreen
+size: 000000DC MenuAudioVisual_CMDProgressiveScan
+size: 00000074 MenuAudioVisual_CMDHelpText
+size: 000000F8 MenuAudioVisual_CMDVOVolume
+size: 0000001C MenuAudioVisual_ValidOption
+size: 000000B8 MenuAudioVisual_DeselectOption
+size: 000000C8 MenuAudioVisual_SelectOption
+size: 0000007C MenuAudioVisual_ChangeOption
+size: 00000064 MenuAudioVisual_ChangeValue
+size: 000000A0 MenuAudioVisual_HandleInput
+size: 00000030 MenuAudioVisual_SystemCancel
+size: 00000314 MenuAudioVisual_CreateWidgets
+size: 0000001C MenuAudioVisual_ClearWidgets
+size: 00000038 MenuAudioVisual_ChangeProgressiveCMD
+size: 00000074 MenuAudioVisual_PostProgressiveChangeCheckCMD
+size: 00000034 MenuAudioVisual_ActivateScanningMode
+
+
+game\projectgui\menu\menubotvendor.cpp
+=========================================================
+size: 0000005C GetMenuBotVendorState
+size: 00000028 MenuBotVendor_Init
+size: 0000018C MenuBotVendor_Start
+size: 00000080 MenuBotVendor_Stop
+size: 00000200 Init
+size: 000000AC Deinit
+size: 00000224 Update
+size: 0000033C MenuBotVendor_UpdateItemCB
+size: 00000110 MenuBotVendor_UpdateItemList
+size: 0000027C MenuBotVendor_UpdateCurrentItem
+size: 000000B8 MenuBotVendor_UpdateBolts
+size: 0000006C MenuBotVendor_BotItemAlreadyPurchased
+size: 00000140 MenuBotVendor_ConfirmPurchaseCB
+size: 000000C0 MenuBotVendor_Select
+size: 0000001C MenuBotVendor_Back
+size: 00000038 MenuBotVendor_ValidItem
+size: 0000007C MenuBotVendor_ChangeItem
+size: 0000008C MenuBotVendor_HandleInput
+size: 00000028 MenuBotVendor_SystemCancel
+size: 00000188 MenuBotVendor_CreateWidgets
+size: 0000001C MenuBotVendor_ClearWidgets
+size: 00000040 MenuBotVendor_SwitchToHead
+size: 0000002C MenuBotVendor_SwitchToPaintjob
+
+
+game\projectgui\menu\menucardviewer.cpp
+==========================================================
+size: 0000005C GetMenuCardViewerState
+size: 00000028 MenuCardViewer_Init
+size: 00000068 MenuCardViewer_Start
+size: 00000040 MenuCardViewer_Stop
+size: 000000C8 Init
+size: 00000054 Deinit
+size: 000000D0 Update
+size: 000000BC MenuCardViewer_HandleInput
+size: 0000001C MenuCardViewer_Back
+size: 00000028 MenuCardViewer_SystemCancel
+size: 000002B4 MenuCardViewer_CreateWidgets
+size: 00000088 MenuCardViewer_ClearWidgets
+size: 000000C8 MenuCardViewer_UpdateCardList
+size: 000002A8 MenuCardViewer_SetupCards
+size: 00000084 MenuCardViewer_ChangeCard
+size: 000001E0 MenuCardViewer_UpdateCard
+size: 000000A4 MenuCardViewer_GetCardFocus
+size: 00000030 MenuCardViewer_Setup2dMoby
+size: 000000F8 MenuCardViewer_Update2dMoby
+size: 00000134 MenuCardViewer_ChangeRotate
+size: 0000009C MenuCardViewer_UpdateRotate
+size: 0000001C MenuCardViewer_Shutdown2dMoby
+
+
+game\projectgui\menu\menucharacters.cpp
+==========================================================
+size: 00000150 GetMenuCharactersState
+size: 00000028 MenuCharacters_Init
+size: 00000068 MenuCharacters_Start
+size: 00000038 MenuCharacters_Stop
+size: 000000BC Init
+size: 00000058 Deinit
+size: 000000C0 Update
+size: 000000A8 MenuCharacters_HandleInput
+size: 00000030 MenuCharacters_SystemCancel
+size: 00000220 MenuCharacters_CreateWidgets
+size: 00000088 MenuCharacters_ClearWidgets
+size: 00000088 MenuCharacters_ChangeCharacter
+size: 00000090 MenuCharacters_UpdateCharacterList
+size: 000000EC MenuCharacters_UpdateCharacter
+size: 000000C4 MenuCharacters_SetupCharacters
+
+
+game\projectgui\menu\menucheats.cpp
+======================================================
+size: 00000150 GetMenuCheatsState
+size: 000000E8 CheatActivationBookKeeping
+size: 00000028 MenuCheats_Init
+size: 00000068 MenuCheats_Start
+size: 00000038 MenuCheats_Stop
+size: 000001F8 Init
+size: 000000C0 Deinit
+size: 000000FC Update
+size: 0000001C MenuCheats_CMDCheatCHEAT_GOOFY_HEADS
+size: 0000001C MenuCheats_CMDCheatCHEAT_MIRROR_LEVELS
+size: 00000248 MenuCheats_CMDCheatCHEAT_HUD_COLORS
+size: 0000001C MenuCheats_CMDCheatCHEAT_GOD_MODE
+size: 0000001C MenuCheats_CMDCheatCHEAT_WRENCH_MODS
+size: 0000001C MenuCheats_CMDCheatCHEAT_VEHICLE_MODS
+size: 0000001C MenuCheats_CMDCheatCHEAT_SUPER_BLOOM
+size: 0000001C MenuCheats_CMDCheatCHEAT_BLACK_AND_WHITE
+size: 000000C8 MenuCheats_CMDCheatCHEAT_WEATHER_FX
+size: 0000001C MenuCheats_CMDCheatCHEAT_GANGSTA_GUNS
+size: 0000001C MenuCheats_CMDCheatCHEAT_TROOPER_SKINS
+size: 0000001C MenuCheats_CMDCheatCHEAT_NINJA
+size: 0000001C MenuCheats_CMDCheatCHEAT_RATCHET_HEAD
+size: 000000C8 MenuCheats_UpdateCheatCB
+size: 00000040 MenuCheats_UpdateCheatsList
+size: 00000040 MenuCheats_UpdateCurrentCheat
+size: 00000088 MenuCheats_UpdateCursors
+size: 00000044 MenuCheats_GetStatusColor
+size: 00000130 MenuCheats_ChangeCheat
+size: 0000012C MenuCheats_HandleInput
+size: 00000030 MenuCheats_SystemCancel
+size: 000005DC MenuCheats_CreateWidgets
+size: 0000001C MenuCheats_ClearWidgets
+
+
+game\projectgui\menu\menucinematics.cpp
+==========================================================
+size: 00000150 GetMenuCinematicsState
+size: 00000028 MenuCinematics_Init
+size: 00000084 MenuCinematics_Start
+size: 00000038 MenuCinematics_Stop
+size: 00000298 Init
+size: 000000B8 Deinit
+size: 00000134 Update
+size: 000000C8 MenuCinematics_UpdateCinematicCB
+size: 00000040 MenuCinematics_UpdateCinematicsList
+size: 000000D4 MenuCinematics_UpdateCurrentCinematic
+size: 00000088 MenuCinematics_UpdateCursors
+size: 0000001C MenuCinematics_GetStatusColor
+size: 0000000C MenuCinematics_ValidItem
+size: 00000098 MenuCinematics_ChangeCinematic
+size: 0000009C MenuCinematics_HandleInput
+size: 000000F8 MenuCinematics_HandleSelection
+size: 00000030 MenuCinematics_SystemCancel
+size: 000000F8 MenuCinematics_CreateWidgets
+size: 0000001C MenuCinematics_ClearWidgets
+size: 00000018 MenuCinematics_GetTitleID
+size: 00000018 MenuCinematics_GetMovieID
+
+
+game\projectgui\menu\menuconceptart.cpp
+==========================================================
+size: 00000150 GetMenuConceptArtState
+size: 00000028 MenuConceptArt_Init
+size: 00000068 MenuConceptArt_Start
+size: 00000038 MenuConceptArt_Stop
+size: 000000BC Init
+size: 00000058 Deinit
+size: 000000C0 Update
+size: 000000A8 MenuConceptArt_HandleInput
+size: 00000030 MenuConceptArt_SystemCancel
+size: 000000E8 MenuConceptArt_CreateWidgets
+size: 00000058 MenuConceptArt_ClearWidgets
+size: 0000008C MenuConceptArt_SetupConceptArtList
+size: 000000D4 MenuConceptArt_UpdateArt
+size: 00000088 MenuConceptArt_ChangeArt
+
+
+game\projectgui\menu\menucontrols.cpp
+========================================================
+size: 00000150 GetMenuControlsState
+size: 0000004C MenuControls_Init
+size: 00000070 MenuControls_StartPlayer1
+size: 00000070 MenuControls_StartPlayer2
+size: 00000038 MenuControls_Stop
+size: 000001BC Init
+size: 00000098 Deinit
+size: 00000088 Update
+size: 00000270 MenuControls_CMDCamMode
+size: 00000108 MenuControls_CMDUpDown
+size: 00000108 MenuControls_CMDLeftRight
+size: 000001AC MenuControls_CMDRotation
+size: 00000100 MenuControls_CMDVibration
+size: 0000007C MenuControls_CMDQSPause
+size: 0000001C MenuControls_ValidOption
+size: 000000B8 MenuControls_DeselectOption
+size: 000000C8 MenuControls_SelectOption
+size: 00000078 MenuControls_ChangeOption
+size: 00000068 MenuControls_ChangeValue
+size: 00000098 MenuControls_HandleInput
+size: 00000030 MenuControls_SystemCancel
+size: 00000374 MenuControls_CreateWidgets
+size: 0000001C MenuControls_ClearWidgets
+
+
+game\projectgui\menu\menucontrolview.cpp
+===========================================================
+size: 00000150 GetMenuControlViewState
+size: 0000005C MenuControlView_Init
+size: 00000068 MenuControlView_Start
+size: 00000034 MenuControlView_Stop
+size: 000000EC Init
+size: 0000007C Deinit
+size: 0000008C Update
+size: 0000011C MenuControlView_UpdateControlMap
+size: 00000044 MenuControlView_HandleInput
+size: 00000100 MenuControlView_CreateLabels
+size: 000002FC MenuControlView_CreateWidgets
+size: 0000001C MenuControlView_ClearWidgets
+
+
+game\projectgui\menu\menuequipment.cpp
+=========================================================
+size: 00000150 GetMenuEquipmentState
+size: 00000028 MenuEquipment_Init
+size: 00000070 MenuEquipment_Start
+size: 00000040 MenuEquipment_Stop
+size: 000000F0 Init
+size: 0000025C MenuEquipment_SetupSlots
+size: 00000274 MenuEquipment_SetupPlayerSlots
+size: 000000E8 Deinit
+size: 000000B8 Update
+size: 00000104 MenuEquipment_UpdateEquipmentInfo
+size: 00000044 MenuEquipment_Valid
+size: 00000044 MenuEquipment_Deselect
+size: 000000C0 MenuEquipment_Select
+size: 0000001C MenuEquipment_ToggleGadget
+size: 000000C0 MenuEquipment_HandleInput
+size: 00000134 MenuEquipment_Advance
+size: 00000030 MenuEquipment_SystemCancel
+size: 0000032C MenuEquipment_CreateWidgets
+size: 0000001C MenuEquipment_ClearWidgets
+size: 00000104 MenuEquipment_HasGadget
+size: 000000D0 MenuEquipment_GetGadgetDefIcon
+size: 00000084 MenuEquipment_GetWrenchIcon
+size: 00000114 MenuEquipment_GetGadgetDefDescription
+size: 000000CC MenuEquipment_GetWrenchDescription
+size: 000000E8 MenuEquipment_GetGadgetDefName
+size: 000000CC MenuEquipment_GetWrenchName
+size: 0000001C MenuEquipment_GetGadgetDefPlate
+size: 000000B0 MenuEquipment_GetSlotGadget
+size: 00000054 MenuEquipment_GetArmorType
+size: 00000108 MenuEquipment_GetBotGadgetPlate
+size: 00000008 MenuEquipment_GetWrenchPlate
+size: 0000002C MenuEquipment_GetGadgetID
+size: 00000040 MenuEquipment_SetupRatchetArmor
+size: 00000320 MenuEquipment_Setup2dMoby
+size: 00000288 MenuEquipment_Update2dMoby
+size: 0000002C MenuEquipment_End2dMoby
+size: 00000090 MenuEquipment_SwitchToRatchetMoby
+size: 0000004C MenuEquipment_SwitchToHead
+size: 0000002C MenuEquipment_SwitchToPaintJob
+
+
+game\projectgui\menu\menuhelplog.cpp
+=======================================================
+size: 00000150 GetMenuHelplogState
+size: 00000028 MenuHelplog_Init
+size: 00000068 MenuHelplog_Start
+size: 00000038 MenuHelplog_Stop
+size: 000002A0 Init
+size: 00000014 MenuHelplog_CheckIfEmptyText
+size: 000000A0 Deinit
+size: 000000E8 Update
+size: 000000AC MenuHelplog_UpdateHelplogCB
+size: 00000040 MenuHelplog_UpdateHelplogList
+size: 000000F0 MenuHelplog_UpdateCurrentHelplog
+size: 00000088 MenuHelplog_UpdateCursors
+size: 0000000C MenuHelplog_GetStatusColor
+size: 00000150 MenuHelplog_Truncate
+size: 00000098 MenuHelplog_ChangeHelplog
+size: 0000008C MenuHelplog_HandleInput
+size: 00000030 MenuHelplog_SystemCancel
+size: 00000140 MenuHelplog_CreateWidgets
+size: 0000001C MenuHelplog_ClearWidgets
+
+
+game\projectgui\menu\menuleaderboard.cpp
+===========================================================
+size: 00000150 GetMenuLeaderboardState
+size: 00000028 MenuLeaderboard_Init
+size: 0000007C MenuLeaderboard_Start
+size: 00000040 MenuLeaderboard_Stop
+size: 0000011C Init
+size: 0000007C Deinit
+size: 000000D0 Update
+size: 00000080 MenuLeaderboard_HandleInput
+size: 00000024 MenuLeaderboard_Cancel
+size: 00000030 MenuLeaderboard_SystemCancel
+size: 0000002C MenuLeaderboard_HandleStatsButton
+size: 000000AC MenuLeaderboard_UpdateItemCB
+size: 000000A8 MenuLeaderboard_UpdateCursor
+size: 000001D0 MenuLeaderboard_CreateWidgets
+size: 00000058 MenuLeaderboard_ClearWidgets
+size: 000001AC MenuLeaderboard_SetupLeaderboard
+size: 000001A0 MenuLeaderboard_SetupInitialList
+size: 00000178 MenuLeaderboard_UpdateLeaderboard
+size: 00000120 MenuLeaderboard_SortLeaderboard
+size: 0000005C MenuLeaderboard_GetStatusColor
+size: 00000084 MenuLeaderboard_GetStatus
+size: 00000110 MenuLeaderboard_GetNumCompletedMissions
+
+
+game\projectgui\menu\menuload.cpp
+====================================================
+size: 00000150 GetMenuLoadState
+size: 00000028 MenuLoad_InitLoad
+size: 00000064 MenuLoad_StartLoad
+size: 00000028 MenuLoad_StopLoad
+size: 00000028 MenuLoad_InitSave
+size: 00000068 MenuLoad_StartSave
+size: 00000028 MenuLoad_StopSave
+size: 00000458 Init
+size: 000004C0 Update
+size: 000000EC Deinit
+size: 000003E4 MenuLoad_ChangeState
+size: 000001B8 MenuLoad_HandleInput
+size: 00000028 MenuLoad_AbortDialog
+size: 00000054 MenuLoad_ShowDialog
+size: 00000028 MenuLoad_IsDialogShown
+size: 00000038 MenuLoad_StartGame
+size: 00000038 MenuLoad_PopScreen
+size: 0000005C MenuLoad_GiveAbortResponse
+size: 0000005C MenuLoad_IsCoop
+size: 000000F4 MenuLoad_HandleUpdates
+size: 00000470 MenuLoad_UpdateSlotDisplay
+size: 00000008 MenuLoad_Deselect
+size: 00000064 MenuLoad_Select
+size: 00000020 MenuLoad_HasData
+size: 00000040 MenuLoad_HasAnyData
+size: 0000002C MenuLoad_IsValid
+size: 0000001C MenuLoad_DCB_ExitScreen
+size: 00000048 MenuLoad_DCB_Format
+size: 00000050 MenuLoad_DCB_CreateSave
+size: 00000074 MenuLoad_DCB_StartSave
+size: 00000058 MenuLoad_DCB_StartLoad
+size: 0000004C MenuLoad_DCB_NoSave
+size: 00000084 MenuLoad_DCB_Difficulty
+size: 0000004C MenuLoad_DCB_DifficultyNoSave
+size: 00000028 MenuLoad_MCB_DoSave
+size: 000000B0 MenuLoad_MCB_SaveDone
+size: 00000028 MenuLoad_MCB_DoLoad
+size: 00000094 MenuLoad_MCB_LoadDone
+size: 000001B8 MenuLoad_CreateWidgets
+size: 0000001C MenuLoad_ClearWidgets
+
+
+game\projectgui\menu\menumain.cpp
+====================================================
+size: 000000A4 MenuMain_UpdateCameraString
+size: 000000C0 MenuMain_UpdateLeftRightString
+size: 000000C0 MenuMain_UpdateUpDownString
+size: 000000C0 MenuMain_UpdateSpeedString
+size: 000000C8 MenuMain_UpdateVibrationString
+size: 00000090 MenuMain_UpdateHelpMsgString
+size: 0000001C MenuMain_InitButtons
+size: 00000058 MenuMain_AddButton
+size: 00000104 MenuMain_ShowMenu
+size: 00000074 MenuMain_Init
+size: 0000031C MenuMain_StartMain
+size: 0000025C MenuMain_StartOptions
+size: 00000164 MenuMain_StartExtras
+size: 00000148 MenuMain_StartMedia
+size: 000000C8 MenuMain_StartHelp
+size: 0000001C MenuMain_ResetMain
+size: 0000001C MenuMain_ResetOptions
+size: 0000001C MenuMain_ResetExtras
+size: 0000001C MenuMain_ResetMedia
+size: 0000001C MenuMain_ResetHelp
+size: 00000054 MenuMain_Stop
+size: 00000054 MenuMain_StopExtrasOptions
+size: 00000054 MenuMain_StopMedia
+size: 00000054 MenuMain_StopHelp
+size: 00000050 MenuMain_MainCMDExitCB
+size: 00000054 MenuMain_OptionsCMDGoBackCB
+size: 00000054 MenuMain_ExtrasCMDGoBackCB
+size: 0000004C MenuMain_MediaCMDGoBackCB
+size: 00000054 MenuMain_HelpCMDGoBackCB
+size: 00000058 MenuMain_MainCMDWeaponsCB
+size: 000000A4 MenuMain_MainCMDMissionsCB
+size: 00000058 MenuMain_MainCMDWorldsCB
+size: 00000058 MenuMain_MainCMDEquipmentCB
+size: 00000060 MenuMain_MainCMDOptionsCB
+size: 00000060 MenuMain_MainCMDExtrasCB
+size: 00000060 MenuMain_MainCMDHelpCB
+size: 00000054 MenuMain_OptionsCMDControlCB
+size: 00000054 MenuMain_OptionsCMDControl2CB
+size: 00000054 MenuMain_OptionsCMDSettingsCB
+size: 00000054 MenuMain_OptionsCMDSaveCB
+size: 00000054 MenuMain_OptionsCMDLoadCB
+size: 00000044 MenuMain_OptionsCMDQuitConfirmCB
+size: 00000064 MenuMain_OptionsCMDQuitCB
+size: 00000054 MenuMain_ExtrasCMDHelpLogCB
+size: 00000054 MenuMain_ExtrasCMDLeaderboardCB
+size: 00000054 MenuMain_ExtrasCMDCinematicsCB
+size: 00000054 MenuMain_ExtrasCMDMovesCB
+size: 00000054 MenuMain_ExtrasCMDCheatsCB
+size: 00000054 MenuMain_ExtrasCMDSkillsCB
+size: 00000054 MenuMain_ExtrasCMDSkinsCB
+size: 00000054 MenuMain_ExtrasCMDStatsCB
+size: 00000060 MenuMain_ExtrasCMDMediaCB
+size: 00000060 MenuMain_MediaCMDCreditsCB
+size: 00000054 MenuMain_MediaCMDConceptArtCB
+size: 00000054 MenuMain_MediaCMDCharactersCB
+size: 00000054 MenuMain_MediaCMDRobotCutawaysCB
+size: 0000008C MenuMain_MultiCMDCameraCB
+size: 0000009C MenuMain_MultiCMDLeftRightCB
+size: 0000009C MenuMain_MultiCMDUpDownCB
+size: 000000D4 MenuMain_MultiCMDSpeedCB
+size: 0000008C MenuMain_MultiCMDVibrateCB
+size: 0000006C MenuMain_MultiCMDHelpMsgCB
+size: 000000F0 MenuMain_MultiCMDQuitConfirmCB
+size: 00000064 MenuMain_MultiCMDQuitCB
+
+
+game\projectgui\menu\menumission.cpp
+=======================================================
+size: 00000150 GetMenuMissionState
+size: 00000028 MenuMission_Init
+size: 000000AC MenuMission_Start
+size: 00000060 MenuMission_Stop
+size: 00000134 Init
+size: 000001AC Deinit
+size: 0000015C Update
+size: 000002B8 MenuMission_HandleVO
+size: 0000009C MenuMission_HandleInput
+size: 00000168 MenuMission_HandleSelection
+size: 00000038 MenuMission_ChangeMissionCMD
+size: 0000008C MenuMission_ChangeMission
+size: 00000098 MenuMission_AdvanceMission
+size: 00000064 MenuMission_HandleSkillsButton
+size: 00000088 MenuMission_UpdateCursor
+size: 00000078 MenuMission_Cancel
+size: 00000064 MenuMission_SystemCancel
+size: 000006D8 MenuMission_CreateWidgets
+size: 00000274 MenuMission_SetupStanding
+size: 000003CC MenuMission_UpdateMissions
+size: 000000A0 MenuMission_GetMissionFocus
+size: 000000CC MenuMission_TestForCurrentMission
+size: 000000B0 MenuMission_TestForIncompleteMission
+size: 000000B0 MenuMission_TestForNewMission
+size: 000001E4 MenuMission_UpdateMissionCB
+size: 0000006C MenuMission_ValidItem
+size: 000001DC MenuMission_HandleMissionStarCount
+size: 00000040 MenuMission_GetStatusIcon
+size: 0000006C MenuMission_GetStatusColor
+size: 000002DC MenuMission_UpdateMission
+size: 00000058 MenuMission_ClearWidgets
+
+
+game\projectgui\menu\menumoves.cpp
+=====================================================
+size: 00000150 GetMenuMovesState
+size: 00000028 MenuMoves_Init
+size: 00000068 MenuMoves_Start
+size: 00000038 MenuMoves_Stop
+size: 00000258 Init
+size: 000000B8 Deinit
+size: 000000E8 Update
+size: 000000C0 MenuMoves_UpdateMoveCB
+size: 00000040 MenuMoves_UpdateMovesList
+size: 000000F8 MenuMoves_UpdateCurrentMove
+size: 00000088 MenuMoves_UpdateCursors
+size: 0000001C MenuMoves_GetStatusColor
+size: 00000098 MenuMoves_ChangeMove
+size: 0000008C MenuMoves_HandleInput
+size: 00000030 MenuMoves_SystemCancel
+size: 00000140 MenuMoves_CreateWidgets
+size: 0000001C MenuMoves_ClearWidgets
+size: 00000018 MenuMoves_GetTitleID
+size: 00000018 MenuMoves_GetDescID
+size: 00000018 MenuMoves_GetPlateID
+
+
+game\projectgui\menu\menuplanet.cpp
+======================================================
+size: 00000150 GetMenuPlanetState
+size: 00000134 Init
+size: 00000090 Deinit
+size: 0000015C Update
+size: 0000009C MenuPlanet_HandleInput
+size: 0000003C MenuPlanet_Cancel
+size: 00000048 MenuPlanet_SystemCancel
+size: 00000278 MenuPlanet_HandleSelection
+size: 0000004C MenuPlanet_HandleSkillsButton
+size: 00000030 MenuPlanet_ChangePlanetCMD
+size: 00000058 MenuPlanet_SwitchFromHere
+size: 0000026C MenuPlanet_ChangePlanet
+size: 00000334 MenuPlanet_HandleVO
+size: 000004D4 MenuPlanet_CreateWidgets
+size: 0000051C MenuPlanet_UpdatePlanets
+size: 00000108 MenuPlanet_SetupPlanetTourneyList
+size: 00000054 MenuPlanet_GetTournamentHubMission
+size: 00000054 MenuPlanet_GetTournamentStartMission
+size: 0000004C MenuPlanet_GetTournamentLocked
+size: 0000004C MenuPlanet_GetTournamentNew
+size: 00000078 MenuPlanet_GetTournamentComplete
+size: 00000074 MenuPlanet_GetTournamentName
+size: 00000074 MenuPlanet_GetTournamentDescription
+size: 00000084 MenuPlanet_GetTournamentUnlockPoints
+size: 000000AC MenuPlanet_GetTournamentBadgeRequirements
+size: 00000054 MenuPlanet_GetTournamentPlate
+size: 0000008C MenuPlanet_GetPlanetFocus
+size: 00000148 MenuPlanet_TestForPlanetIncompleteDreadMissions
+size: 00000168 MenuPlanet_TestForIncompleteCurrentDreadzoneMissions
+size: 000000BC MenuPlanet_TestForNewPlanet
+size: 000000BC MenuPlanet_TestForIncompletePlanet
+size: 00000104 MenuPlanet_TestForCurrentLevelFocus
+size: 00000180 MenuPlanet_TestForTournamentFocus
+size: 00000124 MenuPlanet_GetCurrentTournament
+size: 000000A4 MenuPlanet_UpdatePlanet
+size: 000008C8 MenuPlanet_UpdateForPlanet
+size: 000007D0 MenuPlanet_UpdateForTournament
+size: 00000100 MenuPlanet_GetNumCompletedBonusMissions
+size: 000000AC MenuPlanet_GetNumTotalBonusMissions
+size: 000000F8 MenuPlanet_GetNumCompletedTournamentBonusMissions
+size: 0000003C MenuPlanet_GetNumTotalTournamentBonusMissions
+size: 00000040 MenuPlanet_GetStatusIcon
+size: 0000006C MenuPlanet_GetStatusColor
+size: 00000088 MenuPlanet_UpdateCursor
+size: 00000174 MenuPlanet_UpdatePlanetCB
+size: 00000084 MenuPlanet_Advance
+size: 0000006C MenuPlanet_GetBadgesOfType
+size: 00000070 MenuPlanet_ClearWidgets
+size: 00000028 MenuPlanet_Init
+size: 000000A0 MenuPlanet_Start
+size: 0000004C MenuPlanet_Stop
+
+
+game\projectgui\menu\menurobotcutaways.cpp
+=============================================================
+size: 00000150 GetMenuRobotCutawaysState
+size: 00000028 MenuRobotCutaways_Init
+size: 00000068 MenuRobotCutaways_Start
+size: 00000038 MenuRobotCutaways_Stop
+size: 000000BC Init
+size: 00000058 Deinit
+size: 000000C0 Update
+size: 0000008C MenuRobotCutaways_SetupCutawayList
+size: 000000D4 MenuRobotCutaways_UpdateCutaway
+size: 000000A8 MenuRobotCutaways_HandleInput
+size: 00000028 MenuRobotCutaways_SystemCancel
+size: 000000E8 MenuRobotCutaways_CreateWidgets
+size: 00000058 MenuRobotCutaways_ClearWidgets
+size: 00000088 MenuRobotCutaways_ChangeCutaway
+
+
+game\projectgui\menu\menuskills.cpp
+======================================================
+size: 00000150 GetMenuSkillsState
+size: 00000028 MenuSkills_Init
+size: 00000068 MenuSkills_Start
+size: 00000038 MenuSkills_Stop
+size: 00000450 Init
+size: 000000B8 Deinit
+size: 000000E8 Update
+size: 00000120 MenuSkills_UpdateSkillCB
+size: 00000040 MenuSkills_UpdateSkillsList
+size: 000000C0 MenuSkills_UpdateCurrentSkill
+size: 00000088 MenuSkills_UpdateCursors
+size: 0000001C MenuSkills_GetStatusColor
+size: 00000098 MenuSkills_ChangeSkill
+size: 0000008C MenuSkills_HandleInput
+size: 00000060 MenuSkills_SystemCancel
+size: 00000140 MenuSkills_CreateWidgets
+size: 0000001C MenuSkills_ClearWidgets
+
+
+game\projectgui\menu\menuskinscreen.cpp
+==========================================================
+size: 0000005C GetMenuSkinScreenState
+size: 00000028 MenuSkinScreen_Init
+size: 00000068 MenuSkinScreen_Start
+size: 0000028C Init
+size: 000000AC Deinit
+size: 000000E4 Update
+size: 0000030C MenuSkinScreen_UpdateItemCB
+size: 00000154 MenuSkinScreen_UpdateItemList
+size: 0000021C MenuSkinScreen_UpdateCurrentItem
+size: 000000BC MenuSkinScreen_UpdateStars
+size: 00000054 MenuSkinScreen_SkinAlreadyPurchased
+size: 00000114 MenuSkinScreen_ConfirmPurchaseCB
+size: 00000110 MenuSkinScreen_Select
+size: 0000001C MenuSkinScreen_Back
+size: 0000006C MenuSkinScreen_ValidItem
+size: 000000A8 MenuSkinScreen_ChangeItem
+size: 000000AC MenuSkinScreen_HandleInput
+size: 00000030 MenuSkinScreen_SystemCancel
+size: 00000274 MenuSkinScreen_CreateWidgets
+size: 0000001C MenuSkinScreen_ClearWidgets
+size: 00000084 MenuSkinScreen_SwitchArmor
+size: 00000178 MenuSkinScreen_HandleMobyScaling
+size: 00000168 MenuSkinScreen_UpdateMobySwitch
+size: 00000288 MenuSkinScreen_Setup2dMoby
+size: 00000078 MenuSkinScreen_Stop
+size: 000002CC MenuSkinScreen_Update2dMoby
+
+
+game\projectgui\menu\menustats.cpp
+=====================================================
+size: 00000150 GetMenuStatsState
+size: 00000028 MenuStats_Init
+size: 00000068 MenuStats_Start
+size: 00000038 MenuStats_Stop
+size: 0000011C Init
+size: 00000068 Deinit
+size: 000000C8 Update
+size: 000000A8 MenuStats_HandleInput
+size: 00000038 MenuStats_SystemCancel
+size: 00000088 MenuStats_ChangeStat
+size: 000000F0 MenuStats_UpdateItemCB
+size: 00000088 MenuStats_UpdateCursor
+size: 00000128 MenuStats_CreateWidgets
+size: 0000004C MenuStats_ClearWidgets
+size: 000008D0 MenuStats_UpdateStatsList
+size: 00000078 MenuStats_GetBattleDomeTournamentsWon
+size: 00000078 MenuStats_AddKillCount
+size: 00000080 MenuStats_GetExterminatorsDefeated
+size: 000002FC MenuStats_OClassTagLookup
+size: 00000008 MenuStats_GetTotalNumberPossibleStars
+
+
+game\projectgui\menu\menuvendor.cpp
+======================================================
+size: 0000005C GetMenuVendorState
+size: 00000028 MenuVendor_Init
+size: 00000038 MenuVendor_StartWeapon
+size: 00000030 MenuVendor_Stop
+size: 00000058 MenuVendor_StartMainScreen
+size: 00000010 MenuVendor_StopMainScreen
+size: 000001D8 Init
+size: 00000094 Deinit
+size: 000000C8 Update
+size: 00000330 MenuVendor_UpdateItemCB
+size: 00000110 MenuVendor_UpdateItemList
+size: 00000284 MenuVendor_UpdateCurrentItem
+size: 000000B4 MenuVendor_UpdateBolts
+size: 000000E0 MenuVendor_ConfirmPurchaseCB
+size: 000000D8 MenuVendor_Select
+size: 00000034 MenuVendor_ChangeModsCB
+size: 00000064 MenuVendor_Back
+size: 00000038 MenuVendor_ValidItem
+size: 0000007C MenuVendor_ChangeItem
+size: 0000007C MenuVendor_HandleInput
+size: 00000188 MenuVendor_CreateWidgets
+size: 0000001C MenuVendor_ClearWidgets
+
+
+game\projectgui\menu\menuweapon.cpp
+======================================================
+size: 00000150 GetMenuWeaponState
+size: 00000728 Init
+size: 00000108 Deinit
+size: 000001F4 Update
+size: 00000050 MenuWeapon_UpdateCurrentWeapon
+size: 000002A8 MenuWeapon_UpdateWeaponInfo
+size: 000000C4 MenuWeapon_UpdatePlate
+size: 000000B8 MenuWeapon_UpdateEditPos
+size: 0000013C MenuWeapon_UpdateAlphaList
+size: 0000024C MenuWeapon_UpdatePoolMods
+size: 00000240 MenuWeapon_UpdateAlphaMods
+size: 00000208 MenuWeapon_UpdateOmegaMods
+size: 000000F8 MenuWeapon_UpdateKeyText
+size: 00000044 MenuWeapon_GetWeaponColor
+size: 0000004C MenuWeapon_ValidWeapon
+size: 00000080 MenuWeapon_DeselectWeapon
+size: 000000C0 MenuWeapon_SelectWeapon
+size: 0000007C MenuWeapon_ChangeWeapon
+size: 00000068 MenuWeapon_DeselectButton
+size: 000000A8 MenuWeapon_SelectButton
+size: 000000C0 MenuWeapon_ChangeButton
+size: 000000C0 MenuWeapon_ValidPool
+size: 00000104 MenuWeapon_DeselectPool
+size: 000002C8 MenuWeapon_SelectPool
+size: 00000080 MenuWeapon_ChangePool
+size: 000000C4 MenuWeapon_GetOmegaColor
+size: 0000009C MenuWeapon_ValidOmega
+size: 0000007C MenuWeapon_DeselectOmega
+size: 00000118 MenuWeapon_SelectOmega
+size: 00000068 MenuWeapon_ChangeOmega
+size: 000000B0 MenuWeapon_EquipOmega
+size: 000000A0 MenuWeapon_StartEditOmega
+size: 00000164 MenuWeapon_StartEditAlpha
+size: 000000AC MenuWeapon_StartEdit
+size: 00000120 MenuWeapon_StopEdit
+size: 000000B0 MenuWeapon_AddAlpha
+size: 0000012C MenuWeapon_RemoveAlpha
+size: 00000008 MenuWeapon_RemoveAllAlpha
+size: 00000268 MenuWeapon_HandleIdleInput
+size: 00000024 MenuWeapon_HandleCancel
+size: 00000030 MenuWeapon_SystemCancel
+size: 000001A8 MenuWeapon_HandleAlphaInput
+size: 0000018C MenuWeapon_HandleOmegaInput
+size: 00000D48 MenuWeapon_CreateWidgets
+size: 0000001C MenuWeapon_ClearWidgets
+size: 00000028 MenuWeapon_Init
+size: 00000068 MenuWeapon_Start
+size: 00000038 MenuWeapon_Stop
+size: 00000008 MenuWeapon_SetGadgetLock
+
+
+game\projectgui\pausemode\memcardcontrol.cpp
+===============================================================
+size: 0000000C mpMemcardModeInit
+size: 0000009C mpMemcardAnsweredFormatCanceled
+size: 0000009C mpMemcardCheckSave
+size: 00000094 mpMemcardSave
+size: 00000094 mpMemcardForcedSave
+size: 000000F0 mpMemcardBootSave
+size: 00000094 mpMemcardLoad
+size: 000000C0 mpMemcardBootLoad
+size: 00000068 mpMemcardCreateSave
+size: 000000C8 mpUpdateModeMemcard
+size: 00000008 exit_state
+size: 00000430 MemcardUserBootView
+size: 000003E8 MemcardUserBootController
+
+
+game\projectgui\pausemode\pausemode.cpp
+==========================================================
+size: 00000008 Pause_ClearExitFromElsewhere
+size: 000000E8 Mode_PauseInit
+size: 00000058 Pause_InitGenericBuffers
+size: 0000004C AllocateGenericBuffersOnInit
+size: 00000144 InitPauseMode
+size: 00000030 Init
+size: 0000001C Update
+size: 00000008 DeInit
+size: 00000008 Pause_PreRender
+size: 0000001C PreRender
+size: 00000164 Mode_PauseUnInit
+size: 000000F0 Update_HudBitsRepeat
+size: 000000AC ProcessPauseExitRequest
+size: 00000060 GetPauseModeEntryState
+size: 00000188 PIB_reset
+
+
+game\projectgui\projectdatasources.cpp
+=========================================================
+size: 00000024 ConcreteIconDataSource::RequestData
+size: 00000034 ConcreteIconDataSource::RequestData
+size: 00000008 ConcreteIconDataSource::GetData
+size: 00000038 GetIconDataSource
+size: 00000084 GetLoadedImageBuffer
+size: 00000030 GetWidget3dDataSource
+size: 00000088 GetPreLoadedImageBufferSource
+size: 00000034 ConcreteLoadedImageBuffer::ConcreteLoadedImageBuffer
+size: 00000010 ConcreteLoadedImageBuffer::AbortLastRequest
+size: 000000EC ConcreteLoadedImageBuffer::RequestData
+size: 0000001C ConcreteLoadedImageBuffer::GetData
+size: 000000E4 ConcreteLoadedImageBuffer::Update
+size: 00000028 ConcretePreLoadedImageBuffer::ConcretePreLoadedImageBuffer
+size: 00000008 ConcretePreLoadedImageBuffer::AbortLastRequest
+size: 0000004C ConcretePreLoadedImageBuffer::RequestData
+size: 00000044 ConcretePreLoadedImageBuffer::SetDataParams
+size: 0000001C ConcretePreLoadedImageBuffer::GetData
+size: 00000008 ConcretePreLoadedImageBuffer::Update
+size: 00000008 DataSourceWidget3d::GetType
+size: 00000008 DataSourceIcon::GetType
+size: 00000008 DataSourceImageBuffer::GetType
+size: 00000008 ConcreteIconDataSource::AbortLastRequest
+size: 00000008 ConcreteIconDataSource::Update
+size: 00000008 ConcreteDataSourceWidget3d::RequestData
+size: 00000008 ConcreteDataSourceWidget3d::AbortLastRequest
+size: 00000008 ConcreteDataSourceWidget3d::GetData
+size: 00000008 ConcreteDataSourceWidget3d::Update
+
+
+game\projectgui\projectgui.cpp
+=================================================
+size: 00000040 Ige_GetMemoryMap
+size: 00000028 GetMultiplayerMap
+size: 0000000C GetDigeRam
+size: 00000054 InitDigeRam
+size: 00000084 GetCanvas
+size: 0000002C Ige_InitOnce
+size: 000002BC Ige_Init
+size: 00000038 Ige_Update
+size: 000000DC Ige_UpdateCanvas
+size: 00000038 Ige_RenderEnginePreDraws
+size: 00000038 Ige_RenderEnginePostDraws
+size: 000000A0 Ige_RenderCanvas
+size: 0000001C HudState_SetState
+size: 0000001C HudState_CheckStateTrigger
+
+
+game\puzzle.cpp
+==================================
+size: 00000088 InitModeGadgetPuzzle
+size: 00000060 UnInitModeGadgetPuzzle
+
+
+game\quad.cpp
+================================
+size: 00000090 QuadResetQuad
+size: 00000040 QuadScaleQuad
+size: 00000354 QuadDrawBillboard
+
+
+game\shadow.cpp
+==================================
+size: 000001D8 ShadowClearStencil
+size: 000002C0 ShadowDrawStencil
+size: 000003F4 DrawShadow
+
+
+game\skyfunc.cpp
+===================================
+size: 00000260 SkyInitNightSprites
+size: 000000BC SkyUpdateNightSprites
+size: 00000238 UpdateSkyShellMatrix
+size: 00000120 SkyLevelGeneric
+size: 00000080 SetupSkyGifPaging
+size: 00000118 DoSkyGifPaging
+size: 0000005C SkyDrawShell
+size: 000001C0 SkyDrawShellTextured
+size: 000001B0 SkyDrawShellGouraud
+
+
+game\snow_c.cpp
+==================================
+size: 00000350 InitSnowParticles
+
+
+game\sound.cpp
+=================================
+size: 0000005C sound_CreateHandle
+size: 00000078 SOUND_PLAY_LOOP
+size: 000000B4 sound_CamOfs
+size: 000000EC sound_Occl
+size: 000000FC sound_GetFade
+size: 00000074 sound_GetFade
+size: 00000220 sound_GetPan
+size: 00000154 sound_setVolumes
+size: 000001E4 sound_Init
+size: 00000038 sound_LevelInit
+size: 00001118 sound_Update
+size: 00000058 IsMobyPlayingSound
+size: 0000007C sound_KillById
+size: 0000008C sound_KillByMoby
+size: 00000030 sound_Kill
+size: 0000003C sound_KillByChannel
+size: 000000A8 sound_GetFreeChannel
+size: 00000370 sound_Play
+size: 000000A8 sound_MobyPlay
+size: 000000DC sound_MobyPlay
+size: 000000C0 sound_MobyPlay
+size: 000000A0 sound_CorePlay
+size: 000000B0 sound_FootstepPlay
+size: 00000050 sound_SetOffset
+size: 0000009C sound_StopAllSounds
+size: 00000018 sound_BasicCB
+size: 00000044 sound_PlayCB
+size: 00000040 sound_FreshenCB
+size: 00000030 lineEmitterSetAttrib
+size: 00000064 sound_initLineEmitters
+
+
+game\space.cpp
+=================================
+size: 00000304 DoSpaceTransition
+
+
+game\stash.cpp
+=================================
+size: 000000A0 Stash_InitOnce
+size: 000000D8 Stash_SendData
+
+
+game\stats.cpp
+=================================
+size: 00000018 ST_GetMissionRewardData
+size: 00000040 ST_GetMissionRewardData
+size: 00000190 ST_GetMissionRewards
+size: 00000128 ST_GetMissionStatistics
+size: 00000024 ST_GetNumAcquiredSkillPoints
+size: 0000004C ST_GetNumAcquiredSkillPoints
+size: 000000F8 ST_GetSkillPointInfo
+size: 00000084 ST_GetTotalNumAcquiredSkillPoints
+size: 00000088 ST_AcquiredAllSkillPoints
+size: 00000134 ST_GetNumDifficultyStars
+size: 00000028 ST_GetNumRemainingDifficultyStars
+size: 00000074 ST_RegisterEnemyKill
+size: 00000790 ST_RegisterStatKill
+size: 00000414 ST_CalculateExterminatorCardVisibility
+size: 000000AC ST_GetNumExterminatorCardsCollected
+
+
+game\stream.cpp
+==================================
+size: 00000040 InitSoundDef
+size: 00000064 StreamInterface::Reset
+size: 000000BC StreamInterface::StopAll
+size: 00000060 StreamInterface::PauseAll
+size: 00000060 StreamInterface::UnPauseAll
+size: 0000004C StreamInterface::Play
+size: 000000C0 StreamInterface::Queue
+size: 00000050 StreamInterface::GetState
+size: 00000064 StreamInterface::Start
+size: 00000070 StreamInterface::Stop
+size: 00000054 StreamInterface::SetGain
+size: 00000070 StreamInterface::SetMinMaxVolume
+size: 00000058 StreamInterface::SetMinMaxRange
+size: 000002FC StreamInterface::Update
+size: 0000002C StreamInterface::StreamsStopped
+size: 000000E4 StreamInterface::WaitForStop
+size: 0000009C StreamInterface::Alloc
+size: 0000001C StreamInterface::Free
+size: 00000038 StreamInterface::GetStreamFromHandle
+size: 0000004C StreamInterface::CreateHandle
+size: 00000034 StreamInterface::Initialize
+size: 00000214 StreamInterface::AcquireResources
+size: 00000020 StreamInterface::Start
+size: 00000058 StreamInterface::SetGain
+size: 00000038 StreamInterface::GetLocs
+size: 00000078 StreamInterface::Callback_PlayVAGStreamByLoc
+size: 00000068 StreamInterface::Callback_IsVAGStreamBuffered
+size: 00000060 StreamInterface::Callback_SoundIsStillPlaying
+
+
+game\tables.cpp
+==================================
+size: 00000048 GetMovieOffset
+
+
+game\tfragfunc.cpp
+=====================================
+size: 00000148 SetTfragDists
+size: 00000094 SetTfragDistsByFOV
+size: 0000010C DmaTfragTextures
+size: 0000009C PatchTfragGifs
+size: 0000014C DrawTfrag
+
+
+game\tiefunc.cpp
+===================================
+size: 00000144 ResetTieLightingCache
+
+
+game\transition.cpp
+======================================
+size: 00000078 Transition_GetDropshipTexture
+size: 00000078 Transition_GetLandStalkerTexture
+size: 00000008 Transition_GetLevelTo
+size: 00000008 Transition_GetLevelFrom
+size: 00000098 Transition_LoadSoundBank
+size: 00000010 Transition_PlaySound_cb
+size: 000000A8 Transition_PlaySound
+size: 000000A0 Transition_UnloadSounds
+size: 00000AF8 Transition_LoadWad
+size: 0000016C Transition_LoadSounds
+size: 000000AC Transition_LoadPlanetTex
+size: 00000028 Transition_InitPlanetTex
+size: 000000CC Transition_ParseMovie
+size: 00000074 Transition_CleanupMovie
+size: 00000054 Transition_Draw
+size: 000001F4 Transition_PostDraw
+size: 00000098 Transition_Update
+size: 0000027C Transition_DefaultDraw
+size: 00000060 Transition_DrawSky
+size: 0000022C Transition_SetupForFrontend
+size: 00000614 Transition_Pre
+size: 00000194 Transition_Post
+size: 00000244 Transition_DoTransition
+size: 00000114 Transition_UpdateMovieCamera
+size: 00000040 Transition_DrawClankEffects
+size: 00000180 Transition_MovieRobotEyeGlow
+size: 00000110 Transition_UpdateClankEffects
+size: 0000019C Transition_UpdateMovieMobys
+size: 000000D8 Transition_UpdateMovie
+size: 00000054 Transition_SetupMovieIds
+size: 00000030 Transition_ResetPlayedMovies
+size: 000000E8 Transition_GetMovieId
+size: 0000003C Transition_SetupFirstMovie
+size: 0000003C Transition_SetupNextMovie
+size: 00000008 Transition_GetNumMoviesPlayed
+size: 0000001C Transition_ResetParticles
+size: 000000A4 Transition_UpdateScreenFade
+size: 00000008 Transition_SetScreenFade
+size: 000000A8 Transition_QueueMidSceneOrMovie
+size: 000001CC Transition_SetupMidSceneOrMovie
+size: 00000070 Transition_UpdateMidSceneOrMovie
+size: 00000054 Transition_DoMovieMpeg
+size: 00000008 Transition_DoMovieNpc
+size: 00000008 Transition_SetKeepLastFrame
+size: 00000104 Transition_DisplayPassBlur
+
+
+game\transitionfunc.cpp
+==========================================
+size: 000000AC Transition_InitMobys
+size: 0000003C TransitionPre_Undefined
+size: 0000004C TransitionUpdate_Undefined
+size: 00000008 TransitionDraw_Undefined
+size: 0000002C TransitionPre_E3
+size: 00000058 TransitionUpdate_E3
+size: 00000168 TransitionDraw_E3
+size: 00000024 TransitionSpace_ResetParticles
+size: 0000020C TransitionPre_Space
+size: 000000A4 TransitionSpace_InitMoby
+size: 00000130 TransitionUpdate_Space
+size: 00000198 TransitionPostUpdate_Space
+size: 0000002C TransitionSpace_UpdateMobySpace
+size: 00000250 TransitionSpace_DrawMobyPlanet
+size: 0000001C TransitionSpace_DrawMobyShip
+size: 00000198 TransitionDraw_Space
+size: 00000038 TransitionPost_Space
+size: 00000054 TransitionPre_ShuttleInterior
+size: 00000044 TransitionShuttleInterior_InitMoby
+size: 00000080 TransitionUpdate_ShuttleInterior
+size: 0000007C TransitionPostUpdate_ShuttleInterior
+size: 00000048 TransitionDraw_ShuttleInterior
+size: 00000024 TransitionPost_ShuttleInterior
+
+
+game\transitionmulti.cpp
+===========================================
+size: 00000064 TransitionPre_Lobby
+size: 00000130 TransitionUpdate_Lobby
+size: 00000034 TransitionDraw_Lobby
+size: 000000BC Transition_LobbyDrawTitle
+size: 0000022C TransitionPre_Multiplayer
+size: 0000001C TransitionPost_MultiPlayer
+size: 00000370 TransitionMP_SetupCommonRulesText
+size: 0000090C TransitionMP_SetupGameRulesText
+size: 00000168 TransitionUpdate_Multiplayer
+size: 000004E4 Transition_DrawBootLoadTexture
+size: 0000031C TransitionDraw_Multiplayer
+size: 0000007C TransitionMP_DrawOverlay
+size: 00000220 TransitionMP_DrawSplashArt
+size: 00000068 TransitionMP_DrawTitleText
+size: 000003F8 TransitionMP_DrawWeaponsAndVehicleIcons
+size: 000000C8 TransitionMP_SetupSpinningMoby
+size: 00000058 TransitionMP_UpdateMoby
+size: 000001A8 TransitionMP_DrawTextData
+size: 00000038 mpIsWeaponEnabled
+size: 000000F4 GetMapName
+
+
+game\tuning.cpp
+==================================
+size: 00000164 TN_CalculateAmmoFromEnemies
+
+
+game\ubersound.cpp
+=====================================
+size: 00000080 UberSound::Stop
+
+
+game\update.cpp
+==================================
+size: 00000028 ResetGameCounters
+size: 00000074 HideMobysForScene
+size: 000005D8 mode_sceneInit
+size: 00000428 mode_sceneUnInit
+
+
+game\update\camera0.cpp
+==========================================
+size: 00000024 Cam0_GetHeroPos
+size: 00000134 GetHeroGroundPos
+size: 00000174 Cam_GetCurrHeroElv
+size: 000000B4 GetWorldHeightAtHeroGndOfs
+size: 000006C8 HandleSpecialTargetUpVec
+size: 000000B0 GetIdealPitchTarget
+
+
+game\update\camera4.cpp
+==========================================
+size: 00000014 Cam4_IsLookCamDisabled
+
+
+game\update\camera5.cpp
+==========================================
+size: 00000320 Camera_DeactivateMobyDrivenCam
+
+
+game\update\moby1007.cpp
+===========================================
+size: 00000134 Spawn_Moby1007
+
+
+game\update\moby112.cpp
+==========================================
+size: 000001D8 Spawn_Moby112
+
+
+game\update\moby122.cpp
+==========================================
+size: 000001D8 Spawn_Moby122
+
+
+game\update\moby167.cpp
+==========================================
+size: 000009BC _167_DrawMesh
+size: 00000678 _167_CreatePartFx
+size: 000001E8 UpdateMoby_167
+
+
+game\update\moby3137.cpp
+===========================================
+size: 000004C8 UpdateMoby_3137
+size: 000005D8 M3137_SpawnDeathSmoke
+size: 00000610 M3137_SpawnDeathSoot
+size: 00000218 M3137_SpawnDeathAsh
+size: 00000210 M3137_SpawnDeathIce
+size: 000000CC M3137_DeltMobyRGBA
+size: 00000180 MB_RegisterOrganicDeathEffect
+
+
+game\update\moby3303.cpp
+===========================================
+size: 00000D0C UpdateMoby_3303
+size: 000000C4 M3303_InitDust
+size: 000001B4 M3303_DrawDust
+size: 00000164 M3303_AddSparkleEmitter
+size: 00000250 M3303_UpdateSparkleEmitters
+size: 00000118 M3303_AddSparkle
+size: 00000140 M3303_UpdateSparkles
+size: 000000E4 M3303_DrawSparkles
+size: 00000134 M3303_DrawFX
+size: 00000170 M3303_AddMyBoltExp
+size: 000002F8 M3303_UpdateMyBoltExp
+size: 00000164 M3303_DrawMyBoltExp
+size: 000001B0 M3303_DrawBoltExp
+size: 00000024 M3303_CapBolt
+size: 00000608 M3303_DrawBolt
+
+
+game\update\moby357.cpp
+==========================================
+size: 0000013C UpdateMoby_357
+size: 000003C4 M357_UpdateTracking
+
+
+game\update\moby3709.cpp
+===========================================
+size: 00002538 UpdateMoby_3709
+size: 00000768 SpawnMoby_3709
+size: 0000021C M3709_DuckDeath
+size: 0000000C M3709_MakeHeroControlled
+size: 000000A4 M3709_HeroDie
+size: 000002E4 M3709_SpawnPoofEffect
+size: 00000458 M3709_SpawnFeatherEffect
+size: 00000118 M3709_LayEgg
+size: 00000170 M3709_SheepDeath
+size: 00000170 M3709_DuckDeath
+size: 0000036C M3709_PigDeath
+size: 0000035C M3709_PigFlames
+
+
+game\update\moby4231.cpp
+===========================================
+size: 000000F8 M4231_UpdateShotTargeting
+
+
+game\update\moby4234.cpp
+===========================================
+size: 00000118 M4234_UpdateShotTargeting
+
+
+game\update\moby4236.cpp
+===========================================
+size: 00000120 GetFreeRocketMobyIndex
+
+
+game\update\moby4244.cpp
+===========================================
+size: 00000154 M4244_UpdateShotTargeting
+size: 00000008 M4244_SetSoftAim
+size: 00000008 M4244_GetSoftAim
+
+
+game\update\moby4246.cpp
+===========================================
+size: 0000050C M4246_UpdateShotTargeting
+size: 00000008 M4246_SetSoftAim
+size: 00000008 M4246_GetSoftAim
+
+
+game\update\moby4249.cpp
+===========================================
+size: 00000070 mpFlockRotateAngTowardAng
+size: 0000037C M4249_IsMobyAnEnemy
+size: 00000300 M4249_ImpactFX
+size: 00000040 M4249_IgnoreMoby
+size: 00000078 M4249_Death
+size: 00000E00 M4249_Detonate
+size: 0000013C M4249_SetStateDetonate
+size: 0000008C M4249_FX_InitStrand
+size: 00000028 M4249_FX_InitLightning
+size: 000000AC M4249_PostFX_Draw
+size: 00003438 UpdateMoby_4249_mine
+size: 000002F8 LobMoby_4249
+size: 000004C0 Spawn_Moby4249_mine
+size: 0000007C M4249_FindMineMoby
+size: 000000FC M4249_GetGround
+size: 00000094 M4249_AddRelativeZ
+size: 00000094 M4249_RelativeZ
+size: 000000A0 M4249_KillRelativeZVel
+size: 00000538 M4249_WaterExplode
+
+
+game\update\moby4261.cpp
+===========================================
+size: 00000114 M4261_UpdateShotTargeting
+
+
+game\update\moby4265.cpp
+===========================================
+size: 00000100 M4265_AddGadgetXP
+size: 0000000C M4265_GetHoloshieldDuration
+size: 000000A8 M4265_DoneGrowing
+size: 00000170 M4265_GrowShield
+size: 00000108 M4265_AdjustPosVsGround
+size: 00000058 M4265_AddScrollSpeed
+size: 000000D8 M4265_CreatePointLight
+size: 00000048 M4265_BsphereCheck
+size: 00000144 M4265_SpawnShotParts
+size: 000000C4 M4265_ApplyImpact
+size: 00000394 M4265_CheckCollisions
+size: 0000015C M4265_SpawnElecPart
+size: 00001338 UpdateMoby_4265
+size: 00000064 M4265_SetupStripColor
+size: 00000100 M4265_SetupStripSTs
+size: 000000F4 M4265_GetStripVerts
+size: 000001BC M4265_SetupStripVerts
+size: 000001CC M4265_SetupQuadVerts
+size: 000004C4 M4265_PostFX_Layer01
+size: 0000061C M4265_PostFX_HitLayer01
+size: 000001C0 M4265_DrawFlyingBall
+size: 000003DC M4265_DrawParticleTrail
+size: 00000040 M4265_AddHoloShield
+size: 00000040 M4265_HoloShieldCacheFull
+size: 00000044 M4265_RemoveHoloShield
+
+
+game\update\moby428.cpp
+==========================================
+size: 00000280 SpawnMoby_428
+
+
+game\update\moby5025.cpp
+===========================================
+size: 000005FC SpawnMoby_5025
+size: 00000BE0 M5025_Explode
+size: 000000EC M5025_DamageSphere
+
+
+game\update\moby6244.cpp
+===========================================
+size: 000001D8 M6244_UpdateShotTargeting
+size: 00000008 M6244_SetSoftAim
+size: 00000008 M6244_GetSoftAim
+
+
+game\update\moby6249.cpp
+===========================================
+size: 000000A0 M6249_UpdateDamage
+size: 000000C4 SpawnMoby6249
+
+
+game\update\moby6295.cpp
+===========================================
+size: 00000154 SpawnMoby_6295
+size: 000002A4 SpawnMoby_6295s
+
+
+game\update\moby6298.cpp
+===========================================
+size: 000001BC M6298_SpawnMobyWithoutParent
+
+
+game\update\moby639.cpp
+==========================================
+size: 000001CC SpawnMoby_639
+
+
+game\update\moby6736.cpp
+===========================================
+size: 00000208 Spawn_Moby6736
+
+
+game\update\moby6908.cpp
+===========================================
+size: 000000DC M6908_SpawnMoby
+size: 000000DC M6908_Icon_Update
+size: 00000090 M6908_Icon_Hide
+size: 00000178 Create<WidgetRectangle>
+
+
+game\update\moby7257.cpp
+===========================================
+size: 0000029C SpawnMoby_7257
+
+
+game\update\moby7326.cpp
+===========================================
+size: 00000448 M7326_Init
+size: 0000011C M7326_SetColorsByType
+size: 000002DC M7326_SpawnSmoke
+size: 000001D4 M7326_SmokeCluster
+size: 000002F8 M7326_CollisionRockEffect
+size: 00000280 M7326_ConcreteEffectByPos
+size: 000003F8 UpdateMoby_7326
+
+
+game\update\moby775.cpp
+==========================================
+size: 00000184 SpawnMoby_775_V2
+size: 00000178 SpawnMoby_775rot
+size: 00000080 SpawnMoby_775
+
+
+game\update\moby8076.cpp
+===========================================
+size: 000000E4 M8076_DamageSphere
+size: 00000204 M8076_Init
+size: 000004D4 SpawnMoby_8076
+
+
+game\update\moby8244.cpp
+===========================================
+size: 000001E8 Sticky_SetClosestPrim
+size: 0000058C Sticky_PointRelativeToShadowVolumeJoint
+size: 00000020 Sticky_GetStickPoint
+size: 00000170 M8244_AttachPointToJoint
+size: 000002B8 Sticky_FX
+size: 0000001C Stuck_FX
+size: 00000024 Sticky_Init
+size: 000001C4 Sticky_UpdatePos_NearestPrim
+size: 00000134 Sticky_StickingState
+size: 0000032C Sticky_StickingState
+size: 000001EC Sticky_StuckState
+size: 000006E0 UpdateMoby_8244
+size: 00000090 M8244_UpdatePosition
+
+
+game\update\moby8263.cpp
+===========================================
+size: 00000298 SpawnMoby_8263
+size: 000000A0 M8263_DrawGroundRing
+size: 00000114 M8263_SetupLightningRingVerts
+size: 000000E4 M8263_InitLightningRing
+size: 00000054 M8263_UpdateLightningRing
+size: 00000030 M8263_DrawLightningRing
+size: 00000104 M8263_DrawPinchDistortion
+size: 00000068 M8263_Stage1_A_RegFX
+size: 0000001C M8263_Stage2_A_RegFX
+size: 00000234 M8263_Stage2_A_FX
+size: 000002AC M8263_Stage2_B_FX
+size: 00000154 M8263_Stage3_A_RegFX
+size: 000000F4 M8263_LoadExplodeTarget
+size: 00000078 M8263_ExplodeTargetFX
+size: 000000A4 M8263_ProcessTargets
+size: 000002D8 UpdateMoby_8263
+size: 000002AC M8263_DrawParticles
+size: 00000050 M8263_DrawScreenFlash
+size: 000003E8 M8263_DrawShrinkingRings
+
+
+game\update\moby8299.cpp
+===========================================
+size: 00000018 M8299_Attach
+size: 00000018 M8299_Unattach
+size: 00000010 M8299_IsAttached
+
+
+game\update\moby8340.cpp
+===========================================
+size: 00000178 M8340_FX_SpawnElecParts
+size: 00000044 M8340_FX_FireParts
+size: 000001EC M8340_FX_SpawnSparks
+size: 0000017C M8340_FX_UpdateTangent
+size: 00000154 M8340_FX_UpdateGunStrand
+size: 000002B0 M8340_FX_UpdateGroundStrand
+size: 0000014C M8340_FX_ResetAirStrand
+size: 00000114 M8340_FX_UpdateAirStrand
+size: 000001C4 M8340_FX_UpdateReadyLightning
+size: 0000008C M8340_FX_InitStrand
+size: 000000B8 M8340_FX_InitLightning
+size: 00000144 M8340_DrawGroundArc
+size: 0000006C M8340_DrawGroundArcs
+size: 000000E8 M8340_DrawBeams
+size: 0000014C M8340_DrawShell
+size: 0000016C M8340_PostFX_Draw
+size: 0000037C M8340_FX_UpdateFiringLightning
+size: 000002F4 M8340_FX_MineBasic
+size: 0000012C M8340_DetonateLoadedMine
+size: 00000640 M8340_UpdateMinePos
+size: 00000388 M8340_CalcTrajectory
+size: 00000B5C UpdateMoby_8340
+size: 00000208 M8340_UpdateShotTargeting
+
+
+game\update\moby8374.cpp
+===========================================
+size: 0000024C SpawnMoby_8374
+
+
+game\update\moby8439.cpp
+===========================================
+size: 00000044 M8439_GrindRailAttach
+size: 00000020 M8439_GrindRailDetach
+size: 0000002C M8439_IsAttached
+
+
+game\update\moby8454.cpp
+===========================================
+size: 000000B0 M8454_UpdateShotTargeting
+
+
+game\update\moby9450.cpp
+===========================================
+size: 0000033C M9450_SpawnMoby
+
+
+game\update\moby9454.cpp
+===========================================
+size: 0000010C SpawnMoby_9454
+
+
+game\update\moby9456.cpp
+===========================================
+size: 0000010C SpawnMoby_9456
+
+
+game\update\moby9475.cpp
+===========================================
+size: 00000098 SpawnMoby_9475
+
+
+game\update\moby9479.cpp
+===========================================
+size: 0000028C SpawnMoby_9479s
+
+
+game\update\moby9532.cpp
+===========================================
+size: 000000E4 M9532_DamageSphere
+size: 0000022C M9532_Init
+size: 0000057C SpawnMoby_9532
+
+
+game\update\moby9738.cpp
+===========================================
+size: 0000004C M9738_SetShieldColl
+
+
+game\update\moby9747.cpp
+===========================================
+size: 0000000C M9747_GetHero
+size: 00000298 M9747_SetupTargetPaths
+size: 00000044 M9747_SetRocketTargets
+size: 0000017C M9747_SpawnRocket
+size: 00000274 M9747_UpdatePointLights
+size: 000000A4 M9747_PickTargets
+size: 000004A8 UpdateMoby_9747
+
+
+game\update\moby9923.cpp
+===========================================
+size: 00000058 M9923_ClearPendingRocket
+size: 00000474 SpawnMoby_9923
+size: 00000054 _M9923_GetExhaustPos
+
+
+game\update_core.cpp
+=======================================
+size: 0000005C mpeg_malloc_reset
+size: 000000B8 mpeg_malloc
+size: 000000C8 mode_movieInit
+size: 000000E4 mode_movieInit
+size: 000000D0 mode_movieUnInit
+size: 000004D4 UpdateModeMovie
+size: 0000003C RestartGame
+
+
+game\vendor.cpp
+==================================
+size: 00000F50 Vendor_GetAvailableItems
+size: 00000008 Vendor_IsCheatOn
+size: 00000060 Vendor_CanPurchaseItem
+size: 0000036C Vendor_PurchaseItem
+size: 00000044 Vendor_IsGadgetAvailableForPurchase
+size: 0000004C Vendor_IsPostFXModAvailableForPurchase
+size: 00000018 Vendor_IsBotUpgradeAvailableForPurchase
+size: 00000008 Vendor_GetPurchaseableWrenchUpgradeLevel
+
+
+game\vuchain.cpp
+===================================
+size: 000000CC VU0_loadMicroProgram
+size: 000000B0 VU1_setBufSizeByLevel
+size: 00000068 VU1_resetScratch
+size: 0000004C VU1_initChain
+size: 00000080 VU1_swapChain
+size: 00000128 VU1_sendChain
+size: 00000048 VU1_syncChain
+size: 0000004C VU1_addDataRef
+size: 000000A4 VU1_addDataDirect
+size: 000000D8 VU1_addGSregister
+size: 00000114 VU1_setScissor
+size: 0000005C VU1_texFlush
+size: 0000005C VU1_gsRegsNormal
+size: 0000005C VU1_gsRegsEffects
+size: 000000E0 VU1_resetDrawContexts
+size: 000000BC StashGSMem
+size: 00000210 UploadGSMemLinear
+size: 00000090 DMAC_VIF1_Enable
+size: 00000070 DMAC_VIF1_Disable
+size: 000000FC DMAC_VIF1_Handler
+size: 00000030 DMAC_BEIS_Handler
+size: 00000034 Vif1ChainCmd
+
+
+game\wad.cpp
+===============================
+size: 00000050 wad_GetSectors
+size: 00000058 wad_GetHeaders
+size: 00000178 wad_GetLevelHeaders
+
+
+game\water.cpp
+=================================
+size: 00000154 WaterTile_LookupTile
+size: 000005A8 WaterTile_PutDrop
+size: 00000330 WaterTile_GetHeight
+
+
+game\weapons.cpp
+===================================
+size: 000006BC WPN_DrawReticule
+size: 000008C4 WPN_MP_CalcProjectileVelocity
+size: 00000404 WPN_CalculateTrajectory
+size: 0000005C WPN_AddGravity
+size: 000001A4 WPN_GetUp
+size: 00000120 WPN_MP_AddGravity
+size: 00000150 WPN_MP_GetUp
+size: 00000064 WPN_CacheTarget
+size: 00000068 WPN_CheckCacheForTargetable
+size: 000000C0 WPN_UpdateCachedTargets
+size: 00000030 WPN_ClearCachedTargets
+size: 000000EC WPN_AttachVelOrientExternal
+size: 00000020 WPN_RemoveVelOrientExternal
+size: 00000208 WPN_VelOrientExternal
+size: 00000088 WPN_KillAllSoundsForPendingScene
+size: 00000044 WPN_SetUpgradeGadgetMode
+size: 000002C0 WPN_UpgradeModeInit
+size: 000000CC WPN_UpgradeModeUnInit
+size: 00000060 WPN_SetOClass
+size: 000002FC WPN_CreateMoby
+size: 000000CC WPN_DeleteMoby
+size: 000009E8 WPN_UpgradeModeUpdate
+size: 000006BC WPN_PostFX_Showcase
+size: 000006D0 WPN_PostFX_Screen
+size: 00000608 WPN_FontTicker
+size: 000005BC WPN_FontScroll
+size: 00000120 WPN_drawIcon
+size: 00000048 WPN_IsUpgradeMoby
+size: 0000024C WPN_ShowcaseGadget
+size: 00000138 WPN_Showcase_Side
+size: 000000C4 WPN_Showcase_Visor
+size: 0000009C WPN_ShowcaseGadgets
+size: 00000098 WPN_UpgradeDrawFx
+size: 00000080 WPN_AddHeroExternal_Pos
+size: 0000005C WPN_RC3InitWeaponsOnMovingTrain
+size: 00000158 WPN_BangelizeWeapons
+size: 00000150 WPN_TurnOnHoloShields
+size: 000000D8 WPN_TurnOffHoloShields
+
+
+game\wibu\wibu\wibu_ee.cpp
+=============================================
+size: 00000094 wibuInit
+size: 0000007C wibuGetFirstSerial
+
+
+game\widget.cpp
+==================================
+size: 00000120 DrawWidget2D
+size: 00000008 GetWidget2DScreenSize
+
+
