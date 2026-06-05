@@ -69,7 +69,7 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "_generated/matchings\|_generated/nonmatchings")
+SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 
@@ -91,16 +91,8 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 
 all: $(TARGET)
 
-dump:
-ifndef iso
-	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
-endif
-	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
-
-# 	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
-
-rom:
-	@if [ ! -f "$(PS2DEV_OBJCOPY)" ]; then \
+ps2dev:
+	@if [ ! -f "$(PS2DEV_DIR)/ee/bin/ee-gcc" ]; then \
 		echo "[Project RYNO] Downloading ps2dev v1.2.0..."; \
 		curl -L -o /tmp/ps2dev.tar.gz https://github.com/ps2dev/ps2dev/releases/download/v1.2.0/ps2dev-ubuntu-latest.tar.gz && \
 		$(MKDIR) -p $(PS2DEV_DIR) && \
@@ -108,6 +100,18 @@ rom:
 		rm /tmp/ps2dev.tar.gz && \
 		echo "[Project RYNO] ps2dev installed."; \
 	fi
+
+dump:
+ifndef iso
+	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
+endif
+	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
+	@if [ -f "$(ASSETS)/build.asset" ]; then \
+		echo "[Project RYNO] Fixing build.asset ELF path..."; \
+		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROT)/$(GAME)/build/boot_elf.elf"|' $(ASSETS)/build.asset; \
+	fi
+
+rom: ps2dev
 	@echo "[Project RYNO] Extracting ROM only..."
 	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(CONFIG)/$(BASENAME).rom
 
@@ -115,7 +119,7 @@ split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
 
 iso:
-	$(WRENCHBUILD)/wrenchbuild.exe  pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
+	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
 
 # Clean all but .rom for quick rebuild
 clean:
