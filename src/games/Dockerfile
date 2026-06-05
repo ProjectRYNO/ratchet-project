@@ -1,41 +1,8 @@
 # =============================================================================
-# Stage 1: Build Wrench
+# Runtime image
 # =============================================================================
 
-FROM debian:12 AS wrench-builder
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-        ca-certificates \
-        git \
-        cmake \
-        build-essential \
-        pkg-config \
-        python3 \
-        zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /build
-
-RUN git clone --recursive https://github.com/chaoticgd/wrench.git
-
-WORKDIR /build/wrench
-
-RUN cmake -B build \
-    -DCMAKE_BUILD_TYPE=Release \
-    -DGLFW_BUILD_WAYLAND=OFF \
-    -DGLFW_BUILD_X11=OFF
-
-# RUN cmake --build build -j$(nproc)
-RUN cmake --build build --target wrenchbuild -j$(nproc)
-
-# =============================================================================
-# Stage 2: Runtime image
-# =============================================================================
-
-FROM debian:12-slim
+FROM debian:13-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -56,13 +23,13 @@ RUN dpkg --add-architecture i386 && \
 
 # ── Install Wrench ────────────────────────────────────────────────────────────
 
-RUN mkdir -p /opt/wrench
-
-COPY --from=wrench-builder \
-    /build/wrench/build/wrenchbuild \
-    /opt/wrench/wrenchbuild
-
-RUN chmod +x /opt/wrench/wrenchbuild
+RUN curl -fsSL \
+        "https://github.com/chaoticgd/wrench/releases/download/v0.5/wrench_v0.5_linux-glibc2.39-0ubuntu8.5.zip" \
+        -o /tmp/wrench.zip && \
+    unzip /tmp/wrench.zip -d /tmp/wrench_extract && \
+    mv /tmp/wrench_extract/wrench_v0.5_linux-glibc2.39-0ubuntu8.5 /opt/wrench && \
+    rm -rf /tmp/wrench.zip /tmp/wrench_extract && \
+    chmod +x /opt/wrench
 
 # ── Python dependencies ───────────────────────────────────────────────────────
 
