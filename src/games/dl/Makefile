@@ -68,8 +68,9 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
-# SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s')
+# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
+# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell $(FIND) assets -type f -name '*.bin')
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
@@ -119,6 +120,7 @@ rom: ps2dev
 
 split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
+	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
 iso:
 	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
@@ -140,12 +142,18 @@ full-clean: clean
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
-	$(CROSS)-objcopy $(TARGET) build/boot_elf.elf -O binary
+	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch \
+    	--defsym=_gp=0x22597F \		-T $(BUILD_DIR)/undefined_funcs_auto.txt \
+		-T $(BUILD_DIR)/undefined_syms_auto.txt \
+		-T $(CONFIG)/$(BASENAME).ld \
+		-Map build/$(BASENAME).map \
+		$(OBJS) \
+		-o $@
+	$(CROSS)-objcopy -O binary $(TARGET) build/boot_elf.elf
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi $< -o $@
+	sed 's/^\s*\.ent\b.*//; s/^\s*\.end\b.*//' $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
@@ -157,4 +165,4 @@ $(OBJ_DIR)/%.o: code/%.cpp
 
 $(BUILD_DIR)/assets/%.o: assets/%.bin
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-ld -r -b binary -EL $< -o $@
+	$(CROSS)-objcopy -I binary -O elf32-tradlittlemips -B mips $< $@
