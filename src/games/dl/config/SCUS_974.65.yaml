@@ -35,7 +35,8 @@ options:
     .include "macro.inc"
 
   check_consecutive_segment_types: False
-
+  do_c_func_detection: False
+  
   subalign: 8
 
   symbol_addrs_path:
@@ -93,7 +94,7 @@ segments:
       - { type: bss, vram: 0x001A5180, name: cod/001A5180 } # core.bss
 
   - name: core.lit
-    type: lit4 #code
+    type: data #code
     start: 0x11DC00
     vram: 0x0021DC80
     # bss_size: 0x0
@@ -102,7 +103,7 @@ segments:
     #   - [0x11DC00, data, core.lit/11DC00] # core.lit
 
   - name: lit
-    type: lit4 #code
+    type: data #code
     start: 0x11E100
     vram: 0x0021E180
     # bss_size: 0x0
@@ -110,14 +111,14 @@ segments:
     # subsegments:
     #   - [0x11E100, data, lit/11E100] # .lit
 
-  - name: bss
-    type: data #code
-    start: 0x121000
-    vram: 0x00221080
-    # bss_size: 0x1A4908
-    # subalign: null
-    # subsegments:
-    #   - { type: bss, vram: 0x00221080, name: bss/00221080 } # .bss
+  # - name: bss
+  #   type: data #code
+  #   start: 0x121000
+  #   vram: 0x00221080
+  #   bss_size: 0x1A4908
+  #   subalign: null
+  #   subsegments:
+  #     - { type: bss, vram: 0x00221080, name: bss/00221080 } # .bss
 
   - name: data
     type: code

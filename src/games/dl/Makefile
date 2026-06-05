@@ -157,4 +157,4 @@ $(OBJ_DIR)/%.o: code/%.cpp
 
 $(BUILD_DIR)/assets/%.o: assets/%.bin
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-ld -r -b binary $< -o $@
+	$(CROSS)-ld -r -b binary -EL $< -o $@
