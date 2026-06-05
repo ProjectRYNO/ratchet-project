@@ -36,9 +36,10 @@ options:
   subalign: 8
 
   symbol_addrs_path:
-    -  config/symbols.txt
+    - config/symbols_00.txt
+    - config/symbols_01.txt
   reloc_addrs_path:
-    -  config/reloc_addrs.txt
+    - config/reloc_addrs.txt
 
   undefined_funcs_auto_path: build/undefined_funcs_auto.txt
   undefined_syms_auto_path: build/undefined_syms_auto.txt
@@ -50,7 +51,7 @@ options:
   rodata_string_guesser_level: 0 # 2
   data_string_guesser_level: 0 # 2
 
-  named_regs_for_c_funcs: False
+  named_regs_for_c_funcs: true
 
   # section_order:
   #   - .vutext

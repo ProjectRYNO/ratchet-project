@@ -16,6 +16,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", UndoPowerO
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwSetGuiSetBusyCallback);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_0015A010);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_0015A028);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwGuiRefreshCallback);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", _load_microprogram);
@@ -36,7 +40,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwFastUpda
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwUpdate);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_0015B2A0);
+void nwLocalConnectCallback(void) {
+}
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwLocalDisconnectCallback);
+
+void nwRemoteConnectCallback(void) {
+}
+
+void nwRemoteDisconnectConnectCallback(void) {
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nwLocalJoinCallback);
 
@@ -511,6 +524,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nmsCreate)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nmsDestroy);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00162C98);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nmsEncode);
 
@@ -530,11 +544,17 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nmsBufferI
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", nmsMultiDecodeUpdate);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163370);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", srand);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", rand);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", rand16);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163440);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", cb_cdComplete);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", Sync);
 
@@ -554,11 +574,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", IsLoading)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", GetBuffer);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163960);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", cb_missionBankLoadComplete);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", load_file);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_001639F0);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", is_complete_file);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", abort_file);
 
@@ -566,8 +586,8 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", load_mission_bank);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163AC0);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", is_complete_mission_bank);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", func_00163AD8);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", abort_mission_bank);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gameglobals", load_complete_mission_bank);

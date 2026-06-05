@@ -82,7 +82,10 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 
 PRODG_DIR = $(TOOLS)/cc
 
-COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -DALLOW_NONMATCHING
+COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions \
+	-march=r5900 -mabi=32 -mgp32 -fno-pic \
+	-Wa,-EL -Wa,-Icode/include \
+	-DALLOW_NONMATCHING
 
 # EXTRA WRENCH commands:
 #     /bin/wrenchbuild unpack_wads ~/ps2/ratchet-dl.iso -o /mnt/ramdisk/ -s
@@ -142,7 +145,7 @@ $(TARGET): $(OBJS)
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi $< -o $@
+	$(PS2DEV_DIR)/ee/bin/ee-as $(INCLUDE) -EL $< -o $@
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)

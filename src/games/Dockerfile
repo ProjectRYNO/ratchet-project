@@ -16,14 +16,12 @@ RUN dpkg --add-architecture i386 && \
         python3 \
         python3-pip \
         python-is-python3 \
-        wine32 \
-        wine64 \
         binutils-mips-linux-gnu \
-        libwine:i386 \
         libc6:i386 \
         libstdc++6:i386 \
         libgcc-s1:i386 \
-        winbind \
+        gcc-mips-linux-gnu \
+        g++-mips-linux-gnu \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Install Wrench ────────────────────────────────────────────────────────────
@@ -43,14 +41,3 @@ WORKDIR /ProjectRYNO
 COPY requirements.txt .
 
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
-
-# ── Wine init ─────────────────────────────────────────────────────────────────
-
-RUN wineboot --init 2>/dev/null || true
-
-# ── Entrypoint ────────────────────────────────────────────────────────────────
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-CMD ["/entrypoint.sh"]
