@@ -39,10 +39,6 @@ COPY requirements.txt .
 
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
-# ── Wine init ─────────────────────────────────────────────────────────────────
-
-RUN wineboot --init 2>/dev/null || true
-
 # ── Entrypoint ────────────────────────────────────────────────────────────────
 
 COPY entrypoint.sh /entrypoint.sh

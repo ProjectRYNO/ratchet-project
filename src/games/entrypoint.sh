@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# ── Wine prefix init ──────────────────────────────────────────────────────────
+echo "[Project RYNO] Initializing Wine prefix..."
+wineboot --init 2>/dev/null || true
+
 # ── EE GCC compiler ───────────────────────────────────────────────────────────
 if [ ! -f "/ProjectRYNO/tools/cc/bin/ee-gcc.exe" ]; then
     echo "[Project RYNO] EE GCC compiler not found, downloading..."
-    curl -L -o /tmp/ee-gcc.tar.gz https://bordplate.no/ee-gcc2.95.2-SN-v2.73a.tar.gz && \
+    curl -fL -o /tmp/ee-gcc.tar.gz https://bordplate.no/ee-gcc2.95.2-SN-v2.73a.tar.gz && \
     tar -xzf /tmp/ee-gcc.tar.gz -C /ProjectRYNO/tools/ && \
     rm /tmp/ee-gcc.tar.gz
     echo "[Project RYNO] EE GCC compiler installed."
