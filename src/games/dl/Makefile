@@ -15,24 +15,23 @@ FOLDER_UYA = uya
 FOLDER_DL = dl
 
 # Get game path and setup relative paths
-CONTAINER_ROT = /ProjectRYNO
+CONTAINER_ROOT = /ProjectRYNO
 GAME := $(notdir $(CURDIR))
-ASSETS = $(CONTAINER_ROT)/assets/$(GAME)
+ASSETS = $(CONTAINER_ROOT)/assets/$(GAME)
 CURRENT_GAME = $(CONTAINER_ROOT)/$(GAME)
-CONFIG = $(CONTAINER_ROT)/$(GAME)/config
-TOOLS = $(CONTAINER_ROT)/tools
-REQUIREMENTS = $(CONTAINER_ROT)/requirements.txt
+CONFIG = $(CONTAINER_ROOT)/$(GAME)/config
+TOOLS = $(CONTAINER_ROOT)/tools
+REQUIREMENTS = $(CONTAINER_ROOT)/requirements.txt
 
 
 ifeq ($(GAME),$(FOLDER_RAC))
-
-    BASENAME = SCUS_971.99
+	BASENAME = SCUS_971.99
 	WRENCH_ID = rac
 else ifeq ($(GAME),$(FOLDER_GC))
-    BASENAME = SCUS_972.68
+	BASENAME = SCUS_972.68
 	WRENCH_ID = gc
 else ifeq ($(GAME),$(FOLDER_UYA))
-    BASENAME = SCUS_973.53
+	BASENAME = SCUS_973.53
 	WRENCH_ID = uya
 else ifeq ($(GAME),$(FOLDER_DL))
     BASENAME = SCUS_974.65
@@ -108,7 +107,7 @@ endif
 	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
 	@if [ -f "$(ASSETS)/build.asset" ]; then \
 		echo "[Project RYNO] Fixing build.asset ELF path..."; \
-		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROT)/$(GAME)/build/boot_elf.elf"|' $(ASSETS)/build.asset; \
+		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROOT)/$(GAME)/build/boot_elf.elf"|' $(ASSETS)/build.asset; \
 	fi
 
 rom: ps2dev
@@ -138,7 +137,7 @@ full-clean: clean
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)$(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
+	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
 	$(CROSS)-objcopy $(TARGET) build/boot_elf.elf -O binary
 
 $(OBJ_DIR)/%.o: code/%.s
