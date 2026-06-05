@@ -14,7 +14,7 @@ options:
   asm_path: code/asm
   src_path: code/
   build_path: build
-  data_path: build/data
+  data_path: build
 
   ld_script_path:  config/SCUS_974.65.ld
   # ld_dependencies: True
@@ -29,7 +29,10 @@ options:
 
   disasm_unknown: True
   pair_rodata_to_text: False
-  generate_asm_macros_files: true
+  generate_asm_macros_files: false
+
+  asm_inc_header: |
+    .include "macro.inc"
 
   check_consecutive_segment_types: False
 
@@ -153,13 +156,13 @@ segments:
     #   - [0x2F0F00, rodata, lvl.sndvtbl/2F0F00] # lvl.sndvtbl
 
   - name: text
-    type: code
+    type: rodata
     start: 0x2F0F80
     vram: 0x003F1000
-    bss_size: 0x0
-    subalign: null
-    subsegments:
-      - [0x2F0F80, asm, text/2F0F80] # .text
+    # bss_size: 0x0
+    # subalign: null
+    # subsegments:
+    #   - [0x2F0F80, asm, text/2F0F80] # .text
 
   - name: net.text
     type: code

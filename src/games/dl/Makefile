@@ -56,7 +56,7 @@ endif
 
 WINE32 := /usr/lib/wine/wine
 WINE64 := /usr/lib/wine/wine64
-EEGCC = $(WINE32) tools/cc/bin/ee-gcc.exe
+EEGCC = $(WINE32) /ProjectRYNO/tools/cc/bin/ee-gcc.exe
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
 WRENCHBUILD = /usr/lib/wine/wine64 /opt/wrench
@@ -68,8 +68,10 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
+# SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
+SRC_BIN = $(shell $(FIND) assets -type f -name '*.bin')
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 
 BUILD_DIR = build
@@ -77,12 +79,13 @@ OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
-       $(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
-       $(SRC_C:code/%.c=$(OBJ_DIR)/%.o)
+    	$(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
+    	$(SRC_C:code/%.c=$(OBJ_DIR)/%.o) \
+		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
 
 PRODG_DIR = $(TOOLS)/cc
 
-COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -DALLOW_NONMATCHING
+COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
 
 # EXTRA WRENCH commands:
 #     /bin/wrenchbuild unpack_wads ~/ps2/ratchet-dl.iso -o /mnt/ramdisk/ -s
@@ -151,3 +154,7 @@ $(OBJ_DIR)/%.o: code/%.c
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -v -c -x c++ $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+
+$(BUILD_DIR)/assets/%.o: assets/%.bin
+	@$(MKDIR) -p $(dir $@)
+	$(CROSS)-ld -r -b binary $< -o $@
