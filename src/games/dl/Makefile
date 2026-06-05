@@ -95,7 +95,9 @@ dump:
 ifndef iso
 	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
 endif
-	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
+	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
+
+# 	$(WINE64) $(WRENCH_DIR)/wrenchbuild.exe unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
 
 rom:
 	@if [ ! -f "$(PS2DEV_OBJCOPY)" ]; then \
