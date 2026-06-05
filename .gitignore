@@ -1,4 +1,6 @@
 .venv/
+*.iso
+
 ee-gcc2.95.2-SN-v2.73a.tar.gz
 src/games/tools/cc/*
 

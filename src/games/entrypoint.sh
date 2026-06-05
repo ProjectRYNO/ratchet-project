@@ -12,35 +12,11 @@ else
 fi
 
 # ── Wrench ────────────────────────────────────────────────────────────────────
-if [ ! -f "/opt/wrench/wrenchbuild.exe" ]; then
-    echo "[Project RYNO] Wrench not found, downloading latest Windows release..."
-
-    WRENCH_URL=$(curl -s https://api.github.com/repos/chaoticgd/wrench/releases/latest \
-        | python3 -c "
-import sys, json
-assets = json.load(sys.stdin)['assets']
-for a in assets:
-    if 'windows' in a['name'].lower() and a['name'].endswith('.zip'):
-        print(a['browser_download_url'])
-        break
-")
-
-    if [ -z "$WRENCH_URL" ]; then
-        echo "[Project RYNO] ERROR: Could not find a Windows release for Wrench. Check https://github.com/chaoticgd/wrench/releases"
-        exec /bin/bash
-    fi
-
-    echo "[Project RYNO] Downloading Wrench from: $WRENCH_URL"
-    curl -L -o /tmp/wrench.zip "$WRENCH_URL" && \
-    mkdir -p /tmp/wrench-extract && \
-    unzip -o /tmp/wrench.zip -d /tmp/wrench-extract && \
-    mkdir -p /opt/wrench && \
-    mv /tmp/wrench-extract/*/* /opt/wrench/ && \
-    rm -rf /tmp/wrench.zip /tmp/wrench-extract
-    echo "[Project RYNO] Wrench installed."
-else
-    echo "[Project RYNO] Wrench already present."
+if [ ! -x "/opt/wrench/wrenchbuild" ]; then
+    echo "[Project RYNO] ERROR: Wrench not installed."
+    exit 1
 fi
+echo "[Project RYNO] Wrench installed."
 
 # ── Fix build.asset ELF path for Wine ─────────────────────────────────────────
 if [ -f "/ProjectRYNO/assets/dl/build.asset" ]; then
