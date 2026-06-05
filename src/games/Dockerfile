@@ -19,6 +19,11 @@ RUN dpkg --add-architecture i386 && \
         wine32 \
         wine64 \
         binutils-mips-linux-gnu \
+        libwine:i386 \
+        libc6:i386 \
+        libstdc++6:i386 \
+        libgcc-s1:i386 \
+        winbind \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Install Wrench ────────────────────────────────────────────────────────────
