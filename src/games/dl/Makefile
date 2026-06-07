@@ -142,13 +142,7 @@ full-clean: clean
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch \
-    	--defsym=_gp=0x22597F \		-T $(BUILD_DIR)/undefined_funcs_auto.txt \
-		-T $(BUILD_DIR)/undefined_syms_auto.txt \
-		-T $(CONFIG)/$(BASENAME).ld \
-		-Map build/$(BASENAME).map \
-		$(OBJS) \
-		-o $@
+	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --defsym=_gp=0x22597F -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
 	$(CROSS)-objcopy -O binary $(TARGET) build/boot_elf.elf
 
 $(OBJ_DIR)/%.o: code/%.s

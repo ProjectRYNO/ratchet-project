@@ -4,13 +4,19 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_StartS
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_FlushSoundCommands);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00158188);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_GotReturns);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PrepareReturnBuffer);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001582A0);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_BankLoadByLoc_CB);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_BankLoadFromEE);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00158550);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_ResolveBankXREFS);
 
@@ -24,13 +30,21 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetMas
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetPlaybackMode);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001586D8);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetGroupVoiceRange);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetReverbMode);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00158760);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PlaySoundVolPanPMPB_CB);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001587C8);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_StopSound);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00158810);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_StopAllSounds);
 
@@ -44,9 +58,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SoundI
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SoundIsStillPlaying_CB);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00158950);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetSoundParams_A);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetSoundParams_CB);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001589F0);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SendIOPCommandAndWait);
 
@@ -56,11 +74,23 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PostMe
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SendCurrentBatch);
 
+void func_00159120(void) {
+}
+
+void func_00159128(void) {
+}
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_InitVAGStreamingEx);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001591D8);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_CloseVAGStreaming);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00159250);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PlayVAGStreamByLocEx_CB);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001592C8);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PauseVAGStream);
 
@@ -80,7 +110,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_Stream
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_StreamSafeCdGetError);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001595A8);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_StreamSafeCdCallback);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001595E8);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SetReverbEx);
 
@@ -88,11 +122,17 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_PreAll
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_AutoReverb);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_001596B0);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_SRAMGetFreeMem);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00159700);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_InitMovieSoundEx);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_ResetMovieSound);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00159780);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_CloseMovieSound);
 
@@ -111,5 +151,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_DoExte
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_DoExternCall_CB);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_DoExternCallWithData);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", func_00159980);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/989snd/ee/989snd", snd_GetDopplerPitchMod);
