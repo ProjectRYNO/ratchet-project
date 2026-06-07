@@ -18,7 +18,7 @@ options:
 
   ld_script_path:  config/SCUS_974.65.ld
   # ld_dependencies: True
-  ld_wildcard_sections: True
+  # ld_wildcard_sections: True
   # ld_bss_contains_common: True
   # create_asm_dependencies: True
 
@@ -36,6 +36,7 @@ options:
 
   check_consecutive_segment_types: False
   do_c_func_detection: False
+  ld_wildcard_sections: True
 
   subalign: 8
 
@@ -53,7 +54,6 @@ options:
   data_string_encoding: ASCII
   rodata_string_guesser_level: 0 # 2
   data_string_guesser_level: 0 # 2
-  ld_wildcard_sections: true
 
   named_regs_for_c_funcs: False
 
@@ -70,118 +70,90 @@ options:
   #   - .data
 
 segments:
-  - name: cod
+  - name: vutext
     type: code
     start: 0x000000
     vram: 0x00100080
-    bss_size: 0x78AB8
-    subalign: null
-    always-scan: true
     subsegments:
-      - [0x000000, textbin, cod/000000] # .vutext
-      - [0x01A100, asm, cod/01A100] # core.text (TODO: replace with mapped subsegments below)
+      - [0x000000, textbin, vutext/000000] # .vutext
 
-      # cod.text mapped subsegments:
-      - [0x576b8, cpp, game/boot]
-      - [0x57ce0, c, 989snd/ee/989snd]
-      - [0x59928, cpp, game/permcb]
-      - [0x59980, cpp, game/wad]
-      - [0x59ba8, cpp, game/gameglobals]
-      # Next subsection start: ShutdownPS2 = 0x00159d00;  // type:func
-
-
-
-      - [0x063B00, bin, cod/063B00] # core.data
-      - [0x091E80, rodata, cod/091E80] # core.rdata
+  - name: core.text
+    type: code
+    start: 0x01A100
+    vram: 0x0011A180
+    bss_size: 0x78AB8
+    subsegments:
+      - [0x01A100, asm, cod/01A100]      # core.text
+      - [0x063B00, bin, cod/063B00]      # core.data
+      - [0x091E80, rodata, cod/091E80]   # core.rdata
       - { type: bss, vram: 0x001A5180, name: cod/001A5180 } # core.bss
 
-  # - name: core.lit
-  #   type: data #code
-  #   start: 0x11DC00
-  #   vram: 0x0021DC80
-  #   bss_size: 0x0
-  #   subalign: null
-  #   subsegments:
-  #     - [0x11DC00, data, core.lit/11DC00] # core.lit
+  - name: core.lit
+    type: data
+    start: 0x11DC00
+    vram: 0x0021DC80
+    subsegments:
+      - [0x11DC00, data, core.lit/11DC00]
 
-  # - name: lit
-  #   type: data #code
-  #   start: 0x11E100
-  #   vram: 0x0021E180
-  #   bss_size: 0x0
-  #   subalign: null
-  #   subsegments:
-  #     - [0x11E100, data, lit/11E100] # .lit
+  - name: lit
+    type: data
+    start: 0x11E100
+    vram: 0x0021E180
+    subsegments:
+      - [0x11E100, data, lit/11E100]
 
-  # - name: bss
-  #   type: data #code
-  #   start: 0x121000
-  #   vram: 0x00221080
-  #   bss_size: 0x1A4908
-  #   subalign: null
-  #   subsegments:
-  #     - { type: bss, vram: 0x00221080, name: bss/00221080 } # .bss
+  - name: bss
+    type: data
+    start: 0x121000
+    vram: 0x00221080
+    bss_size: 0x1A4908
+    subsegments:
+      - { type: bss, vram: 0x00221080, name: bss/00221080 }
 
-  #  - name: data
-  #    type: code
-  #    start: 0x2C5980
-  #    vram: 0x003C5A00
-  #    bss_size: 0x0
-  #    subalign: null
-  #    subsegments:
-  #      - [0x2C5980, data, data/2C5980] # .data
-  
-  # - name: lvl.vtbl
-  #   type: rodata #code
-  #   start: 0x2F0E00
-  #   vram: 0x003F0E80
-  #   # bss_size: 0x0
-  #   # subalign: null
-  #   # subsegments:
-  #   #   - [0x2F0E00, rodata, lvl.vtbl/2F0E00] # lvl.vtbl
+  - name: data
+    type: data
+    start: 0x2C5980
+    vram: 0x003C5A00
+    subsegments:
+      - [0x2C5980, data, data/2C5980]
 
-  # - name: lvl.camvtbl
-  #   type: rodata #code
-  #   start: 0x2F0E80
-  #   vram: 0x003F0F00
-  #   # bss_size: 0x0
-  #   # subalign: null
-  #   # subsegments:
-  #   #   - [0x2F0E80, rodata, lvl.camvtbl/2F0E80] # lvl.camvtbl
+  - name: lvl.vtbl
+    type: rodata
+    start: 0x2F0E00
+    vram: 0x003F0E80
 
-  # - name: lvl.sndvtbl
-  #   type: rodata #code
-  #   start: 0x2F0F00
-  #   vram: 0x003F0F80
-  #   # bss_size: 0x0
-  #   # subalign: null
-  #   # subsegments:
-  #   #   - [0x2F0F00, rodata, lvl.sndvtbl/2F0F00] # lvl.sndvtbl
+  - name: lvl.camvtbl
+    type: rodata
+    start: 0x2F0E80
+    vram: 0x003F0F00
+
+  - name: lvl.sndvtbl
+    type: rodata
+    start: 0x2F0F00
+    vram: 0x003F0F80
 
   - name: text
-    type: rodata
+    type: code
     start: 0x2F0F80
     vram: 0x003F1000
-    # bss_size: 0x0
-    # subalign: null
-    # subsegments:
-    #   - [0x2F0F80, asm, text/2F0F80] # .text
+
+  - name: patch.data
+    type: data
+    start: 0x44D680
+    vram: 0x0054D700
 
   - name: net.text
     type: code
     start: 0x44E000
     vram: 0x01E9A000
-    bss_size: 0x0
-    subalign: null
     subsegments:
-      - [0x44E000, asm, net.text/44E000] # net.text
+      - [0x44E000, asm, net.text/44E000]
 
   - name: net.nostomp
     type: code
     start: 0x4E5380
     vram: 0x01F31380
-    bss_size: 0x0
-    subalign: null
     subsegments:
-      - [0x4E5380, asm, net.nostomp/4E5380] # net.nostomp
+      - [0x4E5380, asm, net.nostomp/4E5380]
+
   - [0x4EBFA0]
