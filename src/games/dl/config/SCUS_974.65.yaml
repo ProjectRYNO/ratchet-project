@@ -41,9 +41,11 @@ options:
   subalign: 8
 
   symbol_addrs_path:
-    -  config/symbols.txt
+    - config/symbols_core.text.txt
+    - config/symbols_text.txt
+    - config/symbols_net.text.txt
   reloc_addrs_path:
-    -  config/reloc_addrs.txt
+    - config/reloc_addrs.txt
 
   undefined_funcs_auto_path: build/undefined_funcs_auto.txt
   undefined_syms_auto_path: build/undefined_syms_auto.txt
