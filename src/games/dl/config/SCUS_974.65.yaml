@@ -90,7 +90,7 @@ segments:
       - [0x59928, cpp, game/permcb]
       - [0x59980, cpp, game/wad]
       - [0x59ba8, cpp, game/gameglobals]
-      # Next subsection start: ShutdownPS2 = 0x00159d00;  // type:func
+
 
       - [0x063B00, bin, core.data/063B00]      # core.data
       - [0x091E80, rodata, core.data/091E80]   # core.rdata
