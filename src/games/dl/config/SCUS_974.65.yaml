@@ -83,9 +83,17 @@ segments:
     vram: 0x0011A180
     bss_size: 0x78AB8
     subsegments:
-      - [0x01A100, asm, cod/01A100]      # core.text
-      - [0x063B00, bin, cod/063B00]      # core.data
-      - [0x091E80, rodata, cod/091E80]   # core.rdata
+      - [0x01A100, asm, core.text/01A100]      # core.text
+      
+      - [0x576b8, cpp, game/boot]
+      - [0x57ce0, c, 989snd/ee/989snd]
+      - [0x59928, cpp, game/permcb]
+      - [0x59980, cpp, game/wad]
+      - [0x59ba8, cpp, game/gameglobals]
+      # Next subsection start: ShutdownPS2 = 0x00159d00;  // type:func
+
+      - [0x063B00, bin, core.data/063B00]      # core.data
+      - [0x091E80, rodata, core.data/091E80]   # core.rdata
       - { type: bss, vram: 0x001A5180, name: cod/001A5180 } # core.bss
 
   - name: core.lit
@@ -118,29 +126,49 @@ segments:
       - [0x2C5980, data, data/2C5980]
 
   - name: lvl.vtbl
-    type: rodata
+    type: code
     start: 0x2F0E00
     vram: 0x003F0E80
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x2F0E00, rodata, lvl.vtbl/2F0E00]
 
   - name: lvl.camvtbl
-    type: rodata
+    type: code
     start: 0x2F0E80
     vram: 0x003F0F00
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x2F0E80, rodata, lvl.camvtbl/2F0E80]
 
   - name: lvl.sndvtbl
-    type: rodata
+    type: code
     start: 0x2F0F00
     vram: 0x003F0F80
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x2F0F00, rodata, lvl.sndvtbl/2F0F00]
 
   - name: text
     type: code
     start: 0x2F0F80
     vram: 0x003F1000
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x2F0F80, asm, text/2F0F80]
 
   - name: patch.data
-    type: data
+    type: code
     start: 0x44D680
     vram: 0x0054D700
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x44D680, data, patch.data/44D680]
 
   - name: net.text
     type: code

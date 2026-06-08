@@ -72,7 +72,7 @@ SRC_S = $(shell $(FIND) code -type f -name '*.s')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
-SRC_BIN = $(shell $(FIND) assets -type f -name '*.bin')
+SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 
 BUILD_DIR = build
