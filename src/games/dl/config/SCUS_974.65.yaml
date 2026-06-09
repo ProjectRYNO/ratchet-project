@@ -85,7 +85,7 @@ segments:
     vram: 0x0011A180
     bss_size: 0x78AB8
     subsegments:
-      - [0x1A100, asm, game/core_start]  # core.text
+      - [0x1A100, asm, game/lib]
       - [0x576b8, cpp, game/boot]
       - [0x57ce0, c, 989snd/ee/989snd]
       - [0x59928, cpp, game/permcb]
@@ -101,7 +101,7 @@ segments:
       - [0x612d0, cpp, game/network/nwAudioUtil]
       - [0x61de0, cpp, game/network/nwVoice]
       - [0x628f8, cpp, game/network/nellymoser_wrapper]
-      - [0x63340, s, game/corefunc]
+      - [0x63340, asm, game/corefunc] # .s
       - [0x633c8, cpp, game/fs]
       - [0x63900, cpp, game/fs_handlers]
       - [0x063B00, bin, core.data/063B00]      # core.data
