@@ -1,0 +1,1001 @@
+// Unmatched proto symbols grouped by nearest matched anchors.
+// If proto_gap_size and retail_gap_size differ, that region likely has inserted/removed/changed retail code.
+// If they are equal but symbols remain here, the bodies were too ambiguous or did not validate cleanly.
+
+[core.text] count:1 proto:0x00126668-0x00126668 between:_strtol_r@0x00126438->SetGsCrt@0x001266e0
+  retail anchors:0x001264e8->0x001267a0 proto_gap_size:0x2a8 retail_gap_size:0x2b8 delta:0x10
+  strtol = 0x00126668; expected_if_equal_gap:0x00126718
+
+[core.text] count:3 proto:0x0012cb20-0x0012cd68 between:sceSifLoadModuleBuffer@0x0012cb00->sceSifResetIop@0x0012cdb0
+  retail anchors:0x0012cbc0->0x0012cc30 proto_gap_size:0x2b0 retail_gap_size:0x70 delta:0x-240
+  sceSifLoadStartModuleBuffer = 0x0012cb20; expected_if_equal_gap:0x0012cbe0
+  _sceSifLoadModule = 0x0012cb40; expected_if_equal_gap:0x0012cc00
+  sceSifLoadModule = 0x0012cd68; expected_if_equal_gap:0x0012ce28
+
+[core.text] count:3 proto:0x0015a2f0-0x0015a8c8 between:_load_microprogram@0x0015a1f8->nwJoinDebug@0x0015aa30
+  retail anchors:0x0015a078->0x0015a8b0 proto_gap_size:0x838 retail_gap_size:0x838 delta:0x0
+  nwConnect = 0x0015a2f0; expected_if_equal_gap:0x0015a170
+  nwConnectDebug = 0x0015a6b0; expected_if_equal_gap:0x0015a530
+  nwDisconnect = 0x0015a8c8; expected_if_equal_gap:0x0015a748
+
+[core.text] count:1 proto:0x0015abd8-0x0015abd8 between:nwJoinDebug@0x0015aa30->nwSyncTime@0x0015adb0
+  retail anchors:0x0015a8b0->0x0015ac30 proto_gap_size:0x380 retail_gap_size:0x380 delta:0x0
+  nwJoin = 0x0015abd8; expected_if_equal_gap:0x0015aa58
+
+[core.text] count:5 proto:0x0015af28-0x0015b4b0 between:nwFastUpdate@0x0015aef0->nwLocalJoinCallback@0x0015b4b8
+  retail anchors:0x0015ad70->0x0015b2c8 proto_gap_size:0x5c8 retail_gap_size:0x558 delta:0x-70
+  nwUpdate = 0x0015af28; expected_if_equal_gap:0x0015ada8
+  nwLocalConnectCallback = 0x0015b490; expected_if_equal_gap:0x0015b310
+  nwLocalDisconnectCallback = 0x0015b498; expected_if_equal_gap:0x0015b318
+  nwRemoteConnectCallback = 0x0015b4a8; expected_if_equal_gap:0x0015b328
+  nwRemoteDisconnectConnectCallback = 0x0015b4b0; expected_if_equal_gap:0x0015b330
+
+[core.text] count:5 proto:0x0015b560-0x0015b748 between:nwLocalJoinCallback@0x0015b4b8->nwSendPlayerReport@0x0015b758
+  retail anchors:0x0015b2c8->0x0015b578 proto_gap_size:0x2a0 retail_gap_size:0x2b0 delta:0x10
+  nwLeaveGame = 0x0015b560; expected_if_equal_gap:0x0015b370
+  nwPostJoin = 0x0015b680; expected_if_equal_gap:0x0015b490
+  nwSetMediusErrorCode = 0x0015b728; expected_if_equal_gap:0x0015b538
+  nwGetLastMediusError = 0x0015b738; expected_if_equal_gap:0x0015b548
+  nwForcePlayerReportNextUpdate = 0x0015b748; expected_if_equal_gap:0x0015b558
+
+[core.text] count:2 proto:0x0015bb40-0x0015bb50 between:nwInitializeWorldReportForNewGame@0x0015ba28->nwUpdateLadderStats@0x0015bbe8
+  retail anchors:0x0015b848->0x0015ba20 proto_gap_size:0x1c0 retail_gap_size:0x1d8 delta:0x18
+  nwForceWorldReportNextUpdate = 0x0015bb40; expected_if_equal_gap:0x0015b960
+  nwSendWorldReport = 0x0015bb50; expected_if_equal_gap:0x0015b970
+
+[core.text] count:2 proto:0x0015c488-0x0015c4a0 between:nwUpdateClanStats@0x0015c2c0->nwSMChangeCallback@0x0015c8a8
+  retail anchors:0x0015c0f8->0x0015c6b0 proto_gap_size:0x5e8 retail_gap_size:0x5b8 delta:0x-30
+  nwUpdateClanStatsCallback = 0x0015c488; expected_if_equal_gap:0x0015c2c0
+  nwRemoteClientEventCallback = 0x0015c4a0; expected_if_equal_gap:0x0015c2d8
+
+[core.text] count:7 proto:0x0015d8f8-0x0015d9e8 between:nwReassignWorldIDCallback@0x0015d8c0->nwResetNetErrors@0x0015dbd0
+  retail anchors:0x0015d6c8->0x0015da10 proto_gap_size:0x310 retail_gap_size:0x348 delta:0x38
+  nwSetLocalizationParametersCallback = 0x0015d8f8; expected_if_equal_gap:0x0015d700
+  nwLadderPositionCallback = 0x0015d920; expected_if_equal_gap:0x0015d728
+  nwFileDeleteCallback = 0x0015d948; expected_if_equal_gap:0x0015d750
+  nwGetTotalRankingsCallback = 0x0015d970; expected_if_equal_gap:0x0015d778
+  nwUtilUpdateServerTimeCallback = 0x0015d998; expected_if_equal_gap:0x0015d7a0
+  nwUtilSetAutoChatHistoryCallback = 0x0015d9c0; expected_if_equal_gap:0x0015d7c8
+  nwLibInit = 0x0015d9e8; expected_if_equal_gap:0x0015d7f0
+
+[core.text] count:1 proto:0x0015dbe8-0x0015dbe8 between:nwResetNetErrors@0x0015dbd0->nwMalloc@0x0015dc80
+  retail anchors:0x0015da10->0x0015dac8 proto_gap_size:0xb0 retail_gap_size:0xb8 delta:0x8
+  nwShutdown = 0x0015dbe8; expected_if_equal_gap:0x0015da28
+
+[core.text] count:19 proto:0x0015e190-0x0015e868 between:nwRegisterMessages@0x0015dfa8->nwGameOverObjectCleanUp@0x0015e8c8
+  retail anchors:0x0015ddf0->0x0015e718 proto_gap_size:0x920 retail_gap_size:0x928 delta:0x8
+  nwMessageDispatcher<0> = 0x0015e190; expected_if_equal_gap:0x0015dfd8
+  nwMessageDispatcher<1> = 0x0015e1f0; expected_if_equal_gap:0x0015e038
+  nwMessageDispatcher<2> = 0x0015e250; expected_if_equal_gap:0x0015e098
+  nwMessageDispatcher<3> = 0x0015e2b0; expected_if_equal_gap:0x0015e0f8
+  nwMessageDispatcher<4> = 0x0015e310; expected_if_equal_gap:0x0015e158
+  nwMessageDispatcher<5> = 0x0015e370; expected_if_equal_gap:0x0015e1b8
+  nwMessageDispatcher<6> = 0x0015e3d0; expected_if_equal_gap:0x0015e218
+  nwMessageDispatcher<7> = 0x0015e430; expected_if_equal_gap:0x0015e278
+  nwMessageDispatcher<8> = 0x0015e490; expected_if_equal_gap:0x0015e2d8
+  nwMessageDispatcher<9> = 0x0015e4f0; expected_if_equal_gap:0x0015e338
+  nwMessageDispatcher<10> = 0x0015e568; expected_if_equal_gap:0x0015e3b0
+  nwMessageDispatcher<11> = 0x0015e5c8; expected_if_equal_gap:0x0015e410
+  nwMessageDispatcher<12> = 0x0015e628; expected_if_equal_gap:0x0015e470
+  nwMessageDispatcher<13> = 0x0015e688; expected_if_equal_gap:0x0015e4d0
+  nwMessageDispatcher<14> = 0x0015e6e8; expected_if_equal_gap:0x0015e530
+  nwMessageDispatcher<15> = 0x0015e748; expected_if_equal_gap:0x0015e590
+  nwMessageDispatcher<16> = 0x0015e7a8; expected_if_equal_gap:0x0015e5f0
+  nwMessageDispatcher<17> = 0x0015e808; expected_if_equal_gap:0x0015e650
+  nwMessageDispatcher<18> = 0x0015e868; expected_if_equal_gap:0x0015e6b0
+
+[core.text] count:1 proto:0x00162010-0x00162010 between:VoiceProcess@0x00161ea0->nwAudioPlayCallback@0x00162530
+  retail anchors:0x00161cf0->0x001623a8 proto_gap_size:0x690 retail_gap_size:0x6b8 delta:0x28
+  nwVoiceUpdate = 0x00162010; expected_if_equal_gap:0x00161e60
+
+[.text] count:1 proto:0x00417140-0x00417140 between:M4249_Death@0x004170c8->M4249_SetStateDetonate@0x00417f40
+  retail anchors:0x00415ec8->0x00416d80 proto_gap_size:0xe78 retail_gap_size:0xeb8 delta:0x40
+  M4249_Detonate = 0x00417140; expected_if_equal_gap:0x00415f40
+
+[.text] count:2 proto:0x004181f8-0x0041b638 between:M4249_PostFX_Draw@0x00418148->Spawn_Moby4249_mine@0x0041b930
+  retail anchors:0x00416f88->0x0041a7a8 proto_gap_size:0x37e8 retail_gap_size:0x3820 delta:0x38
+  UpdateMoby_4249_mine = 0x004181f8; expected_if_equal_gap:0x00417038
+  LobMoby_4249 = 0x0041b638; expected_if_equal_gap:0x0041a478
+
+[.text] count:2 proto:0x0041e510-0x0041e6d8 between:M8340_FX_UpdateAirStrand@0x0041e3f8->M8340_FX_InitLightning@0x0041e768
+  retail anchors:0x0041d270->0x0041d5f0 proto_gap_size:0x370 retail_gap_size:0x380 delta:0x10
+  M8340_FX_UpdateReadyLightning = 0x0041e510; expected_if_equal_gap:0x0041d388
+  M8340_FX_InitStrand = 0x0041e6d8; expected_if_equal_gap:0x0041d550
+
+[.text] count:1 proto:0x0041f528-0x0041f528 between:M8340_DetonateLoadedMine@0x0041f3f8->M8340_CalcTrajectory@0x0041fb68
+  retail anchors:0x0041e280->0x0041ea18 proto_gap_size:0x770 retail_gap_size:0x798 delta:0x28
+  M8340_UpdateMinePos = 0x0041f528; expected_if_equal_gap:0x0041e3b0
+
+[.text] count:1 proto:0x0041fef0-0x0041fef0 between:M8340_CalcTrajectory@0x0041fb68->M8340_UpdateShotTargeting@0x00420a50
+  retail anchors:0x0041ea18->0x0041f908 proto_gap_size:0xee8 retail_gap_size:0xef0 delta:0x8
+  UpdateMoby_8340 = 0x0041fef0; expected_if_equal_gap:0x0041eda0
+
+[.text] count:1 proto:0x00421e48-0x00421e48 between:Camera_DeactivateMobyDrivenCam@0x00421b08->M8439_GrindRailAttach@0x00421f70
+  retail anchors:0x004209c0->0x00420e20 proto_gap_size:0x468 retail_gap_size:0x460 delta:0x-8
+  M4234_UpdateShotTargeting = 0x00421e48; expected_if_equal_gap:0x00420d00
+
+[.text] count:1 proto:0x00428570-0x00428570 between:GetFreeRocketMobyIndex@0x004283c8->M4261_UpdateShotTargeting@0x00428678
+  retail anchors:0x00427278->0x00427558 proto_gap_size:0x2b0 retail_gap_size:0x2e0 delta:0x30
+  M4231_UpdateShotTargeting = 0x00428570; expected_if_equal_gap:0x00427420
+
+[.text] count:1 proto:0x0042ce78-0x0042ce78 between:SpawnMoby_6295s@0x0042cbd0->SpawnMoby_3709@0x0042f3b0
+  retail anchors:0x0042bab8->0x0042e3b0 proto_gap_size:0x27e0 retail_gap_size:0x28f8 delta:0x118
+  UpdateMoby_3709 = 0x0042ce78; expected_if_equal_gap:0x0042bd60
+
+[.text] count:1 proto:0x0042fb18-0x0042fb18 between:SpawnMoby_3709@0x0042f3b0->M3709_MakeHeroControlled@0x0042fd38
+  retail anchors:0x0042e3b0->0x0042ed20 proto_gap_size:0x988 retail_gap_size:0x970 delta:0x-18
+  M3709_DuckDeath = 0x0042fb18; expected_if_equal_gap:0x0042eb18
+
+[.text] count:1 proto:0x00431938-0x00431938 between:SpawnMoby_9532@0x00431320->M6908_SpawnMoby@0x00431c30
+  retail anchors:0x00430308->0x00430c10 proto_gap_size:0x910 retail_gap_size:0x908 delta:0x-8
+  SpawnMoby_9479s = 0x00431938; expected_if_equal_gap:0x00430920
+
+[.text] count:1 proto:0x00432a68-0x00432a68 between:M9747_PickTargets@0x004329c0->SpawnMoby_428@0x00432f10
+  retail anchors:0x004319a8->0x00431ef8 proto_gap_size:0x550 retail_gap_size:0x550 delta:0x0
+  UpdateMoby_9747 = 0x00432a68; expected_if_equal_gap:0x00431a50
+
+[.text] count:2 proto:0x00433680-0x00433700 between:SpawnMoby_9923@0x004331f0->M8076_Init@0x004337e8
+  retail anchors:0x004321d8->0x004327c8 proto_gap_size:0x5f8 retail_gap_size:0x5f0 delta:0x-8
+  _M9923_GetExhaustPos = 0x00433680; expected_if_equal_gap:0x00432668
+  M8076_DamageSphere = 0x00433700; expected_if_equal_gap:0x004326e8
+
+[.text] count:1 proto:0x004340b8-0x004340b8 between:M6298_SpawnMobyWithoutParent@0x00433ee0->M4265_AddGadgetXP@0x004341d8
+  retail anchors:0x00432ec0->0x004331b0 proto_gap_size:0x2f8 retail_gap_size:0x2f0 delta:0x-8
+  M8454_UpdateShotTargeting = 0x004340b8; expected_if_equal_gap:0x00433098
+
+[.text] count:1 proto:0x004342d8-0x004342d8 between:M4265_AddGadgetXP@0x004341d8->M4265_DoneGrowing@0x004342f0
+  retail anchors:0x004331b0->0x00433318 proto_gap_size:0x118 retail_gap_size:0x168 delta:0x50
+  M4265_GetHoloshieldDuration = 0x004342d8; expected_if_equal_gap:0x004332b0
+
+[.text] count:1 proto:0x00434998-0x00434998 between:M4265_ApplyImpact@0x004348d0->M4265_SpawnElecPart@0x00434d30
+  retail anchors:0x004338f8->0x00433dd0 proto_gap_size:0x460 retail_gap_size:0x4d8 delta:0x78
+  M4265_CheckCollisions = 0x00434998; expected_if_equal_gap:0x004339c0
+
+[.text] count:1 proto:0x00434e90-0x00434e90 between:M4265_SpawnElecPart@0x00434d30->M4265_SetupStripColor@0x004361c8
+  retail anchors:0x00433dd0->0x004352f8 proto_gap_size:0x1498 retail_gap_size:0x1528 delta:0x90
+  UpdateMoby_4265 = 0x00434e90; expected_if_equal_gap:0x00433f30
+
+[.text] count:4 proto:0x00437b00-0x00437b18 between:M9738_SetShieldColl@0x00437a90->Level_PostTransitionFX@0x00437b20
+  retail anchors:0x00436bc0->0x00436c60 proto_gap_size:0x90 retail_gap_size:0xa0 delta:0x10
+  LevelTScene_VoxShuttle_UpdateMonitors = 0x00437b00; expected_if_equal_gap:0x00436c30
+  LevelTScene_VoxShuttle_UpdateFX = 0x00437b08; expected_if_equal_gap:0x00436c38
+  UpdateSceneMonitors = 0x00437b10; expected_if_equal_gap:0x00436c40
+  InitForCheats = 0x00437b18; expected_if_equal_gap:0x00436c48
+
+[.text] count:4 proto:0x00438b98-0x00438be0 between:Level_TransitionFX@0x00438b68->mode_lobbyInit@0x00438be8
+  retail anchors:0x00437ca8->0x00437e18 proto_gap_size:0x80 retail_gap_size:0x170 delta:0xf0
+  GetCurrentFrameRateMode = 0x00438b98; expected_if_equal_gap:0x00437cd8
+  mode_creditsInit = 0x00438ba0; expected_if_equal_gap:0x00437ce0
+  mode_creditsUnInit = 0x00438bc0; expected_if_equal_gap:0x00437d00
+  mode_lobbyUnInit = 0x00438be0; expected_if_equal_gap:0x00437d20
+
+[.text] count:1 proto:0x00438c80-0x00438c80 between:GetBootPlate@0x00438c40->UpdateBoot@0x00439520
+  retail anchors:0x00437e70->0x00438688 proto_gap_size:0x8e0 retail_gap_size:0x818 delta:0x-c8
+  startlevel = 0x00438c80; expected_if_equal_gap:0x00437eb0
+
+[.text] count:1 proto:0x00439e50-0x00439e50 between:actuator_killWave@0x00439df0->astrmFreeCallback@0x0043a270
+  retail anchors:0x00438f58->0x004393d0 proto_gap_size:0x480 retail_gap_size:0x478 delta:0x-8
+  actuator_CalcPower = 0x00439e50; expected_if_equal_gap:0x00438fb8
+
+[.text] count:1 proto:0x004464d0-0x004464d0 between:setArrayContents@0x00446498->Credit_AddSequence@0x004476b8
+  retail anchors:0x004455f8->0x00446880 proto_gap_size:0x1220 retail_gap_size:0x1288 delta:0x68
+  _credits_update = 0x004464d0; expected_if_equal_gap:0x00445630
+
+[.text] count:1 proto:0x0044dc38-0x0044dc38 between:FastDrawStrip@0x0044da58->FUN_0044dcf8@0x0044dcf8
+  retail anchors:0x0044cc28->0x0044cec8 proto_gap_size:0x2a0 retail_gap_size:0x2a0 delta:0x0
+  FasterDrawStrip = 0x0044dc38; expected_if_equal_gap:0x0044ce08
+
+[.text] count:1 proto:0x00453bc8-0x00453bc8 between:Contrail_Init@0x00453ae8->FX_DrawCamFacingPoly@0x00453cd0
+  retail anchors:0x00452cb8->0x00452e98 proto_gap_size:0x1e8 retail_gap_size:0x1e0 delta:0x-8
+  IsDrawOK = 0x00453bc8; expected_if_equal_gap:0x00452d98
+
+[.text] count:1 proto:0x00454e98-0x00454e98 between:FontLoad@0x00454de0->GetCharacterIndex@0x00455080
+  retail anchors:0x00453fa8->0x00454258 proto_gap_size:0x2a0 retail_gap_size:0x2b0 delta:0x10
+  LoadFontToGS = 0x00454e98; expected_if_equal_gap:0x00454060
+
+[.text] count:3 proto:0x004550c0-0x00455168 between:GetCharacterIndex@0x00455080->FontGetCharacterCount@0x00455208
+  retail anchors:0x00454258->0x00454400 proto_gap_size:0x188 retail_gap_size:0x1a8 delta:0x20
+  FontInitialize = 0x004550c0; expected_if_equal_gap:0x00454298
+  FontForceInitialize = 0x00455150; expected_if_equal_gap:0x00454328
+  FontSet = 0x00455168; expected_if_equal_gap:0x00454340
+
+[.text] count:1 proto:0x00456c80-0x00456c80 between:FontSetWindow@0x00456c48->FontPrintWindowList@0x00457708
+  retail anchors:0x00455e40->0x00456918 proto_gap_size:0xac0 retail_gap_size:0xad8 delta:0x18
+  FontPrintWindow = 0x00456c80; expected_if_equal_gap:0x00455e78
+
+[.text] count:1 proto:0x0045d4d8-0x0045d4d8 between:SetPmMemory@0x0045d4c8->Construct@0x0045d558
+  retail anchors:0x0045c6d8->0x0045c768 proto_gap_size:0x90 retail_gap_size:0x90 delta:0x0
+  RebootToFrontEnd = 0x0045d4d8; expected_if_equal_gap:0x0045c6e8
+
+[.text] count:1 proto:0x0045ed48-0x0045ed48 between:Help_CheckIfEmptyText@0x0045ed18->Help_DoAddToHelpLogException@0x0045ede8
+  retail anchors:0x0045df28->0x0045e020 proto_gap_size:0xd0 retail_gap_size:0xf8 delta:0x28
+  Help_DontAddToHelpLogException = 0x0045ed48; expected_if_equal_gap:0x0045df58
+
+[.text] count:1 proto:0x00460260-0x00460260 between:UnloadModuleByName@0x00460228->InitMemSlots@0x004604b8
+  retail anchors:0x0045f460->0x0045f700 proto_gap_size:0x290 retail_gap_size:0x2a0 delta:0x10
+  BootElf = 0x00460260; expected_if_equal_gap:0x0045f498
+
+[.text] count:2 proto:0x004607b0-0x004607d0 between:InitMemSlots@0x004604b8->LoadFont@0x00460d70
+  retail anchors:0x0045f700->0x0045feb8 proto_gap_size:0x8b8 retail_gap_size:0x7b8 delta:0x-100
+  SetMediaMode = 0x004607b0; expected_if_equal_gap:0x0045f9f8
+  InitOnce = 0x004607d0; expected_if_equal_gap:0x0045fa18
+
+[.text] count:1 proto:0x00461c00-0x00461c00 between:UnloadSinglePlayerIOPModules@0x00461bb8->UnloadMultiPlayerIOPModules@0x00461ee8
+  retail anchors:0x00460d00->0x00461030 proto_gap_size:0x330 retail_gap_size:0x330 delta:0x0
+  LoadMultiPlayerIOPModules = 0x00461c00; expected_if_equal_gap:0x00460d48
+
+[.text] count:1 proto:0x00462b90-0x00462b90 between:LoadArmor@0x00462848->SwitchArmor@0x00462ca8
+  retail anchors:0x00461990->0x00461e08 proto_gap_size:0x460 retail_gap_size:0x478 delta:0x18
+  RemapArmor = 0x00462b90; expected_if_equal_gap:0x00461cd8
+
+[.text] count:4 proto:0x0046a350-0x0046a488 between:memcard_Save@0x0046a168->DmaToSpr@0x0046a640
+  retail anchors:0x004692c8->0x004697c0 proto_gap_size:0x4d8 retail_gap_size:0x4f8 delta:0x20
+  memcard_cleanupbeforesession = 0x0046a350; expected_if_equal_gap:0x004694b0
+  DNAS_ExtractPatch = 0x0046a358; expected_if_equal_gap:0x004694b8
+  Gui_DrawRC1_Help_Decorator = 0x0046a480; expected_if_equal_gap:0x004695e0
+  Gui_DrawDecoratedWindow = 0x0046a488; expected_if_equal_gap:0x004695e8
+
+[.text] count:1 proto:0x0046a7e8-0x0046a7e8 between:InitDma@0x0046a758->FastDecompress@0x0046aac0
+  retail anchors:0x004698d8->0x00469c40 proto_gap_size:0x368 retail_gap_size:0x368 delta:0x0
+  BuildGifTextureDma = 0x0046a7e8; expected_if_equal_gap:0x00469968
+
+[.text] count:1 proto:0x004716f8-0x004716f8 between:PostUpdateMobyBsphere@0x004716f0->MobyAnimProc@0x004719b8
+  retail anchors:0x00470870->0x00470b38 proto_gap_size:0x2c8 retail_gap_size:0x2c8 delta:0x0
+  BuildMobyTextureDma = 0x004716f8; expected_if_equal_gap:0x00470878
+
+[.text] count:1 proto:0x00471a70-0x00471a70 between:MobyAnimProc@0x004719b8->SetMobyLightCuboid@0x00473258
+  retail anchors:0x00470b38->0x004723e0 proto_gap_size:0x18a0 retail_gap_size:0x18a8 delta:0x8
+  MobyProc = 0x00471a70; expected_if_equal_gap:0x00470bf0
+
+[.text] count:1 proto:0x00473690-0x00473690 between:MB_randSphere@0x00473610->MB_QueueUpgradeScene@0x00473728
+  retail anchors:0x00472798->0x004728b0 proto_gap_size:0x118 retail_gap_size:0x118 delta:0x0
+  MB_IsDead = 0x00473690; expected_if_equal_gap:0x00472818
+
+[.text] count:1 proto:0x00473850-0x00473850 between:MB_AddHoloshieldGadgetXP@0x004737b8->MB_BundleDamage@0x00474190
+  retail anchors:0x00472940->0x00473428 proto_gap_size:0x9d8 retail_gap_size:0xae8 delta:0x110
+  MB_standardDeath = 0x00473850; expected_if_equal_gap:0x004729d8
+
+[.text] count:1 proto:0x0047aa88-0x0047aa88 between:MB_getTarget@0x0047a898->MB_GetLocalSpaceVector@0x0047b700
+  retail anchors:0x00479b38->0x0047aa40 proto_gap_size:0xe68 retail_gap_size:0xf08 delta:0xa0
+  MB_autoTarget3D = 0x0047aa88; expected_if_equal_gap:0x00479d28
+
+[.text] count:1 proto:0x0047c4b8-0x0047c4b8 between:MB_BlowFlamingCorn@0x0047c368->MB_SpawnInit@0x0047c610
+  retail anchors:0x0047b6a8->0x0047b9b8 proto_gap_size:0x2a8 retail_gap_size:0x310 delta:0x68
+  MB_SetTmode = 0x0047c4b8; expected_if_equal_gap:0x0047b7f8
+
+[.text] count:3 proto:0x0047f7a8-0x0047f7b8 between:MB_GetRandomShadowSurfacePoints@0x0047f120->MB_SelectRespawnNode@0x0047f820
+  retail anchors:0x0047e4c8->0x0047ebc0 proto_gap_size:0x700 retail_gap_size:0x6f8 delta:0x-8
+  MB_HeroOnlyCollOff = 0x0047f7a8; expected_if_equal_gap:0x0047eb50
+  MB_HeroOnlyCollOn = 0x0047f7b0; expected_if_equal_gap:0x0047eb58
+  MB_SetMobyTeamTex = 0x0047f7b8; expected_if_equal_gap:0x0047eb60
+
+[.text] count:1 proto:0x00481ef8-0x00481ef8 between:MB_StopReaction_2@0x00481ea0->MB_ProcessDamage_2@0x004834d8
+  retail anchors:0x00481240->0x00482888 proto_gap_size:0x1638 retail_gap_size:0x1648 delta:0x10
+  MB_ProcessDamage_2 = 0x00481ef8; expected_if_equal_gap:0x00481298
+
+[.text] count:1 proto:0x00485360-0x00485360 between:MB_SwitchToDeathState@0x004852c0->MB_MoveSystemUpdateAction@0x00485bb8
+  retail anchors:0x00484670->0x00484f68 proto_gap_size:0x8f8 retail_gap_size:0x8f8 delta:0x0
+  MB_HandleDeath = 0x00485360; expected_if_equal_gap:0x00484710
+
+[.text] count:1 proto:0x004918a0-0x004918a0 between:UpdateParts@0x00491818->_part_load_tex@0x004924c8
+  retail anchors:0x00490bc8->0x00491878 proto_gap_size:0xcb0 retail_gap_size:0xcb0 delta:0x0
+  PartProc = 0x004918a0; expected_if_equal_gap:0x00490c50
+
+[.text] count:2 proto:0x00498da0-0x00498de8 between:GuiMain_GetCurrentGadget@0x00498d70->GuiMain_EquipGadget@0x00498e50
+  retail anchors:0x00498120->0x004981f8 proto_gap_size:0xe0 retail_gap_size:0xd8 delta:0x-8
+  GuiMain_GetPrimaryGadget = 0x00498da0; expected_if_equal_gap:0x00498150
+  GuiMain_IsGadgetAvailable = 0x00498de8; expected_if_equal_gap:0x00498198
+
+[.text] count:2 proto:0x00498fc0-0x00499040 between:GuiMain_GetGadgetVersionName@0x00498ec8->GuiMain_GetMenuCommand@0x00499048
+  retail anchors:0x00498270->0x004983e8 proto_gap_size:0x180 retail_gap_size:0x178 delta:0x-8
+  GuiMain_GetPlayerCommand = 0x00498fc0; expected_if_equal_gap:0x00498368
+  GuiMain_GetLastCommandIssuer = 0x00499040; expected_if_equal_gap:0x004983e8
+
+[.text] count:1 proto:0x0049a250-0x0049a250 between:PIB_QueueHandleLoad@0x0049a198->PIB_FinishImageLoadCB@0x0049a318
+  retail anchors:0x00499538->0x004996d8 proto_gap_size:0x180 retail_gap_size:0x1a0 delta:0x20
+  PIB_RescuePause = 0x0049a250; expected_if_equal_gap:0x004995f0
+
+[.text] count:1 proto:0x0049f3d0-0x0049f3d0 between:GuiSupport_AddButton@0x0049f2f8->GuiSupport_AbortDialog@0x0049fa10
+  retail anchors:0x0049e6b8->0x0049ef30 proto_gap_size:0x718 retail_gap_size:0x878 delta:0x160
+  GuiSupport_ShowDialog = 0x0049f3d0; expected_if_equal_gap:0x0049e790
+
+[.text] count:3 proto:0x0049fac0-0x0049fb20 between:GuiSupport_AbortDialog@0x0049fa10->GuiSupport_ShowMenu@0x0049fdb0
+  retail anchors:0x0049ef30->0x0049f2f0 proto_gap_size:0x3a0 retail_gap_size:0x3c0 delta:0x20
+  GuiSupport_IsDialogShown = 0x0049fac0; expected_if_equal_gap:0x0049efe0
+  GuiSupport_DialogIgnoringInput = 0x0049faf0; expected_if_equal_gap:0x0049f010
+  GuiSupport_CreatePlayerDialogs = 0x0049fb20; expected_if_equal_gap:0x0049f040
+
+[.text] count:3 proto:0x004a2848-0x004a2900 between:BootMemcard_DCB_ExitScreen@0x004a2818->BootMain_Start@0x004a2910
+  retail anchors:0x004a1d58->0x004a1e70 proto_gap_size:0xf8 retail_gap_size:0x118 delta:0x20
+  GetBootMainState = 0x004a2848; expected_if_equal_gap:0x004a1d88
+  Update = 0x004a28a0; expected_if_equal_gap:0x004a1de0
+  BootMain_Init = 0x004a2900; expected_if_equal_gap:0x004a1e40
+
+[.text] count:1 proto:0x004a2ac0-0x004a2ac0 between:BootMain_CMDSingleCB@0x004a2a68->BootMain_CMDMultiCB@0x004a2b98
+  retail anchors:0x004a1fc8->0x004a20c8 proto_gap_size:0x130 retail_gap_size:0x100 delta:0x-30
+  BootMain_CMDCoopCB = 0x004a2ac0; expected_if_equal_gap:0x004a2020
+
+[.text] count:5 proto:0x004a2bd8-0x004a2c28 between:BootMain_CMDMultiCB@0x004a2b98->BootCampaign_Stop@0x004a2d78
+  retail anchors:0x004a20c8->0x004a22b0 proto_gap_size:0x1e0 retail_gap_size:0x1e8 delta:0x8
+  BootMain_CMDSettingsCB = 0x004a2bd8; expected_if_equal_gap:0x004a2108
+  BootMain_CMDLanguagesCB = 0x004a2bf8; expected_if_equal_gap:0x004a2128
+  BootMain_DCB_InsertController = 0x004a2c18; expected_if_equal_gap:0x004a2148
+  BootCampaign_Init = 0x004a2c20; expected_if_equal_gap:0x004a2150
+  BootCampaign_Start = 0x004a2c28; expected_if_equal_gap:0x004a2158
+
+[.text] count:10 proto:0x004a2e20-0x004a3210 between:BootCampaign_Exit@0x004a2df0->BootLanguages_Start@0x004a3218
+  retail anchors:0x004a2328->0x004a2700 proto_gap_size:0x428 retail_gap_size:0x3d8 delta:0x-50
+  GetBootPatchState = 0x004a2e20; expected_if_equal_gap:0x004a2358
+  BootPatch_Init = 0x004a2e80; expected_if_equal_gap:0x004a23b8
+  BootPatch_Start = 0x004a2e88; expected_if_equal_gap:0x004a23c0
+  BootPatch_Stop = 0x004a2ec0; expected_if_equal_gap:0x004a23f8
+  Init = 0x004a2ee0; expected_if_equal_gap:0x004a2418
+  Update = 0x004a2ee8; expected_if_equal_gap:0x004a2420
+  Deinit = 0x004a30b8; expected_if_equal_gap:0x004a25f0
+  BootPatch_DCB_ExitScreen = 0x004a30c0; expected_if_equal_gap:0x004a25f8
+  SetLanguage = 0x004a30d0; expected_if_equal_gap:0x004a2608
+  BootLanguages_Init = 0x004a3210; expected_if_equal_gap:0x004a2748
+
+[.text] count:3 proto:0x004a75c0-0x004a8248 between:Init@0x004a73f0->HudAmmo_UpdateInUse@0x004a82e8
+  retail anchors:0x004a68d8->0x004a79d8 proto_gap_size:0xef8 retail_gap_size:0x1100 delta:0x208
+  Deinit = 0x004a75c0; expected_if_equal_gap:0x004a6aa8
+  Update = 0x004a75f0; expected_if_equal_gap:0x004a6ad8
+  HudAmmo_SetGadgetLock = 0x004a8248; expected_if_equal_gap:0x004a7730
+
+[.text] count:2 proto:0x004a86c0-0x004a86e0 between:HudAmmo_UnequipGadget@0x004a8658->HudAmmo_PleaseDeprecateMe@0x004a8918
+  retail anchors:0x004a7d48->0x004a8050 proto_gap_size:0x2c0 retail_gap_size:0x308 delta:0x48
+  HudAmmo_GetMainGadget = 0x004a86c0; expected_if_equal_gap:0x004a7db0
+  HudAmmo_SetMainGadget = 0x004a86e0; expected_if_equal_gap:0x004a7dd0
+
+[.text] count:1 proto:0x004a92b0-0x004a92b0 between:HudAmmo_SetAmmoString@0x004a9268->HudAmmo_SetIcon@0x004a93c0
+  retail anchors:0x004a89a0->0x004a8b10 proto_gap_size:0x158 retail_gap_size:0x170 delta:0x18
+  HudAmmo_GetGadgetColor = 0x004a92b0; expected_if_equal_gap:0x004a89e8
+
+[.text] count:9 proto:0x004ae8c8-0x004aeee0 between:BoltHud_CreateWidgets@0x004ae708->BotHud_IsSlotEmpty@0x004aef80
+  retail anchors:0x004ade58->0x004ae820 proto_gap_size:0x878 retail_gap_size:0x9c8 delta:0x150
+  BoltHud_ClearWidgets = 0x004ae8c8; expected_if_equal_gap:0x004ae018
+  GetBotHudState = 0x004ae8f0; expected_if_equal_gap:0x004ae040
+  HudBot_Init = 0x004aea40; expected_if_equal_gap:0x004ae190
+  HudBot_Show = 0x004aea78; expected_if_equal_gap:0x004ae1c8
+  HudBot_Hide = 0x004aead8; expected_if_equal_gap:0x004ae228
+  Init = 0x004aeaf8; expected_if_equal_gap:0x004ae248
+  Update = 0x004aec50; expected_if_equal_gap:0x004ae3a0
+  Deinit = 0x004aeeb0; expected_if_equal_gap:0x004ae600
+  BotHud_UpdateOpen = 0x004aeee0; expected_if_equal_gap:0x004ae630
+
+[.text] count:4 proto:0x004b2698-0x004b2918 between:HudMPScore_UpdateNumTeamsSplit@0x004b1fb0->HudComplete_Hide@0x004b2a58
+  retail anchors:0x004b1850->0x004b2260 proto_gap_size:0xaa8 retail_gap_size:0xa10 delta:0x-98
+  HudMPScore_CreateCommonWidgets = 0x004b2698; expected_if_equal_gap:0x004b1f38
+  HudMPScore_ClearCommonWidgets = 0x004b2890; expected_if_equal_gap:0x004b2130
+  GetHudCompleteState = 0x004b28b8; expected_if_equal_gap:0x004b2158
+  HudComplete_Show = 0x004b2918; expected_if_equal_gap:0x004b21b8
+
+[.text] count:4 proto:0x004b33d0-0x004b34b8 between:HudComplete_UpdateStatsIn@0x004b32d0->HudComplete_UpdateFooterIn@0x004b36a0
+  retail anchors:0x004b2ad8->0x004b2e08 proto_gap_size:0x3d0 retail_gap_size:0x330 delta:0x-a0
+  HudComplete_FillStatTime = 0x004b33d0; expected_if_equal_gap:0x004b2bd8
+  HudComplete_FillStatNumber = 0x004b3438; expected_if_equal_gap:0x004b2c40
+  HudComplete_FillStatSkillpoints = 0x004b3478; expected_if_equal_gap:0x004b2c80
+  HudComplete_UpdateStat = 0x004b34b8; expected_if_equal_gap:0x004b2cc0
+
+[.text] count:1 proto:0x004b4790-0x004b4790 between:HudComplete_KillSounds@0x004b4740->HudComplete_FillRewardIcon@0x004b48e8
+  retail anchors:0x004b3ea8->0x004b4050 proto_gap_size:0x1a8 retail_gap_size:0x1a8 delta:0x0
+  HudComplete_FinishAll = 0x004b4790; expected_if_equal_gap:0x004b3ef8
+
+[.text] count:1 proto:0x004b4a90-0x004b4a90 between:HudComplete_FillRewardIcon@0x004b48e8->HudComplete_HandleInput@0x004b5108
+  retail anchors:0x004b4050->0x004b4a40 proto_gap_size:0x820 retail_gap_size:0x9f0 delta:0x1d0
+  HudComplete_ReadData = 0x004b4a90; expected_if_equal_gap:0x004b41f8
+
+[.text] count:3 proto:0x004b5248-0x004b5708 between:HudComplete_ResetPanelPositions@0x004b5160->HudBossHealth_Init@0x004b5768
+  retail anchors:0x004b4a98->0x004b4cf0 proto_gap_size:0x608 retail_gap_size:0x258 delta:0x-3b0
+  HudComplete_CreateWidgets = 0x004b5248; expected_if_equal_gap:0x004b4b80
+  HudComplete_ClearWidgets = 0x004b56e0; expected_if_equal_gap:0x004b5018
+  GetHudBossState = 0x004b5708; expected_if_equal_gap:0x004b5040
+
+[.text] count:1 proto:0x004b6a68-0x004b6a68 between:MenuMain_Init@0x004b69f0->MenuMain_StartOptions@0x004b6d88
+  retail anchors:0x004b5f78->0x004b6378 proto_gap_size:0x398 retail_gap_size:0x400 delta:0x68
+  MenuMain_StartMain = 0x004b6a68; expected_if_equal_gap:0x004b5ff0
+
+[.text] count:1 proto:0x004ba8c0-0x004ba8c0 between:Deinit@0x004ba808->MenuAudioVisual_CMDSound@0x004baa60
+  retail anchors:0x004b9df8->0x004ba050 proto_gap_size:0x258 retail_gap_size:0x258 delta:0x0
+  Update = 0x004ba8c0; expected_if_equal_gap:0x004b9eb0
+
+[.text] count:3 proto:0x004bb680-0x004bb6d8 between:MenuAudioVisual_CreateWidgets@0x004bb368->MenuAudioVisual_ActivateScanningMode@0x004bb750
+  retail anchors:0x004ba958->0x004bad50 proto_gap_size:0x3e8 retail_gap_size:0x3f8 delta:0x10
+  MenuAudioVisual_ClearWidgets = 0x004bb680; expected_if_equal_gap:0x004bac70
+  MenuAudioVisual_ChangeProgressiveCMD = 0x004bb6a0; expected_if_equal_gap:0x004bac90
+  MenuAudioVisual_PostProgressiveChangeCheckCMD = 0x004bb6d8; expected_if_equal_gap:0x004bacc8
+
+[.text] count:1 proto:0x004be408-0x004be408 between:MenuPlanet_SystemCancel@0x004be3c0->MenuPlanet_HandleSkillsButton@0x004be680
+  retail anchors:0x004bd9c0->0x004bdd10 proto_gap_size:0x2c0 retail_gap_size:0x350 delta:0x90
+  MenuPlanet_HandleSelection = 0x004be408; expected_if_equal_gap:0x004bda08
+
+[.text] count:2 proto:0x004bf800-0x004bf858 between:MenuPlanet_SetupPlanetTourneyList@0x004bf6f8->MenuPlanet_GetTournamentLocked@0x004bf8b0
+  retail anchors:0x004bed98->0x004bef80 proto_gap_size:0x1b8 retail_gap_size:0x1e8 delta:0x30
+  MenuPlanet_GetTournamentHubMission = 0x004bf800; expected_if_equal_gap:0x004beea0
+  MenuPlanet_GetTournamentStartMission = 0x004bf858; expected_if_equal_gap:0x004beef8
+
+[.text] count:1 proto:0x004c0e28-0x004c0e28 between:MenuPlanet_UpdateForPlanet@0x004c0560->MenuPlanet_GetNumCompletedBonusMissions@0x004c15f8
+  retail anchors:0x004bfc30->0x004c0cd0 proto_gap_size:0x1098 retail_gap_size:0x10a0 delta:0x8
+  MenuPlanet_UpdateForTournament = 0x004c0e28; expected_if_equal_gap:0x004c04f8
+
+[.text] count:2 proto:0x004c1e18-0x004c1f68 between:MenuPlanet_Stop@0x004c1dc0->Deinit@0x004c2690
+  retail anchors:0x004c1498->0x004c1e98 proto_gap_size:0x8d0 retail_gap_size:0xa00 delta:0x130
+  GetMenuWeaponState = 0x004c1e18; expected_if_equal_gap:0x004c14f0
+  Init = 0x004c1f68; expected_if_equal_gap:0x004c1640
+
+[.text] count:1 proto:0x004c2998-0x004c2998 between:Update@0x004c27a0->MenuWeapon_UpdateWeaponInfo@0x004c29e8
+  retail anchors:0x004c1fa8->0x004c21e8 proto_gap_size:0x248 retail_gap_size:0x240 delta:0x-8
+  MenuWeapon_UpdateCurrentWeapon = 0x004c2998; expected_if_equal_gap:0x004c21a0
+
+[.text] count:1 proto:0x004c38b8-0x004c38b8 between:MenuWeapon_SelectWeapon@0x004c37f8->MenuWeapon_DeselectButton@0x004c3938
+  retail anchors:0x004c2ff8->0x004c3140 proto_gap_size:0x140 retail_gap_size:0x148 delta:0x8
+  MenuWeapon_ChangeWeapon = 0x004c38b8; expected_if_equal_gap:0x004c30b8
+
+[.text] count:4 proto:0x004c49f0-0x004c4c90 between:MenuWeapon_RemoveAlpha@0x004c48c0->MenuWeapon_HandleAlphaInput@0x004c4cc0
+  retail anchors:0x004c40c8->0x004c44e8 proto_gap_size:0x400 retail_gap_size:0x420 delta:0x20
+  MenuWeapon_RemoveAllAlpha = 0x004c49f0; expected_if_equal_gap:0x004c41f8
+  MenuWeapon_HandleIdleInput = 0x004c4a00; expected_if_equal_gap:0x004c4208
+  MenuWeapon_HandleCancel = 0x004c4c68; expected_if_equal_gap:0x004c4470
+  MenuWeapon_SystemCancel = 0x004c4c90; expected_if_equal_gap:0x004c4498
+
+[.text] count:1 proto:0x004c7ab8-0x004c7ab8 between:MenuArena_HandleInput@0x004c7a18->MenuArena_CancelConfirmationCMD@0x004c7b80
+  retail anchors:0x004c7240->0x004c73a8 proto_gap_size:0x168 retail_gap_size:0x168 delta:0x0
+  MenuArena_Cancel = 0x004c7ab8; expected_if_equal_gap:0x004c72e0
+
+[.text] count:2 proto:0x004c8c00-0x004c8dd8 between:MenuVendor_StopMainScreen@0x004c8bf0->Update@0x004c8e70
+  retail anchors:0x004c8418->0x004c8768 proto_gap_size:0x280 retail_gap_size:0x350 delta:0xd0
+  Init = 0x004c8c00; expected_if_equal_gap:0x004c8428
+  Deinit = 0x004c8dd8; expected_if_equal_gap:0x004c8600
+
+[.text] count:2 proto:0x004c9e98-0x004c9ec0 between:MenuLoad_StartSave@0x004c9e30->Update@0x004ca318
+  retail anchors:0x004c9728->0x004c9c20 proto_gap_size:0x4e8 retail_gap_size:0x4f8 delta:0x10
+  MenuLoad_StopSave = 0x004c9e98; expected_if_equal_gap:0x004c9790
+  Init = 0x004c9ec0; expected_if_equal_gap:0x004c97b8
+
+[.text] count:1 proto:0x004cb040-0x004cb040 between:MenuLoad_IsCoop@0x004cafe0->MenuLoad_UpdateSlotDisplay@0x004cb138
+  retail anchors:0x004ca8e8->0x004caa50 proto_gap_size:0x158 retail_gap_size:0x168 delta:0x10
+  MenuLoad_HandleUpdates = 0x004cb040; expected_if_equal_gap:0x004ca948
+
+[.text] count:2 proto:0x004cba30-0x004cba58 between:MenuLoad_MCB_SaveDone@0x004cb980->MenuLoad_CreateWidgets@0x004cbaf0
+  retail anchors:0x004cb298->0x004cb440 proto_gap_size:0x170 retail_gap_size:0x1a8 delta:0x38
+  MenuLoad_MCB_DoLoad = 0x004cba30; expected_if_equal_gap:0x004cb348
+  MenuLoad_MCB_LoadDone = 0x004cba58; expected_if_equal_gap:0x004cb370
+
+[.text] count:5 proto:0x004d0ed8-0x004d0f58 between:MenuCheats_CMDCheatCHEAT_HUD_COLORS@0x004d0c90->MenuCheats_CMDCheatCHEAT_WEATHER_FX@0x004d0f78
+  retail anchors:0x004d05e0->0x004d08b0 proto_gap_size:0x2e8 retail_gap_size:0x2d0 delta:0x-18
+  MenuCheats_CMDCheatCHEAT_GOD_MODE = 0x004d0ed8; expected_if_equal_gap:0x004d0828
+  MenuCheats_CMDCheatCHEAT_WRENCH_MODS = 0x004d0ef8; expected_if_equal_gap:0x004d0848
+  MenuCheats_CMDCheatCHEAT_VEHICLE_MODS = 0x004d0f18; expected_if_equal_gap:0x004d0868
+  MenuCheats_CMDCheatCHEAT_SUPER_BLOOM = 0x004d0f38; expected_if_equal_gap:0x004d0888
+  MenuCheats_CMDCheatCHEAT_BLACK_AND_WHITE = 0x004d0f58; expected_if_equal_gap:0x004d08a8
+
+[.text] count:7 proto:0x004d1540-0x004d1d58 between:MenuCheats_HandleInput@0x004d1410->Init@0x004d1d90
+  retail anchors:0x004d0d48->0x004d1708 proto_gap_size:0x980 retail_gap_size:0x9c0 delta:0x40
+  MenuCheats_SystemCancel = 0x004d1540; expected_if_equal_gap:0x004d0e78
+  MenuCheats_CreateWidgets = 0x004d1570; expected_if_equal_gap:0x004d0ea8
+  MenuCheats_ClearWidgets = 0x004d1b50; expected_if_equal_gap:0x004d1488
+  GetMenuMovesState = 0x004d1b78; expected_if_equal_gap:0x004d14b0
+  MenuMoves_Init = 0x004d1cc8; expected_if_equal_gap:0x004d1600
+  MenuMoves_Start = 0x004d1cf0; expected_if_equal_gap:0x004d1628
+  MenuMoves_Stop = 0x004d1d58; expected_if_equal_gap:0x004d1690
+
+[.text] count:1 proto:0x004d2a08-0x004d2a08 between:DialogDifficulty_IsShown@0x004d29e8->Deinit@0x004d2d40
+  retail anchors:0x004d2360->0x004d26d8 proto_gap_size:0x358 retail_gap_size:0x378 delta:0x20
+  Init = 0x004d2a08; expected_if_equal_gap:0x004d2380
+
+[.text] count:2 proto:0x004d2e60-0x004d2f00 between:Update@0x004d2db0->DialogDifficulty_Deselect@0x004d2f48
+  retail anchors:0x004d2748->0x004d28e0 proto_gap_size:0x198 retail_gap_size:0x198 delta:0x0
+  DialogDifficulty_UpdateDifficultyInfo = 0x004d2e60; expected_if_equal_gap:0x004d27f8
+  DialogDifficulty_Valid = 0x004d2f00; expected_if_equal_gap:0x004d2898
+
+[.text] count:6 proto:0x004d3128-0x004d33a0 between:DialogDifficulty_CMDDifficulty0@0x004d30e8->DialogDifficulty_ClearWidgets@0x004d3690
+  retail anchors:0x004d2a80->0x004d2ff8 proto_gap_size:0x5a8 retail_gap_size:0x578 delta:0x-30
+  DialogDifficulty_CMDDifficulty1 = 0x004d3128; expected_if_equal_gap:0x004d2ac0
+  DialogDifficulty_CMDDifficulty2 = 0x004d3168; expected_if_equal_gap:0x004d2b00
+  DialogDifficulty_CMDDifficulty3 = 0x004d31a8; expected_if_equal_gap:0x004d2b40
+  DialogDifficulty_CMDDifficulty4 = 0x004d31e8; expected_if_equal_gap:0x004d2b80
+  DialogDifficulty_HandleInput = 0x004d3228; expected_if_equal_gap:0x004d2bc0
+  DialogDifficulty_CreateWidgets = 0x004d33a0; expected_if_equal_gap:0x004d2d38
+
+[.text] count:1 proto:0x004d6b88-0x004d6b88 between:MenuStats_ClearWidgets@0x004d6b38->MenuStats_GetBattleDomeTournamentsWon@0x004d7458
+  retail anchors:0x004d64a0->0x004d6dd0 proto_gap_size:0x920 retail_gap_size:0x930 delta:0x10
+  MenuStats_UpdateStatsList = 0x004d6b88; expected_if_equal_gap:0x004d64f0
+
+[.text] count:1 proto:0x004d7cb0-0x004d7cb0 between:Deinit@0x004d7c30->MenuLeaderboard_HandleInput@0x004d7d80
+  retail anchors:0x004d75a8->0x004d7738 proto_gap_size:0x150 retail_gap_size:0x190 delta:0x40
+  Update = 0x004d7cb0; expected_if_equal_gap:0x004d7628
+
+[.text] count:2 proto:0x004d81b0-0x004d8208 between:MenuLeaderboard_CreateWidgets@0x004d7fe0->MenuLeaderboard_SetupInitialList@0x004d83b8
+  retail anchors:0x004d7998->0x004d7d40 proto_gap_size:0x3d8 retail_gap_size:0x3a8 delta:0x-30
+  MenuLeaderboard_ClearWidgets = 0x004d81b0; expected_if_equal_gap:0x004d7b68
+  MenuLeaderboard_SetupLeaderboard = 0x004d8208; expected_if_equal_gap:0x004d7bc0
+
+[.text] count:1 proto:0x004dfae0-0x004dfae0 between:SkyDrawShellGouraud@0x004df930->_ssp_load_tex@0x004dfde8
+  retail anchors:0x004df2b8->0x004df770 proto_gap_size:0x4b8 retail_gap_size:0x4b8 delta:0x0
+  SkySpriteProc = 0x004dfae0; expected_if_equal_gap:0x004df468
+
+[.text] count:1 proto:0x004e0ed0-0x004e0ed0 between:sound_LevelInit@0x004e0e98->IsMobyPlayingSound@0x004e1fe8
+  retail anchors:0x004e0820->0x004e1978 proto_gap_size:0x1150 retail_gap_size:0x1158 delta:0x8
+  sound_Update = 0x004e0ed0; expected_if_equal_gap:0x004e0858
+
+[.text] count:1 proto:0x004e2270-0x004e2270 between:sound_GetFreeChannel@0x004e21c8->sound_MobyPlay@0x004e25e0
+  retail anchors:0x004e1b58->0x004e1f90 proto_gap_size:0x418 retail_gap_size:0x438 delta:0x20
+  sound_Play = 0x004e2270; expected_if_equal_gap:0x004e1c00
+
+[.text] count:1 proto:0x004e3688-0x004e3688 between:DrawTfrag@0x004e3520->ComputeTfragTextureUsage@0x004e4290
+  retail anchors:0x004e2ed0->0x004e3c40 proto_gap_size:0xd70 retail_gap_size:0xd70 delta:0x0
+  TfragProc = 0x004e3688; expected_if_equal_gap:0x004e3038
+
+[.text] count:1 proto:0x004e43f8-0x004e43f8 between:ComputeTfragTextureUsage@0x004e4290->LightTfrags@0x004e4650
+  retail anchors:0x004e3c40->0x004e4000 proto_gap_size:0x3c0 retail_gap_size:0x3c0 delta:0x0
+  BuildTfragTextureDma = 0x004e43f8; expected_if_equal_gap:0x004e3da8
+
+[.text] count:1 proto:0x004e7650-0x004e7650 between:Vendor_CanPurchaseItem@0x004e75f0->Vendor_IsGadgetAvailableForPurchase@0x004e79d0
+  retail anchors:0x004e6fa0->0x004e7388 proto_gap_size:0x3e0 retail_gap_size:0x3e8 delta:0x8
+  Vendor_PurchaseItem = 0x004e7650; expected_if_equal_gap:0x004e7000
+
+[.text] count:1 proto:0x004e9ae0-0x004e9ae0 between:WPN_DrawReticule@0x004e9418->WPN_CalculateTrajectory@0x004ea3b0
+  retail anchors:0x004e8dd0->0x004e9d60 proto_gap_size:0xf98 retail_gap_size:0xf90 delta:0x-8
+  WPN_MP_CalcProjectileVelocity = 0x004e9ae0; expected_if_equal_gap:0x004e9498
+
+[.text] count:1 proto:0x004eb9d8-0x004eb9d8 between:WPN_DeleteMoby@0x004eb908->WPN_PostFX_Showcase@0x004ec3c0
+  retail anchors:0x004eb2b8->0x004ebd30 proto_gap_size:0xab8 retail_gap_size:0xa78 delta:0x-40
+  WPN_UpgradeModeUpdate = 0x004eb9d8; expected_if_equal_gap:0x004eb388
+
+[.text] count:2 proto:0x004ee8c0-0x004ee958 between:WPN_TurnOffHoloShields@0x004ee7e0->DrawWidget2D@0x004ee9f0
+  retail anchors:0x004ee150->0x004ee248 proto_gap_size:0x210 retail_gap_size:0xf8 delta:0x-118
+  wibuInit = 0x004ee8c0; expected_if_equal_gap:0x004ee230
+  wibuGetFirstSerial = 0x004ee958; expected_if_equal_gap:0x004ee2c8
+
+[.text] count:1 proto:0x004f2398-0x004f2398 between:videoDecCreate@0x004f2290->videoDecBeginPut@0x004f23b8
+  retail anchors:0x004f1ae8->0x004f1cf8 proto_gap_size:0x128 retail_gap_size:0x210 delta:0xe8
+  videoDecSetStream = 0x004f2398; expected_if_equal_gap:0x004f1bf0
+
+[.text] count:1 proto:0x004f23d8-0x004f23d8 between:videoDecBeginPut@0x004f23b8->videoDecReset@0x004f23f8
+  retail anchors:0x004f1cf8->0x004f1c50 proto_gap_size:0x40 retail_gap_size:0x-a8 delta:0x-e8
+  videoDecEndPut = 0x004f23d8; expected_if_equal_gap:0x004f1d18
+
+[.text] count:1 proto:0x004f6038-0x004f6038 between:TransitionSpace_ResetParticles@0x004f6010->TransitionSpace_InitMoby@0x004f6248
+  retail anchors:0x004f5868->0x004f5aa8 proto_gap_size:0x238 retail_gap_size:0x240 delta:0x8
+  TransitionPre_Space = 0x004f6038; expected_if_equal_gap:0x004f5890
+
+[.text] count:2 proto:0x004fce90-0x004fd620 between:ST_RegisterEnemyKill@0x004fce18->ST_GetNumExterminatorCardsCollected@0x004fda38
+  retail anchors:0x004fc678->0x004fd198 proto_gap_size:0xc20 retail_gap_size:0xb20 delta:0x-100
+  ST_RegisterStatKill = 0x004fce90; expected_if_equal_gap:0x004fc6f0
+  ST_CalculateExterminatorCardVisibility = 0x004fd620; expected_if_equal_gap:0x004fce80
+
+[.text] count:8 proto:0x00505ad8-0x00506180 between:GetBoundingRectangle@0x005059b8->SetCurrentCanvas@0x00506298
+  retail anchors:0x00505118->0x00505ad8 proto_gap_size:0x8e0 retail_gap_size:0x9c0 delta:0xe0
+  SetText = 0x00505ad8; expected_if_equal_gap:0x00505238
+  SetColor = 0x00505bc8; expected_if_equal_gap:0x00505328
+  SetAlpha = 0x00505cb0; expected_if_equal_gap:0x00505410
+  SetTexture = 0x00505d98; expected_if_equal_gap:0x005054f8
+  SetFontText = 0x00505e80; expected_if_equal_gap:0x005055e0
+  SetVertexColors = 0x00505f68; expected_if_equal_gap:0x005056c8
+  SetDataSource = 0x00506080; expected_if_equal_gap:0x005057e0
+  SetScale = 0x00506180; expected_if_equal_gap:0x005058e0
+
+[.text] count:5 proto:0x0050efa0-0x0050f170 between:Render@0x0050ec30->CopyFrom@0x0050f178
+  retail anchors:0x0050e470->0x0050ea80 proto_gap_size:0x548 retail_gap_size:0x610 delta:0xc8
+  GetBoundingRectangle = 0x0050efa0; expected_if_equal_gap:0x0050e7e0
+  Update = 0x0050f0e0; expected_if_equal_gap:0x0050e920
+  IsATypeOf = 0x0050f0f8; expected_if_equal_gap:0x0050e938
+  ~WidgetText = 0x0050f140; expected_if_equal_gap:0x0050e980
+  GetId = 0x0050f170; expected_if_equal_gap:0x0050e9b0
+
+[.text] count:1 proto:0x0050f778-0x0050f778 between:GetTextSizes@0x0050f728->UpdateScrolling@0x0050fae0
+  retail anchors:0x0050f030->0x0050f438 proto_gap_size:0x3b8 retail_gap_size:0x408 delta:0x50
+  UpdateTextSizes = 0x0050f778; expected_if_equal_gap:0x0050f080
+
+[.text] count:1 proto:0x00511588-0x00511588 between:GB_IsCoopLevel@0x00511558->GB_GetHeroDamager@0x00511628
+  retail anchors:0x00510eb0->0x00510fb8 proto_gap_size:0xd0 retail_gap_size:0x108 delta:0x38
+  GB_GetDamager = 0x00511588; expected_if_equal_gap:0x00510ee0
+
+[.text] count:3 proto:0x005167b0-0x00516ba0 between:SendConvertToJuggernaut@0x00516748->EndFiringAnim@0x00516e70
+  retail anchors:0x005160d8->0x005168e0 proto_gap_size:0x728 retail_gap_size:0x808 delta:0xe0
+  UnconvertJuggernaut = 0x005167b0; expected_if_equal_gap:0x00516140
+  ConvertToJuggernaut = 0x00516878; expected_if_equal_gap:0x00516208
+  PlayFiringAnim = 0x00516ba0; expected_if_equal_gap:0x00516530
+
+[.text] count:1 proto:0x005171c0-0x005171c0 between:KillGadget@0x00517048->ZeroMovement@0x00518058
+  retail anchors:0x00516ab8->0x00517af0 proto_gap_size:0x1010 retail_gap_size:0x1038 delta:0x28
+  HandleGadgetSwitching = 0x005171c0; expected_if_equal_gap:0x00516c30
+
+[.text] count:2 proto:0x00518b30-0x00519df0 between:UpdateReactionEffects@0x005184b8->Death@0x00519e90
+  retail anchors:0x00517f50->0x00519958 proto_gap_size:0x19d8 retail_gap_size:0x1a08 delta:0x30
+  HandleDamage = 0x00518b30; expected_if_equal_gap:0x005185c8
+  SendGetHitMessage = 0x00519df0; expected_if_equal_gap:0x00519888
+
+[.text] count:2 proto:0x0051a648-0x0051ab58 between:Death@0x00519e90->DeIceMe@0x0051aca8
+  retail anchors:0x00519958->0x0051a790 proto_gap_size:0xe18 retail_gap_size:0xe38 delta:0x20
+  Resurrect = 0x0051a648; expected_if_equal_gap:0x0051a110
+  WeaponStripMe = 0x0051ab58; expected_if_equal_gap:0x0051a620
+
+[.text] count:1 proto:0x0051aeb0-0x0051aeb0 between:SpawnBackpack@0x0051ad38->MobyIsWrench@0x0051b2f8
+  retail anchors:0x0051a820->0x0051adf0 proto_gap_size:0x5c0 retail_gap_size:0x5d0 delta:0x10
+  CreditKill = 0x0051aeb0; expected_if_equal_gap:0x0051a998
+
+[.text] count:1 proto:0x00521d20-0x00521d20 between:JumpOrSnapJumpCheck@0x00521c28->GetSpecialIdle@0x005223a0
+  retail anchors:0x00521720->0x00521eb0 proto_gap_size:0x778 retail_gap_size:0x790 delta:0x18
+  UpdateWalkAnim = 0x00521d20; expected_if_equal_gap:0x00521818
+
+[.text] count:1 proto:0x00522d58-0x00522d58 between:HandleLockon@0x00522bf0->QueueGadgetEvent@0x00522e18
+  retail anchors:0x00522700->0x00522928 proto_gap_size:0x228 retail_gap_size:0x228 delta:0x0
+  RequestGadgetEquip = 0x00522d58; expected_if_equal_gap:0x00522868
+
+[.text] count:1 proto:0x00522fe8-0x00522fe8 between:GB_DisplayHelpMsgs@0x00522f20->DropFlag@0x005230e0
+  retail anchors:0x00522a30->0x00522bf8 proto_gap_size:0x1c0 retail_gap_size:0x1c8 delta:0x8
+  MakeGadgetAvailable = 0x00522fe8; expected_if_equal_gap:0x00522af8
+
+[.text] count:1 proto:0x00525608-0x00525608 between:Slope@0x00525528->IsFPSModeActive@0x00525680
+  retail anchors:0x00525040->0x00525190 proto_gap_size:0x158 retail_gap_size:0x150 delta:0x-8
+  WalkToPosStatus = 0x00525608; expected_if_equal_gap:0x00525120
+
+[.text] count:2 proto:0x005260e8-0x005260f0 between:PlayGetHitSound@0x00525e00->DeleteGadgets@0x005261b0
+  retail anchors:0x00525910->0x00525c58 proto_gap_size:0x3b0 retail_gap_size:0x348 delta:0x-68
+  GetPlayerInput = 0x005260e8; expected_if_equal_gap:0x00525bf8
+  CalcProgressToNextHpLevel = 0x005260f0; expected_if_equal_gap:0x00525c00
+
+[.text] count:1 proto:0x00526a78-0x00526a78 between:IsPlayerLinkHealthy@0x005269c8->mpFPSCam_NetTargetingAnnoyingSpecialCases@0x00527280
+  retail anchors:0x00526470->0x00526d38 proto_gap_size:0x8b8 retail_gap_size:0x8c8 delta:0x10
+  mpFPSCam_NetTargeting = 0x00526a78; expected_if_equal_gap:0x00526520
+
+[.text] count:1 proto:0x00527598-0x00527598 between:mp_PlayControllerHelp@0x00527520->IsOnHoverBike@0x005276f0
+  retail anchors:0x00526fd8->0x005271c0 proto_gap_size:0x1d0 retail_gap_size:0x1e8 delta:0x18
+  InitGadgetBox = 0x00527598; expected_if_equal_gap:0x00527050
+
+[.text] count:2 proto:0x00527718-0x00527830 between:IsOnHoverBike@0x005276f0->IsWeaponTemp@0x00527860
+  retail anchors:0x005271c0->0x00527340 proto_gap_size:0x170 retail_gap_size:0x180 delta:0x10
+  CleanTemporaryWeapons = 0x00527718; expected_if_equal_gap:0x005271e8
+  VoidTemporaryWeaponList = 0x00527830; expected_if_equal_gap:0x00527300
+
+[.text] count:1 proto:0x0052d0c8-0x0052d0c8 between:DoBehavior_Walk@0x0052c760->DoBehavior_Swing@0x0052d948
+  retail anchors:0x0052c240->0x0052d598 proto_gap_size:0x11e8 retail_gap_size:0x1358 delta:0x170
+  DoBehavior_Jump = 0x0052d0c8; expected_if_equal_gap:0x0052cba8
+
+[.text] count:2 proto:0x005305a8-0x00534d80 between:DoBehavior_Swim@0x0052f998->LookmodeTransition@0x00534f50
+  retail anchors:0x0052f5e8->0x00534c40 proto_gap_size:0x55b8 retail_gap_size:0x5658 delta:0xa0
+  InitBodyState = 0x005305a8; expected_if_equal_gap:0x005301f8
+  CheckForSquattingYourAss = 0x00534d80; expected_if_equal_gap:0x005349d0
+
+[.text] count:1 proto:0x00535080-0x00535080 between:LookmodeTransition@0x00534f50->TryFlailAttack@0x0053b740
+  retail anchors:0x00534c40->0x0053b4c0 proto_gap_size:0x67f0 retail_gap_size:0x6880 delta:0x90
+  Transitions = 0x00535080; expected_if_equal_gap:0x00534d70
+
+[.text] count:2 proto:0x0053ca80-0x0053cb68 between:SwimSurfTransition@0x0053c658->CreateEvent@0x0053cb90
+  retail anchors:0x0053c3d8->0x0053c920 proto_gap_size:0x538 retail_gap_size:0x548 delta:0x10
+  UnderwaterTransitions = 0x0053ca80; expected_if_equal_gap:0x0053c800
+  UpdateCommand = 0x0053cb68; expected_if_equal_gap:0x0053c8e8
+
+[.text] count:2 proto:0x0053cde0-0x0053ceb0 between:read@0x0053cd90->GB_GetVehicle@0x0053ceb8
+  retail anchors:0x0053cb20->0x0053cc58 proto_gap_size:0x128 retail_gap_size:0x138 delta:0x10
+  setEventTimes = 0x0053cde0; expected_if_equal_gap:0x0053cb70
+  GB_GetNumVehicles = 0x0053ceb0; expected_if_equal_gap:0x0053cc40
+
+[.text] count:1 proto:0x0053e378-0x0053e378 between:GB_GetVehicleFromUID@0x0053e330->GB_VehicleHandleDamage@0x0053e3c0
+  retail anchors:0x0053e0d8->0x0053e160 proto_gap_size:0x90 retail_gap_size:0x88 delta:0x-8
+  GB_VehicleCheckBadHotSpot = 0x0053e378; expected_if_equal_gap:0x0053e120
+
+[.text] count:1 proto:0x0053f7f0-0x0053f7f0 between:GB_VehicleIsHeroInDeadVehicle@0x0053f7b0->GB_VehicleShouldBeTargetedByTeam@0x0053f868
+  retail anchors:0x0053f550->0x0053f600 proto_gap_size:0xb8 retail_gap_size:0xb0 delta:0x-8
+  GB_VehicleCleanModReactions = 0x0053f7f0; expected_if_equal_gap:0x0053f590
+
+[.text] count:1 proto:0x0053f918-0x0053f918 between:GB_VehicleShouldBeTargetedByTeam@0x0053f868->GB_VehicleHasPlayerLockedIn@0x0053fc38
+  retail anchors:0x0053f600->0x0053f9d8 proto_gap_size:0x3d0 retail_gap_size:0x3d8 delta:0x8
+  GB_GetCOOPRespawnHoverBike = 0x0053f918; expected_if_equal_gap:0x0053f6b0
+
+[.text] count:1 proto:0x00541dc8-0x00541dc8 between:ClearJuggernaut@0x00541d98->GB_CheckForCheaters@0x005420d0
+  retail anchors:0x00541b38->0x00541e88 proto_gap_size:0x338 retail_gap_size:0x350 delta:0x18
+  GB_UpdateJuggernaut = 0x00541dc8; expected_if_equal_gap:0x00541b68
+
+[.text] count:1 proto:0x005423b0-0x005423b0 between:GB_GetNumStartPlayersAndTeams@0x00542318->GB_GameControllerDisplayKillMessage@0x005433e0
+  retail anchors:0x005420d0->0x005431c8 proto_gap_size:0x10c8 retail_gap_size:0x10f8 delta:0x30
+  GB_UpdateGameController = 0x005423b0; expected_if_equal_gap:0x00542168
+
+[.text] count:1 proto:0x00544760-0x00544760 between:GB_GameControllerSessionMasterEndGame@0x005441c8->GB_CheckResurrectionSpot@0x005455c0
+  retail anchors:0x00543fb0->0x00545420 proto_gap_size:0x13f8 retail_gap_size:0x1470 delta:0x78
+  GB_GameControllerEndGame = 0x00544760; expected_if_equal_gap:0x00544548
+
+[.text] count:1 proto:0x00547e30-0x00547e30 between:FindMaxGadgetLevel@0x00547db0->GetGadgetLevel@0x00547ed8
+  retail anchors:0x00547c10->0x00547d58 proto_gap_size:0x128 retail_gap_size:0x148 delta:0x20
+  SetGadgetLevel = 0x00547e30; expected_if_equal_gap:0x00547c90
+
+[.text] count:1 proto:0x00548228-0x00548228 between:GetGadgetXP@0x005481f8->AddGadgetXP@0x00548318
+  retail anchors:0x00548078->0x005481a8 proto_gap_size:0x120 retail_gap_size:0x130 delta:0x10
+  GetLevelUpXP = 0x00548228; expected_if_equal_gap:0x005480a8
+
+[.text] count:1 proto:0x00548790-0x00548790 between:GetGadgetRefireRate@0x005486f0->GadgetBox_ShouldDebrisGadgetsBail@0x00548b80
+  retail anchors:0x00548580->0x00548a10 proto_gap_size:0x490 retail_gap_size:0x490 delta:0x0
+  QueueGadgetEvent = 0x00548790; expected_if_equal_gap:0x00548620
+
+[.text] count:1 proto:0x00548c70-0x00548c70 between:PeekGadgetEvent@0x00548b88->GetGadgetDef@0x00548e38
+  retail anchors:0x00548a18->0x00548d28 proto_gap_size:0x2b0 retail_gap_size:0x310 delta:0x60
+  GetGadgetEvent = 0x00548c70; expected_if_equal_gap:0x00548b00
+
+[.text] count:1 proto:0x00548f08-0x00548f08 between:IsGadgetUpgraded@0x00548ee8->RemoveGadget@0x00549048
+  retail anchors:0x00548dd8->0x00548f48 proto_gap_size:0x160 retail_gap_size:0x170 delta:0x10
+  MakeAvailable = 0x00548f08; expected_if_equal_gap:0x00548df8
+
+[.text] count:4 proto:0x0054a5a0-0x0054a6d0 between:ActivateMod@0x0054a500->StripMods@0x0054a750
+  retail anchors:0x0054a400->0x0054a708 proto_gap_size:0x250 retail_gap_size:0x308 delta:0xb8
+  DeactivateBasicMod = 0x0054a5a0; expected_if_equal_gap:0x0054a4a0
+  DeactivateBasicMods = 0x0054a610; expected_if_equal_gap:0x0054a510
+  DeactivatePostFXMod = 0x0054a650; expected_if_equal_gap:0x0054a550
+  DeactivateWeaponMod = 0x0054a6d0; expected_if_equal_gap:0x0054a5d0
+
+[.text] count:1 proto:0x0054aee8-0x0054aee8 between:CheckBadgeUnlock@0x0054ae10->GB_ConvertToJuggernautMsgCB@0x0054b000
+  retail anchors:0x0054adc8->0x0054afb8 proto_gap_size:0x1f0 retail_gap_size:0x1f0 delta:0x0
+  GB_SetGunpointMobyIfTarget = 0x0054aee8; expected_if_equal_gap:0x0054aea0
+
+[net.text] count:1 proto:0x01ebc870-0x01ebc870 between:rt_p2p_process_token_data@0x01ebc560->rt_p2p_timebase_query@0x01ebca40
+  retail anchors:0x01ebc660->0x01ebcb40 proto_gap_size:0x4e0 retail_gap_size:0x4e0 delta:0x0
+  rt_p2p_token_event_notify = 0x01ebc870; expected_if_equal_gap:0x01ebc970
+
+[net.text] count:1 proto:0x01ebd650-0x01ebd650 between:rt_udp_get_first_sub_header@0x01ebd618->randomNonZero@0x01ebd680
+  retail anchors:0x01ebd718->0x01ebd758 proto_gap_size:0x68 retail_gap_size:0x40 delta:0x-28
+  GetUDPSecurityMode = 0x01ebd650; expected_if_equal_gap:0x01ebd750
+
+[net.text] count:1 proto:0x01ec0ed0-0x01ec0ed0 between:rt_udp_send_version_exchange@0x01ec0ce0->rt_udp_process_disconnect@0x01ec1230
+  retail anchors:0x01ec0db8->0x01ec1310 proto_gap_size:0x550 retail_gap_size:0x558 delta:0x8
+  rt_udp_process_new_connect = 0x01ec0ed0; expected_if_equal_gap:0x01ec0fa8
+
+[net.text] count:4 proto:0x01ec31a8-0x01ec3400 between:get_n_intc@0x01ec3160->rt_msg_mutex_unlock@0x01ec3438
+  retail anchors:0x01ec3240->0x01ec3498 proto_gap_size:0x2d8 retail_gap_size:0x258 delta:0x-80
+  rt_msg_client_resolve_interface = 0x01ec31a8; expected_if_equal_gap:0x01ec3288
+  NetUseClientServer = 0x01ec33a8; expected_if_equal_gap:0x01ec3488
+  rt_msg_client_get_client_security_mode = 0x01ec33d0; expected_if_equal_gap:0x01ec34b0
+  rt_msg_mutex_lock = 0x01ec3400; expected_if_equal_gap:0x01ec34e0
+
+[net.text] count:42 proto:0x01ec3458-0x01ec54b8 between:rt_msg_mutex_unlock@0x01ec3438->rt_msg_client_calc_connect_aux_udp_msg_size@0x01ec54c0
+  retail anchors:0x01ec3498->0x01ec54f0 proto_gap_size:0x2088 retail_gap_size:0x2058 delta:0x-30
+  rt_msg_client_get_version_string_ptr = 0x01ec3458; expected_if_equal_gap:0x01ec34b8
+  rt_msg_client_get_build_timestamp = 0x01ec3468; expected_if_equal_gap:0x01ec34c8
+  rt_msg_client_startup = 0x01ec3478; expected_if_equal_gap:0x01ec34d8
+  rt_msg_client_shutdown = 0x01ec3530; expected_if_equal_gap:0x01ec3590
+  rt_msg_client_connect = 0x01ec3658; expected_if_equal_gap:0x01ec36b8
+  rt_msg_client_disconnect = 0x01ec36a8; expected_if_equal_gap:0x01ec3708
+  rt_msg_client_disconnect_all = 0x01ec36f8; expected_if_equal_gap:0x01ec3758
+  rt_msg_client_update = 0x01ec3770; expected_if_equal_gap:0x01ec37d0
+  rt_msg_client_update_all = 0x01ec37c0; expected_if_equal_gap:0x01ec3820
+  rt_msg_client_send_target = 0x01ec3868; expected_if_equal_gap:0x01ec38c8
+  rt_msg_client_send_client_set = 0x01ec3990; expected_if_equal_gap:0x01ec39f0
+  rt_msg_client_get_buffer_status = 0x01ec3b38; expected_if_equal_gap:0x01ec3b98
+  rt_msg_client_get_local_ip = 0x01ec3d00; expected_if_equal_gap:0x01ec3d60
+  rt_msg_client_get_broadcast_ip = 0x01ec3d40; expected_if_equal_gap:0x01ec3da0
+  rt_msg_client_get_host_by_name = 0x01ec3d80; expected_if_equal_gap:0x01ec3de0
+  rt_msg_client_get_connection_ip = 0x01ec3de8; expected_if_equal_gap:0x01ec3e48
+  rt_msg_client_set_recv_flag = 0x01ec3e60; expected_if_equal_gap:0x01ec3ec0
+  rt_msg_client_receive_broadcasts = 0x01ec3ee8; expected_if_equal_gap:0x01ec3f48
+  rt_msg_client_get_metrics = 0x01ec3f88; expected_if_equal_gap:0x01ec3fe8
+  rt_msg_client_set_send_aggregation_time = 0x01ec4050; expected_if_equal_gap:0x01ec40b0
+  rt_msg_client_set_server_send_aggregation_time = 0x01ec40d8; expected_if_equal_gap:0x01ec4138
+  rt_msg_client_set_default_connect_options = 0x01ec4160; expected_if_equal_gap:0x01ec41c0
+  rt_msg_client_display_comm_state = 0x01ec41c8; expected_if_equal_gap:0x01ec4228
+  rt_msg_client_get_interface_data = 0x01ec4208; expected_if_equal_gap:0x01ec4268
+  rt_msg_client_iconnect = 0x01ec4288; expected_if_equal_gap:0x01ec42e8
+  rt_msg_client_idisconnect = 0x01ec45b8; expected_if_equal_gap:0x01ec4618
+  rt_msg_client_update_single = 0x01ec4738; expected_if_equal_gap:0x01ec4798
+  rt_msg_client_update_connection = 0x01ec4830; expected_if_equal_gap:0x01ec4890
+  rt_msg_client_update_comm_wait = 0x01ec4990; expected_if_equal_gap:0x01ec49f0
+  rt_msg_client_update_send = 0x01ec4a58; expected_if_equal_gap:0x01ec4ab8
+  rt_msg_client_create_channel_info = 0x01ec4cf0; expected_if_equal_gap:0x01ec4d50
+  rt_msg_client_destroy_channel_info = 0x01ec4d98; expected_if_equal_gap:0x01ec4df8
+  rt_msg_client_create_new_connection_index = 0x01ec4dd8; expected_if_equal_gap:0x01ec4e38
+  rt_msg_client_free_connection_index = 0x01ec5038; expected_if_equal_gap:0x01ec5098
+  rt_msg_client_is_valid_connection = 0x01ec5120; expected_if_equal_gap:0x01ec5180
+  rt_msg_client_is_valid_connection_id = 0x01ec51c0; expected_if_equal_gap:0x01ec5220
+  rt_msg_client_get_connection = 0x01ec5218; expected_if_equal_gap:0x01ec5278
+  rt_msg_client_get_valid_connection = 0x01ec5250; expected_if_equal_gap:0x01ec52b0
+  rt_msg_client_is_valid_channel = 0x01ec5288; expected_if_equal_gap:0x01ec52e8
+  rt_msg_client_store_pkey_msg_in_send_buf = 0x01ec52b0; expected_if_equal_gap:0x01ec5310
+  rt_msg_client_store_connect_msg_in_send_buf = 0x01ec52f8; expected_if_equal_gap:0x01ec5358
+  rt_msg_client_calc_connect_msg_size = 0x01ec54b8; expected_if_equal_gap:0x01ec5518
+
+[net.text] count:45 proto:0x01ec54c8-0x01ec8dd0 between:rt_msg_client_calc_connect_aux_udp_msg_size@0x01ec54c0->NetInitializeClients@0x01ec8e28
+  retail anchors:0x01ec54f0->0x01ec8e58 proto_gap_size:0x3968 retail_gap_size:0x3968 delta:0x0
+  rt_msg_client_store_connect_aux_udp = 0x01ec54c8; expected_if_equal_gap:0x01ec54f8
+  rt_msg_client_store_msg_in_send_buf = 0x01ec55e0; expected_if_equal_gap:0x01ec5610
+  rt_msg_client_create_send_buf_space = 0x01ec57a0; expected_if_equal_gap:0x01ec57d0
+  rt_msg_client_process_recv_buf = 0x01ec5840; expected_if_equal_gap:0x01ec5870
+  rt_msg_client_process_message = 0x01ec59b8; expected_if_equal_gap:0x01ec59e8
+  rt_msg_client_process_connect_result = 0x01ec5d00; expected_if_equal_gap:0x01ec5d30
+  rt_msg_client_process_accept_aux_udp = 0x01ec5f90; expected_if_equal_gap:0x01ec5fc0
+  rt_msg_client_process_connect_complete = 0x01ec60d8; expected_if_equal_gap:0x01ec6108
+  rt_msg_client_process_client_connect_notify = 0x01ec6178; expected_if_equal_gap:0x01ec61a8
+  rt_msg_client_process_app_message = 0x01ec6350; expected_if_equal_gap:0x01ec6380
+  rt_msg_client_process_server_echo_message = 0x01ec6440; expected_if_equal_gap:0x01ec6470
+  rt_msg_client_process_disconnect_message = 0x01ec6470; expected_if_equal_gap:0x01ec64a0
+  rt_msg_client_process_crypt_key_peer = 0x01ec6530; expected_if_equal_gap:0x01ec6560
+  rt_msg_client_process_info_aux_udp = 0x01ec65f0; expected_if_equal_gap:0x01ec6620
+  rt_msg_client_process_system_message = 0x01ec66c0; expected_if_equal_gap:0x01ec66f0
+  rt_msg_client_process_cheat_query = 0x01ec6708; expected_if_equal_gap:0x01ec6738
+  rt_msg_client_process_memory_poke = 0x01ec6ed0; expected_if_equal_gap:0x01ec6f00
+  rt_msg_client_send_buffer = 0x01ec6f48; expected_if_equal_gap:0x01ec6f78
+  rt_msg_client_send_channel_circ_buf = 0x01ec6ff0; expected_if_equal_gap:0x01ec7020
+  rt_msg_client_recv_channel_circ_buf = 0x01ec7110; expected_if_equal_gap:0x01ec7140
+  rt_msg_client_set_scratch_buf_min_size = 0x01ec72c8; expected_if_equal_gap:0x01ec72f8
+  rt_msg_client_transfer_last_msg = 0x01ec7358; expected_if_equal_gap:0x01ec7388
+  rt_msg_client_calc_send_size = 0x01ec7680; expected_if_equal_gap:0x01ec76b0
+  rt_msg_client_channel_send_buf = 0x01ec7730; expected_if_equal_gap:0x01ec7760
+  rt_msg_client_get_encryption_key = 0x01ec77f0; expected_if_equal_gap:0x01ec7820
+  rt_msg_client_have_encryption_key = 0x01ec7840; expected_if_equal_gap:0x01ec7870
+  rt_msg_client_is_server_compatible = 0x01ec7860; expected_if_equal_gap:0x01ec7890
+  rt_msg_client_send_server_message = 0x01ec78a0; expected_if_equal_gap:0x01ec78d0
+  rt_msg_client_set_send_max_message_len = 0x01ec7a20; expected_if_equal_gap:0x01ec7a50
+  rt_msg_client_peer_query_single = 0x01ec7aa8; expected_if_equal_gap:0x01ec7ad8
+  rt_msg_client_peer_query_list = 0x01ec7b40; expected_if_equal_gap:0x01ec7b70
+  rt_msg_client_wallclock_query = 0x01ec7c38; expected_if_equal_gap:0x01ec7c68
+  rt_msg_client_timebase_query = 0x01ec7c98; expected_if_equal_gap:0x01ec7cc8
+  rt_msg_client_process_timebase_query = 0x01ec7d18; expected_if_equal_gap:0x01ec7d48
+  rt_msg_client_process_startup_info_notify = 0x01ec7d80; expected_if_equal_gap:0x01ec7db0
+  rt_msg_client_send_systemmsg = 0x01ec8118; expected_if_equal_gap:0x01ec8148
+  rt_msg_client_process_connect_require = 0x01ec81f8; expected_if_equal_gap:0x01ec8228
+  rt_msg_client_send_token_msg = 0x01ec8358; expected_if_equal_gap:0x01ec8388
+  rt_msg_client_send_token_set_msg = 0x01ec8410; expected_if_equal_gap:0x01ec8440
+  rt_msg_client_process_server_token_notify = 0x01ec8518; expected_if_equal_gap:0x01ec8548
+  rt_msg_client_send_hello = 0x01ec8758; expected_if_equal_gap:0x01ec8788
+  rt_msg_client_process_server_hello = 0x01ec88b0; expected_if_equal_gap:0x01ec88e0
+  rt_msg_client_process_peer_query_notify = 0x01ec8a38; expected_if_equal_gap:0x01ec8a68
+  rt_msg_client_process_peer_query_list_notify = 0x01ec8b40; expected_if_equal_gap:0x01ec8b70
+  DorkFunk = 0x01ec8dd0; expected_if_equal_gap:0x01ec8e00
+
+[net.text] count:29 proto:0x01ed4730-0x01ed5500 between:MediusBillingLogInCallback@0x01ed4678->MediusSetNatServiceAddress@0x01ed5510
+  retail anchors:0x01ed46a8->0x01ed5548 proto_gap_size:0xe98 retail_gap_size:0xea0 delta:0x8
+  MediusBillingAccountLogout = 0x01ed4730; expected_if_equal_gap:0x01ed4760
+  MediusCreateClan = 0x01ed47e0; expected_if_equal_gap:0x01ed4810
+  MediusDisbandClan = 0x01ed4860; expected_if_equal_gap:0x01ed4890
+  MediusGetClanByName = 0x01ed48e0; expected_if_equal_gap:0x01ed4910
+  MediusGetClanByID = 0x01ed4960; expected_if_equal_gap:0x01ed4990
+  MediusTransferClanLeadership = 0x01ed49e0; expected_if_equal_gap:0x01ed4a10
+  MediusRemovePlayerFromClan = 0x01ed4a60; expected_if_equal_gap:0x01ed4a90
+  MediusInvitePlayerToClan = 0x01ed4ae0; expected_if_equal_gap:0x01ed4b10
+  MediusCheckMyClanInvitations = 0x01ed4b60; expected_if_equal_gap:0x01ed4b90
+  MediusGetClanInvitationsSent = 0x01ed4be0; expected_if_equal_gap:0x01ed4c10
+  MediusRespondToClanInvitation = 0x01ed4c60; expected_if_equal_gap:0x01ed4c90
+  MediusRevokeClanInvitation = 0x01ed4ce0; expected_if_equal_gap:0x01ed4d10
+  MediusGetMyClanMessages = 0x01ed4d60; expected_if_equal_gap:0x01ed4d90
+  MediusSendClanMessage = 0x01ed4de0; expected_if_equal_gap:0x01ed4e10
+  MediusModifyClanMessage = 0x01ed4e60; expected_if_equal_gap:0x01ed4e90
+  MediusDeleteClanMessage = 0x01ed4ee0; expected_if_equal_gap:0x01ed4f10
+  MediusRequestClanTeamChallenge = 0x01ed4f60; expected_if_equal_gap:0x01ed4f90
+  MediusRespondToClanTeamChallenge = 0x01ed4fe0; expected_if_equal_gap:0x01ed5010
+  MediusRevokeClanTeamChallenge = 0x01ed5060; expected_if_equal_gap:0x01ed5090
+  MediusGetClanTeamChallenges = 0x01ed50e0; expected_if_equal_gap:0x01ed5110
+  MediusGetMyClans = 0x01ed5160; expected_if_equal_gap:0x01ed5190
+  MediusGetAllClanMessages = 0x01ed51e8; expected_if_equal_gap:0x01ed5218
+  MediusGetClanTeamChallengeHistory = 0x01ed5268; expected_if_equal_gap:0x01ed5298
+  MediusUpdateClanStats = 0x01ed52e8; expected_if_equal_gap:0x01ed5318
+  MediusClanLadderList = 0x01ed5370; expected_if_equal_gap:0x01ed53a0
+  MediusClanLadderPosition = 0x01ed53f0; expected_if_equal_gap:0x01ed5420
+  MediusGetClanMemberList_ExtraInfo = 0x01ed5470; expected_if_equal_gap:0x01ed54a0
+  MediusConnectionHandle = 0x01ed54f0; expected_if_equal_gap:0x01ed5520
+  MediusInitFlag = 0x01ed5500; expected_if_equal_gap:0x01ed5530
+
+[net.text] count:5 proto:0x01edbc30-0x01edbd10 between:MediusUniqueCallbackAccountLoginResponseHandler@0x01edbbd8->MediusUniqueCallbackAccountUpdateStatsResponseHandler@0x01edbd48
+  retail anchors:0x01edbc10->0x01edc510 proto_gap_size:0x170 retail_gap_size:0x900 delta:0x790
+  MediusUniqueCallbackAccountLogoutResponseHandler = 0x01edbc30; expected_if_equal_gap:0x01edbc68
+  MediusUniqueCallbackAccountRegistrationResponseHandler = 0x01edbc68; expected_if_equal_gap:0x01edbca0
+  MediusUniqueCallbackAccountGetProfileResponseHandler = 0x01edbca0; expected_if_equal_gap:0x01edbcd8
+  MediusUniqueCallbackAccountUpdateProfileResponseHandler = 0x01edbcd8; expected_if_equal_gap:0x01edbd10
+  MediusUniqueCallbackAccountUpdatePasswordResponseHandler = 0x01edbd10; expected_if_equal_gap:0x01edbd48
+
+[net.text] count:5 proto:0x01edbd80-0x01edbe60 between:MediusUniqueCallbackAccountUpdateStatsResponseHandler@0x01edbd48->MediusUniqueCallbackJoinChannelFwdResponseHandler@0x01edbe98
+  retail anchors:0x01edc510->0x01edbed0 proto_gap_size:0x150 retail_gap_size:0x-640 delta:0x-790
+  MediusUniqueCallbackAnonymousLoginResponseHandler = 0x01edbd80; expected_if_equal_gap:0x01edc548
+  MediusUniqueCallbackCreateGameResponseHandler = 0x01edbdb8; expected_if_equal_gap:0x01edc580
+  MediusUniqueCallbackCreateChannelResponseHandler = 0x01edbdf0; expected_if_equal_gap:0x01edc5b8
+  MediusUniqueCallbackJoinGameResponseHandler = 0x01edbe28; expected_if_equal_gap:0x01edc5f0
+  MediusUniqueCallbackJoinChannelResponseHandler = 0x01edbe60; expected_if_equal_gap:0x01edc628
+
+[net.text] count:40 proto:0x01edc468-0x01edccf0 between:MediusUniqueCallbackGetGameListFilterResponseHandler0@0x01edc460->MediusUniqueCallbackGetTotalChannelsResponseHandler@0x01edcd28
+  retail anchors:0x01edc498->0x01eddbe0 proto_gap_size:0x8c8 retail_gap_size:0x1748 delta:0xe80
+  MediusUniqueCallbackGetGameListFilterResponseHandler = 0x01edc468; expected_if_equal_gap:0x01edc4a0
+  MediusUniqueCallbackCreateClanResponseHandler = 0x01edc4a0; expected_if_equal_gap:0x01edc4d8
+  MediusUniqueCallbackDisbandClanResponseHandler = 0x01edc4d8; expected_if_equal_gap:0x01edc510
+  MediusUniqueCallbackGetClanByIDResponseHandler = 0x01edc510; expected_if_equal_gap:0x01edc548
+  MediusUniqueCallbackGetClanByNameResponseHandler = 0x01edc548; expected_if_equal_gap:0x01edc580
+  MediusUniqueCallbackTransferClanLeadershipResponseHandler = 0x01edc580; expected_if_equal_gap:0x01edc5b8
+  MediusUniqueCallbackAddPlayerToClanResponseHandler = 0x01edc5b8; expected_if_equal_gap:0x01edc5f0
+  MediusUniqueCallbackRemovePlayerFromClanResponseHandler = 0x01edc5f0; expected_if_equal_gap:0x01edc628
+  MediusUniqueCallbackInvitePlayerToClanResponseHandler = 0x01edc628; expected_if_equal_gap:0x01edc660
+  MediusUniqueCallbackCheckMyClanInvitationsResponseHandler = 0x01edc660; expected_if_equal_gap:0x01edc698
+  MediusUniqueCallbackGetClanInvitationsSentResponseHandler = 0x01edc698; expected_if_equal_gap:0x01edc6d0
+  MediusUniqueCallbackRespondToClanInvitationResponseHandler = 0x01edc6d0; expected_if_equal_gap:0x01edc708
+  MediusUniqueCallbackRevokeClanInvitationResponseHandler = 0x01edc708; expected_if_equal_gap:0x01edc740
+  MediusUniqueCallbackRequestClanTeamChallengeResponseHandler = 0x01edc740; expected_if_equal_gap:0x01edc778
+  MediusUniqueCallbackGetMyClanMessagesResponseHandler = 0x01edc778; expected_if_equal_gap:0x01edc7b0
+  MediusUniqueCallbackSendClanMessageResponseHandler = 0x01edc7b0; expected_if_equal_gap:0x01edc7e8
+  MediusUniqueCallbackModifyClanMessageResponseHandler = 0x01edc7e8; expected_if_equal_gap:0x01edc820
+  MediusUniqueCallbackDeleteClanMessageResponseHandler = 0x01edc820; expected_if_equal_gap:0x01edc858
+  MediusUniqueCallbackRespondToClanTeamChallengeResponseHandler = 0x01edc858; expected_if_equal_gap:0x01edc890
+  MediusUniqueCallbackRevokeClanTeamChallengeResponseHandler = 0x01edc890; expected_if_equal_gap:0x01edc8c8
+  MediusUniqueCallbackGetMyClansResponseHandler = 0x01edc8c8; expected_if_equal_gap:0x01edc900
+  MediusUniqueCallbackGetClanTeamChallengesResponseHandler = 0x01edc900; expected_if_equal_gap:0x01edc938
+  MediusUniqueCallbackConfirmClanTeamChallengeResponseHandler = 0x01edc938; expected_if_equal_gap:0x01edc970
+  MediusUniqueCallbackGetAllClanMessagesResponseHandler = 0x01edc970; expected_if_equal_gap:0x01edc9a8
+  MediusUniqueCallbackGetClanTeamChallengeHistoryResponseHandler = 0x01edc9a8; expected_if_equal_gap:0x01edc9e0
+  MediusUniqueCallbackUpdateClanStatsResponseHandler = 0x01edc9e0; expected_if_equal_gap:0x01edca18
+  MediusUniqueCallbackGetMyIPResponseHandler = 0x01edca18; expected_if_equal_gap:0x01edca50
+  MediusUniqueCallbackVersionServerResponseHandler = 0x01edca50; expected_if_equal_gap:0x01edca88
+  MediusUniqueCallbackGetWorldSecurityLevelResponseHandler = 0x01edca88; expected_if_equal_gap:0x01edcac0
+  MediusUniqueCallbackBanPlayerResponseHandler = 0x01edcac0; expected_if_equal_gap:0x01edcaf8
+  MediusUniqueCallbackAccountDeleteResponseHandler = 0x01edcaf8; expected_if_equal_gap:0x01edcb30
+  MediusUniqueCallbackAccountGetIDResponseHandler = 0x01edcb30; expected_if_equal_gap:0x01edcb68
+  MediusUniqueCallbackGetLocationsResponseHandler = 0x01edcb68; expected_if_equal_gap:0x01edcba0
+  MediusUniqueCallbackPickLocationResponseHandler = 0x01edcba0; expected_if_equal_gap:0x01edcbd8
+  MediusUniqueCallbackGetClanMemberListResponseHandler = 0x01edcbd8; expected_if_equal_gap:0x01edcc10
+  MediusUniqueCallbackLadderPositionFastResponseHandler = 0x01edcc10; expected_if_equal_gap:0x01edcc48
+  MediusUniqueCallbackGenericChatSetFilterResponseHandler = 0x01edcc48; expected_if_equal_gap:0x01edcc80
+  MediusUniqueCallbackTextFilterResponseHandler = 0x01edcc80; expected_if_equal_gap:0x01edccb8
+  MediusUniqueCallbackReassignGameMediusWorldIDHandler = 0x01edccb8; expected_if_equal_gap:0x01edccf0
+  MediusUniqueCallbackGetTotalGamesResponseHandler = 0x01edccf0; expected_if_equal_gap:0x01edcd28
+
+[net.text] count:15 proto:0x01edce08-0x01edd118 between:MediusUniqueCallbackSetLocalizationParamsResponseHandler@0x01edcdd0->MediusUniqueCallbackFileUploadFromClientResponseHandler@0x01edd150
+  retail anchors:0x01eddc88->0x01edd188 proto_gap_size:0x380 retail_gap_size:0x-b00 delta:0x-e80
+  MediusUniqueCallbackSetMessageAsReadResponseHandler = 0x01edce08; expected_if_equal_gap:0x01eddcc0
+  MediusUniqueCallbackClanLadderListResponseHandler = 0x01edce40; expected_if_equal_gap:0x01eddcf8
+  MediusUniqueCallbackClanLadderPositionResponseHandler = 0x01edce78; expected_if_equal_gap:0x01eddd30
+  MediusUniqueCallbackGetBuddyList_ExtraInfoResponseHandler = 0x01edceb0; expected_if_equal_gap:0x01eddd68
+  MediusUniqueCallbackGetTotalRankingsResponseHandler = 0x01edcee8; expected_if_equal_gap:0x01eddda0
+  MediusUniqueCallbackGetLobbyPlayerNames_ExtraInfoResponseHandler = 0x01edcf20; expected_if_equal_gap:0x01edddd8
+  MediusUniqueCallbackGetClanMemberList_ExtraInfoResponseHandler = 0x01edcf58; expected_if_equal_gap:0x01edde10
+  MediusUniqueCallbackGameList_ExtraInfoResponseHandler = 0x01edcf90; expected_if_equal_gap:0x01edde48
+  MediusUniqueCallbackChannelList_ExtraInfoResponseHandler = 0x01edcfc8; expected_if_equal_gap:0x01edde80
+  MediusUniqueCallbackLadderList_ExtraInfoResponseHandler = 0x01edd000; expected_if_equal_gap:0x01eddeb8
+  MediusUniqueCallbackUpdateLadderStatsResponseHandler = 0x01edd038; expected_if_equal_gap:0x01eddef0
+  MediusUniqueCallbackUpdateLadderStatsWideResponseHandler = 0x01edd070; expected_if_equal_gap:0x01eddf28
+  MediusUniqueCallbackGetLadderStatsWideResponseHandler = 0x01edd0a8; expected_if_equal_gap:0x01eddf60
+  MediusUniqueCallbackLadderPosition_ExtraInfoResponseHandler = 0x01edd0e0; expected_if_equal_gap:0x01eddf98
+  MediusUniqueCallbackFileCreateResponseHandler = 0x01edd118; expected_if_equal_gap:0x01eddfd0
+
+[net.text] count:1 proto:0x01ee51fc-0x01ee51fc between:~HttpSecure@0x01ee5194->HttpsCallEngine@0x01ee5230
+  retail anchors:0x01ee51cc->0x01ee5268 proto_gap_size:0x9c retail_gap_size:0x9c delta:0x0
+  DoRegistrations = 0x01ee51fc; expected_if_equal_gap:0x01ee5234
+
+[net.text] count:1 proto:0x01ee9ef0-0x01ee9ef0 between:~Http@0x01ee9e1c->InitRequest@0x01ee9f24
+  retail anchors:0x01ee9e54->0x01ee9f5c proto_gap_size:0x108 retail_gap_size:0x108 delta:0x0
+  DoRegistrations = 0x01ee9ef0; expected_if_equal_gap:0x01ee9f28
+
+[no matched executable section] count:42
+  patch_entry = 0x01f38000;
+  nwUtilFileCreateCallback = 0x01f38004;
+  nwUtilFileUploadCallback = 0x01f38008;
+  nwUtilFileCloseCallback = 0x01f3800c;
+  nwUtilFileDownloadCallback = 0x01f38010;
+  SpawnMoby_9301 = 0x01f38014;
+  SpawnMoby_4245 = 0x01f38018;
+  SpawnMuzzleFlash_8376 = 0x01f3801c;
+  M8207_CreateLargeGunEffect01 = 0x01f38020;
+  M8207_CreateLargeGunEffect01 = 0x01f38024;
+  SpawnMoby_4247 = 0x01f38028;
+  M7383_FlameOn = 0x01f3802c;
+  M8419_FadeOut = 0x01f38030;
+  M8363_FadeOut = 0x01f38034;
+  M8363_PostFX_Heat = 0x01f38038;
+  M8363_FX_UpdateDistort = 0x01f3803c;
+  SpawnMoby_8419 = 0x01f38040;
+  SpawnMoby_4238 = 0x01f38044;
+  SpawnMoby_3406 = 0x01f38048;
+  SpawnMoby_8418 = 0x01f3804c;
+  SpawnMoby_9771 = 0x01f38050;
+  MobyLoaderInit_9464 = 0x01f38054;
+  SpawnMoby_9464 = 0x01f38058;
+  SpawnMoby_9962 = 0x01f3805c;
+  SpawnMoby_8459 = 0x01f38060;
+  OrderSplitScreens = 0x01f38064;
+  SpawnMoby_6928 = 0x01f38068;
+  LoadGadget = 0x01f3806c;
+  Cam19_ActivateCutScene = 0x01f38074;
+  UpdateMoby_358 = 0x01f38078;
+  UpdateMoby_9854 = 0x01f3807c;
+  MB_PointInArea = 0x01f38080;
+  MB_LimitAngToBetweenPoints = 0x01f38084;
+  PAUSEDIALOG_DrawDialog = 0x01f38088;
+  UpdateSceneFX = 0x01f3808c;
+  M4959_PointInLava = 0x01f38090;
+  Ige_GetMapManualDisplay = 0x01f380a0;
+  Ige_GetScoreManualDisplay = 0x01f380a4;
+  Ige_SetScoreManualDisplay = 0x01f380a8;
+  Ige_SetMapManualDisplay = 0x01f380ac;
+  Ige_IsMapVisible = 0x01f380b0;
+  Ige_IsScoreVisible = 0x01f380b4;
