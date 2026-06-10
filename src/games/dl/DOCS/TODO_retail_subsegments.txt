@@ -18,12 +18,14 @@
       - [0x633c8, cpp, game/fs]
       - [0x63900, cpp, game/fs_handlers]
 
-      - [0x, cpp, game/network/nwSocket]
-      - [0x, cpp, game/fixfilename]
-      - [0x, cpp, game/streamer/ee/src/streamer]
-      - [0x, cpp, game/streamer/ee/src/rpc]
-      - [0x, cpp, game/patch]
-      - [0x, cpp, game/bmain]
+
+    # SKIPPED
+    #  - [0x, cpp, game/network/nwSocket]
+    #  - [0x, cpp, game/fixfilename]
+    #  - [0x, cpp, game/streamer/ee/src/streamer]
+    #  - [0x, cpp, game/streamer/ee/src/rpc]
+    #  - [0x, cpp, game/patch]
+    #  - [0x, cpp, game/bmain]
 
 
 
@@ -51,12 +53,10 @@
       - [0x323fc0, cpp, game/update/moby8263]
       - [0x325930, cpp, game/update/moby8299]
       - [0x325970, cpp, game/update/moby167]
-      
-      - [0x, cpp, game/update/moby6244]
-      - [0x, cpp, game/update/moby4236]
+      - [0x327008, cpp, game/update/moby6244]
+      - [0x3271f8, cpp, game/update/moby4236]
       - [0x, cpp, game/update/moby4231]
       - [0x, cpp, game/update/moby4261]
-
       - [0x, cpp, game/update/moby3303]
       - [0x, cpp, game/update/moby9454]
       - [0x, cpp, game/update/moby9456]
