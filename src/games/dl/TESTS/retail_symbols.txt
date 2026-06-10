@@ -2114,6 +2114,7 @@ M6244_UpdateShotTargeting = 0x00427088;  // type:func proto:0x004281d8 section:.
 M6244_SetSoftAim = 0x00427268;  // type:func proto:0x004283b8 section:.text match:gap_equal_exact_at
 M6244_GetSoftAim = 0x00427270;  // type:func proto:0x004283c0 section:.text match:gap_equal_exact_at
 GetFreeRocketMobyIndex = 0x00427278;  // type:func proto:0x004283c8 section:.text match:norm
+M4231_UpdateShotTargeting = 0x00427420; // type:func
 M4261_UpdateShotTargeting = 0x00427558;  // type:func proto:0x00428678 section:.text match:norm
 UpdateMoby_3303 = 0x00427670;  // type:func proto:0x00428790 section:.text match:norm
 M3303_InitDust = 0x00428380;  // type:func proto:0x004294a0 section:.text match:norm

@@ -55,7 +55,7 @@
       - [0x325970, cpp, game/update/moby167]
       - [0x327008, cpp, game/update/moby6244]
       - [0x3271f8, cpp, game/update/moby4236]
-      - [0x, cpp, game/update/moby4231]
+      - [0x3273a0, cpp, game/update/moby4231]
       - [0x3274d8, cpp, game/update/moby4261]
       - [0x3275f0, cpp, game/update/moby3303]
       - [0x329b68, cpp, game/update/moby9454]
