@@ -16,7 +16,7 @@
       - [0x628f8, cpp, game/network/nellymoser_wrapper]
       - [0x63340, s, game/corefunc]
       - [0x633c8, cpp, game/fs]
-      - [0x63900, cpp, game/fs_handlers]
+      - [0x638e0, cpp, game/fs_handlers]
 
 
     # SKIPPED
