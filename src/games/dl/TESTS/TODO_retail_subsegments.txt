@@ -25,7 +25,6 @@
     #  - [0x, cpp, game/streamer/ee/src/streamer]
     #  - [0x, cpp, game/streamer/ee/src/rpc]
     #  - [0x, cpp, game/patch]
-    #  - [0x, cpp, game/bmain]
 
 
 
@@ -47,6 +46,7 @@
       - [0x320940, cpp, game/update/camera5]
       - [0x320c80, cpp, game/update/moby4234]
       - [0x320da0, cpp, game/update/moby8439]
+    #  - [0x, cpp, game/update/moby8227]
       - [0x320e78, cpp, game/update/moby8244]
       - [0x322a18, cpp, game/update/moby6736]
       - [0x322c30, cpp, game/update/moby7326]
@@ -66,27 +66,23 @@
       - [0x32b8e0, cpp, game/update/moby6295]
       - [0x32e330, cpp, game/update/moby3709]
       - [0x32ff68, cpp, game/update/moby9532]
-      - [0x, cpp, game/update/moby9396]
+    #  - [0x, cpp, game/update/moby9396]
       - [0x3308a0, cpp, game/update/moby9479]
       - [0x330b90, cpp, game/update/moby6908]
       - [0x330f78, cpp, game/update/moby7257]
-      - [0x, cpp, game/update/moby9458]
+    #  - [0x, cpp, game/update/moby9458]
       - [0x331228, cpp, game/update/moby9747]
       - [0x331e78, cpp, game/update/moby428]
       - [0x3320f8, cpp, game/update/moby9923]
       - [0x332748, cpp, game/update/moby8076]
       - [0x332e40, cpp, game/update/moby6298]
-      - [0x, cpp, game/update/moby8454]
+      - [0x333018, cpp, game/update/moby8454]
       - [0x333130, cpp, game/update/moby4265]
       - [0x3369b8, cpp, game/update/moby6249]
       - [0x336b40, cpp, game/update/moby9738]
-      - [0x, cpp, output/game/mobypvarb]
-
-
-    # SKIPPED moby8227
-    #  - [0x, cpp, game/update/moby8227]
-
-
+    #  - [0x, cpp, output/game/mobypvarb]
+    # ==== Label: ovl_code_end; CDCDCD CDCDCDCD CDCDCDCD CDCDCDCD
+      - [0x336BC0, cpp, game/bmain]
       - [0x338c10, cpp, game/actuator]
       - [0x, s, game/asmtable]
       - [0x339350, cpp, game/astrm/ee/src/astrm]
@@ -358,6 +354,12 @@
       - [0x44af38, cpp, game/guber/MessageHandlers]
       - [0x44af90, cpp, game/dead_reckon]
       - [0x44b068, cpp, game/transitionmulti]
+
+    # ===== END SEGMENT: text ===========
+
+
+
+
       - [0x, s, sdk/klib]
       - [0x, h, sdk/include/syscall]
       - [0x, h, sdk/version]
