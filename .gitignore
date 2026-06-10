@@ -50,3 +50,5 @@ ctx.c
 
 userconfig*
 !*.template.mk
+src/games/dl/TESTS/proto_elf.elf
+src/games/dl/TESTS/retail_elf.elf
