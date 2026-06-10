@@ -1,8 +1,8 @@
 Retail Symbol Accuracy Audit
 
-entries: 7786
-method_counts: {'norm': 4809, 'gap_equal_norm_at': 1528, 'exact': 1054, 'gap_equal_exact_at': 395}
-body_validation_counts: {'normalized_body_at_addr': 6337, 'exact_body_at_addr': 1449}
+entries: 8225
+method_counts: {'norm': 4809, 'gap_equal_norm_at': 1528, 'exact': 1054, 'config_manual': 439, 'gap_equal_exact_at': 395}
+body_validation_counts: {'normalized_body_at_addr': 6337, 'exact_body_at_addr': 1449, 'config_manual_unverified': 439}
 issues: 0
 duplicate_retail_addresses: 6
 duplicate_proto_entries: 0
@@ -11,7 +11,7 @@ proto_order_retail_backtracks: 4
 Issue Samples
 
 Duplicate Retail Address Samples
-.text 0x004c5b20: MenuPlanet_SwitchFromHere@proto:0x004be700, MenuArena_SwitchFromHere@proto:0x004c62f8
+.text 0x004c5b20: MenuArena_SwitchFromHere@proto:0x004c62f8, MenuPlanet_SwitchFromHere@proto:0x004be700
 .text 0x004f1cf8: videoDecBeginPut@proto:0x004f23b8, videoDecInputCount@proto:0x004f24a0
 net.text 0x01eddbe0: MediusUniqueCallbackGetTotalChannelsResponseHandler@proto:0x01edcd28, MediusUtilAddLobbyWorldResponseHandler@proto:0x01eddba8
 net.text 0x01eddc18: MediusUniqueCallbackGetLobbyPlayerNamesResponseHandler@proto:0x01edcd60, MediusUtilAddGameWorldResponseHandler@proto:0x01eddbe0

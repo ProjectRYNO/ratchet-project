@@ -133,22 +133,23 @@ def parse_proto_symbols(path, proto_sections):
 
 def parse_retail_symbols(path):
     entries = []
-    pattern = re.compile(
-        r"(.+?)\s*=\s*0x([0-9a-fA-F]+);\s*//\s*type:func\s+"
-        r"proto:0x([0-9a-fA-F]+)\s+section:([^ ]+)\s+match:(\S+)"
-    )
+    pattern = re.compile(r"(.+?)\s*=\s*0x([0-9a-fA-F]+);\s*//\s*type:func\s+(.*)$")
     for line_number, line in enumerate(path.read_text().splitlines(), 1):
         match = pattern.match(line)
         if not match:
             continue
+        extra = match.group(3)
+        proto_match = re.search(r"proto:0x([0-9a-fA-F]+)", extra)
+        section_match = re.search(r"section:([^ ]+)", extra)
+        method_match = re.search(r"match:(\S+)", extra)
         entries.append(
             {
                 "line": line_number,
                 "name": match.group(1),
                 "retail_addr": int(match.group(2), 16),
-                "proto_addr": int(match.group(3), 16),
-                "section": match.group(4),
-                "method": match.group(5),
+                "proto_addr": int(proto_match.group(1), 16) if proto_match else None,
+                "section": section_match.group(1) if section_match else None,
+                "method": method_match.group(1) if method_match else "unknown",
                 "text": line,
             }
         )
@@ -170,8 +171,12 @@ def main():
     by_proto = collections.defaultdict(list)
     for entry in entries:
         by_retail[(entry["section"], entry["retail_addr"])].append(entry)
-        by_proto[(entry["name"], entry["proto_addr"])].append(entry)
+        if entry["proto_addr"] is not None:
+            by_proto[(entry["name"], entry["proto_addr"])].append(entry)
 
+        if entry["method"] == "config_manual":
+            validation_counts["config_manual_unverified"] += 1
+            continue
         if entry["section"] not in SECTIONS:
             issues.append(("bad_section", entry, "unknown section"))
             continue
@@ -211,7 +216,7 @@ def main():
     order_issues = []
     for section in SECTIONS:
         section_entries = sorted(
-            [e for e in entries if e["section"] == section],
+            [e for e in entries if e["section"] == section and e["proto_addr"] is not None],
             key=lambda e: (e["proto_addr"], e["line"]),
         )
         previous = None
