@@ -139,18 +139,12 @@
       - [0x36da78, cpp, game/mobyanim] # was .s/asm
       - [0x36e968, cpp, game/mobyanim_c]
       - [0x36fcc0, cpp, game/snow_c]
-
-
-
-
-
-      
-      - [0x, s, game/envelope]
-      - [0x, cpp, game/animate]
-      - [0x, s, game/mobyproc]
+    #  - [0x, s, game/envelope]
+    #  - [0x, cpp, game/animate]
+      - [0x370010, cpp, game/mobyproc] # was .s/asm
       - [0x372498, cpp, game/bootutil]
       - [0x372830, cpp, game/mobyutil]
-      - [0x, cpp, game/navutil]
+    #  - [0x, cpp, game/navutil]
       - [0x37eeb8, cpp, game/mode_level]
       - [0x37f4b8, cpp, game/mode]
       - [0x37f820, cpp, game/move]
@@ -162,12 +156,12 @@
       - [0x38ebf0, cpp, game/navsyslocal]
       - [0x38f440, cpp, game/npc]
       - [0x38f760, cpp, game/pad]
-      - [0x, cpp, game/partfunc]
-      - [0x, s, game/partproc]
+    #  - [0x, cpp, game/partfunc]
+      - [0x3908e8, cpp, game/partproc] # was .s/asm
       - [0x3918a0, cpp, game/partupd]
       - [0x395440, cpp, game/path]
       - [0x396288, cpp, game/pause]
-      - [0x, s, game/postcpu]
+      - [0x396348, cpp, game/postcpu] # was .s/asm
       - [0x396400, cpp, game/projectgui/projectgui]
       - [0x396ae8, cpp, game/projectgui/guiapi]
       - [0x396fc8, cpp, game/projectgui/guimain]
@@ -227,42 +221,42 @@
       - [0x3d9d40, cpp, game/projectgui/menu/menuskinscreen]
       - [0x3dba18, cpp, game/projectgui/menu/menucardviewer]
       - [0x3dcb28, cpp, game/puzzle]
-      - [0x, cpp, game/save]
+    #  - [0x, cpp, game/save]
       - [0x3dcc38, cpp, game/shadow]
-      - [0x, s, game/shadowproc]
-      - [0x, cpp, game/shrubfunc]
-      - [0x, s, game/shrubproc]
+      - [0x3dd4c8, cpp, game/shadowproc] # was .s/asm
+    #  - [0x, cpp, game/shrubfunc]
+      - [0x3de6f8, cpp, game/shrubproc] # was .s/asm
       - [0x3de800, cpp, game/skyfunc]
-      - [0x, s, game/skyproc]
+      - [0x3df6f0, cpp, game/skyproc] # was .s/asm
       - [0x3dfe48, cpp, game/sound]
       - [0x3e2568, cpp, game/space]
       - [0x3e2870, cpp, game/stash]
-      - [0x, cpp, game/statemachine]
-      - [0x, cpp, game/stdutil_ps2]
+    #  - [0x, cpp, game/statemachine]
+    #  - [0x, cpp, game/stdutil_ps2]
       - [0x3e2a78, cpp, game/tables]
       - [0x3e2ac0, cpp, game/tfragfunc]
-      - [0x, s, game/tfragproc]
+      - [0x3e2fb8, cpp, game/tfragproc] # was .s/asm
       - [0x3e4950, cpp, game/tiefunc]
-      - [0x, s, game/tieproc]
-      - [0x, cpp, game/tweaker]
+      - [0x3e4ac8, cpp, game/tieproc] # was .s/asm
+    #  - [0x, cpp, game/tweaker]
       - [0x3e4bd0, cpp, game/ubersound]
       - [0x3e4c58, cpp, game/update_core]
       - [0x3e5510, cpp, game/update]
       - [0x3e5fc8, cpp, game/vendor]
       - [0x3e73d0, cpp, game/vuchain]
       - [0x3e8258, cpp, game/water]
-      - [0x, s, game/waterasm]
+    #  - [0x, s, game/waterasm]
       - [0x3e8d50, cpp, game/weapons]
       - [0x3ee1c8, cpp, game/widget]
-      - [0x, s, game/widgetasm]
+      - [0x3ee2f0, cpp, game/widgetasm] # was .s/asm
       - [0x3ee668, cpp, game/gui/behaviors]
-      - [0x, cpp, game/gui/channels]
-      - [0x, cpp, game/gui/generalGui]
-      - [0x, cpp, game/gui/graphicObjects]
-      - [0x, cpp, game/gui/guiLoaders]
+    #  - [0x, cpp, game/gui/channels]
+    #  - [0x, cpp, game/gui/generalGui]
+    #  - [0x, cpp, game/gui/graphicObjects]
+    #  - [0x, cpp, game/gui/guiLoaders]
       - [0x3eecf8, cpp, game/gui/memoryManagement]
-      - [0x, cpp, game/gui/rc2Hud]
-      - [0x, cpp, game/gui/rc2HudMoby]
+    #  - [0x, cpp, game/gui/rc2Hud]
+    #  - [0x, cpp, game/gui/rc2HudMoby]
       - [0x3eed48, cpp, game/gui/mathUtil]
       - [0x3eee30, cpp, game/movie/movie]
       - [0x3ef650, cpp, game/movie/audiodec]
@@ -277,16 +271,14 @@
       - [0x3f54b0, cpp, game/transitionfunc]
       - [0x3f6418, cpp, game/posteffects]
       - [0x3fb900, cpp, game/quad]
-      - [0x, cpp, game/quarantine]
+    #  - [0x, cpp, game/quarantine]
       - [0x3fbd50, cpp, game/tuning]
       - [0x3fbef8, cpp, game/stats]
       - [0x3fd1e8, cpp, game/config_util]
       - [0x3fdc90, cpp, game/mathfunc]
-      - [0x, s, game/mathfunc_asm]
+      - [0x3fdfa8, cpp, game/mathfunc_asm] #was .s/asm
       - [0x3fe468, cpp, game/mathutil]
       - [0x3fe920, cpp, game/missionload]
-
-
 
       - [0x, cpp, game/ige/behaviors/iBehaviors]
       - [0x3fed48, cpp, game/ige/behaviors/iBehavior]
