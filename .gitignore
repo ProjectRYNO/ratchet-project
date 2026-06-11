@@ -1,5 +1,12 @@
-.venv/
 *.iso
+*.elf
+ctx.c
+
+.venv/
+disc/
+build/
+
+**/TESTS
 
 ee-gcc2.95.2-SN-v2.73a.tar.gz
 src/games/tools/cc/*
@@ -42,11 +49,3 @@ src/games/rac/assets/
 src/games/gc/assets/
 src/games/uya/assets/
 src/games/dl/assets/
-
-disc/
-build/
-
-ctx.c
-
-userconfig*
-!*.template.mk

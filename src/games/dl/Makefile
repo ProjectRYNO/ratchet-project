@@ -56,7 +56,7 @@ endif
 
 WINE32 := /usr/lib/wine/wine
 WINE64 := /usr/lib/wine/wine64
-EEGCC = $(WINE32) tools/cc/bin/ee-gcc.exe
+EEGCC = $(WINE32) /ProjectRYNO/tools/cc/bin/ee-gcc.exe
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
 WRENCHBUILD = /usr/lib/wine/wine64 /opt/wrench
@@ -68,8 +68,11 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S   = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s')
+# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
+# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
+SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 
 BUILD_DIR = build
@@ -77,12 +80,13 @@ OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
-       $(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
-       $(SRC_C:code/%.c=$(OBJ_DIR)/%.o)
+    	$(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
+    	$(SRC_C:code/%.c=$(OBJ_DIR)/%.o) \
+		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
 
 PRODG_DIR = $(TOOLS)/cc
 
-COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -DALLOW_NONMATCHING
+COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
 
 # EXTRA WRENCH commands:
 #     /bin/wrenchbuild unpack_wads ~/ps2/ratchet-dl.iso -o /mnt/ramdisk/ -s
@@ -116,6 +120,7 @@ rom: ps2dev
 
 split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
+	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
 iso:
 	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
@@ -137,12 +142,12 @@ full-clean: clean
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).ld $(OBJS) -o $@
-	$(CROSS)-objcopy $(TARGET) build/boot_elf.elf -O binary
+	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --defsym=_gp=0x22597F -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
+	$(CROSS)-objcopy -O binary $(TARGET) build/boot_elf.elf
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi $< -o $@
+	sed 's/^\s*\.ent\b.*//; s/^\s*\.end\b.*//' $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
@@ -151,3 +156,7 @@ $(OBJ_DIR)/%.o: code/%.c
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -v -c -x c++ $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+
+$(BUILD_DIR)/assets/%.o: assets/%.bin
+	@$(MKDIR) -p $(dir $@)
+	$(CROSS)-objcopy -I binary -O elf32-tradlittlemips -B mips $< $@

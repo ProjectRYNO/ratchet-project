@@ -1,7 +1,7 @@
 #ifndef INCLUDE_ASM_H
 #define INCLUDE_ASM_H
 
-#if !defined(M2CTX) && !defined(PERMUTER)
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
 
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME) \
@@ -22,7 +22,12 @@
         ".section .text" \
     )
 #endif
-__asm__(".include \"code/include/labels.inc\"\n");
+
+#if INCLUDE_ASM_USE_MACRO_INC
+__asm__(".include \"/ProjectRYNO/dl/code/include/macro.inc\"\n");
+#else
+__asm__(".include \"/ProjectRYNO/dl/code/include/labels.inc\"\n");
+#endif
 
 #else
 
