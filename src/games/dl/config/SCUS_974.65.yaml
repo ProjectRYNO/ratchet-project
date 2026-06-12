@@ -86,6 +86,7 @@ segments:
     bss_size: 0x78AB8
     subsegments:
       - [0x1A100, cpp, game/lib] # was .s/asm
+      - [0x57468, asm, crt0]
       - [0x576b8, cpp, game/boot]
       - [0x57ce0, c, 989snd/ee/989snd]
       - [0x59928, cpp, game/permcb]
