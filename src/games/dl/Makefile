@@ -68,9 +68,9 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S = $(shell $(FIND) code -type f -name '*.s')
+# SRC_S = $(shell $(FIND) code -type f -name '*.s')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
-# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
@@ -78,6 +78,8 @@ INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
+PACK_ASSETS = $(BUILD_DIR)/pack_assets
+ELF_ENTRYPOINT = $(shell $(PYTHON) $(TOOLS)/yaml_split_addr.py $(CONFIG)/$(BASENAME).yaml core.text crt0)
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
     	$(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
@@ -86,7 +88,7 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 
 PRODG_DIR = $(TOOLS)/cc
 
-COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
+COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
 
 # EXTRA WRENCH commands:
 #     /bin/wrenchbuild unpack_wads ~/ps2/ratchet-dl.iso -o /mnt/ramdisk/ -s
@@ -109,10 +111,6 @@ ifndef iso
 	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
 endif
 	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
-	@if [ -f "$(ASSETS)/build.asset" ]; then \
-		echo "[Project RYNO] Fixing build.asset ELF path..."; \
-		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROOT)/$(GAME)/build/boot_elf.elf"|' $(ASSETS)/build.asset; \
-	fi
 
 rom: ps2dev
 	@echo "[Project RYNO] Extracting ROM only..."
@@ -122,14 +120,28 @@ split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
 	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
-iso:
-	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
+iso: $(TARGET)
+	@rm -rf $(PACK_ASSETS)
+	@mkdir -p $(PACK_ASSETS)
+	@for item in $(ASSETS)/* $(ASSETS)/.[!.]* $(ASSETS)/..?*; do \
+		[ -e "$$item" ] || continue; \
+		name=$$(basename "$$item"); \
+		[ "$$name" = "build.asset" ] && continue; \
+		ln -s "$$item" "$(PACK_ASSETS)/$$name"; \
+	done
+	@if [ -f "$(ASSETS)/build.asset" ]; then \
+		cp $(ASSETS)/build.asset $(PACK_ASSETS)/build.asset; \
+	fi
+	@if [ -f "$(PACK_ASSETS)/build.asset" ]; then \
+		echo "[Project RYNO] Using build-local build.asset ELF path..."; \
+		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROOT)/$(GAME)/build/boot_elf.elf"|' $(PACK_ASSETS)/build.asset; \
+	fi
+	$(WRENCH_DIR)/wrenchbuild pack $(PACK_ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
 
 # Clean all but .rom for quick rebuild
 clean:
 	rm -rf build
 	rm -rf code/asm
-	rm -rf assets
 	rm -rf include
 	rm -rf cache
 	rm -rf config/$(BASENAME).d
@@ -141,13 +153,14 @@ full-clean: clean
 	
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --defsym=_gp=0x22597F -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
-	$(CROSS)-objcopy -O binary $(TARGET) build/boot_elf.elf
+	@grep -q '\*(.text\*)' $(CONFIG)/$(BASENAME).ld || sed -i 's/        text_TEXT_END = .;/\t\t*(.text*)\n        text_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
+	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
+	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
+	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
-	sed 's/^\s*\.ent\b.*//; s/^\s*\.end\b.*//' $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
+	$(PYTHON) $(TOOLS)/asm_preprocess.py $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
