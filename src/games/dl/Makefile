@@ -1,4 +1,4 @@
-.PHONY: all dump config split iso clean FORCE
+.PHONY: all dump config split iso wad clean FORCE
 
 SHELL := /bin/bash
 export PATH := /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$(PATH)
@@ -79,6 +79,7 @@ TARGET = $(BUILD_DIR)/boot_elf.elf
 WRENCH_PACK_ASSETS = $(BUILD_DIR)/wrench_pack_assets
 ELF_ASSET_SRC = ../../$(GAME)/$(TARGET)
 ISO_SOURCE = $(if $(iso),$(iso),$(shell $(FIND) . -maxdepth 1 -type f -iname '*.iso' -print -quit))
+ISO_WAD_MODE = $(filter wad,$(MAKECMDGOALS))
 ELF_ENTRYPOINT = ENTRYPOINT
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
@@ -119,23 +120,30 @@ split:
 	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
 iso: $(TARGET)
+ifneq ($(ISO_WAD_MODE),)
 ifndef ISO_SOURCE
 	$(error ISO source not found. Put the original ISO in $(CURRENT_GAME) or pass iso=/path/to/game.iso)
 endif
+endif
 	@$(MKDIR) -p $(BUILD_DIR)
-	@rm -rf $(WRENCH_PACK_ASSETS)
 	@rm -f $(BUILD_DIR)/new_$(GAME).iso
 	@sed -i 's|src: ".*boot_elf\.elf"|src: "$(ELF_ASSET_SRC)"|' $(ASSETS)/build.asset
+ifneq ($(ISO_WAD_MODE),)
+	@rm -rf $(WRENCH_PACK_ASSETS)
 	$(WRENCH_DIR)/wrenchbuild unpack_wads "$(ISO_SOURCE)" -o $(WRENCH_PACK_ASSETS) -s
 	@pack_dir=$$($(FIND) "$(WRENCH_PACK_ASSETS)" -mindepth 1 -maxdepth 1 -type d -print -quit); \
 	if [ -z "$$pack_dir" ]; then \
 		echo "[Project RYNO] Wrench did not create a packable asset bank in $(WRENCH_PACK_ASSETS)."; \
 		exit 1; \
 	fi; \
-	if [ -f "$(TARGET)" ]; then \
-		cp "$(TARGET)" "$$pack_dir/boot_elf.elf"; \
-	fi; \
+	cp "$(TARGET)" "$$pack_dir/boot_elf.elf"; \
 	$(WRENCH_DIR)/wrenchbuild pack "$$pack_dir" $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
+else
+	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
+endif
+
+wad:
+	@:
 
 # Clean all but .rom for quick rebuild
 clean:
