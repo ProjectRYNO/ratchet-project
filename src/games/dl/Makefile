@@ -1,4 +1,4 @@
-.PHONY: all dump config split iso clean
+.PHONY: all dump config split iso clean FORCE
 
 SHELL := /bin/bash
 export PATH := /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$(PATH)
@@ -54,13 +54,11 @@ else
 	DELETEFLAGS := -rf
 endif
 
-WINE32 := /usr/lib/wine/wine
-WINE64 := /usr/lib/wine/wine64
-EEGCC = $(WINE32) /ProjectRYNO/tools/cc/bin/ee-gcc.exe
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
-WRENCHBUILD = /usr/lib/wine/wine64 /opt/wrench
 PS2DEV_DIR = /opt/ps2dev
+EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
+EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
 PS2DEV_OBJCOPY = $(PS2DEV_DIR)/ee/bin/ee-objcopy
 PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
@@ -79,16 +77,14 @@ BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
 PACK_ASSETS = $(BUILD_DIR)/pack_assets
-ELF_ENTRYPOINT = $(shell $(PYTHON) $(TOOLS)/yaml_split_addr.py $(CONFIG)/$(BASENAME).yaml core.text crt0)
+ELF_ENTRYPOINT = ENTRYPOINT
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
     	$(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
     	$(SRC_C:code/%.c=$(OBJ_DIR)/%.o) \
 		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
 
-PRODG_DIR = $(TOOLS)/cc
-
-COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
+COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
 
 # EXTRA WRENCH commands:
 #     /bin/wrenchbuild unpack_wads ~/ps2/ratchet-dl.iso -o /mnt/ramdisk/ -s
@@ -157,6 +153,7 @@ $(TARGET): $(OBJS)
 	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
 	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
 	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
+	$(PYTHON) $(TOOLS)/patch_elf_runtime_headers.py $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
@@ -164,11 +161,11 @@ $(OBJ_DIR)/%.o: code/%.s
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
-	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
-	$(EEGCC) -v -c -x c++ $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+	$(EEGXX) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
 $(BUILD_DIR)/assets/%.o: assets/%.bin
 	@$(MKDIR) -p $(dir $@)
