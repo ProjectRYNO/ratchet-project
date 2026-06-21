@@ -76,7 +76,9 @@ INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
-PACK_ASSETS = $(BUILD_DIR)/pack_assets
+WRENCH_PACK_ASSETS = $(BUILD_DIR)/wrench_pack_assets
+ELF_ASSET_SRC = ../../$(GAME)/$(TARGET)
+ISO_SOURCE = $(if $(iso),$(iso),$(shell $(FIND) . -maxdepth 1 -type f -iname '*.iso' -print -quit))
 ELF_ENTRYPOINT = ENTRYPOINT
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
@@ -117,22 +119,23 @@ split:
 	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
 iso: $(TARGET)
-	@rm -rf $(PACK_ASSETS)
-	@mkdir -p $(PACK_ASSETS)
-	@for item in $(ASSETS)/* $(ASSETS)/.[!.]* $(ASSETS)/..?*; do \
-		[ -e "$$item" ] || continue; \
-		name=$$(basename "$$item"); \
-		[ "$$name" = "build.asset" ] && continue; \
-		ln -s "$$item" "$(PACK_ASSETS)/$$name"; \
-	done
-	@if [ -f "$(ASSETS)/build.asset" ]; then \
-		cp $(ASSETS)/build.asset $(PACK_ASSETS)/build.asset; \
-	fi
-	@if [ -f "$(PACK_ASSETS)/build.asset" ]; then \
-		echo "[Project RYNO] Using build-local build.asset ELF path..."; \
-		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROOT)/$(GAME)/build/boot_elf.elf"|' $(PACK_ASSETS)/build.asset; \
-	fi
-	$(WRENCH_DIR)/wrenchbuild pack $(PACK_ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
+ifndef ISO_SOURCE
+	$(error ISO source not found. Put the original ISO in $(CURRENT_GAME) or pass iso=/path/to/game.iso)
+endif
+	@$(MKDIR) -p $(BUILD_DIR)
+	@rm -rf $(WRENCH_PACK_ASSETS)
+	@rm -f $(BUILD_DIR)/new_$(GAME).iso
+	@sed -i 's|src: ".*boot_elf\.elf"|src: "$(ELF_ASSET_SRC)"|' $(ASSETS)/build.asset
+	$(WRENCH_DIR)/wrenchbuild unpack_wads "$(ISO_SOURCE)" -o $(WRENCH_PACK_ASSETS) -s
+	@pack_dir=$$($(FIND) "$(WRENCH_PACK_ASSETS)" -mindepth 1 -maxdepth 1 -type d -print -quit); \
+	if [ -z "$$pack_dir" ]; then \
+		echo "[Project RYNO] Wrench did not create a packable asset bank in $(WRENCH_PACK_ASSETS)."; \
+		exit 1; \
+	fi; \
+	if [ -f "$(TARGET)" ]; then \
+		cp "$(TARGET)" "$$pack_dir/boot_elf.elf"; \
+	fi; \
+	$(WRENCH_DIR)/wrenchbuild pack "$$pack_dir" $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
 
 # Clean all but .rom for quick rebuild
 clean:
