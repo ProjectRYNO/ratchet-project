@@ -1,0 +1,3 @@
+#include "common.h"
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update/moby4231", M4231_UpdateShotTargeting);

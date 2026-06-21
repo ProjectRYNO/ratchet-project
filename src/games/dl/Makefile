@@ -1,4 +1,4 @@
-.PHONY: all dump config split iso clean
+.PHONY: all dump config split iso wad clean FORCE
 
 SHELL := /bin/bash
 export PATH := /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$(PATH)
@@ -54,13 +54,11 @@ else
 	DELETEFLAGS := -rf
 endif
 
-WINE32 := /usr/lib/wine/wine
-WINE64 := /usr/lib/wine/wine64
-EEGCC = $(WINE32) /ProjectRYNO/tools/cc/bin/ee-gcc.exe
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
-WRENCHBUILD = /usr/lib/wine/wine64 /opt/wrench
 PS2DEV_DIR = /opt/ps2dev
+EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
+EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
 PS2DEV_OBJCOPY = $(PS2DEV_DIR)/ee/bin/ee-objcopy
 PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
@@ -68,9 +66,9 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-SRC_S = $(shell $(FIND) code -type f -name '*.s')
+# SRC_S = $(shell $(FIND) code -type f -name '*.s')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
-# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
@@ -78,13 +76,16 @@ INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
+WRENCH_PACK_ASSETS = $(BUILD_DIR)/wrench_pack_assets
+ELF_ASSET_SRC = ../../$(GAME)/$(TARGET)
+ISO_SOURCE = $(if $(iso),$(iso),$(shell $(FIND) . -maxdepth 1 -type f -iname '*.iso' -print -quit))
+ISO_WAD_MODE = $(filter wad,$(MAKECMDGOALS))
+ELF_ENTRYPOINT = ENTRYPOINT
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
     	$(SRC_CPP:code/%.cpp=$(OBJ_DIR)/%.o) \
     	$(SRC_C:code/%.c=$(OBJ_DIR)/%.o) \
 		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
-
-PRODG_DIR = $(TOOLS)/cc
 
 COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
 
@@ -109,10 +110,6 @@ ifndef iso
 	$(error ISO is not set. Usage: make dump iso=/path/to/your/game.iso or ISO=D:\path\to\your\game.iso)
 endif
 	$(WRENCH_DIR)/wrenchbuild unpack "$(shell /usr/bin/python3 $(TOOLS)/normalize_path.py "$(iso)")" -o $(ASSETS)
-	@if [ -f "$(ASSETS)/build.asset" ]; then \
-		echo "[Project RYNO] Fixing build.asset ELF path..."; \
-		sed -i 's|src: "boot_elf.elf"|src: "$(CONTAINER_ROOT)/$(GAME)/build/boot_elf.elf"|' $(ASSETS)/build.asset; \
-	fi
 
 rom: ps2dev
 	@echo "[Project RYNO] Extracting ROM only..."
@@ -122,14 +119,36 @@ split:
 	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
 	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
-iso:
-	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o build/new_$(GAME).iso -h release --flusher-thread-hack
+iso: $(TARGET)
+ifneq ($(ISO_WAD_MODE),)
+ifndef ISO_SOURCE
+	$(error ISO source not found. Put the original ISO in $(CURRENT_GAME) or pass iso=/path/to/game.iso)
+endif
+endif
+	@$(MKDIR) -p $(BUILD_DIR)
+	@rm -f $(BUILD_DIR)/new_$(GAME).iso
+	@sed -i 's|src: ".*boot_elf\.elf"|src: "$(ELF_ASSET_SRC)"|' $(ASSETS)/build.asset
+ifneq ($(ISO_WAD_MODE),)
+	@rm -rf $(WRENCH_PACK_ASSETS)
+	$(WRENCH_DIR)/wrenchbuild unpack_wads "$(ISO_SOURCE)" -o $(WRENCH_PACK_ASSETS) -s
+	@pack_dir=$$($(FIND) "$(WRENCH_PACK_ASSETS)" -mindepth 1 -maxdepth 1 -type d -print -quit); \
+	if [ -z "$$pack_dir" ]; then \
+		echo "[Project RYNO] Wrench did not create a packable asset bank in $(WRENCH_PACK_ASSETS)."; \
+		exit 1; \
+	fi; \
+	cp "$(TARGET)" "$$pack_dir/boot_elf.elf"; \
+	$(WRENCH_DIR)/wrenchbuild pack "$$pack_dir" $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
+else
+	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
+endif
+
+wad:
+	@:
 
 # Clean all but .rom for quick rebuild
 clean:
 	rm -rf build
 	rm -rf code/asm
-	rm -rf assets
 	rm -rf include
 	rm -rf cache
 	rm -rf config/$(BASENAME).d
@@ -141,21 +160,23 @@ full-clean: clean
 	
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
-	$(CROSS)-strip $(OBJS) -N dummy-symbol-name
-	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --defsym=_gp=0x22597F -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
-	$(CROSS)-objcopy -O binary $(TARGET) build/boot_elf.elf
+	@grep -q '\*(.text\*)' $(CONFIG)/$(BASENAME).ld || sed -i 's/        text_TEXT_END = .;/\t\t*(.text*)\n        text_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
+	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
+	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
+	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
+	$(PYTHON) $(TOOLS)/patch_elf_runtime_headers.py $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
-	sed 's/^\s*\.ent\b.*//; s/^\s*\.end\b.*//' $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
+	$(PYTHON) $(TOOLS)/asm_preprocess.py $< | $(CROSS)-as $(INCLUDE) -EL -no-pad-sections -march=5900 -mabi=eabi - -o $@
 
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
-	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
-	$(EEGCC) -v -c -x c++ $(COMMON_COMPILE_FLAGS) $(INCLUDE) -B$(PRODG_DIR)/lib/gcc-lib/ee/2.95.2/ $< -o $@
+	$(EEGXX) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
 $(BUILD_DIR)/assets/%.o: assets/%.bin
 	@$(MKDIR) -p $(dir $@)
