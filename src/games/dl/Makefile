@@ -57,7 +57,7 @@ endif
 
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
-PS2DEV_DIR = /opt/ps2dev
+PS2DEV_DIR ?= /opt/ps2dev
 EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
 EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
 PS2DEV_OBJCOPY = $(PS2DEV_DIR)/ee/bin/ee-objcopy
@@ -69,7 +69,7 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
-SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings")
+SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings\|asm/build/cod/001A5180.bss.s")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
@@ -88,7 +88,11 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
     	$(SRC_C:code/%.c=$(OBJ_DIR)/%.o) \
 		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
 
-COMMON_COMPILE_FLAGS = -DALLOW_NONMATCHING -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
+ALLOW_NONMATCHING ?= 0
+COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
+ifeq ($(ALLOW_NONMATCHING),1)
+	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
+endif
 
 elf: $(TARGET)
 
@@ -117,6 +121,9 @@ split:
 	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
 
 iso:
+	@$(MKDIR) -p $(BUILD_DIR)
+	@rm -f $(BUILD_DIR)/new_$(GAME).iso
+	@sed -i 's|src: ".*boot_elf\.elf"|src: "$(ELF_ASSET_SRC)"|' $(ASSETS)/build.asset
 	$(WRENCH_DIR)/wrenchbuild pack $(ASSETS) $(WRENCH_DIR)/overlay -a $(WRENCH_ID) -o $(BUILD_DIR)/new_$(GAME).iso -h release --flusher-thread-hack
 
 # Clean all but .rom for quick rebuild
@@ -134,11 +141,10 @@ full-clean: clean
 	
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
-	@grep -q '\*(.text\*)' $(CONFIG)/$(BASENAME).ld || sed -i 's/        text_TEXT_END = .;/\t\t*(.text*)\n        text_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
+	@sed -i '/build\/code\/asm\/build\/cod\/001A5180\.bss\.o/d' $(CONFIG)/$(BASENAME).ld
 	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
 	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
-	$(CROSS)-ld -EL -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
-	$(PYTHON) $(TOOLS)/patch_elf_runtime_headers.py $@
+	$(CROSS)-ld -EL -G0 -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
