@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/Team", GetTeamCount);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/guber/Team", GetTeamCount);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/Team", GetTeamColorStr);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/guber/Team", GetTeamColorStr);

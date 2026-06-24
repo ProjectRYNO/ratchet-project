@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/tieproc", TieDetachPointLight);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/tieproc", TieDetachPointLight);

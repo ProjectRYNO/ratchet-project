@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/npc", UpdateNPCState);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/npc", UpdateNPCState);

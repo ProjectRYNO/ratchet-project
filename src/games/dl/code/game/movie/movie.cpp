@@ -1,18 +1,18 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", movie);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", movie);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", readMpeg);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", readMpeg);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", switchThread);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", switchThread);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", isAudioOK);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", isAudioOK);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", initAll);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", initAll);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", termAll);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", termAll);
 
 void ErrMessage(void) {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/movie/movie", proceedAudio);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/movie/movie", proceedAudio);

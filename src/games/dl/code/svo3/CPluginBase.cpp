@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPluginBase", emptyMessageQueue);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/svo3/CPluginBase", emptyMessageQueue);

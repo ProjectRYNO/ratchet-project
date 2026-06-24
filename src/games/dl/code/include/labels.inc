@@ -6,13 +6,11 @@
     .\visibility \label
     .type \label, @function
     \label:
-        .ent \label
 .endm
 
 # The end of a function symbol.
 .macro endlabel label
     .size \label, . - \label
-    .end \label
 .endm
 
 # An alternative entry to a function.
@@ -20,7 +18,6 @@
     .\visibility \label
     .type \label, @function
     \label:
-        .aent \label
 .endm
 
 # A label referenced by an error handler table.

@@ -1,5 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/HeroInitBodyState", InitBodyState);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/guber/HeroInitBodyState", InitBodyState);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/HeroInitBodyState", CheckForSquattingYourAss);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/guber/HeroInitBodyState", CheckForSquattingYourAss);

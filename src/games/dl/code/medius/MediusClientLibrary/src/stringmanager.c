@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/stringmanager", iCreateAndAllocateMessageID);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/medius/MediusClientLibrary/src/stringmanager", iCreateAndAllocateMessageID);

@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/MessageHandlers", GB_ConvertToJuggernautMsgCB);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/guber/MessageHandlers", GB_ConvertToJuggernautMsgCB);

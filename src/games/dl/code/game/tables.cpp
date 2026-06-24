@@ -1,3 +1,3 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/tables", GetMovieOffset);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/game/tables", GetMovieOffset);
