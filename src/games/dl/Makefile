@@ -69,7 +69,7 @@ PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s')
 # SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
-SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings\|asm/build/cod/001A5180.bss.s")
+SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings\|asm/build/core.bss.data.s\|asm/build/bss.data.s\|asm/build/cod/001A5180.bss.s\|asm/build/bss/00221080.bss.s")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
 INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
@@ -141,10 +141,9 @@ full-clean: clean
 	
 $(TARGET): $(OBJS)
 	@$(MKDIR) -p $(dir $@)
-	@sed -i '/build\/code\/asm\/build\/cod\/001A5180\.bss\.o/d' $(CONFIG)/$(BASENAME).ld
 	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
 	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
-	$(CROSS)-ld -EL -G0 -z muldefs --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
+	$(CROSS)-ld -EL -G0 -z muldefs -z max-page-size=0x1000 --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)
