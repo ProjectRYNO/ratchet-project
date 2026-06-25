@@ -19,6 +19,7 @@ options:
   ld_script_path:  config/SCUS_974.65.ld
   # ld_dependencies: True
   # ld_wildcard_sections: True
+  ld_bss_is_noload: True
   # ld_bss_contains_common: True
   # create_asm_dependencies: True
 
@@ -83,7 +84,7 @@ segments:
     type: code
     start: 0x01A100
     vram: 0x0011A180
-    bss_size: 0x78AB8
+    bss_size: 0x0
     subsegments:
       - [0x1A100, cpp, game/lib] # was .s/asm
       - [0x57460, textbin, junk/core.text/057460_057468]
@@ -114,9 +115,28 @@ segments:
       - [0x633c8, cpp, game/fs]
       - [0x638e0, cpp, game/fs_handlers]
       - [0x63a90, textbin, junk/core.text/063a90_063b00]
-      - [0x063B00, bin, core.data/063B00]      # core.data
-      - [0x091E80, rodata, core.data/091E80]   # core.rdata
-      - { type: bss, vram: 0x001A5180, name: cod/001A5180 } # core.bss
+
+  - name: core.data
+    type: bin
+    start: 0x063B00
+    vram: 0x00163B80
+
+  - name: core.rdata
+    type: code
+    start: 0x091E80
+    vram: 0x00191F00
+    bss_size: 0x0
+    subalign: null
+    subsegments:
+      - [0x091E80, rodata, core.data/091E80]
+
+  - name: core.bss
+    type: bss
+    start: 0x0A5100
+    vram: 0x001A5180
+    bss_size: 0x78AB8
+    subsegments:
+      - { type: bss, vram: 0x001A5180, name: cod/001A5180 }
 
   - name: core.lit
     type: data
@@ -133,7 +153,7 @@ segments:
       - [0x11E100, data, lit/11E100]
 
   - name: bss
-    type: data
+    type: bss
     start: 0x121000
     vram: 0x00221080
     bss_size: 0x1A4908
