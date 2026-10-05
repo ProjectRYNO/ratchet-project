@@ -46,7 +46,7 @@ make split
 ```
 
 5. Start decomping the code!
-...more work is still done to do this.  Current state is unbuildable.
+Deadlocked has a matching assembly rebuild. See [ELF rebuild notes](src/games/dl/DOCS/ELF_REBUILD.md) for the verified workflow and the distinction between matching assembly and decompiled C/C++.
 
 6. Build the new elf!
 ```

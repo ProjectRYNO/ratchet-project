@@ -1,5 +1,5 @@
 name: Ratchet Deadlocked (USA)
-sha1: accfca45948d59a16d932443ae7e201d0f0cabf0
+sha1: 9afbce694b6927871b9456f57c86f9e8c6cfb4e7
 options:
   basename: SCUS_974.65
   target_path: config/SCUS_974.65.rom
@@ -39,12 +39,17 @@ options:
   do_c_func_detection: False
   ld_wildcard_sections: True
 
-  subalign: 8
+  subalign: 4
+  auto_decompile_empty_functions: False
+  align_on_branch_labels: False
+  ld_align_section_vram_end: False
+  ld_align_segment_vram_end: False
 
   symbol_addrs_path:
     - config/symbols_core.text.txt
     - config/symbols_text.txt
     - config/symbols_net.text.txt
+    - config/symbols_bss.txt
   reloc_addrs_path:
     - config/reloc_addrs.txt
 
@@ -199,7 +204,8 @@ segments:
     start: 0x2F0F80
     vram: 0x003F1000
     bss_size: 0x0
-    subalign: null
+    subalign: 4
+    section_order: [.rodata, .text, .data, .bss]
     subsegments:
       - [0x2F0F80, rodata, text/2F0F80]
       - [0x3140a4, textbin, junk/text/3140a4_3140a8]
@@ -648,6 +654,12 @@ segments:
     subalign: null
     subsegments:
       - [0x44D680, data, patch.data/44D680]
+
+  # File padding is not part of the main PT_LOAD.
+  - name: main.padding
+    type: pad
+    start: 0x44D698
+    vram: 0x0054D718
 
   - name: net.text
     type: code

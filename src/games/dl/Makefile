@@ -89,7 +89,7 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 		$(SRC_BIN:assets/%.bin=$(BUILD_DIR)/assets/%.o)
 
 ALLOW_NONMATCHING ?= 0
-COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include
+COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -Wa,-no-pad-sections
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
@@ -114,11 +114,10 @@ endif
 
 rom: ps2dev
 	@echo "[Project RYNO] Extracting ROM only..."
-	$(PS2DEV_OBJCOPY) -O binary $(ASSETS)/boot_elf.elf $(CONFIG)/$(BASENAME).rom
+	$(PYTHON) $(TOOLS)/elf_to_rom.py $(ASSETS)/boot_elf.elf $(CONFIG)/$(BASENAME).yaml $(CONFIG)/$(BASENAME).rom
 
 split:
-	$(PYTHON) -m splat split $(CONFIG)/$(BASENAME).yaml --disassemble-all
-	sed -i 's/        cod_TEXT_END = .;/\t\t*(.text*)\n        cod_TEXT_END = .;/' $(CONFIG)/$(BASENAME).ld
+	$(PYTHON) $(TOOLS)/split_dl.py $(CONFIG)/$(BASENAME).yaml
 
 iso:
 	@$(MKDIR) -p $(BUILD_DIR)
@@ -139,11 +138,12 @@ clean:
 full-clean: clean
 	rm -rf config/$(BASENAME).rom
 	
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) $(CONFIG)/$(BASENAME).ld
 	@$(MKDIR) -p $(dir $@)
 	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
 	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
 	$(CROSS)-ld -EL -G0 -z muldefs -z max-page-size=0x1000 --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
+	$(PYTHON) $(TOOLS)/patch_elf_runtime_headers.py $@
 
 $(OBJ_DIR)/%.o: code/%.s
 	@$(MKDIR) -p $(dir $@)

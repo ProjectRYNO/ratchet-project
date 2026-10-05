@@ -1,4 +1,3 @@
 #include "common.h"
 
-void UpdateCommand(void) {
-}
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/guber/LocalHero", UpdateCommand);

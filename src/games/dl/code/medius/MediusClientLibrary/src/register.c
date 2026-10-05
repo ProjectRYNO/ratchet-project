@@ -1,3 +1,5 @@
 #include "common.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/matchings/medius/MediusClientLibrary/src/register", RegisterPackets);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/register", RegisterPackets);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/register", func_01EDEAB8);

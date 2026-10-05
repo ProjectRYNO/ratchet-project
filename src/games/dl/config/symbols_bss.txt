@@ -1,0 +1,5 @@
+// Distinct targets prevent unrelated HI16/LO16 relocations against the large
+// D_0022597F BSS range from being paired together by the EE linker.
+D_0023AB00 = 0x0023AB00;
+D_0023AB10 = 0x0023AB10;
+D_00241CE0 = 0x00241CE0;
