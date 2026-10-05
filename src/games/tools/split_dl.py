@@ -56,6 +56,12 @@ def runtime_linker_script(text, config, replacements=None):
             if line.strip() == f"build/code/{obj}.o(.text*);":
                 lines.append(f'        ASSERT(ABSOLUTE(.) == 0x{bounds["text_start"]:X}, "{obj} moved from its original address");')
                 lines.append(line)
+                for slot in bounds.get("slots", []):
+                    lines.append(f'        ASSERT(ABSOLUTE(.) <= 0x{slot["start"]:X}, "code overlaps {slot["section"]}");')
+                    lines.append(f'        . = ABSOLUTE(0x{slot["start"]:X});')
+                    lines.append(f'        build/code/{slot["object"]}.o({slot["section"]});')
+                    lines.append(f'        ASSERT(ABSOLUTE(.) <= 0x{slot["end"]:X}, "{slot["section"]} exceeds its original allocation");')
+                    lines.append(f'        . = ABSOLUTE(0x{slot["end"]:X});')
                 lines.append(f'        ASSERT(ABSOLUTE(.) <= 0x{bounds["text_end"]:X}, "{obj} exceeds its original allocation");')
                 line = f'        . = ABSOLUTE(0x{bounds["text_end"]:X});'
         match = re.match(r"    (\.[\w]+)\s", line)

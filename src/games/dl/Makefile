@@ -90,6 +90,8 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 
 ALLOW_NONMATCHING ?= 0
 COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -Wa,-no-pad-sections
+# Avoid pre-allocation scheduling's extra argument moves in the fixed-size EE sound wrappers.
+$(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -fno-schedule-insns
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif

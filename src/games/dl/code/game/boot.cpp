@@ -6,10 +6,6 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", ParsePatch);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", ParseBin);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", GetBootOptionsFromSettings);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", ApplyBootOptionsToSettings);
-
 extern "C" {
 typedef void (*BootEntry)(void);
 
@@ -31,7 +27,7 @@ extern const char multiOption[] __asm__("D_0021DCA0");       // "multi"
 }
 
 // Original: 0x00157C58. This EE compiler needs the runtime call explicitly.
-int main(int argc, char **argv)
+int __attribute__((section(".boot_main"))) main(int argc, char **argv)
 {
     __main();
     gParsedBootOptions = 0;

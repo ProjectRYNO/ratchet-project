@@ -1,11 +1,136 @@
-# Compiled replacements must retain their entry addresses while the rest of
-# the executable still contains original pointers and assembly references.
+# Compiled replacements have no fallback symbols and retain original entry addresses.
+# Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  GetBootOptionsFromSettings: 0x001579F0
+  ApplyBootOptionsToSettings: 0x00157B30
   main: 0x00157C58
+  snd_ResolveBankXREFS: 0x00158568
+  snd_UnloadBank: 0x00158598
+  snd_UnloadBank_CB: 0x001585C8
+  snd_SetMasterVolume: 0x001585F8
+  snd_SetPlaybackMode: 0x001586A8
+  snd_SetGroupVoiceRange: 0x001586F0
+  snd_SetReverbMode: 0x00158730
+  snd_PlaySoundVolPanPMPB_CB: 0x00158780
+  snd_StopSound: 0x001587E0
+  snd_StopAllSounds: 0x00158838
+  snd_PauseAllSoundsInGroup: 0x00158868
+  snd_ContinueAllSoundsInGroup: 0x00158898
+  snd_StopAllSoundsInGroup: 0x001588C8
+  snd_SoundIsStillPlaying: 0x001588F8
+  snd_SoundIsStillPlaying_CB: 0x00158920
+  snd_SetSoundParams_A: 0x00158988
+  snd_SetSoundParams_CB: 0x001589A8
+  snd_StartCaching: 0x00159120
+  snd_SendCache: 0x00159128
+  snd_PlayVAGStreamByLocEx_CB: 0x00159258
+  snd_PauseVAGStream: 0x001592D8
+  snd_ContinueVAGStream: 0x00159308
+  snd_GetVAGStreamQueueCount_CB: 0x00159338
+  snd_GetVAGStreamTimeRemaining_CB: 0x00159368
+  snd_IsVAGStreamBuffered_CB: 0x00159398
+  snd_SetReverbEx: 0x001595F8
+  snd_PreAllocReverbWorkArea: 0x00159638
+  snd_AutoReverb: 0x00159670
+  snd_SRAMGetFreeMem: 0x001596D8
+  snd_InitMovieSoundEx: 0x00159718
+  snd_ResetMovieSound: 0x00159758
+  snd_CloseMovieSound: 0x00159790
+  snd_StartMovieSoundEx: 0x001597B8
+  snd_GetTransStatus: 0x001597F0
+  snd_UpdateMovieADPCM: 0x00159818
+  snd_GetMovieNAX: 0x00159848
+  snd_DoExternCall: 0x00159870
+  snd_DoExternCall_A: 0x001598B0
+  snd_DoExternCall_CB: 0x001598F8
+  snd_DoExternCallWithData: 0x00159948
 
-# Keep later translation units fixed if the replacement becomes smaller;
-# fail the link if it outgrows the original allocation.
 objects:
   game/boot:
     text_start: 0x00157738
     text_end: 0x00157D60
+    slots:
+      - {object: game/boot_options, section: .boot_get_options, start: 0x001579F0, end: 0x00157B30}
+      - {object: game/boot_options, section: .boot_apply_options, start: 0x00157B30, end: 0x00157C58}
+      - {object: game/boot, section: .boot_main, start: 0x00157C58, end: 0x00157D60}
+  989snd/ee/989snd:
+    text_start: 0x00157D60
+    text_end: 0x001599A4
+    slots:
+      - {object: 989snd/ee/989snd, section: .snd_snd_StartSoundSystemEx, start: 0x00157D60, end: 0x00157F98}
+      - {object: 989snd/ee/989snd, section: .snd_snd_FlushSoundCommands, start: 0x00157F98, end: 0x00158188}
+      - {object: 989snd/ee/989snd, section: .snd_func_00158188, start: 0x00158188, end: 0x00158198}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GotReturns, start: 0x00158198, end: 0x00158240}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PrepareReturnBuffer, start: 0x00158240, end: 0x001582A0}
+      - {object: 989snd/ee/989snd, section: .snd_func_001582A0, start: 0x001582A0, end: 0x001582A8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_BankLoadByLoc_CB, start: 0x001582A8, end: 0x00158400}
+      - {object: 989snd/ee/989snd, section: .snd_snd_BankLoadFromEE, start: 0x00158400, end: 0x00158550}
+      - {object: 989snd/ee/989snd, section: .snd_func_00158550, start: 0x00158550, end: 0x00158568}
+      - {object: 989snd/ee/989snd, section: .snd_snd_ResolveBankXREFS, start: 0x00158568, end: 0x00158598}
+      - {object: 989snd/ee/989snd, section: .snd_snd_UnloadBank, start: 0x00158598, end: 0x001585C8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_UnloadBank_CB, start: 0x001585C8, end: 0x001585F8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetMasterVolume, start: 0x001585F8, end: 0x00158630}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetMasterVolumeDucker, start: 0x00158630, end: 0x001586A8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetPlaybackMode, start: 0x001586A8, end: 0x001586D8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001586D8, start: 0x001586D8, end: 0x001586F0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetGroupVoiceRange, start: 0x001586F0, end: 0x00158730}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetReverbMode, start: 0x00158730, end: 0x00158760}
+      - {object: 989snd/ee/989snd, section: .snd_func_00158760, start: 0x00158760, end: 0x00158780}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PlaySoundVolPanPMPB_CB, start: 0x00158780, end: 0x001587C8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001587C8, start: 0x001587C8, end: 0x001587E0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StopSound, start: 0x001587E0, end: 0x00158810}
+      - {object: 989snd/ee/989snd, section: .snd_func_00158810, start: 0x00158810, end: 0x00158838}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StopAllSounds, start: 0x00158838, end: 0x00158868}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PauseAllSoundsInGroup, start: 0x00158868, end: 0x00158898}
+      - {object: 989snd/ee/989snd, section: .snd_snd_ContinueAllSoundsInGroup, start: 0x00158898, end: 0x001588C8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StopAllSoundsInGroup, start: 0x001588C8, end: 0x001588F8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SoundIsStillPlaying, start: 0x001588F8, end: 0x00158920}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SoundIsStillPlaying_CB, start: 0x00158920, end: 0x00158950}
+      - {object: 989snd/ee/989snd, section: .snd_func_00158950, start: 0x00158950, end: 0x00158988}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetSoundParams_A, start: 0x00158988, end: 0x001589A8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetSoundParams_CB, start: 0x001589A8, end: 0x001589F0}
+      - {object: 989snd/ee/989snd, section: .snd_func_001589F0, start: 0x001589F0, end: 0x00158A30}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SendIOPCommandAndWait, start: 0x00158A30, end: 0x00158C60}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SendIOPCommandNoWait, start: 0x00158C60, end: 0x00158FC0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PostMessage, start: 0x00158FC0, end: 0x00158FF8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SendCurrentBatch, start: 0x00158FF8, end: 0x00159120}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StartCaching, start: 0x00159120, end: 0x00159128}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SendCache, start: 0x00159128, end: 0x00159130}
+      - {object: 989snd/ee/989snd, section: .snd_snd_InitVAGStreamingEx, start: 0x00159130, end: 0x001591D8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001591D8, start: 0x001591D8, end: 0x001591F0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_CloseVAGStreaming, start: 0x001591F0, end: 0x00159250}
+      - {object: 989snd/ee/989snd, section: .snd_func_00159250, start: 0x00159250, end: 0x00159258}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PlayVAGStreamByLocEx_CB, start: 0x00159258, end: 0x001592C8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001592C8, start: 0x001592C8, end: 0x001592D8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PauseVAGStream, start: 0x001592D8, end: 0x00159308}
+      - {object: 989snd/ee/989snd, section: .snd_snd_ContinueVAGStream, start: 0x00159308, end: 0x00159338}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GetVAGStreamQueueCount_CB, start: 0x00159338, end: 0x00159368}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GetVAGStreamTimeRemaining_CB, start: 0x00159368, end: 0x00159398}
+      - {object: 989snd/ee/989snd, section: .snd_snd_IsVAGStreamBuffered_CB, start: 0x00159398, end: 0x001593C8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StreamSafeCdRead, start: 0x001593C8, end: 0x00159488}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StreamSafeCdSync, start: 0x00159488, end: 0x00159528}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StreamSafeCdBreak, start: 0x00159528, end: 0x00159570}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StreamSafeCdGetError, start: 0x00159570, end: 0x001595A8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001595A8, start: 0x001595A8, end: 0x001595B8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StreamSafeCdCallback, start: 0x001595B8, end: 0x001595E8}
+      - {object: 989snd/ee/989snd, section: .snd_func_001595E8, start: 0x001595E8, end: 0x001595F8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SetReverbEx, start: 0x001595F8, end: 0x00159638}
+      - {object: 989snd/ee/989snd, section: .snd_snd_PreAllocReverbWorkArea, start: 0x00159638, end: 0x00159670}
+      - {object: 989snd/ee/989snd, section: .snd_snd_AutoReverb, start: 0x00159670, end: 0x001596B0}
+      - {object: 989snd/ee/989snd, section: .snd_func_001596B0, start: 0x001596B0, end: 0x001596D8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_SRAMGetFreeMem, start: 0x001596D8, end: 0x00159700}
+      - {object: 989snd/ee/989snd, section: .snd_func_00159700, start: 0x00159700, end: 0x00159718}
+      - {object: 989snd/ee/989snd, section: .snd_snd_InitMovieSoundEx, start: 0x00159718, end: 0x00159758}
+      - {object: 989snd/ee/989snd, section: .snd_snd_ResetMovieSound, start: 0x00159758, end: 0x00159780}
+      - {object: 989snd/ee/989snd, section: .snd_func_00159780, start: 0x00159780, end: 0x00159790}
+      - {object: 989snd/ee/989snd, section: .snd_snd_CloseMovieSound, start: 0x00159790, end: 0x001597B8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_StartMovieSoundEx, start: 0x001597B8, end: 0x001597F0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GetTransStatus, start: 0x001597F0, end: 0x00159818}
+      - {object: 989snd/ee/989snd, section: .snd_snd_UpdateMovieADPCM, start: 0x00159818, end: 0x00159848}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GetMovieNAX, start: 0x00159848, end: 0x00159870}
+      - {object: 989snd/ee/989snd, section: .snd_snd_DoExternCall, start: 0x00159870, end: 0x001598B0}
+      - {object: 989snd/ee/989snd, section: .snd_snd_DoExternCall_A, start: 0x001598B0, end: 0x001598F8}
+      - {object: 989snd/ee/989snd, section: .snd_snd_DoExternCall_CB, start: 0x001598F8, end: 0x00159948}
+      - {object: 989snd/ee/989snd, section: .snd_snd_DoExternCallWithData, start: 0x00159948, end: 0x00159980}
+      - {object: 989snd/ee/989snd, section: .snd_func_00159980, start: 0x00159980, end: 0x00159988}
+      - {object: 989snd/ee/989snd, section: .snd_snd_GetDopplerPitchMod, start: 0x00159988, end: 0x001599A4}

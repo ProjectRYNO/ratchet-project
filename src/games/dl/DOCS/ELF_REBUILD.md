@@ -1,5 +1,9 @@
 # Rebuilding Deadlocked's boot ELF
 
+The current build also includes 40 C replacements in the EE sound library.
+See [989snd progress](989SND_REUSE.md) for their validation and remaining work.
+The audit command below covers all registered boot and sound replacements.
+
 The default build compiles the C/C++ translation units and assembles their
 `INCLUDE_ASM` functions, then links a new executable. The original ELF is used
 as extraction input and as a comparison reference. It is not copied into the
@@ -81,11 +85,11 @@ The old `build/elf-investigation` logs were removed by a subsequent full-clean.
   separate portable profile with cheats and memory cards disabled. Full
   gameplay has not been tested.
 
-## First C++ replacement: main
+## First C++ replacement: main (initial validation)
 
 `code/game/boot.cpp` now implements `main` in C++, replacing its `INCLUDE_ASM`.
 It was recovered from the open Ghidra program and checked against the original
-instructions at `0x00157C58`. The other five functions in this file remain
+instructions at `0x00157C58`. Initially the other five functions remained
 assembly includes. The generated original assembly is reference material and
 is not linked for `main`.
 
@@ -145,3 +149,67 @@ g++ -std=c++98 -O2 -fno-builtin -Icode/include tests/boot_main_test.cpp -o /tmp/
 
 The last two commands use a host C++ compiler; that compiler is only needed for
 the behavior test, not the PS2 build.
+
+## Boot-option encoder and decoder
+
+`code/game/boot_options.cpp` adds C++ replacements for
+`GetBootOptionsFromSettings` at `0x001579F0` and
+`ApplyBootOptionsToSettings` at `0x00157B30`. Their original includes have been
+removed from `boot.cpp`. Three functions there still use assembly: `unpackbuff`,
+`ParsePatch`, and `ParseBin`.
+
+The wire format is eight little-endian bytes represented by sixteen uppercase
+hexadecimal digits. The first word holds one-bit flags at bits 0, 1, and 2,
+eleven-bit values at bits 3 and 14, and a three-bit value at bit 25. The second
+word contains the low sixteen bits of the display X and Y positions.
+The implementation uses the original globals and preserves unrelated settings.
+
+Two intentional differences apply to undefined/malformed original behavior:
+
+* The original encoder exposed uninitialized stack bits in reserved bits 28..31.
+  The C++ encoder clears them. The original decoder ignores those bits.
+* The original decoder could overrun its stack or read uninitialized bytes for
+  long/short input. The replacement reads at most eight complete pairs and
+  zero-fills missing pairs. Complete invalid pairs retain the original -1 nibble
+  arithmetic; lowercase is not accepted as hexadecimal.
+
+These changes do not alter the decoded settings for valid game-generated input.
+The encoder writes sixteen characters plus a terminating null; callers need a
+17-byte output buffer.
+
+The functions use separate code sections, registered as fixed address slots in
+`config/decompiled_functions.yaml`. `split_dl.py` inserts each section at its
+original address, fills the unused space with zeros, and rejects overflow.
+This allows shorter compiled functions without shifting main or later code.
+No additional Makefile changes were needed for these two replacements.
+
+Current ELF audit: encoder size `0x104` within its `0x140` allocation, decoder
+size `0x128` within its `0x128` allocation (including the original trailing nop),
+and main size `0x104` within its `0x108` allocation. All three are compiled
+function symbols, with no corresponding original assembly definitions linked.
+727 loaded bytes differ from the original, all within those three slots.
+Every other loaded byte and runtime header matches. A separate full-clean
+rebuild also passes this audit.
+
+`tests/check_main_elf.py` now audits all three functions using the manifest.
+`tests/boot_options_test.cpp` checks known vectors, field masking, untouched
+settings, output bounds, malformed input, and 4096 deterministic round trips.
+It passes with AddressSanitizer and UndefinedBehaviorSanitizer:
+
+```sh
+g++ -std=c++98 -O2 -fsanitize=address,undefined tests/boot_options_test.cpp -o /tmp/boot-options-test
+/tmp/boot-options-test
+```
+
+The existing main behavior tests and extraction/split tests still pass. Linker
+tests also cover separate function sections, incorrect entry addresses, and
+slot overflow. Current build/reference diagnostics use the `options-*` and
+`ghidra-*-boot-options.c` files under `build/main-test`.
+
+The working-directory build and isolated full-clean build have identical
+runtime headers and all 5,158,456 loaded bytes (their non-runtime ELF metadata
+differs). PCSX2 loaded this new ELF from its build path with the original disc
+and reached sound/controller initialization; see `options-pcsx2-boot.log`.
+Full gameplay and boot-option behavior inside the emulator remain untested;
+option behavior is covered by the host tests above. This step did not repack
+the ISO. Run `make iso` after building to package the current ELF.
