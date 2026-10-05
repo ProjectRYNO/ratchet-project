@@ -1,0 +1,11 @@
+# Compiled replacements must retain their entry addresses while the rest of
+# the executable still contains original pointers and assembly references.
+functions:
+  main: 0x00157C58
+
+# Keep later translation units fixed if the replacement becomes smaller;
+# fail the link if it outgrows the original allocation.
+objects:
+  game/boot:
+    text_start: 0x00157738
+    text_end: 0x00157D60

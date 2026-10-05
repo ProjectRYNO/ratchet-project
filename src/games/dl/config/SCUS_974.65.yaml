@@ -36,7 +36,7 @@ options:
     .include "macro.inc"
 
   check_consecutive_segment_types: False
-  do_c_func_detection: False
+  do_c_func_detection: True
   ld_wildcard_sections: True
 
   subalign: 4

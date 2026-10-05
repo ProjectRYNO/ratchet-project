@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import argparse
 import re
-import sys
 from pathlib import Path
+
+import yaml
 
 
 COMMENT_RE = re.compile(r"/\*\s*[0-9A-Fa-f]+\s+([0-9A-Fa-f]{8})\s+[0-9A-Fa-f]{8}\s*\*/")
@@ -11,14 +13,17 @@ SYMBOL_RE = re.compile(r"^\s*([A-Za-z_.$][A-Za-z0-9_.$]*)\s*=\s*(0x[0-9A-Fa-f]+)
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
-        print(f"usage: {Path(sys.argv[0]).name} ASM_DIR [ASM_DIR ...]", file=sys.stderr)
-        return 2
+    parser = argparse.ArgumentParser(description="Generate fallback addresses, never overriding object definitions.")
+    parser.add_argument("--decompiled", type=Path)
+    parser.add_argument("inputs", nargs="+")
+    args = parser.parse_args()
+    replacements = yaml.safe_load(args.decompiled.read_text()) if args.decompiled else {}
+    excluded = set(replacements.get("functions", {})) | {"ENTRYPOINT"}
 
     definitions = {}
 
     asm_paths = []
-    for arg in sys.argv[1:]:
+    for arg in args.inputs:
         root = Path(arg)
         if not root.exists():
             continue
@@ -29,7 +34,7 @@ def main() -> int:
         for line in root.read_text(errors="ignore").splitlines():
             symbol = SYMBOL_RE.match(line)
             if symbol:
-                if symbol.group(1) == "ENTRYPOINT":
+                if symbol.group(1) in excluded:
                     continue
                 definitions.setdefault(symbol.group(1), int(symbol.group(2), 16))
 
@@ -55,7 +60,8 @@ def main() -> int:
                 pending.clear()
 
     for name in sorted(definitions):
-        print(f"{name} = 0x{definitions[name]:08X};")
+        if name not in excluded:
+            print(f"PROVIDE({name} = 0x{definitions[name]:08X});")
 
     return 0
 

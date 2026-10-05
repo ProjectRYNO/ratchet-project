@@ -138,9 +138,9 @@ clean:
 full-clean: clean
 	rm -rf config/$(BASENAME).rom
 	
-$(TARGET): $(OBJS) $(CONFIG)/$(BASENAME).ld
+$(TARGET): $(OBJS) $(CONFIG)/$(BASENAME).ld $(CONFIG)/decompiled_functions.yaml $(TOOLS)/gen_matching_symbols.py
 	@$(MKDIR) -p $(dir $@)
-	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
+	@$(PYTHON) $(TOOLS)/gen_matching_symbols.py --decompiled $(CONFIG)/decompiled_functions.yaml $(CONFIG)/symbols_core.text.txt code/asm/matchings code/asm/nonmatchings > $(BUILD_DIR)/matching_symbols_auto.txt
 	$(CROSS)-strip -x -N dummy-symbol-name $(OBJS)
 	$(CROSS)-ld -EL -G0 -z muldefs -z max-page-size=0x1000 --no-warn-mismatch --no-check-sections --defsym=_gp=0x22597F -e $(ELF_ENTRYPOINT) -T $(BUILD_DIR)/undefined_funcs_auto.txt -T $(BUILD_DIR)/undefined_syms_auto.txt -T $(BUILD_DIR)/matching_symbols_auto.txt -T $(CONFIG)/$(BASENAME).ld -Map build/$(BASENAME).map $(OBJS) -o $@
 	$(PYTHON) $(TOOLS)/patch_elf_runtime_headers.py $@

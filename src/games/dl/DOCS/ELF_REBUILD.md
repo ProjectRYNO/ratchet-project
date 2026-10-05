@@ -12,7 +12,7 @@ make ps2dev
 make rom
 make split
 make -B -j8 elf
-python3 ../tools/compare_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 tests/check_main_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf build/code/game/boot.o
 make iso
 ```
 
@@ -57,13 +57,15 @@ after linking; it does not replace executable contents.
 Only source files consisting entirely of generated assembly includes and empty
 stubs are regenerated. Their original versions are saved once under
 `build/split_source_backup`. Files with actual C/C++ implementations are retained.
-The pre-investigation sources/configuration are also archived at
-`build/elf-investigation/before-split.tar.gz`.
+Build diagnostics and backups are temporary: `make full-clean` removes them.
 
 Validated toolchain: splat64 0.41.0, spimdisasm 1.41.0, EE GCC 3.2.3, and the
 GNU MIPS binutils in the existing `projectryno` Docker image.
 
-## Validation results
+## Original assembly baseline validation
+
+These results describe the assembly baseline before replacing `main` with C++.
+The old `build/elf-investigation` logs were removed by a subsequent full-clean.
 
 * A fresh `make rom`, `make split`, and forced rebuild completed successfully.
 * A separate new container also passed `make full-clean`, `make ps2dev`,
@@ -79,6 +81,67 @@ GNU MIPS binutils in the existing `projectryno` Docker image.
   separate portable profile with cheats and memory cards disabled. Full
   gameplay has not been tested.
 
-The comparison, compiler, packer, and emulator logs are retained under
-`build/elf-investigation/`, including `final-compare.txt`, `final-build.log`,
-`final-iso.log`, and `pcsx2-iso-boot.log`.
+## First C++ replacement: main
+
+`code/game/boot.cpp` now implements `main` in C++, replacing its `INCLUDE_ASM`.
+It was recovered from the open Ghidra program and checked against the original
+instructions at `0x00157C58`. The other five functions in this file remain
+assembly includes. The generated original assembly is reference material and
+is not linked for `main`.
+
+The function processes `BOPT=`, `gooey`, and `multi` arguments, initializes lobby
+controller settings, then runs the entry/ParseBin loop and flushes caches 0 and
+2 between entries. The byte-sized parsed-options counter retains its wraparound
+behavior. EE GCC 3.2.3 requires an explicit `__main()` runtime initialization
+call here. Existing data symbols provide the option strings and globals.
+
+The compiler emits 260 bytes (`0x104`), the original function size, at the
+original address. The instructions are not byte-matching: 203 loaded bytes
+change, all within main's `0x108`-byte allocation including trailing padding.
+Every other loaded byte and runtime ELF header matches the extracted original.
+`check_main_elf.py` also verifies that main is a real function defined in the
+compiled object and ELF, with no `main.NON_MATCHING` assembly definition.
+The whole-file loaded-byte comparison intentionally fails for this replacement.
+
+Two build-tool details matter for subsequent decompilation:
+
+* Splat's `do_c_func_detection` is enabled so a clean split regenerates the
+  remaining assembly includes while preserving handwritten C++.
+* `gen_matching_symbols.py` uses `PROVIDE` fallbacks so object definitions take
+  precedence. Functions registered in `config/decompiled_functions.yaml` have
+  no fallback address. The manifest also makes the generated linker script
+  assert entry addresses and object bounds, padding smaller objects to keep
+  later code fixed. Add equivalent bounds when converting other objects.
+
+The Makefile changes for this experiment are limited to the symbol generator's
+manifest argument and dependencies. Keep `ALLOW_NONMATCHING=0`; enabling it
+suppresses the assembly that the mixed build still needs. Larger replacements
+will require an explicit placement strategy because existing raw pointers and
+assembly references constrain addresses.
+
+Validation for this C++ version:
+
+* A separate container passed full-clean, toolchain installation, ROM extraction,
+  split, compilation, and the ELF audit, with no retained objects or assembly.
+  The handwritten source remained unchanged after splitting.
+* Six host argument cases, runtime initialization, two level transitions, and
+  cache-call ordering pass in `tests/boot_main_test.cpp`.
+* `tests/check_main_link_guards.py` verifies that a valid object links and that
+  missing main, moved main, and oversized objects fail the link.
+* The four extraction/split regression tests still pass.
+* PCSX2 booted this ELF with the original ISO through sound and controller
+  initialization in an isolated portable profile. Full gameplay is untested.
+  This experiment did not repack the ISO; `make iso` packs the new ELF afterward.
+
+Current diagnostic logs are under `build/main-test`, including `build.log`,
+`clean-main-check.txt`, and `pcsx2-boot.log`. To run the additional checks:
+
+```sh
+python3 ../tools/test_elf_tools.py
+python3 tests/check_main_link_guards.py
+g++ -std=c++98 -O2 -fno-builtin -Icode/include tests/boot_main_test.cpp -o /tmp/boot-main-test
+/tmp/boot-main-test
+```
+
+The last two commands use a host C++ compiler; that compiler is only needed for
+the behavior test, not the PS2 build.

@@ -44,13 +44,20 @@ def normalize_assembly(text, crt0=False):
     return re.sub(r"/\*\s*\w+\s+\w+\s+(\w{8})\s*\*/\s+bgezal\s+[^\n]+", branch, text)
 
 
-def runtime_linker_script(text, config):
+def runtime_linker_script(text, config, replacements=None):
+    replacements = replacements or {}
     # Splat's AT(ROM offset) is for ROM images. A PS2 ELF needs physical load
     # addresses equal to virtual addresses, with two independent PT_LOADs.
     text = re.sub(r" AT\([^)]*\)", "", text)
     lines = ["PHDRS { main PT_LOAD FLAGS(7); net PT_LOAD FLAGS(7); }"]
     current = None
     for line in text.splitlines():
+        for obj, bounds in replacements.get("objects", {}).items():
+            if line.strip() == f"build/code/{obj}.o(.text*);":
+                lines.append(f'        ASSERT(ABSOLUTE(.) == 0x{bounds["text_start"]:X}, "{obj} moved from its original address");')
+                lines.append(line)
+                lines.append(f'        ASSERT(ABSOLUTE(.) <= 0x{bounds["text_end"]:X}, "{obj} exceeds its original allocation");')
+                line = f'        . = ABSOLUTE(0x{bounds["text_end"]:X});'
         match = re.match(r"    (\.[\w]+)\s", line)
         if match:
             current = match[1]
@@ -61,6 +68,8 @@ def runtime_linker_script(text, config):
     # Do not let --no-check-sections hide the kind of overflow that broke the
     # previous build. These are bounds, not copied bytes or forced entrypoints.
     assertions = []
+    for name, address in replacements.get("functions", {}).items():
+        assertions.append(f'ASSERT({name} == 0x{address:X}, "compiled {name} moved from its original address")')
     segments = config["segments"]
     for segment, following in zip(segments, segments[1:]):
         if segment["type"] in ("pad", "bss"):
@@ -77,6 +86,8 @@ def main():
     args = ap.parse_args()
     config_path = args.config.resolve()
     config = yaml.safe_load(config_path.read_text())
+    replacements_path = config_path.parent / "decompiled_functions.yaml"
+    replacements = yaml.safe_load(replacements_path.read_text()) if replacements_path.exists() else {}
     opts = config["options"]
     root = (config_path.parent / opts["base_path"]).resolve()
     src = root / opts["src_path"]
@@ -105,7 +116,7 @@ def main():
         if normalized != original:
             path.write_text(normalized, newline="\n")
     linker = root / opts["ld_script_path"]
-    linker.write_text(runtime_linker_script(linker.read_text(), config), newline="\n")
+    linker.write_text(runtime_linker_script(linker.read_text(), config, replacements), newline="\n")
     print(f"Refreshed {len(refreshed)} generated wrappers; backups: build/split_source_backup")
 
 
