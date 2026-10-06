@@ -2,5 +2,4 @@
 **
 !Dockerfile
 !requirements.txt
-!entrypoint.sh
 !.dockerignore

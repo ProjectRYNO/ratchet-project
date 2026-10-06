@@ -6,8 +6,7 @@ FROM debian:13-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         make \
         curl \
@@ -16,8 +15,6 @@ RUN dpkg --add-architecture i386 && \
         python3 \
         python3-pip \
         python-is-python3 \
-        wine32 \
-        wine64 \
         binutils-mips-linux-gnu \
     && rm -rf /var/lib/apt/lists/*
 
@@ -39,9 +36,5 @@ COPY requirements.txt .
 
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
 
-# ── Entrypoint ────────────────────────────────────────────────────────────────
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-CMD ["/entrypoint.sh"]
+# Start directly in the native Linux build shell.
+CMD ["/bin/bash"]

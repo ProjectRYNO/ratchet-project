@@ -19,10 +19,8 @@ FOLDER_DL = dl
 CONTAINER_ROOT = /ProjectRYNO
 GAME := $(notdir $(CURDIR))
 ASSETS = $(CONTAINER_ROOT)/assets/$(GAME)
-CURRENT_GAME = $(CONTAINER_ROOT)/$(GAME)
 CONFIG = $(CONTAINER_ROOT)/$(GAME)/config
 TOOLS = $(CONTAINER_ROOT)/tools
-REQUIREMENTS = $(CONTAINER_ROOT)/requirements.txt
 
 
 ifeq ($(GAME),$(FOLDER_RAC))
@@ -41,46 +39,23 @@ else
     $(error Unknown game directory: $(GAME). Expected d$(FOLDER_RAC), $(FOLDER_GC), $(FOLDER_UYA), or $(FOLDER_DL))
 endif
 
-ifeq ($(OS),Windows_NT)
-	OS_ID := Windows
-	PATH_SEP := \\
-	COPY := copy
-	DELETE := del
-	DELETEFLAGS := /s /q
-else
-	OS_ID := $(shell uname 2>/dev/null || echo Unknown)
-	PATH_SEP := /
-	COPY := cp
-	DELETE := rm
-	DELETEFLAGS := -rf
-endif
-
 CROSS = /usr/bin/mips-linux-gnu
 WRENCH_DIR = /opt/wrench
 PS2DEV_DIR ?= /opt/ps2dev
 EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
 EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
-PS2DEV_OBJCOPY = $(PS2DEV_DIR)/ee/bin/ee-objcopy
-PS2DEV_READELF = $(PS2DEV_DIR)/ee/bin/ee-readelf
-
-# -include userconfig.mk
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
-# SRC_S = $(shell $(FIND) code -type f -name '*.s')
-# SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings")
 SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings\|asm/build/core.bss.data.s\|asm/build/bss.data.s\|asm/build/cod/001A5180.bss.s\|asm/build/bss/00221080.bss.s")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
-INCLUDE = -Icode/include -Itools/cc/lib/gcc-lib/ee/2.95.2/include
+INCLUDE = -Icode/include
 
 BUILD_DIR = build
 OBJ_DIR = $(BUILD_DIR)/code
 TARGET = $(BUILD_DIR)/boot_elf.elf
-WRENCH_PACK_ASSETS = $(BUILD_DIR)/wrench_pack_assets
 ELF_ASSET_SRC = ../../$(GAME)/$(TARGET)
-ISO_SOURCE = $(if $(iso),$(iso),$(shell $(FIND) . -maxdepth 1 -type f -iname '*.iso' -print -quit))
-ISO_ASSET_MODE = $(filter assets,$(MAKECMDGOALS))
 ELF_ENTRYPOINT = ENTRYPOINT
 
 OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \

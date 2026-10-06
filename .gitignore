@@ -20,6 +20,7 @@ src/games/dl/TESTS/*
 !src/games/dl/TESTS/boot_main_test.cpp
 !src/games/dl/TESTS/boot_options_test.cpp
 
+# Keep previously downloaded, unused Windows toolchains out of source control.
 ee-gcc2.95.2-SN-v2.73a.tar.gz
 src/games/tools/cc/*
 

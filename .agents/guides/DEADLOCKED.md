@@ -37,8 +37,9 @@ Check Docker and asset availability before a build. Build the image from
 `src/games` with `docker compose build projectryno`, then enter a shell with
 `docker compose run --rm projectryno`. Inspect existing containers before starting
 or stopping one; never assume another contributor's container can be reused.
-`make ps2dev` supplies the compiler used by Deadlocked (EE GCC 3.2.3); the image's
-Wine/legacy compiler setup is not a reason to switch the active Makefile toolchain.
+`make ps2dev` supplies the native Linux compiler used by Deadlocked (EE GCC 3.2.3).
+Extraction and ISO packing use native Linux Wrench v0.5. The image opens Bash
+directly; no Wine or Windows compiler installation is needed.
 Keep the established image/toolchain versions unless toolchain work is requested.
 
 The original ISO, extracted assets, prototype tree, and Ghidra project are local
