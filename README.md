@@ -72,9 +72,12 @@ The [recovered data types](src/games/dl/DOCS/types/RECOVERED_TYPES.md) document 
 
 6. Build the new elf!
 ```
-make
-python3 ../tools/compare_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 ../tools/verify.py dl
 ```
+
+See [verification options and reports](docs/build/VERIFICATION.md); add `--host-tests`
+for boot behavior checks or `--require-matching` for the strict gate. Nonmatching
+development builds remain usable.
 
 The current Deadlocked C replacements fail strict matching; a successful compile
 or slot audit does not yet make them a 1:1 build. Other games currently have

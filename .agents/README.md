@@ -15,3 +15,7 @@ pointers for assistants that look in those conventional locations.
 
 Assistants without skill support can read the corresponding SKILL.md directly.
 Shared technical documentation starts at [docs/README.md](../docs/README.md).
+
+Use [templates/HANDOFF.md](templates/HANDOFF.md) for a resumable task summary.
+The [verification command](../docs/build/VERIFICATION.md) and
+[decision log](../docs/decompilation/DECISIONS.md) keep results and rationale consistent.

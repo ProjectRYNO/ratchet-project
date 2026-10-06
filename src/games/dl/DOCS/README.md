@@ -2,6 +2,7 @@
 
 | Folder | Documents and data |
 | --- | --- |
+| progress | [Function tracker, byte status, and research notes](progress/README.md) |
 | build | [ELF reconstruction and build history](build/ELF_REBUILD.md) |
 | sound | [989snd decompilation notes](sound/989SND_REUSE.md), [function inventory](sound/989SND_INVENTORY.csv) |
 | symbols | [Global mapping notes](symbols/GLOBAL_VARIABLES.md), [retail inventory](symbols/GLOBAL_VARIABLES.csv), [unmapped prototype globals](symbols/GLOBALS_UNMAPPED.csv) |

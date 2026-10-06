@@ -62,3 +62,7 @@ For emulator verification, record the ELF/ISO used, relevant configuration, log,
 and furthest observed stage. A boot through initialization is not gameplay or
 sound correctness. Report compile, audit, clean-build, pack, boot, and gameplay
 results separately; never claim a check that was not performed.
+
+Use [the verification entry point](../../../docs/build/VERIFICATION.md) for combined
+checks and machine-readable results. Nonmatching development output remains usable;
+only the optional strict gate treats byte differences alone as a failing exit.

@@ -220,3 +220,9 @@ Further detail: [ELF reconstruction history](../../src/games/dl/DOCS/build/ELF_R
 [recovered types](../../src/games/dl/DOCS/types/RECOVERED_TYPES.md), [source style](../../src/games/dl/DOCS/types/STYLE.md).
 
 Current platform/matching results: [PLATFORM_VERIFICATION.md](../../docs/build/PLATFORM_VERIFICATION.md).
+
+## Verification entry point
+
+Use `python3 ../tools/verify.py dl` from `/ProjectRYNO/dl` for a forced build and
+separate diagnostic/matching results. See [options and exit codes](../../docs/build/VERIFICATION.md).
+Use the [progress tracker](../../src/games/dl/DOCS/progress/README.md) to select the next function.

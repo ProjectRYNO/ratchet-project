@@ -71,3 +71,7 @@ not the IOP driver; callback user data is 64-bit and completion is reentrant.
 Conclude with address/module, evidence, source/manifest changes, actual checks,
 and remaining runtime uncertainty. Leave uncertain functions in assembly and
 record what evidence is missing instead of claiming a completed decompilation.
+
+Consult the [function tracker](../../../src/games/dl/DOCS/progress/README.md) and
+[decision log](../../../docs/decompilation/DECISIONS.md) before choosing work.
+After verification, refresh the tracker and preserve concrete research notes.

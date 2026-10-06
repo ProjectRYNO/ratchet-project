@@ -11,3 +11,11 @@
 Game-specific documents stay with their game under `src/games/GAME/DOCS`.
 Use topic subfolders there rather than mixing research inventories with guides.
 Keep SDK/tool/vendor documentation beside the code it describes.
+
+## Contributor tools
+
+* [One-command verification](build/VERIFICATION.md)
+* [Decisions and known issues](decompilation/DECISIONS.md)
+* [Emulator smoke checklist](build/EMULATOR_SMOKE_TEST.md)
+* [Deadlocked function tracker](../src/games/dl/DOCS/progress/README.md)
+* [AI handoff template](../.agents/templates/HANDOFF.md)

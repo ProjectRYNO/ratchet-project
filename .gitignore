@@ -65,3 +65,6 @@ src/games/dl/assets/
 # Documentation categories named build are not generated build output.
 !docs/build/
 !src/games/dl/DOCS/build/
+
+# Python tools generate bytecode caches during local verification.
+__pycache__/

@@ -80,3 +80,12 @@ ELF auditing, ISO packing, emulator boot, and gameplay are separate claims.
 Maintain the workflow/skills when changing the mechanism they describe. Historical
 counts, compiler output sizes, and generated report paths in older docs are not
 proof of the current checkout's behavior.
+
+## Track progress and hand off
+
+For sustained changes, consult the game's progress tracker and the
+[decision/issue log](../docs/decompilation/DECISIONS.md) before repeating research.
+Use [the verifier](../docs/build/VERIFICATION.md) for build/test reporting; update
+tracked progress after verification. Record runtime observations with the
+[smoke checklist](../docs/build/EMULATOR_SMOKE_TEST.md). Use
+[the handoff template](templates/HANDOFF.md) when work needs a resumable summary.

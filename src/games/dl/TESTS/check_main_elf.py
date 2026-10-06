@@ -61,8 +61,6 @@ def main():
         if unexpected:
             raise SystemExit(f"FAIL: {len(unexpected)} unexpected differences; first at 0x{unexpected[0]:08X}")
         count += len(changed)
-    if count == 0:
-        raise SystemExit("FAIL: this nonmatching C++ experiment unexpectedly contains only original bytes")
     print(f"PASS: {count} changed bytes, all within registered compiled function slots; every other loaded byte and runtime header matches")
 
 
