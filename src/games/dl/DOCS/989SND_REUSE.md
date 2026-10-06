@@ -43,6 +43,10 @@ Validation completed for this pass:
   random values, VAG bit packing, and external-data descriptors; it also checks
   preservation of callee-saved registers. Unsupported instructions fail.
 * Existing split/extraction and linker guard regressions pass.
+* PCSX2 booted the independently built clean ELF with the original disc through
+  sound and controller initialization. The final working-directory ELF has
+  identical runtime headers and all 5,158,456 loaded bytes to that clean ELF.
+  See `build/989snd-test/pcsx2-boot.log` and `clean-compare.txt`.
 
 The differential test covers wrapper behavior at the transport boundary. It
 does not emulate the IOP or establish that all audio paths work during gameplay.

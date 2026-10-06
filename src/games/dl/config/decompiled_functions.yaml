@@ -4,10 +4,17 @@ functions:
   GetBootOptionsFromSettings: 0x001579F0
   ApplyBootOptionsToSettings: 0x00157B30
   main: 0x00157C58
+  snd_StartSoundSystemEx: 0x00157D60
+  snd_FlushSoundCommands: 0x00157F98
+  snd_GotReturns: 0x00158198
+  snd_PrepareReturnBuffer: 0x00158240
+  snd_BankLoadByLoc_CB: 0x001582A8
+  snd_BankLoadFromEE: 0x00158400
   snd_ResolveBankXREFS: 0x00158568
   snd_UnloadBank: 0x00158598
   snd_UnloadBank_CB: 0x001585C8
   snd_SetMasterVolume: 0x001585F8
+  snd_SetMasterVolumeDucker: 0x00158630
   snd_SetPlaybackMode: 0x001586A8
   snd_SetGroupVoiceRange: 0x001586F0
   snd_SetReverbMode: 0x00158730
@@ -21,14 +28,25 @@ functions:
   snd_SoundIsStillPlaying_CB: 0x00158920
   snd_SetSoundParams_A: 0x00158988
   snd_SetSoundParams_CB: 0x001589A8
+  snd_SendIOPCommandAndWait: 0x00158A30
+  snd_SendIOPCommandNoWait: 0x00158C60
+  snd_PostMessage: 0x00158FC0
+  snd_SendCurrentBatch: 0x00158FF8
   snd_StartCaching: 0x00159120
   snd_SendCache: 0x00159128
+  snd_InitVAGStreamingEx: 0x00159130
+  snd_CloseVAGStreaming: 0x001591F0
   snd_PlayVAGStreamByLocEx_CB: 0x00159258
   snd_PauseVAGStream: 0x001592D8
   snd_ContinueVAGStream: 0x00159308
   snd_GetVAGStreamQueueCount_CB: 0x00159338
   snd_GetVAGStreamTimeRemaining_CB: 0x00159368
   snd_IsVAGStreamBuffered_CB: 0x00159398
+  snd_StreamSafeCdRead: 0x001593C8
+  snd_StreamSafeCdSync: 0x00159488
+  snd_StreamSafeCdBreak: 0x00159528
+  snd_StreamSafeCdGetError: 0x00159570
+  snd_StreamSafeCdCallback: 0x001595B8
   snd_SetReverbEx: 0x001595F8
   snd_PreAllocReverbWorkArea: 0x00159638
   snd_AutoReverb: 0x00159670
@@ -44,6 +62,7 @@ functions:
   snd_DoExternCall_A: 0x001598B0
   snd_DoExternCall_CB: 0x001598F8
   snd_DoExternCallWithData: 0x00159948
+  snd_GetDopplerPitchMod: 0x00159988
 
 objects:
   game/boot:
