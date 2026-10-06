@@ -12,6 +12,7 @@ build/
 !src/games/dl/tests/
 src/games/dl/tests/*
 !src/games/dl/tests/check_main_elf.py
+!src/games/dl/tests/check_global_map.py
 !src/games/dl/tests/check_main_link_guards.py
 !src/games/dl/tests/clean_main_build.py
 !src/games/dl/tests/test_989snd_wrappers.py
@@ -60,3 +61,4 @@ src/games/rac/assets/
 src/games/gc/assets/
 src/games/uya/assets/
 src/games/dl/assets/
+!src/games/dl/tests/check_type_layouts.py

@@ -1,4 +1,6 @@
 #include "common.h"
+#include "boot.h"
+#include "gameglobals.h"
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", unpackbuff);
 
@@ -9,20 +11,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/boot", ParseBin);
 // Boot option wire format recovered from 0x1579F0 and 0x157B30.
 // Eight little-endian bytes encoded as sixteen uppercase hexadecimal digits.
 extern "C" {
-extern unsigned char bootSettings[];
-extern unsigned int progressiveScan;
-extern unsigned int displayX;
-extern unsigned int displayY;
 
 void __attribute__((section(".boot_get_options"))) GetBootOptionsFromSettings(char *output)
 {
     unsigned int words[2];
-    words[0] = (bootSettings[0xB3] & 1)
+    words[0] = (bootSettings.Wide & 1)
              | ((progressiveScan & 1) << 1)
-             | ((*reinterpret_cast<unsigned int *>(bootSettings + 8) & 1) << 2)
-             | ((*reinterpret_cast<unsigned int *>(bootSettings + 12) & 0x7FF) << 3)
-             | ((*reinterpret_cast<unsigned int *>(bootSettings + 16) & 0x7FF) << 14)
-             | ((bootSettings[0xBD] & 7) << 25);
+             | ((bootSettings.Stereo & 1) << 2)
+             | ((bootSettings.MusicVolume & 0x7FF) << 3)
+             | ((bootSettings.EffectsVolume & 0x7FF) << 14)
+             | ((bootSettings.Language & 7) << 25);
     // Bits 28..31 were uninitialized stack padding in the original encoder.
     // They are ignored by the decoder; emit zero for a deterministic string.
     words[1] = (displayX & 0xFFFF) | (displayY << 16);
@@ -51,26 +49,23 @@ void __attribute__((section(".boot_apply_options"))) ApplyBootOptionsToSettings(
     }
     unsigned int flags = words[0];
     progressiveScan = (flags >> 1) & 1;
-    bootSettings[0xB3] = flags & 1;
-    bootSettings[0xBD] = (flags >> 25) & 7;
-    *reinterpret_cast<unsigned int *>(bootSettings + 8) = (flags >> 2) & 1;
-    *reinterpret_cast<unsigned int *>(bootSettings + 12) = (flags >> 3) & 0x7FF;
-    *reinterpret_cast<unsigned int *>(bootSettings + 16) = (flags >> 14) & 0x7FF;
+    bootSettings.Wide = flags & 1;
+    bootSettings.Language = (flags >> 25) & 7;
+    bootSettings.Stereo = (flags >> 2) & 1;
+    bootSettings.MusicVolume = (flags >> 3) & 0x7FF;
+    bootSettings.EffectsVolume = (flags >> 14) & 0x7FF;
     displayX = words[1] & 0xFFFF;
     displayY = words[1] >> 16;
 }
 }
 
 extern "C" {
-typedef void (*BootEntry)(void);
 
 void __main(void);
 int strncmp(const char *left, const char *right, unsigned int length);
 int strcmp(const char *left, const char *right);
-void ApplyBootOptionsToSettings(const char *options);
 void InitializeLobbyControllerSettingsToDefaults(void);
 void startlevel(void);
-BootEntry ParseBin(void);
 
 // Names recovered in Ghidra; these bind to the existing split data symbols.
 extern unsigned char gParsedBootOptions;

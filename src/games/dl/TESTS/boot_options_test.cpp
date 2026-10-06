@@ -1,10 +1,12 @@
 #include <cassert>
 #include <cstring>
 #include <cstdio>
+#include "../code/game/boot.h"
+#include "../code/game/gameglobals.h"
 extern "C" {
 void GetBootOptionsFromSettings(char *output);
 void ApplyBootOptionsToSettings(const char *input);
-unsigned char bootSettings[0xC0] __attribute__((aligned(4)));
+GameSettings bootSettings;
 unsigned int progressiveScan;
 unsigned int displayX;
 unsigned int displayY;
@@ -12,16 +14,16 @@ unsigned int displayY;
 
 static unsigned int &setting(unsigned int offset)
 {
-    return *reinterpret_cast<unsigned int *>(bootSettings + offset);
+    return *reinterpret_cast<unsigned int *>(reinterpret_cast<unsigned char *>(&bootSettings) + offset);
 }
 
 static void checkDecode(const char *text, unsigned int flags, unsigned int positions)
 {
-    std::memset(bootSettings, 0xA5, sizeof(bootSettings));
+    std::memset(&bootSettings, 0xA5, sizeof(bootSettings));
     ApplyBootOptionsToSettings(text);
     assert(progressiveScan == ((flags >> 1) & 1));
-    assert(bootSettings[0xB3] == (flags & 1));
-    assert(bootSettings[0xBD] == ((flags >> 25) & 7));
+    assert(reinterpret_cast<unsigned char *>(&bootSettings)[0xB3] == (flags & 1));
+    assert(reinterpret_cast<unsigned char *>(&bootSettings)[0xBD] == ((flags >> 25) & 7));
     assert(setting(8) == ((flags >> 2) & 1));
     assert(setting(12) == ((flags >> 3) & 0x7FF));
     assert(setting(16) == ((flags >> 14) & 0x7FF));
@@ -29,7 +31,7 @@ static void checkDecode(const char *text, unsigned int flags, unsigned int posit
     assert(displayY == (positions >> 16));
     for (unsigned int i = 0; i < sizeof(bootSettings); ++i)
         if (!(i >= 8 && i < 20) && i != 0xB3 && i != 0xBD)
-            assert(bootSettings[i] == 0xA5);
+            assert(reinterpret_cast<unsigned char *>(&bootSettings)[i] == 0xA5);
 }
 
 int main()
@@ -50,12 +52,12 @@ int main()
             random = random * 1664525U + 1013904223U;
             values[i] = random;
         }
-        bootSettings[0xB3] = values[0];
+        reinterpret_cast<unsigned char *>(&bootSettings)[0xB3] = values[0];
         progressiveScan = values[1];
         setting(8) = values[2];
         setting(12) = values[3];
         setting(16) = values[4];
-        bootSettings[0xBD] = values[5];
+        reinterpret_cast<unsigned char *>(&bootSettings)[0xBD] = values[5];
         displayX = values[6];
         displayY = values[7];
         unsigned int flags = (values[0] & 1) | ((values[1] & 1) << 1)

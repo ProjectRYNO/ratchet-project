@@ -50,6 +50,10 @@ Deadlocked rebuilds from split assembly, three decompiled C++ boot functions, an
 
 Follow the [decompilation source conventions](src/games/dl/DOCS/DECOMP_STYLE.md) for header guards, struct layouts, and source-file grouping.
 
+The [retail global-variable map](src/games/dl/DOCS/GLOBAL_VARIABLES.md) provides recovered names, addresses, prototype declarations, and an unmapped research backlog.
+
+The [recovered data types](src/games/dl/DOCS/RECOVERED_TYPES.md) document module headers, PS2 layouts, evidence levels, and the distinction between packed boot options and runtime settings.
+
 6. Build the new elf!
 ```
 make

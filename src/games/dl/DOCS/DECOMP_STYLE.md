@@ -35,6 +35,10 @@ extern const char sndLocBusy[];
 
 These entries name the existing data; do not add another C definition just to
 name it. Run splitting before rebuilding so generated assembly uses the names.
+The current Makefile does not track header dependencies. After changing a
+header's symbol bindings, remove the affected generated object or clean before
+rebuilding; otherwise it may still reference the old names. For the sound
+header, the affected object is `build/code/989snd/ee/989snd.o`.
 
 Current exception to file-level section placement: compiled replacements use
 individual section attributes because their sizes differ from the original

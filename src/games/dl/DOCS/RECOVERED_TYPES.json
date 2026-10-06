@@ -1,0 +1,4256 @@
+[
+  {
+    "name": "Subtitle",
+    "size": "0x12",
+    "line": 661,
+    "owners": [
+      "game_dl\\draw.h"
+    ],
+    "header": "code/game/draw.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "start",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "stop",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "text_ofs",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "_HeroSave",
+    "size": "0x3c",
+    "line": 942,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "bolts",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "boltDeficit",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "xp",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "points",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "HeroMaxHp",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "ArmorLevel",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "limitBreak",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "purchasedSkins",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "spentDiffStars",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "boltMultLevel",
+        "offset": 30,
+        "bitfield": false
+      },
+      {
+        "name": "boltMultSubLevel",
+        "offset": 31,
+        "bitfield": false
+      },
+      {
+        "name": "OldGameSaveData",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "blueBadges",
+        "offset": 33,
+        "bitfield": false
+      },
+      {
+        "name": "redBadges",
+        "offset": 34,
+        "bitfield": false
+      },
+      {
+        "name": "greenBadges",
+        "offset": 35,
+        "bitfield": false
+      },
+      {
+        "name": "goldBadges",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "blackBadges",
+        "offset": 37,
+        "bitfield": false
+      },
+      {
+        "name": "Completes",
+        "offset": 38,
+        "bitfield": false
+      },
+      {
+        "name": "lastEquippedGadget",
+        "offset": 39,
+        "bitfield": false
+      },
+      {
+        "name": "tempWeapons",
+        "offset": 41,
+        "bitfield": false
+      },
+      {
+        "name": "currentMaxLimitBreak",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "ArmorLevel2",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "progressionArmorLevel",
+        "offset": 54,
+        "bitfield": false
+      },
+      {
+        "name": "startLimitBreakDiff",
+        "offset": 56,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "fileblock",
+    "size": "0x8",
+    "line": 1231,
+    "owners": [
+      "game_dl\\wad.h"
+    ],
+    "header": "code/game/wad.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "offset",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "length",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "binblock",
+    "size": "0x8",
+    "line": 1236,
+    "owners": [
+      "game_dl\\update_core.h"
+    ],
+    "header": "code/game/update_core.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "offset",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "length",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FontKerning",
+    "size": "0x4",
+    "line": 1997,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "second",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "kern",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "end",
+        "offset": 3,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FontFileHeader",
+    "size": "0x110",
+    "line": 2003,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "num_palettes",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "num_pages",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "padding",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "page_palette_map",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "palette_types",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "page_types",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "page_sizes",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "palette_offsets",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "page_offsets",
+        "offset": 208,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GameSettings",
+    "size": "0xc4",
+    "line": 2034,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "PalMode",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "HelpVoiceOn",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "HelpTextOn",
+        "offset": 5,
+        "bitfield": false
+      },
+      {
+        "name": "SubtitlesActive",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "Stereo",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "MusicVolume",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "EffectsVolume",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "VoVolume",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "CameraElevationDir",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "CameraAzimuthDir",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "CameraRotateSpeed",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "FirstPersonModeOn",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "_was_NTSCProgessive",
+        "offset": 178,
+        "bitfield": false
+      },
+      {
+        "name": "Wide",
+        "offset": 179,
+        "bitfield": false
+      },
+      {
+        "name": "ControllerVibrationOn",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "QuickSelectPauseOn",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "Language",
+        "offset": 189,
+        "bitfield": false
+      },
+      {
+        "name": "AuxSetting2",
+        "offset": 190,
+        "bitfield": false
+      },
+      {
+        "name": "AuxSetting3",
+        "offset": 191,
+        "bitfield": false
+      },
+      {
+        "name": "AuxSetting4",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "AutoSaveOn",
+        "offset": 193,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "generalStatStruct",
+    "size": "0x14",
+    "line": 2096,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "noofGamesPlayed",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "noofGamesWon",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "noofGamesLost",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "noofKills",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "noofDeaths",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "siegeMatchStatStruct",
+    "size": "0x44",
+    "line": 2104,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "noofWins",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "noofLosses",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "winsPerLevel",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "lossesPerLevel",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "noofBaseCaptures",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "noofKills",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "noofDeaths",
+        "offset": 64,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "deadMatchStatStruct",
+    "size": "0x40",
+    "line": 2114,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "noofWins",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "noofLosses",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "winsPerLevel",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "lossesPerLevel",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "noofkills",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "noofDeaths",
+        "offset": 60,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "cameraMode",
+    "size": "0x8",
+    "line": 2123,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "normalLeftRightMode",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "normalUpDownMode",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "cameraSpeed",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tTeamStats",
+    "size": "0x64",
+    "line": 2170,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "index",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "points",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "numPlayers",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "totalKills",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "totalDeaths",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "totalSuicides",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "conquestTicketScore",
+        "offset": 96,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "datablock",
+    "size": "0x8",
+    "line": 2397,
+    "owners": [
+      "game_dl\\iopload.h"
+    ],
+    "header": "code/game/iopload.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "offset",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "length",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GadgetPrice",
+    "size": "0x24",
+    "line": 2603,
+    "owners": [
+      "game_dl\\guber\\Gadget.h"
+    ],
+    "header": "code/game/guber/Gadget.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "purchase_price",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "discount_price",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "ammo_price",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "pda_ammo_price",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "ammo_count",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "ammo_limit",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "ammo_start",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "gold_price",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "mod_shock_price",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "mod_acid_price",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "mod_lock_on_price",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GadgetLevelDef",
+    "size": "0x20",
+    "line": 2677,
+    "owners": [
+      "game_dl\\guber\\Gadget.h"
+    ],
+    "header": "code/game/guber/Gadget.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "level",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "levelUpExperience",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "mpLevelUpExperience",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "ipadA",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetDamage",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GadgetMegaLevelInfo",
+    "size": "0x10",
+    "line": 2685,
+    "owners": [
+      "game_dl\\guber\\Gadget.h"
+    ],
+    "header": "code/game/guber/Gadget.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "levelUpExperience",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "damageIncrement",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "levelUpExperienceBase",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "ipadB",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ModPrices",
+    "size": "0x8",
+    "line": 2758,
+    "owners": [
+      "game_dl\\guber\\GadgetBox.h"
+    ],
+    "header": "code/game/guber/GadgetBox.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "purchase_price",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "discount_price",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tGadgetConstants",
+    "size": "0x18c",
+    "line": 3244,
+    "owners": [
+      "game_dl\\network\\nwObjects.h"
+    ],
+    "header": "code/game/network/nwObjects.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "maxAmmo",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "metersPerSecond",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "shotsPerSecond",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetDamage1",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetDamage2",
+        "offset": 280,
+        "bitfield": false
+      },
+      {
+        "name": "kBuggyDriverDamage",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "kBuggyPassengerDamage",
+        "offset": 364,
+        "bitfield": false
+      },
+      {
+        "name": "M4222_DAMAGE_HP",
+        "offset": 368,
+        "bitfield": false
+      },
+      {
+        "name": "kMineBomberDamage",
+        "offset": 372,
+        "bitfield": false
+      },
+      {
+        "name": "M4290_FireDamage",
+        "offset": 376,
+        "bitfield": false
+      },
+      {
+        "name": "check1",
+        "offset": 380,
+        "bitfield": false
+      },
+      {
+        "name": "check2",
+        "offset": 384,
+        "bitfield": false
+      },
+      {
+        "name": "check3",
+        "offset": 388,
+        "bitfield": false
+      },
+      {
+        "name": "check4",
+        "offset": 392,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Polar",
+    "size": "0x14",
+    "line": 3691,
+    "owners": [
+      "game_dl\\camera.h"
+    ],
+    "header": "code/game/camera.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "azimuth",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "elevation",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "radius",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "rotY",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "rotZ",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FlashVars",
+    "size": "0x10",
+    "line": 3884,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "timer",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "destColor",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "srcColor",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FontWindow",
+    "size": "0x1c",
+    "line": 3977,
+    "owners": [
+      "game_dl\\fonts.h"
+    ],
+    "header": "code/game/fonts.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "win_top",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "win_bot",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "win_left",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "win_right",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "text_x",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "text_y",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "max_width",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "max_height",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "line_spacing",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "sub_pixel_x",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "sub_pixel_y",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "drop_shadow_offset_x",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "drop_shadow_offset_y",
+        "offset": 26,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraFov",
+    "size": "0x30",
+    "line": 4024,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "speed",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ideal",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "actual",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "gain",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "damp",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "limit",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "changeType",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 25,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 26,
+        "bitfield": false
+      },
+      {
+        "name": "timerInv",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "init",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PolarSm",
+    "size": "0xc",
+    "line": 4051,
+    "owners": [
+      "game_dl\\camera.h"
+    ],
+    "header": "code/game/camera.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "azimuth",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "elevation",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "radius",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraShake",
+    "size": "0x10",
+    "line": 4163,
+    "owners": [
+      "game_dl\\camera.h"
+    ],
+    "header": "code/game/camera.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "strength",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "adjust",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "time",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "div",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTimers",
+    "size": "0xb4",
+    "line": 4460,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "stateType",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "subState",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "animState",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "stickOn",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "stickOff",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "noLedge",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "allowQuickSelect",
+        "offset": 26,
+        "bitfield": false
+      },
+      {
+        "name": "firing",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "moveModifierTimer",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "boltMultTimer",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpOk",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "postHitInvinc",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "ignoreHeroColl",
+        "offset": 46,
+        "bitfield": false
+      },
+      {
+        "name": "collOff",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "invisible",
+        "offset": 50,
+        "bitfield": false
+      },
+      {
+        "name": "slide",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "bezerker",
+        "offset": 54,
+        "bitfield": false
+      },
+      {
+        "name": "noWallJump",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "noJumps",
+        "offset": 58,
+        "bitfield": false
+      },
+      {
+        "name": "boxBreaking",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "noMag",
+        "offset": 62,
+        "bitfield": false
+      },
+      {
+        "name": "noChargeJump",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "resurrectWait",
+        "offset": 66,
+        "bitfield": false
+      },
+      {
+        "name": "timeSinceStrafe",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "noHackerSwitch",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "noInput",
+        "offset": 74,
+        "bitfield": false
+      },
+      {
+        "name": "noJumpLookBack",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "noShockAbort",
+        "offset": 78,
+        "bitfield": false
+      },
+      {
+        "name": "stuck",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "noSwing",
+        "offset": 82,
+        "bitfield": false
+      },
+      {
+        "name": "noWaterJump",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "noWaterDive",
+        "offset": 86,
+        "bitfield": false
+      },
+      {
+        "name": "facialExpression",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "idle",
+        "offset": 90,
+        "bitfield": false
+      },
+      {
+        "name": "bumpPushing",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "lookButton",
+        "offset": 94,
+        "bitfield": false
+      },
+      {
+        "name": "edgeStop",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "clankRedEye",
+        "offset": 98,
+        "bitfield": false
+      },
+      {
+        "name": "edgePath",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "magSlope",
+        "offset": 102,
+        "bitfield": false
+      },
+      {
+        "name": "ledgeCamAdj",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "screenFlashRed",
+        "offset": 106,
+        "bitfield": false
+      },
+      {
+        "name": "holdDeathPose",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "strafeMove",
+        "offset": 110,
+        "bitfield": false
+      },
+      {
+        "name": "noRaisedGunArm",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "noExternalRot",
+        "offset": 114,
+        "bitfield": false
+      },
+      {
+        "name": "screenFlashOn",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "screenFadeOn",
+        "offset": 118,
+        "bitfield": false
+      },
+      {
+        "name": "lastVehicleTimer",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetRefire",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "timeAlive",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "noFpsCamTimer",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "endDeathEarly",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "forceGlide",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "noGrind",
+        "offset": 142,
+        "bitfield": false
+      },
+      {
+        "name": "instaGrind",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "noCamInputTimer",
+        "offset": 146,
+        "bitfield": false
+      },
+      {
+        "name": "postTeleportTimer",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "multiKillTimer",
+        "offset": 150,
+        "bitfield": false
+      },
+      {
+        "name": "armorLevelTimer",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "damageMuliplierTimer",
+        "offset": 154,
+        "bitfield": false
+      },
+      {
+        "name": "powerupEffectTimer",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "juggernautFadeTimer",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "onFireTimer",
+        "offset": 162,
+        "bitfield": false
+      },
+      {
+        "name": "acidTimer",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "freezeTimer",
+        "offset": 166,
+        "bitfield": false
+      },
+      {
+        "name": "noHelmTimer",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "elecTimer",
+        "offset": 170,
+        "bitfield": false
+      },
+      {
+        "name": "boltDistMulTimer",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "explodeTimer",
+        "offset": 174,
+        "bitfield": false
+      },
+      {
+        "name": "noDeathTimer",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "invincibilityTimer",
+        "offset": 178,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroAnim",
+    "size": "0x20",
+    "line": 4607,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "speed",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "iscale",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "interping",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "env_index",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "env_time",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "mayaFrm",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "mayaFrmDelt",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroSpecialIdleDef",
+    "size": "0x10",
+    "line": 4688,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "anim",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "frequency",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "minRepeatTime",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "repeatTimer",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroShadow",
+    "size": "0x28",
+    "line": 4785,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "slope",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "plane",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "range",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "sample_id",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "sample_pos",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroThrust",
+    "size": "0x10",
+    "line": 4921,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "ideal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "actual",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroAttackDef",
+    "size": "0x2c",
+    "line": 4972,
+    "owners": [
+      "game_dl\\guber\\Hero.h"
+    ],
+    "header": "code/game/guber/Hero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "type",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "stage",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "endComboFrm",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "inputFrm",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "transFrm",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "jumpTransFrm",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "etcTransFrm",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "startDamFrm",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "stopDamFrm",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "startBlurFrm",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "stopBlurFrm",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroHotspots",
+    "size": "0x10",
+    "line": 4999,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "index",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ice",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "magictele",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "water",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "lava",
+        "offset": 5,
+        "bitfield": false
+      },
+      {
+        "name": "quicksand",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "magnetic",
+        "offset": 7,
+        "bitfield": false
+      },
+      {
+        "name": "noStand",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "deathsand",
+        "offset": 9,
+        "bitfield": false
+      },
+      {
+        "name": "icewater",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "groundType",
+        "offset": 11,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroDust",
+    "size": "0x10",
+    "line": 5022,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "vel",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "velvar",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "rate",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 14,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroFall",
+    "size": "0x20",
+    "line": 5030,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "gravity",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "xyDecel",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "xRotSpeed",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "yRotSpeed",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "xRotSpeedIdeal",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "yRotSpeedIdeal",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "glideTaperSpeed",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroQuickSand",
+    "size": "0x10",
+    "line": 5115,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "timesFallen",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroQueuedSound",
+    "size": "0x8",
+    "line": 5133,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "active",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "sound",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 6,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroPlayerConstants",
+    "size": "0x70",
+    "line": 5146,
+    "owners": [
+      "game_dl\\guber\\Hero.h"
+    ],
+    "header": "code/game/guber/Hero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "mobyNum",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "maxWalkSpeed",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "kneeHeight",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "kneeCheckDist",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "colRadius",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "colTop",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "colBot",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "colBotFall",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "jumpPushOffTime",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "jumpPeakFrm",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "jumpLandFrm",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "jumpGameLandFrm",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "jumpMaxHeight",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "jumpMinHeight",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "jumpMaxUpTime",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "jumpGravity",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "jumpMaxXySpeed",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "fallGravity",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "maxFallSpeed",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "walkAnimSpeedMul",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "walkAnimSpeedLimLower",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "walkAnimSpeedLimUpper",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "jogAnimSpeedMul",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "jogAnimSpeedLimLower",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "jogAnimSpeedLimUpper",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 100,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "npcStep",
+    "size": "0x1c",
+    "line": 6095,
+    "owners": [
+      "game_dl\\npc.h"
+    ],
+    "header": "code/game/npc.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "offer",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "scene",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "dest",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "cond_type",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "cond_val",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "true_dest",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "false_dest",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 18,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ArmorVars",
+    "size": "0x20",
+    "line": 6107,
+    "owners": [
+      "game_dl\\bootutil.h"
+    ],
+    "header": "code/game/bootutil.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "bPercents",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 15,
+        "bitfield": false
+      },
+      {
+        "name": "oldHitPoints",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "armorBits",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 22,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Weapon_ThirdPerson",
+    "size": "0x18",
+    "line": 6124,
+    "owners": [
+      "game_dl\\update\\moby4244.h"
+    ],
+    "header": "code/game/update/moby4244.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "maxYaw",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "maxElv",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "maxRange",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "scaleElv",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "scaleAng",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "blendFactorLimit",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "actuatorWave",
+    "size": "0x10",
+    "line": 6138,
+    "owners": [
+      "game_dl\\actuator.h"
+    ],
+    "header": "code/game/actuator.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "type",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "loop",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "side",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "scale",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "delay",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "lifeSpan",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "on",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "off",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "power",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "minpower",
+        "offset": 15,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tDR_Profile",
+    "size": "0x28",
+    "line": 6275,
+    "owners": [
+      "game_dl\\guber\\LocalHero.h"
+    ],
+    "header": "code/game/guber/LocalHero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "LinearPredictionCutoff",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "LinearConvergenceThreshold",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "MaxLinearConvergenceDelta",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "MinLinearConvergenceDelta",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "MinSmoothConvergenceDelta",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "PositionErrorThreshold",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "MaxTrackSpeed",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "MaxConvergeSpeed",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "Accel",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "Decel",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "pad_frame",
+    "size": "0x2",
+    "line": 6331,
+    "owners": [
+      "game_dl\\guber\\PadStream.h"
+    ],
+    "header": "code/game/guber/PadStream.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "data",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_ShotSpawnMessage",
+    "size": "0x1c",
+    "line": 6637,
+    "owners": [
+      "game_dl\\update\\moby4249.h"
+    ],
+    "header": "code/game/update/moby4249.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "targetPosX",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "targetPosY",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "targetPosZ",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "timeStamp",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "sourceUID",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "targetUID",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "shotUID",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "miscInfo",
+        "offset": 25,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "EnemyTypeTag",
+    "size": "0x18",
+    "line": 7266,
+    "owners": [
+      "game_dl\\tables.h"
+    ],
+    "header": "code/game/tables.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "oClasses",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "localizationTag",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "localizationDescTag",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "localizationSizeTag",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "localizationWorldTag",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "barWidths",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "EffectorVars",
+    "size": "0x10",
+    "line": 7460,
+    "owners": [
+      "game_dl\\navsyslocal.h"
+    ],
+    "header": "code/game/navsyslocal.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "effectorMode",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "bunkerType",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "padc",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "strength",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Part074_fixed",
+    "size": "0x10",
+    "line": 7779,
+    "owners": [
+      "game_dl\\update\\moby167.h"
+    ],
+    "header": "code/game/update/moby167.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "beginColor",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "endColor",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "maxScale",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "startScale",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "lifeSpan",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Channel4f",
+    "size": "0x10",
+    "line": 8290,
+    "owners": [
+      "game_dl\\gui\\graphicObjects.h"
+    ],
+    "header": "code/game/gui/graphicObjects.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "w",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "M8454_WhipParameters",
+    "size": "0x20",
+    "line": 9107,
+    "owners": [
+      "game_dl\\update\\moby8454.h"
+    ],
+    "header": "code/game/update/moby8454.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "SegmentLength",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "Gravity",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "Damping",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "CollideRadius",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "ParentCollideRadius",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "NumIterations",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "NumControlledVerts",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "NumNonParentCollideableVerts",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "ConstraintOverlap",
+        "offset": 23,
+        "bitfield": false
+      },
+      {
+        "name": "ControlledSegmentLength",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FXU_DistortionShellStyle_t",
+    "size": "0x3c",
+    "line": 9248,
+    "owners": [
+      "game_dl\\update\\moby9738.h"
+    ],
+    "header": "code/game/update/moby9738.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "iDivisions",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "iCenterColor",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "iEdgeColor",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "fCenterAmp",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "fEdgeAmp",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "fEdgeOfs",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "fEdgeScale",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "iRandTableSize",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "fRandStep",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "bFrontSide",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "iNumFadeRows",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "fEdgeAmpFadeTarget",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "fCenterAmpFadeTarget",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "iCenterColorFadeTarget",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "iEdgeColorFadeTarget",
+        "offset": 56,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PifHeader",
+    "size": "0x20",
+    "line": 9479,
+    "owners": [
+      "game_dl\\loaders.h"
+    ],
+    "header": "code/game/loaders.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "pifID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "fileSize",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "uSize",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "vSize",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "texFormat",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "clutFormat",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "clutOrder",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "mipLevels",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FrustumDef",
+    "size": "0x28",
+    "line": 9772,
+    "owners": [
+      "game_dl\\draw.h"
+    ],
+    "header": "code/game/draw.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "scis_l",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "scis_r",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "scis_t",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "scis_b",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "size_x",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "size_y",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "center_x",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "center_y",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "splitScreenMode",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "xratio",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "_2legAnim",
+    "size": "0x50",
+    "line": 9976,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "anim",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "stride",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "frame0",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "frames",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "fromIdle",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "heelRange",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "heelDown",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "heelUp",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "footRange",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "footDown",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "footUp",
+        "offset": 72,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "fontLetter",
+    "size": "0x4",
+    "line": 10327,
+    "owners": [
+      "game_dl\\fonts.h"
+    ],
+    "header": "code/game/fonts.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "u",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "v",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "drop",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "spacing",
+        "offset": 3,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_DownloadedTweaks",
+    "size": "0x8c",
+    "line": 10346,
+    "owners": [
+      "game_dl\\network\\nw.h"
+    ],
+    "header": "code/game/network/nw.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "ranksToLevels",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_dropPenaltyStart",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "m_linkDirtyMax",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "m_linkDirtyShortTermMax",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "m_dropTo30",
+        "offset": 26,
+        "bitfield": false
+      },
+      {
+        "name": "m_perPlayer",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "m_perPlayerSiege",
+        "offset": 30,
+        "bitfield": false
+      },
+      {
+        "name": "m_hasHeadset",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "m_perWeapon",
+        "offset": 34,
+        "bitfield": false
+      },
+      {
+        "name": "m_perVehicle",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "m_perLevel",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "m_perMajorMode",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "m_RANK_SPREAD",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "m_RANK_DIFF_LOW_CLAMP",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "m_RANK_DIFF_HIGH_CLAMP",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "m_RANK_VALUE",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "m_MIN_LOSE",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "m_MIN_LOSE_SPREAD",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "m_MAX_WIN_SPREAD",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "m_MAX_SCORE",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "m_DAMP_WINNING_LOW_CLAMP",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "m_MIN_ALWAYS_POSITIVE_RANK_DELTA",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "m_MAX_ADD_TO_RANK",
+        "offset": 136,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IM_LoadBalancer",
+    "size": "0x10",
+    "line": 10707,
+    "owners": [
+      "game_dl\\influence.h"
+    ],
+    "header": "code/game/influence.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "worldTimeReserved",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "currentPhase",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "fraction",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "index",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "numSectors",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "uid",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "paddingOfRenewableSunpowerDrivenPantsResources",
+        "offset": 14,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IM_PointList",
+    "size": "0xa0",
+    "line": 10717,
+    "owners": [
+      "game_dl\\influence.h"
+    ],
+    "header": "code/game/influence.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "pX",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pY",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "pZ",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "pScore",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "pHash",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "foundPointMaximum",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "foundPoints",
+        "offset": 145,
+        "bitfield": false
+      },
+      {
+        "name": "paddingOfWayTooMuchPadding",
+        "offset": 146,
+        "bitfield": false
+      },
+      {
+        "name": "paddingOfTasteSensations",
+        "offset": 148,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IM_SectorCover",
+    "size": "0x4",
+    "line": 10729,
+    "owners": [
+      "game_dl\\influence.h"
+    ],
+    "header": "code/game/influence.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "xDistance",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "yDistance",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "radius",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "strength",
+        "offset": 3,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GC_EnemyAttackInformation",
+    "size": "0x20",
+    "line": 10761,
+    "owners": [
+      "game_dl\\group_control.h"
+    ],
+    "header": "code/game/group_control.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "frontAttackApeture",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "trackingRatio",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "shotError",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "timeLastAttacked",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "timeRefraction",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "allowedByState",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "hasMutex",
+        "offset": 19,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "TieLod",
+    "size": "0x8",
+    "line": 11186,
+    "owners": [
+      "game_dl\\tiefunc.h"
+    ],
+    "header": "code/game/tiefunc.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "vert_cnt",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "tri_cnt",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "strip_cnt",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 6,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "UnlockData",
+    "size": "0x18",
+    "line": 11654,
+    "owners": [
+      "game_dl\\guber\\LevelBox.h"
+    ],
+    "header": "code/game/guber/LevelBox.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "points",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "badgeType",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "badges",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "armorLevel",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "completeMission",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "playedScene",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BotAbility",
+    "size": "0x10",
+    "line": 12192,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "tagUCName",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "tagName",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "tagDesc",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "imageIndex",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "iconIndex",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "price",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HudState_State",
+    "size": "0xc",
+    "line": 13709,
+    "owners": [
+      "game_dl\\projectgui\\projectgui.h"
+    ],
+    "header": "code/game/projectgui/projectgui.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "counter",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "trigger",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MPTeamData_s",
+    "size": "0xc",
+    "line": 13829,
+    "owners": [
+      "game_dl\\projectgui\\guimain.h"
+    ],
+    "header": "code/game/projectgui/guimain.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "iTeam",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "bLocal",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "iScore",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RewardData",
+    "size": "0x5",
+    "line": 14698,
+    "owners": [
+      "game_dl\\guber\\LevelBox.h"
+    ],
+    "header": "code/game/guber/LevelBox.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "gadget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "basic_mod",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "post_mod",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "weapon_mod",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "bot",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "VendorData",
+    "size": "0x8",
+    "line": 14706,
+    "owners": [
+      "game_dl\\guber\\LevelBox.h"
+    ],
+    "header": "code/game/guber/LevelBox.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "gadget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "bot1",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "bot2",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "wrench",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "pfxMod",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "replayGadget",
+        "offset": 5,
+        "bitfield": false
+      },
+      {
+        "name": "replayWrench",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "replayBot",
+        "offset": 7,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "VendorItem",
+    "size": "0x24",
+    "line": 15260,
+    "owners": [
+      "game_dl\\vendor.h"
+    ],
+    "header": "code/game/vendor.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "type",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "id",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "cost",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "description",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "uc_name",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "name",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "icon",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "image",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "affordable",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ST_SkillPointInfo",
+    "size": "0x18",
+    "line": 15364,
+    "owners": [
+      "game_dl\\stats.h"
+    ],
+    "header": "code/game/stats.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "name",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "desc",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "difficulty",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "bolts",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "xp",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "completed",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tChecksumConstants",
+    "size": "0x30c",
+    "line": 15975,
+    "owners": [
+      "game_dl\\network\\nwObjects.h"
+    ],
+    "header": "code/game/network/nwObjects.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "kEnableChecksum",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "kEnableCDChecksum",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "kEnableChecksumMsgs",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "kChecksumBlocks",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_PlayerInfoStats",
+    "size": "0x34",
+    "line": 17968,
+    "owners": [
+      "game_dl\\network\\nw.h"
+    ],
+    "header": "code/game/network/nw.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "crc",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rank",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "padding",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "headsetAttached",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "isClanLeader",
+        "offset": 33,
+        "bitfield": false
+      },
+      {
+        "name": "hasLocalPlayer",
+        "offset": 34,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 35,
+        "bitfield": false
+      },
+      {
+        "name": "clanID",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "totalGamesWithCheaters",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "consecutiveGamesWithCheaters",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "lastGameHadCheater",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tReservations",
+    "size": "0x8",
+    "line": 18013,
+    "owners": [
+      "game_dl\\network\\nw.h"
+    ],
+    "header": "code/game/network/nw.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "m_id",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_timeout",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_KillDeathMessage",
+    "size": "0x18",
+    "line": 20910,
+    "owners": [
+      "game_dl\\guber\\Hero.h"
+    ],
+    "header": "code/game/guber/Hero.h",
+    "evidence": "ghidra-layout",
+    "fields": [
+      {
+        "name": "killingPlayerIndex",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "deathState",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "deadPlayerIndex",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "killingWeapon",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "killType",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "killerUID",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "deathData",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "iTag",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "iTagFlg",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "netFrameTime",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "DeathMatchGameData",
+    "size": "0x140",
+    "line": 20938,
+    "owners": [
+      "game_dl\\guber\\GameController.h"
+    ],
+    "header": "code/game/guber/GameController.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "resurrectionPts",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pad1",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "randomSpawn",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "smartSpawnPts",
+        "offset": 264,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 268,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_VehiclePosRotUpdateMessage",
+    "size": "0x18",
+    "line": 21062,
+    "owners": [
+      "game_dl\\guber\\Vehicle.h"
+    ],
+    "header": "code/game/guber/Vehicle.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "flags",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "UID",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "timeStamp",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "rot_x",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "rot_y",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "rot_z",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pos_x",
+        "offset": 18,
+        "bitfield": false
+      },
+      {
+        "name": "pos_y",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "pos_z",
+        "offset": 22,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_GameStateMessage",
+    "size": "0x4e8",
+    "line": 21310,
+    "owners": [
+      "game_dl\\guber\\GameController.h"
+    ],
+    "header": "code/game/guber/GameController.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "gameType",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "timeEnd",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "timeStart",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "gameState",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "numTeams",
+        "offset": 13,
+        "bitfield": false
+      },
+      {
+        "name": "teamTicketScore",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "baseTeam",
+        "offset": 34,
+        "bitfield": false
+      },
+      {
+        "name": "winningTeam",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "winningPlayer",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "gameIsOver",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "weaponKills",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "weaponDeaths",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "weaponShotsFired",
+        "offset": 416,
+        "bitfield": false
+      },
+      {
+        "name": "weaponShotsHit",
+        "offset": 596,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleTime",
+        "offset": 776,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleWeaponKills",
+        "offset": 816,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleWeaponDeaths",
+        "offset": 836,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleRoadKills",
+        "offset": 856,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleRoadDeaths",
+        "offset": 876,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleShotsFired",
+        "offset": 896,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleShotsHit",
+        "offset": 916,
+        "bitfield": false
+      },
+      {
+        "name": "playerKills",
+        "offset": 936,
+        "bitfield": false
+      },
+      {
+        "name": "playerDeaths",
+        "offset": 956,
+        "bitfield": false
+      },
+      {
+        "name": "suicides",
+        "offset": 976,
+        "bitfield": false
+      },
+      {
+        "name": "multiKills",
+        "offset": 996,
+        "bitfield": false
+      },
+      {
+        "name": "sniperKills",
+        "offset": 1016,
+        "bitfield": false
+      },
+      {
+        "name": "wrenchKills",
+        "offset": 1036,
+        "bitfield": false
+      },
+      {
+        "name": "conquestNodesCaptured",
+        "offset": 1056,
+        "bitfield": false
+      },
+      {
+        "name": "conquestNodeSaves",
+        "offset": 1066,
+        "bitfield": false
+      },
+      {
+        "name": "conquestDefensiveKills",
+        "offset": 1076,
+        "bitfield": false
+      },
+      {
+        "name": "conquestPoints",
+        "offset": 1086,
+        "bitfield": false
+      },
+      {
+        "name": "ctfFlagCaptures",
+        "offset": 1096,
+        "bitfield": false
+      },
+      {
+        "name": "ctfFlagSaves",
+        "offset": 1106,
+        "bitfield": false
+      },
+      {
+        "name": "kingHillHoldTime",
+        "offset": 1116,
+        "bitfield": false
+      },
+      {
+        "name": "juggernautTime",
+        "offset": 1156,
+        "bitfield": false
+      },
+      {
+        "name": "squats",
+        "offset": 1196,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleSquats",
+        "offset": 1216,
+        "bitfield": false
+      },
+      {
+        "name": "ticketScore",
+        "offset": 1236,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GameBootOptions",
+    "size": "0x8",
+    "line": 969,
+    "owners": [
+      "game_dl\\boot.cpp"
+    ],
+    "header": "code/game/boot.h",
+    "evidence": "retail-boot-accesses",
+    "fields": [
+      {
+        "name": "wideScreen",
+        "offset": 0,
+        "bitfield": true
+      },
+      {
+        "name": "progressiveScan",
+        "offset": 0,
+        "bitfield": true
+      },
+      {
+        "name": "stereo",
+        "offset": 0,
+        "bitfield": true
+      },
+      {
+        "name": "musicVolume",
+        "offset": 0,
+        "bitfield": true
+      },
+      {
+        "name": "effectsVolume",
+        "offset": 1,
+        "bitfield": true
+      },
+      {
+        "name": "language",
+        "offset": 3,
+        "bitfield": true
+      },
+      {
+        "name": "screen_offset_x",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "screen_offset_y",
+        "offset": 6,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "blockhdr",
+    "size": "0x10",
+    "line": 990,
+    "owners": [
+      "game_dl\\boot.cpp"
+    ],
+    "header": "code/game/boot.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "address",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "size",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "entry",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "LobbyControllerSetup",
+    "size": "0x140",
+    "line": 2058,
+    "owners": [
+      "game_dl\\gameglobals.h"
+    ],
+    "header": "code/game/gameglobals.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "CameraElevationDir",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "CameraAzimuthDir",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "CameraRotateSpeed",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "FirstPersonModeOn",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "ControllerVibrationOn",
+        "offset": 296,
+        "bitfield": false
+      },
+      {
+        "name": "nControllerPadIndices",
+        "offset": 304,
+        "bitfield": false
+      }
+    ]
+  }
+]

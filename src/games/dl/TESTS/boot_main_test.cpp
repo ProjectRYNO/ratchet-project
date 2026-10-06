@@ -14,7 +14,7 @@ int g_SkipBootIntro;
 const char bootOptionsPrefix[] = "BOPT=";
 const char gooeyOption[] = "gooey";
 const char multiOption[] = "multi";
-unsigned char bootSettings[0xC0] __attribute__((aligned(4)));
+GameSettings bootSettings;
 unsigned int progressiveScan;
 unsigned int displayX;
 unsigned int displayY;

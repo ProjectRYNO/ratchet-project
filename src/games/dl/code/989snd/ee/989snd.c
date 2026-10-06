@@ -1,6 +1,7 @@
 #include "989snd.h"
 
 // Recovered using retail Ghidra, prototype types, and original EE instructions.
+// Global addresses are supplied by config/symbols_core.text.txt.
 #define SND_SECTION(name) __attribute__((section(".snd_" #name)))
 
 void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int flags)
