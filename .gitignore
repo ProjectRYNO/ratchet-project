@@ -9,16 +9,16 @@ build/
 **/TESTS
 
 # Keep the reproducible Deadlocked decompilation checks, not scratch reports.
-!src/games/dl/tests/
-src/games/dl/tests/*
-!src/games/dl/tests/check_main_elf.py
-!src/games/dl/tests/check_global_map.py
-!src/games/dl/tests/check_main_link_guards.py
-!src/games/dl/tests/clean_main_build.py
-!src/games/dl/tests/test_989snd_wrappers.py
-!src/games/dl/tests/test_989snd_state.py
-!src/games/dl/tests/boot_main_test.cpp
-!src/games/dl/tests/boot_options_test.cpp
+!src/games/dl/TESTS/
+src/games/dl/TESTS/*
+!src/games/dl/TESTS/check_main_elf.py
+!src/games/dl/TESTS/check_global_map.py
+!src/games/dl/TESTS/check_main_link_guards.py
+!src/games/dl/TESTS/clean_main_build.py
+!src/games/dl/TESTS/test_989snd_wrappers.py
+!src/games/dl/TESTS/test_989snd_state.py
+!src/games/dl/TESTS/boot_main_test.cpp
+!src/games/dl/TESTS/boot_options_test.cpp
 
 ee-gcc2.95.2-SN-v2.73a.tar.gz
 src/games/tools/cc/*
@@ -61,4 +61,7 @@ src/games/rac/assets/
 src/games/gc/assets/
 src/games/uya/assets/
 src/games/dl/assets/
-!src/games/dl/tests/check_type_layouts.py
+!src/games/dl/TESTS/check_type_layouts.py
+# Documentation categories named build are not generated build output.
+!docs/build/
+!src/games/dl/DOCS/build/

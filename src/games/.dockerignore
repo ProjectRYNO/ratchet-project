@@ -1,0 +1,6 @@
+# The image only copies these build inputs. Games/assets are bind-mounted later.
+**
+!Dockerfile
+!requirements.txt
+!entrypoint.sh
+!.dockerignore

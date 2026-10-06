@@ -1,7 +1,11 @@
 # Rebuilding Deadlocked's boot ELF
 
+> Current acceptance policy: [the shared game rules](../../../../../.agents/guides/GAME_WORKFLOW.md)
+> require exact executable matching and preserved behavior. The nonmatching C
+> validation described below is historical/diagnostic evidence, not a 1:1 pass.
+
 The current build also includes all 59 C replacements in the EE sound library.
-See [989snd progress](989SND_REUSE.md) for their validation and runtime-testing limits.
+See [989snd progress](../sound/989SND_REUSE.md) for their validation and runtime-testing limits.
 The audit command below covers all registered boot and sound replacements.
 
 The default build compiles the C/C++ translation units and assembles their

@@ -1,4 +1,4 @@
-# Decompilation source conventions
+# Decompilation source conventions (all games)
 
 * Header guards follow the filename, with a distinguishing suffix if needed,
   and no `RYNO_` prefix. For filenames starting with digits, use a valid
@@ -17,11 +17,12 @@ typedef struct { // 0x08
 ```
 
 Sizes and offsets describe the original PS2 ABI, not the host compiler's ABI.
-Keep recovered functions in their original source-file grouping. The boot-option
+Keep recovered functions in their original source-file grouping. In Deadlocked, the boot-option
 encoder and decoder belong in `code/game/boot.cpp`.
 
 Recovered globals use ordinary `extern` declarations. Register their retail
-addresses in `config/symbols_core.text.txt`, which is already consumed by the
+addresses in the selected game's symbol configuration. In Deadlocked, use
+`config/symbols_core.text.txt`, which is already consumed by the
 splitter and symbol generator, rather than attaching `__asm__("D_...")` aliases
 to C/C++ declarations. For example:
 

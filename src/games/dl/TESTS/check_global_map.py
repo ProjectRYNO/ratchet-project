@@ -13,7 +13,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('elf')
     args=parser.parse_args()
-    rows=list(csv.DictReader((ROOT/'DOCS/GLOBAL_VARIABLES.csv').open()))
+    rows=list(csv.DictReader((ROOT/'DOCS/symbols/GLOBAL_VARIABLES.csv').open()))
     configured={name:int(address,16) for name,address in re.findall(
         r'^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)\s*;',
         (ROOT/'config/symbols_core.text.txt').read_text(),re.M)}

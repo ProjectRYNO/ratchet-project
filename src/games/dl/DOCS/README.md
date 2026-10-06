@@ -1,12 +1,16 @@
-## What os the DOCS folder for?
-This folder is specifically for helpful documents that is related to this current game path.
+# Deadlocked documentation
 
-### SDK Versions
-Following was found via searching either MCMAN.IRX, or the boot ELF for `PSII` strings.
-RAC1 and RAC2 has libraries built using different SDK's, so I used the highest version found.
-```
-RAC1: SDK 2.5.4
-RAC2: SDK 2.5.5
-RAC3: SDK 3.0.2
-RAC4: SDK 3.0.2
-```
+| Folder | Documents and data |
+| --- | --- |
+| build | [ELF reconstruction and build history](build/ELF_REBUILD.md) |
+| sound | [989snd decompilation notes](sound/989SND_REUSE.md), [function inventory](sound/989SND_INVENTORY.csv) |
+| symbols | [Global mapping notes](symbols/GLOBAL_VARIABLES.md), [retail inventory](symbols/GLOBAL_VARIABLES.csv), [unmapped prototype globals](symbols/GLOBALS_UNMAPPED.csv) |
+| types | [Recovered layouts](types/RECOVERED_TYPES.md), [machine-readable inventory](types/RECOVERED_TYPES.json), [style reference](types/STYLE.md) |
+
+AI instructions and skills are grouped in [.agents](../../../../.agents/README.md).
+The [Deadlocked AI guide](../../../../.agents/guides/DEADLOCKED.md) contains current
+build and test commands. Shared technical documents start at
+[docs/README.md](../../../../docs/README.md).
+
+The CSV/JSON files under symbols and types are also inputs to verification tools.
+When moving or renaming them, update the readers and clean-build copy paths.

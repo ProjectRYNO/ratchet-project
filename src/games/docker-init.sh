@@ -1,4 +1,8 @@
 #!/bin/bash
+set -euo pipefail
+
+# Resolve build context independently of the caller's current directory.
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 
 IMAGE_NAME="projectryno"
 
@@ -25,9 +29,17 @@ test_image_exists() {
     return $?
 }
 
+if [[ "${1:-}" == "--help" ]]; then
+    show_usage
+    exit 0
+fi
+if (( $# > 1 )); then
+    show_usage >&2
+    exit 1
+fi
 test_docker_available
 
-case "$1" in
+case "${1:-}" in
     --help)
         show_usage
         ;;

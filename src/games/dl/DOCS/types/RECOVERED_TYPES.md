@@ -1,5 +1,9 @@
 # Recovered data types
 
+> Current acceptance policy: [the shared game rules](../../../../../.agents/guides/GAME_WORKFLOW.md)
+> require exact executable matching and preserved behavior. The nonmatching C
+> validation described below is historical/diagnostic evidence, not a 1:1 pass.
+
 77 types are declared in 39 module headers under `code/game`, following their
 ownership in the prototype sources. `GameBootOptions` and `blockhdr` were local
 to prototype `boot.cpp`; their declarations live in `boot.h` for reuse.

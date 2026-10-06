@@ -1576,7 +1576,7 @@ nwLobbyInitIntoScreen = 0x0021DE80;
 
 // BEGIN RECOVERED RETAIL GLOBALS
 // Retail Ghidra addresses; names corroborated by dlglobals.txt and prototype sources.
-// Provenance and deferred entries: DOCS/GLOBAL_VARIABLES.csv
+// Provenance and deferred entries: DOCS/symbols/GLOBAL_VARIABLES.csv
 
 // core.data
 gDmeGlobals = 0x00167EFC;

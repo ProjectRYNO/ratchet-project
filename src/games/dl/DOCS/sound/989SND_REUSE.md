@@ -1,5 +1,9 @@
 # 989snd EE decompilation
 
+> Current acceptance policy: [the shared game rules](../../../../../.agents/guides/GAME_WORKFLOW.md)
+> require exact executable matching and preserved behavior. The nonmatching C
+> validation described below is historical/diagnostic evidence, not a 1:1 pass.
+
 All **59 named EE sound functions compile from C** in
 `code/989snd/ee/989snd.c`. This includes startup, RPC transport and batching,
 asynchronous completion, bank loading, ducking, stream-safe CD operations,

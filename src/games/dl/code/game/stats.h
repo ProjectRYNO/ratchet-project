@@ -2,7 +2,7 @@
 #define STATS_H
 
 // Recovered data layouts from dltypes.txt and the prototype sources.
-// Sizes/offsets use the PS2 ABI. See DOCS/RECOVERED_TYPES.md.
+// Sizes/offsets use the PS2 ABI. See DOCS/types/RECOVERED_TYPES.md.
 
 #ifndef __cplusplus
 #include <stdbool.h>

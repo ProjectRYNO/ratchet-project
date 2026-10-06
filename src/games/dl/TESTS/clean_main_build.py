@@ -11,11 +11,14 @@ root = Path('/ProjectRYNO')
 game = root / 'dl'
 reports = Path('/reports')
 game.mkdir(parents=True, exist_ok=True)
-for name in ('config', 'tests'):
-    shutil.copytree(reference / 'dl' / name, game / name, dirs_exist_ok=True)
+shutil.copytree(reference / 'dl/config', game / 'config', dirs_exist_ok=True)
+# Use the launched script's directory: Git tracks TESTS, while some Windows
+# worktrees spell it tests. The isolated destination uses tests consistently.
+shutil.copytree(Path(__file__).resolve().parent, game / 'tests', dirs_exist_ok=True)
 shutil.copy2(reference / 'dl/Makefile', game / 'Makefile')
-(game / 'DOCS').mkdir(exist_ok=True)
-shutil.copy2(reference / 'dl/DOCS/GLOBAL_VARIABLES.csv', game / 'DOCS/GLOBAL_VARIABLES.csv')
+(game / 'DOCS/symbols').mkdir(parents=True, exist_ok=True)
+(game / 'DOCS/types').mkdir(parents=True, exist_ok=True)
+shutil.copy2(reference / 'dl/DOCS/symbols/GLOBAL_VARIABLES.csv', game / 'DOCS/symbols/GLOBAL_VARIABLES.csv')
 for directory, dirs, files in os.walk(reference / 'dl/code'):
     dirs[:] = [d for d in dirs if d != 'asm']
     destination = game / 'code' / Path(directory).relative_to(reference / 'dl/code')
@@ -27,7 +30,7 @@ for source in (reference / 'tools').glob('*.py'):
     shutil.copy2(source, root / 'tools' / source.name)
 (root / 'assets/dl').mkdir(parents=True, exist_ok=True)
 shutil.copy2(reference / 'assets/dl/boot_elf.elf', root / 'assets/dl/boot_elf.elf')
-shutil.copy2(reference / 'dl/DOCS/RECOVERED_TYPES.json', game / 'DOCS/RECOVERED_TYPES.json')
+shutil.copy2(reference / 'dl/DOCS/types/RECOVERED_TYPES.json', game / 'DOCS/types/RECOVERED_TYPES.json')
 source = game / 'code/game/boot.cpp'
 before = hashlib.sha256(source.read_bytes()).hexdigest()
 sound_source = game / 'code/989snd/ee/989snd.c'

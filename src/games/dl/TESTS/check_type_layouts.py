@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EE = '/opt/ps2dev/ee/bin/ee-g++'
 
 def main():
-    types = json.loads((ROOT / 'DOCS/RECOVERED_TYPES.json').read_text())
+    types = json.loads((ROOT / 'DOCS/types/RECOVERED_TYPES.json').read_text())
     lines = ['#include <stddef.h>']
     for header in sorted({t['header'] for t in types}):
         lines += ['#include "' + header + '"', '#include "' + header + '"']

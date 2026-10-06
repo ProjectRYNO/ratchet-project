@@ -4,7 +4,15 @@ param (
     [switch]$help
 )
 
+$ErrorActionPreference = 'Stop'
 $ImageName = "projectryno"
+
+function Invoke-DockerChecked {
+    & docker @args
+    if ($LASTEXITCODE -ne 0) {
+        throw "Docker failed with exit code $LASTEXITCODE."
+    }
+}
 
 function Show-Usage {
     Write-Host "Usage: .\docker-init.ps1 [OPTION]"
@@ -25,41 +33,55 @@ function Test-DockerAvailable {
 }
 
 function Test-ImageExists {
-    docker image inspect $ImageName 2>&1 | Out-Null
-    return $LASTEXITCODE -eq 0
+    # A missing image is an expected nonzero result, including its stderr.
+    $savedPreference = $ErrorActionPreference
+    try {
+        $ErrorActionPreference = 'Continue'
+        docker image inspect $ImageName *> $null
+        return $LASTEXITCODE -eq 0
+    } finally {
+        $ErrorActionPreference = $savedPreference
+    }
 }
-
-Test-DockerAvailable
 
 if ($help) {
     Show-Usage
-} elseif ($rebuild) {
-    Write-Host "[Project RYNO] Rebuilding image..."
-    docker build --no-cache -t $ImageName .
-    docker compose run projectryno
-} elseif ($delete) {
-    Write-Host "[Project RYNO] Removing Project RYNO containers..."
-    $containers = docker ps -aq --filter "name=projectryno"
-    if ($containers) {
-        docker rm -f $containers
-        Write-Host "[Project RYNO] Containers removed."
-    } else {
-        Write-Host "[Project RYNO] No containers found."
-    }
+    exit 0
+}
+Test-DockerAvailable
+Push-Location -LiteralPath $PSScriptRoot
+try {
+    if ($rebuild) {
+        Write-Host "[Project RYNO] Rebuilding image..."
+        Invoke-DockerChecked build --no-cache -t $ImageName .
+        Invoke-DockerChecked compose run projectryno
+    } elseif ($delete) {
+        Write-Host "[Project RYNO] Removing Project RYNO containers..."
+        $containers = docker ps -aq --filter "name=projectryno"
+        if ($LASTEXITCODE -ne 0) { throw "Unable to list Docker containers." }
+        if ($containers) {
+            Invoke-DockerChecked rm -f $containers
+            Write-Host "[Project RYNO] Containers removed."
+        } else {
+            Write-Host "[Project RYNO] No containers found."
+        }
 
-    if (Test-ImageExists) {
-        Write-Host "[Project RYNO] Deleting image '$ImageName'..."
-        docker image rm -f $ImageName
-        Write-Host "[Project RYNO] Done."
+        if (Test-ImageExists) {
+            Write-Host "[Project RYNO] Deleting image '$ImageName'..."
+            Invoke-DockerChecked image rm -f $ImageName
+            Write-Host "[Project RYNO] Done."
+        } else {
+            Write-Host "[Project RYNO] Image '$ImageName' not found, nothing to delete."
+        }
     } else {
-        Write-Host "[Project RYNO] Image '$ImageName' not found, nothing to delete."
+        if (-not (Test-ImageExists)) {
+            Write-Host "[Project RYNO] Image not found, building..."
+            Invoke-DockerChecked build -t $ImageName .
+        } else {
+            Write-Host "[Project RYNO] Image already exists, skipping build."
+        }
+        Invoke-DockerChecked compose run projectryno
     }
-} else {
-    if (-not (Test-ImageExists)) {
-        Write-Host "[Project RYNO] Image not found, building..."
-        docker build -t $ImageName .
-    } else {
-        Write-Host "[Project RYNO] Image already exists, skipping build."
-    }
-    docker compose run projectryno
+} finally {
+    Pop-Location
 }

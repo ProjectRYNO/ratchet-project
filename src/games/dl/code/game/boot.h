@@ -2,7 +2,7 @@
 #define BOOT_H
 
 // Recovered data layouts from dltypes.txt and the prototype sources.
-// Sizes/offsets use the PS2 ABI. See DOCS/RECOVERED_TYPES.md.
+// Sizes/offsets use the PS2 ABI. See DOCS/types/RECOVERED_TYPES.md.
 
 // dltypes.txt:969; retail-boot-accesses.
 typedef struct { // 0x8
