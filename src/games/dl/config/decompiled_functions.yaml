@@ -69,8 +69,8 @@ objects:
     text_start: 0x00157738
     text_end: 0x00157D60
     slots:
-      - {object: game/boot_options, section: .boot_get_options, start: 0x001579F0, end: 0x00157B30}
-      - {object: game/boot_options, section: .boot_apply_options, start: 0x00157B30, end: 0x00157C58}
+      - {object: game/boot, section: .boot_get_options, start: 0x001579F0, end: 0x00157B30}
+      - {object: game/boot, section: .boot_apply_options, start: 0x00157B30, end: 0x00157C58}
       - {object: game/boot, section: .boot_main, start: 0x00157C58, end: 0x00157D60}
   989snd/ee/989snd:
     text_start: 0x00157D60

@@ -46,7 +46,9 @@ make split
 ```
 
 5. Start decomping the code!
-Deadlocked rebuilds from split assembly, three decompiled C++ boot functions, and 40 decompiled C sound functions. See [ELF rebuild notes](src/games/dl/DOCS/ELF_REBUILD.md) and [989snd progress](src/games/dl/DOCS/989SND_REUSE.md) for the verified workflow and validation limits.
+Deadlocked rebuilds from split assembly, three decompiled C++ boot functions, and 59 decompiled C sound functions. See [ELF rebuild notes](src/games/dl/DOCS/ELF_REBUILD.md) and [989snd progress](src/games/dl/DOCS/989SND_REUSE.md) for the verified workflow and validation limits.
+
+Follow the [decompilation source conventions](src/games/dl/DOCS/DECOMP_STYLE.md) for header guards, struct layouts, and source-file grouping.
 
 6. Build the new elf!
 ```

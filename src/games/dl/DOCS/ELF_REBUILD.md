@@ -1,7 +1,7 @@
 # Rebuilding Deadlocked's boot ELF
 
-The current build also includes 40 C replacements in the EE sound library.
-See [989snd progress](989SND_REUSE.md) for their validation and remaining work.
+The current build also includes all 59 C replacements in the EE sound library.
+See [989snd progress](989SND_REUSE.md) for their validation and runtime-testing limits.
 The audit command below covers all registered boot and sound replacements.
 
 The default build compiles the C/C++ translation units and assembles their
@@ -152,7 +152,7 @@ the behavior test, not the PS2 build.
 
 ## Boot-option encoder and decoder
 
-`code/game/boot_options.cpp` adds C++ replacements for
+`code/game/boot.cpp` contains C++ replacements for
 `GetBootOptionsFromSettings` at `0x001579F0` and
 `ApplyBootOptionsToSettings` at `0x00157B30`. Their original includes have been
 removed from `boot.cpp`. Three functions there still use assembly: `unpackbuff`,
@@ -197,7 +197,8 @@ settings, output bounds, malformed input, and 4096 deterministic round trips.
 It passes with AddressSanitizer and UndefinedBehaviorSanitizer:
 
 ```sh
-g++ -std=c++98 -O2 -fsanitize=address,undefined tests/boot_options_test.cpp -o /tmp/boot-options-test
+g++ -std=c++98 -O2 -DPERMUTER -Dmain=tested_boot_main -Icode/include -ffunction-sections -fsanitize=address,undefined -c code/game/boot.cpp -o /tmp/boot-options.o
+g++ -std=c++98 -O2 -fsanitize=address,undefined -Wl,--gc-sections tests/boot_options_test.cpp /tmp/boot-options.o -o /tmp/boot-options-test
 /tmp/boot-options-test
 ```
 

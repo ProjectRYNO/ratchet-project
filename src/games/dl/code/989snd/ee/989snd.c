@@ -206,7 +206,10 @@ void SND_SECTION(snd_SetMasterVolume) snd_SetMasterVolume(int group, int volume)
 
 void SND_SECTION(snd_SetMasterVolumeDucker) snd_SetMasterVolumeDucker(int which, const DuckerDef *state)
 {
-    struct { int which; DuckerDef state; } data;
+    struct DuckerCommand { // 0x1C
+        /* 0x00 */ int which;
+        /* 0x04 */ DuckerDef state;
+    } data;
     data.which = which;
     if (state) data.state = *state;
     else data.state.source_group = -1;

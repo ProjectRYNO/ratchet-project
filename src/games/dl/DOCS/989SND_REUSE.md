@@ -1,84 +1,98 @@
-# 989snd reuse assessment
+# 989snd EE decompilation
 
-The existing public work is useful reference material, but it is not a complete,
-compatible replacement for Deadlocked's EE library. The initial investigation
-below was followed by a first implementation pass: **40 of 59 named EE sound
-functions now compile from C**. The other 19 named functions and 18 remnant
-entries still use assembly. This count describes functions, not code size; the
-remaining transport/state-machine functions account for much of the code.
+All **59 named EE sound functions compile from C** in
+`code/989snd/ee/989snd.c`. This includes startup, RPC transport and batching,
+asynchronous completion, bank loading, ducking, stream-safe CD operations,
+movie/stream command wrappers, and Doppler conversion. There are no remaining
+`INCLUDE_ASM` functions in this translation unit.
 
-## First implementation pass
+This covers the EE client in `boot.elf`, not the separate IOP sound driver.
+Eighteen `func_*` entries are stack-adjustment/nop remnants, not callable
+functions. Their original words remain as constant arrays in fixed sections;
+the audit requires those bytes to remain exact. Executable function bodies are
+compiled C, not original ELF code copied into the output.
 
-`code/989snd/ee/989snd.c` contains real C implementations for bank-unload and
-cross-reference commands, volume/playback/reverb controls, sound play/stop/query
-commands, group controls, sound-parameter updates, VAG stream commands, movie
-audio commands, SRAM queries, and external calls. It also preserves Deadlocked's
-two genuine cache-control no-ops as empty C functions. These were recovered
-against Deadlocked's instructions, not copied from unfinished upstream stubs.
+## Recovery and layout
 
-Each function has its own code section. The existing fixed-slot mechanism in
-`config/decompiled_functions.yaml` places both compiled and retained assembly
-sections at their original addresses. The loaded-byte audit permits differences
-only for registered compiled functions; retained assembly and remnant slots
-must still match byte for byte. The split preserves this handwritten C source
-and regenerates its remaining includes during a clean build.
+The open retail Ghidra program was consulted first. The prototype sources and
+`dltypes.txt`, `dlfuncs.txt`, and `dlglobals.txt` in
+`D:/PS2/ISOs/deadlocked-proto-decomp` supplied names, signatures, and layouts.
+Prototype addresses were not substituted for retail addresses. The new
+`989snd.h` binds typed declarations to existing retail state, using 32-bit
+pointers and 64-bit callback data. Struct comments document the recovered
+sizes and field offsets.
 
-The only new Makefile adjustment is `-fno-schedule-insns` for this one object.
-EE GCC 3.2.3's pre-allocation scheduler otherwise adds argument-copy instructions
-that make many wrappers exceed their allocations. The scoped flag keeps all
-40 implementations within their original bounds without changing other objects.
+All 54 recovered global names used by the sound and boot code are registered in
+`config/symbols_core.text.txt`. Their C/C++ declarations use plain names without
+assembler aliases. The mappings were cross-checked against the open retail
+Ghidra program. The migration required no Makefile or linker-code changes.
+The clean-build audit verifies all 54 addresses and identical runtime headers
+and loaded bytes before and after the rename. Both sound differential suites
+and the boot tests pass; migration reports are in `build/global-symbols`.
 
-Validation completed for this pass:
+Every public entry retains its original address, from `0x00157D60` through
+`0x00159988`. The manifest and linker reject missing compiled functions and slot
+overruns. Two small C helpers occupy spare space inside the initialization slot:
+file-load completion and CD callback replacement. They do not move public
+entries or consume remnant bytes.
 
-* A separate full-clean build retained all handwritten sources and passed the
-  compiled-symbol, fixed-address, and loaded-byte audit.
-* There are 1,488 changed loaded bytes versus the extracted ELF, including the
-  727 bytes from the earlier boot-function work. Every byte outside registered
-  replacement slots and every runtime header matches the original.
-* `tests/test_989snd_wrappers.py` passes 2,720 differential machine-code cases
-  across the 40 functions. A limited MIPS interpreter runs original and rebuilt
-  wrappers until the unchanged RPC transport, then compares command IDs,
-  payload sizes/bytes, callback pointers, full 64-bit user data, and applicable
-  return values. It exercises stack-passed arguments, boundary bit patterns,
-  random values, VAG bit packing, and external-data descriptors; it also checks
-  preservation of callee-saved registers. Unsupported instructions fail.
-* Existing split/extraction and linker guard regressions pass.
-* PCSX2 booted the independently built clean ELF with the original disc through
-  sound and controller initialization. The final working-directory ELF has
-  identical runtime headers and all 5,158,456 loaded bytes to that clean ELF.
-  See `build/989snd-test/pcsx2-boot.log` and `clean-compare.txt`.
+The existing object-specific Makefile flag line now uses `-Os`,
+`-fno-schedule-insns`, `-fno-reorder-blocks`, and `-mno-check-zero-division`.
+These avoid code growth from this old EE compiler. The last flag removes a
+redundant check for the constant divisor 741. Other objects retain their flags.
+The split tool and main build rules did not need changes for this pass.
+The RPC binding retry delay is a volatile C countdown; its instruction timing
+is not identical to the original nop-based delay.
 
-The differential test covers wrapper behavior at the transport boundary. It
-does not emulate the IOP or establish that all audio paths work during gameplay.
-No ISO was repacked in this pass. Build/test logs are in `build/989snd-test`,
-with independent clean-build results in its `clean` subdirectory.
+## Validation
+
+* An independent full-clean, ROM preparation, split, and ELF build preserved
+  the handwritten source and produced all 62 registered compiled functions
+  (59 sound functions and the three earlier boot functions).
+* The ELF audit finds **5,131 changed loaded bytes**, all inside registered C
+  slots. Every other loaded byte, all remnant words, runtime headers, and entry
+  address match the extracted ELF. No fallback assembly bodies are linked for
+  the compiled functions.
+* The working-directory ELF and independent clean ELF have identical runtime
+  headers and all 5,158,456 loaded bytes.
+* `tests/test_989snd_wrappers.py` checks 2,720 original-versus-compiled machine
+  code cases across the original 40 functions.
+* `tests/test_989snd_state.py` checks 293 cases across the remaining 19, including
+  RPC payloads, queue limits/alignment, polling, cache endpoints, callback
+  clearing/reentrancy, full 64-bit user data, CD delegation, and arithmetic
+  boundaries. Twelve cases execute the sound functions together, mocking only
+  SDK calls and application callbacks. Unsupported instructions fail the tests.
+* PCSX2 booted the independently compiled ELF with the original disc through
+  sound-driver and controller initialization (`pcsx2-boot.log`).
+* The four ELF tool regressions and seven linker-guard cases pass.
+
+Logs and the independent ELF are in `build/989snd-final`. The final full-clean
+run passes the ELF audit and both differential suites; its logs are under
+`build/989snd-final/clean`. The focused tests are no longer ignored by Git,
+despite the repository's general exclusion of scratch test directories.
+
+These tests simulate SDK completion, not IOP timing or audible output. Full
+gameplay coverage of music, effects, movies, and streaming remains necessary.
+No ISO was repacked in this pass.
+
+Run split and compilation sequentially: split normalizes generated assembly
+after splat finishes, and compiling before that step completes can insert padding.
 
 ```sh
 make split
 make -j8 elf
 python3 tests/check_main_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf build/code/game/boot.o
 python3 tests/test_989snd_wrappers.py ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 tests/test_989snd_state.py ../assets/dl/boot_elf.elf build/boot_elf.elf
 ```
-
-Remaining named functions cover startup, flushing/return buffers, synchronous
-and asynchronous transport, batching, bank loading, volume ducking, streaming
-initialization/shutdown, stream-safe CD operations, and Doppler pitch conversion.
-Their original assembly remains linked and validated.
 
 ## Scope in this executable
 
-`code/989snd/ee/989snd.c` has 77 assembly includes, covering the region
-`0x00157D60` through `0x001599A4` (exclusive). There are 59 named `snd_*`
-functions and 18 `func_*` entries consisting solely of stack adjustments and
-nops. The latter are not ordinary callable functions and must not be blindly
-converted from Ghidra's function output. Some Ghidra requests at these addresses
-return no function or a misleading function spanning later code.
-
-This is the EE-side command/RPC client. The IOP-side driver that loads banks,
-streams audio, and drives the sound hardware is a separate part of the game.
-The emulator previously reported the IOP driver's version as 3.1.7, built
-May 10, 2005, with MIDI disabled. That banner alone does not prove an upstream
-source-version match.
+The EE library occupies `0x00157D60` through `0x001599A4` (exclusive): 59 named
+functions and 18 remnant entries. The IOP driver loads banks, streams audio,
+and drives the sound hardware separately. Its observed banner identifies
+version 3.1.7, built May 10, 2005, with MIDI disabled. That banner does not
+establish compatibility with another game's source version.
 
 ## External references checked
 
@@ -123,25 +137,3 @@ See [the per-entry inventory](989SND_INVENTORY.csv) for addresses and status.
 * `snd_SendIOPCommandNoWait` also has an external-data command path, command
   alignment, finite queue capacity, and callback records that need to match
   the original. Replacing this with an upstream stub would break normal use.
-
-## Work required to complete the EE library
-
-Recover the actual PS2 data structures and function signatures, retaining
-32-bit pointers, 64-bit callback user data, and the existing global addresses.
-Implement and test the synchronous/asynchronous transport, bank loading, and
-stream-safe CD state machine against Deadlocked's assembly. Then convert the
-small command wrappers and use the fixed-address function-section mechanism
-to retain all entry addresses and reject code overruns. Preserve the remnant
-bytes separately until their references and origin have been fully checked.
-
-Validation needs RPC command/payload tests, completion and reentrant callback
-tests, the loaded-byte audit outside the replacement allocations, a full-clean
-build, and emulator checks that exercise music, effects, streaming, and movie
-audio. Reaching the boot screen alone would not establish library correctness.
-
-Reference downloads and Ghidra responses are in `build/989snd-test`; they are
-temporary and are removed by full-clean. No external source is compiled into
-the current build. At the end of the initial investigation (before the C wrapper
-implementation), the ELF remained SHA-256
-`61168f189d87ed14acf012bfbf171e770208b75d02c477f24b3706e4d36294c2`
-through this investigation.
