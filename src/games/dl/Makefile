@@ -68,8 +68,13 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # Keep the recovered EE sound functions inside their original address slots.
 # The only division has a constant, nonzero divisor (741).
 $(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
-# Retail iksemel accessors occupy 20-byte slots at four-byte boundaries.
+# Retail iksemel/SVO string helpers use four-byte function boundaries.
 $(OBJ_DIR)/iksemel/src/iks.o: COMMON_COMPILE_FLAGS += -falign-functions=4
+$(OBJ_DIR)/svo3/SVOString.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -falign-functions=4
+# SVO3 core replacements retain fixed retail slots; matching remains tracked separately.
+$(OBJ_DIR)/svo3/LineTag.o $(OBJ_DIR)/svo3/RectangleTag.o $(OBJ_DIR)/svo3/SVTag.o $(OBJ_DIR)/svo3/LogoutTag.o $(OBJ_DIR)/svo3/RedirectTag.o $(OBJ_DIR)/svo3/BrowserInitTag.o $(OBJ_DIR)/svo3/SVURIStore.o $(OBJ_DIR)/svo3/URISchemeMgr.o $(OBJ_DIR)/svo3/RedirectTagModule.o $(OBJ_DIR)/svo3/CPluginManager.o $(OBJ_DIR)/svo3/CCookie.o $(OBJ_DIR)/svo3/SVTagModuleList.o $(OBJ_DIR)/svo3/HttpUtils.o $(OBJ_DIR)/svo3/DNSCache.o $(OBJ_DIR)/svo3/PageHistory.o $(OBJ_DIR)/svo3/SVChronograph.o $(OBJ_DIR)/svo3/SVSock.o $(OBJ_DIR)/svo3/UTF8_Util.o $(OBJ_DIR)/svo3/ButtonTagModule.o $(OBJ_DIR)/svo3/LineTagModule.o $(OBJ_DIR)/svo3/RectangleTagModule.o $(OBJ_DIR)/svo3/HiddenInputTagModule.o $(OBJ_DIR)/svo3/PasswordInputTagModule.o $(OBJ_DIR)/svo3/SubmitInputTagModule.o $(OBJ_DIR)/svo3/RadioInputTagModule.o $(OBJ_DIR)/svo3/TextInputTagModule.o $(OBJ_DIR)/svo3/TextTagModule.o $(OBJ_DIR)/svo3/TickerTagModule.o $(OBJ_DIR)/svo3/PageIDTagModule.o $(OBJ_DIR)/svo3/BrowserInitTagModule.o $(OBJ_DIR)/svo3/CheckboxInputTagModule.o $(OBJ_DIR)/svo3/FormTagModule.o $(OBJ_DIR)/svo3/GenericListBoxTagModule.o $(OBJ_DIR)/svo3/GridTagModule.o $(OBJ_DIR)/svo3/ListBoxTagModule.o $(OBJ_DIR)/svo3/LogoutTagModule.o $(OBJ_DIR)/svo3/PopupTagModule.o $(OBJ_DIR)/svo3/QuickLinkTagModule.o $(OBJ_DIR)/svo3/SelectTagModule.o $(OBJ_DIR)/svo3/SetVariableTagModule.o $(OBJ_DIR)/svo3/StaticImageTagModule.o $(OBJ_DIR)/svo3/TextAreaTagModule.o $(OBJ_DIR)/svo3/CPluginBase.o $(OBJ_DIR)/svo3/CQueryParams.o $(OBJ_DIR)/svo3/CConfig.o $(OBJ_DIR)/svo3/CMemoryContextBase.o $(OBJ_DIR)/svo3/CInputContextBase.o $(OBJ_DIR)/svo3/CError.o $(OBJ_DIR)/svo3/CSystemContextBase.o $(OBJ_DIR)/svo3/CAudioContextBase.o: COMMON_COMPILE_FLAGS += -G0 -Os -fno-schedule-insns -fno-reorder-blocks -falign-functions=4
+# HTTP decoding fits its original slots with instruction scheduling enabled.
+$(OBJ_DIR)/svo3/HttpUtils.o: COMMON_COMPILE_FLAGS += -fschedule-insns
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif

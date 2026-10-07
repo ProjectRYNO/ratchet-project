@@ -43,7 +43,7 @@ def inventory(game, original, rebuilt):
         if source.suffix not in ('.c', '.cpp') or 'asm' in source.relative_to(game / 'code').parts:
             continue
         owner = source.relative_to(game).as_posix()
-        for name in re.findall(r'^\s*INCLUDE_ASM\(\s*"[^"]+"\s*,\s*(\w+)\s*\);', source.read_text(), re.M):
+        for name in re.findall(r'^\s*INCLUDE_ASM\(\s*"[^"]+"\s*,\s*([\w.$]+)\s*\);', source.read_text(), re.M):
             addresses = known.get(name, set())
             if len(addresses) == 1:
                 address = next(iter(addresses))
@@ -64,7 +64,13 @@ def inventory(game, original, rebuilt):
         old = region(old_segments, address, slot['end'])
         new = region(new_segments, address, slot['end'])
         changed = sum(a != b for a, b in zip(old, new))
-        scope = ('check_iksemel.py; exact module bytes and EE differential cases' if name in ('iks_next', 'iks_parent', 'iks_child', 'iks_type', 'iks_name', 'iks_cdata') else
+        scope = ('compile/placement only; behavior tests deferred by user' if slot['object'] in ('svo3/CQueryParams', 'svo3/CPluginBase', 'svo3/PageHistory', 'svo3/SVChronograph', 'svo3/SVSock', 'svo3/UTF8_Util', 'svo3/HttpUtils', 'svo3/DNSCache', 'svo3/CCookie', 'svo3/SVTagModuleList', 'svo3/CPluginManager', 'svo3/SVURIStore', 'svo3/URISchemeMgr', 'svo3/SVTag', 'svo3/LogoutTag', 'svo3/BrowserInitTag', 'svo3/RedirectTag', 'svo3/LineTag', 'svo3/RectangleTag') or slot['object'].endswith('TagModule') else
+                 'check_svo_config.py; EE file/XML callback cases' if slot['object'] == 'svo3/CConfig' else
+                 'check_svo_string.py; EE differential cases and two retained exact matches' if slot['object'] == 'svo3/SVOString' else
+                 'check_svo_input.py; EE maps and callback cases' if slot['object'] == 'svo3/CInputContextBase' else
+                 'check_svo_memory.py; EE allocation/chunk/callback cases' if slot['object'] == 'svo3/CMemoryContextBase' else
+                 'check_svo_core.py; EE error and context callback cases' if slot['object'] in ('svo3/CError', 'svo3/CSystemContextBase', 'svo3/CAudioContextBase') else
+                 'check_iksemel.py; exact module bytes and EE differential cases' if name in ('iks_next', 'iks_parent', 'iks_child', 'iks_type', 'iks_name', 'iks_cdata') else
                  '989snd differential suites; mocked SDK/IOP' if name.startswith('snd_') else
                  'boot_main_test.cpp; host mocks' if name == 'main' else 'boot_options_test.cpp; host vectors' if name in ('GetBootOptionsFromSettings', 'ApplyBootOptionsToSettings') else 'not inventoried')
         rows.append(dict(name=name, source=source.relative_to(game).as_posix(), address='0x%08X' % address,

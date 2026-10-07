@@ -1,9 +1,32 @@
-#include "common.h"
+#include "CSystemContextBase.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CSystemContextBase", FileDownloadCallback);
+extern "C" {
+extern const char svoSystemContextSource[];
+void __SVO_Assert_Handler(const char *file, int line);
+}
+#define SVO_SYSTEM_SECTION(name) __attribute__((section(".svo_system_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CSystemContextBase", EnterStaticScreen);
+void SVO_SYSTEM_SECTION(FileDownloadCallback) FileDownloadCallback(
+    CSystemContextBase *context, CFileDownloadInfo *info)
+{
+    // Retail's base implementation deliberately does nothing.
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CSystemContextBase", GetElapsedMS);
+void SVO_SYSTEM_SECTION(EnterStaticScreen) EnterStaticScreen(
+    CSystemContextBase *context, char *screenName)
+{
+    __SVO_Assert_Handler(svoSystemContextSource, 0xE0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CSystemContextBase", OkToFreeFileDownloadBuffer);
+long SVO_SYSTEM_SECTION(GetElapsedMS) GetElapsedMS(CSystemContextBase *context)
+{
+    __SVO_Assert_Handler(svoSystemContextSource, 0xE7);
+    return 0;
+}
+
+int SVO_SYSTEM_SECTION(OkToFreeFileDownloadBuffer) OkToFreeFileDownloadBuffer(
+    CSystemContextBase *context, void *data)
+{
+    __SVO_Assert_Handler(svoSystemContextSource, 0xF8);
+    return 1;
+}

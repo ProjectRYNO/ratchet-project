@@ -71,3 +71,11 @@ src/games/dl/assets/
 __pycache__/
 
 !src/games/dl/TESTS/check_iksemel.py
+
+!src/games/dl/TESTS/check_svo_string.py
+
+!src/games/dl/TESTS/check_svo_core.py
+!src/games/dl/TESTS/svo_string_cases.py
+!src/games/dl/TESTS/check_svo_input.py
+!src/games/dl/TESTS/check_svo_memory.py
+!src/games/dl/TESTS/check_svo_config.py

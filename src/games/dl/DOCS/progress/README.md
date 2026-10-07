@@ -42,3 +42,59 @@ updates only with the source/evidence they describe.
 The 2026-10-07 iksemel batch adds six byte-matching C accessors: the refreshed
 snapshot has 8,528 assembly entries, 68 compiled functions, 12 matching slots,
 and 56 nonmatching slots. See [library notes](../libraries/IKSEMEL.md).
+
+The subsequent SVO3 batch adds two byte-matching C functions: the refreshed
+snapshot has 8,526 assembly entries, 70 compiled functions, 14 matching slots,
+and 56 nonmatching slots. See [library notes](../libraries/SVO3.md).
+
+The SVO3 follow-up adds 30 tested C/C++ replacements with nonmatching integration
+explicitly authorized by the user. That snapshot had 8,496 assembly entries,
+100 compiled functions, 18 matching slots and 82 nonmatching slots. Within SVO3,
+32 functions are compiled and 903 remain assembly. The combined verifier passes;
+the full ELF still differs from retail in 7,747 loaded bytes. See the SVO3 notes
+for scope, remaining inventory and runtime-testing limits.
+
+The decompilation-first SVO3 batch adds nine C replacements. The current snapshot
+has 8,487 assembly entries, 109 compiled functions, 20 matching slots and 89
+nonmatching slots. SVO3 has 41 compiled functions and 894 assembly entries. The
+rebuild and ELF placement audit pass; 8,590 loaded bytes differ from retail, all
+inside registered compiled slots. New behavior tests, full regressions and gameplay
+testing were deferred for this batch at the user's request.
+
+The next SVO3 batch adds 124 C/C++ functions across 28 files, bringing SVO3 to
+165 compiled functions and 770 remaining assembly entries. 34 of its 97 source
+files are free of INCLUDE_ASM. The corrected tracker includes dotted operator
+symbols: project totals are 8,625 functions, 8,392 assembly and 233 compiled
+(24 matching slots, 209 nonmatching). This adds 29 formerly omitted symbols to the
+inventory rather than adding new game functions. The rebuilt ELF passes placement
+checks but differs in 16,337 loaded bytes. Behavior/gameplay tests remain deferred
+for this batch. See the SVO3 notes for three small wrappers still awaiting slot fit.
+
+
+The HTTP/DNS continuation adds 15 C++ functions, removing INCLUDE_ASM entirely
+from HttpUtils.cpp and DNSCache.cpp. SVO3 now has 180 compiled functions and 755
+assembly entries; 36 of 97 files are free of INCLUDE_ASM. The current project
+snapshot has 8,377 assembly functions, 248 compiled, 24 matching slots and 224
+nonmatching slots. Compilation/placement and the focused type/global checks pass;
+18,537 loaded bytes differ, all within compiled slots. Behavior and gameplay
+checks remain deferred. See the HTTP/DNS section of the SVO3 library notes.
+
+
+The cookie/module-manager continuation adds 13 compiled functions across CCookie,
+SVTagModuleList and CPluginManager. CCookie is assembly-free; three newly recovered
+wrappers remain assembly because their compiled bodies exceed the retail slots.
+SVO3 now has 193 compiled functions and 742 assembly entries, with 37 of 97 files
+free of INCLUDE_ASM. Project totals are 8,364 assembly and 261 compiled functions
+(24 matching slots, 237 nonmatching). The ELF build/placement audit and focused
+ABI/global checks pass; 19,762 loaded bytes differ inside compiled slots.
+Behavior and gameplay checks remain deferred.
+
+
+The URI continuation adds 29 C++ functions across SVURIStore, URISchemeMgr and
+RedirectTagModule. The redirect factory file is assembly-free; three oversized
+URI wrappers remain visible assembly. SVO3 has 222 compiled functions and 713
+assembly entries, with 38/97 files free of INCLUDE_ASM. Project totals are 8,335
+assembly and 290 compiled (27 matching slots, 263 nonmatching). Build/placement
+and focused ABI/global checks pass; 21,689 loaded bytes differ only inside
+compiled slots. Three new slots match exactly, but behavior/gameplay checks
+remain deferred. See the URI section in the library notes.

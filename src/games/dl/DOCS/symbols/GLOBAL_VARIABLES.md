@@ -84,3 +84,10 @@ all 3,013 sound differential cases. The global-name audit confirms all 806 linke
 addresses, and comparison with the pre-mapping ELF finds identical runtime
 headers and all 5,158,456 loaded bytes. These checks establish that adding the
 names did not change the executable's loaded contents.
+
+The SVO3 library/tag-module batch names 115 existing string, vtable, singleton and
+timer locations. [SVO3_GLOBALS.csv](SVO3_GLOBALS.csv) records owners and retail
+reference evidence for these additions. They are aliases in symbols_core.text.txt,
+with ordinary extern declarations and no new storage allocations. The rebuilt ELF
+placement audit confirms all loaded bytes outside compiled function slots remain
+unchanged; new behavior tests were deferred for this batch.

@@ -69,6 +69,11 @@ while working toward exact matching. Report their strict-comparison failures
 clearly; do not block ordinary compile/test work merely because C output differs.
 A slot-audit pass remains different from an exact-matching pass.
 
+For SVO3, the user explicitly authorized integrating behavior-tested C/C++ that
+fits the original retail slots even when instructions differ (2026-10-07). Track
+those replacements as unfinished matching work; retain strict comparison results
+and do not call them byte-exact. This does not permit guessed behavior or layouts.
+
 ## Reliable completion
 
 Inspect the relevant source, manifest, and tool implementation before editing.
@@ -89,3 +94,12 @@ Use [the verifier](../docs/build/VERIFICATION.md) for build/test reporting; upda
 tracked progress after verification. Record runtime observations with the
 [smoke checklist](../docs/build/EMULATOR_SMOKE_TEST.md). Use
 [the handoff template](templates/HANDOFF.md) when work needs a resumable summary.
+
+## Current decompilation priority (2026-10-07)
+
+The user subsequently requested more decompilation and less testing. For ongoing
+SVO3 work, prioritize retail/Ghidra/prototype recovery and C/C++ integration.
+Keep compilation, public-address/slot checks and matching-status reporting; defer
+new behavior suites and routine full regressions unless a specific concern needs
+one. Preserve existing tests. Mark new functions as behavior-unverified when
+those tests were deferred; nonmatching integration remains authorized.

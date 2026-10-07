@@ -1,5 +1,25 @@
-#include "common.h"
+#include "CError.h"
+#include "CSystemContextBase.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CError", SetErrorCode);
+struct SVBrowser;
+extern "C" SVBrowser *GetInstance(void);
+#define SVO_ERROR_SECTION(name) __attribute__((section(".svo_error_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CError", GetErrorCode);
+void SVO_ERROR_SECTION(SetErrorCode) SetErrorCode(int code)
+{
+    // The first nonzero error is latched before notifying the browser.
+    if (svoErrorCode == 0 && code != 0) {
+        svoErrorCode = code;
+        if (GetInstance()) {
+            CSystemContextBase *context = GetSystemContext();
+            if (context) {
+                context->vtable->ErrorCallback(context, code);
+            }
+        }
+    }
+}
+
+int SVO_ERROR_SECTION(GetErrorCode) GetErrorCode(void)
+{
+    return svoErrorCode;
+}

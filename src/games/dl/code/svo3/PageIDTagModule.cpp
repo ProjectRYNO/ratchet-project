@@ -1,9 +1,46 @@
-#include "common.h"
+#include "PageIDTagModule.h"
+#include <string.h>
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageIDTagModule", IsMyTag___dupe24);
+extern "C" {
+extern char svoPageIDTagModuleSource[];
+extern char svoPageIDTagModuleTagName[];
+extern SVTagModuleState *svoPageIDTagModuleInstance;
+extern const SVTagModuleVtablePrefix svoPageIDTagModuleVtable;
+void PageIDTag(void *memory, iks *xml, CAllContextData *contexts);
+}
+#define MODULE_SECTION(name) __attribute__((section(".svo_PageIDTagModule_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageIDTagModule", BuildTag___dupe25);
+MODULE_SECTION(IsMyTag___dupe24) int IsMyTag___dupe24(SVTagModuleState *module, iks *xml)
+{
+    if (iks_type(xml) != IKS_TAG)
+        __SVO_Assert_Handler(svoPageIDTagModuleSource, 0x14);
+    return strcmp(iks_name(xml), svoPageIDTagModuleTagName) == 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageIDTagModule", getInstance___dupe26);
+MODULE_SECTION(BuildTag___dupe25) void BuildTag___dupe25(
+    SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
+{
+    if (!xml || !tagList)
+        __SVO_Assert_Handler(svoPageIDTagModuleSource, 0x1A);
+    void *memory = SVTagNew(0xB4);
+    PageIDTag(memory, xml, contexts);
+    *outTag = (SVTag *)memory;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageIDTagModule", FreeResources___dupe50);
+MODULE_SECTION(getInstance___dupe26) SVTagModuleState *getInstance___dupe26(void)
+{
+    if (!svoPageIDTagModuleInstance) {
+        SVTagModuleState *module = (SVTagModuleState *)SVTagModuleNew(4);
+        module->vtable = &svoPageIDTagModuleVtable;
+        svoPageIDTagModuleInstance = module;
+    }
+    return svoPageIDTagModuleInstance;
+}
+
+MODULE_SECTION(FreeResources___dupe50) void FreeResources___dupe50(SVTagModuleState *module)
+{
+    if (svoPageIDTagModuleInstance) {
+        svoPageIDTagModuleInstance->vtable->destroy(svoPageIDTagModuleInstance, 3);
+        svoPageIDTagModuleInstance = 0;
+    }
+}

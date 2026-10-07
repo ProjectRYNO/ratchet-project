@@ -1,9 +1,44 @@
-#include "common.h"
+#include "ButtonTagModule.h"
+#include <string.h>
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ButtonTagModule", IsMyTag___dupe2);
+extern "C" {
+extern char svoButtonTagModuleSource[];
+extern char svoButtonTagModuleTagName[];
+extern SVTagModuleState *svoButtonTagModuleInstance;
+extern const SVTagModuleVtablePrefix svoButtonTagModuleVtable;
+void ButtonTag(void *memory, iks *xml, CAllContextData *contexts);
+}
+#define MODULE_SECTION(name) __attribute__((section(".svo_ButtonTagModule_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ButtonTagModule", BuildTag___dupe3);
+MODULE_SECTION(IsMyTag___dupe2) int IsMyTag___dupe2(SVTagModuleState *module, iks *xml)
+{
+    if (iks_type(xml) != IKS_TAG)
+        __SVO_Assert_Handler(svoButtonTagModuleSource, 0x15);
+    return strcmp(iks_name(xml), svoButtonTagModuleTagName) == 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ButtonTagModule", getInstance___dupe4);
+MODULE_SECTION(BuildTag___dupe3) void BuildTag___dupe3(
+    SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
+{
+    void *memory = SVTagNew(0x15C);
+    ButtonTag(memory, xml, contexts);
+    *outTag = (SVTag *)memory;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ButtonTagModule", FreeResources___dupe6);
+MODULE_SECTION(getInstance___dupe4) SVTagModuleState *getInstance___dupe4(void)
+{
+    if (!svoButtonTagModuleInstance) {
+        SVTagModuleState *module = (SVTagModuleState *)SVTagModuleNew(4);
+        module->vtable = &svoButtonTagModuleVtable;
+        svoButtonTagModuleInstance = module;
+    }
+    return svoButtonTagModuleInstance;
+}
+
+MODULE_SECTION(FreeResources___dupe6) void FreeResources___dupe6(SVTagModuleState *module)
+{
+    if (svoButtonTagModuleInstance) {
+        svoButtonTagModuleInstance->vtable->destroy(svoButtonTagModuleInstance, 3);
+        svoButtonTagModuleInstance = 0;
+    }
+}

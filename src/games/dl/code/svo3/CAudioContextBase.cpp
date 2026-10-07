@@ -1,3 +1,10 @@
-#include "common.h"
+#include "CAudioContextBase.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CAudioContextBase", CAudioContextBase);
+extern "C" const char svoAudioContextVtable[];
+
+extern "C" __attribute__((section(".svo_audio_CAudioContextBase")))
+const void *CAudioContextBase(CAudioContextBaseState *context)
+{
+    // Preserve retail's v0 value as well as its vtable store.
+    return context->vtable = svoAudioContextVtable;
+}

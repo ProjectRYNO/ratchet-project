@@ -120,6 +120,11 @@ python3 "$test_dir/check_type_layouts.py"
 python3 "$test_dir/test_989snd_wrappers.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
 python3 "$test_dir/test_989snd_state.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
 python3 "$test_dir/check_iksemel.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_string.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_core.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_input.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_memory.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_config.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
 python3 "$test_dir/check_main_link_guards.py"
 python3 ../tools/test_elf_tools.py
 ```

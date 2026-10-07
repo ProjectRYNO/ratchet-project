@@ -82,3 +82,69 @@ Added `iks` in `code/iksemel/src/iks.h`: size 0x30 with all 12 offsets checked
 using the EE compiler. Retail allocation/insertion/accessor instructions establish
 the layout; dltypes.txt only supplies an incomplete iks_struct and node enum.
 See [iksemel evidence and tests](../libraries/IKSEMEL.md).
+
+## SVO3 core contexts (2026-10-07)
+
+Added ten types across five headers: audio/system/input/memory contexts, explicitly
+partial vtables, SVButtonMap, CMemChunk, and CConfigState. Retail instructions verify
+the used offsets/strides; the prototype supplies field names and untouched-field
+context. CSystemContextBase keeps an unrecovered 16-byte prefix; vtable prefixes
+must not be treated as complete tables. The EE layout suite now checks 833 sizes/
+offsets across 88 types and 45 headers, with independent header includes. See
+[SVO3 evidence](../libraries/SVO3.md) for behavior and testing limits.
+
+## Query parameters and plugin queue prefix
+
+Recovered CQueryParam (0x08), CQueryParamListState (0x404), PluginMessage (0x08),
+and CPluginQueuePrefix (0x590) from retail accesses/strides and prototype names.
+The plugin declaration is explicitly a prefix, not the complete 0x638-byte class.
+A focused EE compiler probe checks these sizes and used offsets. Behavior tests
+are deferred under the user's decompilation-first preference; existing suites
+remain available.
+
+The following SVO3 batch adds PageHistoryState (0x2024), SVChronographState (0x10),
+SVSockState (0xC), SVBrowserPrefix (0xA8), CDrawContextBase (0x4), its vtable prefix
+(0x18), SVTagModuleState (0x4), and its destructor-vtable prefix (0xC). The system
+vtable prefix now extends through GetElapsedMS at 0x38 (size 0x3C). All new sizes
+and field offsets passed focused EE compilation. Browser and vtable prefixes are
+incomplete views; they are not allocation sizes for derived/full objects. Form's
+module allocates eight bytes in retail while the shared module base is four bytes.
+Behavior and gameplay testing are deferred; the type inventory now has 100 entries.
+
+
+The HTTP/DNS batch adds HTTPEntity (0x08), SVPath (0x14), DNSCacheEntry (0x8C)
+and DNSCacheState (0x460), bringing the inventory to 104 types. A focused EE
+compiler probe checks all four sizes and 12 field offsets. SVPath's port member
+is retail reference storage (a pointer); DNS rtIP is an unaligned eight-byte
+field, so a naturally aligned 64-bit member would give the wrong entry stride.
+The prototype SVO_RT_LINKADDRESS declaration is not used to guess this layout.
+
+
+The cookie/module-manager batch brings the inventory to 112 types. Added
+CCookieJar (0x7F4), SVTagModuleListState (0x204), PluginExpectedMessage (0x24),
+CPluginManagerState (0x58), CPluginBaseState (0x638) and its vtable prefix (0x14),
+SVTag (0xB4) and its vtable prefix (0x40). SVTagModuleVtablePrefix now includes
+FreeResources at 0x0C (size 0x10), and CPluginQueuePrefix identifies the 32
+expected-message records at offset zero. Retail callback accesses establish the
+used slots; unrecovered regions remain explicit. Focused EE compilation passes
+ten sizes and 32 field offsets. Behavior/gameplay tests were deferred.
+
+
+The URI batch adds URIEntryState (0x08), URIStoreState (0x204), URIRequestPrefix
+(0x04), IURISchemeProviderState (0x04), its vtable prefix (0x20), sProviderEntry
+(0x08) and CURISchemeMgrState (0x40). Inventory: 119 types. The EE layout probe
+passes all seven sizes and 17 offsets. The request and vtable are partial views;
+they must not be used as complete request allocations or complete interfaces.
+Callback return values used by retail 64-bit register comparisons remain long.
+
+
+The concrete-tag batch expands SVTag's 0xB4 layout and its verified vtable prefix
+(0x4C), and the draw vtable prefix (0x48). New declarations are CNavInfoState
+(0x10), CAllContextData (0x18), CPage's state prefix (0x5B14), RedirectTagState
+(0xBC), LineTagState (0xC0) and RectangleTagState (0xD0). The system callback at
+vtable offset 0x18 is HandleOnlineInitComplete. Retail draw call sites establish
+independent integer and floating-point argument banks. CPage and vtables remain
+partial views, not allocation sizes. Inventory: 125 declarations.
+
+The focused EE compiler probe passes 12 type sizes and 87 field offsets for
+the concrete-tag headers, including expanded existing context/vtable types.

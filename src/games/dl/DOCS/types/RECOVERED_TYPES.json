@@ -4323,5 +4323,1714 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "CSystemContextVtablePrefix",
+    "size": "0x3C",
+    "line": 0,
+    "owners": [
+      "svo3\\CSystemContextBase.h"
+    ],
+    "header": "code/svo3/CSystemContextBase.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "ErrorCallback",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "unknown14",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "HandleOnlineInitComplete",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "unknown1C",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "unknown20",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "unknown24",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "unknown28",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "unknown2C",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "unknown30",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "unknown34",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "GetElapsedMS",
+        "offset": 56,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CSystemContextBase",
+    "size": "0x14",
+    "line": 0,
+    "owners": [
+      "svo3\\CSystemContextBase.h"
+    ],
+    "header": "code/svo3/CSystemContextBase.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "unrecovered",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CAudioContextBaseState",
+    "size": "0x04",
+    "line": 0,
+    "owners": [
+      "svo3/CAudioContextBase.h"
+    ],
+    "header": "code/svo3/CAudioContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CInputContextVtablePrefix",
+    "size": "0x24",
+    "line": 0,
+    "owners": [
+      "svo3/CInputContextBase.h"
+    ],
+    "header": "code/svo3/CInputContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "IsButtonDown",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "LeftHorizontal",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "RightHorizontal",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "LeftVertical",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "RightVertical",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CInputContextBaseState",
+    "size": "0xDC",
+    "line": 0,
+    "owners": [
+      "svo3/CInputContextBase.h"
+    ],
+    "header": "code/svo3/CInputContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "specialKeyCode",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "padding01",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "m_bEnterHit",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_defaultButtons",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_actionButtons",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 216,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVButtonMap",
+    "size": "0x68",
+    "line": 0,
+    "owners": [
+      "svo3/CInputContextBase.h"
+    ],
+    "header": "code/svo3/CInputContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "navUpButton",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "navDownButton",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "navLeftButton",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "navRightButton",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "scrollUpButton",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "scrollDownButton",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "scrollLeftButton",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "scrollRightButton",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "selectUpButton",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "selectDownButton",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "selectLeftButton",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "selectRightButton",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "selectPrevItemButton",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "selectNextItemButton",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "selectPrevGroupButton",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "selectNextGroupButton",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "activateButton",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "backButton",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "vkbActivateButton",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "vkbBackspaceButton",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "vkbCancelButton",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "vkbHideButton",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "vkbShiftButton",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "vkbScrollLeftButton",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "vkbScrollRightButton",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "leaveFocusGroupButton",
+        "offset": 100,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CMemoryContextVtablePrefix",
+    "size": "0x14",
+    "line": 0,
+    "owners": [
+      "svo3/CMemoryContextBase.h"
+    ],
+    "header": "code/svo3/CMemoryContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "svAlloc",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "svFree",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CMemChunk",
+    "size": "0x34",
+    "line": 0,
+    "owners": [
+      "svo3/CMemoryContextBase.h"
+    ],
+    "header": "code/svo3/CMemoryContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "FreeCnt",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "memPtr",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "size",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "idStr",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "alignSize",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "id",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CMemoryContextBaseState",
+    "size": "0x10420",
+    "line": 0,
+    "owners": [
+      "svo3/CMemoryContextBase.h"
+    ],
+    "header": "code/svo3/CMemoryContextBase.h",
+    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "fields": [
+      {
+        "name": "m_TotalBytes",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_memChunks",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "bu_memChunk",
+        "offset": 33284,
+        "bitfield": false
+      },
+      {
+        "name": "m_curMemChunk",
+        "offset": 66564,
+        "bitfield": false
+      },
+      {
+        "name": "buCnt",
+        "offset": 66568,
+        "bitfield": false
+      },
+      {
+        "name": "pageBeginHighWaterMark",
+        "offset": 66572,
+        "bitfield": false
+      },
+      {
+        "name": "m_MaxAllocated",
+        "offset": 66576,
+        "bitfield": false
+      },
+      {
+        "name": "m_AllocCounter",
+        "offset": 66580,
+        "bitfield": false
+      },
+      {
+        "name": "m_FreeCounter",
+        "offset": 66584,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 66588,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CConfigState",
+    "size": "0x148",
+    "line": 0,
+    "owners": [
+      "svo3/CConfig.h"
+    ],
+    "header": "code/svo3/CConfig.h",
+    "evidence": "retail constructor/loader accesses; prototype field names",
+    "fields": [
+      {
+        "name": "m_ip",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_port",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "m_firstPage",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "m_bFileRead",
+        "offset": 324,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CQueryParam",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/CQueryParams.h"
+    ],
+    "header": "code/svo3/CQueryParams.h",
+    "evidence": "retail field accesses/strides and prototype names; plugin prefix is explicitly incomplete",
+    "fields": [
+      {
+        "name": "key",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "value",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CQueryParamListState",
+    "size": "0x404",
+    "line": 0,
+    "owners": [
+      "svo3/CQueryParams.h"
+    ],
+    "header": "code/svo3/CQueryParams.h",
+    "evidence": "retail field accesses/strides and prototype names; plugin prefix is explicitly incomplete",
+    "fields": [
+      {
+        "name": "m_params",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_iIndex",
+        "offset": 1024,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PluginMessage",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/CPluginBase.h"
+    ],
+    "header": "code/svo3/CPluginBase.h",
+    "evidence": "retail field accesses/strides and prototype names; plugin prefix is explicitly incomplete",
+    "fields": [
+      {
+        "name": "event",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "sender",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CPluginQueuePrefix",
+    "size": "0x590",
+    "line": 0,
+    "owners": [
+      "svo3/CPluginBase.h"
+    ],
+    "header": "code/svo3/CPluginBase.h",
+    "evidence": "retail field accesses/strides and prototype names; plugin prefix is explicitly incomplete",
+    "fields": [
+      {
+        "name": "m_expectedMessages",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_messageQueue",
+        "offset": 1152,
+        "bitfield": false
+      },
+      {
+        "name": "m_headIndex",
+        "offset": 1408,
+        "bitfield": false
+      },
+      {
+        "name": "m_tailIndex",
+        "offset": 1412,
+        "bitfield": false
+      },
+      {
+        "name": "m_curEvent",
+        "offset": 1416,
+        "bitfield": false
+      },
+      {
+        "name": "m_curSender",
+        "offset": 1420,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageHistoryState",
+    "size": "0x2024",
+    "line": 30859,
+    "owners": [
+      "svo3/PageHistory.h"
+    ],
+    "header": "code/svo3/PageHistory.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "m_history",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_next_index",
+        "offset": 8224,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVBrowserPrefix",
+    "size": "0xA8",
+    "line": 29878,
+    "owners": [
+      "svo3/SVBrowser.h"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "unrecovered",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_pMainPage",
+        "offset": 164,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVChronographState",
+    "size": "0x10",
+    "line": 30280,
+    "owners": [
+      "svo3/SVChronograph.h"
+    ],
+    "header": "code/svo3/SVChronograph.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "start",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "stop",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "lastlap",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_pSystemContext",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVSockState",
+    "size": "0xC",
+    "line": 32076,
+    "owners": [
+      "svo3/SVSock.h"
+    ],
+    "header": "code/svo3/SVSock.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "m_errNo",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_pMemoryContext",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CDrawContextVtablePrefix",
+    "size": "0x48",
+    "line": 0,
+    "owners": [
+      "svo3\\CDrawContextBase.h"
+    ],
+    "header": "code/svo3/CDrawContextBase.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "DrawLine",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "GetStringWidth",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered18",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "DrawRectangle",
+        "offset": 68,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CDrawContextBase",
+    "size": "0x04",
+    "line": 0,
+    "owners": [
+      "svo3\\CDrawContextBase.h"
+    ],
+    "header": "code/svo3/CDrawContextBase.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagModuleVtablePrefix",
+    "size": "0x10",
+    "line": 31857,
+    "owners": [
+      "svo3/SVTagModule.h"
+    ],
+    "header": "code/svo3/SVTagModule.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "freeResources",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagModuleState",
+    "size": "0x4",
+    "line": 31857,
+    "owners": [
+      "svo3/SVTagModule.h"
+    ],
+    "header": "code/svo3/SVTagModule.h",
+    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HTTPEntity",
+    "size": "0x08",
+    "line": 30925,
+    "owners": [
+      "svo3\\HttpUtils.h"
+    ],
+    "header": "code/svo3/HttpUtils.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe",
+    "fields": [
+      {
+        "name": "str",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "val",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "padding",
+        "offset": 5,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVPath",
+    "size": "0x14",
+    "line": 30930,
+    "owners": [
+      "svo3\\HttpUtils.h"
+    ],
+    "header": "code/svo3/HttpUtils.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe",
+    "fields": [
+      {
+        "name": "m_scheme",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_server",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_port",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_path",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "m_pathMaxLength",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "DNSCacheEntry",
+    "size": "0x8C",
+    "line": 32000,
+    "owners": [
+      "svo3\\DNSCache.h"
+    ],
+    "header": "code/svo3/DNSCache.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe",
+    "fields": [
+      {
+        "name": "name",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rtIP",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "age",
+        "offset": 136,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "DNSCacheState",
+    "size": "0x460",
+    "line": 32011,
+    "owners": [
+      "svo3\\DNSCache.h"
+    ],
+    "header": "code/svo3/DNSCache.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe",
+    "fields": [
+      {
+        "name": "m_entries",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CCookieJar",
+    "size": "0x7F4",
+    "line": 30776,
+    "owners": [
+      "svo3\\CCookie.h"
+    ],
+    "header": "code/svo3/CCookie.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "m_cookies",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_memory",
+        "offset": 2032,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagModuleListState",
+    "size": "0x204",
+    "line": 30800,
+    "owners": [
+      "svo3\\SVTagModuleList.h"
+    ],
+    "header": "code/svo3/SVTagModuleList.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "m_modules",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_nextTagUID",
+        "offset": 512,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PluginExpectedMessage",
+    "size": "0x24",
+    "line": 31715,
+    "owners": [
+      "svo3\\CPluginBase.h"
+    ],
+    "header": "code/svo3/CPluginBase.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "event",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "sender",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CPluginBaseVtablePrefix",
+    "size": "0x14",
+    "line": 33436,
+    "owners": [
+      "svo3\\CPluginBase.h"
+    ],
+    "header": "code/svo3/CPluginBase.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "Process",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "AddMessage",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CPluginBaseState",
+    "size": "0x638",
+    "line": 33436,
+    "owners": [
+      "svo3\\CPluginBase.h"
+    ],
+    "header": "code/svo3/CPluginBase.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "queue",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered590",
+        "offset": 1424,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 1588,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagVtablePrefix",
+    "size": "0x4C",
+    "line": 0,
+    "owners": [
+      "svo3\\SVTag.h"
+    ],
+    "header": "code/svo3/SVTag.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "IsSelected",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "unknown24",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "IsSelectable",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered2C",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "GetTagName",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "unknown40",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "unknown44",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "SetVisible",
+        "offset": 72,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTag",
+    "size": "0xB4",
+    "line": 0,
+    "owners": [
+      "svo3\\SVTag.h"
+    ],
+    "header": "code/svo3/SVTag.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "m_xml",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_tagid",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSelected",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_bIgnoreInput",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSelectable",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "m_bOptional",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "m_x",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "m_y",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "m_z",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "m_width",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "m_height",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "m_lineColor",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "m_fillColor",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "m_name",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "m_tagTypeName",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "m_toolTip",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "m_toolTipTagName",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "m_contexts",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "m_navInfo",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "m_info",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "m_isDefTextEntry",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "m_isDefTextScroll",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "m_tagClass",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "m_bIsVisible",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "m_bNeverSelectable",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "m_ucType",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "paddingAD",
+        "offset": 173,
+        "bitfield": false
+      },
+      {
+        "name": "vtable",
+        "offset": 176,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CPluginManagerState",
+    "size": "0x58",
+    "line": 31720,
+    "owners": [
+      "svo3\\CPluginManager.h"
+    ],
+    "header": "code/svo3/CPluginManager.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; unrecovered fields remain explicit",
+    "fields": [
+      {
+        "name": "m_pluginList",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_numPlugins",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "m_popupRequests",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "m_curPopupRequest",
+        "offset": 84,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "URIEntryState",
+    "size": "0x08",
+    "line": 31302,
+    "owners": [
+      "svo3\\SVURIStore.h"
+    ],
+    "header": "code/svo3/SVURIStore.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "m_lookupStr",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_valueStr",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "URIStoreState",
+    "size": "0x204",
+    "line": 31319,
+    "owners": [
+      "svo3\\SVURIStore.h"
+    ],
+    "header": "code/svo3/SVURIStore.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "m_entries",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_next_URI_index",
+        "offset": 512,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "URIRequestPrefix",
+    "size": "0x04",
+    "line": 30169,
+    "owners": [
+      "svo3\\URISchemeMgr.h"
+    ],
+    "header": "code/svo3/URISchemeMgr.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "scheme",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IURISchemeProviderVtablePrefix",
+    "size": "0x20",
+    "line": 33616,
+    "owners": [
+      "svo3\\URISchemeMgr.h"
+    ],
+    "header": "code/svo3/URISchemeMgr.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "unknown00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unknown04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "unknown08",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "doRequest",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "IsBusy",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "freeResources",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "LoadStatePostGameFromPersistentData",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IURISchemeProviderState",
+    "size": "0x04",
+    "line": 33616,
+    "owners": [
+      "svo3\\URISchemeMgr.h"
+    ],
+    "header": "code/svo3/URISchemeMgr.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "sProviderEntry",
+    "size": "0x08",
+    "line": 30180,
+    "owners": [
+      "svo3\\URISchemeMgr.h"
+    ],
+    "header": "code/svo3/URISchemeMgr.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "provider",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "scheme",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CURISchemeMgrState",
+    "size": "0x40",
+    "line": 30185,
+    "owners": [
+      "svo3\\URISchemeMgr.h"
+    ],
+    "header": "code/svo3/URISchemeMgr.h",
+    "evidence": "retail-instructions and prototype dltypes; EE layout probe; request/vtable are prefixes only",
+    "fields": [
+      {
+        "name": "m_providers",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CAllContextData",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3\\CAllContextData.h"
+    ],
+    "header": "code/svo3/CAllContextData.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "drawContext",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "inputContext",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "memoryContext",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "audioContext",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "systemContext",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pMain",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CNavInfoState",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3\\Navigation.h"
+    ],
+    "header": "code/svo3/Navigation.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "up",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "down",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "left",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "right",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CPage",
+    "size": "0x5B14",
+    "line": 0,
+    "owners": [
+      "svo3\\CPage.h"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "unrecovered",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_state",
+        "offset": 23312,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RedirectTagState",
+    "size": "0xBC",
+    "line": 0,
+    "owners": [
+      "svo3\\RedirectTag.h"
+    ],
+    "header": "code/svo3/RedirectTag.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_alreadyRedirected",
+        "offset": 184,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "LineTagState",
+    "size": "0xC0",
+    "line": 0,
+    "owners": [
+      "svo3\\LineTag.h"
+    ],
+    "header": "code/svo3/LineTag.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_endX",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_endY",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_thickness",
+        "offset": 188,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RectangleTagState",
+    "size": "0xD0",
+    "line": 0,
+    "owners": [
+      "svo3\\RectangleTag.h"
+    ],
+    "header": "code/svo3/RectangleTag.h",
+    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_zVal",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_lineThickness",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_cornerRadius",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_gradientColor",
+        "offset": 192,
+        "bitfield": false
+      }
+    ]
   }
 ]

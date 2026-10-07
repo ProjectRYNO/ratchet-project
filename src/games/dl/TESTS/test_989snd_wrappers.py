@@ -44,6 +44,7 @@ class WrapperMachine:
         self.segments = segments
         self.transports = transports
         self.reg = [0] * 32
+        self.fpr = [0] * 32  # Raw bits for variadic argument saves.
         for i in range(1, 32):
             self.reg[i] = (0x123456789ABCDEF0 + i * 0x11223344556677) & MASK
         self.reg[4:12] = arguments[:8]
@@ -181,6 +182,7 @@ class WrapperMachine:
                 if op in (0x1A,0x1B):
                     r[rt] = (r[rt]&~mask) | (self.read(base,count)<<shift)
                 else: self.write(base,r[rt]>>shift,count)
+            elif op == 0x39: self.write(r[rs]+imm,self.fpr[rt],4)  # SWC1
             elif op == 0x3F: self.write(r[rs]+imm,r[rt],8)
             else: raise AssertionError('unsupported instruction %#x at %#x' % (word,pc))
             r[0] = 0

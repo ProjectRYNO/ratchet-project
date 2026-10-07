@@ -9,7 +9,8 @@ python3 ../tools/verify.py dl
 
 This forces an ELF rebuild, then checks loaded bytes/runtime headers, compiled
 function placement, global addresses, PS2 type layouts, both sound differential
-suites, and the function progress inventory. It writes individual logs and
+suites, iksemel and SVO3 library checks, and the function progress inventory.
+It writes individual logs and
 `summary.json` under a fresh `build/verification/<UTC timestamp>/` directory.
 The JSON records original/output ELF hashes, commands, return codes, skipped
 checks, and timestamps. It is a record of that run, not a permanent guarantee.

@@ -1,0 +1,179 @@
+name,address,owner,evidence,references
+svoPageHistorySource,0x0019C588,code/svo3/PageHistory.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoHistoryHomePage,0x0019C598,code/svo3/PageHistory.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoChronographSource,0x0019C5A8,code/svo3/SVChronograph.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoTimerMilliseconds,0x0016E448,code/svo3/SVChronograph.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoSockVtable,0x00170020,code/svo3/SVSock.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoUTF8Source,0x0019D750,code/svo3/UTF8_Util.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoButtonTagModuleSource,0x0019CA08,code/svo3/ButtonTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe2@0x01EF5F88
+svoButtonTagModuleTagName,0x0019CA20,code/svo3/ButtonTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe2@0x01EF5F88
+svoButtonTagModuleInstance,0x0016E558,code/svo3/ButtonTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe4@0x01EF6048; FreeResources___dupe6@0x01EF608C
+svoButtonTagModuleVtable,0x001700E0,code/svo3/ButtonTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe4@0x01EF6048
+svoLineTagModuleSource,0x0019CAE8,code/svo3/LineTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe3@0x01EF6390; BuildTag___dupe4@0x01EF63F0
+svoLineTagModuleTagName,0x0019CB00,code/svo3/LineTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe3@0x01EF6390
+svoLineTagModuleInstance,0x0016E570,code/svo3/LineTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe5@0x01EF6470; FreeResources___dupe8@0x01EF64B4
+svoLineTagModuleVtable,0x00170170,code/svo3/LineTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe5@0x01EF6470
+svoRectangleTagModuleSource,0x0019CC30,code/svo3/RectangleTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe5@0x01EF6B08; BuildTag___dupe6@0x01EF6B68
+svoRectangleTagModuleTagName,0x0019CC48,code/svo3/RectangleTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe5@0x01EF6B08
+svoRectangleTagModuleInstance,0x0016E578,code/svo3/RectangleTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe7@0x01EF6BE8; FreeResources___dupe11@0x01EF6C2C
+svoRectangleTagModuleVtable,0x00170238,code/svo3/RectangleTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe7@0x01EF6BE8
+svoHiddenInputTagModuleSource,0x0019DFB0,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe20@0x01F03B5C; BuildTag___dupe21@0x01F03BF8
+svoHiddenInputTagModuleTypeAttribute,0x0019DFD0,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe20@0x01F03B5C
+svoHiddenInputTagModuleTagName,0x0019DFD8,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe20@0x01F03B5C
+svoHiddenInputTagModuleInputType,0x0019DFE0,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe20@0x01F03B5C
+svoHiddenInputTagModuleInstance,0x0016E5E8,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe22@0x01F03C88; FreeResources___dupe41@0x01F03CCC
+svoHiddenInputTagModuleVtable,0x00170B80,code/svo3/HiddenInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe22@0x01F03C88
+svoPasswordInputTagModuleSource,0x0019D7C8,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe12@0x01EFD4C8; BuildTag___dupe13@0x01EFD564
+svoPasswordInputTagModuleTypeAttribute,0x0019D7E8,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe12@0x01EFD4C8
+svoPasswordInputTagModuleTagName,0x0019D7F0,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe12@0x01EFD4C8
+svoPasswordInputTagModuleInputType,0x0019D7F8,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe12@0x01EFD4C8
+svoPasswordInputTagModuleInstance,0x0016E5C0,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe14@0x01EFD5F4; FreeResources___dupe25@0x01EFD638
+svoPasswordInputTagModuleVtable,0x00170700,code/svo3/PasswordInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe14@0x01EFD5F4
+svoSubmitInputTagModuleSource,0x0019DB70,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe16@0x01F000C0; BuildTag___dupe17@0x01F0015C
+svoSubmitInputTagModuleTypeAttribute,0x0019DB90,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe16@0x01F000C0
+svoSubmitInputTagModuleTagName,0x0019DB98,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe16@0x01F000C0
+svoSubmitInputTagModuleInputType,0x0019DBA0,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe16@0x01F000C0
+svoSubmitInputTagModuleInstance,0x0016E5D0,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe18@0x01F001EC; FreeResources___dupe33@0x01F00230
+svoSubmitInputTagModuleVtable,0x00170940,code/svo3/SubmitInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe18@0x01F001EC
+svoRadioInputTagModuleSource,0x0019D8B8,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe13@0x01EFDCE8; BuildTag___dupe14@0x01EFDD84
+svoRadioInputTagModuleTypeAttribute,0x0019D8D0,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe13@0x01EFDCE8
+svoRadioInputTagModuleTagName,0x0019D8D8,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe13@0x01EFDCE8
+svoRadioInputTagModuleInputType,0x0019D8E0,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe13@0x01EFDCE8
+svoRadioInputTagModuleInstance,0x0016E5C4,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe15@0x01EFDE14; FreeResources___dupe27@0x01EFDE58
+svoRadioInputTagModuleVtable,0x00170790,code/svo3/RadioInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe15@0x01EFDE14
+svoTextInputTagModuleSource,0x0019D720,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe11@0x01EFCBAC; BuildTag___dupe12@0x01EFCC48
+svoTextInputTagModuleTypeAttribute,0x0019D738,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe11@0x01EFCBAC
+svoTextInputTagModuleTagName,0x0019D740,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe11@0x01EFCBAC
+svoTextInputTagModuleInputType,0x0019D748,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe11@0x01EFCBAC
+svoTextInputTagModuleInstance,0x0016E5BC,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe13@0x01EFCCD4; FreeResources___dupe24@0x01EFCD18
+svoTextInputTagModuleVtable,0x00170640,code/svo3/TextInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe13@0x01EFCCD4
+svoTextTagModuleSource,0x0019C680,code/svo3/TextTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag@0x01EF2B3C; BuildTag___dupe2@0x01EF2B9C
+svoTextTagModuleTagName,0x0019C698,code/svo3/TextTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag@0x01EF2B3C
+svoTextTagModuleInstance,0x0016E494,code/svo3/TextTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe2@0x01EF2C14; FreeResources___dupe3@0x01EF2C58
+svoTextTagModuleVtable,0x0016FEF0,code/svo3/TextTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe2@0x01EF2C14
+svoTickerTagModuleSource,0x0019E700,code/svo3/TickerTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe28@0x01F0BAA0; BuildTag___dupe28@0x01F0BB00
+svoTickerTagModuleTagName,0x0019E718,code/svo3/TickerTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe28@0x01F0BAA0
+svoTickerTagModuleInstance,0x0016E66C,code/svo3/TickerTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe30@0x01F0BB78; FreeResources___dupe58@0x01F0BBBC
+svoTickerTagModuleVtable,0x00171050,code/svo3/TickerTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe30@0x01F0BB78
+svoPageIDTagModuleSource,0x0019E2B0,code/svo3/PageIDTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe24@0x01F06574; BuildTag___dupe25@0x01F065D4
+svoPageIDTagModuleTagName,0x0019E2C8,code/svo3/PageIDTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe24@0x01F06574
+svoPageIDTagModuleInstance,0x0016E604,code/svo3/PageIDTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe26@0x01F06654; FreeResources___dupe50@0x01F06698
+svoPageIDTagModuleVtable,0x00170DB0,code/svo3/PageIDTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe26@0x01F06654
+svoBrowserInitTagModuleSource,0x0019E8E8,code/svo3/BrowserInitTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe29@0x01F0C2A8; BuildTag___dupe29@0x01F0C308
+svoBrowserInitTagModuleTagName,0x0019E908,code/svo3/BrowserInitTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe29@0x01F0C2A8
+svoBrowserInitTagModuleInstance,0x0016F6B0,code/svo3/BrowserInitTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe31@0x01F0C390; FreeResources___dupe61@0x01F0C3D4
+svoBrowserInitTagModuleVtable,0x00171138,code/svo3/BrowserInitTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe31@0x01F0C390
+svoSockSource,0x0019C8E0,code/svo3/SVSock.cpp,"retail split address references and Ghidra; existing storage, no allocation",
+svoCheckboxInputTagModuleSource,0x0019D998,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe14@0x01EFE5BC; BuildTag___dupe15@0x01EFE658
+svoCheckboxInputTagModuleTypeAttribute,0x0019D9B8,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe14@0x01EFE5BC
+svoCheckboxInputTagModuleTagName,0x0019D9C0,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe14@0x01EFE5BC
+svoCheckboxInputTagModuleInputType,0x0019D9C8,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe14@0x01EFE5BC
+svoCheckboxInputTagModuleInstance,0x0016E5C8,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe16@0x01EFE6E8; FreeResources___dupe29@0x01EFE72C
+svoCheckboxInputTagModuleVtable,0x00170820,code/svo3/CheckboxInputTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe16@0x01EFE6E8
+svoFormTagModuleSource,0x0019DA60,code/svo3/FormTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe15@0x01EFF8A8; BuildTag___dupe16@0x01EFF908
+svoFormTagModuleTagName,0x0019DA78,code/svo3/FormTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe15@0x01EFF8A8
+svoFormTagModuleInstance,0x0016E5CC,code/svo3/FormTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe17@0x01EFF990; FreeResources___dupe31@0x01EFF9D4
+svoFormTagModuleVtable,0x001708B0,code/svo3/FormTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe17@0x01EFF990
+svoGenericListBoxTagModuleSource,0x0019E6D0,code/svo3/GenericListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe27@0x01F0B940; BuildTag___dupe27@0x01F0B9A0
+svoGenericListBoxTagModuleTagName,0x0019E6F0,code/svo3/GenericListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe27@0x01F0B940
+svoGenericListBoxTagModuleInstance,0x0016E668,code/svo3/GenericListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe29@0x01F0BA20; FreeResources___dupe57@0x01F0BA64
+svoGenericListBoxTagModuleVtable,0x00171018,code/svo3/GenericListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe29@0x01F0BA20
+svoGridTagModuleSource,0x0019DEF8,code/svo3/GridTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe18@0x01F03448; BuildTag___dupe19@0x01F034A8
+svoGridTagModuleTagName,0x0019DF10,code/svo3/GridTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe18@0x01F03448
+svoGridTagModuleInstance,0x0016E5E0,code/svo3/GridTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe20@0x01F03530; FreeResources___dupe37@0x01F03574
+svoGridTagModuleVtable,0x00170A60,code/svo3/GridTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe20@0x01F03530
+svoListBoxTagModuleSource,0x0019E290,code/svo3/ListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe23@0x01F06414; BuildTag___dupe24@0x01F06474
+svoListBoxTagModuleTagName,0x0019E2A8,code/svo3/ListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe23@0x01F06414
+svoListBoxTagModuleInstance,0x0016E600,code/svo3/ListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe25@0x01F064F4; FreeResources___dupe49@0x01F06538
+svoListBoxTagModuleVtable,0x00170D78,code/svo3/ListBoxTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe25@0x01F064F4
+svoLogoutTagModuleSource,0x0019DBC8,code/svo3/LogoutTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe17@0x01F0036C; BuildTag___dupe18@0x01F003CC
+svoLogoutTagModuleTagName,0x0019DBE0,code/svo3/LogoutTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe17@0x01F0036C
+svoLogoutTagModuleInstance,0x0016E5D4,code/svo3/LogoutTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe19@0x01F0044C; FreeResources___dupe35@0x01F00490
+svoLogoutTagModuleVtable,0x001709D0,code/svo3/LogoutTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe19@0x01F0044C
+svoPopupTagModuleSource,0x0019DF40,code/svo3/PopupTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe19@0x01F036BC; BuildTag___dupe20@0x01F0371C
+svoPopupTagModuleTagName,0x0019DF58,code/svo3/PopupTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe19@0x01F036BC
+svoPopupTagModuleInstance,0x0016E5E4,code/svo3/PopupTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe21@0x01F0379C; FreeResources___dupe39@0x01F037E0
+svoPopupTagModuleVtable,0x00170AF0,code/svo3/PopupTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe21@0x01F0379C
+svoQuickLinkTagModuleSource,0x0019CEC0,code/svo3/QuickLinkTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe6@0x01EF71E8; BuildTag___dupe7@0x01EF7248
+svoQuickLinkTagModuleTagName,0x0019CED8,code/svo3/QuickLinkTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe6@0x01EF71E8
+svoQuickLinkTagModuleInstance,0x0016E57C,code/svo3/QuickLinkTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe8@0x01EF72C8; FreeResources___dupe14@0x01EF730C
+svoQuickLinkTagModuleVtable,0x00170320,code/svo3/QuickLinkTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe8@0x01EF72C8
+svoSelectTagModuleSource,0x0019D050,code/svo3/SelectTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe7@0x01EF7E00; BuildTag___dupe8@0x01EF7E60
+svoSelectTagModuleTagName,0x0019D068,code/svo3/SelectTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe7@0x01EF7E00
+svoSelectTagModuleInstance,0x0016E58C,code/svo3/SelectTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe9@0x01EF7EF0; FreeResources___dupe16@0x01EF7F34
+svoSelectTagModuleVtable,0x001703B0,code/svo3/SelectTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe9@0x01EF7EF0
+svoSetVariableTagModuleSource,0x0019CC08,code/svo3/SetVariableTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe4@0x01EF69C8
+svoSetVariableTagModuleTagName,0x0019CC28,code/svo3/SetVariableTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe4@0x01EF69C8
+svoSetVariableTagModuleInstance,0x0016E574,code/svo3/SetVariableTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe6@0x01EF6A88; FreeResources___dupe10@0x01EF6ACC
+svoSetVariableTagModuleVtable,0x00170200,code/svo3/SetVariableTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe6@0x01EF6A88
+svoStaticImageTagModuleSource,0x0019D180,code/svo3/StaticImageTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe9@0x01EF8B54; BuildTag___dupe10@0x01EF8BB4
+svoStaticImageTagModuleTagName,0x0019D1A0,code/svo3/StaticImageTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe9@0x01EF8B54
+svoStaticImageTagModuleInstance,0x0016E5A8,code/svo3/StaticImageTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe11@0x01EF8C34; FreeResources___dupe19@0x01EF8C78
+svoStaticImageTagModuleVtable,0x00170478,code/svo3/StaticImageTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe11@0x01EF8C34
+svoTextAreaTagModuleSource,0x0019D450,code/svo3/TextAreaTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe10@0x01EFB5F0; BuildTag___dupe11@0x01EFB650
+svoTextAreaTagModuleTagName,0x0019D468,code/svo3/TextAreaTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",IsMyTag___dupe10@0x01EFB5F0
+svoTextAreaTagModuleInstance,0x0016E5B0,code/svo3/TextAreaTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe12@0x01EFB6E0; FreeResources___dupe22@0x01EFB724
+svoTextAreaTagModuleVtable,0x00170580,code/svo3/TextAreaTagModule.cpp,"retail split address references and Ghidra; existing storage, no allocation",getInstance___dupe12@0x01EFB6E0
+svoHttpUtilsSource,0x0019E360,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpEscapeFormat,0x0019E370,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpDoubleSlash,0x0019E378,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpColon,0x0019E380,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpSlash,0x0019E388,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpEntityMap,0x0016E608,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoHttpInvalidChars,0x0016E650,code/svo3/HttpUtils.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",HttpUtils retail module references
+svoDNSCache,0x001B7FE0,code/svo3/DNSCache.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",DNSCache retail module references
+svoDNSCacheInitialized,0x0016E660,code/svo3/DNSCache.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",DNSCache retail module references
+svoDNSCacheSource,0x0019E460,code/svo3/DNSCache.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",DNSCache retail module references
+svoCookieJarInstance,0x0016E440,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookieSource,0x0019C500,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookieHeaderPrefix,0x0019C510,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookieSeparator,0x0019C520,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookiePairFormat,0x0019C528,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookieLineEnd,0x0019C530,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoCookieRequestHeader,0x0019C538,code/svo3/CCookie.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",getInstance@0x01EEFEB8; setCookie@0x01EEFF4C; asHeaderString@0x01EF00F8; parseSetCookieHeader@0x01EF0284; freeResources___dupe3@0x01EF0378
+svoTagModuleListInstance,0x0016E498,code/svo3/SVTagModuleList.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",SVTagModuleList@0x01EF2C94; getInstance___dupe3@0x01EF2CC4; FreeResources___dupe4@0x01EF2D10; AddTagModule@0x01EF2D88; operator.new___dupe6@0x01EF2DB8
+svoTagModuleListSource,0x0019C6A0,code/svo3/SVTagModuleList.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",SVTagModuleList@0x01EF2C94; getInstance___dupe3@0x01EF2CC4; FreeResources___dupe4@0x01EF2D10; AddTagModule@0x01EF2D88; operator.new___dupe6@0x01EF2DB8
+svoPluginManagerSource,0x0019E160,code/svo3/CPluginManager.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",CPluginManager@0x01F04C2C; Initialize___dupe5@0x01F04C40; Update___dupe112@0x01F04C74; AddMessage@0x01F04CEC; EmptyMessageQueue@0x01F04E28; operator.new___dupe11@0x01F04E88
+svoPluginNullSenderName,0x0019E158,code/svo3/CPluginManager.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",CPluginManager@0x01F04C2C; Initialize___dupe5@0x01F04C40; Update___dupe112@0x01F04C74; AddMessage@0x01F04CEC; EmptyMessageQueue@0x01F04E28; operator.new___dupe11@0x01F04E88
+svoURIStoreSource,0x0019E050,code/svo3/SVURIStore.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",FreeResources___dupe43@0x01F04068; URIEntry@0x01F040A4; FreeResources___dupe44@0x01F040B0; GetValueStr@0x01F0410C; matchesMyLookup@0x01F0414C; setURIProps@0x01F041A0; operator.new___dupe10@0x01F042B8; URIStore@0x01F042F4; add@0x01F0435C; find@0x01F0443C; FreeResources___dupe45@0x01F044F4; LoadInFromMemory@0x01F04538
+svoURIStoreDelimiter,0x0019E068,code/svo3/SVURIStore.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",FreeResources___dupe43@0x01F04068; URIEntry@0x01F040A4; FreeResources___dupe44@0x01F040B0; GetValueStr@0x01F0410C; matchesMyLookup@0x01F0414C; setURIProps@0x01F041A0; operator.new___dupe10@0x01F042B8; URIStore@0x01F042F4; add@0x01F0435C; find@0x01F0443C; FreeResources___dupe45@0x01F044F4; LoadInFromMemory@0x01F04538
+svoRedirectTagModuleInstance,0x0016E5EC,code/svo3/RedirectTagModule.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IsMyTag___dupe21@0x01F03F44; BuildTag___dupe22@0x01F03FA4; getInstance___dupe23@0x01F04024
+svoRedirectTagModuleSource,0x0019E028,code/svo3/RedirectTagModule.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IsMyTag___dupe21@0x01F03F44; BuildTag___dupe22@0x01F03FA4; getInstance___dupe23@0x01F04024
+svoRedirectTagModuleTagName,0x0019E040,code/svo3/RedirectTagModule.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IsMyTag___dupe21@0x01F03F44; BuildTag___dupe22@0x01F03FA4; getInstance___dupe23@0x01F04024
+svoRedirectTagModuleVtable,0x00170C10,code/svo3/RedirectTagModule.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IsMyTag___dupe21@0x01F03F44; BuildTag___dupe22@0x01F03FA4; getInstance___dupe23@0x01F04024
+svoURISchemeManager,0x001B7FA0,code/svo3/URISchemeMgr.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IURISchemeProvider@0x01F07050; _IURISchemeProvider@0x01F07060; Register@0x01F07094; DeRegister@0x01F070D0; Get@0x01F07100; CURISchemeMgr@0x01F07154; _CURISchemeMgr@0x01F07170; Register___dupe2@0x01F07198; DeRegister___dupe2@0x01F072C8; HasProvider@0x01F07300; GetProvider@0x01F07320; GetFreeProvider@0x01F073AC; doRequest___dupe3@0x01F07458; init___dupe2@0x01F074CC; shutdown___dupe2@0x01F074FC; LoadStatePostGameFromPersistentData___dupe4@0x01F07554; __tcf_0@0x01F075D0
+svoURISchemeManagerInitialized,0x0016E654,code/svo3/URISchemeMgr.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IURISchemeProvider@0x01F07050; _IURISchemeProvider@0x01F07060; Register@0x01F07094; DeRegister@0x01F070D0; Get@0x01F07100; CURISchemeMgr@0x01F07154; _CURISchemeMgr@0x01F07170; Register___dupe2@0x01F07198; DeRegister___dupe2@0x01F072C8; HasProvider@0x01F07300; GetProvider@0x01F07320; GetFreeProvider@0x01F073AC; doRequest___dupe3@0x01F07458; init___dupe2@0x01F074CC; shutdown___dupe2@0x01F074FC; LoadStatePostGameFromPersistentData___dupe4@0x01F07554; __tcf_0@0x01F075D0
+svoURISchemeSource,0x0019E390,code/svo3/URISchemeMgr.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IURISchemeProvider@0x01F07050; _IURISchemeProvider@0x01F07060; Register@0x01F07094; DeRegister@0x01F070D0; Get@0x01F07100; CURISchemeMgr@0x01F07154; _CURISchemeMgr@0x01F07170; Register___dupe2@0x01F07198; DeRegister___dupe2@0x01F072C8; HasProvider@0x01F07300; GetProvider@0x01F07320; GetFreeProvider@0x01F073AC; doRequest___dupe3@0x01F07458; init___dupe2@0x01F074CC; shutdown___dupe2@0x01F074FC; LoadStatePostGameFromPersistentData___dupe4@0x01F07554; __tcf_0@0x01F075D0
+svoURISchemeProviderVtable,0x00170E40,code/svo3/URISchemeMgr.cpp,"Retail Ghidra and split instruction references; existing storage, no allocation",IURISchemeProvider@0x01F07050; _IURISchemeProvider@0x01F07060; Register@0x01F07094; DeRegister@0x01F070D0; Get@0x01F07100; CURISchemeMgr@0x01F07154; _CURISchemeMgr@0x01F07170; Register___dupe2@0x01F07198; DeRegister___dupe2@0x01F072C8; HasProvider@0x01F07300; GetProvider@0x01F07320; GetFreeProvider@0x01F073AC; doRequest___dupe3@0x01F07458; init___dupe2@0x01F074CC; shutdown___dupe2@0x01F074FC; LoadStatePostGameFromPersistentData___dupe4@0x01F07554; __tcf_0@0x01F075D0
+svoTagVtable,0x0016FF60,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoTagSource,0x0019C7B8,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoTagNavUpAttribute,0x0019C880,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoTagNavDownAttribute,0x0019C888,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoTagNavLeftAttribute,0x0019C890,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoTagNavRightAttribute,0x0019C898,code/svo3/SVTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLogoutTagName,0x0019DBA8,code/svo3/LogoutTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLogoutTagSource,0x0019DBB8,code/svo3/LogoutTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLogoutTagVtable,0x00170978,code/svo3/LogoutTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoBrowserInitTagName,0x0019E8D8,code/svo3/BrowserInitTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoBrowserInitTagVtable,0x001710E0,code/svo3/BrowserInitTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoBrowserInitAlreadyHappened,0x0016F6AC,code/svo3/BrowserInitTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRedirectTagName,0x0019E000,code/svo3/RedirectTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRedirectTagSource,0x0019E018,code/svo3/RedirectTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRedirectLinkAttribute,0x0019E010,code/svo3/RedirectTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRedirectTagVtable,0x00170BB8,code/svo3/RedirectTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineTagName,0x0019CC58,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineTagSource,0x0019CC98,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineEndXAttribute,0x0019CC60,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineEndYAttribute,0x0019CC68,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineThicknessAttribute,0x0019CC70,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineColorAttribute,0x0019CC80,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineClassAttribute,0x0019CC90,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoLineTagVtable,0x00170270,code/svo3/LineTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleTagName,0x0019CA28,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleTagSource,0x0019CAD0,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleThicknessAttribute,0x0019CAA0,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleRadiusAttribute,0x0019CAB0,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleZAttribute,0x0019CAC0,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleClassAttribute,0x0019CAC8,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleGradientAttributes,0x0016E560,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
+svoRectangleTagVtable,0x00170118,code/svo3/RectangleTag.cpp,Retail Ghidra and split references; prototype/dltypes names; existing storage,
