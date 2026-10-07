@@ -38,7 +38,8 @@ Check Docker and asset availability before a build. Build the image from
 `docker compose run --rm projectryno`. Inspect existing containers before starting
 or stopping one; never assume another contributor's container can be reused.
 `make ps2dev` supplies the native Linux compiler used by Deadlocked (EE GCC 3.2.3).
-Extraction and ISO packing use native Linux Wrench v0.5. The image opens Bash
+Extraction and ISO packing use native Linux Wrench nightly 2026-10-05 (`7638b99`), pinned with
+a download checksum in the Dockerfile. The image opens Bash
 directly; no Wine or Windows compiler installation is needed.
 Keep the established image/toolchain versions unless toolchain work is requested.
 

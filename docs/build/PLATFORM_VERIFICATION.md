@@ -113,3 +113,24 @@ The new ISO, logs, partial rebuilt-ISO extraction, and `summary.json` are in
 `src/games/dl/build/wrench-native-check`. Reference assets and the previous ISO
 were mounted read-only. The original retail extraction used disposable
 container-local storage. No emulator or gameplay test was performed.
+
+
+## Nightly Wrench update (2026-10-06)
+
+The Dockerfile now pins the latest Linux artifact available in upstream's
+[unstable release](https://github.com/chaoticgd/wrench/releases/tag/unstable)
+at review time: `wrench_2026-10-05-7638b99_linux-glibc2.39-0ubuntu8.9.zip`.
+Upstream builds this channel on master pushes, rather than on a daily schedule.
+The download is checked against SHA-256
+`09aaf19e366280c25ee492eec0fd70b0d240cc705fe7b6989825ee3747626b92`.
+
+Fresh image build, archive checksum, native library resolution, overlay presence,
+and Wrench version/help commands passed. The binary reports commit
+`7638b998b78ad1fde5d83218976da77836c5665c`. The local `projectryno` image tag was
+updated; existing running containers must be replaced to use the new image.
+No Wine dependency was added. Image build log:
+`src/games/dl/build/wrench-nightly-image.log`.
+
+The full ISO pack/unpack results above describe v0.5, not this nightly.
+ISO round-trip, texture correctness, and gameplay have not yet been retested
+with the nightly; the debug-font issue remains unverified on this version.

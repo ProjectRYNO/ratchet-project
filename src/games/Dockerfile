@@ -20,11 +20,13 @@ RUN apt-get update && \
 
 # ── Install Wrench ────────────────────────────────────────────────────────────
 
+# Latest Linux nightly checked 2026-10-06; pin the artifact and SHA-256.
 RUN curl -fsSL \
-        "https://github.com/chaoticgd/wrench/releases/download/v0.5/wrench_v0.5_linux-glibc2.39-0ubuntu8.5.zip" \
+        "https://github.com/chaoticgd/wrench/releases/download/unstable/wrench_2026-10-05-7638b99_linux-glibc2.39-0ubuntu8.9.zip" \
         -o /tmp/wrench.zip && \
+    echo "09aaf19e366280c25ee492eec0fd70b0d240cc705fe7b6989825ee3747626b92  /tmp/wrench.zip" | sha256sum -c - && \
     unzip /tmp/wrench.zip -d /tmp/wrench_extract && \
-    mv /tmp/wrench_extract/wrench_v0.5_linux-glibc2.39-0ubuntu8.5 /opt/wrench && \
+    mv /tmp/wrench_extract/wrench_2026-10-05-7638b99_linux-glibc2.39-0ubuntu8.9 /opt/wrench && \
     rm -rf /tmp/wrench.zip /tmp/wrench_extract && \
     chmod +x /opt/wrench
 
