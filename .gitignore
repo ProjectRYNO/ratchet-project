@@ -69,3 +69,5 @@ src/games/dl/assets/
 
 # Python tools generate bytecode caches during local verification.
 __pycache__/
+
+!src/games/dl/TESTS/check_iksemel.py

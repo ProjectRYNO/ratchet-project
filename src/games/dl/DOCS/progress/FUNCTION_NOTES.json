@@ -1,5 +1,13 @@
 {
   "code/game/boot.cpp:main": "Explicit __main runtime initialization and cache operations are intentional; compare against retail control flow before changing them.",
   "code/game/boot.cpp:GetBootOptionsFromSettings": "Current encoder zeros reserved bits that were uninitialized in retail. Reconcile this documented behavior with matching; do not silently restore undefined reads.",
-  "code/game/boot.cpp:ApplyBootOptionsToSettings": "Current decoder bounds malformed input and zero-fills missing bytes. Matching and valid-input behavior are separate questions."
+  "code/game/boot.cpp:ApplyBootOptionsToSettings": "Current decoder bounds malformed input and zero-fills missing bytes. Matching and valid-input behavior are separate questions.",
+  "code/iksemel/src/iks.c:iks_next": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_parent": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_child": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_type": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_name": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_cdata": "Retail Ghidra + split instructions; exact 20-byte C accessor. check_iksemel.py checks null/field values/sign extension and entire module bytes. No new gameplay test.",
+  "code/iksemel/src/iks.c:iks_next_tag": "Behavior inspected in retail Ghidra; trial C did not match original register/branch scheduling. Retained assembly pending compiler matching.",
+  "code/iksemel/src/iks.c:iks_has_children": "Behavior inspected in retail Ghidra; trial C did not match original register/branch scheduling. Retained assembly pending compiler matching."
 }

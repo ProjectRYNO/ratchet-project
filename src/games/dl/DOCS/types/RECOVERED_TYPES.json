@@ -4252,5 +4252,76 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "iks",
+    "size": "0x30",
+    "owners": [
+      "iksemel/src/iks.c"
+    ],
+    "header": "code/iksemel/src/iks.h",
+    "evidence": "retail-instructions: allocation 0x30 and constructor/insertion/accessor field accesses; prototype iks.c corroborates; dltypes.txt has an incomplete iks_struct",
+    "fields": [
+      {
+        "name": "next",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "prev",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "children",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "last_child",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "attributes",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "last_attribute",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "parent",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "stack",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "name",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "cdata",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "cdata_size",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
   }
 ]

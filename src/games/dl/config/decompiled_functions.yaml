@@ -64,6 +64,13 @@ functions:
   snd_DoExternCallWithData: 0x00159948
   snd_GetDopplerPitchMod: 0x00159988
 
+  iks_next: 0x01EE38EC
+  iks_parent: 0x01EE394C
+  iks_child: 0x01EE3960
+  iks_type: 0x01EE3A84
+  iks_name: 0x01EE3A98
+  iks_cdata: 0x01EE3AAC
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -153,3 +160,26 @@ objects:
       - {object: 989snd/ee/989snd, section: .snd_snd_DoExternCallWithData, start: 0x00159948, end: 0x00159980}
       - {object: 989snd/ee/989snd, section: .snd_func_00159980, start: 0x00159980, end: 0x00159988}
       - {object: 989snd/ee/989snd, section: .snd_snd_GetDopplerPitchMod, start: 0x00159988, end: 0x001599A4}
+  iksemel/src/iks:
+    text_start: 0x01EE3570
+    text_end: 0x01EE3CEC
+    slots:
+      - {object: iksemel/src/iks, section: .iks_iks_new_within, start: 0x01EE3570, end: 0x01EE3600}
+      - {object: iksemel/src/iks, section: .iks_iks_insert, start: 0x01EE3600, end: 0x01EE366C}
+      - {object: iksemel/src/iks, section: .iks_iks_insert_cdata, start: 0x01EE366C, end: 0x01EE3770}
+      - {object: iksemel/src/iks, section: .iks_iks_insert_attrib, start: 0x01EE3770, end: 0x01EE38C4}
+      - {object: iksemel/src/iks, section: .iks_iks_delete, start: 0x01EE38C4, end: 0x01EE38EC}
+      - {object: iksemel/src/iks, section: .iks_iks_next, start: 0x01EE38EC, end: 0x01EE3900}
+      - {object: iksemel/src/iks, section: .iks_iks_next_tag, start: 0x01EE3900, end: 0x01EE394C}
+      - {object: iksemel/src/iks, section: .iks_iks_parent, start: 0x01EE394C, end: 0x01EE3960}
+      - {object: iksemel/src/iks, section: .iks_iks_child, start: 0x01EE3960, end: 0x01EE3974}
+      - {object: iksemel/src/iks, section: .iks_iks_find, start: 0x01EE3974, end: 0x01EE39E0}
+      - {object: iksemel/src/iks, section: .iks_iks_find_cdata, start: 0x01EE39E0, end: 0x01EE3A18}
+      - {object: iksemel/src/iks, section: .iks_iks_find_attrib, start: 0x01EE3A18, end: 0x01EE3A84}
+      - {object: iksemel/src/iks, section: .iks_iks_type, start: 0x01EE3A84, end: 0x01EE3A98}
+      - {object: iksemel/src/iks, section: .iks_iks_name, start: 0x01EE3A98, end: 0x01EE3AAC}
+      - {object: iksemel/src/iks, section: .iks_iks_cdata, start: 0x01EE3AAC, end: 0x01EE3AC0}
+      - {object: iksemel/src/iks, section: .iks_iks_has_children, start: 0x01EE3AC0, end: 0x01EE3AE0}
+      - {object: iksemel/src/iks, section: .iks_escape_size, start: 0x01EE3AE0, end: 0x01EE3B50}
+      - {object: iksemel/src/iks, section: .iks_my_strcat, start: 0x01EE3B50, end: 0x01EE3BAC}
+      - {object: iksemel/src/iks, section: .iks_escape, start: 0x01EE3BAC, end: 0x01EE3CEC}

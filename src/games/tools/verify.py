@@ -116,6 +116,7 @@ def main():
         run('global-addresses', [py, tests/'check_global_map.py', rebuilt])
         run('type-layouts', [py, tests/'check_type_layouts.py'])
         run('sound-wrappers', [py, tests/'test_989snd_wrappers.py', original, rebuilt])
+        run('iksemel-accessors', [py, tests/'check_iksemel.py', original, rebuilt])
         run('sound-state', [py, tests/'test_989snd_state.py', original, rebuilt])
         run('progress', [py, GAMES/'tools/function_progress.py', args.game, '--elf', rebuilt, '--output', output/'progress'])
         if args.host_tests:

@@ -64,7 +64,8 @@ def inventory(game, original, rebuilt):
         old = region(old_segments, address, slot['end'])
         new = region(new_segments, address, slot['end'])
         changed = sum(a != b for a, b in zip(old, new))
-        scope = ('989snd differential suites; mocked SDK/IOP' if name.startswith('snd_') else
+        scope = ('check_iksemel.py; exact module bytes and EE differential cases' if name in ('iks_next', 'iks_parent', 'iks_child', 'iks_type', 'iks_name', 'iks_cdata') else
+                 '989snd differential suites; mocked SDK/IOP' if name.startswith('snd_') else
                  'boot_main_test.cpp; host mocks' if name == 'main' else 'boot_options_test.cpp; host vectors' if name in ('GetBootOptionsFromSettings', 'ApplyBootOptionsToSettings') else 'not inventoried')
         rows.append(dict(name=name, source=source.relative_to(game).as_posix(), address='0x%08X' % address,
                          implementation='compiled', slot_end='0x%08X' % slot['end'], compiled_size='0x%X' % size,

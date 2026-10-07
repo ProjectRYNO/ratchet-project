@@ -68,6 +68,8 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # Keep the recovered EE sound functions inside their original address slots.
 # The only division has a constant, nonzero divisor (741).
 $(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
+# Retail iksemel accessors occupy 20-byte slots at four-byte boundaries.
+$(OBJ_DIR)/iksemel/src/iks.o: COMMON_COMPILE_FLAGS += -falign-functions=4
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
