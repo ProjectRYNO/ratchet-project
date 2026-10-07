@@ -46,3 +46,18 @@ the trial C changed register allocation/branch scheduling. Allocation, insertion
 search/escaping, SAX/DOM parsing, and stack functions also remain to decompile.
 Continue with library code before `game/`, as requested. A matching accessor is
 not a claim that the entire XML library or full ELF is matching or decompiled.
+
+## Verified result
+
+Serial split followed by `make -B -j8 elf` succeeded. The complete new ELF's
+loaded bytes and runtime headers equal the previous development build. All six
+new C allocations and the entire iks.c module match retail exactly. The verifier
+passed compiled-symbol/slot checks, 806 globals, 750 layout checks across 78
+types, both sound suites, and the new 774-case accessor suite. Nine verifier
+orchestration tests also passed. Reports: `build/iksemel-work/verification`;
+build and baseline comparison logs are in `build/iksemel-work`.
+
+The whole-ELF strict comparison remains NONMATCH with the existing 5,130
+differing bytes. Progress is now 68 compiled functions, 12 matching slots and
+56 nonmatching slots. No new gameplay or ISO pack was performed. Use the local
+ELF override launcher with original disc assets for further runtime testing.

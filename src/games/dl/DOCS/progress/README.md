@@ -37,3 +37,8 @@ The [verification command](../../../../../docs/build/VERIFICATION.md) also write
 separate progress snapshot beside each verification report. Prefer that report
 when deciding what a particular tested ELF contains. Commit tracked snapshot
 updates only with the source/evidence they describe.
+
+
+The 2026-10-07 iksemel batch adds six byte-matching C accessors: the refreshed
+snapshot has 8,528 assembly entries, 68 compiled functions, 12 matching slots,
+and 56 nonmatching slots. See [library notes](../libraries/IKSEMEL.md).
