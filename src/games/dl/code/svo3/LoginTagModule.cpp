@@ -1,25 +1,99 @@
+#include "CMemoryContextBase.h"
+#include <string.h>
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .svo_LoginTagModule_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", operator.delete___dupe10);
+#include "LoginTagModule.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", LoginTagModule);
+extern "C" {
+extern LoginTagModuleState *svoLoginTagModuleInstance;
+extern char svoLoginTagModuleSource[];
+CMemoryContextBaseState *GetMemoryContext(void);
+void *LoginTagModuleNew(unsigned int size) __asm__("operator.new___dupe12");
+void LoginTagModuleDelete10(void *memory) __asm__("operator.delete___dupe10");
+void LoginTagModuleDelete11(void *memory) __asm__("operator.delete___dupe11");
+extern const SVTagModuleVtablePrefix svoBaseTagModuleVtable;
+extern char svoLoginTagModuleName[];
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", _LoginTagModule);
+extern const SVTagModuleVtablePrefix svoLoginTagModuleVtable;
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", IsMyTag___dupe25);
+#define SECTION(name) __attribute__((section(".svo_LoginTagModule_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginSubmitResponse);
+SECTION(LoginTagModule) const SVTagModuleVtablePrefix *LoginTagModule(LoginTagModuleState *module)
+{
+    module->m_bHaveUnhandledLoginResponse = 0;
+    module->base.vtable = &svoLoginTagModuleVtable;
+    return &svoLoginTagModuleVtable;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginDTD);
+}
+
+extern "C" SECTION(_LoginTagModule) void _LoginTagModule(LoginTagModuleState *module, int flags)
+{
+    module->base.vtable = &svoBaseTagModuleVtable;
+    if (flags & 1) LoginTagModuleDelete11(module);
+}
+
+
+extern "C" SECTION(FreeResources___dupe52) void FreeResources___dupe52(LoginTagModuleState *module)
+{
+    if (svoLoginTagModuleInstance) {
+        svoLoginTagModuleInstance->base.vtable->destroy(&svoLoginTagModuleInstance->base, 3);
+        svoLoginTagModuleInstance = 0;
+    }
+}
+
+
+extern "C" SECTION(getInstance___dupe27) LoginTagModuleState *getInstance___dupe27(void)
+{
+    if (!svoLoginTagModuleInstance) {
+        LoginTagModuleState *module = (LoginTagModuleState *)LoginTagModuleNew(0x8);
+        LoginTagModule(module);
+        svoLoginTagModuleInstance = module;
+    }
+    return svoLoginTagModuleInstance;
+}
+
+
+extern "C" SECTION(IsMyTag___dupe25) int IsMyTag___dupe25(LoginTagModuleState *module, iks *xml)
+{
+    if (iks_type(xml) != IKS_TAG) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x2A);
+    return strcmp(iks_name(xml), svoLoginTagModuleName) == 0;
+}
+
+
+extern "C" SECTION(operator.delete___dupe10) void LoginTagModuleDelete10(void *memory)
+{
+    svFreeSafe(GetMemoryContext(), memory);
+}
+
+
+extern "C" SECTION(operator.delete___dupe11) void LoginTagModuleDelete11(void *memory)
+{
+    svFreeSafe(GetMemoryContext(), memory);
+}
+
+
+extern "C" SECTION(operator.new___dupe12) void *LoginTagModuleNew(unsigned int size)
+{
+    void *memory = svAllocSafe(GetMemoryContext(), size, 0, 0xCA, svoLoginTagModuleSource);
+    if (!memory) __SVO_Assert_Handler(svoLoginTagModuleSource, 0xCD);
+    return memory;
+}
+
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTags___dupe6);
 
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginDTD);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginSubmitResponse);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", UnhandledLoginResponseExists);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", getInstance___dupe27);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", operator.new___dupe12);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", operator.delete___dupe11);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", FreeResources___dupe52);

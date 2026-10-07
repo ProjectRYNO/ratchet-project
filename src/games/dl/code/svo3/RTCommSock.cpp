@@ -1,41 +1,77 @@
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .svo_RTCommSock_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", createSVSock);
+#include "RTCommSock.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", RTCommSock);
+extern "C" {
+extern int svoRTCommSockSendBufferSize;
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookup);
+#define SECTION(name) __attribute__((section(".svo_RTCommSock_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupBlocking);
+SECTION(unSerializeAddr) void *unSerializeAddr(RTCommSockState *socket, void *data, void *memory)
+{
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", sDNSLookupCB);
+SECTION(SetSockSendBufferSize) void SetSockSendBufferSize(int size)
+{
+    svoRTCommSockSendBufferSize = size;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupNonBlockingQuery);
+SECTION(SetNonBlocking) void SetNonBlocking(RTCommSockState *socket, int nonBlocking)
+{
+    socket->m_bNonBlocking = nonBlocking;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupNonBlocking);
+SECTION(GetNonBlocking) long GetNonBlocking(RTCommSockState *socket)
+{
+    return socket->m_bNonBlocking;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", unSerializeAddr);
+SECTION(setSynchronous) void setSynchronous(RTCommSockState *socket, int synchronous)
+{
+    socket->m_eSynchronous = synchronous;
+}
+
+SECTION(getSynchronous) long getSynchronous(RTCommSockState *socket)
+{
+    return socket->m_eSynchronous;
+}
+
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", addrAsString);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Connect);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", WaitForConnect);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Send);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Recv);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", BufferHasEndSVMLTag);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Close);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", SetSockSendBufferSize);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Connect);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", SetNonBlocking);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", createSVSock);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", GetNonBlocking);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookup);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", setSynchronous);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupBlocking);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", getSynchronous);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupNonBlocking);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", dnsLookupNonBlockingQuery);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Recv);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", RTCommSock);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", sDNSLookupCB);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", Send);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/RTCommSock", WaitForConnect);

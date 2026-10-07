@@ -2,7 +2,7 @@
 #define CDRAWCONTEXTBASE_H
 
 struct CDrawContextBase;
-typedef struct { // 0x48 (vtable prefix)
+typedef struct { // 0x5C (vtable prefix)
     /* 0x00 */ void *unknown00;
     /* 0x04 */ void *unknown04;
     /* 0x08 */ void *unknown08;
@@ -17,6 +17,10 @@ typedef struct { // 0x48 (vtable prefix)
                                        unsigned int lineColor, unsigned int fillColor,
                                        int lineThickness, int cornerRadius, float z,
                                        unsigned int *gradient, char *tagClass);
+    /* 0x48 */ unsigned char unrecovered48[0x10];
+    /* 0x58 */ void (*DrawPopupBackground)(CDrawContextBase *draw, float x, float y,
+                                           float width, float height, unsigned int lineColor,
+                                           unsigned int fillColor, char *tagClass);
 } CDrawContextVtablePrefix;
 
 struct CDrawContextBase { // 0x04 (verified prefix)

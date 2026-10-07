@@ -1,3 +1,13 @@
-#include "common.h"
+#include "ParseXML.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseXML", ParseXML);
+extern "C" {
+
+#define SECTION(name) __attribute__((section(".svo_ParseXML_" #name)))
+
+SECTION(ParseXML) const void *ParseXML(ParseXMLState *parser)
+{
+    parser->vtable = svoParseXMLVtable;
+    return svoParseXMLVtable;
+}
+
+}

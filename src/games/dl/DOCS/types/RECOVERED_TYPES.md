@@ -148,3 +148,16 @@ partial views, not allocation sizes. Inventory: 125 declarations.
 
 The focused EE compiler probe passes 12 type sizes and 87 field offsets for
 the concrete-tag headers, including expanded existing context/vtable types.
+
+
+## SVO3 50% batch (latest)
+
+The inventory now contains 149 declarations. Added or expanded views cover
+SVBrowser, download metadata and request buffers, XML adapters, the file queue,
+HTTP/socket state and concrete widget/module prefixes. SVBrowser is 0x3140;
+CPage's verified prefix extends through 0x6360 and the draw vtable through 0x5C.
+Opaque regions remain explicitly unrecovered. Partial views must not determine
+allocation sizes. The focused EE GCC probe passes 28 sizes and 158 offsets;
+its source/log are build/svo-library-work/half-types.cpp and half-types.log.
+The owning CInputContextBase and SVChronograph headers supply their anonymous
+typedefs; no incompatible struct forward declarations are introduced.

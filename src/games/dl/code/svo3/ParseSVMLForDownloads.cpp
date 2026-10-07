@@ -1,11 +1,37 @@
-#include "common.h"
+#include "ParseSVMLForDownloads.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLForDownloads", ParseSVMLForDownloads);
+extern "C" {
+extern const unsigned char svoParseSVMLForDownloadsVtable[];
+extern char svoParseSVMLForDownloadsCheckString[];
+#define SECTION(name) __attribute__((section(".svo_ParseSVMLForDownloads_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLForDownloads", _ParseSVMLForDownloads);
+SECTION(ParseSVMLForDownloads) const void *ParseSVMLForDownloads(ParseXMLState *parser)
+{
+    ParseXML(parser);
+    parser->vtable = svoParseSVMLForDownloadsVtable;
+    return svoParseSVMLForDownloadsVtable;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLForDownloads", ShouldFreeResources___dupe2);
+SECTION(_ParseSVMLForDownloads) void _ParseSVMLForDownloads(ParseXMLState *parser, int flags)
+{
+    parser->vtable = svoParseSVMLForDownloadsVtable;
+    _ParseXML(parser, 0);
+    if (flags & 1) SvoBuiltinDelete(parser);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLForDownloads", GetCheckString___dupe2);
+SECTION(ShouldFreeResources___dupe2) int ShouldFreeResources___dupe2(ParseXMLState *parser)
+{
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLForDownloads", CallFunction___dupe2);
+SECTION(GetCheckString___dupe2) char *GetCheckString___dupe2(ParseXMLState *parser)
+{
+    return svoParseSVMLForDownloadsCheckString;
+}
+
+SECTION(CallFunction___dupe2) void CallFunction___dupe2(ParseXMLState *parser, iks *xml, CPage *page)
+{
+    scanObject(page, xml);
+}
+
+}

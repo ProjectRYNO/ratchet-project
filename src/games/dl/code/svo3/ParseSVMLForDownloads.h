@@ -1,0 +1,4 @@
+#ifndef PARSESVMLFORDOWNLOADS_H
+#define PARSESVMLFORDOWNLOADS_H
+#include "ParseXML.h"
+#endif

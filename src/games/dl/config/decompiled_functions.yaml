@@ -332,6 +332,222 @@ functions:
   svstrlen: 0x01EEDFE0
   svisdigit: 0x01EEE070
 
+  DownloadBinary: 0x01F075F4
+  _DownloadBinary: 0x01F0760C
+  GetPath: 0x01F07640
+  SetPath: 0x01F07648
+  GetDownloadCallback: 0x01F07664
+  SetDownloadCallback: 0x01F0766C
+  GetFormMethodType: 0x01F07678
+  SetFormMethodType: 0x01F07680
+  GetWidth: 0x01F07688
+  GetHeight: 0x01F07690
+  SetDimensions___dupe2: 0x01F07698
+  GetID: 0x01F076A4
+  SetID___dupe2: 0x01F076AC
+  SetToDestroyOnRequestSend: 0x01F076B4
+  DestroyOnRequestSend: 0x01F076C0
+  SetUserNameMaxLength: 0x01F076C8
+  SetUserNameParameter: 0x01F076D0
+  GetUserNameParameter: 0x01F076F0
+  SetAccountIDParameter: 0x01F076F8
+  GetAccountIDParameter: 0x01F07718
+  ParseXML: 0x01F07D54
+  _ParseXML: 0x01F07D64
+  ParseSVMLAddObjects: 0x01F07D98
+  _ParseSVMLAddObjects: 0x01F07DC8
+  ShouldFreeResources: 0x01F07E28
+  GetCheckString: 0x01F07E30
+  CallFunction: 0x01F07E40
+  ParseSVMLForDownloads: 0x01F07E5C
+  _ParseSVMLForDownloads: 0x01F07E8C
+  ShouldFreeResources___dupe2: 0x01F07EEC
+  GetCheckString___dupe2: 0x01F07EF4
+  CallFunction___dupe2: 0x01F07F04
+  ParseXMLInfo: 0x01F07F20
+  _ParseXMLInfo: 0x01F07F50
+  ShouldFreeResources___dupe3: 0x01F07FB0
+  GetCheckString___dupe3: 0x01F07FB8
+  CallFunction___dupe3: 0x01F07FC8
+  PageRequestListener: 0x01F0C410
+  _PageRequestListener: 0x01F0C470
+  operator.delete___dupe14: 0x01F0C4CC
+  Reset___dupe6: 0x01F0C4EC
+  OnURIRequestStart___dupe2: 0x01F0C53C
+  OnURIRequestChunkReceived___dupe2: 0x01F0C558
+  OnURIRequestIsOkContinueDownload___dupe2: 0x01F0C624
+  OnURIRequestHeaderReceived___dupe2: 0x01F0C668
+  OnURIRequestRedirectReceived___dupe2: 0x01F0C720
+  OnURIRequestCompletion___dupe2: 0x01F0C788
+  GetResponse: 0x01F0C7D4
+  GetLastStatus: 0x01F0C834
+  GetLastContentType: 0x01F0C83C
+  FileDownloadEntry: 0x01F09BBC
+  FreeResources___dupe53: 0x01F09BC8
+  GetValueStr___dupe2: 0x01F09C2C
+  GetNameStr: 0x01F09C6C
+  matchesMyLookup___dupe2: 0x01F09CAC
+  allocateMemory: 0x01F09DF0
+  reset___dupe3: 0x01F09E94
+  isEmpty: 0x01F09EFC
+  FileDownloadQueue: 0x01F09F48
+  allocateMemoryForEntries: 0x01F09FB0
+  add___dupe2: 0x01F09FFC
+  FreeResources___dupe54: 0x01F0A128
+  HasEntries: 0x01F0A2A0
+  operator.delete___dupe5: 0x01EF2DF4
+  RegisterCommonTagModules: 0x01EF2E24
+  getIntAttrib: 0x01EF308C
+  getBoolAttrib: 0x01EF30EC
+  getFloatAttrib: 0x01EF3164
+  getAlignAttrib: 0x01EF31D0
+  getColorAttrib: 0x01EF328C
+  getStringAttrib: 0x01EF339C
+  getTagByName: 0x01EF33D4
+  getChildIksStructList: 0x01EF3520
+  DefaultInit: 0x01EEE0BC
+  GetInstance: 0x01EEE12C
+  GetMemoryContext: 0x01EEE13C
+  GetAltMemoryContext: 0x01EEE19C
+  GetDrawContext: 0x01EEE1FC
+  GetAltDrawContext: 0x01EEE27C
+  GetInputContext: 0x01EEE2DC
+  GetAltInputContext: 0x01EEE33C
+  GetAudioContext: 0x01EEE39C
+  GetAltAudioContext: 0x01EEE3FC
+  GetSystemContext: 0x01EEE45C
+  GetAltSystemContext: 0x01EEE4BC
+  SV_IKS_Free: 0x01EEE558
+  SetupTargetInfo: 0x01EEE588
+  SetAlternateContexts: 0x01EEEC8C
+  SetExternalIPAddress: 0x01EEED4C
+  GetLoginInfo: 0x01EEEDA0
+  SetLogout: 0x01EEEDC4
+  ExitOnline: 0x01EEEDD0
+  IsActive: 0x01EEF164
+  Activate: 0x01EEF16C
+  DoFrameUpdates: 0x01EEF25C
+  HandleUpdatePages: 0x01EEF3F8
+  InitInitializeParams: 0x01EEF7E4
+  SignalPluginEvent: 0x01EEF814
+  DeInitializePluginManagerAndPluggins: 0x01EEF8A4
+  RemovePluginMgrMessages: 0x01EEFA5C
+  URIStoreAdd: 0x01EEFA80
+  FileDownloadQueueAdd: 0x01EEFB78
+  RTCommDestroy: 0x01EEFE94
+  FreeResources___dupe5: 0x01EF5C4C
+  FreeResources___dupe28: 0x01EFE118
+  HttpsDestroy___dupe2: 0x01EEB968
+  HttpsCleanup___dupe2: 0x01EEB970
+  HttpsPrepareRequestForServerHello: 0x01EEB978
+  HttpSendRequest___dupe2: 0x01EEB988
+  HttpsDownload___dupe2: 0x01EEB994
+  PrintRequestHeader___dupe2: 0x01EEB9AC
+  PrintRequestFooter___dupe2: 0x01EEB9B4
+  PrintHeader___dupe2: 0x01EEB9BC
+  PrintFooter___dupe2: 0x01EEB9C4
+  HttpRecvOnEnter: 0x01EEB9CC
+  HttpSendOnUpdate: 0x01EEBC38
+  SetStatePostRequest: 0x01EEBC54
+  HttpIdleOnEnter: 0x01EEBDA0
+  HttpIdleOnUpdate: 0x01EEBDBC
+  IsSecure___dupe2: 0x01EEBDC4
+  HttpCleanup___dupe2: 0x01EEBDCC
+  GetHttpState: 0x01EEC260
+  setSocketType: 0x01EEC484
+  HttpsDestroy: 0x01EE5420
+  HttpsCleanup: 0x01EE5428
+  PrintRequestHeader: 0x01EE5574
+  PrintRequestFooter: 0x01EE557C
+  PrintHeader: 0x01EE5584
+  PrintFooter: 0x01EE558C
+  IsSecure: 0x01EE5928
+  FreeResources___dupe9: 0x01EF663C
+  IsSelectable___dupe7: 0x01EF6718
+  FreeResources___dupe2: 0x01EF28A4
+  FreeResources___dupe59: 0x01F0BDCC
+  HandleInput___dupe55: 0x01F0BDD4
+  IsSelectable___dupe17: 0x01F0BED8
+  DrawVKB: 0x01EECCC4
+  RenderAssert: 0x01EECCCC
+  TransitionPageOff: 0x01EECCD4
+  TransitionPageOn: 0x01EECCDC
+  TransitionPopupPageOff: 0x01EECCE4
+  TransitionPopupPageOn: 0x01EECCEC
+  FreeResources___dupe30: 0x01EFEA2C
+  IsSelectable___dupe13: 0x01EFEB28
+  FreeResources___dupe40: 0x01F03924
+  HandleInput___dupe51: 0x01F03940
+  IsSelectable___dupe16: 0x01F03948
+  PopupTag: 0x01F035B0
+  FreeResources___dupe38: 0x01F03608
+  Draw___dupe24: 0x01F03624
+  IsSelectable___dupe15: 0x01F036B4
+  FreeResources___dupe13: 0x01EF6EE8
+  IsSelectable___dupe9: 0x01EF71E0
+  FreeResources___dupe32: 0x01EFFC44
+  IsSelectable___dupe14: 0x01EFFF38
+  DefaultInit___dupe21: 0x01F045E8
+  _DataTag: 0x01F04624
+  ParseURITag: 0x01F0471C
+  ParseFileTag: 0x01F047A0
+  FreeResources___dupe46: 0x01F048A8
+  okToNavigate___dupe3: 0x01F04950
+  FreeResources___dupe18: 0x01EF86B4
+  PageIDTag: 0x01F066D4
+  _PageIDTag: 0x01F067DC
+  FreeResources___dupe51: 0x01F06810
+  FreeResources___dupe26: 0x01EFD8B0
+  SetChecked: 0x01EFDCD4
+  FreeResources___dupe15: 0x01EF7688
+  GetValue: 0x01EF7DE8
+  FreeResources___dupe20: 0x01EF8F30
+  FreeResources___dupe23: 0x01EFBBAC
+  Draw___dupe17: 0x01EFBDB0
+  GetMaxLengthUTF8Chars___dupe2: 0x01EFCB9C
+  GetMaxLengthBytes___dupe2: 0x01EFCBA4
+  okToNavigate___dupe2: 0x01EE7B78
+  GetTagAtIndex: 0x01EE98D8
+  SetTagAtIndex: 0x01EE98EC
+  CreateGameTagModule: 0x01F0A2FC
+  BuildTag___dupe26: 0x01F0A430
+  getInstance___dupe28: 0x01F0A5F0
+  operator.new___dupe15: 0x01F0A63C
+  operator.delete___dupe13: 0x01F0A6A4
+  FreeResources___dupe55: 0x01F0A6D4
+  FreeResources___dupe56: 0x01F0AD14
+  SetExternalDrawFunction: 0x01F06394
+  operator.delete___dupe10: 0x01F07720
+  LoginTagModule: 0x01F07750
+  _LoginTagModule: 0x01F07764
+  IsMyTag___dupe25: 0x01F07798
+  getInstance___dupe27: 0x01F07C34
+  operator.new___dupe12: 0x01F07C80
+  operator.delete___dupe11: 0x01F07CE8
+  FreeResources___dupe52: 0x01F07D18
+  reset___dupe2: 0x01EF3ED8
+  unSerializeAddr: 0x01EF5328
+  SetSockSendBufferSize: 0x01EF587C
+  SetNonBlocking: 0x01EF588C
+  GetNonBlocking: 0x01EF5894
+  setSynchronous: 0x01EF589C
+  getSynchronous: 0x01EF58A4
+  setState: 0x01F088BC
+  OnURIRequestRedirectReceived: 0x01F09838
+  sv_connect_to_log_server: 0x01F0C194
+  ScanTags___dupe3: 0x01EF3704
+  scroll___dupe2: 0x01EFA2A4
+  GetMaxLengthUTF8Chars: 0x01EFB5E0
+  GetMaxLengthBytes: 0x01EFB5E8
+  IsMyTag___dupe8: 0x01EF7F70
+  BuildTag___dupe9: 0x01EF7FD0
+  getInstance___dupe10: 0x01EF8050
+  FreeResources___dupe17: 0x01EF8094
+  IsMyTag___dupe22: 0x01F04958
+  BuildTag___dupe23: 0x01F04AE8
+  getInstance___dupe24: 0x01F04B70
+  FreeResources___dupe47: 0x01F04BB4
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -923,3 +1139,792 @@ objects:
       - {object: svo3/RectangleTag, section: .svo_RectangleTag_FreeResources___dupe7, start: 0x01EF620C, end: 0x01EF6228}
       - {object: svo3/RectangleTag, section: .svo_RectangleTag_HandleInput___dupe36, start: 0x01EF6228, end: 0x01EF62AC}
       - {object: svo3/RectangleTag, section: .svo_RectangleTag_Draw___dupe10, start: 0x01EF62AC, end: 0x01EF6390}
+
+  svo3/DownloadBinary:
+    text_start: 0x01F075F4
+    text_end: 0x01F07720
+    slots:
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_DownloadBinary, start: 0x01F075F4, end: 0x01F0760C}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary__DownloadBinary, start: 0x01F0760C, end: 0x01F07640}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetPath, start: 0x01F07640, end: 0x01F07648}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetPath, start: 0x01F07648, end: 0x01F07664}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetDownloadCallback, start: 0x01F07664, end: 0x01F0766C}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetDownloadCallback, start: 0x01F0766C, end: 0x01F07678}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetFormMethodType, start: 0x01F07678, end: 0x01F07680}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetFormMethodType, start: 0x01F07680, end: 0x01F07688}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetWidth, start: 0x01F07688, end: 0x01F07690}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetHeight, start: 0x01F07690, end: 0x01F07698}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetDimensions___dupe2, start: 0x01F07698, end: 0x01F076A4}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetID, start: 0x01F076A4, end: 0x01F076AC}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetID___dupe2, start: 0x01F076AC, end: 0x01F076B4}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetToDestroyOnRequestSend, start: 0x01F076B4, end: 0x01F076C0}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_DestroyOnRequestSend, start: 0x01F076C0, end: 0x01F076C8}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetUserNameMaxLength, start: 0x01F076C8, end: 0x01F076D0}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetUserNameParameter, start: 0x01F076D0, end: 0x01F076F0}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetUserNameParameter, start: 0x01F076F0, end: 0x01F076F8}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_SetAccountIDParameter, start: 0x01F076F8, end: 0x01F07718}
+      - {object: svo3/DownloadBinary, section: .svo_DownloadBinary_GetAccountIDParameter, start: 0x01F07718, end: 0x01F07720}
+  svo3/ParseXML:
+    text_start: 0x01F07D54
+    text_end: 0x01F07D64
+    slots:
+      - {object: svo3/ParseXML, section: .svo_ParseXML_ParseXML, start: 0x01F07D54, end: 0x01F07D64}
+  svo3/ParseSVMLAddObjects:
+    text_start: 0x01F07D64
+    text_end: 0x01F07E5C
+    slots:
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects__ParseXML, start: 0x01F07D64, end: 0x01F07D98}
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects_ParseSVMLAddObjects, start: 0x01F07D98, end: 0x01F07DC8}
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects__ParseSVMLAddObjects, start: 0x01F07DC8, end: 0x01F07E28}
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects_ShouldFreeResources, start: 0x01F07E28, end: 0x01F07E30}
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects_GetCheckString, start: 0x01F07E30, end: 0x01F07E40}
+      - {object: svo3/ParseSVMLAddObjects, section: .svo_ParseSVMLAddObjects_CallFunction, start: 0x01F07E40, end: 0x01F07E5C}
+  svo3/ParseSVMLForDownloads:
+    text_start: 0x01F07E5C
+    text_end: 0x01F07F20
+    slots:
+      - {object: svo3/ParseSVMLForDownloads, section: .svo_ParseSVMLForDownloads_ParseSVMLForDownloads, start: 0x01F07E5C, end: 0x01F07E8C}
+      - {object: svo3/ParseSVMLForDownloads, section: .svo_ParseSVMLForDownloads__ParseSVMLForDownloads, start: 0x01F07E8C, end: 0x01F07EEC}
+      - {object: svo3/ParseSVMLForDownloads, section: .svo_ParseSVMLForDownloads_ShouldFreeResources___dupe2, start: 0x01F07EEC, end: 0x01F07EF4}
+      - {object: svo3/ParseSVMLForDownloads, section: .svo_ParseSVMLForDownloads_GetCheckString___dupe2, start: 0x01F07EF4, end: 0x01F07F04}
+      - {object: svo3/ParseSVMLForDownloads, section: .svo_ParseSVMLForDownloads_CallFunction___dupe2, start: 0x01F07F04, end: 0x01F07F20}
+  svo3/ParseXMLInfo:
+    text_start: 0x01F07F20
+    text_end: 0x01F07FE4
+    slots:
+      - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo_ParseXMLInfo, start: 0x01F07F20, end: 0x01F07F50}
+      - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo__ParseXMLInfo, start: 0x01F07F50, end: 0x01F07FB0}
+      - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo_ShouldFreeResources___dupe3, start: 0x01F07FB0, end: 0x01F07FB8}
+      - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo_GetCheckString___dupe3, start: 0x01F07FB8, end: 0x01F07FC8}
+      - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo_CallFunction___dupe3, start: 0x01F07FC8, end: 0x01F07FE4}
+  svo3/PageRequestListener:
+    text_start: 0x01F0C410
+    text_end: 0x01F31380
+    slots:
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_PageRequestListener, start: 0x01F0C410, end: 0x01F0C470}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener__PageRequestListener, start: 0x01F0C470, end: 0x01F0C4CC}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_operator.delete___dupe14, start: 0x01F0C4CC, end: 0x01F0C4EC}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_Reset___dupe6, start: 0x01F0C4EC, end: 0x01F0C53C}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestStart___dupe2, start: 0x01F0C53C, end: 0x01F0C558}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestChunkReceived___dupe2, start: 0x01F0C558, end: 0x01F0C624}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestIsOkContinueDownload___dupe2, start: 0x01F0C624, end: 0x01F0C668}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestHeaderReceived___dupe2, start: 0x01F0C668, end: 0x01F0C720}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestRedirectReceived___dupe2, start: 0x01F0C720, end: 0x01F0C788}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_OnURIRequestCompletion___dupe2, start: 0x01F0C788, end: 0x01F0C7D4}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetResponse, start: 0x01F0C7D4, end: 0x01F0C834}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetLastStatus, start: 0x01F0C834, end: 0x01F0C83C}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetLastContentType, start: 0x01F0C83C, end: 0x01F0C844}
+      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_func_01F27658, start: 0x01F27658, end: 0x01F31380}
+  svo3/SVFileDownloadQueue:
+    text_start: 0x01F09BBC
+    text_end: 0x01F0A2FC
+    slots:
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_FileDownloadEntry, start: 0x01F09BBC, end: 0x01F09BC8}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_FreeResources___dupe53, start: 0x01F09BC8, end: 0x01F09C2C}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_GetValueStr___dupe2, start: 0x01F09C2C, end: 0x01F09C6C}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_GetNameStr, start: 0x01F09C6C, end: 0x01F09CAC}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_matchesMyLookup___dupe2, start: 0x01F09CAC, end: 0x01F09D00}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_setFileDownloadProps, start: 0x01F09D00, end: 0x01F09DF0}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_allocateMemory, start: 0x01F09DF0, end: 0x01F09E94}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_reset___dupe3, start: 0x01F09E94, end: 0x01F09EFC}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_isEmpty, start: 0x01F09EFC, end: 0x01F09F0C}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_operator.new___dupe14, start: 0x01F09F0C, end: 0x01F09F48}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_FileDownloadQueue, start: 0x01F09F48, end: 0x01F09FB0}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_allocateMemoryForEntries, start: 0x01F09FB0, end: 0x01F09FFC}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_add___dupe2, start: 0x01F09FFC, end: 0x01F0A0AC}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_find___dupe2, start: 0x01F0A0AC, end: 0x01F0A128}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_FreeResources___dupe54, start: 0x01F0A128, end: 0x01F0A16C}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_GetNextEntry, start: 0x01F0A16C, end: 0x01F0A2A0}
+      - {object: svo3/SVFileDownloadQueue, section: .svo_SVFileDownloadQueue_HasEntries, start: 0x01F0A2A0, end: 0x01F0A2FC}
+  svo3/TagUtils:
+    text_start: 0x01EF2DF4
+    text_end: 0x01EF3654
+    slots:
+      - {object: svo3/TagUtils, section: .svo_TagUtils_operator.delete___dupe5, start: 0x01EF2DF4, end: 0x01EF2E24}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_RegisterCommonTagModules, start: 0x01EF2E24, end: 0x01EF308C}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getIntAttrib, start: 0x01EF308C, end: 0x01EF30EC}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getBoolAttrib, start: 0x01EF30EC, end: 0x01EF3164}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getFloatAttrib, start: 0x01EF3164, end: 0x01EF31D0}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getAlignAttrib, start: 0x01EF31D0, end: 0x01EF328C}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getColorAttrib, start: 0x01EF328C, end: 0x01EF3318}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getLinkOptionAttrib, start: 0x01EF3318, end: 0x01EF339C}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getStringAttrib, start: 0x01EF339C, end: 0x01EF33D4}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getTagByName, start: 0x01EF33D4, end: 0x01EF3470}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getChildIksStruct, start: 0x01EF3470, end: 0x01EF3520}
+      - {object: svo3/TagUtils, section: .svo_TagUtils_getChildIksStructList, start: 0x01EF3520, end: 0x01EF3654}
+  svo3/SVBrowser:
+    text_start: 0x01EEE0BC
+    text_end: 0x01EEFEB8
+    slots:
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DefaultInit, start: 0x01EEE0BC, end: 0x01EEE12C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetInstance, start: 0x01EEE12C, end: 0x01EEE13C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetMemoryContext, start: 0x01EEE13C, end: 0x01EEE19C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAltMemoryContext, start: 0x01EEE19C, end: 0x01EEE1FC}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetDrawContext, start: 0x01EEE1FC, end: 0x01EEE27C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAltDrawContext, start: 0x01EEE27C, end: 0x01EEE2DC}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetInputContext, start: 0x01EEE2DC, end: 0x01EEE33C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAltInputContext, start: 0x01EEE33C, end: 0x01EEE39C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAudioContext, start: 0x01EEE39C, end: 0x01EEE3FC}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAltAudioContext, start: 0x01EEE3FC, end: 0x01EEE45C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetSystemContext, start: 0x01EEE45C, end: 0x01EEE4BC}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetAltSystemContext, start: 0x01EEE4BC, end: 0x01EEE51C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SV_IKS_Malloc, start: 0x01EEE51C, end: 0x01EEE558}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SV_IKS_Free, start: 0x01EEE558, end: 0x01EEE588}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SetupTargetInfo, start: 0x01EEE588, end: 0x01EEE654}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_Initialize___dupe4, start: 0x01EEE654, end: 0x01EEEC8C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SetAlternateContexts, start: 0x01EEEC8C, end: 0x01EEED28}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_BrowserIsIdle, start: 0x01EEED28, end: 0x01EEED4C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SetExternalIPAddress, start: 0x01EEED4C, end: 0x01EEEDA0}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetLoginInfo, start: 0x01EEEDA0, end: 0x01EEEDC4}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SetLogout, start: 0x01EEEDC4, end: 0x01EEEDD0}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_ExitOnline, start: 0x01EEEDD0, end: 0x01EEEE20}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_FreeResources, start: 0x01EEEE20, end: 0x01EEEFD0}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_CalculatePersistentDataMd5Sum, start: 0x01EEEFD0, end: 0x01EEF074}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_ReturnFromGame, start: 0x01EEF074, end: 0x01EEF088}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_LoadStatePostGameFromPersistentData___dupe3, start: 0x01EEF088, end: 0x01EEF164}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_IsActive, start: 0x01EEF164, end: 0x01EEF16C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_Activate, start: 0x01EEF16C, end: 0x01EEF178}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DownloadFile, start: 0x01EEF178, end: 0x01EEF25C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DoFrameUpdates, start: 0x01EEF25C, end: 0x01EEF28C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DrawPages, start: 0x01EEF28C, end: 0x01EEF358}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_HandleInputPages, start: 0x01EEF358, end: 0x01EEF3F8}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_HandleUpdatePages, start: 0x01EEF3F8, end: 0x01EEF414}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_Update___dupe109, start: 0x01EEF414, end: 0x01EEF6A8}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_ShowVKB, start: 0x01EEF6A8, end: 0x01EEF7A0}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_InitServerInfo, start: 0x01EEF7A0, end: 0x01EEF7E4}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_InitInitializeParams, start: 0x01EEF7E4, end: 0x01EEF814}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_SignalPluginEvent, start: 0x01EEF814, end: 0x01EEF83C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_InitalizePluginManagerAndPlugins, start: 0x01EEF83C, end: 0x01EEF8A4}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DeInitializePluginManagerAndPluggins, start: 0x01EEF8A4, end: 0x01EEF8F4}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_InitURISchemas, start: 0x01EEF8F4, end: 0x01EEF9B4}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_DeInitURISchemas, start: 0x01EEF9B4, end: 0x01EEFA5C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_RemovePluginMgrMessages, start: 0x01EEFA5C, end: 0x01EEFA80}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_URIStoreAdd, start: 0x01EEFA80, end: 0x01EEFB08}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_URIStoreFind, start: 0x01EEFB08, end: 0x01EEFB78}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_FileDownloadQueueAdd, start: 0x01EEFB78, end: 0x01EEFC44}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_GetPageName, start: 0x01EEFC44, end: 0x01EEFD40}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_UpdateDownloadManager, start: 0x01EEFD40, end: 0x01EEFE08}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_reset, start: 0x01EEFE08, end: 0x01EEFE4C}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_RTCommInit, start: 0x01EEFE4C, end: 0x01EEFE94}
+      - {object: svo3/SVBrowser, section: .svo_SVBrowser_RTCommDestroy, start: 0x01EEFE94, end: 0x01EEFEB8}
+  svo3/buttonTag:
+    text_start: 0x01EF5914
+    text_end: 0x01EF5F88
+    slots:
+      - {object: svo3/buttonTag, section: .svo_buttonTag_operator.delete___dupe9, start: 0x01EF5914, end: 0x01EF5938}
+      - {object: svo3/buttonTag, section: .svo_buttonTag_DefaultInit___dupe4, start: 0x01EF5938, end: 0x01EF59AC}
+      - {object: svo3/buttonTag, section: .svo_buttonTag__ButtonTag, start: 0x01EF59AC, end: 0x01EF5A14}
+      - {object: svo3/buttonTag, section: .svo_buttonTag_ButtonTag, start: 0x01EF5A14, end: 0x01EF5C4C}
+      - {object: svo3/buttonTag, section: .svo_buttonTag_FreeResources___dupe5, start: 0x01EF5C4C, end: 0x01EF5C54}
+      - {object: svo3/buttonTag, section: .svo_buttonTag_HandleInput___dupe35, start: 0x01EF5C54, end: 0x01EF5E48}
+      - {object: svo3/buttonTag, section: .svo_buttonTag_Draw___dupe9, start: 0x01EF5E48, end: 0x01EF5F88}
+  svo3/CheckboxInputTag:
+    text_start: 0x01EFDE94
+    text_end: 0x01EFE5BC
+    slots:
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_DefaultInit___dupe14, start: 0x01EFDE94, end: 0x01EFDF0C}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag__CheckboxInputTag, start: 0x01EFDF0C, end: 0x01EFDF74}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_CheckboxInputTag, start: 0x01EFDF74, end: 0x01EFE118}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_FreeResources___dupe28, start: 0x01EFE118, end: 0x01EFE120}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_HandleInput___dupe46, start: 0x01EFE120, end: 0x01EFE2A4}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_Draw___dupe20, start: 0x01EFE2A4, end: 0x01EFE388}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_FindParentForm___dupe4, start: 0x01EFE388, end: 0x01EFE4DC}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_RegisterWithForm___dupe4, start: 0x01EFE4DC, end: 0x01EFE528}
+      - {object: svo3/CheckboxInputTag, section: .svo_CheckboxInputTag_ToggleChecked, start: 0x01EFE528, end: 0x01EFE5BC}
+  svo3/CHttp:
+    text_start: 0x01EE9D40
+    text_end: 0x01EEC4E8
+    slots:
+      - {object: svo3/CHttp, section: .svo_CHttp_operator.new___dupe4, start: 0x01EE9D40, end: 0x01EE9D70}
+      - {object: svo3/CHttp, section: .svo_CHttp_operator.delete___dupe3, start: 0x01EE9D70, end: 0x01EE9D90}
+      - {object: svo3/CHttp, section: .svo_CHttp_Http, start: 0x01EE9D90, end: 0x01EE9E54}
+      - {object: svo3/CHttp, section: .svo_CHttp__Http, start: 0x01EE9E54, end: 0x01EE9F28}
+      - {object: svo3/CHttp, section: .svo_CHttp_DoRegistrations2, start: 0x01EE9F28, end: 0x01EE9F5C}
+      - {object: svo3/CHttp, section: .svo_CHttp_InitRequest, start: 0x01EE9F5C, end: 0x01EEA034}
+      - {object: svo3/CHttp, section: .svo_CHttp_freeResources___dupe2, start: 0x01EEA034, end: 0x01EEA104}
+      - {object: svo3/CHttp, section: .svo_CHttp_doRequest___dupe2, start: 0x01EEA104, end: 0x01EEA354}
+      - {object: svo3/CHttp, section: .svo_CHttp_formRequestText, start: 0x01EEA354, end: 0x01EEA678}
+      - {object: svo3/CHttp, section: .svo_CHttp_md5request, start: 0x01EEA678, end: 0x01EEA774}
+      - {object: svo3/CHttp, section: .svo_CHttp_md5requestLogin, start: 0x01EEA774, end: 0x01EEA8E8}
+      - {object: svo3/CHttp, section: .svo_CHttp_download___dupe2, start: 0x01EEA8E8, end: 0x01EEA974}
+      - {object: svo3/CHttp, section: .svo_CHttp_IsBusy, start: 0x01EEA974, end: 0x01EEA9A8}
+      - {object: svo3/CHttp, section: .svo_CHttp_downloadBody, start: 0x01EEA9A8, end: 0x01EEAAA4}
+      - {object: svo3/CHttp, section: .svo_CHttp_OnBodyChunkReceived, start: 0x01EEAAA4, end: 0x01EEAB08}
+      - {object: svo3/CHttp, section: .svo_CHttp_downloadHeaders, start: 0x01EEAB08, end: 0x01EEACC8}
+      - {object: svo3/CHttp, section: .svo_CHttp_parseHeaderBuf, start: 0x01EEACC8, end: 0x01EEAD48}
+      - {object: svo3/CHttp, section: .svo_CHttp_OnHeaderParsed, start: 0x01EEAD48, end: 0x01EEAF24}
+      - {object: svo3/CHttp, section: .svo_CHttp_handleRedirect, start: 0x01EEAF24, end: 0x01EEB110}
+      - {object: svo3/CHttp, section: .svo_CHttp_parseHttpStatusLine, start: 0x01EEB110, end: 0x01EEB1B0}
+      - {object: svo3/CHttp, section: .svo_CHttp_parseHttpHeaderLine, start: 0x01EEB1B0, end: 0x01EEB6E0}
+      - {object: svo3/CHttp, section: .svo_CHttp_LoadStatePostGameFromPersistentData___dupe2, start: 0x01EEB6E0, end: 0x01EEB804}
+      - {object: svo3/CHttp, section: .svo_CHttp_SaveStatePreGameToPersistentData, start: 0x01EEB804, end: 0x01EEB924}
+      - {object: svo3/CHttp, section: .svo_CHttp_closeSocket, start: 0x01EEB924, end: 0x01EEB968}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpsDestroy___dupe2, start: 0x01EEB968, end: 0x01EEB970}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpsCleanup___dupe2, start: 0x01EEB970, end: 0x01EEB978}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpsPrepareRequestForServerHello, start: 0x01EEB978, end: 0x01EEB988}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpSendRequest___dupe2, start: 0x01EEB988, end: 0x01EEB994}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpsDownload___dupe2, start: 0x01EEB994, end: 0x01EEB9AC}
+      - {object: svo3/CHttp, section: .svo_CHttp_PrintRequestHeader___dupe2, start: 0x01EEB9AC, end: 0x01EEB9B4}
+      - {object: svo3/CHttp, section: .svo_CHttp_PrintRequestFooter___dupe2, start: 0x01EEB9B4, end: 0x01EEB9BC}
+      - {object: svo3/CHttp, section: .svo_CHttp_PrintHeader___dupe2, start: 0x01EEB9BC, end: 0x01EEB9C4}
+      - {object: svo3/CHttp, section: .svo_CHttp_PrintFooter___dupe2, start: 0x01EEB9C4, end: 0x01EEB9CC}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpRecvOnEnter, start: 0x01EEB9CC, end: 0x01EEB9E8}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpRecvOnUpdate, start: 0x01EEB9E8, end: 0x01EEBB48}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpSendOnEnter, start: 0x01EEBB48, end: 0x01EEBC38}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpSendOnUpdate, start: 0x01EEBC38, end: 0x01EEBC54}
+      - {object: svo3/CHttp, section: .svo_CHttp_SetStatePostRequest, start: 0x01EEBC54, end: 0x01EEBC70}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpConnectWaitOnEnter, start: 0x01EEBC70, end: 0x01EEBD30}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpConnectWaitOnUpdate, start: 0x01EEBD30, end: 0x01EEBDA0}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpIdleOnEnter, start: 0x01EEBDA0, end: 0x01EEBDBC}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpIdleOnUpdate, start: 0x01EEBDBC, end: 0x01EEBDC4}
+      - {object: svo3/CHttp, section: .svo_CHttp_IsSecure___dupe2, start: 0x01EEBDC4, end: 0x01EEBDCC}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpCleanup___dupe2, start: 0x01EEBDCC, end: 0x01EEBDD4}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpGetHostByNameOnEnter, start: 0x01EEBDD4, end: 0x01EEBE54}
+      - {object: svo3/CHttp, section: .svo_CHttp_HttpGetHostByNameOnUpdate, start: 0x01EEBE54, end: 0x01EEBEA4}
+      - {object: svo3/CHttp, section: .svo_CHttp_SetHttpState, start: 0x01EEBEA4, end: 0x01EEC260}
+      - {object: svo3/CHttp, section: .svo_CHttp_GetHttpState, start: 0x01EEC260, end: 0x01EEC268}
+      - {object: svo3/CHttp, section: .svo_CHttp_States___dupe2, start: 0x01EEC268, end: 0x01EEC484}
+      - {object: svo3/CHttp, section: .svo_CHttp_setSocketType, start: 0x01EEC484, end: 0x01EEC498}
+      - {object: svo3/CHttp, section: .svo_CHttp_getSocketType, start: 0x01EEC498, end: 0x01EEC4E8}
+  svo3/HttpSecure:
+    text_start: 0x01EE5000
+    text_end: 0x01EE5B64
+    slots:
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HTTPS_Malloc, start: 0x01EE5000, end: 0x01EE503C}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HTTPS_Free, start: 0x01EE503C, end: 0x01EE506C}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_operator.new___dupe2, start: 0x01EE506C, end: 0x01EE50D4}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_operator.delete, start: 0x01EE50D4, end: 0x01EE5104}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpSecure, start: 0x01EE5104, end: 0x01EE51CC}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure__HttpSecure, start: 0x01EE51CC, end: 0x01EE5234}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_DoRegistrations, start: 0x01EE5234, end: 0x01EE5268}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsCallEngine, start: 0x01EE5268, end: 0x01EE52E8}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsDownloadHello, start: 0x01EE52E8, end: 0x01EE5390}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsKeyExchange, start: 0x01EE5390, end: 0x01EE5420}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsDestroy, start: 0x01EE5420, end: 0x01EE5428}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsCleanup, start: 0x01EE5428, end: 0x01EE5430}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpSendRequest, start: 0x01EE5430, end: 0x01EE54BC}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpsDownload, start: 0x01EE54BC, end: 0x01EE5574}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_PrintRequestHeader, start: 0x01EE5574, end: 0x01EE557C}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_PrintRequestFooter, start: 0x01EE557C, end: 0x01EE5584}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_PrintHeader, start: 0x01EE5584, end: 0x01EE558C}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_PrintFooter, start: 0x01EE558C, end: 0x01EE5594}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpSecureConnectingOnEnter, start: 0x01EE5594, end: 0x01EE5660}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpSecureConnectingOnUpdate1, start: 0x01EE5660, end: 0x01EE57E4}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpSecureConnectingOnUpdate2, start: 0x01EE57E4, end: 0x01EE5928}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_IsSecure, start: 0x01EE5928, end: 0x01EE5930}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_HttpCleanup, start: 0x01EE5930, end: 0x01EE5978}
+      - {object: svo3/HttpSecure, section: .svo_HttpSecure_States, start: 0x01EE5978, end: 0x01EE5B64}
+  svo3/SetVariableTag:
+    text_start: 0x01EF64F0
+    text_end: 0x01EF69C8
+    slots:
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_DefaultInit___dupe6, start: 0x01EF64F0, end: 0x01EF652C}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag__SetVariableTag, start: 0x01EF652C, end: 0x01EF6594}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_SetVariableTag, start: 0x01EF6594, end: 0x01EF663C}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_FreeResources___dupe9, start: 0x01EF663C, end: 0x01EF6644}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_HandleInput___dupe37, start: 0x01EF6644, end: 0x01EF66E4}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_Draw___dupe11, start: 0x01EF66E4, end: 0x01EF6718}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_IsSelectable___dupe7, start: 0x01EF6718, end: 0x01EF6720}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_handleDownloadThrobber, start: 0x01EF6720, end: 0x01EF681C}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_handleTTYDebugServerSetup, start: 0x01EF681C, end: 0x01EF68E8}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_handleHTTPSBuffers, start: 0x01EF68E8, end: 0x01EF697C}
+      - {object: svo3/SetVariableTag, section: .svo_SetVariableTag_handleHTTPSendBuffer, start: 0x01EF697C, end: 0x01EF69C8}
+  svo3/TextTag:
+    text_start: 0x01EF262C
+    text_end: 0x01EF2B3C
+    slots:
+      - {object: svo3/TextTag, section: .svo_TextTag_DefaultInit___dupe2, start: 0x01EF262C, end: 0x01EF2698}
+      - {object: svo3/TextTag, section: .svo_TextTag__TextTag, start: 0x01EF2698, end: 0x01EF2700}
+      - {object: svo3/TextTag, section: .svo_TextTag_TextTag, start: 0x01EF2700, end: 0x01EF28A4}
+      - {object: svo3/TextTag, section: .svo_TextTag_FreeResources___dupe2, start: 0x01EF28A4, end: 0x01EF28AC}
+      - {object: svo3/TextTag, section: .svo_TextTag_HandleInput___dupe34, start: 0x01EF28AC, end: 0x01EF2A3C}
+      - {object: svo3/TextTag, section: .svo_TextTag_Draw___dupe8, start: 0x01EF2A3C, end: 0x01EF2B20}
+      - {object: svo3/TextTag, section: .svo_TextTag_IsSelectable___dupe6, start: 0x01EF2B20, end: 0x01EF2B3C}
+  svo3/TickerTag:
+    text_start: 0x01F0BBF8
+    text_end: 0x01F0BF70
+    slots:
+      - {object: svo3/TickerTag, section: .svo_TickerTag_DefaultInit___dupe24, start: 0x01F0BBF8, end: 0x01F0BC60}
+      - {object: svo3/TickerTag, section: .svo_TickerTag__TickerTag, start: 0x01F0BC60, end: 0x01F0BCC8}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_TickerTag, start: 0x01F0BCC8, end: 0x01F0BDCC}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_FreeResources___dupe59, start: 0x01F0BDCC, end: 0x01F0BDD4}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_HandleInput___dupe55, start: 0x01F0BDD4, end: 0x01F0BDDC}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_Draw___dupe27, start: 0x01F0BDDC, end: 0x01F0BED8}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_IsSelectable___dupe17, start: 0x01F0BED8, end: 0x01F0BEE0}
+      - {object: svo3/TickerTag, section: .svo_TickerTag_getTickerTypeAttrib, start: 0x01F0BEE0, end: 0x01F0BF70}
+  svo3/CDrawContextBase:
+    text_start: 0x01EEC4E8
+    text_end: 0x01EED4AC
+    slots:
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_TrimToFitDisplaySize, start: 0x01EEC4E8, end: 0x01EEC50C}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawInputBox, start: 0x01EEC50C, end: 0x01EEC544}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawButton, start: 0x01EEC544, end: 0x01EEC57C}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawSelect, start: 0x01EEC57C, end: 0x01EEC638}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_drawTicker, start: 0x01EEC638, end: 0x01EEC794}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawGridBorder, start: 0x01EEC794, end: 0x01EEC7D4}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawGridCell, start: 0x01EEC7D4, end: 0x01EEC818}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawGridScrollbars, start: 0x01EEC818, end: 0x01EECB30}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawGridHeader, start: 0x01EECB30, end: 0x01EECC40}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawPopupBackground, start: 0x01EECC40, end: 0x01EECC88}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawGenericListboxFrame, start: 0x01EECC88, end: 0x01EECCC4}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawVKB, start: 0x01EECCC4, end: 0x01EECCCC}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_RenderAssert, start: 0x01EECCCC, end: 0x01EECCD4}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_TransitionPageOff, start: 0x01EECCD4, end: 0x01EECCDC}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_TransitionPageOn, start: 0x01EECCDC, end: 0x01EECCE4}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_TransitionPopupPageOff, start: 0x01EECCE4, end: 0x01EECCEC}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_TransitionPopupPageOn, start: 0x01EECCEC, end: 0x01EECCF4}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawTextArea, start: 0x01EECCF4, end: 0x01EECD38}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawDownloadThrobber, start: 0x01EECD38, end: 0x01EECF0C}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawImage, start: 0x01EECF0C, end: 0x01EED0B8}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawStaticImage, start: 0x01EED0B8, end: 0x01EED26C}
+      - {object: svo3/CDrawContextBase, section: .svo_CDrawContextBase_DrawListBox, start: 0x01EED26C, end: 0x01EED4AC}
+  svo3/FormTag:
+    text_start: 0x01EFE768
+    text_end: 0x01EFF8A8
+    slots:
+      - {object: svo3/FormTag, section: .svo_FormTag_DefaultInit___dupe15, start: 0x01EFE768, end: 0x01EFE878}
+      - {object: svo3/FormTag, section: .svo_FormTag_FormTag, start: 0x01EFE878, end: 0x01EFEA2C}
+      - {object: svo3/FormTag, section: .svo_FormTag_FreeResources___dupe30, start: 0x01EFEA2C, end: 0x01EFEA48}
+      - {object: svo3/FormTag, section: .svo_FormTag_HandleInput___dupe47, start: 0x01EFEA48, end: 0x01EFEACC}
+      - {object: svo3/FormTag, section: .svo_FormTag_Draw___dupe21, start: 0x01EFEACC, end: 0x01EFEB28}
+      - {object: svo3/FormTag, section: .svo_FormTag_IsSelectable___dupe13, start: 0x01EFEB28, end: 0x01EFEB30}
+      - {object: svo3/FormTag, section: .svo_FormTag_InitRadioGroups, start: 0x01EFEB30, end: 0x01EFEBA8}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddRadioElement, start: 0x01EFEBA8, end: 0x01EFED44}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddCheckboxElement, start: 0x01EFED44, end: 0x01EFEDC8}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddTextElement, start: 0x01EFEDC8, end: 0x01EFEE4C}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddPasswordElement, start: 0x01EFEE4C, end: 0x01EFEED0}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddSubmitElement, start: 0x01EFEED0, end: 0x01EFEF40}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddHiddenElement, start: 0x01EFEF40, end: 0x01EFEFC4}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddSelectElement, start: 0x01EFEFC4, end: 0x01EFF048}
+      - {object: svo3/FormTag, section: .svo_FormTag_AddTextAreaElement, start: 0x01EFF048, end: 0x01EFF0CC}
+      - {object: svo3/FormTag, section: .svo_FormTag_CheckRadioElement, start: 0x01EFF0CC, end: 0x01EFF24C}
+      - {object: svo3/FormTag, section: .svo_FormTag_CheckCheckboxElement, start: 0x01EFF24C, end: 0x01EFF2DC}
+      - {object: svo3/FormTag, section: .svo_FormTag_DataCanBeEncryped, start: 0x01EFF2DC, end: 0x01EFF30C}
+      - {object: svo3/FormTag, section: .svo_FormTag_Submit, start: 0x01EFF30C, end: 0x01EFF8A8}
+  svo3/HiddenInputTag:
+    text_start: 0x01F0381C
+    text_end: 0x01F03B5C
+    slots:
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_DefaultInit___dupe19, start: 0x01F0381C, end: 0x01F03864}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_HiddenInputTag, start: 0x01F03864, end: 0x01F03924}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_FreeResources___dupe40, start: 0x01F03924, end: 0x01F03940}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_HandleInput___dupe51, start: 0x01F03940, end: 0x01F03948}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_IsSelectable___dupe16, start: 0x01F03948, end: 0x01F03950}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_SetValue, start: 0x01F03950, end: 0x01F039BC}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_FindParentForm___dupe6, start: 0x01F039BC, end: 0x01F03B10}
+      - {object: svo3/HiddenInputTag, section: .svo_HiddenInputTag_RegisterWithForm___dupe6, start: 0x01F03B10, end: 0x01F03B5C}
+  svo3/PopupTag:
+    text_start: 0x01F035B0
+    text_end: 0x01F036BC
+    slots:
+      - {object: svo3/PopupTag, section: .svo_PopupTag_PopupTag, start: 0x01F035B0, end: 0x01F03608}
+      - {object: svo3/PopupTag, section: .svo_PopupTag_FreeResources___dupe38, start: 0x01F03608, end: 0x01F03624}
+      - {object: svo3/PopupTag, section: .svo_PopupTag_Draw___dupe24, start: 0x01F03624, end: 0x01F036B4}
+      - {object: svo3/PopupTag, section: .svo_PopupTag_IsSelectable___dupe15, start: 0x01F036B4, end: 0x01F036BC}
+  svo3/QuickLinkTag:
+    text_start: 0x01EF6E1C
+    text_end: 0x01EF71E8
+    slots:
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_DefaultInit___dupe8, start: 0x01EF6E1C, end: 0x01EF6E5C}
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_QuickLinkTag, start: 0x01EF6E5C, end: 0x01EF6EE8}
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_FreeResources___dupe13, start: 0x01EF6EE8, end: 0x01EF6F04}
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_HandleInput___dupe39, start: 0x01EF6F04, end: 0x01EF7140}
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_getPadLinkButtonAttrib, start: 0x01EF7140, end: 0x01EF71E0}
+      - {object: svo3/QuickLinkTag, section: .svo_QuickLinkTag_IsSelectable___dupe9, start: 0x01EF71E0, end: 0x01EF71E8}
+  svo3/SubmitInputTag:
+    text_start: 0x01EFFA10
+    text_end: 0x01F000C0
+    slots:
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_DefaultInit___dupe16, start: 0x01EFFA10, end: 0x01EFFAC0}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_SubmitInputTag, start: 0x01EFFAC0, end: 0x01EFFC44}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_FreeResources___dupe32, start: 0x01EFFC44, end: 0x01EFFC60}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_HandleInput___dupe48, start: 0x01EFFC60, end: 0x01EFFE08}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_Draw___dupe22, start: 0x01EFFE08, end: 0x01EFFF38}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_IsSelectable___dupe14, start: 0x01EFFF38, end: 0x01EFFF40}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_FindParentForm___dupe5, start: 0x01EFFF40, end: 0x01F00074}
+      - {object: svo3/SubmitInputTag, section: .svo_SubmitInputTag_RegisterWithForm___dupe5, start: 0x01F00074, end: 0x01F000C0}
+  svo3/DataTag:
+    text_start: 0x01F045E8
+    text_end: 0x01F04958
+    slots:
+      - {object: svo3/DataTag, section: .svo_DataTag_DefaultInit___dupe21, start: 0x01F045E8, end: 0x01F04624}
+      - {object: svo3/DataTag, section: .svo_DataTag__DataTag, start: 0x01F04624, end: 0x01F04658}
+      - {object: svo3/DataTag, section: .svo_DataTag_DataTag, start: 0x01F04658, end: 0x01F0471C}
+      - {object: svo3/DataTag, section: .svo_DataTag_ParseURITag, start: 0x01F0471C, end: 0x01F047A0}
+      - {object: svo3/DataTag, section: .svo_DataTag_ParseFileTag, start: 0x01F047A0, end: 0x01F048A8}
+      - {object: svo3/DataTag, section: .svo_DataTag_FreeResources___dupe46, start: 0x01F048A8, end: 0x01F048C4}
+      - {object: svo3/DataTag, section: .svo_DataTag_getDataTypeAttrib, start: 0x01F048C4, end: 0x01F04950}
+      - {object: svo3/DataTag, section: .svo_DataTag_okToNavigate___dupe3, start: 0x01F04950, end: 0x01F04958}
+  svo3/ImageTag:
+    text_start: 0x01EF83AC
+    text_end: 0x01EF8B54
+    slots:
+      - {object: svo3/ImageTag, section: .svo_ImageTag_DefaultInit___dupe10, start: 0x01EF83AC, end: 0x01EF8434}
+      - {object: svo3/ImageTag, section: .svo_ImageTag__ImageTag, start: 0x01EF8434, end: 0x01EF84F4}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_ImageTag, start: 0x01EF84F4, end: 0x01EF86B4}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_FreeResources___dupe18, start: 0x01EF86B4, end: 0x01EF86D0}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_HandleInput___dupe41, start: 0x01EF86D0, end: 0x01EF88C0}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_Draw___dupe14, start: 0x01EF88C0, end: 0x01EF89B8}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_IsSelectable___dupe11, start: 0x01EF89B8, end: 0x01EF89D8}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_getImageTypeAttrib, start: 0x01EF89D8, end: 0x01EF8A64}
+      - {object: svo3/ImageTag, section: .svo_ImageTag_InitImage___dupe2, start: 0x01EF8A64, end: 0x01EF8B54}
+  svo3/PageIDTag:
+    text_start: 0x01F066D4
+    text_end: 0x01F0682C
+    slots:
+      - {object: svo3/PageIDTag, section: .svo_PageIDTag_PageIDTag, start: 0x01F066D4, end: 0x01F067DC}
+      - {object: svo3/PageIDTag, section: .svo_PageIDTag__PageIDTag, start: 0x01F067DC, end: 0x01F06810}
+      - {object: svo3/PageIDTag, section: .svo_PageIDTag_FreeResources___dupe51, start: 0x01F06810, end: 0x01F0682C}
+  svo3/RadioInputTag:
+    text_start: 0x01EFD674
+    text_end: 0x01EFDCE8
+    slots:
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_DefaultInit___dupe13, start: 0x01EFD674, end: 0x01EFD6F0}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_RadioInputTag, start: 0x01EFD6F0, end: 0x01EFD8B0}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_FreeResources___dupe26, start: 0x01EFD8B0, end: 0x01EFD8CC}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_HandleInput___dupe45, start: 0x01EFD8CC, end: 0x01EFDA50}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_Draw___dupe19, start: 0x01EFDA50, end: 0x01EFDB34}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_FindParentForm___dupe3, start: 0x01EFDB34, end: 0x01EFDC88}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_RegisterWithForm___dupe3, start: 0x01EFDC88, end: 0x01EFDCD4}
+      - {object: svo3/RadioInputTag, section: .svo_RadioInputTag_SetChecked, start: 0x01EFDCD4, end: 0x01EFDCE8}
+  svo3/SelectTag:
+    text_start: 0x01EF7348
+    text_end: 0x01EF7E00
+    slots:
+      - {object: svo3/SelectTag, section: .svo_SelectTag__SelectTag, start: 0x01EF7348, end: 0x01EF73F0}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_DefaultInit___dupe9, start: 0x01EF73F0, end: 0x01EF748C}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_SelectTag, start: 0x01EF748C, end: 0x01EF7688}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_FreeResources___dupe15, start: 0x01EF7688, end: 0x01EF76A4}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_HandleInput___dupe40, start: 0x01EF76A4, end: 0x01EF7830}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_Draw___dupe13, start: 0x01EF7830, end: 0x01EF7930}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_IsSelectable___dupe10, start: 0x01EF7930, end: 0x01EF794C}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_populateSelectOptions, start: 0x01EF794C, end: 0x01EF7B14}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_changeCurOptionToNextLetterInAlphabet, start: 0x01EF7B14, end: 0x01EF7C5C}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_getCurrOptionStrPtr, start: 0x01EF7C5C, end: 0x01EF7CA8}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_advanceCurrOption, start: 0x01EF7CA8, end: 0x01EF7CD0}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_FindParentForm, start: 0x01EF7CD0, end: 0x01EF7DAC}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_RegisterWithForm, start: 0x01EF7DAC, end: 0x01EF7DE8}
+      - {object: svo3/SelectTag, section: .svo_SelectTag_GetValue, start: 0x01EF7DE8, end: 0x01EF7E00}
+  svo3/StaticImageTag:
+    text_start: 0x01EF8CB4
+    text_end: 0x01EF9260
+    slots:
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_DefaultInit___dupe11, start: 0x01EF8CB4, end: 0x01EF8D28}
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_StaticImageTag, start: 0x01EF8D28, end: 0x01EF8F30}
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_FreeResources___dupe20, start: 0x01EF8F30, end: 0x01EF8F4C}
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_HandleInput___dupe42, start: 0x01EF8F4C, end: 0x01EF913C}
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_Draw___dupe15, start: 0x01EF913C, end: 0x01EF9240}
+      - {object: svo3/StaticImageTag, section: .svo_StaticImageTag_IsSelectable___dupe12, start: 0x01EF9240, end: 0x01EF9260}
+  svo3/TextInputTag:
+    text_start: 0x01EFB760
+    text_end: 0x01EFCBAC
+    slots:
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_defaultInit, start: 0x01EFB760, end: 0x01EFB828}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_TextInputTag, start: 0x01EFB828, end: 0x01EFB8A8}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_InitialiseFromXml, start: 0x01EFB8A8, end: 0x01EFBBAC}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_FreeResources___dupe23, start: 0x01EFBBAC, end: 0x01EFBBC8}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_HandleInput___dupe44, start: 0x01EFBBC8, end: 0x01EFBDB0}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_Draw___dupe17, start: 0x01EFBDB0, end: 0x01EFBDCC}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_DrawImpl, start: 0x01EFBDCC, end: 0x01EFBFB4}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_resetTextInput, start: 0x01EFBFB4, end: 0x01EFC000}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_handleSpecialKeys___dupe2, start: 0x01EFC000, end: 0x01EFC2CC}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_getSubstringPixelWidth, start: 0x01EFC2CC, end: 0x01EFC2F0}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_getSubstringPixelWidthImpl, start: 0x01EFC2F0, end: 0x01EFC3A4}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_drawCursor, start: 0x01EFC3A4, end: 0x01EFC4E8}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_SetText___dupe4, start: 0x01EFC4E8, end: 0x01EFC550}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_GetText___dupe2, start: 0x01EFC550, end: 0x01EFC598}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_setText, start: 0x01EFC598, end: 0x01EFC654}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_handleKeyboardInput___dupe2, start: 0x01EFC654, end: 0x01EFC7B4}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_DumpSubstring, start: 0x01EFC7B4, end: 0x01EFC814}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_scrollTextRightToFillWindow, start: 0x01EFC814, end: 0x01EFC994}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_scrollTextLeftToFillWindow, start: 0x01EFC994, end: 0x01EFCA14}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_findParentForm, start: 0x01EFCA14, end: 0x01EFCB48}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_registerWithForm, start: 0x01EFCB48, end: 0x01EFCB84}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_GetEditPosition___dupe2, start: 0x01EFCB84, end: 0x01EFCB9C}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_GetMaxLengthUTF8Chars___dupe2, start: 0x01EFCB9C, end: 0x01EFCBA4}
+      - {object: svo3/TextInputTag, section: .svo_TextInputTag_GetMaxLengthBytes___dupe2, start: 0x01EFCBA4, end: 0x01EFCBAC}
+  svo3/CPage:
+    text_start: 0x01EE5B64
+    text_end: 0x01EE9D40
+    slots:
+      - {object: svo3/CPage, section: .svo_CPage_operator.new___dupe3, start: 0x01EE5B64, end: 0x01EE5BA0}
+      - {object: svo3/CPage, section: .svo_CPage_operator.delete___dupe2, start: 0x01EE5BA0, end: 0x01EE5BD0}
+      - {object: svo3/CPage, section: .svo_CPage__CPage, start: 0x01EE5BD0, end: 0x01EE5CF0}
+      - {object: svo3/CPage, section: .svo_CPage_CPage, start: 0x01EE5CF0, end: 0x01EE5FB8}
+      - {object: svo3/CPage, section: .svo_CPage_PushPostTransitionArray, start: 0x01EE5FB8, end: 0x01EE60F8}
+      - {object: svo3/CPage, section: .svo_CPage_PopInTransitArray, start: 0x01EE60F8, end: 0x01EE6254}
+      - {object: svo3/CPage, section: .svo_CPage_DestroyPreTransitionArray, start: 0x01EE6254, end: 0x01EE62AC}
+      - {object: svo3/CPage, section: .svo_CPage_DestroyPostTransitionArray, start: 0x01EE62AC, end: 0x01EE6304}
+      - {object: svo3/CPage, section: .svo_CPage_DestroyInTransitionArray, start: 0x01EE6304, end: 0x01EE635C}
+      - {object: svo3/CPage, section: .svo_CPage_download, start: 0x01EE635C, end: 0x01EE66B0}
+      - {object: svo3/CPage, section: .svo_CPage_freeResources, start: 0x01EE66B0, end: 0x01EE676C}
+      - {object: svo3/CPage, section: .svo_CPage_shutdown, start: 0x01EE676C, end: 0x01EE67DC}
+      - {object: svo3/CPage, section: .svo_CPage_resolveRelativePath, start: 0x01EE67DC, end: 0x01EE68FC}
+      - {object: svo3/CPage, section: .svo_CPage_followLink, start: 0x01EE68FC, end: 0x01EE6AF8}
+      - {object: svo3/CPage, section: .svo_CPage_addToHistory, start: 0x01EE6AF8, end: 0x01EE6B4C}
+      - {object: svo3/CPage, section: .svo_CPage_getTopOfHistory, start: 0x01EE6B4C, end: 0x01EE6B64}
+      - {object: svo3/CPage, section: .svo_CPage_doPost, start: 0x01EE6B64, end: 0x01EE6B80}
+      - {object: svo3/CPage, section: .svo_CPage_doRequest, start: 0x01EE6B80, end: 0x01EE6EE0}
+      - {object: svo3/CPage, section: .svo_CPage_parseTagsCB, start: 0x01EE6EE0, end: 0x01EE6F78}
+      - {object: svo3/CPage, section: .svo_CPage_scanForDownloadablesCB, start: 0x01EE6F78, end: 0x01EE7010}
+      - {object: svo3/CPage, section: .svo_CPage_scanXMLCB, start: 0x01EE7010, end: 0x01EE7098}
+      - {object: svo3/CPage, section: .svo_CPage_SVMLparseCB, start: 0x01EE7098, end: 0x01EE7260}
+      - {object: svo3/CPage, section: .svo_CPage_XMLparseCB, start: 0x01EE7260, end: 0x01EE73DC}
+      - {object: svo3/CPage, section: .svo_CPage_parseCBHelper, start: 0x01EE73DC, end: 0x01EE74F0}
+      - {object: svo3/CPage, section: .svo_CPage_handleDefaultSelection, start: 0x01EE74F0, end: 0x01EE7620}
+      - {object: svo3/CPage, section: .svo_CPage_frameUpdate, start: 0x01EE7620, end: 0x01EE7860}
+      - {object: svo3/CPage, section: .svo_CPage_draw, start: 0x01EE7860, end: 0x01EE7904}
+      - {object: svo3/CPage, section: .svo_CPage_substituteErrorPage, start: 0x01EE7904, end: 0x01EE7A2C}
+      - {object: svo3/CPage, section: .svo_CPage_getIndexOfNextAvailEntryInTagList, start: 0x01EE7A2C, end: 0x01EE7A88}
+      - {object: svo3/CPage, section: .svo_CPage_addObject, start: 0x01EE7A88, end: 0x01EE7B78}
+      - {object: svo3/CPage, section: .svo_CPage_okToNavigate___dupe2, start: 0x01EE7B78, end: 0x01EE7B9C}
+      - {object: svo3/CPage, section: .svo_CPage_handleUpdate, start: 0x01EE7B9C, end: 0x01EE7C34}
+      - {object: svo3/CPage, section: .svo_CPage_handleInput, start: 0x01EE7C34, end: 0x01EE7E60}
+      - {object: svo3/CPage, section: .svo_CPage_setPageContextData, start: 0x01EE7E60, end: 0x01EE7EEC}
+      - {object: svo3/CPage, section: .svo_CPage_LoadStatePostGameFromPersistentData, start: 0x01EE7EEC, end: 0x01EE7FDC}
+      - {object: svo3/CPage, section: .svo_CPage_handleTextEntryDefaultInput, start: 0x01EE7FDC, end: 0x01EE8010}
+      - {object: svo3/CPage, section: .svo_CPage_handleTextScrollDefaultInput, start: 0x01EE8010, end: 0x01EE8044}
+      - {object: svo3/CPage, section: .svo_CPage_SetDefaultTextScrollTag, start: 0x01EE8044, end: 0x01EE8090}
+      - {object: svo3/CPage, section: .svo_CPage_pathIsFullyQualified, start: 0x01EE8090, end: 0x01EE8160}
+      - {object: svo3/CPage, section: .svo_CPage_pathIsStatic, start: 0x01EE8160, end: 0x01EE8220}
+      - {object: svo3/CPage, section: .svo_CPage_adjustPathBinaryDownload, start: 0x01EE8220, end: 0x01EE83D8}
+      - {object: svo3/CPage, section: .svo_CPage_requestBinary, start: 0x01EE83D8, end: 0x01EE8B88}
+      - {object: svo3/CPage, section: .svo_CPage_scanObject, start: 0x01EE8B88, end: 0x01EE8D18}
+      - {object: svo3/CPage, section: .svo_CPage_callGenericDownloadCallback, start: 0x01EE8D18, end: 0x01EE90EC}
+      - {object: svo3/CPage, section: .svo_CPage_LeaveCurrentPage, start: 0x01EE90EC, end: 0x01EE918C}
+      - {object: svo3/CPage, section: .svo_CPage_EnterNewPage___dupe30, start: 0x01EE918C, end: 0x01EE91E0}
+      - {object: svo3/CPage, section: .svo_CPage_GetSelectedTagName, start: 0x01EE91E0, end: 0x01EE9270}
+      - {object: svo3/CPage, section: .svo_CPage_doAfterParseTags, start: 0x01EE9270, end: 0x01EE936C}
+      - {object: svo3/CPage, section: .svo_CPage_FindAndSetDefualtTextAreaScroll, start: 0x01EE936C, end: 0x01EE944C}
+      - {object: svo3/CPage, section: .svo_CPage_autoRefreshPage, start: 0x01EE944C, end: 0x01EE94B4}
+      - {object: svo3/CPage, section: .svo_CPage_SetPageRefreshSeconds, start: 0x01EE94B4, end: 0x01EE94F8}
+      - {object: svo3/CPage, section: .svo_CPage_ClosePopup, start: 0x01EE94F8, end: 0x01EE955C}
+      - {object: svo3/CPage, section: .svo_CPage_setPageState, start: 0x01EE955C, end: 0x01EE98B0}
+      - {object: svo3/CPage, section: .svo_CPage_SwapDisplayBuffers, start: 0x01EE98B0, end: 0x01EE98D8}
+      - {object: svo3/CPage, section: .svo_CPage_GetTagAtIndex, start: 0x01EE98D8, end: 0x01EE98EC}
+      - {object: svo3/CPage, section: .svo_CPage_SetTagAtIndex, start: 0x01EE98EC, end: 0x01EE9900}
+      - {object: svo3/CPage, section: .svo_CPage_ResetBackDisplayBuffer, start: 0x01EE9900, end: 0x01EE992C}
+      - {object: svo3/CPage, section: .svo_CPage_ReAllocBackDisplayBufferParser, start: 0x01EE992C, end: 0x01EE99A0}
+      - {object: svo3/CPage, section: .svo_CPage_FreeBackDisplayBuffer, start: 0x01EE99A0, end: 0x01EE9A70}
+      - {object: svo3/CPage, section: .svo_CPage_FreeFrontDisplayBuffer, start: 0x01EE9A70, end: 0x01EE9B40}
+      - {object: svo3/CPage, section: .svo_CPage_FreeDisplayBuffers, start: 0x01EE9B40, end: 0x01EE9B6C}
+      - {object: svo3/CPage, section: .svo_CPage_GenerateLagListInfo, start: 0x01EE9B6C, end: 0x01EE9D40}
+  svo3/CreateGameTagModule:
+    text_start: 0x01F0A2FC
+    text_end: 0x01F0AA54
+    slots:
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_CreateGameTagModule, start: 0x01F0A2FC, end: 0x01F0A318}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule__CreateGameTagModule, start: 0x01F0A318, end: 0x01F0A398}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_IsMyTag___dupe26, start: 0x01F0A398, end: 0x01F0A430}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_BuildTag___dupe26, start: 0x01F0A430, end: 0x01F0A454}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_ScanTags___dupe7, start: 0x01F0A454, end: 0x01F0A5F0}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_getInstance___dupe28, start: 0x01F0A5F0, end: 0x01F0A63C}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_operator.new___dupe15, start: 0x01F0A63C, end: 0x01F0A6A4}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_operator.delete___dupe13, start: 0x01F0A6A4, end: 0x01F0A6D4}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_FreeResources___dupe55, start: 0x01F0A6D4, end: 0x01F0A710}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_GetCreateGameSubmitResponse, start: 0x01F0A710, end: 0x01F0A870}
+      - {object: svo3/CreateGameTagModule, section: .svo_CreateGameTagModule_ParseCreateGameParamsXML, start: 0x01F0A870, end: 0x01F0AA54}
+  svo3/GenericListBoxTag:
+    text_start: 0x01F0AA54
+    text_end: 0x01F0B940
+    slots:
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_DefaultInit___dupe23, start: 0x01F0AA54, end: 0x01F0AAC8}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_GenericListBoxTag, start: 0x01F0AAC8, end: 0x01F0AC68}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag__GenericListBoxTag, start: 0x01F0AC68, end: 0x01F0AD14}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_FreeResources___dupe56, start: 0x01F0AD14, end: 0x01F0AD38}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_HandleInput___dupe54, start: 0x01F0AD38, end: 0x01F0AF04}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_Draw___dupe26, start: 0x01F0AF04, end: 0x01F0B0EC}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_size, start: 0x01F0B0EC, end: 0x01F0B150}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_selectIndex___dupe2, start: 0x01F0B150, end: 0x01F0B1D0}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_changeSelectedItem___dupe2, start: 0x01F0B1D0, end: 0x01F0B3D0}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getIndexOfHandle, start: 0x01F0B3D0, end: 0x01F0B478}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getSelectedIndex___dupe2, start: 0x01F0B478, end: 0x01F0B4EC}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_addHandle, start: 0x01F0B4EC, end: 0x01F0B598}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_clearList, start: 0x01F0B598, end: 0x01F0B5E0}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_deleteHandle, start: 0x01F0B5E0, end: 0x01F0B6D8}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getTopVisibleIndex___dupe2, start: 0x01F0B6D8, end: 0x01F0B778}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getNumVisibleRows___dupe2, start: 0x01F0B778, end: 0x01F0B7E4}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getHandleByIndex, start: 0x01F0B7E4, end: 0x01F0B898}
+      - {object: svo3/GenericListBoxTag, section: .svo_GenericListBoxTag_getSelectedHandle, start: 0x01F0B898, end: 0x01F0B940}
+  svo3/ListBoxTag:
+    text_start: 0x01F04EC4
+    text_end: 0x01F06414
+    slots:
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_DefaultInit___dupe22, start: 0x01F04EC4, end: 0x01F04F64}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag__ListBoxTag, start: 0x01F04F64, end: 0x01F04FCC}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_ListBoxTag, start: 0x01F04FCC, end: 0x01F051D8}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_FreeResources___dupe48, start: 0x01F051D8, end: 0x01F0525C}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_HandleInput___dupe53, start: 0x01F0525C, end: 0x01F05428}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_Draw___dupe25, start: 0x01F05428, end: 0x01F056C8}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_countItems, start: 0x01F056C8, end: 0x01F0574C}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_deselectItem, start: 0x01F0574C, end: 0x01F05808}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_getItem, start: 0x01F05808, end: 0x01F058D8}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_getSelectedItem, start: 0x01F058D8, end: 0x01F059A8}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_replaceItem, start: 0x01F059A8, end: 0x01F05AA0}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_selectIndex, start: 0x01F05AA0, end: 0x01F05B4C}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_changeSelectedItem, start: 0x01F05B4C, end: 0x01F05D34}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_initListboxItem, start: 0x01F05D34, end: 0x01F05D6C}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_populateListboxItems, start: 0x01F05D6C, end: 0x01F05F30}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_addItem, start: 0x01F05F30, end: 0x01F05FEC}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_clearItems, start: 0x01F05FEC, end: 0x01F06034}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_deleteItem, start: 0x01F06034, end: 0x01F060F4}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_getSelectedIndex, start: 0x01F060F4, end: 0x01F06188}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_isIndexSelected, start: 0x01F06188, end: 0x01F06248}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_getTopVisibleIndex, start: 0x01F06248, end: 0x01F06308}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_getNumVisibleRows, start: 0x01F06308, end: 0x01F06394}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_SetExternalDrawFunction, start: 0x01F06394, end: 0x01F0639C}
+      - {object: svo3/ListBoxTag, section: .svo_ListBoxTag_calculateScrollBarPercentage, start: 0x01F0639C, end: 0x01F06414}
+  svo3/LoginTagModule:
+    text_start: 0x01F07720
+    text_end: 0x01F07D54
+    slots:
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_operator.delete___dupe10, start: 0x01F07720, end: 0x01F07750}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_LoginTagModule, start: 0x01F07750, end: 0x01F07764}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule__LoginTagModule, start: 0x01F07764, end: 0x01F07798}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_IsMyTag___dupe25, start: 0x01F07798, end: 0x01F077F8}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_ScanTagsHandleLoginSubmitResponse, start: 0x01F077F8, end: 0x01F0792C}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_ScanTagsHandleLoginDTD, start: 0x01F0792C, end: 0x01F07B48}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_ScanTags___dupe6, start: 0x01F07B48, end: 0x01F07BCC}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_UnhandledLoginResponseExists, start: 0x01F07BCC, end: 0x01F07C34}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_getInstance___dupe27, start: 0x01F07C34, end: 0x01F07C80}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_operator.new___dupe12, start: 0x01F07C80, end: 0x01F07CE8}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_operator.delete___dupe11, start: 0x01F07CE8, end: 0x01F07D18}
+      - {object: svo3/LoginTagModule, section: .svo_LoginTagModule_FreeResources___dupe52, start: 0x01F07D18, end: 0x01F07D54}
+  svo3/Navigation:
+    text_start: 0x01EF3EC4
+    text_end: 0x01EF4DDC
+    slots:
+      - {object: svo3/Navigation, section: .svo_Navigation_CNavInfo, start: 0x01EF3EC4, end: 0x01EF3ED8}
+      - {object: svo3/Navigation, section: .svo_Navigation_reset___dupe2, start: 0x01EF3ED8, end: 0x01EF3EEC}
+      - {object: svo3/Navigation, section: .svo_Navigation_getDistanceAutoNav, start: 0x01EF3EEC, end: 0x01EF4188}
+      - {object: svo3/Navigation, section: .svo_Navigation_Navigate, start: 0x01EF4188, end: 0x01EF4494}
+      - {object: svo3/Navigation, section: .svo_Navigation_lt_double, start: 0x01EF4494, end: 0x01EF4504}
+      - {object: svo3/Navigation, section: .svo_Navigation_autoNavigate, start: 0x01EF4504, end: 0x01EF4CF4}
+      - {object: svo3/Navigation, section: .svo_Navigation_setWrapDimensions, start: 0x01EF4CF4, end: 0x01EF4DDC}
+  svo3/RTCommSock:
+    text_start: 0x01EF4DDC
+    text_end: 0x01EF58AC
+    slots:
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_createSVSock, start: 0x01EF4DDC, end: 0x01EF4E64}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_RTCommSock, start: 0x01EF4E64, end: 0x01EF4EB0}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_dnsLookup, start: 0x01EF4EB0, end: 0x01EF4F40}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_dnsLookupBlocking, start: 0x01EF4F40, end: 0x01EF505C}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_sDNSLookupCB, start: 0x01EF505C, end: 0x01EF5128}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_dnsLookupNonBlockingQuery, start: 0x01EF5128, end: 0x01EF51C0}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_dnsLookupNonBlocking, start: 0x01EF51C0, end: 0x01EF5328}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_unSerializeAddr, start: 0x01EF5328, end: 0x01EF5330}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_addrAsString, start: 0x01EF5330, end: 0x01EF5388}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_Connect, start: 0x01EF5388, end: 0x01EF5548}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_WaitForConnect, start: 0x01EF5548, end: 0x01EF55DC}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_Send, start: 0x01EF55DC, end: 0x01EF5700}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_Recv, start: 0x01EF5700, end: 0x01EF57D4}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_BufferHasEndSVMLTag, start: 0x01EF57D4, end: 0x01EF5838}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_Close, start: 0x01EF5838, end: 0x01EF587C}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_SetSockSendBufferSize, start: 0x01EF587C, end: 0x01EF588C}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_SetNonBlocking, start: 0x01EF588C, end: 0x01EF5894}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_GetNonBlocking, start: 0x01EF5894, end: 0x01EF589C}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_setSynchronous, start: 0x01EF589C, end: 0x01EF58A4}
+      - {object: svo3/RTCommSock, section: .svo_RTCommSock_getSynchronous, start: 0x01EF58A4, end: 0x01EF58AC}
+  svo3/SVDownloadManager:
+    text_start: 0x01F0845C
+    text_end: 0x01F09BBC
+    slots:
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_operator.new___dupe13, start: 0x01F0845C, end: 0x01F08498}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_operator.delete___dupe12, start: 0x01F08498, end: 0x01F084C8}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager__SVDownloadManager, start: 0x01F084C8, end: 0x01F085A8}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_SVDownloadManager, start: 0x01F085A8, end: 0x01F086EC}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_download___dupe3, start: 0x01F086EC, end: 0x01F087F8}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_freeResources___dupe4, start: 0x01F087F8, end: 0x01F08888}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_shutdown___dupe3, start: 0x01F08888, end: 0x01F088BC}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_setState, start: 0x01F088BC, end: 0x01F088D0}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_doRequest___dupe4, start: 0x01F088D0, end: 0x01F08B94}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_draw___dupe2, start: 0x01F08B94, end: 0x01F09218}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_okToNavigate___dupe4, start: 0x01F09218, end: 0x01F092E4}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_formatDownloadStatusText, start: 0x01F092E4, end: 0x01F093F0}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_NotifySystemContextOfChunk, start: 0x01F093F0, end: 0x01F094CC}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_NotifySystemContextOfFailure, start: 0x01F094CC, end: 0x01F0953C}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_UpdateFileDownload, start: 0x01F0953C, end: 0x01F09750}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestStart, start: 0x01F09750, end: 0x01F097B0}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestHeaderReceived, start: 0x01F097B0, end: 0x01F09838}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestRedirectReceived, start: 0x01F09838, end: 0x01F09840}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestChunkReceived, start: 0x01F09840, end: 0x01F09964}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestIsOkContinueDownload, start: 0x01F09964, end: 0x01F09ADC}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_OnURIRequestCompletion, start: 0x01F09ADC, end: 0x01F09B50}
+      - {object: svo3/SVDownloadManager, section: .svo_SVDownloadManager_IsSystemFinishedWithBuffers, start: 0x01F09B50, end: 0x01F09BBC}
+  svo3/SVO_DBG:
+    text_start: 0x01F0BF70
+    text_end: 0x01F0C19C
+    slots:
+      - {object: svo3/SVO_DBG, section: .svo_SVO_DBG_cleanFileString, start: 0x01F0BF70, end: 0x01F0BFDC}
+      - {object: svo3/SVO_DBG, section: .svo_SVO_DBG_SV_CheckVersion, start: 0x01F0BFDC, end: 0x01F0C090}
+      - {object: svo3/SVO_DBG, section: .svo_SVO_DBG___SVO_Assert_Handler, start: 0x01F0C090, end: 0x01F0C194}
+      - {object: svo3/SVO_DBG, section: .svo_SVO_DBG_sv_connect_to_log_server, start: 0x01F0C194, end: 0x01F0C19C}
+  svo3/SVTagModule:
+    text_start: 0x01EF3654
+    text_end: 0x01EF370C
+    slots:
+      - {object: svo3/SVTagModule, section: .svo_SVTagModule_operator.new___dupe7, start: 0x01EF3654, end: 0x01EF3690}
+      - {object: svo3/SVTagModule, section: .svo_SVTagModule_operator.delete___dupe6, start: 0x01EF3690, end: 0x01EF36C0}
+      - {object: svo3/SVTagModule, section: .svo_SVTagModule_ScanTags___dupe2, start: 0x01EF36C0, end: 0x01EF3704}
+      - {object: svo3/SVTagModule, section: .svo_SVTagModule_ScanTags___dupe3, start: 0x01EF3704, end: 0x01EF370C}
+  svo3/TextAreaTag:
+    text_start: 0x01EF9260
+    text_end: 0x01EFB5F0
+    slots:
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_DefaultInit___dupe12, start: 0x01EF9260, end: 0x01EF9350}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_TextAreaTag, start: 0x01EF9350, end: 0x01EF97DC}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag__TextAreaTag, start: 0x01EF97DC, end: 0x01EF9844}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_FreeResources___dupe21, start: 0x01EF9844, end: 0x01EF989C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_HandleInput___dupe43, start: 0x01EF989C, end: 0x01EF9B50}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_Draw___dupe16, start: 0x01EF9B50, end: 0x01EF9D10}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_resetTextArea, start: 0x01EF9D10, end: 0x01EF9DD8}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_changeColorForAllLines, start: 0x01EF9DD8, end: 0x01EF9E18}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ResetVariables, start: 0x01EF9E18, end: 0x01EF9E90}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_handleSpecialKeys, start: 0x01EF9E90, end: 0x01EFA064}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_SetScrollBarPercentage, start: 0x01EFA064, end: 0x01EFA118}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_Scroll, start: 0x01EFA118, end: 0x01EFA2A4}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_scroll___dupe2, start: 0x01EFA2A4, end: 0x01EFA2C8}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_SetText___dupe3, start: 0x01EFA2C8, end: 0x01EFA368}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_handleKeyboardInput, start: 0x01EFA368, end: 0x01EFA484}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_FindParentForm___dupe2, start: 0x01EFA484, end: 0x01EFA5C8}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_RegisterWithForm___dupe2, start: 0x01EFA5C8, end: 0x01EFA604}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ParseText, start: 0x01EFA604, end: 0x01EFA794}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_GetNextWord, start: 0x01EFA794, end: 0x01EFA92C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_PutBackWord, start: 0x01EFA92C, end: 0x01EFA964}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ProcessNewLine, start: 0x01EFA964, end: 0x01EFAA2C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_UpdateCursorPosition, start: 0x01EFAA2C, end: 0x01EFAB00}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_PrintText, start: 0x01EFAB00, end: 0x01EFACA0}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_DrawCursor, start: 0x01EFACA0, end: 0x01EFAD0C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_SetArrowOffsets, start: 0x01EFAD0C, end: 0x01EFAF54}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ProcessUpArrow, start: 0x01EFAF54, end: 0x01EFAFCC}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ProcessDownArrow, start: 0x01EFAFCC, end: 0x01EFB098}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ProcessLeftArrow, start: 0x01EFB098, end: 0x01EFB128}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ProcessRightArrow, start: 0x01EFB128, end: 0x01EFB224}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_GetSubstringPixelWidth, start: 0x01EFB224, end: 0x01EFB300}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_UpdateAfterTextEntry, start: 0x01EFB300, end: 0x01EFB38C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_ResetParser, start: 0x01EFB38C, end: 0x01EFB44C}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_GetLineNumberAtOffset, start: 0x01EFB44C, end: 0x01EFB4E8}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_CheckForLongWord, start: 0x01EFB4E8, end: 0x01EFB540}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_TrimLongWord, start: 0x01EFB540, end: 0x01EFB5E0}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_GetMaxLengthUTF8Chars, start: 0x01EFB5E0, end: 0x01EFB5E8}
+      - {object: svo3/TextAreaTag, section: .svo_TextAreaTag_GetMaxLengthBytes, start: 0x01EFB5E8, end: 0x01EFB5F0}
+  svo3/ImageTagModule:
+    text_start: 0x01EF7F70
+    text_end: 0x01EF83AC
+    slots:
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_IsMyTag___dupe8, start: 0x01EF7F70, end: 0x01EF7FD0}
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_BuildTag___dupe9, start: 0x01EF7FD0, end: 0x01EF8050}
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_getInstance___dupe10, start: 0x01EF8050, end: 0x01EF8094}
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_FreeResources___dupe17, start: 0x01EF8094, end: 0x01EF80D0}
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_ScanTags___dupe4, start: 0x01EF80D0, end: 0x01EF8238}
+      - {object: svo3/ImageTagModule, section: .svo_ImageTagModule_processImageCB, start: 0x01EF8238, end: 0x01EF83AC}
+  svo3/DataTagModule:
+    text_start: 0x01F04958
+    text_end: 0x01F04BF0
+    slots:
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_IsMyTag___dupe22, start: 0x01F04958, end: 0x01F049B8}
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_ScanTags___dupe5, start: 0x01F049B8, end: 0x01F04A5C}
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_getDataTypeAttrib___dupe2, start: 0x01F04A5C, end: 0x01F04AE8}
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_BuildTag___dupe23, start: 0x01F04AE8, end: 0x01F04B70}
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_getInstance___dupe24, start: 0x01F04B70, end: 0x01F04BB4}
+      - {object: svo3/DataTagModule, section: .svo_DataTagModule_FreeResources___dupe47, start: 0x01F04BB4, end: 0x01F04BF0}

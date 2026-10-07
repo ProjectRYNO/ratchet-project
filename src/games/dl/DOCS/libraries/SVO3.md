@@ -3,8 +3,8 @@
 ## Current scope (2026-10-07)
 
 SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **260 compiled C/C++ functions and 675 INCLUDE_ASM entries**.
-40 translation units are entirely free of INCLUDE_ASM; 57 still contain assembly.
+across 97 files: **475 compiled C/C++ functions (50.8%) and 460 INCLUDE_ASM entries**.
+47 translation units are entirely free of INCLUDE_ASM; 50 still contain assembly.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
 
@@ -493,3 +493,103 @@ loaded bytes, all within C slots). Strict comparison remains NONMATCH. The 16
 new matching slots are: `SetSelectable`, `GetDimensions`, `SetDimensions`, `GetQueryParams`, `SetVisible`, `GetVisible`, `GetNavInfo`, `FreeResources___dupe7`, `FreeResources___dupe12`, `HandleInput___dupe38`, `IsSelectable___dupe8`, `FreeResources___dupe34`, `HandleInput___dupe49`, `FreeResources___dupe42`, `HandleInput___dupe52`, `FreeResources___dupe60`.
 All 32 new global addresses and 43 batch entry addresses pass. EE layout probe
 passes 12 sizes and 87 offsets. No runtime/behavior tests were added or run.
+
+
+## 50% batch (2026-10-07)
+
+Added 215 compiled functions across 42 translation units, reaching 475/935
+(50.8%) compiled. This is function-count progress, not byte-size coverage or
+whole-library matching. Seven more files are fully C++: DownloadBinary,
+ParseXML, ParseSVMLAddObjects, ParseSVMLForDownloads, ParseXMLInfo, PageIDTag and
+PopupTag. Large browser, HTTP, navigation and widget routines still remain.
+
+| Translation unit | New compiled functions |
+| --- | ---: |
+| CDrawContextBase.cpp | 6 |
+| CHttp.cpp | 18 |
+| CPage.cpp | 3 |
+| CheckboxInputTag.cpp | 1 |
+| CreateGameTagModule.cpp | 6 |
+| DataTag.cpp | 6 |
+| DataTagModule.cpp | 4 |
+| DownloadBinary.cpp | 20 |
+| FormTag.cpp | 2 |
+| GenericListBoxTag.cpp | 1 |
+| HiddenInputTag.cpp | 3 |
+| HttpSecure.cpp | 7 |
+| ImageTag.cpp | 1 |
+| ImageTagModule.cpp | 4 |
+| ListBoxTag.cpp | 1 |
+| LoginTagModule.cpp | 8 |
+| Navigation.cpp | 1 |
+| PageIDTag.cpp | 3 |
+| PageRequestListener.cpp | 13 |
+| ParseSVMLAddObjects.cpp | 6 |
+| ParseSVMLForDownloads.cpp | 5 |
+| ParseXML.cpp | 1 |
+| ParseXMLInfo.cpp | 5 |
+| PopupTag.cpp | 4 |
+| QuickLinkTag.cpp | 2 |
+| RTCommSock.cpp | 6 |
+| RadioInputTag.cpp | 2 |
+| SVBrowser.cpp | 30 |
+| SVDownloadManager.cpp | 2 |
+| SVFileDownloadQueue.cpp | 13 |
+| SVO_DBG.cpp | 1 |
+| SVTagModule.cpp | 1 |
+| SelectTag.cpp | 2 |
+| SetVariableTag.cpp | 2 |
+| StaticImageTag.cpp | 1 |
+| SubmitInputTag.cpp | 2 |
+| TagUtils.cpp | 10 |
+| TextAreaTag.cpp | 3 |
+| TextInputTag.cpp | 4 |
+| TextTag.cpp | 1 |
+| TickerTag.cpp | 3 |
+| buttonTag.cpp | 1 |
+
+Recovered download metadata/accessors, XML parser adapters, page request
+callbacks, tag attributes, browser contexts and helpers, HTTP state callbacks,
+socket settings, tag cleanup/selection and module allocation/singletons. Retail
+Ghidra and split instructions are authoritative; prototype source/dltypes
+corroborate names and layouts. Empty callbacks correspond to actual retail
+no-ops; unimplemented behavior remains visibly INCLUDE_ASM.
+
+Important details:
+
+* FileDownloadQueue cleanup clears lookup twice and leaves the freed value
+  pointer intact. Its add function calls matchesMyLookup but ignores the result,
+  then takes the first empty entry. Those retail quirks are preserved.
+* getBoolAttrib succeeds for an unrecognized present value without storing a
+  result. Numeric attributes require the first character to be a digit. The
+  float parser explicitly converts atof's double bits in v0 with dptofp.
+* Browser context getters reload the singleton after assertion callbacks.
+  SetupTargetInfo preserves the retail copy length and terminator assertions.
+* PageRequestListener retains redirect/status handling, callback byte counts,
+  completion assertions and the shared download-buffer copy. The original
+  trailing NOP extent at 0x01F27658 remains assembly through 0x01F31380; it is
+  not a compiled function. The preceding padding remains original zero bytes.
+* Popup drawing preserves the independent integer/floating argument banks and
+  the virtual callback at offset 0x58. Partial object views are marked as such.
+
+Sixteen additional trial bodies exceed retail slots and remain assembly.
+[SVO3_SLOT_BLOCKERS.md](SVO3_SLOT_BLOCKERS.md) preserves those candidates and
+measured sizes outside production code. The earlier compact-wrapper blockers
+also remain; no function slot was widened for a C replacement.
+
+Validation: serial make split, forced make -B -j8 elf, and the ELF slot/header
+and unchanged-byte audit pass. A shared SVButtonMap forward-declaration conflict
+found by the full build was fixed by including its owning header. The focused
+EE layout probe passes 28 sizes and 158 field offsets; all 55 new global labels
+resolve to the verified retail addresses. No new behavior suite, gameplay test,
+full regression or ISO build was run.
+
+Strict comparison remains NONMATCH: 5,130 core.text and 24,315 net.text byte
+differences, totaling 29,445 changed loaded bytes, all in registered compiled
+slots. This batch adds 111 exact slots and 104 nonmatching slots. Whole-project
+progress is 543 compiled / 8,082 assembly out of 8,625 source-backed functions;
+154 compiled slots match and 389 do not. Matching work remains unfinished.
+
+Rebuilt ELF SHA-256: `d5cc828e730617b7cb94246e259bf12987a7425c76f06ebd7ecc2e0815b31287`.
+Detailed logs and the compile-only probe are under ignored
+build/svo-library-work/half-*. The tracked progress CSV/JSON record this build.

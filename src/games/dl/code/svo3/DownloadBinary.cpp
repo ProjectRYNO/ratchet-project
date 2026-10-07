@@ -1,41 +1,115 @@
-#include "common.h"
+#include "DownloadBinary.h"
+#include "SVOString.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", DownloadBinary);
+extern "C" {
+extern const unsigned char svoDownloadBinaryVtable[];
+void DownloadBinaryDelete(void *memory) __asm__("operator.delete___dupe10");
+#define SECTION(name) __attribute__((section(".svo_DownloadBinary_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", _DownloadBinary);
+SECTION(DownloadBinary) const void *DownloadBinary(DownloadBinaryState *record)
+{
+    record->bDestroyWhenRequestSent = 0;
+    record->vtable = svoDownloadBinaryVtable;
+    record->eMethod = 0;
+    return svoDownloadBinaryVtable;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetPath);
+SECTION(_DownloadBinary) void _DownloadBinary(DownloadBinaryState *record, int flags)
+{
+    record->vtable = svoDownloadBinaryVtable;
+    if (flags & 1) DownloadBinaryDelete(record);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetPath);
+SECTION(GetPath) char * GetPath(DownloadBinaryState *record)
+{
+    return record->szPath;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetDownloadCallback);
+SECTION(GetDownloadCallback) DownloadCallback GetDownloadCallback(DownloadBinaryState *record)
+{
+    return record->pDownloadCallback;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetDownloadCallback);
+SECTION(GetFormMethodType) int GetFormMethodType(DownloadBinaryState *record)
+{
+    return record->eMethod;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetFormMethodType);
+SECTION(GetWidth) unsigned short GetWidth(DownloadBinaryState *record)
+{
+    return record->usWidth;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetFormMethodType);
+SECTION(GetHeight) unsigned short GetHeight(DownloadBinaryState *record)
+{
+    return record->usHeight;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetWidth);
+SECTION(GetID) int GetID(DownloadBinaryState *record)
+{
+    return record->iID;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetHeight);
+SECTION(DestroyOnRequestSend) int DestroyOnRequestSend(DownloadBinaryState *record)
+{
+    return record->bDestroyWhenRequestSent;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetDimensions___dupe2);
+SECTION(GetUserNameParameter) char * GetUserNameParameter(DownloadBinaryState *record)
+{
+    return record->m_szUserNameParameter;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetID);
+SECTION(GetAccountIDParameter) char * GetAccountIDParameter(DownloadBinaryState *record)
+{
+    return record->m_szAccountIDParameter;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetID___dupe2);
+SECTION(SetPath) void SetPath(DownloadBinaryState *record, char *text)
+{
+    svstrncpy(record->szPath, text, 0x101);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetToDestroyOnRequestSend);
+SECTION(SetUserNameParameter) void SetUserNameParameter(DownloadBinaryState *record, char *text)
+{
+    svstrncpy(record->m_szUserNameParameter, text, 0x20);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", DestroyOnRequestSend);
+SECTION(SetAccountIDParameter) void SetAccountIDParameter(DownloadBinaryState *record, char *text)
+{
+    svstrncpy(record->m_szAccountIDParameter, text, 0x20);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetUserNameMaxLength);
+SECTION(SetFormMethodType) void SetFormMethodType(DownloadBinaryState *record, int value)
+{
+    record->eMethod = value;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetUserNameParameter);
+SECTION(SetID___dupe2) void SetID___dupe2(DownloadBinaryState *record, int value)
+{
+    record->iID = value;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetUserNameParameter);
+SECTION(SetUserNameMaxLength) void SetUserNameMaxLength(DownloadBinaryState *record, int value)
+{
+    record->m_iUserNameMaxLength = value;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", SetAccountIDParameter);
+SECTION(SetDownloadCallback) void SetDownloadCallback(DownloadBinaryState *record, DownloadCallback callback)
+{
+    record->pDownloadCallback = callback;
+    record->bRequested = 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DownloadBinary", GetAccountIDParameter);
+SECTION(SetDimensions___dupe2) void SetDimensions___dupe2(DownloadBinaryState *record, unsigned short width, unsigned short height)
+{
+    record->usHeight = height;
+    record->usWidth = width;
+}
+
+SECTION(SetToDestroyOnRequestSend) void SetToDestroyOnRequestSend(DownloadBinaryState *record)
+{
+    record->bDestroyWhenRequestSent = 1;
+}
+
+}

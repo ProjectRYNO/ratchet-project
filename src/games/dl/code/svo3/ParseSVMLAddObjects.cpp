@@ -1,13 +1,43 @@
-#include "common.h"
+#include "ParseSVMLAddObjects.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", _ParseXML);
+extern "C" {
+extern const unsigned char svoParseSVMLAddObjectsVtable[];
+extern char svoParseSVMLAddObjectsCheckString[];
+#define SECTION(name) __attribute__((section(".svo_ParseSVMLAddObjects_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", ParseSVMLAddObjects);
+SECTION(_ParseXML) void _ParseXML(ParseXMLState *parser, int flags)
+{
+    parser->vtable = svoParseXMLVtable;
+    if (flags & 1) SvoBuiltinDelete(parser);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", _ParseSVMLAddObjects);
+SECTION(ParseSVMLAddObjects) const void *ParseSVMLAddObjects(ParseXMLState *parser)
+{
+    ParseXML(parser);
+    parser->vtable = svoParseSVMLAddObjectsVtable;
+    return svoParseSVMLAddObjectsVtable;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", ShouldFreeResources);
+SECTION(_ParseSVMLAddObjects) void _ParseSVMLAddObjects(ParseXMLState *parser, int flags)
+{
+    parser->vtable = svoParseSVMLAddObjectsVtable;
+    _ParseXML(parser, 0);
+    if (flags & 1) SvoBuiltinDelete(parser);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", GetCheckString);
+SECTION(ShouldFreeResources) int ShouldFreeResources(ParseXMLState *parser)
+{
+    return 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ParseSVMLAddObjects", CallFunction);
+SECTION(GetCheckString) char *GetCheckString(ParseXMLState *parser)
+{
+    return svoParseSVMLAddObjectsCheckString;
+}
+
+SECTION(CallFunction) void CallFunction(ParseXMLState *parser, iks *xml, CPage *page)
+{
+    addObject(page, xml);
+}
+
+}

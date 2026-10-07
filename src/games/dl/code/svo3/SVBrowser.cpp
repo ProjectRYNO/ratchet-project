@@ -1,103 +1,319 @@
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .svo_SVBrowser_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DefaultInit);
+#include "SVBrowser.h"
+#include "CPage.h"
+#include "CMemoryContextBase.h"
+#include "SVOString.h"
+#include "CError.h"
+#include <string.h>
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetInstance);
+extern "C" {
+extern SVBrowserPrefix *svoBrowserInstance;
+extern char svoBrowserSource[];
+extern char gTagNotSetStr[];
+void reset(DownloadThrobberInfo *info);
+void FreeResources(SVBrowserPrefix *browser);
+void RTCommDestroy(SVBrowserPrefix *browser);
+void frameUpdate(CPage *page);
+void handleUpdate(CPage *page);
+void *PluginManagerNew(unsigned int size) __asm__("operator.new___dupe11");
+void add___dupe2(FileDownloadQueueState *queue, char *lookup, char *value);
+void rt_comm_update(void);
+void rt_comm_shutdown(void);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetMemoryContext);
+#define SECTION(name) __attribute__((section(".svo_SVBrowser_" #name)))
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAltMemoryContext);
+SECTION(DefaultInit) void DefaultInit(SVBrowserPrefix *browser)
+{
+    browser->m_bUseDownloadManger = 1;
+    browser->m_pPopupPage = 0;
+    browser->m_pMainPage = 0;
+    browser->m_pDownloadManager = 0;
+    browser->m_bCreateGameRequested = 0;
+    browser->m_pTimer = 0;
+    browser->m_pFileDownloadQueue = 0;
+    reset(&browser->m_downloadThrobberInfo);
+    browser->m_bUseDownloadManger = 1;
+    memset(&browser->m_targetInfo, 0, 0x4C);
+    browser->m_severity = 0xFF;
+    browser->m_category = 0xFFFF;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetDrawContext);
+SECTION(GetInstance) SVBrowserPrefix *GetInstance(void)
+{
+    return svoBrowserInstance;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAltDrawContext);
+SECTION(GetMemoryContext) CMemoryContextBaseState *GetMemoryContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x6D);
+    if (!svoBrowserInstance->m_pMemoryContext) __SVO_Assert_Handler(svoBrowserSource, 0x6E);
+    return svoBrowserInstance->m_pMemoryContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetInputContext);
+SECTION(GetAltMemoryContext) CMemoryContextBaseState *GetAltMemoryContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x74);
+    if (!svoBrowserInstance->m_pAltMemoryContext) __SVO_Assert_Handler(svoBrowserSource, 0x75);
+    return svoBrowserInstance->m_pAltMemoryContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAltInputContext);
+SECTION(GetAltDrawContext) CDrawContextBase *GetAltDrawContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x8F);
+    if (!svoBrowserInstance->m_pAltDrawContext) __SVO_Assert_Handler(svoBrowserSource, 0x90);
+    return svoBrowserInstance->m_pAltDrawContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAudioContext);
+SECTION(GetInputContext) CInputContextBaseState *GetInputContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x96);
+    if (!svoBrowserInstance->m_pInputContext) __SVO_Assert_Handler(svoBrowserSource, 0x97);
+    return svoBrowserInstance->m_pInputContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAltAudioContext);
+SECTION(GetAltInputContext) CInputContextBaseState *GetAltInputContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x9D);
+    if (!svoBrowserInstance->m_pAltInputContext) __SVO_Assert_Handler(svoBrowserSource, 0x9E);
+    return svoBrowserInstance->m_pAltInputContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetSystemContext);
+SECTION(GetAudioContext) CAudioContextBaseState *GetAudioContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0xA4);
+    if (!svoBrowserInstance->m_pAudioContext) __SVO_Assert_Handler(svoBrowserSource, 0xA5);
+    return svoBrowserInstance->m_pAudioContext;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetAltSystemContext);
+SECTION(GetAltAudioContext) CAudioContextBaseState *GetAltAudioContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0xAB);
+    if (!svoBrowserInstance->m_pAltAudioContext) __SVO_Assert_Handler(svoBrowserSource, 0xAC);
+    return svoBrowserInstance->m_pAltAudioContext;
+}
 
+SECTION(GetSystemContext) CSystemContextBase *GetSystemContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0xB2);
+    if (!svoBrowserInstance->m_pSystemContext) __SVO_Assert_Handler(svoBrowserSource, 0xB3);
+    return svoBrowserInstance->m_pSystemContext;
+}
+
+SECTION(GetAltSystemContext) CSystemContextBase *GetAltSystemContext(void)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0xB9);
+    if (!svoBrowserInstance->m_pAltSystemContext) __SVO_Assert_Handler(svoBrowserSource, 0xBA);
+    return svoBrowserInstance->m_pAltSystemContext;
+}
+
+SECTION(GetDrawContext) CDrawContextBase *GetDrawContext(void)
+{
+    if (!svoBrowserInstance) return 0;
+    if (svoBrowserInstance->m_bShowVKB) {
+        if (!svoBrowserInstance->m_pVKBDrawContext) __SVO_Assert_Handler(svoBrowserSource, 0x83);
+        return svoBrowserInstance->m_pVKBDrawContext;
+    }
+    if (!svoBrowserInstance->m_pDrawContext) __SVO_Assert_Handler(svoBrowserSource, 0x88);
+    return svoBrowserInstance->m_pDrawContext;
+}
+
+void *SV_IKS_Malloc(unsigned int size);
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SV_IKS_Malloc);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SV_IKS_Free);
+SECTION(SV_IKS_Free) void SV_IKS_Free(void *memory)
+{
+    svFreeSafe(GetMemoryContext(), memory);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SetupTargetInfo);
+SECTION(SetupTargetInfo) void SetupTargetInfo(SVBrowserPrefix *browser, SVTargetInfo *target)
+{
+    browser->m_targetInfo.targetType = target->targetType;
+    unsigned int length = 64;
+    if (target->targetType == 1) length = 20;
+    else __SVO_Assert_Handler(svoBrowserSource, 0x106);
+    memcpy(browser->m_targetInfo.targetSpecialID, target->targetSpecialID, length);
+    if (browser->m_targetInfo.targetSpecialID[length]) __SVO_Assert_Handler(svoBrowserSource, 0x10C);
+    if (strlen(browser->m_targetInfo.targetSpecialID) > 64) __SVO_Assert_Handler(svoBrowserSource, 0x10D);
+    browser->m_targetInfo.targetAppID = target->targetAppID;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Initialize___dupe4);
+SECTION(SetAlternateContexts) void SetAlternateContexts(SVBrowserPrefix *browser, CAllContextData *contexts)
+{
+    if (!contexts->drawContext || !contexts->inputContext || !contexts->memoryContext || !contexts->audioContext || !contexts->systemContext)
+        __SVO_Assert_Handler(svoBrowserSource, 0x1FF);
+    SVBrowserPrefix *instance = svoBrowserInstance;
+    CSystemContextBase *system = contexts->systemContext;
+    CDrawContextBase *draw = contexts->drawContext;
+    CAudioContextBaseState *audio = contexts->audioContext;
+    CMemoryContextBaseState *memory = contexts->memoryContext;
+    CInputContextBaseState *input = contexts->inputContext;
+    instance->m_pAltSystemContext = system;
+    instance->m_pAltDrawContext = draw;
+    instance->m_pAltAudioContext = audio;
+    instance->m_pAltMemoryContext = memory;
+    instance->m_pAltInputContext = input;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SetAlternateContexts);
-
+long BrowserIsIdle(SVBrowserPrefix *browser);
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", BrowserIsIdle);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SetExternalIPAddress);
+SECTION(SetExternalIPAddress) void SetExternalIPAddress(SVBrowserPrefix *browser, char *ip)
+{
+    if (!ip) __SVO_Assert_Handler(svoBrowserSource, 0x250);
+    svstrncpy(browser->m_loginInfo.ExternalIP, ip, 16);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetLoginInfo);
+SECTION(GetLoginInfo) void GetLoginInfo(SVBrowserPrefix *browser, char **user, char **password, int *account, char **ip)
+{
+    int id = browser->m_loginInfo.MediusAccountID;
+    *user = browser->m_loginInfo.MediusUserName;
+    *account = id;
+    *password = browser->m_loginInfo.MediusPassWord;
+    *ip = browser->m_loginInfo.ExternalIP;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SetLogout);
+SECTION(SetLogout) void SetLogout(SVBrowserPrefix *browser)
+{
+    browser->m_bLogout = 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ExitOnline);
+SECTION(ExitOnline) void ExitOnline(SVBrowserPrefix *browser, long force)
+{
+    if (svoBrowserInstance) {
+        FreeResources(browser);
+        if (force) RTCommDestroy(browser);
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", FreeResources);
+SECTION(IsActive) long IsActive(SVBrowserPrefix *browser)
+{
+    return browser->m_bIsActive;
+}
+
+SECTION(Activate) void Activate(SVBrowserPrefix *browser)
+{
+    browser->m_bIsActive = 1;
+}
+
+SECTION(DoFrameUpdates) void DoFrameUpdates(SVBrowserPrefix *browser)
+{
+    frameUpdate(browser->m_pMainPage);
+    frameUpdate(browser->m_pPopupPage);
+}
+
+SECTION(HandleUpdatePages) void HandleUpdatePages(SVBrowserPrefix *browser, CPage *page)
+{
+    handleUpdate(page);
+}
+
+void InitServerInfo(SVServerInfo *info);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitServerInfo);
+
+SECTION(InitInitializeParams) void InitInitializeParams(SVInitializeParams *params)
+{
+    params->iShouldListenForAuthoringToolPort = 0;
+    params->downloadBufferSize = 0x80000;
+    params->mainContextData = 0;
+    params->altContextData = 0;
+    params->eURL = 0;
+    params->serverInfo = 0;
+    params->a_pPersistentData = 0;
+    params->headerVersion = 0;
+    params->defaultButtonMap = 0;
+    params->targetInfo = 0;
+}
+
+SECTION(SignalPluginEvent) void SignalPluginEvent(SVBrowserPrefix *browser, int event, SVTag *sender)
+{
+    AddMessage(browser->m_pPluginManager, sender, event);
+}
+
+void InitalizePluginManagerAndPlugins(SVBrowserPrefix *browser);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitalizePluginManagerAndPlugins);
+
+SECTION(DeInitializePluginManagerAndPluggins) void DeInitializePluginManagerAndPluggins(SVBrowserPrefix *browser)
+{
+    if (svoBrowserInstance->m_pPluginManager) {
+        CMemoryContextBaseState *memory = GetMemoryContext();
+        svFreeSafe(memory, svoBrowserInstance->m_pPluginManager);
+        svoBrowserInstance->m_pPluginManager = 0;
+    }
+}
+
+SECTION(RemovePluginMgrMessages) void RemovePluginMgrMessages(SVBrowserPrefix *browser)
+{
+    EmptyMessageQueue(svoBrowserInstance->m_pPluginManager);
+}
+
+SECTION(URIStoreAdd) void URIStoreAdd(char *lookup, char *value)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x6AD);
+    if (!svoBrowserInstance->m_pURIStore) __SVO_Assert_Handler(svoBrowserSource, 0x6AE);
+    add(svoBrowserInstance->m_pURIStore, lookup, value);
+}
+
+char *URIStoreFind(char *lookup);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", URIStoreFind);
+
+SECTION(FileDownloadQueueAdd) void FileDownloadQueueAdd(char *id, char *path)
+{
+    if (!svoBrowserInstance->m_bUseDownloadManger) {
+        SetErrorCode(0x1F);
+        if (!svoBrowserInstance->m_bUseDownloadManger) __SVO_Assert_Handler(svoBrowserSource, 0x6BE);
+        return;
+    }
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x6C2);
+    if (!svoBrowserInstance->m_pFileDownloadQueue) __SVO_Assert_Handler(svoBrowserSource, 0x6C3);
+    add___dupe2(svoBrowserInstance->m_pFileDownloadQueue, id, path);
+}
+
+void reset(DownloadThrobberInfo *info);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", reset);
+
+SECTION(RTCommDestroy) void RTCommDestroy(SVBrowserPrefix *browser)
+{
+    rt_comm_update();
+    rt_comm_shutdown();
+}
+
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", CalculatePersistentDataMd5Sum);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ReturnFromGame);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", LoadStatePostGameFromPersistentData___dupe3);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", IsActive);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Activate);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DeInitURISchemas);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DownloadFile);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DoFrameUpdates);
-
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DrawPages);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", HandleInputPages);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", HandleUpdatePages);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Update___dupe109);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ShowVKB);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitServerInfo);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitInitializeParams);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SignalPluginEvent);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitalizePluginManagerAndPlugins);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DeInitializePluginManagerAndPluggins);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitURISchemas);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DeInitURISchemas);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", RemovePluginMgrMessages);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", URIStoreAdd);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", URIStoreFind);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", FileDownloadQueueAdd);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", FreeResources);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetPageName);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", UpdateDownloadManager);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", HandleInputPages);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", reset);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Initialize___dupe4);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitURISchemas);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", LoadStatePostGameFromPersistentData___dupe3);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ReturnFromGame);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", RTCommInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", RTCommDestroy);
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ShowVKB);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Update___dupe109);
+
+INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", UpdateDownloadManager);
