@@ -74,3 +74,11 @@ passed 2,720 sound-wrapper cases, 293 stateful sound cases, and the 806-global
 address audit. Host boot tests passed their six argument/control-flow cases and
 4,096 option round trips. Logs are under `build/type-recovery` (generated files).
 No new emulator/gameplay test or ISO repack was performed for this type pass.
+
+
+## iksemel node (2026-10-07)
+
+Added `iks` in `code/iksemel/src/iks.h`: size 0x30 with all 12 offsets checked
+using the EE compiler. Retail allocation/insertion/accessor instructions establish
+the layout; dltypes.txt only supplies an incomplete iks_struct and node enum.
+See [iksemel evidence and tests](../libraries/IKSEMEL.md).
