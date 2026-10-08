@@ -13,7 +13,7 @@ typedef struct { // 0x1C
     /* 0x18 */ unsigned int tagid;
 } ListBoxItem;
 
-typedef struct { // 0x288
+struct ListBoxTagState { // 0x288
     /* 0x000 */ SVTag base;
     /* 0x0B4 */ int m_fontSize;
     /* 0x0B8 */ int m_align;
@@ -33,5 +33,10 @@ typedef struct { // 0x288
     /* 0x27C */ SVChronographState *m_pTimer;
     /* 0x280 */ int m_turnOffDraw;
     /* 0x284 */ int m_selectFocusAreaMode;
-} ListBoxTagState;
+};
+
+typedef struct { // 0x5C (vtable prefix)
+    /* 0x00 */ unsigned char unrecovered00[0x58];
+    /* 0x58 */ void (*clearItems)(ListBoxTagState *tag);
+} ListBoxTagVtablePrefix;
 #endif

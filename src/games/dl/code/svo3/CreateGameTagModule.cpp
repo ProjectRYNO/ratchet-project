@@ -51,7 +51,6 @@ extern "C" SECTION(FreeResources___dupe55) void FreeResources___dupe55(CreateGam
     }
 }
 
-
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CreateGameTagModule", GetCreateGameSubmitResponse);
 
 extern "C" SECTION(getInstance___dupe28) CreateGameTagModuleState *getInstance___dupe28(void)
@@ -64,7 +63,6 @@ extern "C" SECTION(getInstance___dupe28) CreateGameTagModuleState *getInstance__
     return svoCreateGameTagModuleInstance;
 }
 
-
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CreateGameTagModule", IsMyTag___dupe26);
 
 extern "C" SECTION(operator.delete___dupe13) void CreateGameTagModuleDelete13(void *memory)
@@ -72,14 +70,12 @@ extern "C" SECTION(operator.delete___dupe13) void CreateGameTagModuleDelete13(vo
     svFreeSafe(GetMemoryContext(), memory);
 }
 
-
 extern "C" SECTION(operator.new___dupe15) void *CreateGameTagModuleNew(unsigned int size)
 {
     void *memory = svAllocSafe(GetMemoryContext(), size, 0, 0xB6, svoCreateGameTagModuleSource);
     if (!memory) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xB9);
     return memory;
 }
-
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CreateGameTagModule", ParseCreateGameParamsXML);
 

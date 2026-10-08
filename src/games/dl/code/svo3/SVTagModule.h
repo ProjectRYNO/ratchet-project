@@ -3,6 +3,7 @@
 
 #include "../iksemel/src/iks.h"
 struct SVTag;
+struct CPage;
 struct CAllContextData;
 struct SVTagModuleState;
 typedef struct { // 0x30 (vtable prefix)
@@ -10,7 +11,7 @@ typedef struct { // 0x30 (vtable prefix)
     /* 0x04 */ void *unknown04;
     /* 0x08 */ void (*destroy)(SVTagModuleState *module, int flags);
     /* 0x0C */ void (*freeResources)(SVTagModuleState *module);
-    /* 0x10 */ void *unknown10;
+    /* 0x10 */ long (*HandleInput)(SVTagModuleState *module, CPage *page);
     /* 0x14 */ void *unknown14;
     /* 0x18 */ long (*IsMyTag)(SVTagModuleState *module, iks *xml);
     /* 0x1C */ unsigned char unrecovered1C[0x0C];

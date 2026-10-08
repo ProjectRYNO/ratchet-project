@@ -636,6 +636,148 @@ functions:
   _TextTag: 0x01EF2698
   _TickerTag: 0x01F0BC60
 
+  FormTag: 0x01EFE878
+  DefaultInit___dupe23: 0x01F0AA54
+  DefaultInit___dupe22: 0x01F04EC4
+  FreeResources___dupe48: 0x01F051D8
+  initListboxItem: 0x01F05D34
+  DefaultInit___dupe24: 0x01F0BBF8
+  BufferHasEndSVMLTag: 0x01EF57D4
+  DefaultInit___dupe6: 0x01EF64F0
+  DefaultInit___dupe8: 0x01EF6E1C
+  DefaultInit___dupe4: 0x01EF5938
+  DefaultInit___dupe2: 0x01EF262C
+  closeSocket: 0x01EEB924
+  download___dupe2: 0x01EEA8E8
+  getSocketType: 0x01EEC498
+  HttpConnectWaitOnUpdate: 0x01EEBD30
+  HttpGetHostByNameOnEnter: 0x01EEBDD4
+  HttpGetHostByNameOnUpdate: 0x01EEBE54
+  IsBusy: 0x01EEA974
+  OnBodyChunkReceived: 0x01EEAAA4
+  parseHeaderBuf: 0x01EEACC8
+  DrawGridBorder: 0x01EEC794
+  DrawGenericListboxFrame: 0x01EECC88
+  DrawTextArea: 0x01EECCF4
+
+  HTTPS_Free: 0x01EE503C
+  operator.new___dupe2: 0x01EE506C
+  operator.delete: 0x01EE50D4
+  _HttpSecure: 0x01EE51CC
+  HttpCleanup: 0x01EE5930
+  HttpsCallEngine: 0x01EE5268
+  HttpsKeyExchange: 0x01EE5390
+  HttpSendRequest: 0x01EE5430
+  HttpsDownload: 0x01EE54BC
+  States: 0x01EE5978
+  operator.delete___dupe2: 0x01EE5BA0
+  ClosePopup: 0x01EE94F8
+  LeaveCurrentPage: 0x01EE90EC
+  parseTagsCB: 0x01EE6EE0
+  scanForDownloadablesCB: 0x01EE6F78
+  scanXMLCB: 0x01EE7010
+  FreeFrontDisplayBuffer: 0x01EE9A70
+  FreeBackDisplayBuffer: 0x01EE99A0
+  pathIsFullyQualified: 0x01EE8090
+  pathIsStatic: 0x01EE8160
+  FindAndSetDefualtTextAreaScroll: 0x01EE936C
+  operator.delete___dupe3: 0x01EE9D70
+  Http: 0x01EE9D90
+  _Http: 0x01EE9E54
+  InitRequest: 0x01EE9F5C
+  freeResources___dupe2: 0x01EEA034
+  HttpConnectWaitOnEnter: 0x01EEBC70
+  downloadBody: 0x01EEA9A8
+  HttpSendOnEnter: 0x01EEBB48
+  HttpRecvOnUpdate: 0x01EEB9E8
+  LoadStatePostGameFromPersistentData___dupe2: 0x01EEB6E0
+  SaveStatePreGameToPersistentData: 0x01EEB804
+  States___dupe2: 0x01EEC268
+  OnHeaderParsed: 0x01EEAD48
+  HandleInputPages: 0x01EEF358
+  GetPageName: 0x01EEFC44
+  CalculatePersistentDataMd5Sum: 0x01EEEFD0
+  operator.delete___dupe6: 0x01EF3690
+  operator.delete___dupe9: 0x01EF5914
+  operator.delete___dupe12: 0x01F08498
+  OnURIRequestStart: 0x01F09750
+  OnURIRequestHeaderReceived: 0x01F097B0
+  IsSystemFinishedWithBuffers: 0x01F09B50
+  NotifySystemContextOfFailure: 0x01F094CC
+  NotifySystemContextOfChunk: 0x01F093F0
+  OnURIRequestChunkReceived: 0x01F09840
+  OnURIRequestCompletion: 0x01F09ADC
+  freeResources___dupe4: 0x01F087F8
+  download___dupe3: 0x01F086EC
+  RTCommSock: 0x01EF4E64
+  Close: 0x01EF5838
+  WaitForConnect: 0x01EF5548
+  Recv: 0x01EF5700
+  Send: 0x01EF55DC
+  dnsLookup: 0x01EF4EB0
+  ClearRows: 0x01F004CC
+  FreeResources___dupe36: 0x01F00574
+  _GridTag: 0x01F00784
+  initSVGridRow: 0x01F02184
+  ResetIndexArray: 0x01F030DC
+  AdvanceCurrTopRow: 0x01F02AE0
+  AlignVisibleColumns: 0x01F03110
+  CreateAndInitColumnIndexArray: 0x01F0306C
+  GetCurrentSelectedCell: 0x01F02B38
+  FindAndSetSelectedCell: 0x01F01F00
+  InitGridCells: 0x01F01DD0
+  GetToolTipText___dupe2: 0x01F02FB0
+  ChangeSelectedColumn: 0x01F0316C
+  InitRowsAndColumns: 0x01F01FC4
+  ParseRows: 0x01F021B0
+  ParseColumns: 0x01F025D0
+  ParseSingleRow: 0x01F023B4
+  ParseSingleColumn: 0x01F026E8
+  ParseGridHeader: 0x01F02880
+  DefaultInit___dupe18: 0x01F00608
+  DefaultInit___dupe9: 0x01EF73F0
+  DefaultInit___dupe10: 0x01EF83AC
+  QuickLinkTag: 0x01EF6E5C
+  getPadLinkButtonAttrib: 0x01EF7140
+  Draw___dupe11: 0x01EF66E4
+  handleHTTPSendBuffer: 0x01EF697C
+  handleHTTPSBuffers: 0x01EF68E8
+  handleTTYDebugServerSetup: 0x01EF681C
+  HandleInput___dupe37: 0x01EF6644
+  SetVariableTag: 0x01EF6594
+  md5_starts: 0x01EF0D44
+  md5_process: 0x01EF0D88
+  md5_finish: 0x01EF1F70
+  md5_hex: 0x01EF2190
+  resetTextArea: 0x01EF9D10
+  SetScrollBarPercentage: 0x01EFA064
+  Scroll: 0x01EFA118
+  SetText___dupe3: 0x01EFA2C8
+  ProcessNewLine: 0x01EFA964
+  ProcessUpArrow: 0x01EFAF54
+  ProcessDownArrow: 0x01EFAFCC
+  ProcessLeftArrow: 0x01EFB098
+  ProcessRightArrow: 0x01EFB128
+  ResetParser: 0x01EFB38C
+  UpdateAfterTextEntry: 0x01EFB300
+  TrimLongWord: 0x01EFB540
+  DefaultInit___dupe12: 0x01EF9260
+  GetLineNumberAtOffset: 0x01EFB44C
+  GetSubstringPixelWidth: 0x01EFB224
+  TickerTag: 0x01F0BCC8
+  DataTag: 0x01F04658
+  TextInputTag: 0x01EFB828
+  scrollTextLeftToFillWindow: 0x01EFC994
+  defaultInit: 0x01EFB760
+  getSubstringPixelWidthImpl: 0x01EFC2F0
+  cleanFileString: 0x01F0BF70
+  SV_CheckVersion: 0x01F0BFDC
+  UnhandledLoginResponseExists: 0x01F07BCC
+  deleteItem: 0x01F06034
+  HiddenInputTag: 0x01F03864
+  PasswordInputTag: 0x01EFD334
+  ToggleChecked: 0x01EFE528
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -2025,3 +2167,46 @@ objects:
       - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_Draw___dupe18, start: 0x01EFD3A8, end: 0x01EFD418}
       - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_getSubstringPixelWidth___dupe2, start: 0x01EFD418, end: 0x01EFD48C}
       - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_registerWithForm___dupe2, start: 0x01EFD48C, end: 0x01EFD4C8}
+  svo3/GridTag:
+    text_start: 0x01F004CC
+    text_end: 0x01F03448
+    slots:
+      - {object: svo3/GridTag, section: .svo_GridTag_ClearRows, start: 0x01F004CC, end: 0x01F00574}
+      - {object: svo3/GridTag, section: .svo_GridTag_FreeResources___dupe36, start: 0x01F00574, end: 0x01F00608}
+      - {object: svo3/GridTag, section: .svo_GridTag_DefaultInit___dupe18, start: 0x01F00608, end: 0x01F00784}
+      - {object: svo3/GridTag, section: .svo_GridTag__GridTag, start: 0x01F00784, end: 0x01F007EC}
+      - {object: svo3/GridTag, section: .svo_GridTag_GridTag, start: 0x01F007EC, end: 0x01F00D68}
+      - {object: svo3/GridTag, section: .svo_GridTag_HasNavigationOccured, start: 0x01F00D68, end: 0x01F00E54}
+      - {object: svo3/GridTag, section: .svo_GridTag_FollowLink, start: 0x01F00E54, end: 0x01F00F78}
+      - {object: svo3/GridTag, section: .svo_GridTag_HandleModalInput, start: 0x01F00F78, end: 0x01F01120}
+      - {object: svo3/GridTag, section: .svo_GridTag_HandleInput___dupe50, start: 0x01F01120, end: 0x01F0139C}
+      - {object: svo3/GridTag, section: .svo_GridTag_Draw___dupe23, start: 0x01F0139C, end: 0x01F01DD0}
+      - {object: svo3/GridTag, section: .svo_GridTag_InitGridCells, start: 0x01F01DD0, end: 0x01F01F00}
+      - {object: svo3/GridTag, section: .svo_GridTag_FindAndSetSelectedCell, start: 0x01F01F00, end: 0x01F01FC4}
+      - {object: svo3/GridTag, section: .svo_GridTag_InitRowsAndColumns, start: 0x01F01FC4, end: 0x01F020DC}
+      - {object: svo3/GridTag, section: .svo_GridTag_CalculateGridHeight, start: 0x01F020DC, end: 0x01F02184}
+      - {object: svo3/GridTag, section: .svo_GridTag_initSVGridRow, start: 0x01F02184, end: 0x01F021B0}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseRows, start: 0x01F021B0, end: 0x01F023B4}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseSingleRow, start: 0x01F023B4, end: 0x01F025D0}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseColumns, start: 0x01F025D0, end: 0x01F026E8}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseSingleColumn, start: 0x01F026E8, end: 0x01F02880}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseGridHeader, start: 0x01F02880, end: 0x01F029AC}
+      - {object: svo3/GridTag, section: .svo_GridTag_ParseSingleCell, start: 0x01F029AC, end: 0x01F02AE0}
+      - {object: svo3/GridTag, section: .svo_GridTag_AdvanceCurrTopRow, start: 0x01F02AE0, end: 0x01F02B38}
+      - {object: svo3/GridTag, section: .svo_GridTag_GetCurrentSelectedCell, start: 0x01F02B38, end: 0x01F02C18}
+      - {object: svo3/GridTag, section: .svo_GridTag_ChangeSelectedCell, start: 0x01F02C18, end: 0x01F02FB0}
+      - {object: svo3/GridTag, section: .svo_GridTag_GetToolTipText___dupe2, start: 0x01F02FB0, end: 0x01F0306C}
+      - {object: svo3/GridTag, section: .svo_GridTag_CreateAndInitColumnIndexArray, start: 0x01F0306C, end: 0x01F030DC}
+      - {object: svo3/GridTag, section: .svo_GridTag_ResetIndexArray, start: 0x01F030DC, end: 0x01F03110}
+      - {object: svo3/GridTag, section: .svo_GridTag_AlignVisibleColumns, start: 0x01F03110, end: 0x01F0316C}
+      - {object: svo3/GridTag, section: .svo_GridTag_ChangeSelectedColumn, start: 0x01F0316C, end: 0x01F0331C}
+      - {object: svo3/GridTag, section: .svo_GridTag_HandleColumnShuffling, start: 0x01F0331C, end: 0x01F03448}
+  svo3/md5:
+    text_start: 0x01EF0D44
+    text_end: 0x01EF21FC
+    slots:
+      - {object: svo3/md5, section: .svo_md5_md5_starts, start: 0x01EF0D44, end: 0x01EF0D88}
+      - {object: svo3/md5, section: .svo_md5_md5_process, start: 0x01EF0D88, end: 0x01EF1E4C}
+      - {object: svo3/md5, section: .svo_md5_md5_update, start: 0x01EF1E4C, end: 0x01EF1F70}
+      - {object: svo3/md5, section: .svo_md5_md5_finish, start: 0x01EF1F70, end: 0x01EF2190}
+      - {object: svo3/md5, section: .svo_md5_md5_hex, start: 0x01EF2190, end: 0x01EF21FC}

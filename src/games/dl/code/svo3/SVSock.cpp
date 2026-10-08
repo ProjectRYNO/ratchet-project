@@ -1,4 +1,15 @@
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoSockSource[];
+void * SVSockoperator_new___dupe9(unsigned int size, CMemoryContextBaseState *memory) __asm__("operator.new___dupe9");
+
+}
+#define SECTION(name) __attribute__((section(".svo_SVSock_" #name)))
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+
 // Retain the unresolved wrapper at its original address.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
 #undef INCLUDE_ASM
@@ -10,7 +21,6 @@
 #endif
 
 #include "SVSock.h"
-#include "CMemoryContextBase.h"
 
 extern "C" const unsigned int svoSockVtable[];
 

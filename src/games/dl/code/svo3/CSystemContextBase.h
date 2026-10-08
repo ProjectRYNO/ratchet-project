@@ -2,7 +2,15 @@
 #define CSYSTEMCONTEXTBASE_H
 
 struct CSystemContextBase;
-struct CFileDownloadInfo;
+struct CFileDownloadInfo { // 0x1C
+    /* 0x00 */ char *name;
+    /* 0x04 */ char *fileID;
+    /* 0x08 */ void *pData;
+    /* 0x0C */ int dataLen;
+    /* 0x10 */ int partialDownloadInfo;
+    /* 0x14 */ int entireDataLen;
+    /* 0x18 */ int curTotalDataLen;
+};
 
 // Verified prefix used by error and timer dispatch.
 typedef struct { // 0x3C (vtable prefix, not the full table)
@@ -18,7 +26,7 @@ typedef struct { // 0x3C (vtable prefix, not the full table)
     /* 0x24 */ void *unknown24;
     /* 0x28 */ void *unknown28;
     /* 0x2C */ void *unknown2C;
-    /* 0x30 */ void *unknown30;
+    /* 0x30 */ void (*FileDownloadCallback)(CSystemContextBase *, CFileDownloadInfo *);
     /* 0x34 */ void *unknown34;
     /* 0x38 */ long (*GetElapsedMS)(CSystemContextBase *context);
 } CSystemContextVtablePrefix;

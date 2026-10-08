@@ -1,3 +1,6 @@
+#include "string.h"
+#include "TagUtils.h"
+#include "SVTag.h"
 #include "SVOString.h"
 #include <string.h>
 #include "common.h"
@@ -26,7 +29,20 @@ void URIStoreAdd(char *lookup, char *value);
 void FileDownloadQueueAdd(char *id, char *path);
 int strcasecmp(const char *, const char *);
 
-
+extern "C" {
+extern char *_data_type_strings[];
+}
+extern "C" {
+extern char *_data_type_strings[];
+}
+extern "C" {
+extern const SVTagVtablePrefix svoDataTagVtable;
+extern char svoDataTypeAttribute[];
+void DefaultInit___dupe21(DataTagState *);
+long getDataTypeAttrib(void *, iks *, char *, unsigned int *);
+long ParseURITag(DataTagState *, iks *);
+long ParseFileTag(DataTagState *, iks *);
+}
 #define SECTION(name) __attribute__((section(".svo_DataTag_" #name)))
 
 SECTION(FreeResources___dupe46) void FreeResources___dupe46(SVTag *tag)
@@ -47,15 +63,23 @@ extern "C" SECTION(_DataTag) void _DataTag(DataTagState *tag, int flags)
     if (flags & 1) SVTagDelete(&tag->base);
 }
 
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DataTag", DataTag);
+extern "C" SECTION(DataTag) void DataTag(DataTagState *tag, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(&tag->base, xml, contexts);
+    tag->base.vtable = &svoDataTagVtable;
+    DefaultInit___dupe21(tag);
+    getDataTypeAttrib(tag, xml, svoDataTypeAttribute, (unsigned int *)&tag->m_dataTagType);
+    int type = tag->m_dataTagType;
+    if (type >= 0 && type < 2) ParseURITag(tag, xml);
+    else if (type == 2) ParseFileTag(tag, xml);
+    else __SVO_Assert_Handler(svoDataTagSource, 0x32);
+}
 
 extern "C" SECTION(DefaultInit___dupe21) void DefaultInit___dupe21(DataTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoDataTagName, 64);
     tag->m_bAllowNavigationDuringDownload = 1;
 }
-
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DataTag", getDataTypeAttrib);
 
@@ -78,7 +102,6 @@ extern "C" SECTION(ParseFileTag) long ParseFileTag(DataTagState *tag, iks *xml)
     }
     return 1;
 }
-
 
 extern "C" SECTION(ParseURITag) long ParseURITag(DataTagState *tag, iks *xml)
 {

@@ -7,7 +7,9 @@
 
 struct SVTag;
 typedef struct { // 0x4C (vtable prefix)
-    /* 0x00 */ unsigned char unrecovered00[0x14];
+    /* 0x00 */ unsigned char unrecovered00[8];
+    /* 0x08 */ void (*destroy)(SVTag *tag, unsigned int flags);
+    /* 0x0C */ unsigned char unrecovered0C[8];
     /* 0x14 */ void (*Update)(SVTag *tag, CPage *page);
     /* 0x18 */ unsigned char unrecovered18[8];
     /* 0x20 */ long (*IsSelected)(SVTag *tag);

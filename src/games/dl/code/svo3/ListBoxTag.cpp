@@ -1,3 +1,4 @@
+#include "SVOString.h"
 #include "SVTag.h"
 #include "CMemoryContextBase.h"
 #include "string.h"
@@ -16,12 +17,18 @@
 
 extern "C" {
 
-extern "C" {
 extern char svoListBoxTagSource[];
-}
+
 extern "C" {
 extern const SVTagVtablePrefix svoListBoxTagVtable;
 void FreeResources___dupe48(ListBoxTagState *tag);
+}
+extern "C" {
+extern char svoListBoxTagName[];
+extern unsigned int svoNextTagId;
+}
+extern "C" {
+
 }
 #define SECTION(name) __attribute__((section(".svo_ListBoxTag_" #name)))
 
@@ -77,9 +84,39 @@ extern "C" SECTION(countItems) long countItems(ListBoxTagState *tag)
     return tag->m_numItems;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", DefaultInit___dupe22);
+extern "C" SECTION(DefaultInit___dupe22) void DefaultInit___dupe22(ListBoxTagState *tag)
+{
+    svstrncpy(tag->base.m_tagTypeName, svoListBoxTagName, 64);
+    const ListBoxTagVtablePrefix *vtable = (const ListBoxTagVtablePrefix *)tag->base.vtable;
+    tag->m_fontSize = 14;
+    tag->m_align = 1;
+    tag->base.m_fillColor = 0xFFFFFFFF;
+    tag->base.m_lineColor = 0xFF00FF00;
+    tag->m_defaultItemColor = 0xFF000000;
+    tag->m_selectedItemColor = 0xFFFFFF00;
+    tag->m_buttonHeight = 20.0f;
+    tag->m_lineSpacing = 20.0f;
+    tag->m_displayLength = 0.0f;
+    tag->m_turnOffDraw = 0;
+    tag->m_selectFocusAreaMode = 0;
+    tag->m_scrollBarPercentage = 0.0f;
+    tag->m_maxNumItems = 0;
+    tag->m_maxVisibleItems = 0;
+    vtable->clearItems(tag);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", deleteItem);
+extern "C" SECTION(deleteItem) long deleteItem(ListBoxTagState *tag, int index)
+{
+    if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x273);
+    int count = tag->m_numItems;
+    if (index >= count || !tag->m_items[index]) return 0;
+    for (; index < count - 1; ++index) tag->m_items[index] = tag->m_items[index + 1];
+    count = tag->m_numItems;
+    tag->m_numItems = count - 1;
+    // Retail clears the old count index, not the last occupied index.
+    tag->m_items[count] = 0;
+    return 1;
+}
 
 extern "C" SECTION(deselectItem) void deselectItem(ListBoxTagState *tag, int index)
 {
@@ -92,7 +129,14 @@ extern "C" SECTION(deselectItem) void deselectItem(ListBoxTagState *tag, int ind
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", Draw___dupe25);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", FreeResources___dupe48);
+extern "C" SECTION(FreeResources___dupe48) void FreeResources___dupe48(ListBoxTagState *tag)
+{
+    if (tag->m_pTimer) _SVChronograph(tag->m_pTimer, 3);
+    for (int i = 0; i < tag->m_maxNumItems; ++i) {
+        ListBoxItem *item = tag->m_items[i];
+        if (item) svFreeSafe(tag->base.m_contexts->memoryContext, item);
+    }
+}
 
 extern "C" SECTION(getItem) ListBoxItem * getItem(ListBoxTagState *tag, int index)
 {
@@ -136,7 +180,18 @@ extern "C" SECTION(getTopVisibleIndex) long getTopVisibleIndex(ListBoxTagState *
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", HandleInput___dupe53);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", initListboxItem);
+extern "C" SECTION(initListboxItem) void initListboxItem(ListBoxTagState *tag, ListBoxItem *item)
+{
+    unsigned int id = svoNextTagId;
+    item->displayStr = 0;
+    item->h_ref = 0;
+    item->linkOption = 0;
+    item->tagClass = 0;
+    item->name = 0;
+    item->info = 0;
+    svoNextTagId = id + 1;
+    item->tagid = id;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", isIndexSelected);
 

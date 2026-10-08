@@ -1,3 +1,10 @@
+#include "CError.h"
+#include "URISchemeMgr.h"
+#include "ParseXML.h"
+#include "string.h"
+#include "SVBrowser.h"
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
 #include "SVTagModuleList.h"
 #include "SVTag.h"
 #include "common.h"
@@ -15,11 +22,61 @@
 
 extern "C" {
 
-extern "C" {
 extern char svoPageSource[];
 long DefaultHandleInput(SVTag *tag, CPage *page);
 void FreeBackDisplayBuffer(CPage *page);
 void ReAllocBackDisplayBufferParser(CPage *page);
+
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoPageSource[];
+void * CPageoperator_new___dupe3(unsigned int size) __asm__("operator.new___dupe3");
+
+}
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+void CPageoperator_delete___dupe2(void *memory) __asm__("operator.delete___dupe2");
+
+}
+extern "C" {
+iksparser_struct *iks_dom_new(iks **);
+void iks_parser_reset(iksparser_struct *);
+void FreeDisplayBuffers(CPage *);
+void freeResources(CPage *, int);
+char *GetPageName(SVBrowserPrefix *);
+char *GetSelectedTagName(CPage *);
+extern char svoTournamentHomeName[];
+extern char *svoTournamentSelectedTagName;
+extern CAllContextData svoPageContextData;
+CAudioContextBaseState *GetAudioContext();
+CAudioContextBaseState *GetAltAudioContext();
+CDrawContextBase *GetDrawContext();
+CDrawContextBase *GetAltDrawContext();
+CMemoryContextBaseState *GetMemoryContext();
+CMemoryContextBaseState *GetAltMemoryContext();
+CSystemContextBase *GetSystemContext();
+CSystemContextBase *GetAltSystemContext();
+CInputContextBaseState *GetInputContext();
+CInputContextBaseState *GetAltInputContext();
+
+}
+extern "C" {
+void SVMLparseCB(CPage *, unsigned int, char *, int, ParseXMLState *, int);
+void XMLparseCB(CPage *, unsigned int, char *, int, ParseXMLState *);
+void iks_delete(iks *);
+void iks_parser_delete(iksparser_struct *);
+char *GetTagTypeName(SVTag *);
+void SetDefaultTextScrollTag(CPage *, SVTag *);
+extern char svoPageSchemeSeparator[];
+extern char svoPageStaticScheme[];
+extern char svoPageTextAreaTagName[];
+const void *ParseSVMLAddObjects(ParseXMLState *);
+void _ParseSVMLAddObjects(ParseXMLState *, int);
+const void *ParseSVMLForDownloads(ParseXMLState *);
+void _ParseSVMLForDownloads(ParseXMLState *, int);
+const void *ParseXMLInfo(ParseXMLState *);
+void _ParseXMLInfo(ParseXMLState *, int);
+
 }
 #define SECTION(name) __attribute__((section(".svo_CPage_" #name)))
 
@@ -63,7 +120,15 @@ extern "C" SECTION(autoRefreshPage) long autoRefreshPage(CPage *page)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", callGenericDownloadCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", ClosePopup);
+extern "C" SECTION(ClosePopup) long ClosePopup(CPage *page)
+{
+    if (page != GetInstance()->m_pPopupPage) __SVO_Assert_Handler(svoPageSource, 0x9AB);
+    page->m_bIsActive = 0;
+    clear(&page->m_history);
+    FreeDisplayBuffers(page);
+    freeResources(page, 0);
+    return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", CPage);
 
@@ -104,17 +169,61 @@ extern "C" SECTION(EnterNewPage___dupe30) void EnterNewPage___dupe30(CPage *page
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", FindAndSetDefualtTextAreaScroll);
+extern "C" SECTION(FindAndSetDefualtTextAreaScroll) void FindAndSetDefualtTextAreaScroll(CPage *page)
+{
+    SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
+    int found = -1;
+    for (int i = 0; i < 256 && tags[i]; ++i) {
+        if (!strcmp(svoPageTextAreaTagName, GetTagTypeName(tags[i]))) {
+            if (found != -1) return;
+            found = i;
+        }
+    }
+    if (found != -1) {
+        tags[found]->m_isDefTextScroll = 1;
+        SetDefaultTextScrollTag(page, tags[found]);
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", followLink);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", frameUpdate);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", FreeBackDisplayBuffer);
+extern "C" SECTION(FreeBackDisplayBuffer) void FreeBackDisplayBuffer(CPage *page)
+{
+    for (int i = 0; i < 256 && page->m_pBackDisplayBuffer->tagList[i]; ++i) {
+        SVTag *tag = page->m_pBackDisplayBuffer->tagList[i];
+        tag->vtable->destroy(tag, 3);
+        page->m_pBackDisplayBuffer->tagList[i] = 0;
+    }
+    if (page->m_pBackDisplayBuffer->xml) {
+        iks_delete(page->m_pBackDisplayBuffer->xml);
+        page->m_pBackDisplayBuffer->xml = 0;
+    }
+    if (page->m_pBackDisplayBuffer->parser) {
+        iks_parser_delete(page->m_pBackDisplayBuffer->parser);
+        page->m_pBackDisplayBuffer->parser = 0;
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", FreeDisplayBuffers);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", FreeFrontDisplayBuffer);
+extern "C" SECTION(FreeFrontDisplayBuffer) void FreeFrontDisplayBuffer(CPage *page)
+{
+    for (int i = 0; i < 256 && page->m_pFrontDisplayBuffer->tagList[i]; ++i) {
+        SVTag *tag = page->m_pFrontDisplayBuffer->tagList[i];
+        tag->vtable->destroy(tag, 3);
+        page->m_pFrontDisplayBuffer->tagList[i] = 0;
+    }
+    if (page->m_pFrontDisplayBuffer->xml) {
+        iks_delete(page->m_pFrontDisplayBuffer->xml);
+        page->m_pFrontDisplayBuffer->xml = 0;
+    }
+    if (page->m_pFrontDisplayBuffer->parser) {
+        iks_parser_delete(page->m_pFrontDisplayBuffer->parser);
+        page->m_pFrontDisplayBuffer->parser = 0;
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", freeResources);
 
@@ -170,21 +279,63 @@ extern "C" SECTION(handleUpdate) void handleUpdate(CPage *page)
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", LeaveCurrentPage);
+extern "C" SECTION(LeaveCurrentPage) void LeaveCurrentPage(CPage *page)
+{
+    SVTagModuleState **entry = getInstance___dupe3()->m_modules + 1;
+    while (*entry) {
+        SVTagModuleState *module = *entry++;
+        module->vtable->LeaveCurrentPage(module);
+    }
+    char *name = GetPageName(GetInstance());
+    if (name && strcmp(name, svoTournamentHomeName) == 0)
+        svoTournamentSelectedTagName = GetSelectedTagName(page);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", LoadStatePostGameFromPersistentData);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", operator.delete___dupe2);
+extern "C" SECTION(operator.delete___dupe2) void CPageoperator_delete___dupe2(void *memory)
+{
+    svFreeSafe(GetMemoryContext(), memory);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", operator.new___dupe3);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", parseCBHelper);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", parseTagsCB);
+extern "C" SECTION(parseTagsCB) void parseTagsCB(unsigned int status, char *buffer, int size, CPage *page, int swap)
+{
+    if (!page) __SVO_Assert_Handler(svoPageSource, 0x3ab);
+    ParseXMLState parser;
+    ParseSVMLAddObjects(&parser);
+    SVMLparseCB(page, status, buffer, size, &parser, swap);
+    _ParseSVMLAddObjects(&parser, 2);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", pathIsFullyQualified);
+extern "C" SECTION(pathIsFullyQualified) long pathIsFullyQualified(CPage *page, char *path)
+{
+    char *colon = strstr(path, svoPageSchemeSeparator);
+    if (!colon) return 0;
+    int length = colon - path;
+    if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x74d);
+    char scheme[15];
+    memcpy(scheme, path, 15);
+    scheme[length] = 0;
+    long result = HasProvider(Get(), scheme);
+    if (!result) SetErrorCode(32);
+    return result;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", pathIsStatic);
+extern "C" SECTION(pathIsStatic) long pathIsStatic(CPage *page, char *path)
+{
+    char *colon = strstr(path, svoPageSchemeSeparator);
+    if (!colon) return 0;
+    int length = colon - path;
+    if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x777);
+    char scheme[15];
+    memcpy(scheme, path, 15);
+    scheme[length] = 0;
+    return strcmp(scheme, svoPageStaticScheme) == 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", PopInTransitArray);
 
@@ -202,11 +353,25 @@ extern "C" SECTION(ResetBackDisplayBuffer) void ResetBackDisplayBuffer(CPage *pa
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", resolveRelativePath);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", scanForDownloadablesCB);
+extern "C" SECTION(scanForDownloadablesCB) void scanForDownloadablesCB(unsigned int status, char *buffer, int size, CPage *page, int swap)
+{
+    if (!page) __SVO_Assert_Handler(svoPageSource, 0x3b8);
+    ParseXMLState parser;
+    ParseSVMLForDownloads(&parser);
+    SVMLparseCB(page, status, buffer, size, &parser, swap);
+    _ParseSVMLForDownloads(&parser, 2);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", scanObject);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", scanXMLCB);
+extern "C" SECTION(scanXMLCB) void scanXMLCB(unsigned int status, char *buffer, int size, CPage *page, int swap)
+{
+    if (!page) __SVO_Assert_Handler(svoPageSource, 0x3cb);
+    ParseXMLState parser;
+    ParseXMLInfo(&parser);
+    XMLparseCB(page, status, buffer, size, &parser);
+    _ParseXMLInfo(&parser, 2);
+}
 
 extern "C" SECTION(SetDefaultTextScrollTag) void SetDefaultTextScrollTag(CPage *page, SVTag *tag)
 {

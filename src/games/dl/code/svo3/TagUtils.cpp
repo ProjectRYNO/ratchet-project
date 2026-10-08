@@ -1,3 +1,5 @@
+#include "string.h"
+#include "TagUtils.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -9,7 +11,6 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
-#include "TagUtils.h"
 #include "SVTag.h"
 #include "CPage.h"
 #include "SVTagModuleList.h"
@@ -61,6 +62,12 @@ SVTagModuleState *getInstance___dupe6(void);
 SVTagModuleState *getInstance___dupe30(void);
 SVTagModuleState *getInstance___dupe31(void);
 
+extern "C" {
+extern char *svoTagLinkOptions[];
+}
+extern "C" {
+
+}
 #define SECTION(name) __attribute__((section(".svo_TagUtils_" #name)))
 
 SECTION(operator.delete___dupe5) void TagUtilsDelete(void *memory)

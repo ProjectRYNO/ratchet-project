@@ -1,3 +1,5 @@
+#include "TagUtils.h"
+#include "LineTag.h"
 #include "common.h"
 // Retain the unresolved wrapper at its original address.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -9,8 +11,6 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
-#include "LineTag.h"
-#include "TagUtils.h"
 #include "SVOString.h"
 #include "CDrawContextBase.h"
 
@@ -23,6 +23,10 @@ extern char svoLineThicknessAttribute[];
 extern char svoLineColorAttribute[];
 extern char svoLineClassAttribute[];
 extern const SVTagVtablePrefix svoLineTagVtable;
+extern "C" {
+void DefaultInit___dupe7(LineTagState *);
+}
+#define SECTION(name) TAG_SECTION(name)
 #define TAG_SECTION(name) __attribute__((section(".svo_LineTag_" #name)))
 
 TAG_SECTION(DefaultInit___dupe7) void DefaultInit___dupe7(LineTagState *tag)

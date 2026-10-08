@@ -1,3 +1,4 @@
+struct CTagModuleActions;
 #include "CMemoryContextBase.h"
 #include <string.h>
 #include "common.h"
@@ -25,6 +26,12 @@ extern char svoLoginTagModuleName[];
 
 extern const SVTagModuleVtablePrefix svoLoginTagModuleVtable;
 
+extern "C" {
+extern int m_loginResult;
+void ScanTagsHandleLoginDTD(LoginTagModuleState *, iks *, CAllContextData *, char *, CTagModuleActions *);
+void ScanTagsHandleLoginSubmitResponse(LoginTagModuleState *, iks *, CAllContextData *, CTagModuleActions *);
+extern char svoLoginDTDAttribute[];
+}
 #define SECTION(name) __attribute__((section(".svo_LoginTagModule_" #name)))
 
 SECTION(LoginTagModule) const SVTagModuleVtablePrefix *LoginTagModule(LoginTagModuleState *module)
@@ -42,7 +49,6 @@ extern "C" SECTION(_LoginTagModule) void _LoginTagModule(LoginTagModuleState *mo
     if (flags & 1) LoginTagModuleDelete11(module);
 }
 
-
 extern "C" SECTION(FreeResources___dupe52) void FreeResources___dupe52(LoginTagModuleState *module)
 {
     if (svoLoginTagModuleInstance) {
@@ -50,7 +56,6 @@ extern "C" SECTION(FreeResources___dupe52) void FreeResources___dupe52(LoginTagM
         svoLoginTagModuleInstance = 0;
     }
 }
-
 
 extern "C" SECTION(getInstance___dupe27) LoginTagModuleState *getInstance___dupe27(void)
 {
@@ -62,25 +67,21 @@ extern "C" SECTION(getInstance___dupe27) LoginTagModuleState *getInstance___dupe
     return svoLoginTagModuleInstance;
 }
 
-
 extern "C" SECTION(IsMyTag___dupe25) int IsMyTag___dupe25(LoginTagModuleState *module, iks *xml)
 {
     if (iks_type(xml) != IKS_TAG) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x2A);
     return strcmp(iks_name(xml), svoLoginTagModuleName) == 0;
 }
 
-
 extern "C" SECTION(operator.delete___dupe10) void LoginTagModuleDelete10(void *memory)
 {
     svFreeSafe(GetMemoryContext(), memory);
 }
 
-
 extern "C" SECTION(operator.delete___dupe11) void LoginTagModuleDelete11(void *memory)
 {
     svFreeSafe(GetMemoryContext(), memory);
 }
-
 
 extern "C" SECTION(operator.new___dupe12) void *LoginTagModuleNew(unsigned int size)
 {
@@ -89,11 +90,18 @@ extern "C" SECTION(operator.new___dupe12) void *LoginTagModuleNew(unsigned int s
     return memory;
 }
 
-
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTags___dupe6);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginDTD);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginSubmitResponse);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", UnhandledLoginResponseExists);
+extern "C" SECTION(UnhandledLoginResponseExists) long UnhandledLoginResponseExists(LoginTagModuleState *module, int *result)
+{
+    if (!result) __SVO_Assert_Handler(svoLoginTagModuleSource, 0xB1);
+    if (!module->m_bHaveUnhandledLoginResponse) return 0;
+    int value = m_loginResult;
+    module->m_bHaveUnhandledLoginResponse = 0;
+    *result = value;
+    return 1;
+}

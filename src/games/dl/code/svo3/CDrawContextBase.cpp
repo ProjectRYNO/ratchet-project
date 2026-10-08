@@ -13,6 +13,8 @@
 
 extern "C" {
 
+
+
 #define SECTION(name) __attribute__((section(".svo_CDrawContextBase_" #name)))
 
 SECTION(RenderAssert) long RenderAssert(void *self, void *context)
@@ -51,9 +53,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawB
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawDownloadThrobber);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawGenericListboxFrame);
+extern "C" SECTION(DrawGenericListboxFrame) void DrawGenericListboxFrame(CDrawContextBase *draw, unsigned int id, float x, float y, float width, float height, unsigned int lineColor, unsigned int fillColor, int maxVisibleItems, float scrollBarPercentage, char *tagClass)
+{
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 100000.0f, 0, 0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawGridBorder);
+extern "C" SECTION(DrawGridBorder) void DrawGridBorder(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, char *tagClass)
+{
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, z, 0, tagClass);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawGridCell);
 
@@ -73,7 +81,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawS
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawStaticImage);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", DrawTextArea);
+extern "C" SECTION(DrawTextArea) void DrawTextArea(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, unsigned int textColor, int selected, float scrollbarWidth, float scrollbarHeight, float scrollBarPercentage, char *tagClass, int canScrollUp, int canScrollDown)
+{
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 100000.0f, 0, 0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CDrawContextBase", drawTicker);
 

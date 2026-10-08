@@ -15,13 +15,12 @@
 
 extern "C" {
 
-extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoRadioInputTagFormNameAttribute[];
 void AddRadioElement(FormTag *form, RadioInputTagState *tag);
 extern char svoRadioInputTagSource[];
 
-}
+
 extern "C" {
 extern char svoRadioInputTagName[];
 }

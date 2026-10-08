@@ -1,6 +1,6 @@
+#include "TextInputTag.h"
 #include "string.h"
 #include "SVOString.h"
-#include "TextInputTag.h"
 extern "C" {
 FormTag *findParentForm(TextInputTagState *tag, iks *parent, SVTag **tagList);
 void AddPasswordElement(FormTag *form, TextInputTagState *tag);
@@ -14,6 +14,10 @@ void InitialiseFromXml(TextInputTagState *tag, iks *xml, SVTag **tagList, CAllCo
 extern char svoPasswordInputTagName[];
 extern char svoPasswordInputTagSource[];
 extern const SVTagVtablePrefix svoPasswordInputTagVtable;
+}
+extern "C" {
+void TextInputTag(TextInputTagState *, iks *, SVTag **, CAllContextData *, int);
+void InitialiseFromXml(TextInputTagState *, iks *, SVTag **, CAllContextData *);
 }
 #define SECTION(name) __attribute__((section(".svo_PasswordInputTag_" #name)))
 #include "common.h"
@@ -29,7 +33,13 @@ extern const SVTagVtablePrefix svoPasswordInputTagVtable;
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PasswordInputTag", defaultInit___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PasswordInputTag", PasswordInputTag);
+extern "C" SECTION(PasswordInputTag) void PasswordInputTag(TextInputTagState *tag, iks *xml, SVTag **tags, CAllContextData *contexts)
+{
+    TextInputTag(tag, xml, tags, contexts, 1);
+    tag->base.vtable = &svoPasswordInputTagVtable;
+    InitialiseFromXml(tag, xml, tags, contexts);
+    tag->m_bEditable = 1;
+}
 
 extern "C" SECTION(Draw___dupe18) void Draw___dupe18(TextInputTagState *tag)
 {

@@ -1,4 +1,15 @@
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoTagModuleListSource[];
+void * SVTagModuleListoperator_new___dupe6(unsigned int size) __asm__("operator.new___dupe6");
+
+}
+#define SECTION(name) __attribute__((section(".svo_module_list_" #name)))
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+
 // Retain the unresolved wrapper at its original address.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
 #undef INCLUDE_ASM

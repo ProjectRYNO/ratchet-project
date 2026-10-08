@@ -1,3 +1,6 @@
+#include "string.h"
+#include "SVOString.h"
+#include "StaticImageTag.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -12,6 +15,11 @@
 #include "SVTag.h"
 
 extern "C" {
+
+extern char svoStaticImageTagName[];
+extern char gTagNotSetStr[];
+extern char svoStaticImageUnsetName[];
+
 
 #define SECTION(name) __attribute__((section(".svo_StaticImageTag_" #name)))
 

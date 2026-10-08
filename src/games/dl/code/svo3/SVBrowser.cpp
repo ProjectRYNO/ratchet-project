@@ -1,3 +1,9 @@
+#include "SVTag.h"
+#include "md5.h"
+#include "SVDownloadManager.h"
+#include "SVTagModuleList.h"
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -11,7 +17,6 @@
 
 #include "SVBrowser.h"
 #include "CPage.h"
-#include "CMemoryContextBase.h"
 #include "SVOString.h"
 #include "CError.h"
 #include <string.h>
@@ -30,6 +35,21 @@ void add___dupe2(FileDownloadQueueState *queue, char *lookup, char *value);
 void rt_comm_update(void);
 void rt_comm_shutdown(void);
 
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoBrowserSource[];
+
+}
+extern "C" {
+long handleInput(CPage *);
+char *GetTagTypeName(SVTag *);
+extern char svoBrowserPageIDTagName[];
+void download___dupe3(SVDownloadManager *);
+long HasEntries(FileDownloadQueueState *);
+void GetNextEntry(FileDownloadQueueState *, char *, int, char *, int);
+void DownloadFile(SVBrowserPrefix *, char *, char *);
+
+}
 #define SECTION(name) __attribute__((section(".svo_SVBrowser_" #name)))
 
 SECTION(DefaultInit) void DefaultInit(SVBrowserPrefix *browser)
@@ -288,7 +308,18 @@ SECTION(RTCommDestroy) void RTCommDestroy(SVBrowserPrefix *browser)
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", CalculatePersistentDataMd5Sum);
+extern "C" SECTION(CalculatePersistentDataMd5Sum) void CalculatePersistentDataMd5Sum(SVBrowserPrefix *browser, SVPersistentData *data, char *output, int size)
+{
+    if (size != 33) __SVO_Assert_Handler(svoBrowserSource, 0x3CE);
+    md5_context context;
+    unsigned char digest[16];
+    memset(&context, 0, sizeof(context));
+    memset(digest, 0, sizeof(digest));
+    md5_starts(&context);
+    md5_update(&context, (unsigned char *)data, 5000);
+    md5_finish(&context, digest);
+    md5_hex(digest, output);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DeInitURISchemas);
 
@@ -298,9 +329,36 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DrawPages);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", FreeResources);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", GetPageName);
+extern "C" SECTION(GetPageName) char *GetPageName(SVBrowserPrefix *browser)
+{
+    CPage *main = svoBrowserInstance->m_pMainPage;
+    if (!main) return 0;
+    CPage *popup = svoBrowserInstance->m_pPopupPage;
+    if (!popup) return 0;
+    SVTag **tags = (popup->m_bIsActive ? popup : main)->m_pFrontDisplayBuffer->tagList;
+    for (int i = 0; i < 256 && tags[i]; ++i) {
+        char *name = GetTagTypeName(tags[i]);
+        if (!name) __SVO_Assert_Handler(svoBrowserSource, 0x71C);
+        if (strncmp(name, svoBrowserPageIDTagName, 9) == 0)
+            return tags[i]->vtable->GetTagName(tags[i]);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", HandleInputPages);
+extern "C" SECTION(HandleInputPages) void HandleInputPages(SVBrowserPrefix *browser, CPage *page)
+{
+    long handled = handleInput(page);
+    SVTagModuleState **entry = getInstance___dupe3()->m_modules;
+    if (handled && *entry) {
+        int count = 0;
+        do {
+            SVTagModuleState *module = *entry++;
+            ++count;
+            handled = module->vtable->HandleInput(module, page);
+            if (count >= 128 || !handled) break;
+        } while (*entry);
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Initialize___dupe4);
 

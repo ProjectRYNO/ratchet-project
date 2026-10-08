@@ -4329,10 +4329,10 @@
     "size": "0x3C",
     "line": 0,
     "owners": [
-      "svo3\\CSystemContextBase.h"
+      "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "unknown00",
@@ -4395,7 +4395,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown30",
+        "name": "FileDownloadCallback",
         "offset": 48,
         "bitfield": false
       },
@@ -4416,10 +4416,10 @@
     "size": "0x14",
     "line": 0,
     "owners": [
-      "svo3\\CSystemContextBase.h"
+      "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "unrecovered",
@@ -5028,13 +5028,13 @@
   },
   {
     "name": "SVSockState",
-    "size": "0xC",
+    "size": "0x0C",
     "line": 32076,
     "owners": [
-      "svo3/SVSock.h"
+      "svo3/SVSock.cpp"
     ],
     "header": "code/svo3/SVSock.h",
-    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "m_errNo",
@@ -5084,7 +5084,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown10",
+        "name": "HandleInput",
         "offset": 16,
         "bitfield": false
       },
@@ -5383,6 +5383,16 @@
       {
         "name": "unrecovered00",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered0C",
+        "offset": 12,
         "bitfield": false
       },
       {
@@ -6041,13 +6051,13 @@
   },
   {
     "name": "HttpState",
-    "size": "0x8ABC",
+    "size": "0x8AC4",
     "line": 0,
     "owners": [
       "svo3/CHttp.cpp"
     ],
     "header": "code/svo3/CHttp.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "vtable",
@@ -6060,13 +6070,148 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered08",
+        "name": "m_scheme",
         "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_bConnectionOpen",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "m_addr",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "m_sock",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "m_port",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerBytesReceived",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "m_bodyBytesReceived",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "m_contentLength",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "m_nextLocation",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "padding135",
+        "offset": 309,
+        "bitfield": false
+      },
+      {
+        "name": "m_memoryContextPtr",
+        "offset": 312,
+        "bitfield": false
+      },
+      {
+        "name": "m_QueryParams",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "m_timer",
+        "offset": 1344,
+        "bitfield": false
+      },
+      {
+        "name": "m_szFilePath",
+        "offset": 1360,
+        "bitfield": false
+      },
+      {
+        "name": "padding651",
+        "offset": 1617,
+        "bitfield": false
+      },
+      {
+        "name": "m_iMethodType",
+        "offset": 1620,
+        "bitfield": false
+      },
+      {
+        "name": "m_szHostname",
+        "offset": 1624,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerBuf",
+        "offset": 1688,
+        "bitfield": false
+      },
+      {
+        "name": "m_bDownloadingBody",
+        "offset": 34456,
+        "bitfield": false
+      },
+      {
+        "name": "m_status",
+        "offset": 34460,
+        "bitfield": false
+      },
+      {
+        "name": "m_timeoutFrameCounter",
+        "offset": 34464,
+        "bitfield": false
+      },
+      {
+        "name": "m_httpCommandStr",
+        "offset": 34468,
+        "bitfield": false
+      },
+      {
+        "name": "padding86A9",
+        "offset": 34473,
+        "bitfield": false
+      },
+      {
+        "name": "m_savedServerParams",
+        "offset": 34476,
+        "bitfield": false
+      },
+      {
+        "name": "m_serverParamsTooLong",
+        "offset": 35504,
+        "bitfield": false
+      },
+      {
+        "name": "m_bNeedToPost302",
+        "offset": 35508,
         "bitfield": false
       },
       {
         "name": "m_eSocketType",
         "offset": 35512,
+        "bitfield": false
+      },
+      {
+        "name": "m_pListener",
+        "offset": 35516,
+        "bitfield": false
+      },
+      {
+        "name": "m_pListenerContext",
+        "offset": 35520,
         "bitfield": false
       }
     ]
@@ -6581,17 +6726,32 @@
   },
   {
     "name": "RTCommSockState",
-    "size": "0x9C",
+    "size": "0xA0",
     "line": 0,
     "owners": [
       "svo3/RTCommSock.cpp"
     ],
     "header": "code/svo3/RTCommSock.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
-        "name": "unrecovered00",
+        "name": "base",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_rtCommCID",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "m_OutBuffer",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "m_szHostnameBeingLookedUp",
+        "offset": 56,
         "bitfield": false
       },
       {
@@ -6600,13 +6760,38 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered7C",
+        "name": "m_pScratchBuffer",
         "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "addressVtable",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered84",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "address",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered90",
+        "offset": 144,
         "bitfield": false
       },
       {
         "name": "m_eSynchronous",
         "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "padding9C",
+        "offset": 156,
         "bitfield": false
       }
     ]
@@ -7063,11 +7248,16 @@
       "svo3/SVDisplayBuffer.cpp"
     ],
     "header": "code/svo3/SVDisplayBuffer.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
-        "name": "unrecovered",
+        "name": "xml",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "parser",
+        "offset": 4,
         "bitfield": false
       },
       {
@@ -7079,22 +7269,97 @@
   },
   {
     "name": "SVDownloadManagerState",
-    "size": "0x8B80",
+    "size": "0x8CD8",
     "line": 0,
     "owners": [
       "svo3/SVDownloadManager.cpp"
     ],
     "header": "code/svo3/SVDownloadManager.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
-        "name": "unrecovered00",
+        "name": "base",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_fileName",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_scheme",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "m_serverName",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "m_port",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "paddingB6",
+        "offset": 182,
+        "bitfield": false
+      },
+      {
+        "name": "m_http",
+        "offset": 184,
         "bitfield": false
       },
       {
         "name": "m_state",
         "offset": 35708,
+        "bitfield": false
+      },
+      {
+        "name": "m_bRequestInProgress",
+        "offset": 35712,
+        "bitfield": false
+      },
+      {
+        "name": "m_fileStatus",
+        "offset": 35716,
+        "bitfield": false
+      },
+      {
+        "name": "m_fileContentLength",
+        "offset": 35720,
+        "bitfield": false
+      },
+      {
+        "name": "m_fileBytesReceived",
+        "offset": 35724,
+        "bitfield": false
+      },
+      {
+        "name": "m_buffers",
+        "offset": 35728,
+        "bitfield": false
+      },
+      {
+        "name": "m_page",
+        "offset": 35776,
+        "bitfield": false
+      },
+      {
+        "name": "m_timer",
+        "offset": 35780,
+        "bitfield": false
+      },
+      {
+        "name": "m_fileID",
+        "offset": 35796,
+        "bitfield": false
+      },
+      {
+        "name": "padding8CD5",
+        "offset": 36053,
         "bitfield": false
       }
     ]
@@ -7154,8 +7419,23 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredB4",
+        "name": "m_fontSize",
         "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 192,
         "bitfield": false
       },
       {
@@ -7179,8 +7459,38 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredD4",
+        "name": "m_enableGroupSelection",
         "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightTextColor",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "m_bRequiredForSubmit",
+        "offset": 236,
         "bitfield": false
       },
       {
@@ -7192,7 +7502,7 @@
   },
   {
     "name": "TextAreaTagState",
-    "size": "0x180",
+    "size": "0x194",
     "line": 0,
     "owners": [
       "svo3/TextAreaTag.cpp"
@@ -7221,8 +7531,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredC0",
+        "name": "m_pKBData",
         "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_numKeyboards",
+        "offset": 196,
         "bitfield": false
       },
       {
@@ -7296,7 +7611,7 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered100",
+        "name": "m_maxNumViewableLines",
         "offset": 256,
         "bitfield": false
       },
@@ -7316,7 +7631,7 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered110",
+        "name": "m_maxLineLength",
         "offset": 272,
         "bitfield": false
       },
@@ -7341,20 +7656,150 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered124",
+        "name": "m_blinkCursor",
         "offset": 292,
+        "bitfield": false
+      },
+      {
+        "name": "m_drawCursor",
+        "offset": 296,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 300,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 308,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightTextColor",
+        "offset": 312,
+        "bitfield": false
+      },
+      {
+        "name": "m_isEditable",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "m_fontSize",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "m_node",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "m_obj",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollBarNode",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "m_maxScrollBarNodeTranslate",
+        "offset": 340,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollBarWidth",
+        "offset": 344,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollBarHeight",
+        "offset": 348,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollBarPercentage",
+        "offset": 352,
+        "bitfield": false
+      },
+      {
+        "name": "m_lineSpacing",
+        "offset": 356,
+        "bitfield": false
+      },
+      {
+        "name": "m_opacity",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "m_xAxisPadValue",
+        "offset": 364,
+        "bitfield": false
+      },
+      {
+        "name": "m_yAxisPadValue",
+        "offset": 368,
+        "bitfield": false
+      },
+      {
+        "name": "m_nx",
+        "offset": 372,
+        "bitfield": false
+      },
+      {
+        "name": "m_ny",
+        "offset": 376,
         "bitfield": false
       },
       {
         "name": "m_parentForm",
         "offset": 380,
         "bitfield": false
+      },
+      {
+        "name": "m_tmpCallsToGSW",
+        "offset": 384,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 388,
+        "bitfield": false
+      },
+      {
+        "name": "m_bRequiredForSubmit",
+        "offset": 392,
+        "bitfield": false
+      },
+      {
+        "name": "m_bMultiColorTextArea",
+        "offset": 396,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSelectedLastFrame",
+        "offset": 400,
+        "bitfield": false
       }
     ]
   },
   {
     "name": "TextInputTagState",
-    "size": "0x4E4",
+    "size": "0x514",
     "line": 0,
     "owners": [
       "svo3/TextInputTag.cpp"
@@ -7383,7 +7828,7 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered2BC",
+        "name": "m_numKeyboards",
         "offset": 700,
         "bitfield": false
       },
@@ -7393,8 +7838,28 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered2C4",
+        "name": "m_fontSize",
         "offset": 708,
+        "bitfield": false
+      },
+      {
+        "name": "m_node",
+        "offset": 712,
+        "bitfield": false
+      },
+      {
+        "name": "m_obj",
+        "offset": 716,
+        "bitfield": false
+      },
+      {
+        "name": "m_upRightOffset",
+        "offset": 720,
+        "bitfield": false
+      },
+      {
+        "name": "m_upLeftOffset",
+        "offset": 724,
         "bitfield": false
       },
       {
@@ -7416,18 +7881,78 @@
         "name": "m_keyboardInput",
         "offset": 740,
         "bitfield": false
+      },
+      {
+        "name": "m_maxWrap",
+        "offset": 1252,
+        "bitfield": false
+      },
+      {
+        "name": "m_opacity",
+        "offset": 1256,
+        "bitfield": false
+      },
+      {
+        "name": "m_nx",
+        "offset": 1260,
+        "bitfield": false
+      },
+      {
+        "name": "m_ny",
+        "offset": 1264,
+        "bitfield": false
+      },
+      {
+        "name": "m_blinkCursor",
+        "offset": 1268,
+        "bitfield": false
+      },
+      {
+        "name": "m_drawCursor",
+        "offset": 1272,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 1276,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 1280,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 1284,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightTextColor",
+        "offset": 1288,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 1292,
+        "bitfield": false
+      },
+      {
+        "name": "m_bRequiredForSubmit",
+        "offset": 1296,
+        "bitfield": false
       }
     ]
   },
   {
     "name": "TextTagState",
-    "size": "0x148",
+    "size": "0x14C",
     "line": 0,
     "owners": [
       "svo3/TextTag.cpp"
     ],
     "header": "code/svo3/TextTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -7435,13 +7960,38 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredB4",
+        "name": "m_fontSize",
         "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 196,
         "bitfield": false
       },
       {
         "name": "m_link",
         "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "m_linkOption",
+        "offset": 328,
         "bitfield": false
       }
     ]
@@ -7705,6 +8255,16 @@
         "bitfield": false
       },
       {
+        "name": "clearList",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered60",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
         "name": "getIndexOfHandle",
         "offset": 128,
         "bitfield": false
@@ -7927,6 +8487,1321 @@
       {
         "name": "color",
         "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ListBoxTagVtablePrefix",
+    "size": "0x5C",
+    "line": 0,
+    "owners": [
+      "svo3/ListBoxTag.cpp"
+    ],
+    "header": "code/svo3/ListBoxTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "clearItems",
+        "offset": 88,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SetVariableTagState",
+    "size": "0xBC",
+    "line": 0,
+    "owners": [
+      "svo3/SetVariableTag.cpp"
+    ],
+    "header": "code/svo3/SetVariableTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_pageRefreshSeconds",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_myExternalIP",
+        "offset": 184,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "QuickLinkTagState",
+    "size": "0xC0",
+    "line": 0,
+    "owners": [
+      "svo3/QuickLinkTag.cpp"
+    ],
+    "header": "code/svo3/QuickLinkTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_padLinkButton",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_linkOption",
+        "offset": 188,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "TickerTagState",
+    "size": "0xC8",
+    "line": 0,
+    "owners": [
+      "svo3/TickerTag.cpp"
+    ],
+    "header": "code/svo3/TickerTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_fontSize",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_type",
+        "offset": 196,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ButtonTagState",
+    "size": "0x15C",
+    "line": 0,
+    "owners": [
+      "svo3/buttonTag.cpp"
+    ],
+    "header": "code/svo3/buttonTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_fontSize",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_drawBorder",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "m_linkOption",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightTextColor",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 220,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HttpVtablePrefix",
+    "size": "0x58",
+    "line": 0,
+    "owners": [
+      "svo3/CHttp.cpp"
+    ],
+    "header": "code/svo3/CHttp.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "HttpSendRequest",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "HttpsDownload",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "PrintHeader",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "PrintFooter",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "PrintRequestHeader",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "PrintRequestFooter",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "IsSecure",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "HttpCleanup",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "States",
+        "offset": 84,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVSockVtablePrefix",
+    "size": "0x44",
+    "line": 0,
+    "owners": [
+      "svo3/SVSock.cpp"
+    ],
+    "header": "code/svo3/SVSock.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "dnsLookup",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "dnsLookupBlocking",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "dnsLookupNonBlocking",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "dnsLookupUpdate",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered1C",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "Connect",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "isConnected",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Send",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Recv",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "Close",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "SetNonBlocking",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "GetNonBlocking",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "setSynchronous",
+        "offset": 64,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IRequestListenerVtablePrefix",
+    "size": "0x20",
+    "line": 0,
+    "owners": [
+      "svo3/IRequestListener.cpp"
+    ],
+    "header": "code/svo3/IRequestListener.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "OnURIRequestHeaderReceived",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "OnURIRequestChunkReceived",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "OnURIRequestIsOkContinueDownload",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "OnURIRequestCompletion",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "IRequestListenerState",
+    "size": "0x04",
+    "line": 0,
+    "owners": [
+      "svo3/IRequestListener.cpp"
+    ],
+    "header": "code/svo3/IRequestListener.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVGridCell",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3/GridTag.cpp"
+    ],
+    "header": "code/svo3/GridTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "cell_text",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "cell_link",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "cell_tooltip",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "cellClass",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "linkOption",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "cell_tagID",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVGridColumn",
+    "size": "0x20",
+    "line": 0,
+    "owners": [
+      "svo3/GridTag.cpp"
+    ],
+    "header": "code/svo3/GridTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "colName",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "colHdrLink",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "colTooltip",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "isSelectable",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "width",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "col_x",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "linkOption",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "colAlign",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVGridRow",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3/GridTag.cpp"
+    ],
+    "header": "code/svo3/GridTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "height",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "row_y",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "rowClass",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "row_tagID",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVMyRecordRow",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3/GridTag.cpp"
+    ],
+    "header": "code/svo3/GridTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "row",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "cells",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "textColor",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GridTagState",
+    "size": "0x184",
+    "line": 0,
+    "owners": [
+      "svo3/GridTag.cpp"
+    ],
+    "header": "code/svo3/GridTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_numVisColumns",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_numTotalColumns",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_numVisRowsWithCells",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_origNumVisRows",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_numTotalRows",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "m_currTopRow",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "m_cells",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "m_columns",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "m_rows",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_myRecordRow",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "m_defaultColWidth",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "m_defaultRowHeight",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "m_currCellRowNum",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "m_currCellColNum",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "m_numLockedColumns",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "m_columnIndexes",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerFontSize",
+        "offset": 244,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerHeight",
+        "offset": 248,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerSelected",
+        "offset": 252,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerClass",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "m_header_tagID",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerTextColor",
+        "offset": 264,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerHighlightTextColor",
+        "offset": 268,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerFillColor",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerHighlightFillColor",
+        "offset": 276,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerLineColor",
+        "offset": 280,
+        "bitfield": false
+      },
+      {
+        "name": "m_headerHighlightLineColor",
+        "offset": 284,
+        "bitfield": false
+      },
+      {
+        "name": "m_defCellFontSize",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "m_defCellAlign",
+        "offset": 292,
+        "bitfield": false
+      },
+      {
+        "name": "m_defCellTextColor",
+        "offset": 296,
+        "bitfield": false
+      },
+      {
+        "name": "m_defCellLineColor",
+        "offset": 300,
+        "bitfield": false
+      },
+      {
+        "name": "m_defCellFillColor",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightCellTextColor",
+        "offset": 308,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightCellLineColor",
+        "offset": 312,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightCellFillColor",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderWidth",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderHeight",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderOutlineColor",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderFillColor",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderClass",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "m_border_tagID",
+        "offset": 340,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderHighlightOutlineColor",
+        "offset": 344,
+        "bitfield": false
+      },
+      {
+        "name": "m_borderHighlightFillColor",
+        "offset": 348,
+        "bitfield": false
+      },
+      {
+        "name": "m_spaceBetweenLastRowAndMyRecord",
+        "offset": 352,
+        "bitfield": false
+      },
+      {
+        "name": "m_vert_sb_width",
+        "offset": 356,
+        "bitfield": false
+      },
+      {
+        "name": "m_horz_sb_height",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollbar_class",
+        "offset": 364,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSideWrapAllowed",
+        "offset": 368,
+        "bitfield": false
+      },
+      {
+        "name": "m_bVerticalWrapAllowed",
+        "offset": 372,
+        "bitfield": false
+      },
+      {
+        "name": "m_bIsModalGrid",
+        "offset": 376,
+        "bitfield": false
+      },
+      {
+        "name": "m_bIsClickedIn",
+        "offset": 380,
+        "bitfield": false
+      },
+      {
+        "name": "m_pTimer",
+        "offset": 384,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ImageTagState",
+    "size": "0x170",
+    "line": 0,
+    "owners": [
+      "svo3/ImageTag.cpp"
+    ],
+    "header": "code/svo3/ImageTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageType",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "m_iID",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "m_fu0",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "m_fv0",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "m_fu1",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "m_fv1",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "Width",
+        "offset": 340,
+        "bitfield": false
+      },
+      {
+        "name": "Height",
+        "offset": 344,
+        "bitfield": false
+      },
+      {
+        "name": "PosX",
+        "offset": 348,
+        "bitfield": false
+      },
+      {
+        "name": "PosY",
+        "offset": 352,
+        "bitfield": false
+      },
+      {
+        "name": "u0",
+        "offset": 356,
+        "bitfield": false
+      },
+      {
+        "name": "v0",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "ImageBuf",
+        "offset": 364,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "StaticImageTagState",
+    "size": "0x170",
+    "line": 0,
+    "owners": [
+      "svo3/StaticImageTag.cpp"
+    ],
+    "header": "code/svo3/StaticImageTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_link",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageName",
+        "offset": 308,
+        "bitfield": false
+      },
+      {
+        "name": "u0",
+        "offset": 340,
+        "bitfield": false
+      },
+      {
+        "name": "v0",
+        "offset": 344,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageWidth",
+        "offset": 348,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageHeight",
+        "offset": 352,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageX",
+        "offset": 356,
+        "bitfield": false
+      },
+      {
+        "name": "m_imageY",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "m_index",
+        "offset": 364,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "TextInputTagVtablePrefix",
+    "size": "0x80",
+    "line": 0,
+    "owners": [
+      "svo3/TextInputTag.cpp"
+    ],
+    "header": "code/svo3/TextInputTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered4C",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "getSubstringPixelWidth",
+        "offset": 124,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SSLCallbackParams",
+    "size": "0x30",
+    "line": 0,
+    "owners": [
+      "svo3/HttpSecure.cpp"
+    ],
+    "header": "code/svo3/HttpSecure.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "received",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "receivedLength",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "request",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "requestLength",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "sendBack",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "sendBackLength",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "decrypted",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "decryptedLength",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HttpSecureVtablePrefix",
+    "size": "0x70",
+    "line": 0,
+    "owners": [
+      "svo3/HttpSecure.cpp"
+    ],
+    "header": "code/svo3/HttpSecure.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "HttpsCallEngine",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered5C",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "ConnectingOnEnter",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "ConnectingOnUpdate1",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "ConnectingOnUpdate2",
+        "offset": 108,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HttpSecureState",
+    "size": "0x8ACC",
+    "line": 0,
+    "owners": [
+      "svo3/HttpSecure.cpp"
+    ],
+    "header": "code/svo3/HttpSecure.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "engine",
+        "offset": 35524,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 35528,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "URIReceiveBuffer",
+    "size": "0x0C",
+    "line": 0,
+    "owners": [
+      "svo3/IRequestListener.cpp"
+    ],
+    "header": "code/svo3/IRequestListener.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "data",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "size",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "context",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVPersistentData",
+    "size": "0x1B78",
+    "line": 0,
+    "owners": [
+      "svo3/SVPersistentData.cpp"
+    ],
+    "header": "code/svo3/SVPersistentData.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered0000",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "cookieData",
+        "offset": 5000,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "DLBuffer",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3/SVDownloadManager.cpp"
+    ],
+    "header": "code/svo3/SVDownloadManager.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "dataSizeBytes",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "bytesReceived",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pData",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "bWaitingForSystemOk",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "bBeingUsedForDownload",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "startPos",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CFileDownloadInfo",
+    "size": "0x1C",
+    "line": 0,
+    "owners": [
+      "svo3/CSystemContextBase.cpp"
+    ],
+    "header": "code/svo3/CSystemContextBase.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "name",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "fileID",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pData",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "dataLen",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "partialDownloadInfo",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "entireDataLen",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "curTotalDataLen",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "md5_context",
+    "size": "0x70",
+    "line": 0,
+    "owners": [
+      "svo3/md5.cpp"
+    ],
+    "header": "code/svo3/md5.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "total",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "buffer",
+        "offset": 48,
         "bitfield": false
       }
     ]

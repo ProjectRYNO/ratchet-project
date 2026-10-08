@@ -1,3 +1,4 @@
+#include "CMemoryContextBase.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -11,7 +12,6 @@
 
 #include "SVFileDownloadQueue.h"
 #include "SVTagModule.h"
-#include "CMemoryContextBase.h"
 #include "SVOString.h"
 #include "CError.h"
 #include <string.h>
@@ -21,6 +21,15 @@ extern char svoFileDownloadQueueSource[];
 CMemoryContextBaseState *GetMemoryContext(void);
 void allocateMemoryForEntries(FileDownloadQueueState *queue);
 void *FileDownloadQueueNew(unsigned int size) __asm__("operator.new___dupe14");
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoFileDownloadQueueSource[];
+void * SVFileDownloadQueueoperator_new___dupe14(unsigned int size) __asm__("operator.new___dupe14");
+
+}
+extern "C" {
+void reset___dupe3(FileDownloadEntryState *);
+}
 #define SECTION(name) __attribute__((section(".svo_SVFileDownloadQueue_" #name)))
 
 SECTION(FileDownloadEntry) void FileDownloadEntry(FileDownloadEntryState *entry)

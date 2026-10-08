@@ -1,4 +1,6 @@
 #include "string.h"
+#include "SVOString.h"
+#include "SelectTag.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -10,18 +12,20 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
-#include "SelectTag.h"
-
 extern "C" {
 
-extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoSelectTagFormNameAttribute[];
 void AddSelectElement(FormTag *form, SelectTagState *tag);
 
-}
+
 extern "C" {
 extern char *svoSelectEmptyOption;
+}
+extern "C" {
+extern char svoSelectTagName[];
+extern char gTagNotSetStr[];
+
 }
 #define SECTION(name) __attribute__((section(".svo_SelectTag_" #name)))
 
@@ -49,7 +53,28 @@ extern "C" SECTION(advanceCurrOption) void advanceCurrOption(SelectTagState *tag
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SelectTag", changeCurOptionToNextLetterInAlphabet);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SelectTag", DefaultInit___dupe9);
+extern "C" SECTION(DefaultInit___dupe9) void DefaultInit___dupe9(SelectTagState *tag)
+{
+    svstrncpy(tag->base.m_tagTypeName, svoSelectTagName, 64);
+    tag->m_fontSize = 14;
+    tag->m_align = 1;
+    tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->base.m_fillColor = 0xFF0000FF;
+    tag->m_highlightLineColor = 0xFF00FF00;
+    tag->m_highlightFillColor = 0xFFFFFF00;
+    tag->m_bRequiredForSubmit = 0;
+    tag->m_displayLength = 0;
+    tag->m_text = 0;
+    tag->m_parentForm = 0;
+    tag->m_enableGroupSelection = 0;
+    tag->m_textColor = 0xFFFFFFFF;
+    tag->m_highlightTextColor = 0xFF00FF00;
+    tag->m_numOptions = 0;
+    tag->m_currOptionIdx = 0;
+    tag->m_options = 0;
+    tag->m_values = 0;
+    tag->m_bSubmitAsEncryped = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SelectTag", Draw___dupe13);
 

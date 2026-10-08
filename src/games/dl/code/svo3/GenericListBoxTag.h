@@ -6,7 +6,9 @@
 typedef unsigned int svo_listbox_handle;
 struct GenericListBoxTagState;
 typedef struct { // 0x84 (vtable prefix)
-    /* 0x00 */ unsigned char unrecovered00[0x80];
+    /* 0x00 */ unsigned char unrecovered00[0x5C];
+    /* 0x5C */ void (*clearList)(GenericListBoxTagState *tag);
+    /* 0x60 */ unsigned char unrecovered60[0x20];
     /* 0x80 */ long (*getIndexOfHandle)(GenericListBoxTagState *tag, svo_listbox_handle handle);
 } GenericListBoxTagVtablePrefix;
 

@@ -16,19 +16,22 @@
 
 extern "C" {
 
-extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoCheckboxInputTagFormNameAttribute[];
 void AddCheckboxElement(FormTag *form, CheckboxInputTagState *tag);
 extern char svoCheckboxInputTagSource[];
 
-}
+
 extern "C" {
 extern const SVTagVtablePrefix svoCheckboxInputTagVtable;
 void FreeResources___dupe28(void *tag);
 }
 extern "C" {
 extern char svoCheckboxInputTagName[];
+}
+extern "C" {
+CAudioContextBaseState *GetAudioContext();
+extern char svoCheckboxSoundClass[];
 }
 #define SECTION(name) __attribute__((section(".svo_CheckboxInputTag_" #name)))
 
@@ -95,4 +98,12 @@ extern "C" SECTION(RegisterWithForm___dupe4) void RegisterWithForm___dupe4(Check
     AddCheckboxElement(tag->m_parentForm, tag);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CheckboxInputTag", ToggleChecked);
+extern "C" SECTION(ToggleChecked) void ToggleChecked(CheckboxInputTagState *tag)
+{
+    if (tag->base.m_bSelectable) {
+        int sound = tag->m_isChecked ? 3 : 2;
+        CAudioContextBaseState *audio = GetAudioContext();
+        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, sound, svoCheckboxSoundClass);
+        tag->m_isChecked = !tag->m_isChecked;
+    }
+}

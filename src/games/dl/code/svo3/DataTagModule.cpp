@@ -1,3 +1,6 @@
+#include "string.h"
+#include "TagUtils.h"
+#include "SVTag.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -19,6 +22,12 @@ extern char svoDataTagModuleSource[];
 extern char svoDataTagModuleName[];
 void DataTag(void *memory, iks *xml, CAllContextData *contexts);
 
+extern "C" {
+extern char *_data_type_strings[];
+}
+extern "C" {
+extern char *_data_type_strings[];
+}
 #define SECTION(name) __attribute__((section(".svo_DataTagModule_" #name)))
 
 SECTION(IsMyTag___dupe22) int IsMyTag___dupe22(SVTagModuleState *module, iks *xml)

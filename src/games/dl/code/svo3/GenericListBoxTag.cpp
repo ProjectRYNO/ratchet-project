@@ -1,3 +1,4 @@
+#include "SVOString.h"
 #include "CMemoryContextBase.h"
 #include "string.h"
 #include "GenericListBoxTag.h"
@@ -19,6 +20,12 @@ extern char svoGenericListBoxTagSource[];
 
 extern "C" {
 extern char svoGenericListBoxTagSource[];
+}
+extern "C" {
+extern char svoGenericListBoxTagName[];
+}
+extern "C" {
+
 }
 #define SECTION(name) __attribute__((section(".svo_GenericListBoxTag_" #name)))
 
@@ -56,7 +63,19 @@ extern "C" SECTION(clearList) void clearList(GenericListBoxTagState *tag)
     tag->m_selectedIndex = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", DefaultInit___dupe23);
+extern "C" SECTION(DefaultInit___dupe23) void DefaultInit___dupe23(GenericListBoxTagState *tag)
+{
+    svstrncpy(tag->base.m_tagTypeName, svoGenericListBoxTagName, 64);
+    const GenericListBoxTagVtablePrefix *vtable = (const GenericListBoxTagVtablePrefix *)tag->base.vtable;
+    tag->base.m_lineColor = 0xFF00FF00;
+    tag->m_highlightFillColor = 0xFF808080;
+    tag->m_highlightLineColor = 0xFFFFFFFF;
+    tag->base.m_fillColor = 0xFFFFFFFF;
+    tag->m_handles = 0;
+    tag->m_turnOffDraw = 0;
+    tag->m_entryTagIDs = 0;
+    vtable->clearList(tag);
+}
 
 extern "C" SECTION(deleteHandle) long deleteHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
 {

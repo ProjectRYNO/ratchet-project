@@ -1,3 +1,5 @@
+#include "string.h"
+#include "SVOString.h"
 #include "SVTag.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
@@ -14,9 +16,12 @@
 
 extern "C" {
 
-extern "C" {
 extern const SVTagVtablePrefix svoTextTagVtable;
 void FreeResources___dupe2(void *tag);
+
+extern "C" {
+extern char svoTextTagName[];
+extern char gTagNotSetStr[];
 }
 #define SECTION(name) __attribute__((section(".svo_TextTag_" #name)))
 
@@ -38,7 +43,18 @@ extern "C" SECTION(_TextTag) void _TextTag(SVTag *tag, unsigned long flags)
     if (flags & 1) SVTagDelete(tag);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextTag", DefaultInit___dupe2);
+extern "C" SECTION(DefaultInit___dupe2) void DefaultInit___dupe2(TextTagState *tag)
+{
+    svstrncpy(tag->base.m_tagTypeName, svoTextTagName, 64);
+    tag->m_align = 0;
+    tag->m_fontSize = 14;
+    tag->m_displayLength = 0.0f;
+    memset(tag->m_text, 0, 128);
+    tag->m_link = 0;
+    tag->m_textColor = 0xFFFFFFFF;
+    tag->base.m_fillColor = 0xFFFFFF00;
+    tag->base.m_lineColor = 0xFFFFFFFF;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextTag", Draw___dupe8);
 

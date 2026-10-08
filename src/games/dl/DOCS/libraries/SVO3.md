@@ -1,10 +1,10 @@
 # SVO3 library
 
-## Current scope (2026-10-07)
+## Current scope (2026-10-08)
 
 SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **562 compiled C/C++ functions (60.1%) and 373 INCLUDE_ASM entries**.
-47 translation units are entirely free of INCLUDE_ASM; 50 still contain assembly.
+across 97 files: **702 compiled C/C++ functions (75.1%) and 233 INCLUDE_ASM entries**.
+48 translation units are entirely free of INCLUDE_ASM; 49 still contain assembly.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
 
@@ -667,3 +667,96 @@ CLI migration edits remain intact. See the project CLI build guide.
 Rebuilt ELF SHA-256: `4d162c667219f7eaa6711acebea6cd877fba2f227524bb72bb5d8c918455bbcf`.
 Artifact: build/boot_elf.elf. Ignored logs, slot-size probes, focused type checks
 and verification summary are in build/svo-library-work/svo75-*.
+
+## HTTP, widget defaults and drawing batch (2026-10-08)
+
+Added 23 compiled functions, reaching 585/935 (62.6%). The 75% target
+requires 702 compiled functions: 117 more remain to reach it.
+
+| Module | New compiled functions |
+| --- | ---: |
+| FormTag | 1 |
+| GenericListBoxTag | 1 |
+| ListBoxTag | 3 |
+| TickerTag | 1 |
+| RTCommSock | 1 |
+| SetVariableTag | 1 |
+| QuickLinkTag | 1 |
+| buttonTag | 1 |
+| TextTag | 1 |
+| CHttp | 9 |
+| CDrawContextBase | 3 |
+
+Recovered the FormTag constructor; widget defaults and list cleanup; the socket
+end-tag scan; HTTP socket/DNS/state/listener/header helpers; and three rectangle
+drawing adapters. Retail instructions resolve callback arguments omitted by
+Ghidra, including the fifth OnBodyChunkReceived argument. List cleanup retains
+the maxNumItems bound, defaults retain virtual clear calls, and drawing preserves
+independent floating-point argument placement. New behavior tests were deferred.
+
+Six oversized candidates remain assembly; their recovered bodies and measured
+sizes are preserved in [SVO3_NEXT_SLOT_BLOCKERS.md](SVO3_NEXT_SLOT_BLOCKERS.md).
+No retail slot was widened. Sixteen global labels were added and address-checked.
+
+Validation: sequential make split then make -B -j8 elf PASS. Compiled-origin,
+public-address, slot, runtime-header and unchanged-byte audit PASS: 38,808 changed
+loaded bytes, all within registered compiled slots. Strict comparison remains
+NONMATCH: 5,130 core.text and 33,678 net.text bytes differ. Whole project: 653
+compiled / 7,972 assembly; 156 matching / 497 nonmatching compiled slots. This
+batch adds one matching and 22 nonmatching slots. Focused EE layout checks PASS:
+16 sizes and 121 offsets; recovered type inventory now 168 declarations.
+
+Rebuilt SHA-256: `8a90cd056b44d8a60a16e4218b498f08ca88804c29ce90142ebb1ba1892f5cea`.
+Artifact: build/boot_elf.elf; ignored logs/probes: build/svo-library-work/svo-next-*.
+No new behavior suite, gameplay, ISO packaging or full-clean build was run.
+
+
+## 75 percent checkpoint (2026-10-08)
+
+Added another 117 fitted C/C++ functions after the preceding 23-function batch.
+SVO3 now has 702/935 compiled functions (75.1%); 233 remain assembly.
+Retail Ghidra and split instructions establish behavior; prototype sources and
+`dltypes.txt` support recovered names and layouts. All 117 new slots are NONMATCH.
+Most new behavior tests are deferred under the decompilation-first instruction.
+
+| Module | Newly compiled functions |
+| --- | ---: |
+| CHttp | 13 |
+| CPage | 11 |
+| CheckboxInputTag | 1 |
+| DataTag | 1 |
+| GridTag | 20 |
+| HiddenInputTag | 1 |
+| HttpSecure | 10 |
+| ImageTag | 1 |
+| ListBoxTag | 1 |
+| LoginTagModule | 1 |
+| PasswordInputTag | 1 |
+| QuickLinkTag | 2 |
+| RTCommSock | 6 |
+| SVBrowser | 3 |
+| SVDownloadManager | 10 |
+| SVO_DBG | 2 |
+| SVTagModule | 1 |
+| SelectTag | 1 |
+| SetVariableTag | 6 |
+| TextAreaTag | 15 |
+| TextInputTag | 4 |
+| TickerTag | 1 |
+| buttonTag | 1 |
+| md5 | 4 |
+
+Validation: sequential `make split` and `make -B -j8 elf` PASS. ELF public-address,
+slot, compiled-origin, runtime-header and unchanged-byte checks PASS. All 57,204
+changed loaded bytes are inside registered compiled slots; strict comparison is
+NONMATCH (5,130 core.text and 52,074 net.text). Layout checks PASS: 1,698 size/offset
+checks across 184 types in 100 headers, independent inclusion and ten boot packing
+vectors. Existing 806 mapped globals and all 107 aliases from these two batches
+PASS. The focused MD5 instruction comparison passes 64 compression cases including
+all 64 state bits; finish/hex behavior and wider gameplay remain unverified.
+
+GridTag and md5 join the existing per-object size-optimization list; retail slots
+and linker logic are unchanged. Forty-seven oversized candidates remain assembly;
+recovered bodies and measured sizes are saved in
+[SVO3_TARGET_SLOT_BLOCKERS.md](SVO3_TARGET_SLOT_BLOCKERS.md). No ISO packaging,
+emulator gameplay, or full-clean verification was performed for this checkpoint.

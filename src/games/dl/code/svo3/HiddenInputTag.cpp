@@ -1,3 +1,4 @@
+#include "TagUtils.h"
 #include "SVOString.h"
 #include "string.h"
 #include "HiddenInputTag.h"
@@ -16,15 +17,22 @@
 
 extern "C" {
 
-extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoHiddenInputTagFormNameAttribute[];
 void AddHiddenElement(FormTag *form, HiddenInputTagState *tag);
 extern char svoHiddenInputTagSource[];
 
-}
+
 extern "C" {
 extern char svoHiddenInputTagName[];
+}
+extern "C" {
+extern const SVTagVtablePrefix svoHiddenInputTagVtable;
+extern char svoHiddenValueAttribute[];
+extern char svoHiddenEncryptedAttribute[];
+void *DefaultInit___dupe19(HiddenInputTagState *);
+void SetValue(HiddenInputTagState *, char *);
+void RegisterWithForm___dupe6(HiddenInputTagState *, iks *, SVTag **);
 }
 #define SECTION(name) __attribute__((section(".svo_HiddenInputTag_" #name)))
 
@@ -75,7 +83,17 @@ extern "C" SECTION(FindParentForm___dupe6) FormTag *FindParentForm___dupe6(Hidde
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/HiddenInputTag", HiddenInputTag);
+extern "C" SECTION(HiddenInputTag) void HiddenInputTag(HiddenInputTagState *tag, iks *xml, SVTag **tags, CAllContextData *contexts)
+{
+    SVTagConstruct(&tag->base, xml, contexts);
+    tag->base.vtable = &svoHiddenInputTagVtable;
+    DefaultInit___dupe19(tag);
+    char *value = iks_find_attrib(tag->base.m_xml, svoHiddenValueAttribute);
+    if (value) SetValue(tag, value);
+    else __SVO_Assert_Handler(svoHiddenInputTagSource, 0x2F);
+    if (!getBoolAttrib(tag->base.m_xml, svoHiddenEncryptedAttribute, &tag->m_bSubmitAsEncryped)) tag->m_bSubmitAsEncryped = 0;
+    RegisterWithForm___dupe6(tag, iks_parent(tag->base.m_xml), tags);
+}
 
 extern "C" SECTION(RegisterWithForm___dupe6) void RegisterWithForm___dupe6(HiddenInputTagState *tag, iks *parent, SVTag **tagList)
 {

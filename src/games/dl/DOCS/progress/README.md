@@ -98,3 +98,12 @@ assembly and 290 compiled (27 matching slots, 263 nonmatching). Build/placement
 and focused ABI/global checks pass; 21,689 loaded bytes differ only inside
 compiled slots. Three new slots match exactly, but behavior/gameplay checks
 remain deferred. See the URI section in the library notes.
+
+
+The 2026-10-08 SVO3 checkpoint reaches 702/935 compiled functions (75.1%), with
+233 assembly entries and 48/97 assembly-free files. Project totals: 770 compiled,
+7,855 assembly, 156 matching slots and 614 nonmatching slots. Build, placement,
+layout and global checks pass. Strict comparison reports 57,204 changed loaded
+bytes inside compiled slots. MD5 compression passed 64 differential cases;
+other new behavior and gameplay checks remain deferred. See the current
+[SVO3 handoff](../libraries/SVO3_HANDOFF.md) for evidence and remaining work.

@@ -15,13 +15,12 @@
 
 extern "C" {
 
-extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoSubmitInputTagFormNameAttribute[];
 void AddSubmitElement(FormTag *form, SubmitInputTagState *tag);
 extern char svoSubmitInputTagSource[];
 
-}
+
 #define SECTION(name) __attribute__((section(".svo_SubmitInputTag_" #name)))
 
 SECTION(IsSelectable___dupe14) long IsSelectable___dupe14(void *self)

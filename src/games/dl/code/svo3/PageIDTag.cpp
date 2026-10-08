@@ -11,7 +11,6 @@ extern char svoPageIDNameAttribute[];
 extern const SVTagVtablePrefix svoPageIDTagVtable;
 char *GetTagTypeName(SVTag *tag);
 
-
 #define SECTION(name) __attribute__((section(".svo_PageIDTag_" #name)))
 
 SECTION(FreeResources___dupe51) void FreeResources___dupe51(SVTag *tag)
@@ -26,7 +25,6 @@ extern "C" SECTION(_PageIDTag) void _PageIDTag(SVTag *tag, int flags)
     tag->vtable = &svoTagVtable;
     if (flags & 1) SVTagDelete(tag);
 }
-
 
 extern "C" SECTION(PageIDTag) void PageIDTag(SVTag *tag, iks *xml, CAllContextData *contexts)
 {

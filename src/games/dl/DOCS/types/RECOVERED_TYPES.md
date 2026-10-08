@@ -162,7 +162,7 @@ its source/log are build/svo-library-work/half-types.cpp and half-types.log.
 The owning CInputContextBase and SVChronograph headers supply their anonymous
 typedefs; no incompatible struct forward declarations are introduced.
 
-## SVO3 form/list/page/text batch (latest)
+## SVO3 form/list/page/text batch
 
 Inventory: 159 declarations. FormTag (0x69EC), RadioElementGroup (0x184),
 GenericListBoxTagState (0xE4) and ListBoxItem (0x1C) are recovered. ListBoxTagState
@@ -176,3 +176,25 @@ referencing typed arrays without duplicate typedef tags.
 Focused EE GCC checks pass 21 sizes and 223 offsets across the 14 changed/new
 headers. Probe: build/svo-library-work/svo75-types.cpp. These checks establish
 PS2 layouts, not gameplay behavior or exact instruction matching.
+
+## SVO3 HTTP and widget defaults batch (2026-10-08)
+
+Inventory: 168 declarations. CHttp now describes its 0x8AC4 allocation, with
+explicit unrecovered gaps; typed socket, HTTP and request-listener vtable prefixes
+cover the recovered callbacks. New widget headers describe QuickLinkTag (0xC0),
+SetVariableTag (0xBC), TickerTag (0xC8) and ButtonTagState (0x15C). TextTagState
+now spans 0x14C. List and generic-list vtables expose their virtual clear methods.
+
+The focused EE GCC probe passes 16 sizes and 121 offsets (137 checks):
+build/svo-library-work/svo-next-types.cpp. These establish layout only; new
+behavior suites and gameplay checks remain deferred.
+
+
+## SVO3 75 percent checkpoint (2026-10-08)
+
+The inventory now contains 184 types in 100 headers. Full EE layout verification
+passes 1,698 size/offset checks, independent header inclusion and ten boot packing
+vectors. Expanded declarations cover grid/text widgets, HTTP/SSL and request
+listeners, page display buffers, downloads, sockets, persistent data and MD5.
+Retail instruction accesses establish offsets; prototype types support names.
+The MD5 context preserves the retail 64-bit unsigned-long state representation.

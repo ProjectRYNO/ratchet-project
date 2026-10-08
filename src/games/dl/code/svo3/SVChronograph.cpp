@@ -1,4 +1,15 @@
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoChronographSource[];
+void * SVChronographoperator_new___dupe5(unsigned int size) __asm__("operator.new___dupe5");
+
+}
+#define SECTION(name) __attribute__((section(".svo_chrono_" #name)))
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+
 // Retain the unresolved wrapper at its original address.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
 #undef INCLUDE_ASM
@@ -12,7 +23,6 @@
 #include "SVChronograph.h"
 #include "SVBrowser.h"
 #include "CSystemContextBase.h"
-#include "CMemoryContextBase.h"
 
 extern "C" {
 extern int svoTimerMilliseconds;

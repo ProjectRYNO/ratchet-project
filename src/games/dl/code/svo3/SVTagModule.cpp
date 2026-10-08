@@ -1,3 +1,4 @@
+#include "CMemoryContextBase.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -13,6 +14,16 @@
 
 extern "C" {
 
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoSVTagModuleSource[];
+void * SVTagModuleoperator_new___dupe7(unsigned int size) __asm__("operator.new___dupe7");
+
+
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+void SVTagModuleoperator_delete___dupe6(void *memory) __asm__("operator.delete___dupe6");
+
+}
 #define SECTION(name) __attribute__((section(".svo_SVTagModule_" #name)))
 
 SECTION(ScanTags___dupe3) void ScanTags___dupe3(SVTagModuleState *module, iks *xml, SVTag **tagList, CAllContextData *contexts)
@@ -22,7 +33,10 @@ SECTION(ScanTags___dupe3) void ScanTags___dupe3(SVTagModuleState *module, iks *x
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVTagModule", operator.delete___dupe6);
+extern "C" SECTION(operator.delete___dupe6) void SVTagModuleoperator_delete___dupe6(void *memory)
+{
+    svFreeSafe(GetMemoryContext(), memory);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVTagModule", operator.new___dupe7);
 

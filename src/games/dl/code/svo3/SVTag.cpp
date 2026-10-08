@@ -1,4 +1,15 @@
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+extern "C" {
+CMemoryContextBaseState *GetMemoryContext(void);
+extern char svoTagSource[];
+void * SVTagoperator_new___dupe8(unsigned int size) __asm__("operator.new___dupe8");
+
+}
+#define SECTION(name) __attribute__((section(".svo_tag_" #name)))
 #include "common.h"
+// Keep unreplaced assembly in its original function slots.
+
 // Retain the allocator and XML constructor at their original addresses.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
 #undef INCLUDE_ASM
@@ -10,7 +21,6 @@
 #endif
 
 #include "SVTag.h"
-#include "CMemoryContextBase.h"
 #include "CInputContextBase.h"
 #include "SVBrowser.h"
 #include <string.h>

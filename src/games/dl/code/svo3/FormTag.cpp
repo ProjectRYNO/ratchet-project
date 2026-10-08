@@ -18,11 +18,10 @@
 
 extern "C" {
 
-extern "C" {
 extern char svoFormTagSource[];
 extern char svoFormUnsetGroup[];
 void ToggleChecked(CheckboxInputTagState *tag);
-}
+
 extern "C" {
 extern char svoFormTagName[];
 extern char svoFormActionAttribute[];
@@ -36,6 +35,11 @@ extern char svoFormAudioClass[];
 void InitRadioGroups(FormTag *form);
 void SetChecked(RadioInputTagState *tag, int checked);
 CAudioContextBaseState *GetAudioContext();
+}
+extern "C" {
+extern const SVTagVtablePrefix svoFormTagVtable;
+void DefaultInit___dupe15(FormTag *form);
+void FormTagConstruct(FormTag *form, iks *xml, CAllContextData *contexts) __asm__("FormTag");
 }
 #define SECTION(name) __attribute__((section(".svo_FormTag_" #name)))
 
@@ -241,7 +245,29 @@ extern "C" SECTION(Draw___dupe21) void Draw___dupe21(FormTag *form)
     if (!form->base.m_xml) __SVO_Assert_Handler(svoFormTagSource, 0xB1);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/FormTag", FormTag);
+extern "C" SECTION(FormTag) void FormTagConstruct(FormTag *form, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(&form->base, xml, contexts);
+    form->base.vtable = &svoFormTagVtable;
+    DefaultInit___dupe15(form);
+    char *value = iks_find_attrib(form->base.m_xml, svoFormActionAttribute);
+    if (value) strcpy(form->m_url, value);
+    else __SVO_Assert_Handler(svoFormTagSource, 0x63);
+    value = iks_find_attrib(form->base.m_xml, svoFormEncodingAttribute);
+    if (value) strcpy(form->m_encType, value);
+    else memcpy(form->m_encType, svoFormDefaultEncoding, 34);
+    value = iks_find_attrib(form->base.m_xml, svoFormMethodAttribute);
+    if (!value) {
+        __SVO_Assert_Handler(svoFormTagSource, 0x90);
+    } else if (!strcmp(value, svoFormPost) || !strcmp(value, svoFormGet)) {
+        form->m_method = strcmp(value, svoFormPost) != 0;
+        form->m_methodType = 0;
+    } else if (!strcmp(value, svoFormLogin)) {
+        form->m_methodType = 1;
+    } else {
+        __SVO_Assert_Handler(svoFormTagSource, 0x8A);
+    }
+}
 
 extern "C" SECTION(HandleInput___dupe47) long HandleInput___dupe47(FormTag *form, CPage *page)
 {
