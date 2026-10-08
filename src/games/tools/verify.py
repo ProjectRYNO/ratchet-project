@@ -69,7 +69,7 @@ def main():
         parser.error('Use positive --jobs; --split cannot be combined with --no-build')
     game = GAMES / args.game
     tests = game / ('TESTS' if (game / 'TESTS').is_dir() else 'tests')
-    original = GAMES / 'assets' / args.game / 'boot_elf.elf'
+    original = GAMES / 'assets' / args.game / 'boot.elf'
     rebuilt = game / 'build/boot_elf.elf'
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     output = (args.output or game / 'build/verification' / stamp).resolve()

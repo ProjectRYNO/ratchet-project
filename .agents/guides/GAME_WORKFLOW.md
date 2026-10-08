@@ -13,7 +13,7 @@ Compare every PT_LOAD byte, zero-filled memory, entry point, and runtime header.
 There are no exemptions for decompiled-function slots. The strict gate is:
 
 ```sh
-python3 ../tools/compare_elf.py ../assets/GAME/boot_elf.elf build/boot_elf.elf
+python3 ../tools/compare_elf.py ../assets/GAME/boot.elf build/boot_elf.elf
 ```
 
 Run from `/ProjectRYNO/GAME`, replacing GAME with the selected game directory.

@@ -548,6 +548,94 @@ functions:
   getInstance___dupe24: 0x01F04B70
   FreeResources___dupe47: 0x01F04BB4
 
+  FindParentForm___dupe6: 0x01F039BC
+  RegisterWithForm___dupe6: 0x01F03B10
+  DefaultInit___dupe19: 0x01F0381C
+  SetValue: 0x01F03950
+  FindParentForm: 0x01EF7CD0
+  RegisterWithForm: 0x01EF7DAC
+  getCurrOptionStrPtr: 0x01EF7C5C
+  advanceCurrOption: 0x01EF7CA8
+  findParentForm: 0x01EFCA14
+  registerWithForm: 0x01EFCB48
+  GetText___dupe2: 0x01EFC550
+  SetText___dupe4: 0x01EFC4E8
+  resetTextInput: 0x01EFBFB4
+  FindParentForm___dupe2: 0x01EFA484
+  RegisterWithForm___dupe2: 0x01EFA5C8
+  _TextAreaTag: 0x01EF97DC
+  FreeResources___dupe21: 0x01EF9844
+  PutBackWord: 0x01EFA92C
+  CheckForLongWord: 0x01EFB4E8
+  ResetVariables: 0x01EF9E18
+  FindParentForm___dupe3: 0x01EFDB34
+  RegisterWithForm___dupe3: 0x01EFDC88
+  DefaultInit___dupe13: 0x01EFD674
+  FindParentForm___dupe4: 0x01EFE388
+  RegisterWithForm___dupe4: 0x01EFE4DC
+  _CheckboxInputTag: 0x01EFDF0C
+  DefaultInit___dupe14: 0x01EFDE94
+  FindParentForm___dupe5: 0x01EFFF40
+  RegisterWithForm___dupe5: 0x01F00074
+  registerWithForm___dupe2: 0x01EFD48C
+  Draw___dupe18: 0x01EFD3A8
+  getSubstringPixelWidth___dupe2: 0x01EFD418
+  AddCheckboxElement: 0x01EFED44
+  AddTextElement: 0x01EFEDC8
+  AddPasswordElement: 0x01EFEE4C
+  AddHiddenElement: 0x01EFEF40
+  AddSelectElement: 0x01EFEFC4
+  AddTextAreaElement: 0x01EFF048
+  AddSubmitElement: 0x01EFEED0
+  HandleInput___dupe47: 0x01EFEA48
+  Draw___dupe21: 0x01EFEACC
+  InitRadioGroups: 0x01EFEB30
+  AddRadioElement: 0x01EFEBA8
+  CheckCheckboxElement: 0x01EFF24C
+  DataCanBeEncryped: 0x01EFF2DC
+  DefaultInit___dupe15: 0x01EFE768
+  CheckRadioElement: 0x01EFF0CC
+  size: 0x01F0B0EC
+  selectIndex___dupe2: 0x01F0B150
+  getSelectedIndex___dupe2: 0x01F0B478
+  getTopVisibleIndex___dupe2: 0x01F0B6D8
+  getNumVisibleRows___dupe2: 0x01F0B778
+  getSelectedHandle: 0x01F0B898
+  getHandleByIndex: 0x01F0B7E4
+  addHandle: 0x01F0B4EC
+  clearList: 0x01F0B598
+  deleteHandle: 0x01F0B5E0
+  countItems: 0x01F056C8
+  selectIndex: 0x01F05AA0
+  getSelectedIndex: 0x01F060F4
+  getTopVisibleIndex: 0x01F06248
+  getNumVisibleRows: 0x01F06308
+  getItem: 0x01F05808
+  deselectItem: 0x01F0574C
+  replaceItem: 0x01F059A8
+  clearItems: 0x01F05FEC
+  addItem: 0x01F05F30
+  _ListBoxTag: 0x01F04F64
+  DestroyInTransitionArray: 0x01EE6304
+  DestroyPostTransitionArray: 0x01EE62AC
+  DestroyPreTransitionArray: 0x01EE6254
+  addToHistory: 0x01EE6AF8
+  autoRefreshPage: 0x01EE944C
+  SetPageRefreshSeconds: 0x01EE94B4
+  SetDefaultTextScrollTag: 0x01EE8044
+  ResetBackDisplayBuffer: 0x01EE9900
+  SwapDisplayBuffers: 0x01EE98B0
+  getIndexOfNextAvailEntryInTagList: 0x01EE7A2C
+  GetSelectedTagName: 0x01EE91E0
+  handleUpdate: 0x01EE7B9C
+  EnterNewPage___dupe30: 0x01EE918C
+  handleTextEntryDefaultInput: 0x01EE7FDC
+  handleTextScrollDefaultInput: 0x01EE8010
+  _ButtonTag: 0x01EF59AC
+  _SetVariableTag: 0x01EF652C
+  _TextTag: 0x01EF2698
+  _TickerTag: 0x01F0BC60
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -1928,3 +2016,12 @@ objects:
       - {object: svo3/DataTagModule, section: .svo_DataTagModule_BuildTag___dupe23, start: 0x01F04AE8, end: 0x01F04B70}
       - {object: svo3/DataTagModule, section: .svo_DataTagModule_getInstance___dupe24, start: 0x01F04B70, end: 0x01F04BB4}
       - {object: svo3/DataTagModule, section: .svo_DataTagModule_FreeResources___dupe47, start: 0x01F04BB4, end: 0x01F04BF0}
+  svo3/PasswordInputTag:
+    text_start: 0x01EFD2FC
+    text_end: 0x01EFD4C8
+    slots:
+      - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_defaultInit___dupe2, start: 0x01EFD2FC, end: 0x01EFD334}
+      - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_PasswordInputTag, start: 0x01EFD334, end: 0x01EFD3A8}
+      - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_Draw___dupe18, start: 0x01EFD3A8, end: 0x01EFD418}
+      - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_getSubstringPixelWidth___dupe2, start: 0x01EFD418, end: 0x01EFD48C}
+      - {object: svo3/PasswordInputTag, section: .svo_PasswordInputTag_registerWithForm___dupe2, start: 0x01EFD48C, end: 0x01EFD4C8}

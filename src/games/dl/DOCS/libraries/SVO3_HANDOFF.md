@@ -1,56 +1,62 @@
 # SVO3 continuation handoff, 2026-10-07
 
-The requested 50% function-count milestone is reached: **475/935 (50.8%)**
-compiled, with **460 INCLUDE_ASM entries** across 97 files. 47 files are fully
-C++; 50 still contain assembly. Full SVO3 decompilation remains unfinished.
+Current verified checkpoint: **562/935 (60.1%) compiled, 373 INCLUDE_ASM**.
+The 75% request is not complete: 702 compiled functions are required, another
+140 from this checkpoint. There are still 47 entirely C++ files and 50 mixed
+files across the 97-file inventory. Keep game/ last.
 
-Latest batch: 215 replacements in 42 original translation units. DownloadBinary,
-the four XML adapter files, PageIDTag and PopupTag are newly free of INCLUDE_ASM.
-Browser helpers, page request handling, file download queue, tag attributes,
-HTTP callbacks, socket settings and widget/module helpers are partly recovered.
-See [SVO3.md](SVO3.md) for the per-file counts and retail behavior details.
-Preserve all earlier uncommitted boot/sound/iksemel/SVO3/tool work.
+Latest batch adds 87 functions in 16 modules: FormTag, form-parent registration,
+list-box access/mutation, page helpers, text/password helpers and tag destructors.
+See [SVO3.md](SVO3.md) for the exact per-module increment and behavioral details.
+One new slot matches; 86 do not. Integration of nonmatching C++ is authorized;
+exact matching and gameplay equivalence remain separate unfinished requirements.
+New behavior tests were deferred per the user's decompilation-first preference.
 
-Evidence: explicit retail Ghidra program
-/Ratchet 4/PS2/NTSC-U/Retail_scus_974.65.elf.moose, split R5900 instructions,
-prototype sources and dltypes. 55 new globals name existing storage; provenance
-is in ../symbols/SVO3_GLOBALS.csv. Type inventory: 149 declarations. The focused
-EE probe verifies 28 sizes and 158 offsets. CPage, HTTP, socket and several tag
-views remain prefixes, not allocation sizes. SVBrowser's layout is 0x3140 with
-unrecovered embedded text-field storage still opaque. Use owning headers for
-SVButtonMap and SVChronographState; anonymous typedefs cannot be forward-declared
-as named structs.
+Evidence: retail Ghidra program
+`/Ratchet 4/PS2/NTSC-U/Retail_scus_974.65.elf.moose`, split instructions,
+`D:\PS2\ISOs\deadlocked-proto-decomp` and its dltypes.txt.
+Use Ghidra first, then instructions to resolve misleading FID matches and ABI.
+The prototype does not prove retail behavior. Preserve loop bounds, assertion
+order, virtual calls, signed loads and independent integer/float argument banks.
 
-Validation: make split completed before make -B -j8 elf. Forced build passes.
-All compiled entry/slot checks and loaded-header/unchanged-byte checks pass:
-29,445 differing bytes, all in compiled slots. Strict comparison is NONMATCH:
-5,130 core.text and 24,315 net.text differences. All 55 new global addresses pass.
-The batch has 111 exact compiled slots and 104 nonmatching slots; project total
-is 543 compiled / 8,082 assembly (8,625 total), with 154 matching and 389
-nonmatching compiled slots. Behavior suites, gameplay, ISO packing and full
-regressions were deliberately deferred per the user's decompilation priority.
+Validation: make split finished before make -B -j8 elf; build PASS. Slot/public
+address/compiled-origin/runtime-header/unchanged-byte audit PASS. Changed loaded
+bytes: 37,366, all in registered C slots. Strict comparison NONMATCH (5,130
+core.text, 32,236 net.text). All 40 new global labels PASS. Focused EE layout
+probe PASS: 21 sizes + 223 offsets. Inventory: 159 types. No new behavior suite,
+ISO packaging, gameplay, full-clean build or full regression was run.
+Whole project: 630 compiled / 7,995 ASM; 155 matching, 475 nonmatching slots.
 
-Original SHA-256: ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7.
-Rebuilt SHA-256: d5cc828e730617b7cb94246e259bf12987a7425c76f06ebd7ecc2e0815b31287.
-Artifact: build/boot_elf.elf. Logs/probes: build/svo-library-work/half-* (ignored).
+Original SHA-256:
+`ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7`.
+Rebuilt SHA-256:
+`4d162c667219f7eaa6711acebea6cd877fba2f227524bb72bb5d8c918455bbcf`.
+Artifact: src/games/dl/build/boot_elf.elf. Current reference is
+src/games/assets/dl/boot.elf. Logs/probes: build/svo-library-work/svo75-* (ignored).
 
-Next: use [SVO3_REMAINING.csv](SVO3_REMAINING.csv). Sixteen recovered candidates
-remain assembly because their C bodies exceed retail slots; their complete trial
-bodies and size measurements are preserved in
-[SVO3_SLOT_BLOCKERS.md](SVO3_SLOT_BLOCKERS.md). Do not repeat them without a new
-size/matching approach. Earlier blockers in PageHistory, SVChronograph, SVSock,
-SVTagModuleList, CPluginManager, SVURIStore, URISchemeMgr, LogoutTag,
-BrowserInitTag and LineTag remain documented in SVO3.md. The base SVTag XML
-constructor and larger widget/browser/HTTP functions remain useful next targets.
+Next work: [SVO3_REMAINING.csv](SVO3_REMAINING.csv). Ten newly recovered oversized
+candidates are saved in [SVO3_75_SLOT_BLOCKERS.md](SVO3_75_SLOT_BLOCKERS.md);
+the earlier 16 are in [SVO3_SLOT_BLOCKERS.md](SVO3_SLOT_BLOCKERS.md). Do not retry
+these without a new size approach. Never widen their retail slots. FormTag has
+only its constructor and Submit left. The constructor was researched but not
+implemented: action required (assert 0x63); encoding defaults to a 34-byte copy;
+method recognizes POST/GET/LOGIN, missing method asserts 0x90, unknown 0x8A.
+Submit still needs instruction-level recovery. Larger list/grid/page/HTTP logic
+remains; constructor/destructor and callback signatures need careful checking.
 
-The PageRequestListener object covers the original trailing net.text padding:
-GetLastContentType ends at 0x01F0C844; preserve the zero gap to 0x01F27658 and
-the retained NOP extent through 0x01F31380. Do not count that padding as C or
-widen replacement slots. The unchanged-byte audit checks it.
+Build migration: use the current projectryno image, ratchet-ps2-cli and boot.elf
+reference, not the old Wrench container or boot_elf.elf reference filename.
+`make iso` depends on elf and uses assets/dl/config.ini; packaging preserves
+source ISO assets and replaces the boot executable only. CLI help was checked.
+Read docs/build/RATCHET_PS2_CLI.md and the updated Makefile before packaging.
+The projectryno-svo75 container belongs to this batch and is stopped after work;
+it can be restarted. Other contributors' containers must be left alone.
 
-Keep ALLOW_NONMATCHING=0. Finish splitting before forced rebuilding after
-manifest/symbol edits. Only the existing object-specific size flag list changed;
-no linker/build mechanism was replaced. Matching, compilation, layout and
-in-game behavior remain separate claims. Keep game/ last.
-The projectryno-iksemel container can be restarted for the next task; leave
-other contributors' containers alone.
+Preserve other-agent uncommitted CLI/container/tool/docs changes. No commit or
+push was made for this batch. The previous 50% batch is commit 96ee92d, already
+pushed. Only PasswordInputTag.o was added to the existing size-flags list here.
+No linker generator or build mechanism was replaced. ALLOW_NONMATCHING stays 0.
+
+PageRequestListener preserves trailing net.text padding: GetLastContentType ends
+at 0x01F0C844; the zero gap to 0x01F27658 and NOP extent through 0x01F31380 remain
+original. Do not count that padding as compiled code or enlarge replacement slots.

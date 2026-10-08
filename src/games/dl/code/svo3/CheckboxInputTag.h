@@ -1,8 +1,8 @@
-#ifndef RADIOINPUTTAG_H
-#define RADIOINPUTTAG_H
+#ifndef CHECKBOXINPUTTAG_H
+#define CHECKBOXINPUTTAG_H
 #include "SVTag.h"
 #include "FormTag.h"
-struct RadioInputTagState { // 0x198
+struct CheckboxInputTagState { // 0x194
     /* 0x000 */ SVTag base;
     /* 0x0B4 */ int m_fontSize;
     /* 0x0B8 */ int m_isChecked;
@@ -12,6 +12,5 @@ struct RadioInputTagState { // 0x198
     /* 0x188 */ unsigned int m_highlightColor;
     /* 0x18C */ FormTag *m_parentForm;
     /* 0x190 */ int m_bSubmitAsEncryped;
-    /* 0x194 */ int m_bRequiredForSubmit;
 };
 #endif

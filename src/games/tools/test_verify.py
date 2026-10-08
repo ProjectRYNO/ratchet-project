@@ -29,7 +29,7 @@ class VerifyTests(unittest.TestCase):
             (game/'build').mkdir(parents=True)
             (game/'TESTS').mkdir()
             (root/'assets/dl').mkdir(parents=True)
-            (root/'assets/dl/boot_elf.elf').write_bytes(elf())
+            (root/'assets/dl/boot.elf').write_bytes(elf())
             (game/'build/boot_elf.elf').write_bytes(b'bad ELF' if malformed else elf(payload, address))
             output = root/'reports'
             commands = []

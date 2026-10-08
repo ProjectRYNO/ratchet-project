@@ -1,6 +1,9 @@
 services:
   projectryno:
-    build: .
+    build:
+      context: .
+      additional_contexts:
+        ratchet_cli: ${RATCHET_CLI_SOURCE:-../../../ratchet-ps2-cli}
     image: projectryno
     container_name: projectryno
 
@@ -8,6 +11,7 @@ services:
     # immediately and build outputs persist on your host machine.
     volumes:
       - .:/ProjectRYNO
+      - ${RYNO_ISO_DIRECTORY:-../../../../../PS2/ISOs}:/isos:ro
 
     # Keep stdin open so `docker compose run projectryno` gives you a shell
     stdin_open: true

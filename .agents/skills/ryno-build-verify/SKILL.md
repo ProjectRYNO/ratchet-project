@@ -52,16 +52,25 @@ from symbol tables and other non-runtime metadata.
   may use `TESTS` while local Windows commands historically used `tests`; use the
   actual checkout's names and report/fix a portability issue within task scope.
 
-For ISO work, build and audit the ELF first. `make iso` has no ELF prerequisite,
-rewrites the extracted `build.asset` ELF source, and replaces `build/new_dl.iso`.
-Confirm the source resolves to the newly compiled ELF. When claiming exact disc
-provenance, extract the boot ELF from the packed ISO into a separate directory
-and compare it to that output. Do not overwrite reference extraction assets.
+For ISO work, audit the ELF and run `make iso`. It depends on `elf` and uses
+`assets/dl/config.ini` with the container's ratchet-ps2 CLI. Verify the installed
+ELF and preserved source-disc bytes using `tools/verify_boot_iso.py`.
 
 For emulator verification, record the ELF/ISO used, relevant configuration, log,
 and furthest observed stage. A boot through initialization is not gameplay or
 sound correctness. Report compile, audit, clean-build, pack, boot, and gameplay
 results separately; never claim a check that was not performed.
+
+For CLI extraction and boot-only packaging, see
+[ratchet-ps2-cli integration](../../../docs/build/RATCHET_PS2_CLI.md).
+`src/games/tools/build_dl_cli.ps1` builds the ELF and reads `assets/dl/config.ini`
+for packaging; `-SkipCompile` packages an already-built ELF. It preserves original
+ISO assets and replaces only the boot executable, not edited level overlays.
+Keep the same ELF audits and avoid overlapping compilation in a shared DL tree.
+The native reference ELF is `src/games/assets/dl/boot.elf`; level overlays use
+`assets/dl/levels/<four-digit ID>/code/overlay.elf`. The compiled output remains
+`dl/build/boot_elf.elf`. Historical reference files may coexist but are not the
+inputs to the current ROM, verifier, or progress tools.
 
 Use [the verification entry point](../../../docs/build/VERIFICATION.md) for combined
 checks and machine-readable results. Nonmatching development output remains usable;

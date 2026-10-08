@@ -13,6 +13,10 @@
 
 extern "C" {
 
+extern "C" {
+extern const SVTagVtablePrefix svoTickerTagVtable;
+void FreeResources___dupe59(void *tag);
+}
 #define SECTION(name) __attribute__((section(".svo_TickerTag_" #name)))
 
 SECTION(FreeResources___dupe59) void FreeResources___dupe59(void *self)
@@ -32,7 +36,13 @@ SECTION(IsSelectable___dupe17) long IsSelectable___dupe17(void *self)
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TickerTag", _TickerTag);
+extern "C" SECTION(_TickerTag) void _TickerTag(SVTag *tag, unsigned long flags)
+{
+    tag->vtable = &svoTickerTagVtable;
+    FreeResources___dupe59((void *)tag);
+    tag->vtable = &svoTagVtable;
+    if (flags & 1) SVTagDelete(tag);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TickerTag", DefaultInit___dupe24);
 

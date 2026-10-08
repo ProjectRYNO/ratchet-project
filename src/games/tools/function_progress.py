@@ -96,7 +96,7 @@ def main():
     parser.add_argument('--output', type=Path, help='Defaults to GAME/build/progress; overwrites generated CSV/summary only')
     args = parser.parse_args()
     game = GAMES / args.game
-    original = GAMES / 'assets' / args.game / 'boot_elf.elf'
+    original = GAMES / 'assets' / args.game / 'boot.elf'
     rebuilt = args.elf or game / 'build/boot_elf.elf'
     output = args.output or game / 'build/progress'
     rows = inventory(game, original, rebuilt)

@@ -45,7 +45,7 @@ case "${1:-}" in
         ;;
     --rebuild)
         echo "[Project RYNO] Rebuilding image..."
-        docker build --no-cache -t "$IMAGE_NAME" .
+        docker compose build --no-cache projectryno
         docker compose run projectryno
         ;;
     --delete)
@@ -69,7 +69,7 @@ case "${1:-}" in
     "")
         if ! test_image_exists; then
             echo "[Project RYNO] Image not found, building..."
-            docker build -t "$IMAGE_NAME" .
+            docker compose build projectryno
         else
             echo "[Project RYNO] Image already exists, skipping build."
         fi

@@ -31,7 +31,7 @@ Only this object's compiler flags add `-falign-functions=4`: the default eight-b
 alignment pads 20-byte functions to 24 bytes and overflows their original slots.
 The rest of the compiler flags remain unchanged.
 
-Run `python3 TESTS/check_iksemel.py ../assets/dl/boot_elf.elf build/boot_elf.elf`
+Run `python3 TESTS/check_iksemel.py ../assets/dl/boot.elf build/boot_elf.elf`
 inside `/ProjectRYNO/dl` (use the checkout's actual TESTS/tests spelling).
 The verifier includes this check. It checks real compiled symbols, whole-module
 bytes from 0x01EE3570 through 0x01EE3CEC, node ABI, and 774 original/rebuilt

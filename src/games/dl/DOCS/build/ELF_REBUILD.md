@@ -20,7 +20,7 @@ make ps2dev
 make rom
 make split
 make -B -j8 elf
-python3 tests/check_main_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf build/code/game/boot.o
+python3 tests/check_main_elf.py ../assets/dl/boot.elf build/boot_elf.elf build/code/game/boot.o
 make iso
 ```
 

@@ -3,7 +3,7 @@
 ## Current scope (2026-10-07)
 
 SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **475 compiled C/C++ functions (50.8%) and 460 INCLUDE_ASM entries**.
+across 97 files: **562 compiled C/C++ functions (60.1%) and 373 INCLUDE_ASM entries**.
 47 translation units are entirely free of INCLUDE_ASM; 50 still contain assembly.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
@@ -593,3 +593,77 @@ progress is 543 compiled / 8,082 assembly out of 8,625 source-backed functions;
 Rebuilt ELF SHA-256: `d5cc828e730617b7cb94246e259bf12987a7425c76f06ebd7ecc2e0815b31287`.
 Detailed logs and the compile-only probe are under ignored
 build/svo-library-work/half-*. The tracked progress CSV/JSON record this build.
+
+## Form, list, page and text batch (2026-10-07)
+
+Added 87 compiled functions across 16 existing translation units, reaching
+562/935 (60.1%). The requested 75% target is **not reached**: it requires 702
+compiled functions, another 140 from this checkpoint. One new slot matches
+retail exactly (SelectTag::advanceCurrOption); the other 86 remain unfinished
+matching work. New behavior tests and gameplay were deferred at the user's request.
+
+| File | New compiled functions |
+| --- | ---: |
+| HiddenInputTag.cpp | 4 |
+| SelectTag.cpp | 4 |
+| TextInputTag.cpp | 5 |
+| TextAreaTag.cpp | 7 |
+| RadioInputTag.cpp | 3 |
+| CheckboxInputTag.cpp | 4 |
+| SubmitInputTag.cpp | 2 |
+| PasswordInputTag.cpp | 3 |
+| FormTag.cpp | 15 |
+| GenericListBoxTag.cpp | 10 |
+| ListBoxTag.cpp | 11 |
+| CPage.cpp | 15 |
+| buttonTag.cpp | 1 |
+| SetVariableTag.cpp | 1 |
+| TextTag.cpp | 1 |
+| TickerTag.cpp | 1 |
+
+Recovery uses retail Ghidra, split R5900 instructions and prototype/dltypes:
+
+* Form ancestry lookup differs by tag: Select/TextArea walk ancestors and can
+  return null; TextInput checks the immediate parent; other variants assert on
+  missing parents. Tag-list lookup scans all 256 entries, skipping holes.
+* Form registration preserves each concrete Add*Element call. FormTag recovers
+  group initialization, six bounded arrays, radio/checkbox selection and audio
+  callbacks. FormTag is 0x69EC; RadioElementGroup is 0x184. Radio groups retain
+  the UNSET sentinel and assertion/callback ordering.
+* ListBox and GenericListBox retain different empty-list behavior and assertion
+  lines. Generic handle deletion adjusts selection/top visibility and clears
+  the vacated handle. ListBox addItem initializes only displayStr, as retail does.
+* CPage transition destruction branches over its old clearing loop in retail;
+  only the count store executes. Module EnterNewPage starts at module index 1.
+  Selected-tag lookup reloads the entry after the IsSelected callback.
+* Text helpers preserve fixed-buffer clearing, password masking, substring
+  width calls and text-area line metadata. Tag destructors restore the base
+  vtable before conditional deletion. No replacement calls copied retail code.
+
+Ten additional bodies still exceed their original slots. Their source and measured
+sizes are preserved in [SVO3_75_SLOT_BLOCKERS.md](SVO3_75_SLOT_BLOCKERS.md);
+those functions retain INCLUDE_ASM and are not counted. Earlier blockers remain
+in [SVO3_SLOT_BLOCKERS.md](SVO3_SLOT_BLOCKERS.md). No slot was widened.
+
+Validation: serial make split then make -B -j8 elf PASS. Public function addresses,
+compiled-object origins, slot bounds, runtime headers and bytes outside registered
+compiled slots PASS. All 40 new globals resolve at their verified retail addresses.
+The focused EE GCC type probe passes 21 sizes and 223 offsets (244 checks);
+the type inventory contains 159 declarations. No ISO or gameplay test was run.
+
+Strict comparison remains NONMATCH: 5,130 core.text and 32,236 net.text byte
+differences (37,366 total), all inside registered compiled slots. Whole-project
+inventory is 630 compiled / 7,995 assembly; 155 compiled slots match, 475 do not.
+The previous batch's historical results above are not results for this build.
+
+The updated build workflow uses ratchet-ps2-cli, not Wrench/Wine. The reference
+is assets/dl/boot.elf; make iso depends on elf and reads assets/dl/config.ini.
+Current packaging replaces the boot executable while preserving original disc
+assets; it does not repack edited overlays. The current CLI starts successfully
+in the project image. No extraction/packaging implementation was changed here.
+Only PasswordInputTag.o was added to the existing SVO3 size-flags list; unrelated
+CLI migration edits remain intact. See the project CLI build guide.
+
+Rebuilt ELF SHA-256: `4d162c667219f7eaa6711acebea6cd877fba2f227524bb72bb5d8c918455bbcf`.
+Artifact: build/boot_elf.elf. Ignored logs, slot-size probes, focused type checks
+and verification summary are in build/svo-library-work/svo75-*.

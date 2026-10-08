@@ -1,3 +1,6 @@
+#include "CMemoryContextBase.h"
+#include "string.h"
+#include "GenericListBoxTag.h"
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -14,6 +17,9 @@
 extern "C" {
 extern char svoGenericListBoxTagSource[];
 
+extern "C" {
+extern char svoGenericListBoxTagSource[];
+}
 #define SECTION(name) __attribute__((section(".svo_GenericListBoxTag_" #name)))
 
 SECTION(FreeResources___dupe56) void FreeResources___dupe56(SVTag *tag)
@@ -25,34 +31,113 @@ SECTION(FreeResources___dupe56) void FreeResources___dupe56(SVTag *tag)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", _GenericListBoxTag);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", addHandle);
+extern "C" SECTION(addHandle) long addHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
+{
+    if (tag->m_numItems >= tag->m_maxNumItems) return 0;
+    if (!handle) {
+        __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x1A4);
+        return 0;
+    }
+    const GenericListBoxTagVtablePrefix *vtable = (const GenericListBoxTagVtablePrefix *)tag->base.vtable;
+    if (vtable->getIndexOfHandle(tag, handle) != -1)
+        __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x1AB);
+    tag->m_handles[tag->m_numItems] = handle;
+    ++tag->m_numItems;
+    return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", changeSelectedItem___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", clearList);
+extern "C" SECTION(clearList) void clearList(GenericListBoxTagState *tag)
+{
+    if (tag->m_handles) memset(tag->m_handles, 0, tag->m_maxNumItems * 4);
+    tag->m_topVisibleIndex = 0;
+    tag->m_numItems = 0;
+    tag->m_selectedIndex = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", DefaultInit___dupe23);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", deleteHandle);
+extern "C" SECTION(deleteHandle) long deleteHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
+{
+    const GenericListBoxTagVtablePrefix *vtable = (const GenericListBoxTagVtablePrefix *)tag->base.vtable;
+    long index = vtable->getIndexOfHandle(tag, handle);
+    if (index == -1) return 0;
+    if (index >= tag->m_numItems) {
+        __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x1D6);
+        return 0;
+    }
+    for (int i = index; i < tag->m_numItems - 1; ++i) {
+        tag->m_handles[i] = tag->m_handles[i + 1];
+        if (tag->m_selectedIndex == i + 1) tag->m_selectedIndex = i;
+    }
+    if (index < tag->m_topVisibleIndex + tag->m_maxVisibleItems && tag->m_topVisibleIndex > 0)
+        --tag->m_topVisibleIndex;
+    --tag->m_numItems;
+    tag->m_handles[tag->m_numItems] = 0;
+    return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", Draw___dupe26);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", GenericListBoxTag);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getHandleByIndex);
+extern "C" SECTION(getHandleByIndex) long getHandleByIndex(GenericListBoxTagState *tag, int index)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x219);
+    if (index < 0 || index >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x21a);
+    if (!tag->m_handles[index]) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x21b);
+    return (int)tag->m_handles[index];
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getIndexOfHandle);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getNumVisibleRows___dupe2);
+extern "C" SECTION(getNumVisibleRows___dupe2) long getNumVisibleRows___dupe2(GenericListBoxTagState *tag)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x211);
+    if (tag->m_maxVisibleItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x212);
+    return tag->m_maxVisibleItems;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getSelectedHandle);
+extern "C" SECTION(getSelectedHandle) long getSelectedHandle(GenericListBoxTagState *tag)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x223);
+    if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x224);
+    if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x225);
+    return (int)tag->m_handles[tag->m_selectedIndex];
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getSelectedIndex___dupe2);
+extern "C" SECTION(getSelectedIndex___dupe2) long getSelectedIndex___dupe2(GenericListBoxTagState *tag)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x190);
+    if (tag->m_selectedIndex >= tag->m_numItems && tag->m_numItems != 0) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x191);
+    return tag->m_selectedIndex;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", getTopVisibleIndex___dupe2);
+extern "C" SECTION(getTopVisibleIndex___dupe2) long getTopVisibleIndex___dupe2(GenericListBoxTagState *tag)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x202);
+    if (tag->m_maxVisibleItems < tag->m_numItems) {
+    if (tag->m_topVisibleIndex > tag->m_numItems - tag->m_maxVisibleItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x205);
+    } else {
+    if (tag->m_topVisibleIndex >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x209);
+    }
+    return tag->m_topVisibleIndex;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", HandleInput___dupe54);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", selectIndex___dupe2);
+extern "C" SECTION(selectIndex___dupe2) long selectIndex___dupe2(GenericListBoxTagState *tag, int index)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x137);
+    if (index < 0 || index >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x138);
+    tag->m_selectedIndex = index;
+    return 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GenericListBoxTag", size);
+extern "C" SECTION(size) long size(GenericListBoxTagState *tag)
+{
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x113);
+    if (tag->m_numItems < 0) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x114);
+    return tag->m_numItems;
+}

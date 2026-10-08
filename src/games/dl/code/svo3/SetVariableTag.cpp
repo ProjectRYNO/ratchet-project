@@ -13,6 +13,10 @@
 
 extern "C" {
 
+extern "C" {
+extern const SVTagVtablePrefix svoSetVariableTagVtable;
+void FreeResources___dupe9(void *tag);
+}
 #define SECTION(name) __attribute__((section(".svo_SetVariableTag_" #name)))
 
 SECTION(FreeResources___dupe9) void FreeResources___dupe9(void *self)
@@ -27,7 +31,13 @@ SECTION(IsSelectable___dupe7) long IsSelectable___dupe7(void *self)
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SetVariableTag", _SetVariableTag);
+extern "C" SECTION(_SetVariableTag) void _SetVariableTag(SVTag *tag, unsigned long flags)
+{
+    tag->vtable = &svoSetVariableTagVtable;
+    FreeResources___dupe9((void *)tag);
+    tag->vtable = &svoTagVtable;
+    if (flags & 1) SVTagDelete(tag);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SetVariableTag", DefaultInit___dupe6);
 

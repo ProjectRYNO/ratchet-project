@@ -24,7 +24,7 @@ The host checkout need not have the original author's drive/directory names.
 | Docker build/compose setup | `src/games/Dockerfile`, `src/games/docker-compose.yml` |
 | Container mount | `src/games` becomes `/ProjectRYNO` |
 | Deadlocked working directory | `/ProjectRYNO/dl` |
-| Original extracted ELF | `src/games/assets/dl/boot_elf.elf` (reference input) |
+| Original extracted ELF | `src/games/assets/dl/boot.elf` (reference input) |
 | Main configuration | `src/games/dl/config/SCUS_974.65.yaml` |
 | Compiled replacements and bounds | `src/games/dl/config/decompiled_functions.yaml` |
 | Handwritten code/headers | `src/games/dl/code` (excluding generated `asm`) |
@@ -38,9 +38,10 @@ Check Docker and asset availability before a build. Build the image from
 `docker compose run --rm projectryno`. Inspect existing containers before starting
 or stopping one; never assume another contributor's container can be reused.
 `make ps2dev` supplies the native Linux compiler used by Deadlocked (EE GCC 3.2.3).
-Extraction and ISO packing use native Linux Wrench nightly 2026-10-05 (`7638b99`), pinned with
-a download checksum in the Dockerfile. The image opens Bash
-directly; no Wine or Windows compiler installation is needed.
+Native executable extraction and boot-only ISO packing now use the sibling
+ratchet-ps2-cli checkout; see [the integration guide](../../docs/build/RATCHET_PS2_CLI.md).
+The Docker image builds the sibling CLI checkout as a self-contained Linux executable.
+The image opens Bash directly; no Wine or Windows compiler installation is needed.
 Keep the established image/toolchain versions unless toolchain work is requested.
 
 The original ISO, extracted assets, prototype tree, and Ghidra project are local
@@ -68,7 +69,7 @@ For a shell script, use `set -e`; with logging through a pipe, also use `pipefai
 ```sh
 set -e
 # Only if assets have not been extracted; ISO must be mounted/readable here:
-# make dump iso=/mounted/path/deadlocked.iso
+# Export with ratchet-ps2 map export-executables on the host; see docs/build/RATCHET_PS2_CLI.md.
 make ps2dev
 make rom
 make split
@@ -108,23 +109,23 @@ if [ -d TESTS ]; then test_dir=TESTS; else test_dir=tests; fi
 Strict matching is required for a completed executable change:
 
 ```sh
-python3 ../tools/compare_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 ../tools/compare_elf.py ../assets/dl/boot.elf build/boot_elf.elf
 ```
 
 Additional diagnostics (choose those relevant to the task):
 
 ```sh
-python3 "$test_dir/check_main_elf.py" ../assets/dl/boot_elf.elf build/boot_elf.elf build/code/game/boot.o
+python3 "$test_dir/check_main_elf.py" ../assets/dl/boot.elf build/boot_elf.elf build/code/game/boot.o
 python3 "$test_dir/check_global_map.py" build/boot_elf.elf
 python3 "$test_dir/check_type_layouts.py"
-python3 "$test_dir/test_989snd_wrappers.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/test_989snd_state.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_iksemel.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_svo_string.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_svo_core.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_svo_input.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_svo_memory.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
-python3 "$test_dir/check_svo_config.py" ../assets/dl/boot_elf.elf build/boot_elf.elf
+python3 "$test_dir/test_989snd_wrappers.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/test_989snd_state.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_iksemel.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_string.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_core.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_input.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_memory.py" ../assets/dl/boot.elf build/boot_elf.elf
+python3 "$test_dir/check_svo_config.py" ../assets/dl/boot.elf build/boot_elf.elf
 python3 "$test_dir/check_main_link_guards.py"
 python3 ../tools/test_elf_tools.py
 ```
@@ -157,61 +158,30 @@ proves compiler layout; it does not establish the correctness of prototype field
 
 ## Isolated full-clean verification
 
-`TESTS/clean_main_build.py` expects `/reference` to be the games directory and
-`/reports` to be an existing writable report directory. It copies source and the
-original ELF into container-local `/ProjectRYNO`, then performs full-clean,
-toolchain setup, ROM extraction, split, compilation, and existing audits. It does
-not clean the host tree, pack an ISO, run host boot tests, or test gameplay.
-Its existing PASS message covers diagnostic audits; run the strict original ELF
-comparison separately before claiming a 1:1 build.
-It currently hashes boot/sound sources across splitting; extend this check for a
-new module when claiming its handwritten source survived a clean split.
-
-PowerShell, starting at the Git root:
-
-```powershell
-$rynoGames = (Resolve-Path 'src/games').Path
-$rynoReports = (New-Item -ItemType Directory -Force 'src/games/dl/build/ai-clean').FullName
-$rynoTests = if (Test-Path 'src/games/dl/TESTS') { 'TESTS' } else { 'tests' }
-docker run --rm --entrypoint python3 --mount "type=bind,source=$rynoGames,target=/reference,readonly" --mount "type=bind,source=$rynoReports,target=/reports" projectryno "/reference/dl/$rynoTests/clean_main_build.py"
-if ($LASTEXITCODE -ne 0) { throw 'Clean build failed; inspect the reports.' }
-```
-
-POSIX shell, starting at the Git root:
-
-```sh
-set -e
-ryno_games="$(cd src/games && pwd)"
-mkdir -p "$ryno_games/dl/build/ai-clean"
-ryno_tests=TESTS
-[ -d "$ryno_games/dl/TESTS" ] || ryno_tests=tests
-docker run --rm --entrypoint python3   --mount "type=bind,source=$ryno_games,target=/reference,readonly"   --mount "type=bind,source=$ryno_games/dl/build/ai-clean,target=/reports"   projectryno "/reference/dl/$ryno_tests/clean_main_build.py"
-```
-
-These examples remove the disposable container after exit and retain text reports.
-To retain its ELF for comparison, use a unique named container without `--rm`, then
-`docker cp NAME:/ProjectRYNO/dl/build/boot_elf.elf` to a chosen report filename before
-removing that container. Never reuse a name belonging to someone else's session.
+Use the read-only-source container command in
+[the CLI integration guide](../../docs/build/RATCHET_PS2_CLI.md).
+`TESTS/clean_main_build.py --iso /isos/disc.iso` creates a fresh source snapshot,
+extracts through the CLI, performs full-clean through compilation sequentially,
+audits the executable, and builds/verifies a new ISO. `/reports` retains the logs,
+strict matching result, ELF, and ISO. The active host build is never cleaned.
 
 ## ISO and emulator evidence
 
-`make iso` does not depend on `elf`. Build and audit first, then pack if requested.
-It rewrites `../assets/dl/build.asset` to select `../../dl/build/boot_elf.elf` and
-replaces `build/new_dl.iso`. Confirm this path resolves to the intended compiled
-ELF; preserve an existing ISO first if it is needed as a reference.
+`make iso` now depends on `elf` and invokes `ratchet-ps2 map build-boot` with
+`assets/dl/config.ini`. The host `build_dl_cli.ps1` wrapper uses the same Docker
+CLI; `-SkipCompile` packages an already-built ELF. Configured paths are container
+paths, including the original ISO under `/isos`. Only the boot executable is
+replaced; edited level overlays are not installed by this workflow.
 
-For exact provenance, unpack the rebuilt ISO to a new scratch directory with the
-project's Wrench unpack command and compare its extracted `boot_elf.elf` against
-the compiled file. Record the comparison/hash. An ISO filename, timestamp, or
-successful pack log alone is not proof of its boot payload. Do not unpack over
-the original reference assets.
+Use `tools/verify_boot_iso.py ORIGINAL_ISO OUTPUT_ISO COMPILED_ELF` to compare the
+installed ELF and verify all original disc bytes except boot extent/size and
+volume-size fields. Record strict executable matching separately: current
+nonmatching C development is permitted but must not be described as byte-exact.
 
-Emulator work needs the user's available emulator/BIOS/disc configuration. Use an
-isolated profile when feasible to avoid changing saves/settings. Record the
-actual ELF/ISO path and hash, emulator version, log, and reached stage. Earlier
-work reached sound/controller initialization; this is historical evidence, not a
-claim that the latest edit was tested in-game. Keep boot, audio behavior, and full
-gameplay claims separate.
+The user reported the earlier CLI-built ISO booted and worked on 2026-10-07.
+That observation applies to that tested ISO, not every subsequent clean build.
+Record emulator version, ISO/ELF hash, reached stage, and actual gameplay coverage
+for further runtime claims.
 
 ## Review and handoff
 

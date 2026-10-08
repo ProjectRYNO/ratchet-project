@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
-"""Run inside a disposable container with /reference and /reports mounted."""
+"""Build from a fresh CLI extraction in an isolated container; retain reports and ISO."""
+import argparse
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--iso', required=True, type=Path)
+args = parser.parse_args()
 reference = Path('/reference')
 root = Path('/ProjectRYNO')
 game = root / 'dl'
 reports = Path('/reports')
-game.mkdir(parents=True, exist_ok=True)
-shutil.copytree(reference / 'dl/config', game / 'config', dirs_exist_ok=True)
-# Use the launched script's directory: Git tracks TESTS, while some Windows
-# worktrees spell it tests. The isolated destination uses tests consistently.
-shutil.copytree(Path(__file__).resolve().parent, game / 'tests', dirs_exist_ok=True)
+if game.exists():
+    raise SystemExit('Use a fresh container: /ProjectRYNO/dl already exists')
+game.mkdir(parents=True)
+reports.mkdir(parents=True, exist_ok=True)
+shutil.copytree(reference / 'dl/config', game / 'config', ignore=shutil.ignore_patterns('*.rom', '*.ld', '*.d'))
+shutil.copytree(Path(__file__).resolve().parent, game / 'tests', ignore=shutil.ignore_patterns('keep', 'build', '__pycache__', '*.elf', '*.iso', '*.o'))
 shutil.copy2(reference / 'dl/Makefile', game / 'Makefile')
-(game / 'DOCS/symbols').mkdir(parents=True, exist_ok=True)
-(game / 'DOCS/types').mkdir(parents=True, exist_ok=True)
-shutil.copy2(reference / 'dl/DOCS/symbols/GLOBAL_VARIABLES.csv', game / 'DOCS/symbols/GLOBAL_VARIABLES.csv')
+for name in ('symbols/GLOBAL_VARIABLES.csv', 'types/RECOVERED_TYPES.json'):
+    target = game / 'DOCS' / name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(reference / 'dl/DOCS' / name, target)
 for directory, dirs, files in os.walk(reference / 'dl/code'):
     dirs[:] = [d for d in dirs if d != 'asm']
     destination = game / 'code' / Path(directory).relative_to(reference / 'dl/code')
@@ -28,33 +36,51 @@ for directory, dirs, files in os.walk(reference / 'dl/code'):
 (root / 'tools').mkdir(exist_ok=True)
 for source in (reference / 'tools').glob('*.py'):
     shutil.copy2(source, root / 'tools' / source.name)
-(root / 'assets/dl').mkdir(parents=True, exist_ok=True)
-shutil.copy2(reference / 'assets/dl/boot_elf.elf', root / 'assets/dl/boot_elf.elf')
-shutil.copy2(reference / 'dl/DOCS/types/RECOVERED_TYPES.json', game / 'DOCS/types/RECOVERED_TYPES.json')
-source = game / 'code/game/boot.cpp'
-before = hashlib.sha256(source.read_bytes()).hexdigest()
-sound_source = game / 'code/989snd/ee/989snd.c'
-sound_before = hashlib.sha256(sound_source.read_bytes()).hexdigest()
-for target in ('full-clean', 'ps2dev', 'rom', 'split', 'elf'):
-    print('Running make ' + target, flush=True)
-    with (reports / ('clean-' + target + '.log')).open('w') as log:
-        subprocess.run(['make', '-j8', target], cwd=game, stdout=log, stderr=subprocess.STDOUT, check=True)
-with (reports / 'type-layouts.txt').open('w') as log:
-    subprocess.run(['python3', 'tests/check_type_layouts.py'], cwd=game,
-                   stdout=log, stderr=subprocess.STDOUT, check=True)
-assert hashlib.sha256(source.read_bytes()).hexdigest() == before, 'split changed boot.cpp'
-assert hashlib.sha256(sound_source.read_bytes()).hexdigest() == sound_before, 'split changed handwritten 989snd.c'
-with (reports / 'clean-main-check.txt').open('w') as log:
-    subprocess.run(['python3', 'tests/check_main_elf.py', '../assets/dl/boot_elf.elf',
-                    'build/boot_elf.elf', 'build/code/game/boot.o'], cwd=game,
-                   stdout=log, stderr=subprocess.STDOUT, check=True)
-with (reports / 'clean-sound-behavior.txt').open('w') as log:
-    subprocess.run(['python3', 'tests/test_989snd_wrappers.py', '../assets/dl/boot_elf.elf',
-                    'build/boot_elf.elf'], cwd=game, stdout=log, stderr=subprocess.STDOUT, check=True)
-with (reports / 'clean-sound-state.txt').open('w') as log:
-    subprocess.run(['python3', 'tests/test_989snd_state.py', '../assets/dl/boot_elf.elf',
-                    'build/boot_elf.elf'], cwd=game, stdout=log, stderr=subprocess.STDOUT, check=True)
-with (reports / 'clean-global-map.txt').open('w') as log:
-    subprocess.run(['python3', 'tests/check_global_map.py', 'build/boot_elf.elf'],
-                   cwd=game, stdout=log, stderr=subprocess.STDOUT, check=True)
-print('PASS: full-clean retained handwritten sources, passed the ELF/global audits and both sound differential suites', flush=True)
+
+def hashes():
+    return {str(p.relative_to(game)): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in (game / 'code').rglob('*')
+            if p.suffix in ('.cpp', '.c', '.h') and 'asm' not in p.parts
+            and '{' in p.read_text(errors='replace')}
+
+before = hashes()
+(reports / 'source-hashes.json').write_text(json.dumps(before, indent=2) + '\n')
+
+def run(name, command, check=True):
+    print('Running ' + name, flush=True)
+    with (reports / (name + '.log')).open('w') as log:
+        result = subprocess.run(command, cwd=game, stdout=log, stderr=subprocess.STDOUT)
+    if check and result.returncode:
+        raise SystemExit(f'{name} failed ({result.returncode}); inspect /reports/{name}.log')
+    return result.returncode
+
+for target in ('full-clean', 'dump', 'ps2dev', 'rom', 'split', 'elf'):
+    command = ['make'] + (['-j8'] if target == 'elf' else []) + [target]
+    if target == 'dump':
+        command.append('iso=' + str(args.iso))
+    run('clean-' + target, command)
+after = hashes()
+if any(after.get(name) != digest for name, digest in before.items()):
+    raise SystemExit('Splitting changed handwritten source; inspect source-hashes.json')
+original = '../assets/dl/boot.elf'
+rebuilt = 'build/boot_elf.elf'
+for name, command in (
+    ('elf-layout-and-slots', ['tests/check_main_elf.py', original, rebuilt, 'build/code/game/boot.o']),
+    ('global-addresses', ['tests/check_global_map.py', rebuilt]),
+    ('type-layouts', ['tests/check_type_layouts.py']),
+    ('sound-wrappers', ['tests/test_989snd_wrappers.py', original, rebuilt]),
+    ('sound-state', ['tests/test_989snd_state.py', original, rebuilt]),
+):
+    run(name, [sys.executable] + command)
+matching = run('exact-matching', [sys.executable, '../tools/compare_elf.py', original, rebuilt], check=False)
+if matching not in (0, 1):
+    raise SystemExit('Strict comparison could not run')
+run('pack-iso', ['make', 'iso'])
+run('verify-iso', [sys.executable, '../tools/verify_boot_iso.py', str(args.iso), 'build/new_dl.iso', rebuilt])
+shutil.copy2(game / rebuilt, reports / 'boot_elf.elf')
+shutil.copy2(game / 'build/new_dl.iso', reports / 'new_dl_clean.iso')
+summary = dict(status='PASS', fresh_cli_extraction=True, handwritten_source_preserved=True,
+               executable_matching='PASS' if matching == 0 else 'NONMATCHING development build; see exact-matching.log',
+               iso=str(reports / 'new_dl_clean.iso'), emulator='NOT RUN')
+(reports / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps(summary, indent=2), flush=True)

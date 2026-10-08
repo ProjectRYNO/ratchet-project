@@ -53,7 +53,7 @@ Push-Location -LiteralPath $PSScriptRoot
 try {
     if ($rebuild) {
         Write-Host "[Project RYNO] Rebuilding image..."
-        Invoke-DockerChecked build --no-cache -t $ImageName .
+        Invoke-DockerChecked compose build --no-cache projectryno
         Invoke-DockerChecked compose run projectryno
     } elseif ($delete) {
         Write-Host "[Project RYNO] Removing Project RYNO containers..."
@@ -76,7 +76,7 @@ try {
     } else {
         if (-not (Test-ImageExists)) {
             Write-Host "[Project RYNO] Image not found, building..."
-            Invoke-DockerChecked build -t $ImageName .
+            Invoke-DockerChecked compose build projectryno
         } else {
             Write-Host "[Project RYNO] Image already exists, skipping build."
         }

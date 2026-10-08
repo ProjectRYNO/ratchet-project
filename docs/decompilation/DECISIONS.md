@@ -25,7 +25,7 @@ changing a mechanism; this is not a ban on justified improvements.
 | K03 | Full gameplay and audible sound are not established by the automated suites. | Record emulator scenarios using the smoke checklist; preserve the distinction between SDK mocks and hardware behavior. |
 | K04 | RAC, GC, and UYA lack verified game Makefiles/profiles. | Establish each game's split/assembly matching baseline before borrowing the DL build design. |
 | K05 | Some recovered types are prototype-only. | Validate retail access widths/offsets before using them; preserve the evidence labels in the type inventory. |
-| K06 | Native Wrench v0.5 cannot fully unpack the current or previous rebuilt ISO: `dl.misc.debug_font` substream read fails (size 800, offset 420). Original retail extraction and ISO packing pass; the compiled boot ELF survives exactly. | Investigate debug-font asset packing/format; see the Wrench validation section in the platform checks. This predates Wine removal; gameplay impact is untested. |
+| K06 | Retired asset-bank repacking could corrupt debug-font extraction in rebuilt discs. | Superseded by boot-only CLI replacement, which preserves original game data. Full-disc byte comparison verifies preservation; keep emulator checks separate. |
 
 Historical failures to avoid repeating include exit/Exit filename collisions on
 Windows, incorrect HI16/LO16 target aliases, misplaced section-relative linker

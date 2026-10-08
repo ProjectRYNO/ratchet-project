@@ -150,7 +150,7 @@ The focused EE compiler probe passes 12 type sizes and 87 field offsets for
 the concrete-tag headers, including expanded existing context/vtable types.
 
 
-## SVO3 50% batch (latest)
+## SVO3 50% batch
 
 The inventory now contains 149 declarations. Added or expanded views cover
 SVBrowser, download metadata and request buffers, XML adapters, the file queue,
@@ -161,3 +161,18 @@ allocation sizes. The focused EE GCC probe passes 28 sizes and 158 offsets;
 its source/log are build/svo-library-work/half-types.cpp and half-types.log.
 The owning CInputContextBase and SVChronograph headers supply their anonymous
 typedefs; no incompatible struct forward declarations are introduced.
+
+## SVO3 form/list/page/text batch (latest)
+
+Inventory: 159 declarations. FormTag (0x69EC), RadioElementGroup (0x184),
+GenericListBoxTagState (0xE4) and ListBoxItem (0x1C) are recovered. ListBoxTagState
+is now 0x288, RadioInputTagState 0x198 and CheckboxInputTagState 0x194.
+TextInputTagState remains a 0x4E4 prefix of the 0x514 allocation; TextAreaTagState
+remains a 0x180 prefix of 0x194. CPage remains a 0x6360 prefix of 0x637C.
+Expanded views expose the fields used by the recovered functions and retain
+explicit unrecovered regions. Named tag structs enable FormTag's mutually
+referencing typed arrays without duplicate typedef tags.
+
+Focused EE GCC checks pass 21 sizes and 223 offsets across the 14 changed/new
+headers. Probe: build/svo-library-work/svo75-types.cpp. These checks establish
+PS2 layouts, not gameplay behavior or exact instruction matching.

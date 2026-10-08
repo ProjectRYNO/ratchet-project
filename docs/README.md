@@ -15,6 +15,7 @@ Keep SDK/tool/vendor documentation beside the code it describes.
 ## Contributor tools
 
 * [One-command verification](build/VERIFICATION.md)
+* [CLI extraction, ISO packaging, and full clean builds](build/RATCHET_PS2_CLI.md)
 * [Decisions and known issues](decompilation/DECISIONS.md)
 * [Emulator smoke checklist](build/EMULATOR_SMOKE_TEST.md)
 * [Deadlocked function tracker](../src/games/dl/DOCS/progress/README.md)

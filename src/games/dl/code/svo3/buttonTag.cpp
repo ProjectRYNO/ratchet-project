@@ -13,6 +13,10 @@
 
 extern "C" {
 
+extern "C" {
+extern const SVTagVtablePrefix svoButtonTagVtable;
+void FreeResources___dupe5(void *tag);
+}
 #define SECTION(name) __attribute__((section(".svo_buttonTag_" #name)))
 
 SECTION(FreeResources___dupe5) void FreeResources___dupe5(void *self)
@@ -22,7 +26,13 @@ SECTION(FreeResources___dupe5) void FreeResources___dupe5(void *self)
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/buttonTag", _ButtonTag);
+extern "C" SECTION(_ButtonTag) void _ButtonTag(SVTag *tag, unsigned long flags)
+{
+    tag->vtable = &svoButtonTagVtable;
+    FreeResources___dupe5((void *)tag);
+    tag->vtable = &svoTagVtable;
+    if (flags & 1) SVTagDelete(tag);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/buttonTag", ButtonTag);
 

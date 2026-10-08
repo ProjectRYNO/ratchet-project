@@ -4438,10 +4438,10 @@
     "size": "0x04",
     "line": 0,
     "owners": [
-      "svo3/CAudioContextBase.h"
+      "svo3/CAudioContextBase.cpp"
     ],
     "header": "code/svo3/CAudioContextBase.h",
-    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "vtable",
@@ -5055,13 +5055,13 @@
   },
   {
     "name": "SVTagModuleVtablePrefix",
-    "size": "0x10",
+    "size": "0x30",
     "line": 31857,
     "owners": [
-      "svo3/SVTagModule.h"
+      "svo3/SVTagModule.cpp"
     ],
     "header": "code/svo3/SVTagModule.h",
-    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "unknown00",
@@ -5082,18 +5082,48 @@
         "name": "freeResources",
         "offset": 12,
         "bitfield": false
+      },
+      {
+        "name": "unknown10",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "unknown14",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "IsMyTag",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered1C",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "LeaveCurrentPage",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "EnterNewPage",
+        "offset": 44,
+        "bitfield": false
       }
     ]
   },
   {
     "name": "SVTagModuleState",
-    "size": "0x4",
+    "size": "0x04",
     "line": 31857,
     "owners": [
-      "svo3/SVTagModule.h"
+      "svo3/SVTagModule.cpp"
     ],
     "header": "code/svo3/SVTagModule.h",
-    "evidence": "retail instruction offsets and Ghidra, prototype names; Prefix types deliberately incomplete",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "vtable",
@@ -5345,14 +5375,24 @@
     "size": "0x4C",
     "line": 0,
     "owners": [
-      "svo3\\SVTag.h"
+      "svo3/SVTag.cpp"
     ],
     "header": "code/svo3/SVTag.h",
-    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "unrecovered00",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "Update",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered18",
+        "offset": 24,
         "bitfield": false
       },
       {
@@ -5402,10 +5442,10 @@
     "size": "0xB4",
     "line": 0,
     "owners": [
-      "svo3\\SVTag.h"
+      "svo3/SVTag.cpp"
     ],
     "header": "code/svo3/SVTag.h",
-    "evidence": "Retail tag instructions and prototype dltypes; explicitly marked prefixes are not full allocations",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "m_xml",
@@ -6039,11 +6079,46 @@
       "svo3/CPage.cpp"
     ],
     "header": "code/svo3/CPage.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
-        "name": "unrecovered",
+        "name": "unrecovered0000",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "preTransitionCount",
+        "offset": 6776,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered1A7C",
+        "offset": 6780,
+        "bitfield": false
+      },
+      {
+        "name": "postTransitionCount",
+        "offset": 13588,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered3518",
+        "offset": 13592,
+        "bitfield": false
+      },
+      {
+        "name": "inTransitionCount",
+        "offset": 14856,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered3A0C",
+        "offset": 14860,
+        "bitfield": false
+      },
+      {
+        "name": "m_bIsPopup",
+        "offset": 14892,
         "bitfield": false
       },
       {
@@ -6057,13 +6132,48 @@
         "bitfield": false
       },
       {
+        "name": "m_history",
+        "offset": 15064,
+        "bitfield": false
+      },
+      {
+        "name": "m_pageRefreshTimer",
+        "offset": 23292,
+        "bitfield": false
+      },
+      {
+        "name": "m_pageRefreshSeconds",
+        "offset": 23308,
+        "bitfield": false
+      },
+      {
         "name": "m_state",
         "offset": 23312,
         "bitfield": false
       },
       {
-        "name": "unrecovered5B14",
+        "name": "m_callbackData",
         "offset": 23316,
+        "bitfield": false
+      },
+      {
+        "name": "m_defTextEntryTag",
+        "offset": 23320,
+        "bitfield": false
+      },
+      {
+        "name": "m_defTextScrollTag",
+        "offset": 23324,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered5B20",
+        "offset": 23328,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayBuffers",
+        "offset": 23368,
         "bitfield": false
       },
       {
@@ -6241,13 +6351,13 @@
   },
   {
     "name": "ListBoxTagState",
-    "size": "0x284",
+    "size": "0x288",
     "line": 0,
     "owners": [
       "svo3/ListBoxTag.cpp"
     ],
     "header": "code/svo3/ListBoxTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -6255,13 +6365,93 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredB4",
+        "name": "m_fontSize",
         "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_items",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_maxNumItems",
+        "offset": 592,
+        "bitfield": false
+      },
+      {
+        "name": "m_maxVisibleItems",
+        "offset": 596,
+        "bitfield": false
+      },
+      {
+        "name": "m_numItems",
+        "offset": 600,
+        "bitfield": false
+      },
+      {
+        "name": "m_selectedIndex",
+        "offset": 604,
+        "bitfield": false
+      },
+      {
+        "name": "m_topVisibleIndex",
+        "offset": 608,
+        "bitfield": false
+      },
+      {
+        "name": "m_bPopulatedByPage",
+        "offset": 612,
+        "bitfield": false
+      },
+      {
+        "name": "m_selectedItemColor",
+        "offset": 616,
+        "bitfield": false
+      },
+      {
+        "name": "m_defaultItemColor",
+        "offset": 620,
+        "bitfield": false
+      },
+      {
+        "name": "m_lineSpacing",
+        "offset": 624,
+        "bitfield": false
+      },
+      {
+        "name": "m_buttonHeight",
+        "offset": 628,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollBarPercentage",
+        "offset": 632,
+        "bitfield": false
+      },
+      {
+        "name": "m_pTimer",
+        "offset": 636,
         "bitfield": false
       },
       {
         "name": "m_turnOffDraw",
         "offset": 640,
+        "bitfield": false
+      },
+      {
+        "name": "m_selectFocusAreaMode",
+        "offset": 644,
         "bitfield": false
       }
     ]
@@ -6423,13 +6613,13 @@
   },
   {
     "name": "RadioInputTagState",
-    "size": "0xBC",
+    "size": "0x198",
     "line": 0,
     "owners": [
       "svo3/RadioInputTag.cpp"
     ],
     "header": "code/svo3/RadioInputTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -6444,6 +6634,41 @@
       {
         "name": "m_isChecked",
         "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_value",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 388,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightColor",
+        "offset": 392,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 396,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 400,
+        "bitfield": false
+      },
+      {
+        "name": "m_bRequiredForSubmit",
+        "offset": 404,
         "bitfield": false
       }
     ]
@@ -6915,13 +7140,13 @@
   },
   {
     "name": "SelectTagState",
-    "size": "0xD4",
+    "size": "0xF4",
     "line": 0,
     "owners": [
       "svo3/SelectTag.cpp"
     ],
     "header": "code/svo3/SelectTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -6952,18 +7177,28 @@
         "name": "m_values",
         "offset": 208,
         "bitfield": false
+      },
+      {
+        "name": "unrecoveredD4",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 240,
+        "bitfield": false
       }
     ]
   },
   {
     "name": "TextAreaTagState",
-    "size": "0xBC",
+    "size": "0x180",
     "line": 0,
     "owners": [
       "svo3/TextAreaTag.cpp"
     ],
     "header": "code/svo3/TextAreaTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -6979,18 +7214,153 @@
         "name": "m_maxTextSize",
         "offset": 184,
         "bitfield": false
+      },
+      {
+        "name": "m_maxTextLines",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "unrecoveredC0",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_scrollFrame",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "m_curParseOffset",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "m_curParseLine",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "m_curEditOffset",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_textEndOffset",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "m_upArrowOffset",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "m_downArrowOffset",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "m_leftArrowOffset",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "m_rightArrowOffset",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "m_numTotalLines",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "m_minDisplayLine",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "m_curLine",
+        "offset": 244,
+        "bitfield": false
+      },
+      {
+        "name": "m_textEndLine",
+        "offset": 248,
+        "bitfield": false
+      },
+      {
+        "name": "m_numLinesInDisplay",
+        "offset": 252,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered100",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "m_cursorX",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "m_cursorY",
+        "offset": 264,
+        "bitfield": false
+      },
+      {
+        "name": "m_overallLength",
+        "offset": 268,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered110",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "m_firstAppendToChat",
+        "offset": 276,
+        "bitfield": false
+      },
+      {
+        "name": "m_textLines",
+        "offset": 280,
+        "bitfield": false
+      },
+      {
+        "name": "m_canScrollUp",
+        "offset": 284,
+        "bitfield": false
+      },
+      {
+        "name": "m_canScrollDown",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered124",
+        "offset": 292,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 380,
+        "bitfield": false
       }
     ]
   },
   {
     "name": "TextInputTagState",
-    "size": "0x2DC",
+    "size": "0x4E4",
     "line": 0,
     "owners": [
       "svo3/TextInputTag.cpp"
     ],
     "header": "code/svo3/TextInputTag.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "base",
@@ -7008,13 +7378,43 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered2B8",
+        "name": "m_bEditable",
         "offset": 696,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered2BC",
+        "offset": 700,
+        "bitfield": false
+      },
+      {
+        "name": "m_curEditOffset",
+        "offset": 704,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered2C4",
+        "offset": 708,
         "bitfield": false
       },
       {
         "name": "m_maxLengthUTF8Chars",
         "offset": 728,
+        "bitfield": false
+      },
+      {
+        "name": "m_curLeftOffset",
+        "offset": 732,
+        "bitfield": false
+      },
+      {
+        "name": "m_curRightOffset",
+        "offset": 736,
+        "bitfield": false
+      },
+      {
+        "name": "m_keyboardInput",
+        "offset": 740,
         "bitfield": false
       }
     ]
@@ -7042,6 +7442,491 @@
       {
         "name": "m_link",
         "offset": 324,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CAudioContextVtablePrefix",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3/CAudioContextBase.cpp"
+    ],
+    "header": "code/svo3/CAudioContextBase.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "Play",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CheckboxInputTagState",
+    "size": "0x194",
+    "line": 0,
+    "owners": [
+      "svo3/CheckboxInputTag.cpp"
+    ],
+    "header": "code/svo3/CheckboxInputTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_fontSize",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_isChecked",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_text",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_value",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 388,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightColor",
+        "offset": 392,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 396,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 400,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RadioElementGroup",
+    "size": "0x184",
+    "line": 0,
+    "owners": [
+      "svo3/FormTag.cpp"
+    ],
+    "header": "code/svo3/FormTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "elements",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "name",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "value",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "numElementsInGroup",
+        "offset": 384,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FormTag",
+    "size": "0x69EC",
+    "line": 0,
+    "owners": [
+      "svo3/FormTag.cpp"
+    ],
+    "header": "code/svo3/FormTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_numRadioElementGroups",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_numCheckboxElements",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_numTextElements",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_numPasswordElements",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_numHiddenElements",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "m_numSelectElements",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "m_numTextAreaElements",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "m_url",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "m_encType",
+        "offset": 464,
+        "bitfield": false
+      },
+      {
+        "name": "m_methodType",
+        "offset": 720,
+        "bitfield": false
+      },
+      {
+        "name": "m_method",
+        "offset": 724,
+        "bitfield": false
+      },
+      {
+        "name": "m_bEncryptionErrorOccurred",
+        "offset": 728,
+        "bitfield": false
+      },
+      {
+        "name": "m_bValidationSucceeded",
+        "offset": 732,
+        "bitfield": false
+      },
+      {
+        "name": "m_tagThatFailedValidation",
+        "offset": 736,
+        "bitfield": false
+      },
+      {
+        "name": "m_radioElementGroups",
+        "offset": 740,
+        "bitfield": false
+      },
+      {
+        "name": "m_checkboxElements",
+        "offset": 25572,
+        "bitfield": false
+      },
+      {
+        "name": "m_textElements",
+        "offset": 25828,
+        "bitfield": false
+      },
+      {
+        "name": "m_passwordElements",
+        "offset": 26084,
+        "bitfield": false
+      },
+      {
+        "name": "m_submitElement",
+        "offset": 26340,
+        "bitfield": false
+      },
+      {
+        "name": "m_hiddenElements",
+        "offset": 26344,
+        "bitfield": false
+      },
+      {
+        "name": "m_selectElements",
+        "offset": 26600,
+        "bitfield": false
+      },
+      {
+        "name": "m_textAreaElements",
+        "offset": 26856,
+        "bitfield": false
+      },
+      {
+        "name": "m_pChildrenInfoList",
+        "offset": 27112,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GenericListBoxTagVtablePrefix",
+    "size": "0x84",
+    "line": 0,
+    "owners": [
+      "svo3/GenericListBoxTag.cpp"
+    ],
+    "header": "code/svo3/GenericListBoxTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "getIndexOfHandle",
+        "offset": 128,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GenericListBoxTagState",
+    "size": "0xE4",
+    "line": 0,
+    "owners": [
+      "svo3/GenericListBoxTag.cpp"
+    ],
+    "header": "code/svo3/GenericListBoxTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_class",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_handles",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "m_maxNumItems",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "m_maxVisibleItems",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "m_numItems",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "m_selectedIndex",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "m_topVisibleIndex",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "m_pTimer",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "m_turnOffDraw",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "m_entryTagIDs",
+        "offset": 224,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HiddenInputTagState",
+    "size": "0x1BC",
+    "line": 0,
+    "owners": [
+      "svo3/HiddenInputTag.cpp"
+    ],
+    "header": "code/svo3/HiddenInputTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_value",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 436,
+        "bitfield": false
+      },
+      {
+        "name": "m_bSubmitAsEncryped",
+        "offset": 440,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ListBoxItem",
+    "size": "0x1C",
+    "line": 0,
+    "owners": [
+      "svo3/ListBoxTag.cpp"
+    ],
+    "header": "code/svo3/ListBoxTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "displayStr",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "h_ref",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "linkOption",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "tagClass",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "name",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "info",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "tagid",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SubmitInputTagState",
+    "size": "0x158",
+    "line": 0,
+    "owners": [
+      "svo3/SubmitInputTag.cpp"
+    ],
+    "header": "code/svo3/SubmitInputTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unrecoveredB4",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_parentForm",
+        "offset": 340,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "LineInfo",
+    "size": "0x0C",
+    "line": 0,
+    "owners": [
+      "svo3/TextAreaTag.cpp"
+    ],
+    "header": "code/svo3/TextAreaTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "lineStartIndex",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "lineEndIndex",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "lineNumber",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "padding06",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "color",
+        "offset": 8,
         "bitfield": false
       }
     ]

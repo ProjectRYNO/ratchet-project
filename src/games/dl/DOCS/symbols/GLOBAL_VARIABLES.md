@@ -62,7 +62,7 @@ and candidates, but never changes build inputs automatically. Example from the
 game directory:
 
 ```sh
-python3 ../tools/map_dl_globals.py --ghidra build/global-map/ghidra-named.txt --prototype /path/to/deadlocked-proto-decomp --game . --elf ../assets/dl/boot_elf.elf --output build/global-map
+python3 ../tools/map_dl_globals.py --ghidra build/global-map/ghidra-named.txt --prototype /path/to/deadlocked-proto-decomp --game . --elf ../assets/dl/boot.elf --output build/global-map
 ```
 
 After editing symbol mappings, regenerate assembly and force object compilation:
@@ -71,7 +71,7 @@ After editing symbol mappings, regenerate assembly and force object compilation:
 make split
 make -B -j8 elf
 python3 tests/check_global_map.py build/boot_elf.elf
-python3 tests/check_main_elf.py ../assets/dl/boot_elf.elf build/boot_elf.elf build/code/game/boot.o
+python3 tests/check_main_elf.py ../assets/dl/boot.elf build/boot_elf.elf build/code/game/boot.o
 ```
 
 The forced rebuild matters: the current Makefile does not track header or
