@@ -1,3 +1,8 @@
+
+
+#include "CInputContextBase.h"
+#include "CPage.h"
+#include "CAudioContextBase.h"
 #include "SVOString.h"
 #include "HttpUtils.h"
 #include "GridTag.h"
@@ -68,6 +73,19 @@ long ParseSingleCell(GridTagState *, iks *, SVGridCell *);
 }
 extern "C" {
 extern char svoGridTagName[];
+}
+extern "C" {
+long Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
+CAudioContextBaseState *GetAudioContext();
+extern char svoGridEmptyLink[];
+extern char svoGridAudioClass[];
+}
+extern "C" {
+void ChangeSelectedCell(GridTagState *, int);
+void AdvanceCurrTopRow(GridTagState *, int, int);
+}
+extern "C" {
+void ChangeSelectedColumn(GridTagState *, int);
 }
 #define SECTION(name) __attribute__((section(".svo_GridTag_" #name)))
 
@@ -170,13 +188,117 @@ extern "C" SECTION(_GridTag) void _GridTag(GridTagState *tag, unsigned int flags
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", GridTag);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", HasNavigationOccured);
+extern "C" SECTION(HasNavigationOccured) long HasNavigationOccured(GridTagState *tag, CPage *page)
+{
+    CInputContextBaseState *input = tag->base.m_contexts->inputContext;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) ||
+        HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) ||
+        HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT) ||
+        HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT)) {
+        CDrawContextBase *draw = tag->base.m_contexts->drawContext;
+        if (!draw) __SVO_Assert_Handler(svoGridTagSource, 0x16D);
+        return Navigate(&tag->base, input, draw, tag->base.m_xml, page);
+    }
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", FollowLink);
+extern "C" SECTION(FollowLink) void FollowLink(GridTagState *tag, CPage *page)
+{
+    if (page->m_state) return;
+    SVGridCell *cell;
+    GetCurrentSelectedCell(tag, &cell);
+    if (cell) {
+        if (cell->cell_link && strcmp(cell->cell_link, svoGridEmptyLink)) {
+            CAudioContextBaseState *audio = GetAudioContext();
+            ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoGridAudioClass);
+            followLink(page, cell->cell_link, cell->linkOption);
+        }
+    } else {
+        char *link = tag->m_columns[tag->m_currCellColNum].colHdrLink;
+        if (link && strcmp(link, svoGridEmptyLink)) {
+            CAudioContextBaseState *audio = GetAudioContext();
+            ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoGridAudioClass);
+            followLink(page, tag->m_columns[tag->m_currCellColNum].colHdrLink, 0);
+        }
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", HandleModalInput);
+extern "C" SECTION(HandleModalInput) int HandleModalInput(GridTagState *tag, CPage *page)
+{
+    CInputContextBaseState *input = tag->base.m_contexts->inputContext;
+    if (!tag->m_bIsClickedIn) {
+        if (HasNavigationOccured(tag, page)) return 0;
+        if (tag->m_numVisRowsWithCells < 1) return 1;
+        if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
+            tag->m_bIsClickedIn = 1;
+            return 0;
+        }
+        return 1;
+    }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_BACK)) {
+        tag->m_bIsClickedIn = 0;
+        return 0;
+    }
+    int direction;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT)) direction = -2;
+    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) direction = 2;
+    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP)) direction = -1;
+    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)) direction = 1;
+    else {
+        if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
+            FollowLink(tag, page);
+            return 0;
+        }
+        if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) direction = 1;
+        else if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) direction = -1;
+        else return 1;
+        AdvanceCurrTopRow(tag, direction, 1);
+        return 0;
+    }
+    ChangeSelectedCell(tag, direction);
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", HandleInput___dupe50);
+extern "C" SECTION(HandleInput___dupe50) int HandleInput___dupe50(GridTagState *tag, CPage *page)
+{
+    CInputContextBaseState *input = tag->base.m_contexts->inputContext;
+    if (!tag->base.m_xml) __SVO_Assert_Handler(svoGridTagSource, 0x1F4);
+    if (!input) __SVO_Assert_Handler(svoGridTagSource, 0x1F5);
+    if (!page) __SVO_Assert_Handler(svoGridTagSource, 0x1F6);
+    if (!tag->base.vtable->IsSelected(&tag->base)) return 1;
+    if (tag->m_bIsModalGrid) return HandleModalInput(tag, page);
+    if (HasNavigationOccured(tag, page)) return 0;
+    if (tag->m_numVisRowsWithCells < 1) return 1;
+    int action = HasActionOccurred(input, 0x11, SV_ACTION_SELECT_LEFT);
+    if (!action) action = HasActionOccurred(input, 0x11, SV_ACTION_SELECT_RIGHT);
+    if (action && ElapsedMS(tag->m_pTimer) > 250) {
+        int magnitude = action < 0 ? -action : action;
+        if (magnitude > 45) {
+            Reset___dupe5(tag->m_pTimer);
+            ChangeSelectedCell(tag, action > 0 ? 2 : -2);
+            return 0;
+        }
+    }
+    action = HasActionOccurred(input, 0x11, SV_ACTION_SELECT_UP);
+    if (!action) action = HasActionOccurred(input, 0x11, SV_ACTION_SELECT_DOWN);
+    if (action && ElapsedMS(tag->m_pTimer) > 250) {
+        int magnitude = action < 0 ? -action : action;
+        if (magnitude > 45) {
+            Reset___dupe5(tag->m_pTimer);
+            ChangeSelectedCell(tag, action < 0 ? -1 : 1);
+            return 0;
+        }
+    }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) FollowLink(tag, page);
+    else {
+        int direction;
+        if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) direction = 1;
+        else if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) direction = -1;
+        else return 1;
+        AdvanceCurrTopRow(tag, direction, 1);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", Draw___dupe23);
 
@@ -371,7 +493,27 @@ extern "C" SECTION(ParseGridHeader) long ParseGridHeader(GridTagState *tag, iks 
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", ParseSingleCell);
+extern "C" SECTION(ParseSingleCell) long ParseSingleCell(GridTagState *tag, iks *xml, SVGridCell *cell)
+{
+    if (!xml || !cell) {
+        __SVO_Assert_Handler(svoGridTagSource, 0x549);
+        return 0;
+    }
+    cell->cell_tagID = svoNextTagId++;
+    cell->cellClass = iks_find_attrib(xml, svoGridClassAttribute);
+    if (iks_has_children(xml)) {
+        if (iks_has_children(xml)) cell->cell_text = iks_cdata(iks_child(xml));
+        else cell->cell_text = 0;
+        cell->cell_link = iks_find_attrib(xml, svoGridLinkAttribute);
+        if (tag->base.m_toolTipTagName) cell->cell_tooltip = iks_find_attrib(xml, svoGridTooltipAttribute);
+        if (cell->cell_link) decodeEntityText(cell->cell_link);
+        char *tagClass = iks_find_attrib(xml, svoGridClassAttribute);
+        cell->linkOption = 0;
+        cell->cellClass = tagClass;
+        getLinkOptionAttrib(xml, svoGridLinkOptionAttribute, (unsigned int *)&cell->linkOption);
+    }
+    return 1;
+}
 
 extern "C" SECTION(AdvanceCurrTopRow) void AdvanceCurrTopRow(GridTagState *tag, int direction, int records)
 {
@@ -396,7 +538,81 @@ extern "C" SECTION(GetCurrentSelectedCell) long GetCurrentSelectedCell(GridTagSt
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/GridTag", ChangeSelectedCell);
+extern "C" SECTION(ChangeSelectedCell) void ChangeSelectedCell(GridTagState *tag, int direction)
+{
+    switch (direction) {
+    case -1: {
+        tag->m_headerSelected = 0;
+        if (tag->m_bVerticalWrapAllowed && tag->m_currCellRowNum == -1) {
+            AdvanceCurrTopRow(tag, 1, tag->m_numTotalRows - tag->m_numVisRowsWithCells);
+            tag->m_currCellRowNum = tag->m_numTotalRows;
+        }
+        int previous = tag->m_currCellRowNum;
+        for (int row = previous - 1; row >= 0; --row) {
+            if (tag->m_cells[row][tag->m_currCellColNum].cell_link) {
+                if (row < tag->m_currTopRow) AdvanceCurrTopRow(tag, -1, tag->m_currTopRow - row);
+                tag->m_currCellRowNum = row;
+                return;
+            }
+        }
+        if (tag->m_columns[tag->m_currCellColNum].colHdrLink) {
+            tag->m_headerSelected = 1;
+            if (tag->m_numVisRowsWithCells < previous + 1) AdvanceCurrTopRow(tag, -1, tag->m_currTopRow);
+            tag->m_currCellRowNum = -1;
+        } else if (tag->m_bVerticalWrapAllowed) {
+            AdvanceCurrTopRow(tag, 1, tag->m_numTotalRows - tag->m_numVisRowsWithCells);
+            tag->m_currCellRowNum = tag->m_numTotalRows - 1;
+        }
+        return;
+    }
+    case 1: {
+        int previous = tag->m_currCellRowNum;
+        for (int row = previous + 1; row < tag->m_numTotalRows; ++row) {
+            if (tag->m_cells[row][tag->m_currCellColNum].cell_link) {
+                if (row >= tag->m_currTopRow + tag->m_numVisRowsWithCells)
+                    AdvanceCurrTopRow(tag, 1, row - tag->m_currTopRow - tag->m_numVisRowsWithCells + 1);
+                tag->m_currCellRowNum = row;
+                tag->m_headerSelected = 0;
+                return;
+            }
+        }
+        if (tag->m_bVerticalWrapAllowed) {
+            for (int row = 0; row < previous; ++row) {
+                if (tag->m_cells[row][tag->m_currCellColNum].cell_link) {
+                    if (row < tag->m_currTopRow) AdvanceCurrTopRow(tag, -1, tag->m_currTopRow - row);
+                    tag->m_currCellRowNum = row;
+                    tag->m_headerSelected = 0;
+                    return;
+                }
+            }
+        }
+        return;
+    }
+    case -2:
+    case 2: {
+        int step = direction < 0 ? -1 : 1;
+        int offset = step;
+        for (int tried = 1; tried < tag->m_numTotalColumns; ++tried, offset += step) {
+            int previous = tag->m_currCellColNum;
+            int column = (previous + tag->m_numTotalColumns + offset) % tag->m_numTotalColumns;
+            if (!tag->m_bSideWrapAllowed) {
+                if (direction == -2 && previous < column) return;
+                if (direction == 2 && column < previous) return;
+            }
+            char *link;
+            if (tag->m_currCellRowNum == -1) link = tag->m_columns[column].colHdrLink;
+            else link = tag->m_cells[tag->m_currCellRowNum][column].cell_link;
+            if (link) {
+                ChangeSelectedColumn(tag, column);
+                return;
+            }
+        }
+        return;
+    }
+    default:
+        __SVO_Assert_Handler(svoGridTagSource, 0x62C);
+    }
+}
 
 extern "C" SECTION(GetToolTipText___dupe2) char * GetToolTipText___dupe2(GridTagState *tag)
 {

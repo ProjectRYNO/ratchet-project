@@ -1,3 +1,6 @@
+#include "TagUtils.h"
+#include "CAllContextData.h"
+#include "stdlib.h"
 struct CTagModuleActions;
 #include "CMemoryContextBase.h"
 #include <string.h>
@@ -31,6 +34,28 @@ extern int m_loginResult;
 void ScanTagsHandleLoginDTD(LoginTagModuleState *, iks *, CAllContextData *, char *, CTagModuleActions *);
 void ScanTagsHandleLoginSubmitResponse(LoginTagModuleState *, iks *, CAllContextData *, CTagModuleActions *);
 extern char svoLoginDTDAttribute[];
+}
+extern "C" {
+extern char svoLoginStatusName[];
+extern char svoLoginMessageName[];
+extern char svoLoginIPAddressAttribute[];
+extern char svoLoginUserName[];
+extern char svoLoginMaxLengthAttribute[];
+extern char svoLoginNameAttribute[];
+extern char svoLoginAccountIDName[];
+extern char *svoLoginResultNames[2];
+const void *DownloadBinary(DownloadBinaryState *);
+void _DownloadBinary(DownloadBinaryState *, int);
+void SetPath(DownloadBinaryState *, char *);
+void SetFormMethodType(DownloadBinaryState *, int);
+void SetToDestroyOnRequestSend(DownloadBinaryState *);
+void SetDownloadCallback(DownloadBinaryState *, DownloadCallback);
+void scanXMLCB(unsigned int, char *, int, void *, int);
+void URIStoreAdd(char *, char *);
+void SetUserNameMaxLength(DownloadBinaryState *, int);
+void SetUserNameParameter(DownloadBinaryState *, char *);
+void SetAccountIDParameter(DownloadBinaryState *, char *);
+void PushPostTransitionArray(CPage *, DownloadBinaryState *, DownloadBinaryState **);
 }
 #define SECTION(name) __attribute__((section(".svo_LoginTagModule_" #name)))
 
@@ -92,9 +117,58 @@ extern "C" SECTION(operator.new___dupe12) void *LoginTagModuleNew(unsigned int s
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTags___dupe6);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginDTD);
+extern "C" SECTION(ScanTagsHandleLoginDTD) void ScanTagsHandleLoginDTD(LoginTagModuleState *module, iks *xml, CAllContextData *contexts, char *action, CTagModuleActions *actions)
+{
+    DownloadBinaryState download;
+    DownloadBinaryState *queued;
+    DownloadBinary(&download);
+    memset(&download, 0, sizeof(download));
+    SetPath(&download, action);
+    SetFormMethodType(&download, 1);
+    SetToDestroyOnRequestSend(&download);
+    SetDownloadCallback(&download, scanXMLCB);
+    char *ip = iks_find_attrib(xml, svoLoginIPAddressAttribute);
+    if (!ip) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x77);
+    else URIStoreAdd(svoLoginIPAddressAttribute, ip);
+    if (iks_has_children(xml)) xml = iks_next(iks_child(xml));
+    while (iks_name(xml)) {
+        if (!strcmp(svoLoginUserName, iks_name(xml))) {
+            char *length = iks_find_attrib(xml, svoLoginMaxLengthAttribute);
+            if (!length) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x87);
+            SetUserNameMaxLength(&download, atoi(length));
+            char *name = iks_find_attrib(xml, svoLoginNameAttribute);
+            if (!name) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x8A);
+            SetUserNameParameter(&download, name);
+        } else if (!strcmp(svoLoginAccountIDName, iks_name(xml))) SetAccountIDParameter(&download, iks_find_attrib(xml, svoLoginNameAttribute));
+        xml = iks_next_tag(xml);
+    }
+    PushPostTransitionArray(contexts->pMain, &download, &queued);
+    actions->action[0].type = 3;
+    actions->action[1].ptr = queued;
+    actions->action[1].type = 1;
+    _DownloadBinary(&download, 2);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTagsHandleLoginSubmitResponse);
+extern "C" SECTION(ScanTagsHandleLoginSubmitResponse) void ScanTagsHandleLoginSubmitResponse(LoginTagModuleState *module, iks *xml, CAllContextData *contexts, CTagModuleActions *actions)
+{
+    if (strcmp(iks_name(xml), svoLoginTagModuleName)) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x39);
+    iks *status = getChildIksStruct(xml, svoLoginStatusName);
+    if (!status) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x40);
+    else {
+        iks *message = getChildIksStruct(status, svoLoginMessageName);
+        if (!message) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x49);
+        else {
+            char *text = iks_cdata(iks_child(message));
+            for (int i = 0; i < 2; ++i) {
+                if (text && !strcmp(text, svoLoginResultNames[i])) {
+                    module->m_bHaveUnhandledLoginResponse = 1;
+                    m_loginResult = i;
+                    return;
+                }
+            }
+        }
+    }
+}
 
 extern "C" SECTION(UnhandledLoginResponseExists) long UnhandledLoginResponseExists(LoginTagModuleState *module, int *result)
 {

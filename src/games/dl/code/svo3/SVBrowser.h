@@ -70,7 +70,11 @@ typedef struct { // 0x3140
     /* 0x00A4 */ CPage *m_pMainPage;
     /* 0x00A8 */ CPage *m_pPopupPage;
     /* 0x00AC */ SVDownloadManager *m_pDownloadManager;
-    /* 0x00B0 */ unsigned char unrecoveredTextFieldInfo[0x3010];
+    /* 0x00B0 */ int m_textMaxBytes;
+    /* 0x00B4 */ int m_textMaxChars;
+    /* 0x00B8 */ char m_textBuffer[0x3000];
+    /* 0x30B8 */ int m_textEditPosition;
+    /* 0x30BC */ int m_textIsPassword;
     /* 0x30C0 */ SVTag *m_pCurrentTextEditableTag;
     /* 0x30C4 */ URIStoreState *m_pURIStore;
     /* 0x30C8 */ FileDownloadQueueState *m_pFileDownloadQueue;
@@ -86,7 +90,46 @@ typedef struct { // 0x3140
 } SVBrowserPrefix;
 extern "C" {
 SVBrowserPrefix *GetInstance(void);
-long BrowserIsIdle(SVBrowserPrefix *browser);
+int BrowserIsIdle(SVBrowserPrefix *browser);
 void SetLogout(SVBrowserPrefix *browser);
 }
+struct SVTag;
+struct CDrawContextBase;
+
+struct BrowserProviderVtable { // 0x28
+    /* 0x00 */ void *prefix[2];
+    /* 0x08 */ void (*destroy)(void *, int);
+    /* 0x0C */ unsigned char gap[0x18];
+    /* 0x24 */ void (*registerSchemes)(void *);
+};
+
+struct BrowserEditableVtable { // 0x68
+    /* 0x00 */ unsigned char prefix[0x50];
+    /* 0x50 */ char *(*GetText)(SVTag *);
+    /* 0x54 */ void *unknown54;
+    /* 0x58 */ int (*IsPassword)(SVTag *);
+    /* 0x5C */ int (*GetMaxLengthBytes)(SVTag *);
+    /* 0x60 */ int (*GetMaxLengthUTF8Chars)(SVTag *);
+    /* 0x64 */ int (*GetEditPosition)(SVTag *);
+};
+
+struct BrowserInputVtable { // 0x38
+    /* 0x00 */ unsigned char prefix[0x34];
+    /* 0x34 */ void (*SeedVKBBuffer)(CInputContextBaseState *, char *);
+};
+
+struct BrowserManagerVtable { // 0x24
+    /* 0x00 */ unsigned char prefix[0x20];
+    /* 0x20 */ void (*destroy)(SVDownloadManager *, int);
+};
+
+struct BrowserSystemVtable { // 0x20
+    /* 0x00 */ unsigned char prefix[0x1C];
+    /* 0x1C */ void (*HandleLoginResponse)(CSystemContextBase *, int);
+};
+
+struct BrowserVKBVtable { // 0x68
+    /* 0x00 */ unsigned char prefix[0x64];
+    /* 0x64 */ void (*DrawVKB)(CDrawContextBase *);
+};
 #endif

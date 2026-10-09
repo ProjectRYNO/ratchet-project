@@ -1,3 +1,140 @@
+#include "CPage.h"
+#include "CError.h"
+#include "CHttp.h"
+#include "HttpUtils.h"
+#include "CSystemContextBase.h"
+#include "SVOString.h"
+#include "string.h"
+
+extern "C" {
+extern char svoPageSource[];
+
+extern char svoPageDownloadHostSeparator[];
+extern char svoPageDownloadPathSeparator[];
+long pathIsStatic(CPage *, char *);
+long pathIsFullyQualified(CPage *, char *);
+long resolveRelativePath(CPage *, char *, char *);
+void setPageState(CPage *, int);
+void scanForDownloadablesCB(unsigned int, char *, int, CPage *, int);
+void scanXMLCB(unsigned int, char *, int, CPage *, int);
+void parseTagsCB(unsigned int, char *, int, CPage *, int);
+}
+
+#include "CPage.h"
+#include "SVBrowser.h"
+#include "CError.h"
+#include "string.h"
+
+extern "C" {
+extern char svoPageSource[];
+void rt_comm_update();
+CMemoryContextBaseState *GetMemoryContext();
+void setPageState(CPage *, int);
+void freeResources(CPage *, int);
+SVTag *GetTagAtIndex(CPage *, int);
+int requestBinary(CPage *, int);
+int callGenericDownloadCallback(CPage *, char **, int *);
+int GetResponse(PageRequestListenerState *, char **, int *);
+int GetLastStatus(PageRequestListenerState *);
+int GetLastContentType(PageRequestListenerState *);
+int substituteErrorPage(CPage *, unsigned int, char *, int);
+const void *DownloadBinary(DownloadBinaryState *);
+void _DownloadBinary(DownloadBinaryState *, int);
+void Reset___dupe6(PageRequestListenerState *);
+}
+
+
+
+
+#include "CPage.h"
+#include "SVTag.h"
+#include "CQueryParams.h"
+#include "SVBrowser.h"
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+#include "SVOString.h"
+#include "string.h"
+#include "stdio.h"
+extern "C" {
+extern char svoPageSource[];
+extern CAllContextData svoPageContextData;
+extern char svoPageDownloadHostSeparator[];
+extern char svoPageDownloadPathSeparator[];
+CAudioContextBaseState *GetAudioContext();
+CAudioContextBaseState *GetAltAudioContext();
+CDrawContextBase *GetDrawContext();
+CDrawContextBase *GetAltDrawContext();
+CMemoryContextBaseState *GetMemoryContext();
+CMemoryContextBaseState *GetAltMemoryContext();
+CSystemContextBase *GetSystemContext();
+CSystemContextBase *GetAltSystemContext();
+CInputContextBaseState *GetInputContext();
+CInputContextBaseState *GetAltInputContext();
+char *GetPath(DownloadBinaryState *);
+void SetPath(DownloadBinaryState *, char *);
+long pathIsFullyQualified(CPage *, char *);
+long resolveRelativePath(CPage *, char *, char *);
+}
+
+extern "C" {
+extern char svoPageStateError[];
+extern char svoPageStateIdle[];
+extern char svoPageStateDlPage[];
+extern char svoPageStateCreatePage[];
+extern char svoPageStateAniOut[];
+extern char svoPageStateAniIn[];
+extern char svoPageStateSubmit[];
+extern char svoPageStateSubmitFail[];
+extern char svoPageStateDlObjWhileAniIn[];
+extern char svoPageStateDlObjThenAniIn[];
+extern char svoPageStateDlObjThenAniOut[];
+extern char svoPageStateDlObj[];
+extern char svoPageStateShuttingDown[];
+extern char svoPageStateTransition[];
+}
+
+#include "CDrawContextBase.h"
+
+extern "C" {
+void Reset___dupe6(PageRequestListenerState *);
+void doAfterParseTags(CPage *);
+int requestBinary(CPage *, int);
+}
+
+extern "C" {
+const void *DownloadBinary(DownloadBinaryState *);
+void PageRequestListener(PageRequestListenerState *, CMemoryContextBaseState *, unsigned int);
+long doRequest(CPage *, char *, CQueryParamListState *, int, long, char *);
+extern char svoPageGetCommand[];
+iksparser_struct *iks_dom_new(iks **);
+}
+extern "C" void CPageConstruct(CPage *page, char *firstPage, int popup, int listenPort) __asm__("CPage");
+
+
+extern "C" {
+long shutdown(CPage *);
+void _PageRequestListener(PageRequestListenerState *, int);
+void PageDelete(void *) __asm__("operator.delete___dupe2");
+}
+
+extern "C" {
+char *getTopOfHistory(CPage *);
+long ClosePopup(CPage *);
+long okToNavigate___dupe2(CPage *);
+SVTag *GetTagAtIndex(CPage *, int);
+void HandleInputForPluginEvents(SVTag *);
+char *GetPageName(SVBrowserPrefix *);
+long autoRefreshPage(CPage *);
+long handleTextEntryDefaultInput(CPage *);
+long handleTextScrollDefaultInput(CPage *);
+extern char svoPageHomePageID[];
+}
+
+
+
+
+extern "C" { void setPageContextData(CPage *); void setPageState(CPage *, int); }
+
 #include "CSystemContextBase.h"
 #include "stdio.h"
 #include "SVPersistentData.h"
@@ -144,7 +281,37 @@ SECTION(SetTagAtIndex) void SetTagAtIndex(CPage *page, int index, SVTag *tag)
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", _CPage);
+extern "C" SECTION(_CPage) void _CPage(CPage *page, unsigned int flags)
+{
+    shutdown(page);
+    _PageRequestListener(&page->m_requestListener, 2);
+    _SVChronograph(&page->m_pageRefreshTimer, 2);
+    DownloadBinaryState *begin = page->inTransition;
+    if ((unsigned int)begin) {
+        DownloadBinaryState *item = begin + 2;
+        do {
+            --item;
+            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+        } while (item != begin);
+    }
+    begin = page->postTransition;
+    if ((unsigned int)begin) {
+        DownloadBinaryState *item = begin + 11;
+        do {
+            --item;
+            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+        } while (item != begin);
+    }
+    begin = page->preTransition;
+    if ((unsigned int)begin) {
+        DownloadBinaryState *item = begin + 11;
+        do {
+            --item;
+            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+        } while (item != begin);
+    }
+    if (flags & 1) PageDelete(page);
+}
 
 extern "C" SECTION(addObject) void addObject(CPage *page, iks *xml)
 {
@@ -170,7 +337,34 @@ extern "C" SECTION(addToHistory) long addToHistory(CPage *page, char *path)
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", adjustPathBinaryDownload);
+extern "C" SECTION(adjustPathBinaryDownload) void adjustPathBinaryDownload(CPage *page, DownloadBinaryState *download)
+{
+    char path[272];
+    char resolved[272];
+    if (!download) __SVO_Assert_Handler(svoPageSource, 0x78C);
+    char *source = GetPath(download);
+    int length = strlen(GetPath(download));
+    svstrncpy(path, source, length + 1);
+    if (!pathIsFullyQualified(page, path)) {
+        if (path[0] == '/') {
+            memset(resolved, 0, 257);
+            strncpy(resolved, top(&page->m_history), 257);
+            char *replace = strstr(resolved, svoPageDownloadHostSeparator);
+            replace = strstr(replace + 2, svoPageDownloadPathSeparator);
+            if (!replace) __SVO_Assert_Handler(svoPageSource, 0x7AD);
+            strncpy(replace, path, strlen(path));
+        } else {
+            memset(resolved, 0, 257);
+            strncpy(resolved, top(&page->m_history), 257);
+            if (!resolveRelativePath(page, resolved, path)) {
+                __SVO_Assert_Handler(svoPageSource, 0x7A1);
+                return;
+            }
+        }
+    } else strncpy(resolved, path, 257);
+    if (page->m_state != 1) __SVO_Assert_Handler(svoPageSource, 0x7B3);
+    SetPath(download, resolved);
+}
 
 extern "C" SECTION(autoRefreshPage) long autoRefreshPage(CPage *page)
 {
@@ -180,7 +374,63 @@ extern "C" SECTION(autoRefreshPage) long autoRefreshPage(CPage *page)
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", callGenericDownloadCallback);
+extern "C" SECTION(callGenericDownloadCallback) int callGenericDownloadCallback(CPage *page, char **data, int *length)
+{
+    if (!GetResponse(&page->m_requestListener, data, length)) {
+        SetErrorCode(0x1D);
+        return 0;
+    }
+    page->m_lastHttpStatus = GetLastStatus(&page->m_requestListener);
+    int type = GetLastContentType(&page->m_requestListener);
+    page->m_lastCURIContentType = type;
+    if (type == 3) {
+        int state = page->m_state;
+        if (state == 1) {
+            int size = substituteErrorPage(page, page->m_lastHttpStatus, *data, *length);
+            page->m_lastCURIContentType = 1;
+            *length = size;
+            goto scanSVML;
+        }
+        if ((unsigned int)(state - 8) < 3 || state == 6) {
+            DownloadBinaryState item;
+            DownloadBinary(&item);
+            for (int i = 0; i < 2; ++i) {
+                if (page->inTransitionUsed[i]) {
+                    const void *vtable = item.vtable;
+                    item = page->inTransition[i];
+                    item.vtable = vtable;
+                    memset(&page->inTransition[i], 0, sizeof(item));
+                    page->inTransitionUsed[i] = 0;
+                    --page->inTransitionCount;
+                    break;
+                }
+            }
+            _DownloadBinary(&item, 2);
+        }
+    } else if (type == 1) {
+scanSVML:
+        if (!page->m_pfSVMLPreTagCreateScanCB) __SVO_Assert_Handler(svoPageSource, 0x88A);
+        page->m_pfSVMLPreTagCreateScanCB(page->m_lastHttpStatus, *data, *length, page, 0);
+        setPageState(page, 2);
+    } else if (type == 2) {
+        if (!page->m_pfXMLScanCB) __SVO_Assert_Handler(svoPageSource, 0x8A3);
+        page->m_pfXMLScanCB(page->m_lastHttpStatus, *data, *length, page, 0);
+        Reset___dupe6(&page->m_requestListener);
+        setPageState(page, 0);
+    } else if (type == 4 || type == 5) {
+        if (!page->m_pfBinaryDownloadCB) __SVO_Assert_Handler(svoPageSource, 0x8BA);
+        page->m_pfBinaryDownloadCB(page->m_lastHttpStatus, *data, *length, page, 0);
+    } else if (type == 8) __SVO_Assert_Handler(svoPageSource, 0x8C5);
+    else if (type == -1) __SVO_Assert_Handler(svoPageSource, 0x8C9);
+    else if (type != 0) __SVO_Assert_Handler(svoPageSource, 0x8CD);
+    if (!page->m_pRequestProvider) __SVO_Assert_Handler(svoPageSource, 0x8D2);
+    IURISchemeProviderState *provider = page->m_pRequestProvider;
+    if (provider) {
+        provider->vtable->freeResources(provider, 0);
+        page->m_pRequestProvider = 0;
+    }
+    return page->m_lastCURIContentType;
+}
 
 extern "C" SECTION(ClosePopup) long ClosePopup(CPage *page)
 {
@@ -192,7 +442,49 @@ extern "C" SECTION(ClosePopup) long ClosePopup(CPage *page)
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", CPage);
+extern "C" SECTION(CPage) void CPageConstruct(CPage *page, char *firstPage, int popup, int listenPort)
+{
+    for (int i = 0; i < 11; ++i) DownloadBinary(&page->preTransition[i]);
+    for (int i = 0; i < 11; ++i) DownloadBinary(&page->postTransition[i]);
+    for (int i = 0; i < 2; ++i) DownloadBinary(&page->inTransition[i]);
+    PageHistory(&page->m_history);
+    SVChronograph(&page->m_pageRefreshTimer, 0);
+    PageRequestListener(&page->m_requestListener, GetMemoryContext(), 0xA000);
+    page->m_pRequestProvider = 0;
+    page->m_bIsPopup = popup;
+    setPageContextData(page);
+    page->m_state = 0;
+    setPageState(page, 0);
+    page->m_bIsActive = 0;
+    page->m_pFrontDisplayBuffer = &page->m_displayBuffers[1];
+    page->m_pBackDisplayBuffer = &page->m_displayBuffers[0];
+    memset(page->m_displayBuffers[0].tagList, 0, 0x400);
+    memset(page->m_pFrontDisplayBuffer->tagList, 0, 0x400);
+    SVDisplayBufferState *front = page->m_pFrontDisplayBuffer;
+    page->m_pBackDisplayBuffer->xml = 0;
+    page->m_defTextEntryTag = 0;
+    front->xml = 0;
+    page->m_defTextScrollTag = 0;
+    iksparser_struct *parser = iks_dom_new(&page->m_pBackDisplayBuffer->xml);
+    page->m_pBackDisplayBuffer->parser = parser;
+    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xCD);
+    parser = iks_dom_new(&page->m_pFrontDisplayBuffer->xml);
+    page->m_pFrontDisplayBuffer->parser = parser;
+    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xD1);
+    parser = iks_dom_new(&page->m_XML);
+    page->m_parser = parser;
+    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xD5);
+    page->preTransitionCount = 0;
+    memset(page->preTransitionUsed, 0, 32);
+    page->postTransitionCount = 0;
+    memset(page->postTransitionUsed, 0, 32);
+    page->inTransitionCount = 0;
+    memset(page->inTransitionUsed, 0, 32);
+    if (!firstPage || doRequest(page, firstPage, 0, 0, 1, svoPageGetCommand)) {
+        Reset___dupe5(&page->m_pageRefreshTimer);
+        page->m_pageRefreshSeconds = 0;
+    }
+}
 
 extern "C" SECTION(DestroyInTransitionArray) void DestroyInTransitionArray(CPage *page)
 {
@@ -230,9 +522,131 @@ extern "C" SECTION(doAfterParseTags) void doAfterParseTags(CPage *page)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", doPost);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", doRequest);
+extern "C" SECTION(doRequest) long doRequest(CPage *page, char *path, CQueryParamListState *params, int method, long storeHistory, char *command)
+{
+    char newPath[272];
+    char oldPath[272];
+    char fullPath[272];
+    char *historyPath = newPath;
+    if (!path) __SVO_Assert_Handler(svoPageSource, 0x327);
+    svstrncpy(oldPath, path, 257);
+    if (pathIsStatic(page, path)) {
+        char *screen = strstr(path, svoPageDownloadHostSeparator) + 2;
+        CSystemContextBase *system = GetSystemContext();
+        ((const PageStaticScreenVtable *)system->vtable)->EnterStaticScreen(system, screen);
+        return 1;
+    }
+    if (pathIsFullyQualified(page, path)) {
+        SVPath split;
+        split.m_scheme = page->m_scheme;
+        split.m_server = page->m_serverName;
+        split.m_port = &page->m_port;
+        split.m_path = newPath;
+        split.m_pathMaxLength = 257;
+        parseFullyQualifiedPath(path, &split);
+        historyPath = path;
+    } else if (*path == '/') {
+        memset(newPath, 0, 257);
+        char *base = top(&page->m_history);
+        if (!base) base = page->m_serverName;
+        strncpy(newPath, base, 257);
+        char *replace = strstr(newPath, svoPageDownloadHostSeparator);
+        replace = strstr(replace + 2, svoPageDownloadPathSeparator);
+        if (!replace) __SVO_Assert_Handler(svoPageSource, 0x372);
+        strncpy(replace, oldPath, strlen(oldPath) + 1);
+        if (strlen(newPath) >= 257) __SVO_Assert_Handler(svoPageSource, 0x375);
+    } else {
+        memset(fullPath, 0, 257);
+        svstrncpy(fullPath, top(&page->m_history), 257);
+        if (!resolveRelativePath(page, fullPath, oldPath)) {
+            __SVO_Assert_Handler(svoPageSource, 0x34B);
+            return 0;
+        }
+        SVPath split;
+        split.m_scheme = page->m_scheme;
+        split.m_server = page->m_serverName;
+        split.m_port = &page->m_port;
+        split.m_path = newPath;
+        split.m_pathMaxLength = 257;
+        parseFullyQualifiedPath(fullPath, &split);
+        historyPath = fullPath;
+    }
+    if (page->m_state) __SVO_Assert_Handler(svoPageSource, 0x37E);
+    URIRequest request;
+    request.scheme = page->m_scheme;
+    request.host = page->m_serverName;
+    request.port = page->m_port;
+    request.filePath = newPath;
+    request.params = params;
+    request.methodType = method;
+    request.httpCommand = command;
+    request.context = 0;
+    if (page->m_pRequestProvider) __SVO_Assert_Handler(svoPageSource, 0x38B);
+    IURISchemeProviderState *provider = doRequest___dupe3(Get(), (URIRequestPrefix *)&request, (IRequestListener *)&page->m_requestListener, page);
+    page->m_pRequestProvider = provider;
+    if (!provider) return 0;
+    if (storeHistory) push(&page->m_history, historyPath);
+    page->m_pfSVMLPreTagCreateScanCB = (DownloadCallback)scanForDownloadablesCB;
+    page->m_pfXMLScanCB = (DownloadCallback)scanXMLCB;
+    page->m_pfSVMLTagCreateCB = (DownloadCallback)parseTagsCB;
+    page->m_pfBinaryDownloadCB = 0;
+    page->m_pCURIContent = 0;
+    page->m_iCURIContentLength = 0;
+    page->m_lastCURIContentType = 0;
+    setPageState(page, 1);
+    return 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", download);
+extern "C" SECTION(download) int download(CPage *page)
+{
+    rt_comm_update();
+    int state = page->m_state;
+    if (GetErrorCode()) {
+        setPageState(page, -1);
+        return -1;
+    }
+    EnsureCleanBlocks(GetMemoryContext());
+    IURISchemeProviderState *provider = page->m_pRequestProvider;
+    if (provider) ((const PageProviderDownloadVtable *)provider->vtable)->download(provider);
+    EnsureCleanBlocks(GetMemoryContext());
+    if (state == 1) {
+        freeResources(page, 1);
+        if (!page->m_pRequestProvider) __SVO_Assert_Handler(svoPageSource, 0x169);
+        provider = page->m_pRequestProvider;
+        if (!provider->vtable->IsBusy(provider)) {
+            callGenericDownloadCallback(page, &page->m_pCURIContent, &page->m_iCURIContentLength);
+            if (GetTagAtIndex(page, 0)) {
+                if (!page->inTransitionCount && page->preTransitionCount && requestBinary(page, 1) != 1) setPageState(page, 9);
+            } else if (!page->inTransitionCount && page->preTransitionCount) {
+                if (requestBinary(page, 1) != 1) setPageState(page, 8);
+            } else if (!page->m_pCURIContent) setPageState(page, 0);
+        }
+    } else if (state == 6 || state == 8 || state == 9 || state == 10) {
+        provider = page->m_pRequestProvider;
+        if (!provider->vtable->IsBusy(provider)) {
+            char *data;
+            int length;
+            callGenericDownloadCallback(page, &data, &length);
+            int queue = -1;
+            if (state == 6) {
+                if (page->inTransitionCount || !page->postTransitionCount) setPageState(page, 3);
+                else queue = 2;
+            } else if (state == 8) {
+                if (state == page->m_state && (page->inTransitionCount || !page->preTransitionCount)) setPageState(page, 11);
+                else queue = 1;
+            } else if (state == 9) {
+                if (page->inTransitionCount || !page->preTransitionCount) setPageState(page, 2);
+                else queue = 1;
+            } else {
+                if (!page->inTransitionCount && page->postTransitionCount) queue = 2;
+                else setPageState(page, 0);
+            }
+            if (queue != -1 && requestBinary(page, queue) == 1) setPageState(page, 1);
+        }
+    } else if (state != -1 && state != 0 && state != 2 && state != 3 && state != 4 && state != 11 && state != 12) __SVO_Assert_Handler(svoPageSource, 0x212);
+    if (GetErrorCode()) setPageState(page, -1);
+    return page->m_state;
+}
 
 extern "C" SECTION(draw) void draw(CPage *page, long active)
 {
@@ -271,9 +685,71 @@ extern "C" SECTION(FindAndSetDefualtTextAreaScroll) void FindAndSetDefualtTextAr
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", followLink);
+extern "C" SECTION(followLink) long followLink(CPage *page, char *filePath, int option)
+{
+    char path[257];
+    if (!filePath) __SVO_Assert_Handler(svoPageSource, 0x2BF);
+    memset(path, 0, sizeof(path));
+    long history = 1;
+    CPage *target = page;
+    char *requestPath = filePath;
+    if (option == 2) {
+        if (!pathIsFullyQualified(page, filePath)) {
+            svstrncpy(path, getTopOfHistory(GetInstance()->m_pMainPage), 257);
+            resolveRelativePath(page, path, filePath);
+            requestPath = path;
+        }
+        target = GetInstance()->m_pPopupPage;
+        target->m_bIsActive = 1;
+    } else if (option == 3) target = GetInstance()->m_pPopupPage;
+    else if (option == 4) {
+        ClosePopup(page);
+        return 1;
+    } else if (option == 5) {
+        svstrncpy(path, top(&GetInstance()->m_pMainPage->m_history), 257);
+        requestPath = path;
+        goto closeAndLoadMain;
+    } else if (option == 6) {
+        svstrncpy(path, top(&GetInstance()->m_pPopupPage->m_history), 257);
+        if (!pathIsFullyQualified(page, filePath)) {
+            resolveRelativePath(page, path, filePath);
+            requestPath = path;
+        }
+closeAndLoadMain:
+        target = GetInstance()->m_pMainPage;
+        ClosePopup(page);
+    } else if (option == 7 || option == 8) history = 0;
+    else if (option != 0 && option != 1) __SVO_Assert_Handler(svoPageSource, 0x301);
+    return doRequest(target, requestPath, 0, 0, history, svoPageGetCommand);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", frameUpdate);
+extern "C" SECTION(frameUpdate) void frameUpdate(CPage *page)
+{
+    int state = page->m_state;
+    if (state == 2 || state == 12) {
+        CDrawContextBase *draw = svoPageContextData.drawContext;
+        long done = ((PageAnimationVtable *)draw->vtable)->AnimateOut(draw);
+        if (state == 2 && done == 1) setPageState(page, 11);
+    } else if (state == 3 || state == 6) {
+        CDrawContextBase *draw = svoPageContextData.drawContext;
+        if (((PageAnimationVtable *)draw->vtable)->AnimateIn(draw) == 1) setPageState(page, state == 3 ? 0 : 10);
+    } else if (state == 11) {
+        unsigned int type = page->m_lastCURIContentType;
+        if (type == 2) return;
+        if (type < 2) {
+            page->m_pfSVMLTagCreateCB(page->m_lastHttpStatus, page->m_pCURIContent, page->m_iCURIContentLength, page, 1);
+            Reset___dupe6(&page->m_requestListener);
+            doAfterParseTags(page);
+            if (!page->inTransitionCount && page->postTransitionCount) {
+                int result = requestBinary(page, 2);
+                setPageState(page, result == 1 ? 1 : 6);
+            } else setPageState(page, 3);
+        } else if (type == 4) page->m_lastCURIContentType = 1;
+        else if (type == 8) __SVO_Assert_Handler(svoPageSource, 0x519);
+        else if (type == 0xFFFFFFFF) __SVO_Assert_Handler(svoPageSource, 0x51C);
+        else __SVO_Assert_Handler(svoPageSource, 0x51F);
+    }
+}
 
 extern "C" SECTION(FreeBackDisplayBuffer) void FreeBackDisplayBuffer(CPage *page)
 {
@@ -398,7 +874,38 @@ extern "C" SECTION(handleDefaultSelection) void handleDefaultSelection(CPage *pa
     if (first && !selected) first->vtable->SetSelectedState(first, 1);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", handleInput);
+extern "C" SECTION(handleInput) long handleInput(CPage *page)
+{
+    long unhandled = 1;
+    if (!okToNavigate___dupe2(page)) return unhandled;
+    for (int index = 0; index < 256; ++index) {
+        SVTag *tag = GetTagAtIndex(page, index);
+        if (!tag || !unhandled) break;
+        tag = GetTagAtIndex(page, index);
+        HandleInputForPluginEvents(tag);
+        unhandled = ((const PageTagInputVtable *)tag->vtable)->HandleInput(tag, page);
+    }
+    if (!unhandled) return unhandled;
+    CInputContextBaseState *input = page->m_bIsPopup ? GetAltInputContext() : GetInputContext();
+    if (((const PageInputQueryVtable *)input->vtable)->QueryBackInput(input) && !GetInstance()->m_bShowVKB && !GetInstance()->m_bIsXMPPActive) {
+        PageHistoryState *history = &page->m_history;
+        char *previous = top(history);
+        char *entry = pop(history);
+        if (!entry && page->m_bIsPopup) {
+            ClosePopup(page);
+            return 0;
+        }
+        char *name = GetPageName(GetInstance());
+        if (!name || strcmp(name, svoPageHomePageID)) {
+            if (!doRequest(page, top(history), 0, 0, 0, svoPageGetCommand)) push(history, previous);
+        }
+    } else if (((const PageInputQueryVtable *)input->vtable)->QueryRefreshInput(input) || autoRefreshPage(page)) {
+        doRequest(page, top(&page->m_history), 0, 0, 0, svoPageGetCommand);
+    }
+    handleTextEntryDefaultInput(page);
+    handleTextScrollDefaultInput(page);
+    return unhandled;
+}
 
 extern "C" SECTION(handleTextEntryDefaultInput) long handleTextEntryDefaultInput(CPage *page)
 {
@@ -618,7 +1125,47 @@ extern "C" SECTION(SetPageRefreshSeconds) void SetPageRefreshSeconds(CPage *page
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPage", setPageState);
+extern "C" SECTION(setPageState) void setPageState(CPage *page, int nextState)
+{
+    char message[128];
+    char oldText[64];
+    char newText[64];
+    memset(message, 0, 120);
+    int state = page->m_state;
+    if (state == -1) sprintf(oldText, svoPageStateError);
+    else if (state == 0) sprintf(oldText, svoPageStateIdle);
+    else if (state == 1) sprintf(oldText, svoPageStateDlPage);
+    else if (state == 11) sprintf(oldText, svoPageStateCreatePage);
+    else if (state == 2) sprintf(oldText, svoPageStateAniOut);
+    else if (state == 3) sprintf(oldText, svoPageStateAniIn);
+    else if (state == 4) sprintf(oldText, svoPageStateSubmit);
+    else if (state == 5) sprintf(oldText, svoPageStateSubmitFail);
+    else if (state == 6) sprintf(oldText, svoPageStateDlObjWhileAniIn);
+    else if (state == 8) sprintf(oldText, svoPageStateDlObjThenAniIn);
+    else if (state == 9) sprintf(oldText, svoPageStateDlObjThenAniOut);
+    else if (state == 10) sprintf(oldText, svoPageStateDlObj);
+    else if (state == 12) sprintf(oldText, svoPageStateShuttingDown);
+    else __SVO_Assert_Handler(svoPageSource, 0x9ec);
+    strcpy(message, oldText);
+    strcat(message, svoPageStateTransition);
+    state = nextState;
+    if (state == -1) sprintf(newText, svoPageStateError);
+    else if (state == 0) sprintf(newText, svoPageStateIdle);
+    else if (state == 1) sprintf(newText, svoPageStateDlPage);
+    else if (state == 11) sprintf(newText, svoPageStateCreatePage);
+    else if (state == 2) sprintf(newText, svoPageStateAniOut);
+    else if (state == 3) sprintf(newText, svoPageStateAniIn);
+    else if (state == 4) sprintf(newText, svoPageStateSubmit);
+    else if (state == 5) sprintf(newText, svoPageStateSubmitFail);
+    else if (state == 6) sprintf(newText, svoPageStateDlObjWhileAniIn);
+    else if (state == 8) sprintf(newText, svoPageStateDlObjThenAniIn);
+    else if (state == 9) sprintf(newText, svoPageStateDlObjThenAniOut);
+    else if (state == 10) sprintf(newText, svoPageStateDlObj);
+    else if (state == 12) sprintf(newText, svoPageStateShuttingDown);
+    else __SVO_Assert_Handler(svoPageSource, 0xa1c);
+    strcat(message, newText);
+    page->m_state = nextState;
+}
 
 extern "C" SECTION(shutdown) long shutdown(CPage *page)
 {

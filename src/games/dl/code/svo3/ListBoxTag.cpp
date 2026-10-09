@@ -1,3 +1,12 @@
+#include "CDrawContextBase.h"
+
+#include "CInputContextBase.h"
+#include "CPage.h"
+#include "SVBrowser.h"
+#include "TagUtils.h"
+#include "TagUtils.h"
+#include "HttpUtils.h"
+#include "CAudioContextBase.h"
 #include "SVOString.h"
 #include "SVTag.h"
 #include "CMemoryContextBase.h"
@@ -30,6 +39,40 @@ extern unsigned int svoNextTagId;
 extern "C" {
 
 }
+extern "C" {
+extern char svoListBoxMoveClass[];
+extern char svoListBoxItemName[];
+extern char svoListBoxHrefAttribute[];
+extern char svoListBoxClassAttribute[];
+extern char svoListBoxDefaultItemClass[];
+extern char svoListBoxNameAttribute[];
+extern char svoListBoxLinkOptionAttribute[];
+CAudioContextBaseState *GetAudioContext();
+void initListboxItem(ListBoxTagState *, ListBoxItem *);
+}
+extern "C" {
+void SignalPluginEvent(SVBrowserPrefix *, int, void *);
+void DefaultInit___dupe22(ListBoxTagState *);
+void populateListboxItems(ListBoxTagState *);
+}
+extern "C" {
+extern char svoListBoxFontSizeAttribute[];
+extern char svoListBoxDisplayLengthAttribute[];
+extern char svoListBoxAlignAttribute[];
+extern char svoListBoxFillColorAttribute[];
+extern char svoListBoxLineColorAttribute[];
+extern char svoListBoxDefaultColorAttribute[];
+extern char svoListBoxHighlightColorAttribute[];
+extern char svoListBoxMaxItemsAttribute[];
+extern char svoListBoxMaxVisibleItemsAttribute[];
+extern char svoListBoxPopulatedAttribute[];
+extern char svoListBoxLineSpacingAttribute[];
+extern char svoListBoxButtonHeightAttribute[];
+}
+extern "C" {
+float calculateScrollBarPercentage(ListBoxTagState *);
+void TrimToFitDisplaySize(CDrawContextBase *, char *, float, int);
+}
 #define SECTION(name) __attribute__((section(".svo_ListBoxTag_" #name)))
 
 SECTION(SetExternalDrawFunction) void SetExternalDrawFunction(ListBoxTagState *tag, int turnOffDraw)
@@ -61,9 +104,50 @@ extern "C" SECTION(addItem) long addItem(ListBoxTagState *tag, char *itemName)
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", calculateScrollBarPercentage);
+extern "C" SECTION(calculateScrollBarPercentage) float calculateScrollBarPercentage(ListBoxTagState *tag)
+{
+    int count = tag->m_numItems;
+    if (tag->m_maxVisibleItems < count) count = tag->m_maxVisibleItems;
+    if (tag->m_topVisibleIndex < 0) __SVO_Assert_Handler(svoListBoxTagSource, 0x2C5);
+    float fraction = 0.0f;
+    if (tag->m_topVisibleIndex > 0) fraction = (float)tag->m_topVisibleIndex / (float)count;
+    return fraction;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", changeSelectedItem);
+extern "C" SECTION(changeSelectedItem) void changeSelectedItem(ListBoxTagState *tag, int direction)
+{
+    if (!tag->m_numItems) return;
+    int old = tag->m_selectedIndex;
+    if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x1c3);
+    if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x1c4);
+    int selected = tag->m_selectedIndex;
+    int top = tag->m_topVisibleIndex;
+    if (direction == -1) {
+        if (selected == -1) tag->m_selectedIndex = tag->m_numItems - 1;
+        else {
+            int count = tag->m_numItems;
+            int next = (selected - 1 + count) % count;
+            tag->m_selectedIndex = next;
+            if (next < top) tag->m_topVisibleIndex = next;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + count - tag->m_maxVisibleItems;
+        }
+    } else if (direction == 1) {
+        if (selected == -1) tag->m_selectedIndex = 0;
+        else {
+            int count = tag->m_numItems;
+            int next = (selected + 1 + count) % count;
+            tag->m_selectedIndex = next;
+            if (next < top) tag->m_topVisibleIndex = next;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + 1;
+        }
+    }
+    if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x1ef);
+    if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x1f0);
+    if (old != tag->m_selectedIndex) {
+        CAudioContextBaseState *audio = GetAudioContext();
+        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 5, svoListBoxMoveClass);
+    }
+}
 
 extern "C" SECTION(clearItems) void clearItems(ListBoxTagState *tag)
 {
@@ -127,7 +211,36 @@ extern "C" SECTION(deselectItem) void deselectItem(ListBoxTagState *tag, int ind
     tag->m_selectedIndex = -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", Draw___dupe25);
+extern "C" SECTION(Draw___dupe25) void Draw___dupe25(ListBoxTagState *tag)
+{
+    if (!tag->m_bPopulatedByPage || tag->m_turnOffDraw) return;
+    CDrawContextBase *draw = tag->base.m_contexts->drawContext;
+    if (!draw) __SVO_Assert_Handler(svoListBoxTagSource, 0x111);
+    if (!tag->base.m_xml) __SVO_Assert_Handler(svoListBoxTagSource, 0x112);
+    int selected = ((const ListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
+    int count = tag->m_numItems;
+    if (tag->m_maxVisibleItems < count) count = tag->m_maxVisibleItems;
+    tag->m_scrollBarPercentage = calculateScrollBarPercentage(tag);
+    float fraction = (float)count / (float)((const ListBoxTagVtablePrefix *)tag->base.vtable)->countItems(tag);
+    long active = tag->base.vtable->IsSelected(&tag->base);
+    draw->vtable->DrawListBox(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
+        tag->base.m_z, tag->base.m_width, tag->base.m_height, tag->base.m_lineColor,
+        tag->base.m_fillColor, tag->m_scrollBarPercentage, fraction, active, tag->base.m_tagClass);
+    float y = tag->base.m_y;
+    ListBoxItem **item = tag->m_items + tag->m_topVisibleIndex;
+    for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i, ++item) {
+        strlen((*item)->displayStr);
+        float x = tag->base.m_x + 10.0f;
+        unsigned int color = i == selected ? tag->m_selectedItemColor : tag->m_defaultItemColor;
+        if (tag->m_displayLength > 0.0f) TrimToFitDisplaySize(draw, (*item)->displayStr, tag->m_displayLength, tag->m_fontSize);
+        float height = tag->m_buttonHeight;
+        int length = strlen((*item)->displayStr);
+        draw->vtable->DrawButton(draw, (*item)->tagid, x, y, 100000.0f, tag->base.m_width,
+            height, 0xFF000000, 0xFF0000FF, color, i == selected, (*item)->displayStr,
+            length, tag->m_fontSize, tag->m_align, (*item)->tagClass, 0);
+        y = tag->base.m_y + tag->m_lineSpacing * (float)(i - tag->m_topVisibleIndex + 1);
+    }
+}
 
 extern "C" SECTION(FreeResources___dupe48) void FreeResources___dupe48(ListBoxTagState *tag)
 {
@@ -178,7 +291,38 @@ extern "C" SECTION(getTopVisibleIndex) long getTopVisibleIndex(ListBoxTagState *
     return tag->m_topVisibleIndex;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", HandleInput___dupe53);
+extern "C" SECTION(HandleInput___dupe53) int HandleInput___dupe53(ListBoxTagState *tag, CPage *page)
+{
+    CInputContextBaseState *input = tag->base.m_contexts->inputContext;
+    if (!tag->base.m_xml) __SVO_Assert_Handler(svoListBoxTagSource, 0x95);
+    if (!input) __SVO_Assert_Handler(svoListBoxTagSource, 0x96);
+    if (!page) __SVO_Assert_Handler(svoListBoxTagSource, 0x97);
+    if (!tag->m_selectFocusAreaMode && tag->base.vtable->IsSelected(&tag->base)) {
+        if (tag->m_bPopulatedByPage) {
+            if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
+                if (page->m_state) return 0;
+                int selected = ((const ListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
+                ListBoxItem *item = tag->m_items[selected];
+                if (!item->h_ref) return 0;
+                followLink(page, item->h_ref, item->linkOption);
+                CAudioContextBaseState *audio = GetAudioContext();
+                ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoListBoxMoveClass);
+                return 0;
+            }
+        } else if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
+            SignalPluginEvent(GetInstance(), 0, tag);
+        }
+        int direction;
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP)) direction = -1;
+        else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)) direction = 1;
+        else {
+            HasActionOccurred(input, 0x11, SV_ACTION_LEAVE_FOCUS_GROUP);
+            return 1;
+        }
+        ((const ListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, direction);
+    }
+    return 1;
+}
 
 extern "C" SECTION(initListboxItem) void initListboxItem(ListBoxTagState *tag, ListBoxItem *item)
 {
@@ -193,9 +337,43 @@ extern "C" SECTION(initListboxItem) void initListboxItem(ListBoxTagState *tag, L
     item->tagid = id;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", isIndexSelected);
+extern "C" SECTION(isIndexSelected) int isIndexSelected(ListBoxTagState *tag, int index)
+{
+    if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x290);
+    if (tag->m_maxNumItems < tag->m_numItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x291);
+    if (index >= tag->m_numItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x292);
+    if (!tag->m_items[index]) __SVO_Assert_Handler(svoListBoxTagSource, 0x293);
+    return index == tag->m_selectedIndex;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", ListBoxTag);
+extern "C" SECTION(ListBoxTag) void ListBoxTag(ListBoxTagState *tag, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(&tag->base, xml, contexts);
+    tag->base.vtable = &svoListBoxTagVtable;
+    DefaultInit___dupe22(tag);
+    getIntAttrib(tag->base.m_xml, svoListBoxFontSizeAttribute, &tag->m_fontSize);
+    getFloatAttrib(tag->base.m_xml, svoListBoxDisplayLengthAttribute, &tag->m_displayLength);
+    getAlignAttrib(tag->base.m_xml, svoListBoxAlignAttribute, &tag->m_align);
+    getColorAttrib(tag->base.m_xml, svoListBoxFillColorAttribute, &tag->base.m_fillColor);
+    getColorAttrib(tag->base.m_xml, svoListBoxLineColorAttribute, &tag->base.m_lineColor);
+    getColorAttrib(tag->base.m_xml, svoListBoxDefaultColorAttribute, &tag->m_defaultItemColor);
+    getColorAttrib(tag->base.m_xml, svoListBoxHighlightColorAttribute, &tag->m_selectedItemColor);
+    getIntAttrib(tag->base.m_xml, svoListBoxMaxItemsAttribute, &tag->m_maxNumItems);
+    if (tag->m_maxNumItems < 0) __SVO_Assert_Handler(svoListBoxTagSource, 0x50);
+    if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x51);
+    getIntAttrib(tag->base.m_xml, svoListBoxMaxVisibleItemsAttribute, &tag->m_maxVisibleItems);
+    if (tag->m_maxVisibleItems < 0) __SVO_Assert_Handler(svoListBoxTagSource, 0x53);
+    getIntAttrib(tag->base.m_xml, svoListBoxPopulatedAttribute, &tag->m_bPopulatedByPage);
+    getStringAttrib(tag->base.m_xml, svoListBoxClassAttribute, &tag->base.m_tagClass);
+    if (tag->m_bPopulatedByPage) populateListboxItems(tag);
+    else SignalPluginEvent(GetInstance(), 12, tag);
+    getFloatAttrib(tag->base.m_xml, svoListBoxLineSpacingAttribute, &tag->m_lineSpacing);
+    getFloatAttrib(tag->base.m_xml, svoListBoxButtonHeightAttribute, &tag->m_buttonHeight);
+    SVChronographState *timer = (SVChronographState *)SVChronographNew(0x10);
+    SVChronograph(timer, 0);
+    tag->m_pTimer = timer;
+    Start___dupe3(timer);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", populateListboxItems);
 

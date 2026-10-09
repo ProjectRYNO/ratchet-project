@@ -226,3 +226,6 @@ Text input and HTTP callback recovery (2026-10-09): 1,809 size/offset checks acr
 
 
 Text-area/image drawing callbacks (2026-10-09): recovered DrawTextArea at 0x48 and StoreDownloadedImage at 0x54 without changing CDrawContextVtablePrefix size. PASS: independent header includes and 10 EE boot-option packing vectors; PASS: 1811 PS2 sizes/field offsets across 196 types and 101 headers
+
+
+Browser/page/grid/list/login continuation (2026-10-09): recovered CTagModuleActions, callback prefixes, full CPage tail (0x637C), persistent state (0x1B9C), browser VKB storage and list vtables. Retail split offsets and callback arguments take precedence over Ghidra labels. PASS: independent header includes and 10 EE boot-option packing vectors; PASS: 1889 PS2 sizes/field offsets across 210 types and 101 headers

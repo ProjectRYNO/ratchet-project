@@ -25,12 +25,15 @@ typedef struct { // 0x98 (vtable prefix)
                                        int lineThickness, int cornerRadius, float z,
                                        unsigned int *gradient, char *tagClass);
     /* 0x48 */ void (*DrawTextArea)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, unsigned int, int, float, float, float, char *, int, int);
-    /* 0x4C */ unsigned char unrecovered4C[8];
+    /* 0x4C */ void (*DrawListBox)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, float, float, long, char *);
+    /* 0x50 */ void *unknown50;
     /* 0x54 */ void (*StoreDownloadedImage)(CDrawContextBase *, int, char *, unsigned short, unsigned short);
     /* 0x58 */ void (*DrawPopupBackground)(CDrawContextBase *draw, float x, float y,
                                            float width, float height, unsigned int lineColor,
                                            unsigned int fillColor, char *tagClass);
-    /* 0x5C */ unsigned char unrecovered5C[0x28];
+    /* 0x5C */ void (*DrawGenericListboxFrame)(CDrawContextBase *, unsigned int, float, float, float, float, unsigned int, unsigned int, int, float, char *);
+    /* 0x60 */ void (*DrawGenericListboxEntry)(CDrawContextBase *, unsigned int, char *, unsigned int, int, int, unsigned int, unsigned int, char *);
+    /* 0x64 */ unsigned char unrecovered64[0x20];
     /* 0x84 */ void (*DrawImage)(CDrawContextBase *, unsigned int, char *, int, int, int, int, float, float, int, unsigned int);
     /* 0x88 */ void (*DrawStaticImage)(CDrawContextBase *, unsigned int, char *, int, int, int, int, int, float, float, int, unsigned int);
     /* 0x8C */ void (*InitImage)(CDrawContextBase *, unsigned int, char *, int, int, int, int, float, float);

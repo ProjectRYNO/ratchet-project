@@ -35,8 +35,14 @@ struct ListBoxTagState { // 0x288
     /* 0x284 */ int m_selectFocusAreaMode;
 };
 
-typedef struct { // 0x5C (vtable prefix)
+typedef struct { // 0x98 (vtable prefix)
     /* 0x00 */ unsigned char unrecovered00[0x58];
     /* 0x58 */ void (*clearItems)(ListBoxTagState *tag);
+    /* 0x5C */ void *unknown5C;
+    /* 0x60 */ int (*getSelectedIndex)(ListBoxTagState *tag);
+    /* 0x64 */ unsigned char unrecovered64[0x0C];
+    /* 0x70 */ int (*countItems)(ListBoxTagState *tag);
+    /* 0x74 */ unsigned char unrecovered74[0x20];
+    /* 0x94 */ void (*changeSelectedItem)(ListBoxTagState *tag, int amount);
 } ListBoxTagVtablePrefix;
 #endif

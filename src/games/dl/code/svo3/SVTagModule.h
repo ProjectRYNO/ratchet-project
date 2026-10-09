@@ -11,6 +11,14 @@ typedef struct { // 0x08
     /* 0x00 */ int action;
     /* 0x04 */ DownloadBinaryState *download;
 } SVTagScanResult;
+typedef struct { // 0x08
+    /* 0x00 */ int type;
+    /* 0x04 */ void *ptr;
+} CScanTagAction;
+
+struct CTagModuleActions { // 0x10
+    /* 0x00 */ CScanTagAction action[2];
+};
 typedef struct { // 0x30 (vtable prefix)
     /* 0x00 */ void *unknown00;
     /* 0x04 */ void *unknown04;

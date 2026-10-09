@@ -889,6 +889,53 @@ functions:
 
   ScanTags___dupe4: 0x1ef80d0
 
+  _CreateGameTagModule: 0x01F0A318
+  IsMyTag___dupe26: 0x01F0A398
+  GetCreateGameSubmitResponse: 0x01F0A710
+  ParseCreateGameParamsXML: 0x01F0A870
+  ScanTags___dupe7: 0x01F0A454
+  ScanTagsHandleLoginSubmitResponse: 0x01F077F8
+  ScanTagsHandleLoginDTD: 0x01F0792C
+  isIndexSelected: 0x01F06188
+  calculateScrollBarPercentage: 0x01F0639C
+  changeSelectedItem: 0x01F05B4C
+  HandleInput___dupe53: 0x01F0525C
+  ListBoxTag: 0x01F04FCC
+  Draw___dupe25: 0x01F05428
+  getIndexOfHandle: 0x01F0B3D0
+  _GenericListBoxTag: 0x01F0AC68
+  changeSelectedItem___dupe2: 0x01F0B1D0
+  HandleInput___dupe54: 0x01F0AD38
+  GenericListBoxTag: 0x01F0AAC8
+  Draw___dupe26: 0x01F0AF04
+  HasNavigationOccured: 0x01F00D68
+  FollowLink: 0x01F00E54
+  HandleModalInput: 0x01F00F78
+  HandleInput___dupe50: 0x01F01120
+  ParseSingleCell: 0x01F029AC
+  ChangeSelectedCell: 0x01F02C18
+
+  BrowserIsIdle: 0x01EEED28
+  DeInitURISchemas: 0x01EEF9B4
+  DownloadFile: 0x01EEF178
+  InitURISchemas: 0x01EEF8F4
+  ShowVKB: 0x01EEF6A8
+  adjustPathBinaryDownload: 0x01EE8220
+  LoadStatePostGameFromPersistentData___dupe3: 0x01EEF088
+  CPage: 0x01EE5CF0
+  frameUpdate: 0x01EE7620
+  setPageState: 0x01EE955C
+  FreeResources: 0x01EEEE20
+  Update___dupe109: 0x01EEF414
+  _CPage: 0x01EE5BD0
+  handleInput: 0x01EE7C34
+  followLink: 0x01EE68FC
+  RTCommInit: 0x01EEFE4C
+  InitServerInfo: 0x01EEF7A0
+  download: 0x01EE635C
+  callGenericDownloadCallback: 0x01EE8D18
+  doRequest: 0x01EE6B80
+
 objects:
   game/boot:
     text_start: 0x00157738

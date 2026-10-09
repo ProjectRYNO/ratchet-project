@@ -128,3 +128,6 @@ HTTP continuation: **781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**.
 
 
 Text-area/select/image continuation: **797/935 (85.2%) compiled; 138 INCLUDE_ASM entries remain**. Full build, slot audit, layout and globals pass. Strict comparison remains NONMATCH; gameplay untested.
+
+
+Browser/page/grid/list/login continuation: **842/935 (90.1%) compiled; 93 INCLUDE_ASM entries remain**. Forced build, slot audit, layout and globals pass. Strict comparison remains NONMATCH; gameplay untested.

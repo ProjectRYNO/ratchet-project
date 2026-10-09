@@ -4332,7 +4332,7 @@
       "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unknown00",
@@ -4355,7 +4355,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown10",
+        "name": "HandleCreateGameResponse",
         "offset": 16,
         "bitfield": false
       },
@@ -4380,7 +4380,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown24",
+        "name": "HandleJoinGameResponse",
         "offset": 36,
         "bitfield": false
       },
@@ -4419,7 +4419,7 @@
       "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unrecovered",
@@ -5096,7 +5096,7 @@
       "svo3/SVTagModule.cpp"
     ],
     "header": "code/svo3/SVTagModule.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unknown00",
@@ -5168,7 +5168,7 @@
       "svo3/SVTagModule.cpp"
     ],
     "header": "code/svo3/SVTagModule.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "vtable",
@@ -6043,7 +6043,7 @@
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "Retail split callback offsets/argument registers and explicit retail Ghidra decompilation, corroborated by prototype dltypes. Includes DrawTextArea 0x48 and StoreDownloadedImage 0x54; prefix size unchanged.",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unknown00",
@@ -6116,8 +6116,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered4C",
+        "name": "DrawListBox",
         "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "unknown50",
+        "offset": 80,
         "bitfield": false
       },
       {
@@ -6131,8 +6136,18 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered5C",
+        "name": "DrawGenericListboxFrame",
         "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGenericListboxEntry",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered64",
+        "offset": 100,
         "bitfield": false
       },
       {
@@ -6170,7 +6185,7 @@
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "Retail split callback offsets/argument registers and explicit retail Ghidra decompilation, corroborated by prototype dltypes. Includes DrawTextArea 0x48 and StoreDownloadedImage 0x54; prefix size unchanged.",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "vtable",
@@ -6348,13 +6363,13 @@
   },
   {
     "name": "CPage",
-    "size": "0x6360",
+    "size": "0x637C",
     "line": 0,
     "owners": [
       "svo3/CPage.cpp"
     ],
     "header": "code/svo3/CPage.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "preTransition",
@@ -6492,7 +6507,7 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered5B24",
+        "name": "m_requestListener",
         "offset": 23332,
         "bitfield": false
       },
@@ -6509,6 +6524,41 @@
       {
         "name": "m_pBackDisplayBuffer",
         "offset": 25436,
+        "bitfield": false
+      },
+      {
+        "name": "m_pfSVMLPreTagCreateScanCB",
+        "offset": 25440,
+        "bitfield": false
+      },
+      {
+        "name": "m_pfXMLScanCB",
+        "offset": 25444,
+        "bitfield": false
+      },
+      {
+        "name": "m_pfSVMLTagCreateCB",
+        "offset": 25448,
+        "bitfield": false
+      },
+      {
+        "name": "m_pfBinaryDownloadCB",
+        "offset": 25452,
+        "bitfield": false
+      },
+      {
+        "name": "m_pCURIContent",
+        "offset": 25456,
+        "bitfield": false
+      },
+      {
+        "name": "m_iCURIContentLength",
+        "offset": 25460,
+        "bitfield": false
+      },
+      {
+        "name": "m_bPreserveCurrentPage",
+        "offset": 25464,
         "bitfield": false
       }
     ]
@@ -6682,7 +6732,7 @@
       "svo3/ListBoxTag.cpp"
     ],
     "header": "code/svo3/ListBoxTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "base",
@@ -7046,7 +7096,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "tagid",
@@ -7088,7 +7138,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "targetType",
@@ -7120,7 +7170,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "MediusUserName",
@@ -7152,7 +7202,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "serverName",
@@ -7184,7 +7234,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "targetInfo",
@@ -7246,7 +7296,7 @@
       "svo3/SVBrowser.cpp"
     ],
     "header": "code/svo3/SVBrowser.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "m_downloadThrobberInfo",
@@ -7354,8 +7404,28 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredTextFieldInfo",
+        "name": "m_textMaxBytes",
         "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "m_textMaxChars",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_textBuffer",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_textEditPosition",
+        "offset": 12472,
+        "bitfield": false
+      },
+      {
+        "name": "m_textIsPassword",
+        "offset": 12476,
         "bitfield": false
       },
       {
@@ -8427,7 +8497,7 @@
       "svo3/GenericListBoxTag.cpp"
     ],
     "header": "code/svo3/GenericListBoxTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unrecovered00",
@@ -8440,8 +8510,28 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered60",
+        "name": "getTopVisibleIndex",
         "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered64",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "getSelectedIndex",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "unknown78",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "changeSelectedItem",
+        "offset": 124,
         "bitfield": false
       },
       {
@@ -8459,7 +8549,7 @@
       "svo3/GenericListBoxTag.cpp"
     ],
     "header": "code/svo3/GenericListBoxTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "base",
@@ -8568,7 +8658,7 @@
       "svo3/ListBoxTag.cpp"
     ],
     "header": "code/svo3/ListBoxTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "displayStr",
@@ -8713,13 +8803,13 @@
   },
   {
     "name": "ListBoxTagVtablePrefix",
-    "size": "0x5C",
+    "size": "0x98",
     "line": 0,
     "owners": [
       "svo3/ListBoxTag.cpp"
     ],
     "header": "code/svo3/ListBoxTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unrecovered00",
@@ -8729,6 +8819,36 @@
       {
         "name": "clearItems",
         "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "unknown5C",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "getSelectedIndex",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered64",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "countItems",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered74",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "changeSelectedItem",
+        "offset": 148,
         "bitfield": false
       }
     ]
@@ -9930,13 +10050,13 @@
   },
   {
     "name": "SVPersistentData",
-    "size": "0x1B78",
+    "size": "0x1B9C",
     "line": 0,
     "owners": [
       "svo3/SVPersistentData.cpp"
     ],
     "header": "code/svo3/SVPersistentData.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "unrecovered0000",
@@ -9959,13 +10079,33 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered0382",
+        "name": "padding0382",
         "offset": 898,
+        "bitfield": false
+      },
+      {
+        "name": "szURIStore",
+        "offset": 900,
+        "bitfield": false
+      },
+      {
+        "name": "SVOGameID",
+        "offset": 4996,
         "bitfield": false
       },
       {
         "name": "cookieData",
         "offset": 5000,
+        "bitfield": false
+      },
+      {
+        "name": "szMD5Hash",
+        "offset": 7032,
+        "bitfield": false
+      },
+      {
+        "name": "padding1B99",
+        "offset": 7065,
         "bitfield": false
       }
     ]
@@ -10020,7 +10160,7 @@
       "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "name",
@@ -10126,7 +10266,7 @@
       "svo3/SVTagModule.cpp"
     ],
     "header": "code/svo3/SVTagModule.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "action",
@@ -10148,7 +10288,7 @@
       "svo3/CSystemContextBase.cpp"
     ],
     "header": "code/svo3/CSystemContextBase.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
     "fields": [
       {
         "name": "name",
@@ -10451,6 +10591,354 @@
       {
         "name": "context",
         "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageProviderDownloadVtable",
+    "size": "0x14",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "download",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageAnimationVtable",
+    "size": "0x70",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "AnimateOut",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "AnimateIn",
+        "offset": 108,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageDownloadVtable",
+    "size": "0xC",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageTagInputVtable",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "HandleInput",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageInputQueryVtable",
+    "size": "0x40",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "QueryBackInput",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "QueryRefreshInput",
+        "offset": 60,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PageStaticScreenVtable",
+    "size": "0x30",
+    "line": 0,
+    "owners": [
+      "svo3/CPage.cpp"
+    ],
+    "header": "code/svo3/CPage.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "EnterStaticScreen",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserProviderVtable",
+    "size": "0x28",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "gap",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "registerSchemes",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserEditableVtable",
+    "size": "0x68",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "GetText",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "unknown54",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "IsPassword",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "GetMaxLengthBytes",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "GetMaxLengthUTF8Chars",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "GetEditPosition",
+        "offset": 100,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserInputVtable",
+    "size": "0x38",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SeedVKBBuffer",
+        "offset": 52,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserManagerVtable",
+    "size": "0x24",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserSystemVtable",
+    "size": "0x20",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "HandleLoginResponse",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BrowserVKBVtable",
+    "size": "0x68",
+    "line": 0,
+    "owners": [
+      "svo3/SVBrowser.cpp"
+    ],
+    "header": "code/svo3/SVBrowser.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "DrawVKB",
+        "offset": 100,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CScanTagAction",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/SVTagModule.cpp"
+    ],
+    "header": "code/svo3/SVTagModule.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "type",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ptr",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CTagModuleActions",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3/SVTagModule.cpp"
+    ],
+    "header": "code/svo3/SVTagModule.h",
+    "evidence": "Retail Ghidra, split field accesses and callback register ABI; prototype dltypes corroboration. See SVO3_HANDOFF.md for batch evidence.",
+    "fields": [
+      {
+        "name": "action",
+        "offset": 0,
         "bitfield": false
       }
     ]

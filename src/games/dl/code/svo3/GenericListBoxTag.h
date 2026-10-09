@@ -8,7 +8,11 @@ struct GenericListBoxTagState;
 typedef struct { // 0x84 (vtable prefix)
     /* 0x00 */ unsigned char unrecovered00[0x5C];
     /* 0x5C */ void (*clearList)(GenericListBoxTagState *tag);
-    /* 0x60 */ unsigned char unrecovered60[0x20];
+    /* 0x60 */ int (*getTopVisibleIndex)(GenericListBoxTagState *tag);
+    /* 0x64 */ unsigned char unrecovered64[0x10];
+    /* 0x74 */ int (*getSelectedIndex)(GenericListBoxTagState *tag);
+    /* 0x78 */ void *unknown78;
+    /* 0x7C */ void (*changeSelectedItem)(GenericListBoxTagState *tag, int amount);
     /* 0x80 */ long (*getIndexOfHandle)(GenericListBoxTagState *tag, svo_listbox_handle handle);
 } GenericListBoxTagVtablePrefix;
 

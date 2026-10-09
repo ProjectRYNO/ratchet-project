@@ -26,12 +26,12 @@ typedef struct { // 0x3C (vtable prefix, not the full table)
     /* 0x04 */ void *unknown04;
     /* 0x08 */ void *unknown08;
     /* 0x0C */ void (*ErrorCallback)(CSystemContextBase *context, int code);
-    /* 0x10 */ void *unknown10;
+    /* 0x10 */ void (*HandleCreateGameResponse)(CSystemContextBase *, int);
     /* 0x14 */ void *unknown14;
     /* 0x18 */ void (*HandleOnlineInitComplete)(CSystemContextBase *context);
     /* 0x1C */ void *unknown1C;
     /* 0x20 */ void (*HandleNewPageTagInfo)(CSystemContextBase *, SVTagInfo *, int);
-    /* 0x24 */ void *unknown24;
+    /* 0x24 */ void (*HandleJoinGameResponse)(CSystemContextBase *, int);
     /* 0x28 */ void *unknown28;
     /* 0x2C */ void *unknown2C;
     /* 0x30 */ void (*FileDownloadCallback)(CSystemContextBase *, CFileDownloadInfo *);
