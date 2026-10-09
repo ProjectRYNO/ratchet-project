@@ -3,8 +3,8 @@
 ## Current scope (2026-10-09)
 
 SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **781 compiled C/C++ functions (83.5%) and 154 INCLUDE_ASM entries**.
-54 translation units are entirely free of INCLUDE_ASM; 43 still contain assembly.
+across 97 files: **797 compiled C/C++ functions (85.2%) and 138 INCLUDE_ASM entries**.
+55 translation units are entirely free of INCLUDE_ASM; 42 still contain assembly.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
 
@@ -865,3 +865,32 @@ HTTPS_Malloc. Oversized candidates are preserved in
 [SVO3_HTTP_SLOT_BLOCKERS.md](SVO3_HTTP_SLOT_BLOCKERS.md). Compiled coverage is not
 completed byte matching or gameplay verification. No Makefile/linker changes in
 this continuation. Keep ALLOW_NONMATCHING=0.
+
+
+## Text-area, select and image-module continuation (2026-10-09)
+
+Current verified coverage: **797/935 (85.2%) compiled; 138 INCLUDE_ASM entries remain**. 55/97 files are assembly-free.
+This batch adds 16 functions after commit 80ce23f: TextAreaTag (9), SelectTag (5),
+ImageTagModule (2). ImageTagModule is now free of INCLUDE_ASM.
+
+Text-area recovery includes parsing, keyboard/special-key input, arrow offsets,
+line recoloring, text printing, input dispatch and drawing. Preserved full action
+tests before signed-char scrolling conversion, callback ordering, line-end rules,
+cursor blink wraparound and retail assertion paths. Select recovery includes
+construction/destruction, selection, input dispatch and option population.
+Image scanning/callback recovery preserves constructor-then-zero ordering and
+retail tag-search assumptions. Added typed draw callbacks at 0x48/0x54 and named
+existing XML strings, select directions/vtable and the text-area blink counter.
+
+Split and forced full ELF rebuild PASS. Whole-ELF slot/public-address/compiled-origin
+audit PASS: 78,686 changed loaded bytes are confined to registered compiled
+slots; every other loaded byte and runtime header matches. Strict byte comparison
+remains NONMATCH. Layout checks PASS; globals check PASS (806 existing globals
+and 32 batch aliases). New behavior suites, gameplay, ISO and full-clean tests
+were deferred. No Makefile/linker changes or widened function slots.
+
+Four oversized candidates remain assembly: TextAreaTag DrawCursor and
+UpdateCursorPosition, SelectTag Draw and alphabet navigation. Bodies and measured
+sizes are saved in SVO3_TEXT_AREA_SLOT_BLOCKERS.md and SVO3_SELECT_SLOT_BLOCKERS.md.
+The compiler rejected an experimental float-register binding; it was discarded.
+This is compiled coverage, not completed byte matching or gameplay verification.

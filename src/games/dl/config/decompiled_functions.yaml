@@ -865,6 +865,30 @@ functions:
 
   md5requestLogin: 0x1eea774
 
+  changeColorForAllLines: 0x01EF9DD8
+  handleKeyboardInput: 0x01EFA368
+  PrintText: 0x01EFAB00
+  GetNextWord: 0x01EFA794
+  ParseText: 0x01EFA604
+  SetArrowOffsets: 0x01EFAD0C
+  handleSpecialKeys: 0x01EF9E90
+  HandleInput___dupe43: 0x01EF989C
+  Draw___dupe16: 0x01EF9B50
+
+  IsSelectable___dupe10: 0x1ef7930
+
+  _SelectTag: 0x1ef7348
+
+  HandleInput___dupe40: 0x1ef76a4
+
+  populateSelectOptions: 0x1ef794c
+
+  SelectTag: 0x1ef748c
+
+  processImageCB: 0x1ef8238
+
+  ScanTags___dupe4: 0x1ef80d0
+
 objects:
   game/boot:
     text_start: 0x00157738

@@ -1,72 +1,59 @@
 # SVO3 current handoff, 2026-10-09
 
-**781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**. The 100% request is unfinished. 54/97 files are assembly-free.
-This latest text/HTTP continuation adds nine functions after the 772 checkpoint;
-79 functions have been added since the committed 75.1% checkpoint.
-Changes remain uncommitted. Keep game/ last; use native ratchet-ps2-cli.
+**797/935 (85.2%) compiled; 138 INCLUDE_ASM entries remain**. The 100% request remains unfinished.
+Changes since the user's committed/pushed checkpoint 80ce23f are uncommitted.
+Keep game/ last; use the native ratchet-ps2-cli workflow.
 
-## HTTP continuation (2026-10-09)
+## Text-area, select and image-module continuation (2026-10-09)
 
-Current verified coverage: **781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**; 54/97 files are assembly-free.
-Added five C/C++ replacements in CHttp: SetHttpState, formRequestText,
-parseHttpHeaderLine, md5request and md5requestLogin. Their compiled sizes are
-0x2F0/0x3BC, 0x30C/0x324, 0x520/0x530, 0xF8/0xFC and 0x168/0x174 respectively
-(compiled size / original allocation). No allocation was widened. Added 57 aliases
-for existing strings and recovered SVSock's address-formatting callback at 0x20.
+Current verified coverage: **797/935 (85.2%) compiled; 138 INCLUDE_ASM entries remain**. 55/97 files are assembly-free.
+This batch adds 16 functions after commit 80ce23f: TextAreaTag (9), SelectTag (5),
+ImageTagModule (2). ImageTagModule is now free of INCLUDE_ASM.
 
-Evidence: explicitly selected retail Ghidra program, original split instructions,
-and prototype CHttp sources. Preserved request argument order and capacity math,
-header parser mutations, HTTP state diagnostic calls, and MD5 input ordering.
-The MD5 replacements use ordinary C loops; no inline instructions/register bindings.
-The second agent delivered these five before reaching its usage limit again.
+Text-area recovery includes parsing, keyboard/special-key input, arrow offsets,
+line recoloring, text printing, input dispatch and drawing. Preserved full action
+tests before signed-char scrolling conversion, callback ordering, line-end rules,
+cursor blink wraparound and retail assertion paths. Select recovery includes
+construction/destruction, selection, input dispatch and option population.
+Image scanning/callback recovery preserves constructor-then-zero ordering and
+retail tag-search assumptions. Added typed draw callbacks at 0x48/0x54 and named
+existing XML strings, select directions/vtable and the text-area blink counter.
 
-Split and forced ELF rebuild PASS. Whole-ELF public-address/slot/compiled-origin
-audit PASS: 74,234 changed loaded bytes all inside registered compiled slots;
-every other loaded byte and runtime header matches. Strict comparison NONMATCH.
-Layout PASS: 1,809 size/offset checks, 196 types, 101 headers, independent inclusion,
-ten boot packing vectors. Existing globals and all 100 continuation aliases PASS.
-No new behavior suite, gameplay, ISO or full-clean test was run.
+Split and forced full ELF rebuild PASS. Whole-ELF slot/public-address/compiled-origin
+audit PASS: 78,686 changed loaded bytes are confined to registered compiled
+slots; every other loaded byte and runtime header matches. Strict byte comparison
+remains NONMATCH. Layout checks PASS; globals check PASS (806 existing globals
+and 32 batch aliases). New behavior suites, gameplay, ISO and full-clean tests
+were deferred. No Makefile/linker changes or widened function slots.
 
-CHttp retains downloadHeaders and operator.new___dupe4; HttpSecure retains
-HTTPS_Malloc. Oversized candidates are preserved in
-[SVO3_HTTP_SLOT_BLOCKERS.md](SVO3_HTTP_SLOT_BLOCKERS.md). Compiled coverage is not
-completed byte matching or gameplay verification. No Makefile/linker changes in
-this continuation. Keep ALLOW_NONMATCHING=0.
+Four oversized candidates remain assembly: TextAreaTag DrawCursor and
+UpdateCursorPosition, SelectTag Draw and alphabet navigation. Bodies and measured
+sizes are saved in SVO3_TEXT_AREA_SLOT_BLOCKERS.md and SVO3_SELECT_SLOT_BLOCKERS.md.
+The compiler rejected an experimental float-register binding; it was discarded.
+This is compiled coverage, not completed byte matching or gameplay verification.
 
 
 Artifact: `src/games/dl/build/boot_elf.elf`.
 Original SHA-256: `ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7`.
-Rebuilt SHA-256: `ca030c16b2a5777a8c2391036547be833496d0057d42cd6d247d2d3a0f2e3723`.
-Project: 849 compiled / 7776 assembly;
-157 matching / 692 nonmatching slots.
-Logs: `build/svo-library-work/http-next-*`; preceding text logs `next-*`.
-Remaining function inventory: [SVO3_REMAINING.csv](SVO3_REMAINING.csv).
+Rebuilt SHA-256: `072b98b04d252ace2f66e53164af09a65fd6a2613522ad54e8ff20066014d180`.
+Project: 865 compiled / 7760 assembly;
+158 matching / 707 nonmatching slots.
+Validation logs/evidence: `build/svo-library-work/rise-*` and
+`select-image-next-results.json`. Remaining inventory: SVO3_REMAINING.csv.
 
-## Recovery context
-
-Retail Ghidra program: `/Ratchet 4/PS2/NTSC-U/Retail_scus_974.65.elf.moose`.
-Prototype evidence: `D:/PS2/ISOs/deadlocked-proto-decomp` and dltypes.txt.
+Retail Ghidra: `/Ratchet 4/PS2/NTSC-U/Retail_scus_974.65.elf.moose`, R5900 LE32.
+Prototype: `D:/PS2/ISOs/deadlocked-proto-decomp`, including dltypes.txt.
 Read repository skills/rules before continuing. User permits fitting nonmatching
-C/C++ with behavior suites deferred, but public slots cannot be widened.
+C/C++ with new behavior suites deferred; original slots cannot be widened.
+Keep ALLOW_NONMATCHING=0. Current source/tracker take precedence over historical
+blocker documents, which may include functions subsequently integrated.
 
-The preceding 31-function batch covered RTCommSock (7), HttpSecure (5), CHttp (3),
-CDrawContextBase (6), ImageTag (6), StaticImageTag (4); RTCommSock became assembly-free.
-Its split/build/audit/layout/global checks passed. TextInputTag then added four:
-HandleInput___dupe44, handleKeyboardInput___dupe2, DrawImpl and DumpSubstring.
-Those checks also passed. Earlier MD5 behavior checks passed 64 compression and
-72 update cases; these were not rerun and are not tests of the new HTTP wrappers.
+The second agent delivered seven fitting select/image functions. No incomplete
+production candidates remain. Earlier HTTP/RT automatic-review blocks were
+resolved by user approval on 2026-10-08; historical review docs retain evidence.
+Read all SVO3_*SLOT_BLOCKERS.md before repeating size experiments.
+Prior batches and their separate validation are recorded in SVO3.md.
 
-Read SVO3_TEXT_INPUT_SLOT_BLOCKERS.md, SVO3_DRAW_IMAGE_SLOT_BLOCKERS.md,
-SVO3_FINAL_SLOT_BLOCKERS.md, SVO3_TARGET_SLOT_BLOCKERS.md and earlier blocker
-notes before repeating experiments. Historical candidate documents may include
-functions now integrated; current source/tracker takes precedence.
-
-Earlier HTTP/RT automatic-review blocks were resolved by explicit user approval
-on 2026-10-08. Pending-review documents retain historical evidence; no renewed
-approval is needed for that scope. The second agent reached its usage limit after
-delivering the five latest HTTP functions; no unfinished production edits remain.
-
-Use native ratchet-ps2-cli, not Wrench/Wine. Preserve PageRequestListener padding:
-GetLastContentType ends 0x01F0C844, zero gap to 0x01F27658, NOP extent through
-0x01F31380. Do not count padding as compiled code. Prior batch details remain in
-SVO3.md. The owned projectryno-svo75 container was used for validation.
+Preserve PageRequestListener padding: GetLastContentType ends 0x01F0C844,
+zero gap to 0x01F27658, NOP extent through 0x01F31380. Padding is not compiled code.
+Owned container: projectryno-svo75. No other contributor's output was modified.

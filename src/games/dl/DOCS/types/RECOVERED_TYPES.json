@@ -6043,7 +6043,7 @@
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
+    "evidence": "Retail split callback offsets/argument registers and explicit retail Ghidra decompilation, corroborated by prototype dltypes. Includes DrawTextArea 0x48 and StoreDownloadedImage 0x54; prefix size unchanged.",
     "fields": [
       {
         "name": "unknown00",
@@ -6111,8 +6111,18 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered48",
+        "name": "DrawTextArea",
         "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered4C",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "StoreDownloadedImage",
+        "offset": 84,
         "bitfield": false
       },
       {
@@ -6160,7 +6170,7 @@
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
+    "evidence": "Retail split callback offsets/argument registers and explicit retail Ghidra decompilation, corroborated by prototype dltypes. Includes DrawTextArea 0x48 and StoreDownloadedImage 0x54; prefix size unchanged.",
     "fields": [
       {
         "name": "vtable",

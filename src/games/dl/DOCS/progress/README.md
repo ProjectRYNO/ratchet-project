@@ -125,3 +125,6 @@ Text input continuation: **776/935 (83.0%) compiled; 159 INCLUDE_ASM entries rem
 
 
 HTTP continuation: **781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**. Build, ABI, globals and slot audit pass. Strict matching remains NONMATCH; new behavior/gameplay tests deferred.
+
+
+Text-area/select/image continuation: **797/935 (85.2%) compiled; 138 INCLUDE_ASM entries remain**. Full build, slot audit, layout and globals pass. Strict comparison remains NONMATCH; gameplay untested.

@@ -24,7 +24,9 @@ typedef struct { // 0x98 (vtable prefix)
                                        unsigned int lineColor, unsigned int fillColor,
                                        int lineThickness, int cornerRadius, float z,
                                        unsigned int *gradient, char *tagClass);
-    /* 0x48 */ unsigned char unrecovered48[0x10];
+    /* 0x48 */ void (*DrawTextArea)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, unsigned int, int, float, float, float, char *, int, int);
+    /* 0x4C */ unsigned char unrecovered4C[8];
+    /* 0x54 */ void (*StoreDownloadedImage)(CDrawContextBase *, int, char *, unsigned short, unsigned short);
     /* 0x58 */ void (*DrawPopupBackground)(CDrawContextBase *draw, float x, float y,
                                            float width, float height, unsigned int lineColor,
                                            unsigned int fillColor, char *tagClass);

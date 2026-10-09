@@ -1,3 +1,35 @@
+#include "SVTagModule.h"
+#include "ImageTag.h"
+#include "CPage.h"
+#include "DownloadBinary.h"
+#include "CDrawContextBase.h"
+#include "TagUtils.h"
+#include "string.h"
+extern "C" {
+extern char svoImageTagModuleSource[];
+extern char svoImageModuleIDAttribute[];
+extern char svoImageModuleWidthAttribute[];
+extern char svoImageModuleHeightAttribute[];
+extern char svoImageModuleSourceAttribute[];
+extern char svoImageModuleEmptyString[];
+extern char svoImageModuleDownloadAttribute[];
+extern char svoImageModulePreValue[];
+extern char svoImageModuleTagType[];
+const void *DownloadBinary(DownloadBinaryState *);
+void _DownloadBinary(DownloadBinaryState *, int);
+void SetDimensions___dupe2(DownloadBinaryState *, unsigned short, unsigned short);
+void SetPath(DownloadBinaryState *, char *);
+void SetDownloadCallback(DownloadBinaryState *, DownloadCallback);
+void SetID___dupe2(DownloadBinaryState *, int);
+int GetID(DownloadBinaryState *);
+unsigned short GetWidth(DownloadBinaryState *);
+unsigned short GetHeight(DownloadBinaryState *);
+void PopInTransitArray(CPage *, DownloadBinaryState *);
+void PushPostTransitionArray(CPage *, DownloadBinaryState *, DownloadBinaryState **);
+char *GetTagTypeName(SVTag *);
+void InitImage___dupe2(ImageTagState *, char *, int);
+CDrawContextBase *GetDrawContext();
+}
 #include "common.h"
 // Keep unreplaced assembly in its original function slots.
 #if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
@@ -55,6 +87,58 @@ SECTION(FreeResources___dupe17) void FreeResources___dupe17(SVTagModuleState *mo
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ImageTagModule", processImageCB);
+extern "C" SECTION(processImageCB) void processImageCB(unsigned int status, char *buffer, int length, void *user, int swapBuffers)
+{
+    if (!buffer) __SVO_Assert_Handler(svoImageTagModuleSource, 0x6A);
+    ImageTagState *image = 0;
+    DownloadBinaryState download;
+    DownloadBinary(&download);
+    CPage *page = (CPage *)user;
+    PopInTransitArray(page, &download);
+    SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
+    for (int i = 0; i < 256; ++i) {
+        image = (ImageTagState *)tags[i];
+        if (!strcmp(GetTagTypeName(&image->base), svoImageModuleTagType)) {
+            int id = image->m_iID;
+            if (id == GetID(&download)) break;
+        }
+    }
+    if (!image) __SVO_Assert_Handler(svoImageTagModuleSource, 0x7D);
+    InitImage___dupe2(image, buffer, length);
+    if (status != 200) __SVO_Assert_Handler(svoImageTagModuleSource, 0x87);
+    CDrawContextBase *draw = GetDrawContext();
+    int id = GetID(&download);
+    unsigned short width = GetWidth(&download);
+    unsigned short height = GetHeight(&download);
+    draw->vtable->StoreDownloadedImage(draw, id, buffer, width, height);
+    _DownloadBinary(&download, 2);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ImageTagModule", ScanTags___dupe4);
+extern "C" SECTION(ScanTags___dupe4) void ScanTags___dupe4(SVTagModuleState *module, iks *xml, SVTag **tags, CAllContextData *contexts, SVTagScanResult *actions)
+{
+    char *mode = 0;
+    char *source = 0;
+    int width = 0;
+    int height = 0;
+    int id;
+    DownloadBinaryState *queued;
+    DownloadBinaryState download;
+    DownloadBinary(&download);
+    memset(&download, 0, sizeof(download));
+    getIntAttrib(xml, svoImageModuleIDAttribute, &id);
+    getIntAttrib(xml, svoImageModuleWidthAttribute, &width);
+    getIntAttrib(xml, svoImageModuleHeightAttribute, &height);
+    getStringAttrib(xml, svoImageModuleSourceAttribute, &source);
+    if (strcmp(source, svoImageModuleEmptyString)) {
+        getStringAttrib(xml, svoImageModuleDownloadAttribute, &mode);
+        SetDimensions___dupe2(&download, width, height);
+        SetPath(&download, source);
+        SetDownloadCallback(&download, processImageCB);
+        SetID___dupe2(&download, id);
+        PushPostTransitionArray(contexts->pMain, &download, &queued);
+        int action = strcmp(svoImageModulePreValue, mode) == 0 ? 1 : 2;
+        actions->download = queued;
+        actions->action = action;
+    }
+    _DownloadBinary(&download, 2);
+}

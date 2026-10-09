@@ -223,3 +223,6 @@ not change storage allocation. Layout checks do not establish gameplay behavior.
 
 
 Text input and HTTP callback recovery (2026-10-09): 1,809 size/offset checks across 196 types and 101 headers pass, as do independent header inclusion and ten boot packing vectors. Typed editability/input/drawing callbacks and SVSock::addrAsString retain existing offsets and sizes.
+
+
+Text-area/image drawing callbacks (2026-10-09): recovered DrawTextArea at 0x48 and StoreDownloadedImage at 0x54 without changing CDrawContextVtablePrefix size. PASS: independent header includes and 10 EE boot-option packing vectors; PASS: 1811 PS2 sizes/field offsets across 196 types and 101 headers
