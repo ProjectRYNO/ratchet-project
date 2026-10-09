@@ -134,10 +134,12 @@ class WrapperMachine:
                 elif fn == 0x2A: r[rd] = int(signed(r[rs],64) < signed(r[rt],64))
                 elif fn == 0x2B: r[rd] = int(r[rs] < r[rt])
                 elif fn == 0x2D: r[rd] = (r[rs]+r[rt]) & MASK
+                elif fn == 0x2F: r[rd] = (r[rs]-r[rt]) & MASK
                 elif fn == 0x38: r[rd] = (r[rt] << sh) & MASK
                 elif fn == 0x3A: r[rd] = r[rt] >> sh
                 elif fn == 0x3C: r[rd] = (r[rt] << (sh+32)) & MASK
                 elif fn == 0x3E: r[rd] = r[rt] >> (sh+32)
+                elif fn == 0x3F: r[rd] = (signed(r[rt],64) >> (sh+32)) & MASK
                 else: raise AssertionError('unsupported SPECIAL %#x at %#x' % (word,pc))
             elif op in (2,3):
                 target = ((pc+4)&0xF0000000) | ((word&0x3FFFFFF)<<2)

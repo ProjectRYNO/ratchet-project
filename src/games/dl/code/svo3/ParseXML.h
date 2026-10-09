@@ -2,7 +2,14 @@
 #define PARSEXML_H
 #include "SVTagModule.h"
 struct CPage;
-typedef struct { // 0x04
+struct ParseXMLState;
+typedef struct { // 0x18 (vtable prefix)
+    /* 0x00 */ unsigned char unrecovered00[0x0C];
+    /* 0x0C */ long (*ShouldFreeResources)(ParseXMLState *parser);
+    /* 0x10 */ char *(*GetCheckString)(ParseXMLState *parser);
+    /* 0x14 */ void (*CallFunction)(ParseXMLState *parser, iks *xml, CPage *page);
+} ParseXMLVtablePrefix;
+typedef struct ParseXMLState { // 0x04
     /* 0x00 */ const void *vtable;
 } ParseXMLState;
 extern "C" {

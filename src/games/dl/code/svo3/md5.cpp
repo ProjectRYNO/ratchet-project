@@ -172,7 +172,29 @@ extern "C" SECTION(md5_process) void md5_process(md5_context *ctx, unsigned char
     ctx->state[1] += b;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/md5", md5_update);
+extern "C" SECTION(md5_update) void md5_update(md5_context *ctx, unsigned char *input, unsigned long length)
+{
+    if (!length) return;
+    int left = (ctx->total[0] >> 3) & 63;
+    int fill = 64 - left;
+    unsigned long bits = length << 3;
+    unsigned long total = (ctx->total[0] + bits) & 0xFFFFFFFFUL;
+    ctx->total[1] += (length >> 29) + (total < bits);
+    ctx->total[0] = total;
+    if (left && length >= fill) {
+        memcpy(ctx->buffer + (int)left, input, (int)fill);
+        length -= fill;
+        md5_process(ctx, ctx->buffer);
+        input += (int)fill;
+        left = 0;
+    }
+    while (length >= 64) {
+        md5_process(ctx, input);
+        input += 64;
+        length -= 64;
+    }
+    if (length) memcpy(ctx->buffer + (int)left, input, (int)length);
+}
 
 extern "C" SECTION(md5_finish) void md5_finish(md5_context *ctx, unsigned char *digest)
 {

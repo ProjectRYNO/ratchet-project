@@ -186,7 +186,16 @@ SECTION(getTagByName) SVTag *getTagByName(char *name, CPage *page)
 }
 
 iks *getChildIksStruct(iks *xml, char *name);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TagUtils", getChildIksStruct);
+extern "C" SECTION(getChildIksStruct) iks *getChildIksStruct(iks *xml, char *name)
+{
+    if (!xml) __SVO_Assert_Handler(svoTagUtilsSource, 0x149);
+    iks *child = iks_has_children(xml) ? iks_child(xml) : 0;
+    while (child) {
+        if (iks_name(child) && !strcmp(name, iks_name(child))) return child;
+        child = iks_next(child);
+    }
+    return 0;
+}
 
 SECTION(getChildIksStructList) int getChildIksStructList(iks *xml, char *name, iks **list, int size)
 {

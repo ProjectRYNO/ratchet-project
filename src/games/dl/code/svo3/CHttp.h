@@ -5,8 +5,21 @@
 #include "CQueryParams.h"
 #include "IRequestListener.h"
 struct HttpState;
+typedef struct { // 0x20
+    /* 0x00 */ char *scheme;
+    /* 0x04 */ char *host;
+    /* 0x08 */ int port;
+    /* 0x0C */ char *filePath;
+    /* 0x10 */ CQueryParamListState *params;
+    /* 0x14 */ int methodType;
+    /* 0x18 */ char *httpCommand;
+    /* 0x1C */ void *context;
+} URIRequest;
+
 typedef struct { // 0x58 (vtable prefix)
-    /* 0x00 */ unsigned char unrecovered00[0x34];
+    /* 0x00 */ unsigned char unrecovered00[0x0C];
+    /* 0x0C */ int (*doRequest)(HttpState *, URIRequest *, IRequestListenerState *, void *);
+    /* 0x10 */ unsigned char unrecovered10[0x24];
     /* 0x34 */ void (*HttpSendRequest)(HttpState *, char *, int, char **, int *);
     /* 0x38 */ long (*HttpsDownload)(HttpState *, char *, int, char **, int *, char **, int *);
     /* 0x3C */ void (*PrintHeader)(HttpState *);

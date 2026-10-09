@@ -16,7 +16,8 @@ typedef struct { // 0x44 (vtable prefix)
     /* 0x10 */ SVAddr *(*dnsLookupBlocking)(SVSockState *, char *, CMemoryContextBaseState *, int *);
     /* 0x14 */ SVAddr *(*dnsLookupNonBlocking)(SVSockState *, char *, CMemoryContextBaseState *, int *);
     /* 0x18 */ long (*dnsLookupUpdate)(SVSockState *socket, SVAddr **address);
-    /* 0x1C */ unsigned char unrecovered1C[8];
+    /* 0x1C */ unsigned char unrecovered1C[4];
+    /* 0x20 */ int (*addrAsString)(SVSockState *, SVAddr *, char *, int);
     /* 0x24 */ long (*Connect)(SVSockState *, SVAddr *, int);
     /* 0x28 */ long (*isConnected)(SVSockState *socket);
     /* 0x2C */ long (*Send)(SVSockState *, char *, int, unsigned long *);

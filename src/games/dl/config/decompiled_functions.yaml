@@ -778,6 +778,93 @@ functions:
   PasswordInputTag: 0x01EFD334
   ToggleChecked: 0x01EFE528
 
+  md5_update: 0x01EF1E4C
+  FreeDisplayBuffers: 0x01EE9B40
+  freeResources: 0x01EE66B0
+  shutdown: 0x01EE676C
+  parseCBHelper: 0x01EE73DC
+  draw: 0x01EE7860
+  handleDefaultSelection: 0x01EE74F0
+  PushPostTransitionArray: 0x01EE5FB8
+  PopInTransitArray: 0x01EE60F8
+  resolveRelativePath: 0x01EE67DC
+  doAfterParseTags: 0x01EE9270
+  addObject: 0x01EE7A88
+  SVMLparseCB: 0x01EE7098
+  XMLparseCB: 0x01EE7260
+  LoadStatePostGameFromPersistentData: 0x01EE7EEC
+  ReAllocBackDisplayBufferParser: 0x01EE992C
+  GenerateLagListInfo: 0x01EE9B6C
+  scanObject: 0x01EE8B88
+  substituteErrorPage: 0x01EE7904
+  getChildIksStruct: 0x01EF3470
+  GetNextEntry: 0x01F0A16C
+  DefaultHandleInput: 0x01F03D08
+  CNavInfo: 0x01EF3EC4
+  lt_double: 0x01EF4494
+  setWrapDimensions: 0x01EF4CF4
+  HandleInput___dupe45: 0x01EFD8CC
+  Draw___dupe19: 0x01EFDA50
+  RadioInputTag: 0x01EFD6F0
+  HandleInput___dupe46: 0x01EFE120
+  Draw___dupe20: 0x01EFE2A4
+  CheckboxInputTag: 0x01EFDF74
+  HandleInput___dupe48: 0x01EFFC60
+  Draw___dupe22: 0x01EFFE08
+  DefaultInit___dupe16: 0x01EFFA10
+  HandleInput___dupe35: 0x01EF5C54
+  Draw___dupe9: 0x01EF5E48
+  ButtonTag: 0x01EF5A14
+  parseHttpStatusLine: 0x01EEB110
+  HttpsDownloadHello: 0x01EE52E8
+
+  DrawInputBox: 0x01EEC50C
+  DrawButton: 0x01EEC544
+  DrawSelect: 0x01EEC57C
+  DrawGridCell: 0x01EEC7D4
+  drawTicker: 0x01EEC638
+  DrawDownloadThrobber: 0x01EECD38
+  IsSelectable___dupe11: 0x01EF89B8
+  HandleInput___dupe41: 0x01EF86D0
+  _ImageTag: 0x01EF8434
+  Draw___dupe14: 0x01EF88C0
+  InitImage___dupe2: 0x01EF8A64
+  ImageTag: 0x01EF84F4
+  IsSelectable___dupe12: 0x01EF9240
+  HandleInput___dupe42: 0x01EF8F4C
+  Draw___dupe15: 0x01EF913C
+  StaticImageTag: 0x01EF8D28
+  createSVSock: 0x01EF4DDC
+  dnsLookupBlocking: 0x01EF4F40
+  sDNSLookupCB: 0x01EF505C
+  dnsLookupNonBlockingQuery: 0x01EF5128
+  dnsLookupNonBlocking: 0x01EF51C0
+  addrAsString: 0x01EF5330
+  Connect: 0x01EF5388
+  DoRegistrations: 0x01EE5234
+  HttpSecure: 0x01EE5104
+  HttpSecureConnectingOnEnter: 0x01EE5594
+  HttpSecureConnectingOnUpdate1: 0x01EE5660
+  HttpSecureConnectingOnUpdate2: 0x01EE57E4
+  DoRegistrations2: 0x01EE9F28
+  doRequest___dupe2: 0x01EEA104
+  handleRedirect: 0x01EEAF24
+
+  HandleInput___dupe44: 0x01EFBBC8
+  handleKeyboardInput___dupe2: 0x01EFC654
+  DumpSubstring: 0x01EFC7B4
+  DrawImpl: 0x01EFBDCC
+
+  SetHttpState: 0x1eebea4
+
+  formRequestText: 0x1eea354
+
+  parseHttpHeaderLine: 0x1eeb1b0
+
+  md5request: 0x1eea678
+
+  md5requestLogin: 0x1eea774
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -2210,3 +2297,8 @@ objects:
       - {object: svo3/md5, section: .svo_md5_md5_update, start: 0x01EF1E4C, end: 0x01EF1F70}
       - {object: svo3/md5, section: .svo_md5_md5_finish, start: 0x01EF1F70, end: 0x01EF2190}
       - {object: svo3/md5, section: .svo_md5_md5_hex, start: 0x01EF2190, end: 0x01EF21FC}
+  svo3/TextEditableTag:
+    text_start: 0x01F03D08
+    text_end: 0x01F03E04
+    slots:
+      - {object: svo3/TextEditableTag, section: .svo_TextEditableTag_DefaultHandleInput, start: 0x01F03D08, end: 0x01F03E04}

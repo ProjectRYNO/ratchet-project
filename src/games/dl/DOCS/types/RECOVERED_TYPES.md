@@ -198,3 +198,28 @@ vectors. Expanded declarations cover grid/text widgets, HTTP/SSL and request
 listeners, page display buffers, downloads, sockets, persistent data and MD5.
 Retail instruction accesses establish offsets; prototype types support names.
 The MD5 context preserves the retail 64-bit unsigned-long state representation.
+
+
+## SVO3 page/widget continuation (2026-10-08)
+
+The inventory now contains 188 types in 101 headers. Full EE layout verification
+passes 1,755 size/offset checks, independent header inclusion and ten boot packing
+vectors. Added ParseXMLVtablePrefix, SVTagInfo, SVTagScanResult and
+TextEditableTagVtablePrefix; expanded page transition queues, persistent server
+settings, widget drawing callbacks, SubmitInputTag and HttpSecure (0x9B00).
+Retail offsets and callback argument banks were checked against instructions;
+prototype names support declarations. These checks establish layout, not gameplay.
+
+
+## Networking and image callback continuation (2026-10-08)
+
+Inventory: 196 types/101 headers; 1,802 PS2 size/offset checks PASS, independent
+header inclusion and ten boot packing vectors PASS. Added URIRequest,
+HTTPSInterface, SVRTCommAddrState, RTLinkAddress, RTCommLookupParams,
+RTCommChannelOptions, RTCommSockVtablePrefix and RTUnalignedWord. Expanded
+CDrawContextVtablePrefix to 0x98 and recovered HTTP/listener callback signatures.
+The packed unaligned word models observed LDL/LDR and SDL/SDR accesses; it does
+not change storage allocation. Layout checks do not establish gameplay behavior.
+
+
+Text input and HTTP callback recovery (2026-10-09): 1,809 size/offset checks across 196 types and 101 headers pass, as do independent header inclusion and ten boot packing vectors. Typed editability/input/drawing callbacks and SVSock::addrAsString retain existing offsets and sizes.

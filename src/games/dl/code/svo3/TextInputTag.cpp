@@ -1,3 +1,6 @@
+#include "CPage.h"
+#include "SVBrowser.h"
+#include "TextEditableTag.h"
 #include "CDrawContextBase.h"
 #include "UTF8_Util.h"
 #include "SVOString.h"
@@ -38,6 +41,22 @@ extern const SVTagVtablePrefix svoTextInputTagVtable;
 extern "C" {
 
 }
+int Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
+void ShowVKB(SVBrowserPrefix *, SVTag *);
+long GetVisible(SVTag *);
+void drawCursor(TextInputTagState *, CDrawContextBase *, int);
+void handleSpecialKeys___dupe2(TextInputTagState *, unsigned char);
+void scrollTextLeftToFillWindow(TextInputTagState *);
+void DumpSubstring(char *, float, int, int, char *);
+extern unsigned int svoTextInputBlinkCount;
+extern int svoTextInputJumpScroll;
+extern char svoTextInputCursorGlyph[];
+extern char svoTextInputJumpPart1[];
+extern char svoTextInputJumpPart2[];
+extern char svoTextInputSmoothScroll[];
+
+void SignalPluginEvent(SVBrowserPrefix *, int, SVTag *);
+void scrollTextRightToFillWindow(TextInputTagState *);
 #define SECTION(name) __attribute__((section(".svo_TextInputTag_" #name)))
 
 SECTION(FreeResources___dupe23) void FreeResources___dupe23(SVTag *tag)
@@ -94,9 +113,49 @@ extern "C" SECTION(defaultInit) void defaultInit(TextInputTagState *tag)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", drawCursor);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", DrawImpl);
+extern "C" SECTION(DrawImpl) void DrawImpl(TextInputTagState *self, char *text)
+{
+    SVTag *tag = &self->base;
+    if (!GetVisible(tag)) return;
+    CDrawContextBase *draw = tag->m_contexts->drawContext;
+    if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0x11E);
+    if (!tag->m_xml) __SVO_Assert_Handler(svoTextInputTagSource, 0x11F);
+    unsigned int fill;
+    unsigned int line;
+    unsigned int color;
+    if (tag->vtable->IsSelected(tag)) {
+        fill = self->m_highlightFillColor;
+        line = self->m_highlightLineColor;
+        color = self->m_highlightTextColor;
+    } else {
+        fill = tag->m_fillColor;
+        line = tag->m_lineColor;
+        color = self->m_textColor;
+    }
+    char visibleText[128];
+    memset(visibleText, 0, sizeof(visibleText));
+    memcpy(visibleText, text + self->m_curLeftOffset, (int)((unsigned int)self->m_curRightOffset - self->m_curLeftOffset));
+    int length = strlen(visibleText);
+    draw->vtable->DrawInputBox(draw, tag->m_tagid, tag->m_x, tag->m_y, tag->m_z, tag->m_width, tag->m_height, line, fill, color, tag->m_bSelected, visibleText, length, self->m_fontSize, tag->m_tagClass);
+    if (tag->vtable->IsEditable(tag) && tag->m_bSelected) {
+        if (!self->m_blinkCursor) drawCursor(self, draw, 1);
+        else {
+            if (svoTextInputBlinkCount % 30 == 0) self->m_drawCursor = !self->m_drawCursor;
+            ++svoTextInputBlinkCount;
+            drawCursor(self, draw, self->m_drawCursor);
+        }
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", DumpSubstring);
+extern "C" SECTION(DumpSubstring) void DumpSubstring(char *comment, float width, int left, int right, char *text)
+{
+    int length = (unsigned int)right - left;
+    if ((unsigned long)(long)length < 128) {
+        char buffer[128];
+        memset(buffer, 0, 128);
+        memcpy(buffer, text + left, length);
+    }
+}
 
 extern "C" SECTION(findParentForm) FormTag *findParentForm(TextInputTagState *tag, iks *parent, SVTag **tagList)
 {
@@ -138,9 +197,49 @@ extern "C" SECTION(GetText___dupe2) char *GetText___dupe2(TextInputTagState *tag
     return tag->m_text;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", HandleInput___dupe44);
+extern "C" SECTION(HandleInput___dupe44) int HandleInput___dupe44(TextInputTagState *self, CPage *page)
+{
+    SVTag *tag = &self->base;
+    CInputContextBaseState *input = tag->m_contexts->inputContext;
+    if (!tag->m_xml) __SVO_Assert_Handler(svoTextInputTagSource, 0xE2);
+    if (!input) __SVO_Assert_Handler(svoTextInputTagSource, 0xE3);
+    if (!page) __SVO_Assert_Handler(svoTextInputTagSource, 0xE4);
+    if (!tag->vtable->IsSelected(tag)) return 1;
+    SVBrowserPrefix *browser = GetInstance();
+    if (!browser->m_bShowVKB) {
+        for (int action = 0; action < 4; ++action) {
+            if (HasActionOccurred(input, 0x11, (PadAction)action)) {
+                CDrawContextBase *draw = tag->m_contexts->drawContext;
+                if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0xF2);
+                return Navigate(tag, input, draw, tag->m_xml, page) == 0;
+            }
+        }
+        if (HasActionOccurred(input, 0x11, SV_ACTION_VKB_ACTIVATE) && tag->vtable->IsEditable(tag)) ShowVKB(browser, tag);
+        if (tag->vtable->IsEditable(tag)) ((const TextEditableTagVtablePrefix *)tag->vtable)->HandleTextEntry(tag, input);
+    } else if (tag->vtable->IsEditable(tag)) input->vtable->HandleVKBInput(input, tag);
+    return 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", handleKeyboardInput___dupe2);
+extern "C" SECTION(handleKeyboardInput___dupe2) void handleKeyboardInput___dupe2(TextInputTagState *self, CInputContextBaseState *input)
+{
+    char *text = input->vtable->GetKeyboardBuffer(input);
+    size_t length = strlen(text);
+    size_t oldLength = strlen(self->m_text);
+    if (input->specialKeyCode) {
+        handleSpecialKeys___dupe2(self, input->specialKeyCode);
+        return;
+    }
+    if ((long)length > 0 && *text && (unsigned int)(oldLength + strlen(text)) <= 512) {
+        if (UTF8_CountCharacters(self->m_text, strlen(self->m_text)) < self->m_maxLengthUTF8Chars) {
+            int previous = self->m_curEditOffset;
+            self->m_curEditOffset = UTF8_AddCharToString(self->m_text, 512, text, strlen(text), self->m_curEditOffset);
+            if (self->m_curRightOffset < self->m_curEditOffset) self->m_curRightOffset = self->m_curEditOffset;
+            else self->m_curRightOffset = (unsigned int)self->m_curRightOffset + ((unsigned int)self->m_curEditOffset - previous);
+            scrollTextLeftToFillWindow(self);
+        }
+    }
+    input->vtable->ResetKeyboardInput(input);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", handleSpecialKeys___dupe2);
 

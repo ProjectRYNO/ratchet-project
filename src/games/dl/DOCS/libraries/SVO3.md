@@ -1,10 +1,10 @@
 # SVO3 library
 
-## Current scope (2026-10-08)
+## Current scope (2026-10-09)
 
 SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **702 compiled C/C++ functions (75.1%) and 233 INCLUDE_ASM entries**.
-48 translation units are entirely free of INCLUDE_ASM; 49 still contain assembly.
+across 97 files: **781 compiled C/C++ functions (83.5%) and 154 INCLUDE_ASM entries**.
+54 translation units are entirely free of INCLUDE_ASM; 43 still contain assembly.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
 
@@ -760,3 +760,108 @@ and linker logic are unchanged. Forty-seven oversized candidates remain assembly
 recovered bodies and measured sizes are saved in
 [SVO3_TARGET_SLOT_BLOCKERS.md](SVO3_TARGET_SLOT_BLOCKERS.md). No ISO packaging,
 emulator gameplay, or full-clean verification was performed for this checkpoint.
+
+
+## Page/widget continuation (2026-10-08)
+
+Added 39 compiled functions: CPage (18), Navigation (3), radio/checkbox/submit/
+button widgets (3 each), and one each in md5, TagUtils, SVFileDownloadQueue,
+TextEditableTag, CHttp and HttpSecure. md5, TextEditableTag, RadioInputTag,
+CheckboxInputTag and buttonTag are now assembly-free. This means compiled source,
+not completed byte matching or gameplay validation.
+
+Retail Ghidra and split instructions establish callback order, integer/float
+argument banks, signed narrowing, transition queues and parser behavior. Prototype
+types support field names. Added 64 global names; all 66 checked batch aliases
+resolve correctly, alongside the 806 existing global checks. No slot was widened.
+TextEditableTag uses the existing per-object size flags; no linker changes.
+
+Split and forced ELF rebuild pass. The placement/compiled-origin audit passes:
+64,599 changed loaded bytes are confined to registered compiled slots; every
+other loaded byte and runtime header matches. Strict comparison remains NONMATCH
+(5,130 core.text and 59,469 net.text bytes). Layout checks pass: 1,755 checks,
+188 types, 101 headers, independent inclusion and ten boot packing vectors.
+MD5 passes 64 compression and 72 update differential cases, including partial
+blocks and counter carry. The test interpreter now implements DSUBU and DSRA32;
+unsupported instructions still fail. Other new behavior and gameplay are untested.
+No ISO rebuild or full-clean run was performed for this batch.
+
+Five oversized candidates remain assembly; see SVO3_FINAL_SLOT_BLOCKERS.md.
+Automatic approval review blocked additional HTTP/SSL candidate work and socket
+integration. SVO3_HTTP_PENDING_REVIEW.md and SVO3_RT_PENDING_REVIEW.md retain the
+scope, evidence and rejection reasons. Those integrations were not applied.
+
+
+## Networking and image/drawing continuation (2026-10-08)
+
+Added 31 compiled functions: RTCommSock (7), HttpSecure (5), CHttp (3),
+CDrawContextBase (6), ImageTag (6), StaticImageTag (4). RTCommSock is assembly-free.
+The user authorized resuming the previously blocked networking work. The second
+agent completed those networking candidates before reaching its usage limit;
+the parent checked production compilation and corrected the HTTP C linkage.
+
+Image recovery preserves retail use of v0 for both image UV inputs, alpha 255,
+activation/selection/callback order, and image cleanup. Image construction retains
+the required attribute assumptions and full 128-byte link copy. The default drawing
+callbacks preserve the retail ticker's source-string truncation and throbber ranges.
+SVDrawText and image callbacks now have typed vtable entries at their verified offsets.
+
+Split and forced compilation followed by the HTTP linkage correction/relink pass.
+The complete ELF slot/address/compiled-origin audit passes. 70,499 changed loaded
+bytes are confined to registered compiled slots; every other loaded byte and
+runtime header matches. Strict comparison remains NONMATCH (5,130 core.text,
+65,369 net.text). Layout checks pass: 1,802 checks, 196 types, 101 headers,
+independent inclusion and ten boot packing vectors. Existing mapped globals and
+37 batch aliases pass. New behavior suites, gameplay, ISO and full-clean checks
+were not run. This is compiled coverage, not completed byte matching.
+
+Nine oversized candidates remain assembly; their source and measurements are in
+[SVO3_DRAW_IMAGE_SLOT_BLOCKERS.md](SVO3_DRAW_IMAGE_SLOT_BLOCKERS.md). Other remaining
+browser/page/widget work has not been completed. No slot widening, fallback symbols,
+original-machineword replacement or additional Makefile/linker changes were used.
+
+
+## Text input continuation (2026-10-09)
+
+Current verified coverage: **776/935 (83.0%) compiled; 159 INCLUDE_ASM entries remain**. 54/97 source files are assembly-free.
+Added HandleInput___dupe44, handleKeyboardInput___dupe2, DrawImpl and DumpSubstring
+in their original TextInputTag slots. Recovered input/draw/editability callback
+types and six names for existing globals. Four oversized C candidates remain
+assembly; see [SVO3_TEXT_INPUT_SLOT_BLOCKERS.md](SVO3_TEXT_INPUT_SLOT_BLOCKERS.md).
+
+Split and forced ELF rebuild pass. The whole-ELF slot/address/compiled-origin
+audit passes: 71,357 changed loaded bytes are confined to registered compiled
+slots, with every other loaded byte and runtime header matching. Strict comparison
+remains NONMATCH. Layout checks pass (1,808 offsets/sizes, 196 types, 101 headers,
+independent inclusion and ten boot packing vectors). Global-address checks pass.
+No new behavior suite, emulator/gameplay, ISO or full-clean test was run.
+This is compiled coverage, not byte-exact or gameplay-verified completion.
+
+
+## HTTP continuation (2026-10-09)
+
+Current verified coverage: **781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**; 54/97 files are assembly-free.
+Added five C/C++ replacements in CHttp: SetHttpState, formRequestText,
+parseHttpHeaderLine, md5request and md5requestLogin. Their compiled sizes are
+0x2F0/0x3BC, 0x30C/0x324, 0x520/0x530, 0xF8/0xFC and 0x168/0x174 respectively
+(compiled size / original allocation). No allocation was widened. Added 57 aliases
+for existing strings and recovered SVSock's address-formatting callback at 0x20.
+
+Evidence: explicitly selected retail Ghidra program, original split instructions,
+and prototype CHttp sources. Preserved request argument order and capacity math,
+header parser mutations, HTTP state diagnostic calls, and MD5 input ordering.
+The MD5 replacements use ordinary C loops; no inline instructions/register bindings.
+The second agent delivered these five before reaching its usage limit again.
+
+Split and forced ELF rebuild PASS. Whole-ELF public-address/slot/compiled-origin
+audit PASS: 74,234 changed loaded bytes all inside registered compiled slots;
+every other loaded byte and runtime header matches. Strict comparison NONMATCH.
+Layout PASS: 1,809 size/offset checks, 196 types, 101 headers, independent inclusion,
+ten boot packing vectors. Existing globals and all 100 continuation aliases PASS.
+No new behavior suite, gameplay, ISO or full-clean test was run.
+
+CHttp retains downloadHeaders and operator.new___dupe4; HttpSecure retains
+HTTPS_Malloc. Oversized candidates are preserved in
+[SVO3_HTTP_SLOT_BLOCKERS.md](SVO3_HTTP_SLOT_BLOCKERS.md). Compiled coverage is not
+completed byte matching or gameplay verification. No Makefile/linker changes in
+this continuation. Keep ALLOW_NONMATCHING=0.

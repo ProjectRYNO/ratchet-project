@@ -134,7 +134,20 @@ SECTION(FreeResources___dupe54) void FreeResources___dupe54(FileDownloadQueueSta
 }
 
 void GetNextEntry(FileDownloadQueueState *queue, char *path, int pathSize, char *id, int idSize);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVFileDownloadQueue", GetNextEntry);
+extern "C" SECTION(GetNextEntry) void GetNextEntry(FileDownloadQueueState *queue, char *path, int pathSize, char *id, int idSize)
+{
+    FileDownloadEntryState *entry = &queue->m_entries[0];
+    for (int i = 0; i < 5; ++i) {
+        if (strlen(GetValueStr___dupe2(&queue->m_entries[i]))) { entry = &queue->m_entries[i]; break; }
+    }
+    char *value = GetValueStr___dupe2(entry);
+    if ((long)pathSize < (long)strlen(value)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xD5);
+    svstrncpy(path, value, pathSize);
+    char *name = GetNameStr(entry);
+    if ((long)idSize < (long)strlen(name)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xDC);
+    svstrncpy(id, name, idSize);
+    reset___dupe3(entry);
+}
 
 SECTION(HasEntries) int HasEntries(FileDownloadQueueState *queue)
 {

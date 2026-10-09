@@ -4375,7 +4375,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown20",
+        "name": "HandleNewPageTagInfo",
         "offset": 32,
         "bitfield": false
       },
@@ -4452,13 +4452,13 @@
   },
   {
     "name": "CInputContextVtablePrefix",
-    "size": "0x24",
+    "size": "0x4C",
     "line": 0,
     "owners": [
-      "svo3/CInputContextBase.h"
+      "svo3/CInputContextBase.cpp"
     ],
     "header": "code/svo3/CInputContextBase.h",
-    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "unknown00",
@@ -4481,7 +4481,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown10",
+        "name": "SetButtonMapForPage",
         "offset": 16,
         "bitfield": false
       },
@@ -4504,6 +4504,41 @@
         "name": "RightVertical",
         "offset": 32,
         "bitfield": false
+      },
+      {
+        "name": "GetKeyboardBuffer",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered28",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "HandleVKBInput",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered34",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "ResetKeyboardInput",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "unknown44",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "GetScreenDimensions",
+        "offset": 72,
+        "bitfield": false
       }
     ]
   },
@@ -4512,10 +4547,10 @@
     "size": "0xDC",
     "line": 0,
     "owners": [
-      "svo3/CInputContextBase.h"
+      "svo3/CInputContextBase.cpp"
     ],
     "header": "code/svo3/CInputContextBase.h",
-    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "specialKeyCode",
@@ -4554,10 +4589,10 @@
     "size": "0x68",
     "line": 0,
     "owners": [
-      "svo3/CInputContextBase.h"
+      "svo3/CInputContextBase.cpp"
     ],
     "header": "code/svo3/CInputContextBase.h",
-    "evidence": "retail instruction offsets/strides and Ghidra; prototype names; partial vtables explicitly bounded",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "navUpButton",
@@ -5099,8 +5134,18 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered1C",
+        "name": "InitTag",
         "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "unknown20",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "ScanTag",
+        "offset": 36,
         "bitfield": false
       },
       {
@@ -5378,7 +5423,7 @@
       "svo3/SVTag.cpp"
     ],
     "header": "code/svo3/SVTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "unrecovered00",
@@ -5391,8 +5436,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered0C",
+        "name": "unknown0C",
         "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "Draw",
+        "offset": 16,
         "bitfield": false
       },
       {
@@ -5401,8 +5451,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered18",
+        "name": "SetSelectedState",
         "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "unknown1C",
+        "offset": 28,
         "bitfield": false
       },
       {
@@ -5411,7 +5466,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown24",
+        "name": "IgnoreInput",
         "offset": 36,
         "bitfield": false
       },
@@ -5421,8 +5476,18 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered2C",
+        "name": "IsEditable",
         "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered30",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "GetTagID",
+        "offset": 56,
         "bitfield": false
       },
       {
@@ -5455,7 +5520,7 @@
       "svo3/SVTag.cpp"
     ],
     "header": "code/svo3/SVTag.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "m_xml",
@@ -5972,13 +6037,13 @@
   },
   {
     "name": "CDrawContextVtablePrefix",
-    "size": "0x5C",
+    "size": "0x98",
     "line": 0,
     "owners": [
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "unknown00",
@@ -6001,7 +6066,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown10",
+        "name": "SVDrawText",
         "offset": 16,
         "bitfield": false
       },
@@ -6011,8 +6076,33 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered18",
+        "name": "DrawInputBox",
         "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "DrawButton",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "unknown20",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "DrawRadioButton",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "DrawCheckbox",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered2C",
+        "offset": 44,
         "bitfield": false
       },
       {
@@ -6029,6 +6119,36 @@
         "name": "DrawPopupBackground",
         "offset": 88,
         "bitfield": false
+      },
+      {
+        "name": "unrecovered5C",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "DrawImage",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "DrawStaticImage",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "InitImage",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "InitStaticImage",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "DestroyImage",
+        "offset": 148,
+        "bitfield": false
       }
     ]
   },
@@ -6040,7 +6160,7 @@
       "svo3/CDrawContextBase.cpp"
     ],
     "header": "code/svo3/CDrawContextBase.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "Retail split offsets and Ghidra callback signatures; prototype dltypes corroboration. Text-input editability, input-buffer/reset/VKB and drawing callback recovery.",
     "fields": [
       {
         "name": "vtable",
@@ -6057,7 +6177,7 @@
       "svo3/CHttp.cpp"
     ],
     "header": "code/svo3/CHttp.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "vtable",
@@ -6227,7 +6347,7 @@
     "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
-        "name": "unrecovered0000",
+        "name": "preTransition",
         "offset": 0,
         "bitfield": false
       },
@@ -6237,8 +6357,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered1A7C",
+        "name": "preTransitionUsed",
         "offset": 6780,
+        "bitfield": false
+      },
+      {
+        "name": "postTransition",
+        "offset": 6812,
         "bitfield": false
       },
       {
@@ -6247,8 +6372,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered3518",
+        "name": "postTransitionUsed",
         "offset": 13592,
+        "bitfield": false
+      },
+      {
+        "name": "inTransition",
+        "offset": 13624,
         "bitfield": false
       },
       {
@@ -6257,7 +6387,7 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered3A0C",
+        "name": "inTransitionUsed",
         "offset": 14860,
         "bitfield": false
       },
@@ -6272,8 +6402,43 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered3A34",
+        "name": "m_XML",
         "offset": 14900,
+        "bitfield": false
+      },
+      {
+        "name": "m_parser",
+        "offset": 14904,
+        "bitfield": false
+      },
+      {
+        "name": "m_lastHttpStatus",
+        "offset": 14908,
+        "bitfield": false
+      },
+      {
+        "name": "m_lastCURIContentType",
+        "offset": 14912,
+        "bitfield": false
+      },
+      {
+        "name": "m_scheme",
+        "offset": 14916,
+        "bitfield": false
+      },
+      {
+        "name": "m_port",
+        "offset": 14932,
+        "bitfield": false
+      },
+      {
+        "name": "m_serverName",
+        "offset": 14934,
+        "bitfield": false
+      },
+      {
+        "name": "padding3AD6",
+        "offset": 15062,
         "bitfield": false
       },
       {
@@ -6312,8 +6477,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered5B20",
+        "name": "m_pRequestProvider",
         "offset": 23328,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered5B24",
+        "offset": 23332,
         "bitfield": false
       },
       {
@@ -6715,7 +6885,7 @@
       "svo3/ParseXML.cpp"
     ],
     "header": "code/svo3/ParseXML.h",
-    "evidence": "retail Ghidra and instruction offsets; prototype dltypes corroboration; prefixes explicitly marked",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
     "fields": [
       {
         "name": "vtable",
@@ -6732,7 +6902,7 @@
       "svo3/RTCommSock.cpp"
     ],
     "header": "code/svo3/RTCommSock.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "base",
@@ -8443,8 +8613,48 @@
         "bitfield": false
       },
       {
-        "name": "unrecoveredB4",
+        "name": "m_fontSize",
         "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "m_align",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "m_value",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "m_displayLength",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "m_buttonType",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "m_textColor",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightFillColor",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightLineColor",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "m_highlightTextColor",
+        "offset": 336,
         "bitfield": false
       },
       {
@@ -8694,11 +8904,21 @@
       "svo3/CHttp.cpp"
     ],
     "header": "code/svo3/CHttp.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "unrecovered00",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "doRequest",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered10",
+        "offset": 16,
         "bitfield": false
       },
       {
@@ -8794,6 +9014,11 @@
         "bitfield": false
       },
       {
+        "name": "addrAsString",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
         "name": "Connect",
         "offset": 36,
         "bitfield": false
@@ -8843,11 +9068,16 @@
       "svo3/IRequestListener.cpp"
     ],
     "header": "code/svo3/IRequestListener.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "unrecovered00",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "OnURIRequestStart",
+        "offset": 8,
         "bitfield": false
       },
       {
@@ -8856,7 +9086,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown10",
+        "name": "OnURIRequestRedirectReceived",
         "offset": 16,
         "bitfield": false
       },
@@ -8885,7 +9115,7 @@
       "svo3/IRequestListener.cpp"
     ],
     "header": "code/svo3/IRequestListener.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "vtable",
@@ -9518,7 +9748,7 @@
       "svo3/HttpSecure.cpp"
     ],
     "header": "code/svo3/HttpSecure.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "state",
@@ -9580,7 +9810,7 @@
       "svo3/HttpSecure.cpp"
     ],
     "header": "code/svo3/HttpSecure.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "base",
@@ -9593,8 +9823,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered5C",
+        "name": "HttpsDownloadHello",
         "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "HttpsKeyExchange",
+        "offset": 96,
         "bitfield": false
       },
       {
@@ -9616,13 +9851,13 @@
   },
   {
     "name": "HttpSecureState",
-    "size": "0x8ACC",
+    "size": "0x9B00",
     "line": 0,
     "owners": [
       "svo3/HttpSecure.cpp"
     ],
     "header": "code/svo3/HttpSecure.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "base",
@@ -9638,6 +9873,21 @@
         "name": "state",
         "offset": 35528,
         "bitfield": false
+      },
+      {
+        "name": "download",
+        "offset": 35532,
+        "bitfield": false
+      },
+      {
+        "name": "sendBuffer",
+        "offset": 35580,
+        "bitfield": false
+      },
+      {
+        "name": "sendBufferIndex",
+        "offset": 39676,
+        "bitfield": false
       }
     ]
   },
@@ -9649,7 +9899,7 @@
       "svo3/IRequestListener.cpp"
     ],
     "header": "code/svo3/IRequestListener.h",
-    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
     "fields": [
       {
         "name": "data",
@@ -9681,6 +9931,26 @@
       {
         "name": "unrecovered0000",
         "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "serverName",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered0180",
+        "offset": 384,
+        "bitfield": false
+      },
+      {
+        "name": "port",
+        "offset": 896,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered0382",
+        "offset": 898,
         "bitfield": false
       },
       {
@@ -9802,6 +10072,375 @@
       {
         "name": "buffer",
         "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "ParseXMLVtablePrefix",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3/ParseXML.cpp"
+    ],
+    "header": "code/svo3/ParseXML.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "unrecovered00",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ShouldFreeResources",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "GetCheckString",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "CallFunction",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagScanResult",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/SVTagModule.cpp"
+    ],
+    "header": "code/svo3/SVTagModule.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "action",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "download",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVTagInfo",
+    "size": "0x14",
+    "line": 0,
+    "owners": [
+      "svo3/CSystemContextBase.cpp"
+    ],
+    "header": "code/svo3/CSystemContextBase.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "name",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "typeName",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "tagClass",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "tagID",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "tag",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "TextEditableTagVtablePrefix",
+    "size": "0x70",
+    "line": 0,
+    "owners": [
+      "svo3/TextEditableTag.cpp"
+    ],
+    "header": "code/svo3/TextEditableTag.h",
+    "evidence": "retail Ghidra and split instruction offsets; dltypes corroboration; unrecovered fields and partial views explicitly marked",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered4C",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "HandleTextEntry",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "ScrollText",
+        "offset": 108,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SVRTCommAddrState",
+    "size": "0x18",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "vtable",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "padding04",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "address",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RTLinkAddress",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "Addr",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RTCommLookupParams",
+    "size": "0x10C",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "szHostName",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "NSServerIP",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "pfCommLookupCB",
+        "offset": 264,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RTCommChannelOptions",
+    "size": "0x10",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "type",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "maxMsgLen",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "nonBlockingConnect",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "synchronousReceive",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RTCommSockVtablePrefix",
+    "size": "0x4C",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "base",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "getSynchronous",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "getErrNo",
+        "offset": 72,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RTUnalignedWord",
+    "size": "0x08",
+    "line": 0,
+    "owners": [
+      "svo3/RTCommSock.cpp"
+    ],
+    "header": "code/svo3/RTCommSock.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "value",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HTTPSInterface",
+    "size": "0x1C",
+    "line": 0,
+    "owners": [
+      "svo3/HttpSecure.cpp"
+    ],
+    "header": "code/svo3/HttpSecure.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "initialize",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "addRootCertificate",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "addCRL",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "create",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "destroy",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "callback",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "cleanup",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "URIRequest",
+    "size": "0x20",
+    "line": 0,
+    "owners": [
+      "svo3/CHttp.cpp"
+    ],
+    "header": "code/svo3/CHttp.h",
+    "evidence": "retail Ghidra and split offsets/callback ABI; prototype dltypes corroboration; packed RTUnalignedWord models retail unaligned 64-bit loads/stores",
+    "fields": [
+      {
+        "name": "scheme",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "host",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "port",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "filePath",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "params",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "methodType",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "httpCommand",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "context",
+        "offset": 28,
         "bitfield": false
       }
     ]

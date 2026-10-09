@@ -17,14 +17,28 @@ typedef struct { // 0x30
 typedef struct { // 0x70 (vtable prefix)
     /* 0x00 */ HttpVtablePrefix base;
     /* 0x58 */ void (*HttpsCallEngine)(HttpSecureState *, SSLCallbackParams *);
-    /* 0x5C */ unsigned char unrecovered5C[8];
+    /* 0x5C */ int (*HttpsDownloadHello)(HttpSecureState *, char *, int, char **, int *, int *);
+    /* 0x60 */ long (*HttpsKeyExchange)(HttpSecureState *, char *, int, char **, int *);
     /* 0x64 */ void (*ConnectingOnEnter)(HttpSecureState *);
     /* 0x68 */ void (*ConnectingOnUpdate1)(HttpSecureState *);
     /* 0x6C */ void (*ConnectingOnUpdate2)(HttpSecureState *);
 } HttpSecureVtablePrefix;
-struct HttpSecureState { // 0x8ACC (verified prefix)
+struct HttpSecureState { // 0x9B00
     /* 0x0000 */ HttpState base;
     /* 0x8AC4 */ void *engine;
     /* 0x8AC8 */ int state;
+    /* 0x8ACC */ SSLCallbackParams download;
+    /* 0x8AFC */ unsigned char sendBuffer[4096];
+    /* 0x9AFC */ unsigned int sendBufferIndex;
 };
+typedef struct { // 0x1C
+    /* 0x00 */ long (*initialize)(void *(*)(unsigned int), void (*)(void *), unsigned long (*)(), int, int);
+    /* 0x04 */ void (*addRootCertificate)(); // Address only; signature unrecovered.
+    /* 0x08 */ void (*addCRL)(); // Address only; signature unrecovered.
+    /* 0x0C */ long (*create)(void **);
+    /* 0x10 */ void (*destroy)(void *);
+    /* 0x14 */ long (*callback)(SSLCallbackParams *, void *);
+    /* 0x18 */ void (*cleanup)();
+} HTTPSInterface;
+
 #endif

@@ -16,8 +16,19 @@ DATA = STACK - 0x1800
 class Machine(WrapperMachine):
     max_steps = 20000
 
-    def __init__(self, image, args):
+    def __init__(self, image, args, memcpy_address=None):
         super().__init__(image, {}, args + [0] * (8 - len(args)), 0)
+        self.memcpy_address = memcpy_address
+
+    def intercept(self, pc):
+        if pc != self.memcpy_address:
+            return False
+        dest, source, length = [self.reg[i] & 0xFFFFFFFF for i in (4, 5, 6)]
+        assert length <= 256, 'unexpected MD5 copy length'
+        payload = self.bytes(source, length)
+        for i, value in enumerate(payload): self.write(dest + i, value, 1)
+        self.reg[2] = dest
+        return True
 
     def bytes(self, address, size):
         return bytes(self.read(address + i, 1) for i in range(size))
@@ -45,6 +56,23 @@ def main():
         assert results[0] == results[1], ('md5_process', case, results)
         count += 1
     print('PASS: %d retail-versus-compiled MD5 compression cases, all 64 state bits' % count)
+    count = 0
+    for total in [0, 8, 0x1F8, 0xFFFFFF00, 0xFFFFFFF8, 0x100000008]:
+        for length in [0, 1, 7, 55, 56, 63, 64, 65, 127, 128, 129, 255]:
+            context = bytearray(randomizer.randrange(256) for _ in range(112))
+            context[:8] = total.to_bytes(8, 'little')
+            block = bytes(randomizer.randrange(256) for _ in range(256))
+            results = []
+            for image in images:
+                machine = Machine(image, [CONTEXT, DATA, length], syms['memcpy'][0])
+                for i, value in enumerate(context): machine.write(CONTEXT + i, value, 1)
+                for i, value in enumerate(block): machine.write(DATA + i, value, 1)
+                machine.run(syms['md5_update'][0])
+                results.append(machine.bytes(CONTEXT, 112))
+            assert results[0] == results[1], ('md5_update', hex(total), length, results)
+            count += 1
+    print('PASS: %d MD5 update cases: partial blocks, zero length and counter carry' % count)
+
 
 if __name__ == '__main__':
     main()

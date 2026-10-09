@@ -1,3 +1,10 @@
+#include "TagUtils.h"
+#include "SVOString.h"
+#include "CheckboxInputTag.h"
+#include "CInputContextBase.h"
+#include "CDrawContextBase.h"
+#include "CPage.h"
+#include "string.h"
 #include "SVOString.h"
 #include "string.h"
 #include "CheckboxInputTag.h"
@@ -33,6 +40,29 @@ extern "C" {
 CAudioContextBaseState *GetAudioContext();
 extern char svoCheckboxSoundClass[];
 }
+extern "C" {
+extern char svoCheckboxInputTagSource[];
+int Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
+int TrimToFitDisplaySize(CDrawContextBase *, char *, float, int);
+CAudioContextBaseState *GetAudioContext();
+extern char svoButtonAudioClass[];
+extern char svoSubmitAudioClass[];
+void CheckCheckboxElement(FormTag *, CheckboxInputTagState *);
+}
+extern "C" {
+extern char svoCheckboxInputTagAttrFontSize[];
+extern char svoCheckboxInputTagAttrTextColor[];
+extern char svoCheckboxInputTagAttrHighlightColor[];
+extern char svoCheckboxInputTagAttrValue[];
+extern char svoCheckboxInputTagAttrChecked[];
+extern char svoCheckboxInputTagAttrSelectable[];
+extern char svoCheckboxInputTagAttrClass[];
+extern char svoCheckboxInputTagAttrSubmitAsEncrypted[];
+extern const SVTagVtablePrefix svoCheckboxInputTagVtable;
+void DefaultInit___dupe14(CheckboxInputTagState *);
+void decodeEntityText(char *);
+void RegisterWithForm___dupe4(CheckboxInputTagState *, iks *, SVTag **);
+}
 #define SECTION(name) __attribute__((section(".svo_CheckboxInputTag_" #name)))
 
 SECTION(FreeResources___dupe28) void FreeResources___dupe28(void *self)
@@ -50,7 +80,27 @@ extern "C" SECTION(_CheckboxInputTag) void _CheckboxInputTag(SVTag *tag, unsigne
     if (flags & 1) SVTagDelete(tag);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CheckboxInputTag", CheckboxInputTag);
+extern "C" SECTION(CheckboxInputTag) void CheckboxInputTag(CheckboxInputTagState *self, iks *xml, SVTag **tagList, CAllContextData *contexts)
+{
+    SVTag *tag = &self->base;
+    SVTagConstruct(tag, xml, contexts);
+    tag->vtable = &svoCheckboxInputTagVtable;
+    DefaultInit___dupe14(self);
+    getIntAttrib(tag->m_xml, svoCheckboxInputTagAttrFontSize, &self->m_fontSize);
+    getColorAttrib(tag->m_xml, svoCheckboxInputTagAttrTextColor, &self->m_textColor);
+    getColorAttrib(tag->m_xml, svoCheckboxInputTagAttrHighlightColor, &self->m_highlightColor);
+    char *value = iks_find_attrib(tag->m_xml, svoCheckboxInputTagAttrValue);
+    if (value) strcpy(self->m_value, value);
+    else __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x48);
+    if (iks_find_attrib(tag->m_xml, svoCheckboxInputTagAttrChecked)) self->m_isChecked = 1;
+    if (!getBoolAttrib(tag->m_xml, svoCheckboxInputTagAttrSelectable, &tag->m_bSelectable)) tag->m_bSelectable = 1;
+    getStringAttrib(tag->m_xml, svoCheckboxInputTagAttrClass, &tag->m_tagClass);
+    if (iks_has_children(tag->m_xml)) strcpy(self->m_text, iks_cdata(iks_child(tag->m_xml)));
+    if (!getBoolAttrib(tag->m_xml, svoCheckboxInputTagAttrSubmitAsEncrypted, &self->m_bSubmitAsEncryped)) self->m_bSubmitAsEncryped = 0;
+    if (!self->m_text) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x69);
+    decodeEntityText(self->m_text);
+    RegisterWithForm___dupe4(self, iks_parent(tag->m_xml), tagList);
+}
 
 extern "C" SECTION(DefaultInit___dupe14) void DefaultInit___dupe14(CheckboxInputTagState *tag)
 {
@@ -65,7 +115,18 @@ extern "C" SECTION(DefaultInit___dupe14) void DefaultInit___dupe14(CheckboxInput
     tag->m_parentForm = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CheckboxInputTag", Draw___dupe20);
+extern "C" SECTION(Draw___dupe20) void Draw___dupe20(CheckboxInputTagState *self)
+{
+    SVTag *tag = &self->base;
+    CDrawContextBase *draw = tag->m_contexts->drawContext;
+    if (!draw) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x9C);
+    if (!tag->m_xml) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x9D);
+    unsigned int color = tag->m_bSelected ? self->m_highlightColor : self->m_textColor;
+    int length = strlen(self->m_text);
+    draw->vtable->DrawCheckbox(draw, tag->m_tagid, tag->m_x, tag->m_y, tag->m_z, tag->m_width, tag->m_height,
+        color, tag->m_lineColor, tag->m_fillColor, tag->m_bSelected, self->m_isChecked,
+        self->m_text, length, self->m_fontSize, 0, tag->m_tagClass);
+}
 
 extern "C" SECTION(FindParentForm___dupe4) FormTag *FindParentForm___dupe4(CheckboxInputTagState *tag, iks *parent, SVTag **tagList)
 {
@@ -89,7 +150,27 @@ extern "C" SECTION(FindParentForm___dupe4) FormTag *FindParentForm___dupe4(Check
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CheckboxInputTag", HandleInput___dupe46);
+extern "C" SECTION(HandleInput___dupe46) int HandleInput___dupe46(CheckboxInputTagState *self, CPage *page)
+{
+    SVTag *tag = &self->base;
+    CInputContextBaseState *input = tag->m_contexts->inputContext;
+    if (!tag->m_xml) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x7B);
+    if (!input) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x7C);
+    if (!page) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x7D);
+    if (!tag->vtable->IsSelected(tag)) return 1;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
+        if (!self->m_parentForm) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x83);
+        CheckCheckboxElement(self->m_parentForm, self);
+    }
+    for (int action = 0; action < 4; ++action) {
+        if (HasActionOccurred(input, 0x11, (PadAction)action)) {
+            CDrawContextBase *draw = tag->m_contexts->drawContext;
+            if (!draw) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x8D);
+            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
+        }
+    }
+    return 1;
+}
 
 extern "C" SECTION(RegisterWithForm___dupe4) void RegisterWithForm___dupe4(CheckboxInputTagState *tag, iks *parent, SVTag **tagList)
 {

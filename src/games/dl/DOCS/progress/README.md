@@ -107,3 +107,21 @@ layout and global checks pass. Strict comparison reports 57,204 changed loaded
 bytes inside compiled slots. MD5 compression passed 64 differential cases;
 other new behavior and gameplay checks remain deferred. See the current
 [SVO3 handoff](../libraries/SVO3_HANDOFF.md) for evidence and remaining work.
+
+
+The next 2026-10-08 continuation reaches **741/935 SVO3 compiled (79.3%)**,
+194 assembly entries and 53/97 assembly-free files. Whole project: 809 compiled,
+7,816 assembly, 156 matching and 653 nonmatching slots. Build, placement, layout
+and global checks pass. Strict comparison remains NONMATCH: 64,599 loaded bytes
+differ inside compiled slots. MD5 passed 64 compression and 72 update cases;
+other new behavior and gameplay checks remain deferred. See the current handoff
+for saved oversized candidates and automatic-review-blocked work.
+
+
+The networking/image continuation reaches **772/935 (82.6%) compiled, 163 INCLUDE_ASM**, with 54/97 assembly-free files. Build, layout, slot/address and globals checks pass. Strict comparison remains NONMATCH (70,499 loaded bytes inside compiled slots). New behavior/gameplay checks deferred. See the current SVO3 handoff.
+
+
+Text input continuation: **776/935 (83.0%) compiled; 159 INCLUDE_ASM entries remain**. Build, layout, globals and slot audit pass; strict comparison remains NONMATCH. Gameplay remains untested.
+
+
+HTTP continuation: **781/935 (83.5%) compiled; 154 INCLUDE_ASM entries remain**. Build, ABI, globals and slot audit pass. Strict matching remains NONMATCH; new behavior/gameplay tests deferred.

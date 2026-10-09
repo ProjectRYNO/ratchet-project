@@ -6,6 +6,11 @@ struct SVTag;
 struct CPage;
 struct CAllContextData;
 struct SVTagModuleState;
+#include "DownloadBinary.h"
+typedef struct { // 0x08
+    /* 0x00 */ int action;
+    /* 0x04 */ DownloadBinaryState *download;
+} SVTagScanResult;
 typedef struct { // 0x30 (vtable prefix)
     /* 0x00 */ void *unknown00;
     /* 0x04 */ void *unknown04;
@@ -14,7 +19,9 @@ typedef struct { // 0x30 (vtable prefix)
     /* 0x10 */ long (*HandleInput)(SVTagModuleState *module, CPage *page);
     /* 0x14 */ void *unknown14;
     /* 0x18 */ long (*IsMyTag)(SVTagModuleState *module, iks *xml);
-    /* 0x1C */ unsigned char unrecovered1C[0x0C];
+    /* 0x1C */ void (*InitTag)(SVTagModuleState *module, iks *xml, SVTag **tag, SVTag **tagList, CAllContextData *contexts);
+    /* 0x20 */ void *unknown20;
+    /* 0x24 */ void (*ScanTag)(SVTagModuleState *, iks *, SVTag **, CAllContextData *, SVTagScanResult *);
     /* 0x28 */ void (*LeaveCurrentPage)(SVTagModuleState *module);
     /* 0x2C */ void (*EnterNewPage)(SVTagModuleState *module);
 } SVTagModuleVtablePrefix;
