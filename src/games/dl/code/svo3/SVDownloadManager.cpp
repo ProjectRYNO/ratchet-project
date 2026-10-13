@@ -1,3 +1,27 @@
+#include "SVTag.h"
+#include "CInputContextBase.h"
+#include "SVDownloadManager.h"
+#include "CSystemContextBase.h"
+#include "CMemoryContextBase.h"
+#include "SVTagModule.h"
+
+extern "C" {
+extern const IRequestListenerVtablePrefix svoDownloadManagerVtable;
+extern char svoSVDownloadManagerSource[];
+CMemoryContextBaseState *GetMemoryContext();
+void Http(HttpState *, CMemoryContextBaseState *, int);
+void _Http(HttpState *, int);
+void shutdown___dupe3(SVDownloadManagerState *);
+void setState(SVDownloadManagerState *, int);
+void DownloadManagerDelete(void *) __asm__("operator.delete___dupe12");
+void NotifySystemContextOfChunk(SVDownloadManagerState *, DLBuffer *);
+}
+
+extern "C" void DownloadManagerConstruct(SVDownloadManagerState *, char *, char *, char *, int, CPage *, CMemoryContextBaseState *, unsigned int) __asm__("SVDownloadManager");
+
+
+
+
 #include "CError.h"
 #include "CSystemContextBase.h"
 #include "CMemoryContextBase.h"
@@ -31,13 +55,32 @@ extern "C" {
 void setState(SVDownloadManagerState *, int);
 void NotifySystemContextOfChunk(SVDownloadManagerState *, DLBuffer *);
 void NotifySystemContextOfFailure(SVDownloadManagerState *);
-void freeResources___dupe2(HttpState *);
+void freeResources___dupe2(HttpState *, int);
 void freeResources___dupe4(SVDownloadManagerState *, int);
 void UpdateFileDownload(SVDownloadManagerState *);
-long IsSystemFinishedWithBuffers(SVDownloadManagerState *);
+int IsSystemFinishedWithBuffers(SVDownloadManagerState *);
 void download___dupe2(HttpState *);
 }
+#include "HttpUtils.h"
+#include "SVOString.h"
+#include "string.h"
+#include "stdio.h"
+extern "C" {
+extern char svoDownloadHttpScheme[];
+extern char svoDownloadGetCommand[];
+extern char svoDownloadStatusToken[];
+extern char svoDownloadStatusFormat[];
+int doRequest___dupe2(HttpState *, URIRequest *, IRequestListenerState *, void *);
+}
 #define SECTION(name) __attribute__((section(".svo_SVDownloadManager_" #name)))
+
+static inline void ResetDLBuffer(DLBuffer *buffer)
+{
+    buffer->startPos = 0xFFFFFFFF;
+    buffer->bytesReceived = 0;
+    buffer->bWaitingForSystemOk = 0;
+    buffer->bBeingUsedForDownload = 0;
+}
 
 SECTION(setState) void setState(SVDownloadManagerState *manager, int state)
 {
@@ -51,9 +94,81 @@ SECTION(OnURIRequestRedirectReceived) void OnURIRequestRedirectReceived(SVDownlo
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", _SVDownloadManager);
+extern "C" SECTION(_SVDownloadManager) void _SVDownloadManager(SVDownloadManagerState *manager, int flags)
+{
+    manager->base.vtable = &svoDownloadManagerVtable;
+    shutdown___dupe3(manager);
+    for (int i = 0; i < 2; ++i) {
+        DLBuffer *buffer = &manager->m_buffers[i];
+        if (buffer->pData) {
+            CMemoryContextBaseState *memory = GetMemoryContext();
+            svFreeSafe(memory, buffer->pData);
+            buffer->pData = 0;
+            buffer->dataSizeBytes = 0;
+        }
+    }
+    _SVChronograph(&manager->m_timer, 2);
+    _Http(&manager->m_http, 2);
+    if (flags & 1) { DownloadManagerDelete(manager); return; }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", doRequest___dupe4);
+extern "C" SECTION(doRequest___dupe4) int doRequest___dupe4(SVDownloadManagerState *manager, char *path, CQueryParamListState *params, int method, char *id)
+{
+    char requestPath[272];
+    char originalPath[272];
+    char filename[32];
+    if (!path) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x146);
+    if (manager->m_bRequestInProgress) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x147);
+    svstrncpy(manager->m_fileID, id, 257);
+    Reset___dupe5(&manager->m_timer);
+    Start___dupe3(&manager->m_timer);
+    svstrncpy(originalPath, path, strlen(path) + 1);
+    if (!pathIsFullyQualified___dupe2(path)) {
+        __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x161);
+        return 0;
+    }
+    SVPath split;
+    split.m_scheme = manager->m_scheme;
+    split.m_server = manager->m_serverName;
+    split.m_port = &manager->m_port;
+    split.m_path = requestPath;
+    split.m_pathMaxLength = 257;
+    parseFullyQualifiedPath(path, &split);
+    if (manager->m_state) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x16B);
+    DLBuffer *buffer = manager->m_buffers;
+    int count = 2;
+    do {
+        if (buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x170);
+        CMemoryContextBaseState *memory = GetMemoryContext();
+        buffer->pData = (char *)svAllocSafe(memory, buffer->dataSizeBytes, 4, 0x171, svoSVDownloadManagerSource);
+        if (!buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x172);
+        ++buffer;
+    } while (--count);
+    URIRequest request;
+    request.scheme = svoDownloadHttpScheme;
+    request.host = manager->m_serverName;
+    request.port = manager->m_port;
+    request.filePath = requestPath;
+    request.params = params;
+    request.methodType = method;
+    request.httpCommand = svoDownloadGetCommand;
+    request.context = 0;
+    if (!doRequest___dupe2(&manager->m_http, &request, &manager->base, manager)) {
+        __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x185);
+        return 0;
+    }
+    int length = strlen(path);
+    for (int position = length; position > 0; --position) {
+        if (path[position] == '/') {
+            svstrncpy(filename, path + position + 1, 32);
+            break;
+        }
+    }
+    svstrncpy(manager->m_fileName, filename, 32);
+    setState(manager, 1);
+    manager->m_bRequestInProgress = 1;
+    return 1;
+}
 
 extern "C" SECTION(download___dupe3) void download___dupe3(SVDownloadManagerState *manager)
 {
@@ -73,14 +188,98 @@ extern "C" SECTION(download___dupe3) void download___dupe3(SVDownloadManagerStat
     if (GetErrorCode()) setState(manager, -1);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", draw___dupe2);
+#include "CDrawContextBase.h"
+#include "TextTag.h"
+extern "C" SVTag *getTagByName(char *name, CPage *page);
+extern "C" CAllContextData svoPageContextData;
+extern "C" char svoDownloadProgressRectName[], svoDownloadProgressTextName[], svoDownloadProgressPercentName[];
+extern "C" char svoDownloadOutlineRectClass[], svoDownloadFillRectClass[], svoDownloadRateFormat[];
+extern "C" const long long svoDownloadBlockedText[];
+extern "C" char svoDownloadRateClass[], svoDownloadBytesFormat[], svoDownloadNotSetClass[];
+extern "C" void formatDownloadStatusText(SVDownloadManagerState *manager, char *dst, char *src, char *id, int percent);
+extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manager)
+{
+    if (manager->m_state == 1 || manager->m_state == 3) {
+        CAllContextData contexts = svoPageContextData;
+        CDrawContextBase *draw = contexts.drawContext;
+        int w = 200;
+        int h = 30;
+        float percent = (float)manager->m_fileBytesReceived / (float)manager->m_fileContentLength;
+        SVTag *back = getTagByName(svoDownloadProgressRectName, manager->m_page);
+        TextTagState *text = (TextTagState *)getTagByName(svoDownloadProgressTextName, manager->m_page);
+        SVTag *pct = getTagByName(svoDownloadProgressPercentName, manager->m_page);
+        int x, y;
+        char dstr[128];
+        if (back) {
+            unsigned int tagid = back->vtable->GetTagID(back);
+            x = (int)back->m_x;
+            y = (int)back->m_y;
+            w = (int)back->m_width;
+            h = (int)back->m_height;
+            back->vtable->SetVisible(back, 0);
+            unsigned int line = back->m_lineColor;
+            draw->vtable->DrawRectangle(draw, tagid, (float)x, (float)y, (float)w, (float)h, line, line, 1, 0, 100000.0f, 0, svoDownloadOutlineRectClass);
+            unsigned int fill = back->m_fillColor;
+            if (pct) {
+                tagid = pct->vtable->GetTagID(pct);
+                x = (int)pct->m_x;
+                y = (int)pct->m_y;
+                w = (int)pct->m_width;
+                h = (int)pct->m_height;
+                pct->vtable->SetVisible(pct, 0);
+                fill = pct->m_fillColor;
+                line = pct->m_lineColor;
+            }
+            draw->vtable->DrawRectangle(draw, tagid, (float)x, (float)y, (float)(int)((float)w * percent), (float)h, line, fill, 1, 0, 100000.0f, 0, svoDownloadFillRectClass);
+        }
+        memset(dstr, 0, 128);
+        if (text) {
+            int tx = (int)text->base.m_x;
+            int ty = (int)text->base.m_y;
+            float rate = (float)manager->m_fileBytesReceived / (float)Elapsed(&manager->m_timer);
+            sprintf(dstr, svoDownloadRateFormat, Elapsed(&manager->m_timer), (double)rate);
+            draw->vtable->SVDrawText(draw, 0, (float)tx + (float)(w / 2), (float)ty - (float)(h * 2 + h), 0xFFFFFFFF, dstr, strlen(dstr), 12, 1, svoDownloadRateClass);
+            sprintf(dstr, svoDownloadBytesFormat, manager->m_fileBytesReceived, manager->m_fileContentLength);
+            draw->vtable->SVDrawText(draw, 0, (float)tx, (float)ty - (float)(h * 2), 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
+            if (manager->m_buffers[0].bytesReceived >= manager->m_buffers[0].dataSizeBytes
+                && manager->m_buffers[1].bytesReceived >= manager->m_buffers[1].dataSizeBytes
+                && (manager->m_buffers[0].bWaitingForSystemOk || manager->m_buffers[1].bWaitingForSystemOk)) {
+                long long *d = (long long *)dstr;
+                d[0] = svoDownloadBlockedText[0];
+                d[1] = svoDownloadBlockedText[1];
+                d[2] = svoDownloadBlockedText[2];
+                d[3] = svoDownloadBlockedText[3];
+                d[4] = svoDownloadBlockedText[4];
+                dstr[40] = ((const char *)svoDownloadBlockedText)[40];
+                draw->vtable->SVDrawText(draw, 0, (float)tx, (float)ty - (float)h, 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
+            }
+            formatDownloadStatusText(manager, dstr, text->m_text, manager->m_fileID, (int)((double)percent * 100.0));
+            text->base.vtable->SetVisible(&text->base, 0);
+            draw->vtable->SVDrawText(draw, 0, text->base.m_x, text->base.m_y, text->m_textColor, dstr, strlen(dstr), text->m_fontSize, text->m_align, text->base.m_tagClass);
+        }
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", formatDownloadStatusText);
+extern "C" SECTION(formatDownloadStatusText) void formatDownloadStatusText(SVDownloadManagerState *manager, char *dst, char *src, char *id, int percent)
+{
+    char text[128];
+    if (strlen(src) > 127) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x262);
+    int position = my_strcspn(src, svoDownloadStatusToken);
+    if (position < 1) svstrncpy(dst, src, 128);
+    else {
+        memcpy(dst, src, position);
+        dst[position - 1] = 0;
+        sprintf(text, svoDownloadStatusFormat, manager->m_fileID, percent);
+        strcat(dst, text);
+        svstrncpy(text, src + position + 6, strlen(src));
+        strcat(dst, text);
+    }
+}
 
 extern "C" SECTION(freeResources___dupe4) void freeResources___dupe4(SVDownloadManagerState *manager, int keep)
 {
     if (!keep) {
-        freeResources___dupe2(&manager->m_http);
+        freeResources___dupe2(&manager->m_http, keep);
         setState(manager, 0);
         for (int i = 0; i < 2; ++i) {
             if (manager->m_buffers[i].pData) {
@@ -92,11 +291,16 @@ extern "C" SECTION(freeResources___dupe4) void freeResources___dupe4(SVDownloadM
     }
 }
 
-extern "C" SECTION(IsSystemFinishedWithBuffers) long IsSystemFinishedWithBuffers(SVDownloadManagerState *manager)
+extern "C" SECTION(IsSystemFinishedWithBuffers) int IsSystemFinishedWithBuffers(SVDownloadManagerState *manager)
 {
-    if (manager->m_buffers[0].bWaitingForSystemOk || manager->m_buffers[1].bWaitingForSystemOk) return 0;
-    if (manager->m_buffers[0].bytesReceived || manager->m_buffers[1].bytesReceived) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x398);
-    return 1;
+    DLBuffer *first = &manager->m_buffers[0];
+    DLBuffer *second = &manager->m_buffers[1];
+    int finished = 0;
+    if (!first->bWaitingForSystemOk && !second->bWaitingForSystemOk) {
+        if (first->bytesReceived || second->bytesReceived) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x398);
+        finished = 1;
+    }
+    return finished;
 }
 
 extern "C" SECTION(NotifySystemContextOfChunk) void NotifySystemContextOfChunk(SVDownloadManagerState *manager, DLBuffer *buffer)
@@ -131,7 +335,19 @@ extern "C" SECTION(NotifySystemContextOfFailure) void NotifySystemContextOfFailu
     system->vtable->FileDownloadCallback(system, &info);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", okToNavigate___dupe4);
+extern "C" SVTag *getTagByName(char *name, CPage *page);
+extern "C" CAllContextData svoPageContextData;
+extern "C" SECTION(okToNavigate___dupe4) int okToNavigate___dupe4(SVDownloadManagerState *manager)
+{
+    if (!manager->m_state) return 1;
+    SVTag *tag = getTagByName(manager->m_fileID, manager->m_page);
+    if (!tag) return 1;
+    if (!tag->vtable->okToNavigate(tag)) {
+        CAllContextData contexts = svoPageContextData;
+        HasActionOccurred(contexts.inputContext, 0x11, SV_ACTION_BACK);
+    }
+    return tag->vtable->okToNavigate(tag);
+}
 
 extern "C" SECTION(OnURIRequestChunkReceived) void OnURIRequestChunkReceived(SVDownloadManagerState *manager, void *context, DLBuffer *buffer, char *data, int length)
 {
@@ -154,39 +370,48 @@ extern "C" SECTION(OnURIRequestCompletion) void OnURIRequestCompletion(SVDownloa
     setState(manager, 3);
 }
 
-extern "C" SECTION(OnURIRequestHeaderReceived) long OnURIRequestHeaderReceived(SVDownloadManagerState *manager, void *context, int type, int status, unsigned int length)
+extern "C" SECTION(OnURIRequestHeaderReceived) int OnURIRequestHeaderReceived(SVDownloadManagerState *manager, void *context, int type, int status, unsigned int length)
 {
     manager->m_fileStatus = status;
     manager->m_fileContentLength = length;
     manager->m_fileBytesReceived = 0;
-    manager->m_buffers[0].startPos = 0xFFFFFFFF;
-    manager->m_buffers[0].bytesReceived = 0;
-    manager->m_buffers[0].bWaitingForSystemOk = 0;
-    manager->m_buffers[0].bBeingUsedForDownload = 0;
-    manager->m_buffers[1].startPos = 0xFFFFFFFF;
-    manager->m_buffers[1].bytesReceived = 0;
-    manager->m_buffers[1].bWaitingForSystemOk = 0;
-    manager->m_buffers[1].bBeingUsedForDownload = 0;
+    ResetDLBuffer(&manager->m_buffers[0]);
+    ResetDLBuffer(&manager->m_buffers[1]);
     if (!length) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x309);
     return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", OnURIRequestIsOkContinueDownload);
+extern "C" SECTION(OnURIRequestIsOkContinueDownload) int OnURIRequestIsOkContinueDownload(SVDownloadManagerState *manager, void *context, URIReceiveBuffer *result)
+{
+    DLBuffer *first = &manager->m_buffers[0];
+    DLBuffer *second = &manager->m_buffers[1];
+    DLBuffer *buffer = 0;
+    if (!first->bWaitingForSystemOk && !second->bWaitingForSystemOk) {
+        if (!first->bytesReceived) buffer = second->bytesReceived ? second : first;
+        else if (!second->bytesReceived) buffer = first;
+        else __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x356);
+    } else if (first->bWaitingForSystemOk && second->bytesReceived < second->dataSizeBytes) buffer = second;
+    else if (second->bWaitingForSystemOk && first->bytesReceived < first->dataSizeBytes) buffer = first;
+    if (!buffer) return 0;
+    if (!buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x368);
+    unsigned int received = buffer->bytesReceived;
+    unsigned int size = buffer->dataSizeBytes;
+    char *data = buffer->pData;
+    result->context = buffer;
+    result->size = size - received;
+    result->data = data + received;
+    buffer->bBeingUsedForDownload = 1;
+    if (!buffer->bytesReceived) buffer->startPos = manager->m_fileBytesReceived;
+    return 1;
+}
 
 extern "C" SECTION(OnURIRequestStart) void OnURIRequestStart(SVDownloadManagerState *manager, void *context)
 {
     manager->m_fileContentLength = 0;
     manager->m_fileStatus = 500;
     manager->m_fileBytesReceived = 0;
-    manager->m_buffers[0].startPos = 0xFFFFFFFF;
-    manager->m_buffers[0].bytesReceived = 0;
-    manager->m_buffers[0].bWaitingForSystemOk = 0;
-    manager->m_buffers[0].bBeingUsedForDownload = 0;
-    manager->m_buffers[1].startPos = 0xFFFFFFFF;
-    manager->m_buffers[1].bytesReceived = 0;
-    manager->m_buffers[1].bWaitingForSystemOk = 0;
-    manager->m_buffers[1].bBeingUsedForDownload = 0;
-
+    ResetDLBuffer(&manager->m_buffers[0]);
+    ResetDLBuffer(&manager->m_buffers[1]);
 }
 
 extern "C" SECTION(operator.delete___dupe12) void SVDownloadManageroperator_delete___dupe12(void *memory)
@@ -194,10 +419,78 @@ extern "C" SECTION(operator.delete___dupe12) void SVDownloadManageroperator_dele
     svFreeSafe(GetMemoryContext(), memory);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", operator.new___dupe13);
+extern "C" SECTION(operator.new___dupe13) void * SVDownloadManageroperator_new___dupe13(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0x31, svoSVDownloadManagerSource);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", shutdown___dupe3);
+extern "C" SECTION(shutdown___dupe3) void shutdown___dupe3(SVDownloadManagerState *manager)
+{
+    freeResources___dupe4(manager, 0);
+    freeResources___dupe2(&manager->m_http, 1);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", SVDownloadManager);
+extern "C" SECTION(SVDownloadManager) void DownloadManagerConstruct(SVDownloadManagerState *manager, char *firstPage, char *user, char *password, int account, CPage *page, CMemoryContextBaseState *memory, unsigned int bufferSize)
+{
+    manager->base.vtable = &svoDownloadManagerVtable;
+    Http(&manager->m_http, memory, 2);
+    DLBuffer *buffer = manager->m_buffers;
+    int count = 2;
+    do {
+        buffer->dataSizeBytes = 0;
+        buffer->bytesReceived = 0;
+        buffer->pData = 0;
+        buffer->bWaitingForSystemOk = 0;
+        buffer->bBeingUsedForDownload = 0;
+        buffer->startPos = 0xFFFFFFFFu;
+        ++buffer;
+    } while (--count);
+    SVChronograph(&manager->m_timer, 0);
+    if (!page) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x5E);
+    manager->m_page = page;
+    manager->m_state = 0;
+    setState(manager, 0);
+    manager->m_bRequestInProgress = 0;
+    if (bufferSize < 2) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x67);
+    if (!(bufferSize >> 1)) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x6A);
+    buffer = manager->m_buffers;
+    count = 2;
+    do {
+        buffer->dataSizeBytes = bufferSize >> 1;
+        buffer->pData = 0;
+        ++buffer;
+    } while (--count);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVDownloadManager", UpdateFileDownload);
+extern "C" SECTION(UpdateFileDownload) void UpdateFileDownload(SVDownloadManagerState *manager)
+{
+    DLBuffer *first = &manager->m_buffers[0];
+    DLBuffer *second = &manager->m_buffers[1];
+    DLBuffer *waiting;
+    DLBuffer *other;
+    if (first->bWaitingForSystemOk) {
+        if (second->bWaitingForSystemOk) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x2C2);
+        waiting = first;
+        other = second;
+    } else if (second->bWaitingForSystemOk) {
+        waiting = second;
+        other = first;
+    } else {
+        if (manager->m_state == 3) {
+            if (first->bBeingUsedForDownload) {
+                if (second->bBeingUsedForDownload) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x2E3);
+                NotifySystemContextOfChunk(manager, first);
+            } else if (second->bBeingUsedForDownload) NotifySystemContextOfChunk(manager, second);
+        }
+        return;
+    }
+    CSystemContextBase *system = GetSystemContext();
+    if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, waiting->pData)) {
+        waiting->bytesReceived = 0;
+        waiting->startPos = 0xFFFFFFFFu;
+        waiting->bWaitingForSystemOk = 0;
+        waiting->bBeingUsedForDownload = 0;
+        unsigned int received = other->bytesReceived;
+        if (received >= other->dataSizeBytes || (manager->m_state == 3 && received)) NotifySystemContextOfChunk(manager, other);
+    }
+}

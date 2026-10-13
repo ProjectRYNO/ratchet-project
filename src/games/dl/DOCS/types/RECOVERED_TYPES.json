@@ -4531,7 +4531,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown44",
+        "name": "WrapSelections",
         "offset": 68,
         "bitfield": false
       },
@@ -5139,7 +5139,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown20",
+        "name": "ScanTagsDefault",
         "offset": 32,
         "bitfield": false
       },
@@ -5481,8 +5481,13 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered30",
+        "name": "GetDimensions",
         "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered34",
+        "offset": 52,
         "bitfield": false
       },
       {
@@ -5501,7 +5506,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown44",
+        "name": "okToNavigate",
         "offset": 68,
         "bitfield": false
       },
@@ -6037,7 +6042,7 @@
   },
   {
     "name": "CDrawContextVtablePrefix",
-    "size": "0x98",
+    "size": "0x9C",
     "line": 0,
     "owners": [
       "svo3/CDrawContextBase.cpp"
@@ -6086,7 +6091,7 @@
         "bitfield": false
       },
       {
-        "name": "unknown20",
+        "name": "DrawSelect",
         "offset": 32,
         "bitfield": false
       },
@@ -6101,8 +6106,33 @@
         "bitfield": false
       },
       {
-        "name": "unrecovered2C",
+        "name": "DrawTicker",
         "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGridBorder",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGridHeader",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGridRow",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGridCell",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "DrawGridScrollbars",
+        "offset": 64,
         "bitfield": false
       },
       {
@@ -6151,6 +6181,21 @@
         "bitfield": false
       },
       {
+        "name": "AnimateHighlight",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "unrecovered7C",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "RenderAssert",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
         "name": "DrawImage",
         "offset": 132,
         "bitfield": false
@@ -6173,6 +6218,11 @@
       {
         "name": "DestroyImage",
         "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "DrawDownloadThrobber",
+        "offset": 152,
         "bitfield": false
       }
     ]
@@ -7610,6 +7660,28 @@
       {
         "name": "padding8CD5",
         "offset": 36053,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "DownloadSystemVtable",
+    "size": "0x38",
+    "line": 0,
+    "owners": [
+      "svo3/SVDownloadManager.cpp"
+    ],
+    "header": "code/svo3/SVDownloadManager.h",
+    "evidence": "retail UpdateFileDownload calls system vtable +0x34 with (system, buffer) at 0x01F095A8/0x01F09654; prefix only, earlier slots unrecovered",
+    "fields": [
+      {
+        "name": "prefix",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "OkToFreeFileDownloadBuffer",
+        "offset": 52,
         "bitfield": false
       }
     ]
@@ -9864,6 +9936,16 @@
         "bitfield": false
       },
       {
+        "name": "defaultInit",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "registerWithForm",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
         "name": "getSubstringPixelWidth",
         "offset": 124,
         "bitfield": false
@@ -10071,6 +10153,11 @@
       {
         "name": "unrecovered0180",
         "offset": 384,
+        "bitfield": false
+      },
+      {
+        "name": "homeURI",
+        "offset": 640,
         "bitfield": false
       },
       {

@@ -71,7 +71,17 @@ SECTION(matchesMyLookup___dupe2) int matchesMyLookup___dupe2(FileDownloadEntrySt
 }
 
 void setFileDownloadProps(FileDownloadEntryState *entry, char *lookup, char *value);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVFileDownloadQueue", setFileDownloadProps);
+extern "C" SECTION(setFileDownloadProps) void setFileDownloadProps(FileDownloadEntryState *entry, char *lookup, char *value)
+{
+    if (!entry->m_lookupStr || !entry->m_valueStr) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0x3D);
+    if (strlen(lookup) > 31 || strlen(value) > 256) {
+        SetErrorCode(30);
+        __SVO_Assert_Handler(svoFileDownloadQueueSource, 0x44);
+    }
+    if (!lookup || !value) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0x48);
+    svstrncpy(entry->m_lookupStr, lookup, strlen(lookup) + 1);
+    svstrncpy(entry->m_valueStr, value, strlen(value) + 1);
+}
 
 SECTION(allocateMemory) void allocateMemory(FileDownloadEntryState *entry)
 {
@@ -94,13 +104,17 @@ SECTION(isEmpty) int isEmpty(FileDownloadEntryState *entry)
 }
 
 void *FileDownloadQueueNew(unsigned int size);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVFileDownloadQueue", operator.new___dupe14);
+extern "C" SECTION(operator.new___dupe14) void * SVFileDownloadQueueoperator_new___dupe14(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0x6E, svoFileDownloadQueueSource);
+}
 
 SECTION(FileDownloadQueue) void FileDownloadQueue(FileDownloadQueueState *queue)
 {
     for (int i = 0; i < 5; ++i) FileDownloadEntry(&queue->m_entries[i]);
     memset(queue->m_entries, 0, 0x28);
     allocateMemoryForEntries(queue);
+    return;
 }
 
 SECTION(allocateMemoryForEntries) void allocateMemoryForEntries(FileDownloadQueueState *queue)
@@ -126,7 +140,17 @@ SECTION(add___dupe2) void add___dupe2(FileDownloadQueueState *queue, char *looku
 }
 
 char *find___dupe2(FileDownloadQueueState *queue, char *lookup);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVFileDownloadQueue", find___dupe2);
+extern "C" SECTION(find___dupe2) char *find___dupe2(FileDownloadQueueState *queue, char *lookup)
+{
+    if (!lookup) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xAC);
+    FileDownloadEntryState *entry = queue->m_entries;
+    int count = 5;
+    do {
+        if (matchesMyLookup___dupe2(entry, lookup)) return GetValueStr___dupe2(entry);
+        ++entry;
+    } while (--count);
+    return 0;
+}
 
 SECTION(FreeResources___dupe54) void FreeResources___dupe54(FileDownloadQueueState *queue)
 {
@@ -141,10 +165,10 @@ extern "C" SECTION(GetNextEntry) void GetNextEntry(FileDownloadQueueState *queue
         if (strlen(GetValueStr___dupe2(&queue->m_entries[i]))) { entry = &queue->m_entries[i]; break; }
     }
     char *value = GetValueStr___dupe2(entry);
-    if ((long)pathSize < (long)strlen(value)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xD5);
+    if ((int)pathSize < (int)strlen(value)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xD5);
     svstrncpy(path, value, pathSize);
     char *name = GetNameStr(entry);
-    if ((long)idSize < (long)strlen(name)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xDC);
+    if ((int)idSize < (int)strlen(name)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xDC);
     svstrncpy(id, name, idSize);
     reset___dupe3(entry);
 }

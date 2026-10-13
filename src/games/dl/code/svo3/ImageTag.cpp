@@ -56,8 +56,8 @@ SECTION(FreeResources___dupe18) void FreeResources___dupe18(SVTag *tag)
     FreeContexts(tag);
 }
 
-long IsSelectable___dupe11(SVTag *tag);
-extern "C" SECTION(IsSelectable___dupe11) long IsSelectable___dupe11(SVTag *tag)
+int IsSelectable___dupe11(SVTag *tag);
+extern "C" SECTION(IsSelectable___dupe11) int IsSelectable___dupe11(SVTag *tag)
 {
     return (tag->m_bSelectable != 0) & ((unsigned int)tag != 0xFFFFFF44u);
 }
@@ -76,7 +76,7 @@ extern "C" SECTION(_ImageTag) void _ImageTag(ImageTagState *self, unsigned int f
         self->ImageBuf = 0;
     }
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(DefaultInit___dupe10) void DefaultInit___dupe10(ImageTagState *tag)
@@ -106,7 +106,19 @@ extern "C" SECTION(Draw___dupe14) void Draw___dupe14(ImageTagState *self)
     draw->vtable->DrawImage(draw, tag->m_tagid, self->ImageBuf, self->PosX, self->PosY, self->Width, self->Height, self->v0, self->v0, selected, 255);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ImageTag", getImageTypeAttrib);
+extern "C" SECTION(getImageTypeAttrib) int getImageTypeAttrib(ImageTagState *tag, iks *xml, char *name, unsigned int *value)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text) {
+        for (int i = 0; i < 4; i++) {
+            if (!strcmp(text, svoImageTypeStrings[i])) {
+                *value = i;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
 extern "C" SECTION(HandleInput___dupe41) int HandleInput___dupe41(ImageTagState *self, CPage *page)
 {

@@ -109,7 +109,7 @@ extern "C" SECTION(_SelectTag) void _SelectTag(SelectTagState *tag, unsigned int
         tag->m_values = 0;
     }
     tag->base.vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(&tag->base);
+    if (flags & 1) { SVTagDelete(&tag->base); return; }
 }
 
 extern "C" SECTION(advanceCurrOption) void advanceCurrOption(SelectTagState *tag, int direction)
@@ -117,7 +117,31 @@ extern "C" SECTION(advanceCurrOption) void advanceCurrOption(SelectTagState *tag
     tag->m_currOptionIdx = (tag->m_currOptionIdx + tag->m_numOptions + direction) % tag->m_numOptions;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SelectTag", changeCurOptionToNextLetterInAlphabet);
+extern "C" const char _ctype_[];
+// The retail SDK's ctype macros index the newlib table at _ctype_ + 1.
+#define SVO_ISUPPER(c) ((_ctype_ + 1)[(unsigned)(c)] & 1)
+#define SVO_TOLOWER(c) ({ int __x = (c); SVO_ISUPPER(__x) ? __x - 'A' + 'a' : __x; })
+extern "C" SECTION(changeCurOptionToNextLetterInAlphabet) void changeCurOptionToNextLetterInAlphabet(SelectTagState *tag, int direction)
+{
+    char initial = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+    int start = tag->m_currOptionIdx;
+    while (advanceCurrOption(tag, direction), tag->m_currOptionIdx != start) {
+        int letter = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+        if (initial != letter) {
+            if (direction == svoSelectPreviousDirection) {
+                initial = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+                int previous;
+                do {
+                    advanceCurrOption(tag, svoSelectPreviousDirection);
+                    previous = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+                } while (initial == previous);
+                advanceCurrOption(tag, svoSelectNextDirection);
+            }
+            return;
+        }
+    }
+    advanceCurrOption(tag, direction);
+}
 
 extern "C" SECTION(DefaultInit___dupe9) void DefaultInit___dupe9(SelectTagState *tag)
 {
@@ -142,7 +166,24 @@ extern "C" SECTION(DefaultInit___dupe9) void DefaultInit___dupe9(SelectTagState 
     tag->m_bSubmitAsEncryped = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SelectTag", Draw___dupe13);
+extern "C" SECTION(Draw___dupe13) void Draw___dupe13(SelectTagState *tag)
+{
+    SVTag *base = &tag->base;
+    CDrawContextBase *draw = base->m_contexts->drawContext;
+    tag->m_text = getCurrOptionStrPtr(tag);
+    decodeEntityText(tag->m_text);
+    int length = strlen(tag->m_text);
+    unsigned int text = tag->m_textColor;
+    unsigned int line = base->m_lineColor;
+    unsigned int fill = base->m_fillColor;
+    if (base->m_bSelected) {
+        text = tag->m_highlightTextColor;
+        line = tag->m_highlightLineColor;
+        fill = tag->m_highlightFillColor;
+    }
+    if (tag->m_displayLength > 0) length = TrimToFitDisplaySize(draw, tag->m_text, tag->m_displayLength, tag->m_fontSize);
+    draw->vtable->DrawSelect(draw, base->m_tagid, base->m_x, base->m_y, base->m_z, base->m_width, base->m_height, text, line, fill, base->m_bSelected, tag->m_text, length, tag->m_fontSize, tag->m_align, base->m_tagClass);
+}
 
 extern "C" SECTION(FindParentForm) FormTag *FindParentForm(SelectTagState *tag, iks *parent, SVTag **tagList)
 {
@@ -198,8 +239,9 @@ extern "C" SECTION(HandleInput___dupe40) int HandleInput___dupe40(SelectTagState
 
 extern "C" SECTION(populateSelectOptions) int populateSelectOptions(SelectTagState *tag, iks *xml)
 {
+    iks *node;
     int count = 0;
-    for (iks *node = iks_child(xml); node; node = iks_next(node)) {
+    for (node = iks_child(tag->base.m_xml); node; node = iks_next(node)) {
         char *name = iks_name(node);
         if (name && !strcmp(name, svoSelectOptionName)) ++count;
     }
@@ -211,7 +253,7 @@ extern "C" SECTION(populateSelectOptions) int populateSelectOptions(SelectTagSta
     memset(tag->m_options, 0, tag->m_numOptions << 2);
     memset(tag->m_values, 0, tag->m_numOptions << 2);
     count = 0;
-    for (iks *node = iks_child(xml); node; node = iks_next(node)) {
+    for (node = iks_child(tag->base.m_xml); node; node = iks_next(node)) {
         char *name = iks_name(node);
         if (name && !strcmp(name, svoSelectOptionName)) {
             tag->m_options[count] = node;
@@ -254,4 +296,5 @@ extern "C" SECTION(SelectTag) void SelectTag(SelectTagState *tag, iks *xml, SVTa
     if (!getBoolAttrib(tag->base.m_xml, svoSelectSubmitAsEncryptedAttribute, &tag->m_bSubmitAsEncryped)) tag->m_bSubmitAsEncryped = 0;
     if (!getBoolAttrib(tag->base.m_xml, svoSelectRequiredForPostAttribute, &tag->m_bRequiredForSubmit)) tag->m_bRequiredForSubmit = 0;
     RegisterWithForm(tag, iks_parent(tag->base.m_xml), tagList);
+    return;
 }

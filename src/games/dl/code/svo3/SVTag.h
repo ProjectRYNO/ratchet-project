@@ -14,15 +14,16 @@ typedef struct { // 0x4C (vtable prefix)
     /* 0x14 */ void (*Update)(SVTag *tag, CPage *page);
     /* 0x18 */ void (*SetSelectedState)(SVTag *tag, int selected);
     /* 0x1C */ void *unknown1C;
-    /* 0x20 */ long (*IsSelected)(SVTag *tag);
-    /* 0x24 */ long (*IgnoreInput)(SVTag *tag);
-    /* 0x28 */ long (*IsSelectable)(SVTag *tag);
-    /* 0x2C */ long (*IsEditable)(SVTag *tag);
-    /* 0x30 */ unsigned char unrecovered30[8];
+    /* 0x20 */ int (*IsSelected)(SVTag *tag);
+    /* 0x24 */ int (*IgnoreInput)(SVTag *tag);
+    /* 0x28 */ int (*IsSelectable)(SVTag *tag);
+    /* 0x2C */ int (*IsEditable)(SVTag *tag);
+    /* 0x30 */ void (*GetDimensions)(SVTag *tag, float *x, float *y, float *width, float *height);
+    /* 0x34 */ unsigned char unrecovered34[4];
     /* 0x38 */ unsigned int (*GetTagID)(SVTag *tag);
     /* 0x3C */ char *(*GetTagName)(SVTag *tag);
     /* 0x40 */ void *unknown40;
-    /* 0x44 */ void *unknown44;
+    /* 0x44 */ int (*okToNavigate)(SVTag *tag);
     /* 0x48 */ void (*SetVisible)(SVTag *tag, int visible);
 } SVTagVtablePrefix;
 

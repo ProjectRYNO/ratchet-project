@@ -1,3 +1,4 @@
+#include "CDrawContextBase.h"
 #include "string.h"
 #include "TagUtils.h"
 #include "HttpUtils.h"
@@ -32,7 +33,7 @@ extern char gTagNotSetStr[];
 }
 extern "C" {
 void DefaultInit___dupe24(TickerTagState *);
-long getTickerTypeAttrib(TickerTagState *, iks *, unsigned int *);
+int getTickerTypeAttrib(TickerTagState *, iks *, unsigned int *);
 extern char svoTickerFontSizeAttribute[];
 extern char svoTickerDisplayLengthAttribute[];
 extern char svoTickerAlignAttribute[];
@@ -51,24 +52,24 @@ SECTION(FreeResources___dupe59) void FreeResources___dupe59(void *self)
     // Retail implements this callback as a no-op.
 }
 
-SECTION(HandleInput___dupe55) long HandleInput___dupe55(void *self, void *context)
+SECTION(HandleInput___dupe55) int HandleInput___dupe55(void *self, void *context)
 {
     return 1;
 }
 
-SECTION(IsSelectable___dupe17) long IsSelectable___dupe17(void *self)
+SECTION(IsSelectable___dupe17) int IsSelectable___dupe17(void *self)
 {
     return 0;
 }
 
 }
 
-extern "C" SECTION(_TickerTag) void _TickerTag(SVTag *tag, unsigned long flags)
+extern "C" SECTION(_TickerTag) void _TickerTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoTickerTagVtable;
     FreeResources___dupe59((void *)tag);
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(DefaultInit___dupe24) void DefaultInit___dupe24(TickerTagState *tag)
@@ -84,9 +85,39 @@ extern "C" SECTION(DefaultInit___dupe24) void DefaultInit___dupe24(TickerTagStat
     tag->base.m_bSelectable = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TickerTag", Draw___dupe27);
+extern "C" int TrimToFitDisplaySize(CDrawContextBase *, char *, float, int);
+extern "C" char svoTickerTagSource[];
+extern "C" SECTION(Draw___dupe27) void Draw___dupe27(TickerTagState *tag)
+{
+    CDrawContextBase *draw = tag->base.m_contexts->drawContext;
+    if (!draw) __SVO_Assert_Handler(svoTickerTagSource, 0x61);
+    if (!tag->base.m_xml) __SVO_Assert_Handler(svoTickerTagSource, 0x62);
+    if (tag->m_text) {
+        unsigned int color;
+        if (tag->base.vtable->IsSelected(&tag->base)) color = tag->base.m_fillColor;
+        else color = tag->base.m_lineColor;
+        int length = strlen(tag->m_text);
+        if (tag->m_displayLength > 0.0f) length = TrimToFitDisplaySize(draw, tag->m_text, tag->m_displayLength, tag->m_fontSize);
+        draw->vtable->DrawTicker(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y, tag->base.m_width, tag->base.m_height,
+            tag->m_fontSize, tag->m_text, length, color, tag->m_type, tag->base.m_tagClass);
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TickerTag", getTickerTypeAttrib);
+extern "C" SECTION(getTickerTypeAttrib) int getTickerTypeAttrib(TickerTagState *tag, iks *xml, unsigned int *value)
+{
+    char *text = iks_find_attrib(xml, svoTickerTypeAttribute);
+    if (text) {
+        char **option = svoTickerTypeStrings;
+        unsigned int index = 0;
+        do {
+            if (!strcasecmp(text, *option++)) {
+                *value = index;
+                return 1;
+            }
+        } while (++index < 2);
+    }
+    return 0;
+}
 
 extern "C" SECTION(TickerTag) void TickerTag(TickerTagState *tag, iks *xml, CAllContextData *contexts)
 {

@@ -1,65 +1,168 @@
-# SVO3 current handoff, 2026-10-09
+# SVO3 current handoff, 2026-10-13
 
-**842/935 (90.1%) compiled; 93 INCLUDE_ASM entries remain**. The 90% milestone is reached; 100% remains unfinished.
-This batch is uncommitted, based on the user's checkpoint 4dd4d88.
+**934/935 slots compiled from C/C++; 603 byte-exact, 331 fit their original slots.**
+The one remaining `INCLUDE_ASM` is `PageRequestListener func_01F27658`. It is a 4-byte
+label at the start of a NOP padding run, not a function; how to classify it is an open
+user decision. Uncommitted; based on the user's checkpoint a1b6ccd. Keep ALLOW_NONMATCHING=0.
+
+## Toolchain: SCE ee-gcc 2.96 for SVO3 (user decision, DECISIONS.md K07)
+
+- `src/games/dl/Makefile`: the `ee-gcc296` target downloads `2.96-ee-001003-1` from the
+  decompme/compilers release into `/opt/ee-gcc2.96` and builds the stat shim;
+  `rom` depends on it. SVO3 objects: `ee-g++ -S`, then Sony `as -EL -G0`.
+- Flags: `-G0 -Os -fno-exceptions -mno-split-addresses -falign-functions=4
+  -falign-loops=1 -falign-jumps=1 -falign-labels=1`, plus newlib and the 3.2.3 builtin headers.
+- `src/games/Dockerfile`: i386 multiarch, `gcc-multilib libc6:i386 xz-utils`.
+- `src/games/tools/ee296_statshim.c`: LD_PRELOAD `__xstat`/`__lxstat`/`__fxstat` via the
+  stat64 calls. Without it the 32-bit binaries fail with EOVERFLOW on Docker bind mounts.
+- `long` is 64-bit under this ABI. 32-bit values were converted to `int`; genuine 64-bit
+  members were kept: md5 state, RTCommSock addresses, soft-float double patterns and
+  `Send`'s `unsigned long *sent`.
+- Headers are not Makefile dependencies: `rm build/code/svo3/*.o` after header edits.
+
+## 2.96 source-shape findings
+
+- A `void` function ending in a call gets no sibling call unless it has an explicit `return;`.
+- In if/else only the first branch is tail-called. Retail usually avoids this, so use two
+  separate `if`s or put code after the call. C++ constructors inside branches do not
+  tail-call; asm-labelled constructors (`Name(...) __asm__("Name")`) do.
+- These shapes match retail: guard clauses `{ assert; return 0; }`, direct field reads
+  instead of cached locals, locals declared in prototype order (stack layout), signed
+  `for` counters in parsers, field-wise struct copies, and real `double` arithmetic
+  (soft-float libcalls).
+- `return tag->field = 1;` lets the stored constant double as the return value
+  (GridTag `FindAndSetSelectedCell`, exact). A `do { } while (++i < 128)` loop with an
+  unsigned counter reproduces retail's unrotated loop (CQueryParams `toString`, exact).
+- Extra case labels (0x100, 0x200) reproduce retail switch compare-tree pivots.
+
+## This session's final batch
+
+- SVDownloadManager `draw___dupe2` (fits, 0x67C/0x684); 10 string globals mapped.
+- FormTag `Submit` (fits, 0x574/0x59C). Slot 0x50 of the text-entry vtables is reached
+  through a local `FormValueVtable` view. `DataCanBeEncryped` is called with the tag
+  argument retail passes, through the `DataCanBeEncrypedTag` asm alias.
+- GridTag `Draw___dupe23` (fits, 0xA28/0xA34). `CDrawContextVtablePrefix` 0x30..0x40 were
+  recovered from the retail call ABI and synced to RECOVERED_TYPES.json: `DrawGridBorder`,
+  `DrawGridHeader`, `DrawGridRow`, `DrawGridCell`, `DrawGridScrollbars`. `svoGridEmptyCellText`
+  (0x19DE68, `" "`) is mapped. Retail passes `columns[c].colAlign` (the visible index) to
+  DrawGridCell, while every other column access uses `columnIndexes[c]`. This is preserved.
+- GridTag `FindAndSetSelectedCell` and CQueryParams `toString`: byte-exact.
+- Earlier in the session: Navigation `getDistanceAutoNav`/`autoNavigate`, `lt_double` and
+  `getFloatAttrib`. `pow` is now declared `extern "C"`, because 2.96 had mangled it to `pow__Fdd`.
+
+### Jump-table functions (nonmatching, user decision pending)
+
+Retail CPage `setPageState` and TextAreaTag `handleSpecialKeys` dispatch through
+`.rodata` jump tables (`jtbl_0019B7F0`, `jtbl_0019D410`). A compiled switch places its
+table at the end of the object's `.net_text`, outside the slot, and the retail table
+cannot be reused. Both functions are therefore written as if-chains with no rodata and
+are **not** byte-matching:
+
+- `setPageState` (0x334/0x354): each chain selects the state name, then a single `sprintf`
+  follows. Unknown states skip it, as in retail.
+- `handleSpecialKeys` (0x1D0/0x1D4): cases 0x85/0x86 share their `UpdateCursorPosition`
+  tail, and cases 0x87/0x88/0x89 share their `UpdateAfterTextEntry` tail, via `goto`.
+
+Exact matches need splitter/linker support for per-function rodata slots.
+
+## Validation (ck4, 2026-10-13)
+
+- Sequential `make split`, then `make -B -j8 elf`: PASS.
+- `check_main_elf.py`: PASS, 59,652 changed loaded bytes, all inside registered slots.
+- `check_global_map.py`: PASS (806 names). `check_type_layouts.py`: PASS, 1,905
+  sizes/offsets across 211 types and 101 headers.
+- `compare_elf.py`: NONMATCH (expected).
+- Object byte compare (`byte-compare.py`): C exact 603, C fits 331, assembly 1.
+- Progress: project 1,002 compiled / 7,623 assembly; 615 matching, 387 nonmatching slots.
+- NOT RUN: behavior suites, regressions, ISO packing, emulator/gameplay (deferred).
+
+Original SHA-256: `ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7`.
+Rebuilt SHA-256: `ec7561aa6e9dd2b746feb9b6f5e5587e890a79496b7d0f475ef6e6d6b864c8fd`.
+Logs are `build/svo-library-work/ck4-*`. The helper scripts `try.sh`, `cand.py`,
+`accept.sh`, `sbs.py` and `byte-compare.py` are in the same folder. Build container:
+projectryno-svo75.
+
+## Next work
+
+1. User decisions: rodata/jump-table slots, and the classification of the `func_01F27658` padding.
+2. Tighten the 331 fitting functions toward byte-exact. The usual residue is register
+   allocation, delay-slot fills and store order; `sbs.py Module fn obj` shows the diff.
+
+---
+
+# Earlier handoff, 2026-10-12 (historical)
+
+**861/935 (92.1%) compiled; 74 INCLUDE_ASM entries remain.** 60/97 files are
+assembly-free. This batch is uncommitted, based on the user's checkpoint a1b6ccd.
 Keep game/ last and use the native ratchet-ps2-cli workflow.
 
-## Browser/page, grid/list and login continuation (2026-10-09)
+## Download/page/text/grid continuation (2026-10-12)
 
-Current verified coverage: **842/935 (90.1%) compiled; 93 INCLUDE_ASM entries remain**. 57/97 files are assembly-free.
-This batch adds 45 C/C++ replacements. Per-module counts:
+Completes the batch begun after a1b6ccd (`build/svo-library-work/hundred-*`), which
+had replaced 27 INCLUDE_ASM entries in source without registering them or building.
+19 C/C++ replacements fit their slots and are now registered:
 
-- CreateGameTagModule: 5
-- LoginTagModule: 2
-- ListBoxTag: 6
-- GenericListBoxTag: 6
-- GridTag: 6
-- SVBrowser: 10
-- CPage: 10
+- SVDownloadManager: `_SVDownloadManager`, `SVDownloadManager`, `doRequest___dupe4`,
+  `formatDownloadStatusText`, `UpdateFileDownload`, `OnURIRequestIsOkContinueDownload`
+- SVFileDownloadQueue `find___dupe2`; CPage `requestBinary`; SVBrowser `Initialize___dupe4`
+- Attribute parsers: DataTag `getDataTypeAttrib`, ImageTag `getImageTypeAttrib`,
+  TagUtils `getLinkOptionAttrib`, TickerTag `getTickerTypeAttrib`
+- TextTag constructor, `Draw___dupe8`, `IsSelectable___dupe6`; TextAreaTag constructor;
+  TextInputTag `InitialiseFromXml`; GridTag constructor
 
-Retail Ghidra and split instructions were checked against prototype sources and
-dltypes. Recovered login/create-game response handling; list construction, drawing,
-selection and input; grid selection, modal input and cell parsing; browser/page
-construction, cleanup, transitions and download handling. Generic-list input uses
-the retail callback at 0x1C; list-box input checks focus mode at 0x284. These differ
-from misleading Ghidra field/method labels. Preserved assertion paths, repeated
-callbacks and retail state/store ordering.
+The other 8 bodies overrun their slots and were restored to INCLUDE_ASM. Their source
+is preserved in [SVO3_TAIL_CALL_BLOCKERS.md](SVO3_TAIL_CALL_BLOCKERS.md).
 
-Sequential split and forced full ELF rebuild PASS. Whole-ELF compiled-origin,
-entry-address and slot audit PASS: 93,193 changed loaded bytes are confined
-to registered replacement slots; every other loaded byte and runtime header matches.
-Strict executable comparison remains NONMATCH. This percentage measures compiled
-functions, not exact matching or gameplay correctness.
+Evidence: retail Ghidra disassembly/decompilation for the parsers (entry counts 3/4/9/2;
+`strcasecmp` only in the ticker), the TextTag functions (offsets, assertion lines,
+argument registers, the `this == -0xC4` check) and the header claims below.
+The earlier batch also reviewed the HTTP/page/browser bodies (`hundred-http-results.json`).
 
-Layout checks: PASS: independent header includes and 10 EE boot-option packing vectors; PASS: 1889 PS2 sizes/field offsets across 210 types and 101 headers
-Global-address check PASS. PASS: 67 batch globals at verified retail addresses.
-New behavior suites, gameplay, ISO packaging and full-clean tests were deferred
-per the user's request to prioritize decompilation. No Makefile/linker changes,
-slot widening, fallback substitutions or embedded retail instruction arrays.
+Header changes, all instruction-confirmed:
 
-Five parent candidates remain explicit assembly because they exceed their slots:
-LoginTagModule ScanTags___dupe6 (0x88/0x84), ListBoxTag getSelectedItem (0xD4/0xD0)
-and populateListboxItems (0x1CC/0x1C4), GridTag CalculateGridHeight (0xB0/0xA8)
-and HandleColumnShuffling (0x130/0x12C). Source bodies are preserved in
-SVO3_GRID_LIST_SLOT_BLOCKERS.md. Earlier blocker documents are historical;
-consult current source before repeating experiments.
+- `SVPersistentData.homeURI[256]` at 0x280 (dltypes line 31287; retail Initialize passes
+  persistent+0x280 to sprintf). Size 0x1B9C unchanged.
+- `DownloadSystemVtable` prefix 0x38, `OkToFreeFileDownloadBuffer` at 0x34 (retail
+  UpdateFileDownload `jalr` at 0x01F095A8 and 0x01F09654).
+- `TextInputTagVtablePrefix` `defaultInit` at 0x74 and `registerWithForm` at 0x78
+  (retail InitialiseFromXml `jalr` sites).
 
+97 globals (attribute strings, assertion filenames, formats, download-manager vtable)
+were added to `symbols_core.text.txt` and `DOCS/symbols/SVO3_GLOBALS.csv`. Every
+address begins a retail string whose text matches its name; sampled Ghidra xrefs
+land in the functions that use them.
 
-Artifact: `src/games/dl/build/boot_elf.elf`.
+## Validation
+
+- Sequential `make split`, then `make -B -j8 elf`: PASS.
+- `check_main_elf.py`: PASS, 101,803 changed loaded bytes, all inside registered slots.
+- `check_global_map.py`: PASS (806 names). Batch globals: PASS, 97 at retail addresses.
+- `check_type_layouts.py`: PASS, 1,895 sizes/offsets across 211 types.
+- `compare_elf.py`: NONMATCH (expected; strict matching remains unfinished).
+- Progress: project 929 compiled / 7,696 assembly; 160 matching, 769 nonmatching slots.
+- NOT RUN: new behavior suites, full regressions, ISO packing, emulator/gameplay
+  (deferred per the user's decompilation-first priority).
+
 Original SHA-256: `ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7`.
-Rebuilt SHA-256: `f3237ff01a09640fa1a9ee54409b7f4d2d5d1b0936ca136434dc5a4b37d4f88c`.
-Project: 910 compiled / 7715 assembly;
-159 matching / 751 nonmatching slots.
-Validation logs: `build/svo-library-work/ninety-*`; second-agent recovery metadata:
-`browser-page-next-results.json`. Durable remaining inventory: SVO3_REMAINING.csv.
+Rebuilt SHA-256: `2af553272015a09f2fcabba11c70bd7ae399e02a4d909f8e9ec74b32377abb6d`.
+Logs: `build/svo-library-work/finish-*`. Build container: projectryno-svo75.
+
+## Reaching 100%: compiler blocker
+
+ps2dev ee-gcc 3.2.3 cannot emit MIPS tail calls. 29 of the 74 remaining functions end
+in a retail tail jump and cannot fit their slots with this compiler. Most of the other
+small overruns come from the same compiler-generation gap. Evidence and the list of
+affected functions: [SVO3_TAIL_CALL_BLOCKERS.md](SVO3_TAIL_CALL_BLOCKERS.md).
+The UYA project's toolchain study points to SN Systems ProDG EE GCC 2.95.x as the
+retail compiler; testing it is a toolchain decision for the user.
+
+Functions without a recorded attempt and without tail jumps: Navigation
+`autoNavigate`/`getDistanceAutoNav`, FormTag `Submit`, GridTag `Draw___dupe23`,
+SVDownloadManager `draw___dupe2`/`okToNavigate___dupe4`/`shutdown___dupe3`,
+QuickLinkTag `HandleInput___dupe39`, TickerTag `Draw___dupe27`, SVBrowser `DrawPages`,
+DataTagModule `ScanTags___dupe5`, SVTagModule `ScanTags___dupe2`.
+`PageRequestListener func_01F27658` is 4 bytes of padding, not compiled code.
 
 Retail Ghidra: `/Ratchet 4/PS2/NTSC-U/Retail_scus_974.65.elf.moose`, R5900 LE32.
 Prototype: `D:/PS2/ISOs/deadlocked-proto-decomp`, including dltypes.txt.
-Read repository skills/rules before continuing. User permits fitting nonmatching
-C/C++ with new behavior suites deferred. Keep ALLOW_NONMATCHING=0 and original slots.
-No pending oversized C bodies remain in production. The earlier approval-review
-quota interruption was resolved when the user replenished their allowance.
-
-Preserve PageRequestListener padding: GetLastContentType ends 0x01F0C844,
-zero gap to 0x01F27658, NOP extent through 0x01F31380. Padding is not compiled code.
-Owned build container: projectryno-svo75. No commit/push performed for this batch.
+Keep ALLOW_NONMATCHING=0 and the original slots. No commit/push performed.

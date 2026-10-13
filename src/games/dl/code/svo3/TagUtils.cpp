@@ -23,8 +23,6 @@ extern "C" {
 int strcasecmp(const char *, const char *);
 CMemoryContextBaseState *GetMemoryContext(void);
 void TagUtilsDelete(void *memory) __asm__("operator.delete___dupe5");
-unsigned long SvoAtofBits(char *text) __asm__("atof");
-float dptofp(unsigned long bits);
 extern char svoTagUtilsSource[];
 extern char svoTagTrue[];
 extern char svoTagFalse[];
@@ -68,6 +66,7 @@ extern char *svoTagLinkOptions[];
 extern "C" {
 
 }
+extern "C" double atof(const char *text);
 #define SECTION(name) __attribute__((section(".svo_TagUtils_" #name)))
 
 SECTION(operator.delete___dupe5) void TagUtilsDelete(void *memory)
@@ -109,7 +108,7 @@ SECTION(RegisterCommonTagModules) void RegisterCommonTagModules(void)
     AddTagModule(list, getInstance___dupe31());
 }
 
-SECTION(getIntAttrib) long getIntAttrib(iks *xml, char *name, int *value)
+SECTION(getIntAttrib) int getIntAttrib(iks *xml, char *name, int *value)
 {
     char *text = iks_find_attrib(xml, name);
     if (!text || !svisdigit((signed char)*text)) return 0;
@@ -117,40 +116,45 @@ SECTION(getIntAttrib) long getIntAttrib(iks *xml, char *name, int *value)
     return 1;
 }
 
-SECTION(getBoolAttrib) long getBoolAttrib(iks *xml, char *name, int *value)
+SECTION(getBoolAttrib) int getBoolAttrib(iks *xml, char *name, int *value)
 {
     char *text = iks_find_attrib(xml, name);
-    if (!text) return 0;
-    if (!strcasecmp(text, svoTagTrue)) *value = 1;
-    else if (!strcasecmp(text, svoTagFalse)) *value = 0;
-    // An unrecognized but present attribute still succeeds without a store.
-    return 1;
-}
-
-SECTION(getFloatAttrib) long getFloatAttrib(iks *xml, char *name, float *value)
-{
-    char *text = iks_find_attrib(xml, name);
-    if (!text || !svisdigit((signed char)*text)) return 0;
-    // Retail atof returns IEEE double bits in v0, then dptofp returns f0.
-    *value = dptofp(SvoAtofBits(text));
-    return 1;
-}
-
-SECTION(getAlignAttrib) long getAlignAttrib(iks *xml, char *name, int *align)
-{
-    char *text = iks_find_attrib(xml, name);
-    if (!text) return 0;
-    if (!strcasecmp(text, svoTagCenter)) *align = 1;
-    else if (!strcasecmp(text, svoTagLeft)) *align = 0;
-    else if (!strcasecmp(text, svoTagRight)) *align = 2;
-    else {
-        __SVO_Assert_Handler(svoTagUtilsSource, 0xCD);
-        return 0;
+    if (text) {
+        if (!strcasecmp(text, svoTagTrue)) *value = 1;
+        else if (!strcasecmp(text, svoTagFalse)) *value = 0;
+        // An unrecognized but present attribute still succeeds without a store.
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
-SECTION(getColorAttrib) long getColorAttrib(iks *xml, char *name, unsigned int *color)
+SECTION(getFloatAttrib) int getFloatAttrib(iks *xml, char *name, float *value)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text && svisdigit((signed char)*text)) {
+        *value = atof(text);
+        return 1;
+    }
+    return 0;
+}
+
+SECTION(getAlignAttrib) int getAlignAttrib(iks *xml, char *name, int *align)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text) {
+        if (!strcasecmp(text, svoTagCenter)) *align = 1;
+        else if (!strcasecmp(text, svoTagLeft)) *align = 0;
+        else if (!strcasecmp(text, svoTagRight)) *align = 2;
+        else {
+            __SVO_Assert_Handler(svoTagUtilsSource, 0xCD);
+            return 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+SECTION(getColorAttrib) int getColorAttrib(iks *xml, char *name, unsigned int *color)
 {
     char *text = iks_find_attrib(xml, name);
     if (text) {
@@ -163,10 +167,22 @@ SECTION(getColorAttrib) long getColorAttrib(iks *xml, char *name, unsigned int *
     return 0;
 }
 
-long getLinkOptionAttrib(iks *xml, char *name, unsigned int *option);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TagUtils", getLinkOptionAttrib);
+int getLinkOptionAttrib(iks *xml, char *name, unsigned int *option);
+extern "C" SECTION(getLinkOptionAttrib) int getLinkOptionAttrib(iks *xml, char *name, unsigned int *value)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text) {
+        for (int i = 0; i < 9; i++) {
+            if (!strcmp(text, svoTagLinkOptions[i])) {
+                *value = i;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
-SECTION(getStringAttrib) long getStringAttrib(iks *xml, char *name, char **value)
+SECTION(getStringAttrib) int getStringAttrib(iks *xml, char *name, char **value)
 {
     char *text = iks_find_attrib(xml, name);
     if (text) *value = text;
@@ -202,21 +218,23 @@ SECTION(getChildIksStructList) int getChildIksStructList(iks *xml, char *name, i
     if (!xml) __SVO_Assert_Handler(svoTagUtilsSource, 0x161);
     if (!list) __SVO_Assert_Handler(svoTagUtilsSource, 0x162);
     if (size <= 0) __SVO_Assert_Handler(svoTagUtilsSource, 0x163);
-    memset(list, 0, (unsigned int)size * 4);
-    int count = 0;
+    memset(list, 0, size << 2);
     if (iks_has_children(xml)) {
+        int found = 0;
         for (iks *child = iks_child(xml); child; child = iks_next(child)) {
             if (iks_name(child) && !strncmp(name, iks_name(child), 256)) {
-                if (count < size) list[count] = child;
-                ++count;
+                if (found < size) *list = child;
+                list++;
+                found++;
             }
         }
-        if (count > size) {
+        if (found > size) {
             __SVO_Assert_Handler(svoTagUtilsSource, 0x186);
-            count = size;
+            return size;
         }
+        return found;
     }
-    return count;
+    return 0;
 }
 
 }

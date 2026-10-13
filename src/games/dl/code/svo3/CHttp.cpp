@@ -59,7 +59,7 @@ char *md5requestLogin(HttpState *, char *, char *, char *, char *);
 }
 extern "C" {
 extern char svoHttpSource[];
-long GetHttpState(HttpState *);
+int GetHttpState(HttpState *);
 extern char svoHttpStateIdleEnterOld[];
 extern char svoHttpStateIdleUpdateOld[];
 extern char svoHttpStateDNSLookupEnterOld[];
@@ -104,9 +104,9 @@ void SetHttpState(HttpState *http, int state);
 extern "C" {
 extern char svoHttpSource[];
 extern char svoHttpVersionPrefix[];
-long GetHttpState(HttpState *http);
+int GetHttpState(HttpState *http);
 char *parseHttpStatusLine(HttpState *http, char *cursor);
-long parseHttpHeaderLine(HttpState *http, char **cursor, int *contentType);
+int parseHttpHeaderLine(HttpState *http, char **cursor, int *contentType);
 }
 extern "C" {
 CMemoryContextBaseState *GetMemoryContext(void);
@@ -123,11 +123,11 @@ extern "C" {
 extern const HttpVtablePrefix svoHttpVtable;
 void InitRequest(HttpState *, int);
 void setSocketType(HttpState *, int);
-long getSocketType(HttpState *);
+int getSocketType(HttpState *);
 void closeSocket(HttpState *);
 void OnBodyChunkReceived(HttpState *, void *, char *, int);
-long downloadBody(HttpState *);
-long downloadHeaders(HttpState *);
+int downloadBody(HttpState *);
+int downloadHeaders(HttpState *);
 void handleRedirect(HttpState *);
 int formRequestText(HttpState *, char *, char *, int, int, char *);
 SVSockState *createSVSock(CMemoryContextBaseState *);
@@ -136,7 +136,7 @@ SVSockState *createSVSock(CMemoryContextBaseState *);
 extern "C" {
 extern char svoHttpHeaderEnd[];
 void OnHeaderParsed(HttpState *, int);
-long parseHeaderBuf(HttpState *);
+int parseHeaderBuf(HttpState *);
 void HttpIdleOnEnter(HttpState *http);
 void HttpGetHostByNameOnEnter(HttpState *http);
 void HttpGetHostByNameOnUpdate(HttpState *http);
@@ -198,7 +198,7 @@ SECTION(HttpCleanup___dupe2) void HttpCleanup___dupe2(void *self)
     // Retail implements this callback as a no-op.
 }
 
-SECTION(IsSecure___dupe2) long IsSecure___dupe2(void *self)
+SECTION(IsSecure___dupe2) int IsSecure___dupe2(void *self)
 {
     return 0;
 }
@@ -245,7 +245,7 @@ SECTION(HttpIdleOnEnter) void HttpIdleOnEnter(HttpState *http)
     SetHttpState(http, 2);
 }
 
-SECTION(GetHttpState) long GetHttpState(HttpState *http)
+SECTION(GetHttpState) int GetHttpState(HttpState *http)
 {
     return http->m_HttpState;
 }
@@ -267,7 +267,7 @@ extern "C" SECTION(_Http) void _Http(HttpState *http, unsigned int flags)
     _SVChronograph(&http->m_timer, 2);
     _CQueryParamList(&http->m_QueryParams, 2);
     _IURISchemeProvider((IURISchemeProviderState *)http, 0);
-    if (flags & 1) CHttpoperator_delete___dupe3(http);
+    if (flags & 1) { CHttpoperator_delete___dupe3(http); return; }
 }
 
 extern "C" SECTION(closeSocket) void closeSocket(HttpState *http)
@@ -338,7 +338,7 @@ extern "C" SECTION(download___dupe2) void download___dupe2(HttpState *http)
     }
 }
 
-extern "C" SECTION(downloadBody) long downloadBody(HttpState *http)
+extern "C" SECTION(downloadBody) int downloadBody(HttpState *http)
 {
     int finished = 0;
     if (!http->m_sock) __SVO_Assert_Handler(svoHttpSource, 0x228);
@@ -361,7 +361,38 @@ extern "C" SECTION(downloadBody) long downloadBody(HttpState *http)
     return finished;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CHttp", downloadHeaders);
+extern "C" SECTION(downloadHeaders) int downloadHeaders(HttpState *http)
+{
+    if (!http->m_sock) __SVO_Assert_Handler(svoHttpSource, 0x26B);
+    int received = 0;
+    int finished = 0;
+    SVSockState *socket = http->m_sock;
+    if (!((const SVSockVtablePrefix *)socket->vtable)->Recv(socket, http->m_headerBuf + http->m_headerBytesReceived, 0x8000 - http->m_headerBytesReceived, &received, &finished)) {
+        SetErrorCode(0x15);
+        return 0;
+    }
+    if (http->m_headerBytesReceived > 0x8000) __SVO_Assert_Handler(svoHttpSource, 0x27C);
+    char *response = 0;
+    char *sendBack = 0;
+    int responseLength = 0;
+    int sendLength = 0;
+    if (http->vtable->IsSecure(http) && finished &&
+        http->vtable->HttpsDownload(http, http->m_headerBuf, http->m_headerBytesReceived, &response, &responseLength, &sendBack, &sendLength) && sendLength > 0) {
+        unsigned long sent = 0;
+        socket = http->m_sock;
+        ((const SVSockVtablePrefix *)socket->vtable)->Send(socket, sendBack, sendLength, &sent);
+        if ((int)sent < sendLength) __SVO_Assert_Handler(svoHttpSource, 0x28C);
+        memcpy(http->m_headerBuf, response, responseLength);
+        http->m_headerBytesReceived = 0;
+        received = responseLength;
+    }
+    if (received) {
+        http->m_timeoutFrameCounter = 0;
+        http->m_headerBytesReceived += received;
+        if (strstr(http->m_headerBuf, svoHttpHeaderEnd)) OnHeaderParsed(http, parseHeaderBuf(http));
+    }
+    return finished;
+}
 
 extern "C" SECTION(formRequestText) int formRequestText(HttpState *http, char *filePath, char *request, int methodType, int requestLen, char *httpCommand)
 {
@@ -398,7 +429,7 @@ extern "C" SECTION(formRequestText) int formRequestText(HttpState *http, char *f
     return cursor + 2 - request;
 }
 
-extern "C" SECTION(freeResources___dupe2) void freeResources___dupe2(HttpState *http, long shutdown)
+extern "C" SECTION(freeResources___dupe2) void freeResources___dupe2(HttpState *http, int shutdown)
 {
     IRequestListenerState *listener = http->m_pListener;
     if (listener) {
@@ -416,7 +447,7 @@ extern "C" SECTION(freeResources___dupe2) void freeResources___dupe2(HttpState *
     if (!shutdown) InitRequest(http, getSocketType(http));
 }
 
-extern "C" SECTION(getSocketType) long getSocketType(HttpState *http)
+extern "C" SECTION(getSocketType) int getSocketType(HttpState *http)
 {
     if (http->m_eSocketType <= 0) __SVO_Assert_Handler(svoHttpSource, 0x67A);
     return http->m_eSocketType;
@@ -476,6 +507,7 @@ extern "C" SECTION(Http) void Http(HttpState *http, CMemoryContextBaseState *mem
     http->m_addr = 0;
     http->m_sock = 0;
     InitRequest(http, type);
+    return;
 }
 
 extern "C" SECTION(HttpConnectWaitOnEnter) void HttpConnectWaitOnEnter(HttpState *http)
@@ -522,7 +554,7 @@ extern "C" SECTION(HttpRecvOnUpdate) void HttpRecvOnUpdate(HttpState *http)
 {
     if (!http->m_sock) __SVO_Assert_Handler(svoHttpSource, 0x4CF);
     if (GetErrorCode()) return;
-    long finished = http->m_bDownloadingBody ? downloadBody(http) : downloadHeaders(http);
+    int finished = http->m_bDownloadingBody ? downloadBody(http) : downloadHeaders(http);
     if (finished) {
         http->vtable->PrintHeader(http);
         if (http->m_status != 200 && http->m_status != 302) SetErrorCode(9);
@@ -574,13 +606,13 @@ extern "C" SECTION(InitRequest) void InitRequest(HttpState *http, int type)
     ((const SVSockVtablePrefix *)socket->vtable)->setSynchronous(socket, socketType);
 }
 
-extern "C" SECTION(IsBusy) long IsBusy(HttpState *http)
+extern "C" SECTION(IsBusy) int IsBusy(HttpState *http)
 {
-    long state = GetHttpState(http);
+    int state = GetHttpState(http);
     return state != 0 && state != 2;
 }
 
-extern "C" SECTION(LoadStatePostGameFromPersistentData___dupe2) long LoadStatePostGameFromPersistentData___dupe2(HttpState *http, SVPersistentData *persist)
+extern "C" SECTION(LoadStatePostGameFromPersistentData___dupe2) int LoadStatePostGameFromPersistentData___dupe2(HttpState *http, SVPersistentData *persist)
 {
     CCookieJar *jar = getInstance(http->m_memoryContextPtr);
     if (!jar) __SVO_Assert_Handler(svoHttpSource, 0x44A);
@@ -645,9 +677,8 @@ extern "C" SECTION(OnBodyChunkReceived) void OnBodyChunkReceived(HttpState *http
 extern "C" SECTION(OnHeaderParsed) void OnHeaderParsed(HttpState *http, int type)
 {
     if (!http->m_sock) __SVO_Assert_Handler(svoHttpSource, 0x2CC);
-    IRequestListenerState *listener = http->m_pListener;
-    if (!listener) { __SVO_Assert_Handler(svoHttpSource, 0x2D0); return; }
-    listener->vtable->OnURIRequestHeaderReceived(listener, http->m_pListenerContext, type, http->m_status, http->m_contentLength);
+    if (!http->m_pListener) { __SVO_Assert_Handler(svoHttpSource, 0x2D0); return; }
+    http->m_pListener->vtable->OnURIRequestHeaderReceived(http->m_pListener, http->m_pListenerContext, type, http->m_status, http->m_contentLength);
     if (http->m_status == 302) return;
     char *body = strstr(http->m_headerBuf, svoHttpHeaderEnd);
     if (!body) __SVO_Assert_Handler(svoHttpSource, 0x2DA);
@@ -656,8 +687,7 @@ extern "C" SECTION(OnHeaderParsed) void OnHeaderParsed(HttpState *http, int type
     http->m_bDownloadingBody = 1;
     http->m_bodyBytesReceived = 0;
     URIReceiveBuffer buffer;
-    listener = http->m_pListener;
-    long ready = listener->vtable->OnURIRequestIsOkContinueDownload(listener, http->m_pListenerContext, &buffer);
+    int ready = http->m_pListener->vtable->OnURIRequestIsOkContinueDownload(http->m_pListener, http->m_pListenerContext, &buffer);
     EnsureCleanBlocks(GetMemoryContext());
     if (ready) {
         if (buffer.size < length) __SVO_Assert_Handler(svoHttpSource, 0x2EC);
@@ -674,9 +704,12 @@ extern "C" SECTION(operator.delete___dupe3) void CHttpoperator_delete___dupe3(vo
     svFreeSafe(((HttpState *)memory)->m_memoryContextPtr, memory);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CHttp", operator.new___dupe4);
+extern "C" SECTION(operator.new___dupe4) void * CHttpoperator_new___dupe4(unsigned int size, CMemoryContextBaseState *memory)
+{
+    return svAllocSafe(memory, size, 0x4, 0x32, svoHttpSource);
+}
 
-extern "C" SECTION(parseHeaderBuf) long parseHeaderBuf(HttpState *http)
+extern "C" SECTION(parseHeaderBuf) int parseHeaderBuf(HttpState *http)
 {
     int contentType = 0;
     char *cursor = parseHttpStatusLine(http, http->m_headerBuf);
@@ -689,7 +722,7 @@ extern "C" SECTION(parseHeaderBuf) long parseHeaderBuf(HttpState *http)
     return contentType;
 }
 
-extern "C" SECTION(parseHttpHeaderLine) long parseHttpHeaderLine(HttpState *http, char **cursor, int *contentType)
+extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http, char **cursor, int *contentType)
 {
     char *header = *cursor;
     if (*header == '\r' || *header == '\n') {
@@ -786,7 +819,7 @@ extern "C" SECTION(parseHttpStatusLine) char *parseHttpStatusLine(HttpState *htt
     return end ? end + 1 : 0;
 }
 
-extern "C" SECTION(SaveStatePreGameToPersistentData) long SaveStatePreGameToPersistentData(HttpState *http, SVPersistentData *persist)
+extern "C" SECTION(SaveStatePreGameToPersistentData) int SaveStatePreGameToPersistentData(HttpState *http, SVPersistentData *persist)
 {
     CCookieJar *jar = getInstance(http->m_memoryContextPtr);
     if (!jar) __SVO_Assert_Handler(svoHttpSource, 0x454);
@@ -839,9 +872,9 @@ extern "C" SECTION(SetHttpState) void SetHttpState(HttpState *http, int nextStat
     if (oldLength + newLength > 127) __SVO_Assert_Handler(svoHttpSource, 0x625);
 }
 
-extern "C" SECTION(States___dupe2) long States___dupe2(HttpState *http)
+extern "C" SECTION(States___dupe2) int States___dupe2(HttpState *http)
 {
-    long state = GetHttpState(http);
+    int state = GetHttpState(http);
     if (state == 1) { HttpIdleOnEnter(http); return 0; }
     if (state == 2) { HttpIdleOnUpdate(http); return 1; }
     if (state == 3) { HttpGetHostByNameOnEnter(http); return 0; }

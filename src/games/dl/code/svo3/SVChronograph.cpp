@@ -56,11 +56,14 @@ void CHRONO_SECTION(SVChronograph) SVChronograph(SVChronographState *timer, int 
 
 void CHRONO_SECTION(_SVChronograph) _SVChronograph(SVChronographState *timer, unsigned int flags)
 {
-    if (flags & 1) SVChronographDelete(timer);
+    if (flags & 1) { SVChronographDelete(timer); return; }
 }
 
 // Recovered C currently emits 0x40 bytes for this 0x3C-byte slot.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVChronograph", operator.new___dupe5);
+extern "C" SECTION(operator.new___dupe5) void * SVChronographoperator_new___dupe5(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0x5D, svoChronographSource);
+}
 
 void CHRONO_SECTION(SVChronographDelete) SVChronographDelete(void *memory)
 {

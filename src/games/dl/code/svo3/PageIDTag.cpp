@@ -23,7 +23,7 @@ SECTION(FreeResources___dupe51) void FreeResources___dupe51(SVTag *tag)
 extern "C" SECTION(_PageIDTag) void _PageIDTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(PageIDTag) void PageIDTag(SVTag *tag, iks *xml, CAllContextData *contexts)

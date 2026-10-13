@@ -5,18 +5,17 @@ extern const unsigned char svoParseXMLInfoVtable[];
 extern char svoParseXMLInfoCheckString[];
 #define SECTION(name) __attribute__((section(".svo_ParseXMLInfo_" #name)))
 
-SECTION(ParseXMLInfo) const void *ParseXMLInfo(ParseXMLState *parser)
+SECTION(ParseXMLInfo) void ParseXMLInfo(ParseXMLState *parser)
 {
     ParseXML(parser);
     parser->vtable = svoParseXMLInfoVtable;
-    return svoParseXMLInfoVtable;
 }
 
 SECTION(_ParseXMLInfo) void _ParseXMLInfo(ParseXMLState *parser, int flags)
 {
     parser->vtable = svoParseXMLInfoVtable;
     _ParseXML(parser, 0);
-    if (flags & 1) SvoBuiltinDelete(parser);
+    if (flags & 1) { SvoBuiltinDelete(parser); return; }
 }
 
 SECTION(ShouldFreeResources___dupe3) int ShouldFreeResources___dupe3(ParseXMLState *parser)

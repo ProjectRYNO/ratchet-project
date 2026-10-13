@@ -3,7 +3,7 @@ extern "C" char svoTextEditableSource[];
 #define SECTION(name) __attribute__((section(".svo_TextEditableTag_" #name)))
 #include "common.h"
 
-extern "C" SECTION(DefaultHandleInput) long DefaultHandleInput(SVTag *tag, CPage *page)
+extern "C" SECTION(DefaultHandleInput) int DefaultHandleInput(SVTag *tag, CPage *page)
 {
     CInputContextBaseState *input = tag->m_contexts->inputContext;
     if (!tag->m_xml) __SVO_Assert_Handler(svoTextEditableSource, 10);

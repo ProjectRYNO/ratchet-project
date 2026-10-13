@@ -26,7 +26,7 @@ extern "C" {
 extern char svoFormTagName[];
 extern char svoFormActionAttribute[];
 extern char svoFormEncodingAttribute[];
-extern char svoFormDefaultEncoding[];
+extern char svoFormDefaultEncoding[34] __attribute__((aligned(8)));
 extern char svoFormMethodAttribute[];
 extern char svoFormPost[];
 extern char svoFormGet[];
@@ -39,11 +39,10 @@ CAudioContextBaseState *GetAudioContext();
 extern "C" {
 extern const SVTagVtablePrefix svoFormTagVtable;
 void DefaultInit___dupe15(FormTag *form);
-void FormTagConstruct(FormTag *form, iks *xml, CAllContextData *contexts) __asm__("FormTag");
 }
 #define SECTION(name) __attribute__((section(".svo_FormTag_" #name)))
 
-SECTION(IsSelectable___dupe13) long IsSelectable___dupe13(void *self)
+SECTION(IsSelectable___dupe13) int IsSelectable___dupe13(void *self)
 {
     return 0;
 }
@@ -201,7 +200,7 @@ extern "C" SECTION(CheckRadioElement) void CheckRadioElement(FormTag *form, Radi
     }
 }
 
-extern "C" SECTION(DataCanBeEncryped) long DataCanBeEncryped(FormTag *form)
+extern "C" SECTION(DataCanBeEncryped) int DataCanBeEncryped(FormTag *form)
 {
     form->m_bEncryptionErrorOccurred = 1;
     __SVO_Assert_Handler(svoFormTagSource, 0x1BD);
@@ -245,31 +244,34 @@ extern "C" SECTION(Draw___dupe21) void Draw___dupe21(FormTag *form)
     if (!form->base.m_xml) __SVO_Assert_Handler(svoFormTagSource, 0xB1);
 }
 
-extern "C" SECTION(FormTag) void FormTagConstruct(FormTag *form, iks *xml, CAllContextData *contexts)
+SECTION(FormTag) FormTag::FormTag(iks *xml, CAllContextData *contexts)
 {
-    SVTagConstruct(&form->base, xml, contexts);
-    form->base.vtable = &svoFormTagVtable;
-    DefaultInit___dupe15(form);
-    char *value = iks_find_attrib(form->base.m_xml, svoFormActionAttribute);
-    if (value) strcpy(form->m_url, value);
+    SVTagConstruct(&base, xml, contexts);
+    base.vtable = &svoFormTagVtable;
+    DefaultInit___dupe15(this);
+    char *action = iks_find_attrib(base.m_xml, svoFormActionAttribute);
+    if (action) strcpy(m_url, action);
     else __SVO_Assert_Handler(svoFormTagSource, 0x63);
-    value = iks_find_attrib(form->base.m_xml, svoFormEncodingAttribute);
-    if (value) strcpy(form->m_encType, value);
-    else memcpy(form->m_encType, svoFormDefaultEncoding, 34);
-    value = iks_find_attrib(form->base.m_xml, svoFormMethodAttribute);
-    if (!value) {
-        __SVO_Assert_Handler(svoFormTagSource, 0x90);
-    } else if (!strcmp(value, svoFormPost) || !strcmp(value, svoFormGet)) {
-        form->m_method = strcmp(value, svoFormPost) != 0;
-        form->m_methodType = 0;
-    } else if (!strcmp(value, svoFormLogin)) {
-        form->m_methodType = 1;
+    char *encoding = iks_find_attrib(base.m_xml, svoFormEncodingAttribute);
+    if (encoding) strcpy(m_encType, encoding);
+    else memcpy(m_encType, svoFormDefaultEncoding, 34);
+    char *method = iks_find_attrib(base.m_xml, svoFormMethodAttribute);
+    if (method) {
+        if (!strcmp(method, svoFormPost) || !strcmp(method, svoFormGet)) {
+            if (!strcmp(method, svoFormPost)) m_method = 0;
+            else m_method = 1;
+            m_methodType = 0;
+        } else if (!strcmp(method, svoFormLogin)) {
+            m_methodType = 1;
+        } else {
+            __SVO_Assert_Handler(svoFormTagSource, 0x8A);
+        }
     } else {
-        __SVO_Assert_Handler(svoFormTagSource, 0x8A);
+        __SVO_Assert_Handler(svoFormTagSource, 0x90);
     }
 }
 
-extern "C" SECTION(HandleInput___dupe47) long HandleInput___dupe47(FormTag *form, CPage *page)
+extern "C" SECTION(HandleInput___dupe47) int HandleInput___dupe47(FormTag *form, CPage *page)
 {
     CInputContextBaseState *input = form->base.m_contexts->inputContext;
     if (!form->base.m_xml) __SVO_Assert_Handler(svoFormTagSource, 0xA4);
@@ -287,4 +289,110 @@ extern "C" SECTION(InitRadioGroups) void InitRadioGroups(FormTag *form)
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/FormTag", Submit);
+#include "CheckboxInputTag.h"
+#include "TextInputTag.h"
+#include "HiddenInputTag.h"
+#include "SelectTag.h"
+#include "TextAreaTag.h"
+#include "CQueryParams.h"
+struct FormValueVtable { // slot 0x50 of the text-entry tag vtables
+    /* 0x00 */ unsigned char prefix[0x50];
+    /* 0x50 */ char *(*GetValue)(SVTag *tag);
+};
+extern "C" {
+char *GetValue(SelectTagState *tag);
+int doPost(CPage *page, char *path, CQueryParamListState *params, int method, int storeHistory);
+int DataCanBeEncrypedTag(FormTag *form, SVTag *tag) __asm__("DataCanBeEncryped");
+}
+#define FORM_VALUE(tag) (((const FormValueVtable *)(tag)->base.vtable)->GetValue(&(tag)->base))
+extern "C" SECTION(Submit) void Submit(FormTag *form, CPage *page)
+{
+    int i;
+    CQueryParamListState QueryParams;
+    CQueryParamListState EncryptedQueryParams;
+    CQueryParamList(&QueryParams);
+    CQueryParamList(&EncryptedQueryParams);
+    if (!form->m_bValidationSucceeded) {
+        _CQueryParamList(&EncryptedQueryParams, 2);
+        _CQueryParamList(&QueryParams, 2);
+        return;
+    }
+    for (i = 0; i < form->m_numRadioElementGroups; i++) {
+        RadioElementGroup *group = &form->m_radioElementGroups[i];
+        if (!strcmp(group->name, svoFormUnsetGroup)) break;
+        int numElements = group->numElementsInGroup;
+        for (int j = 0; j < numElements; j++) {
+            RadioInputTagState *element = group->elements[j];
+            if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x218);
+            if (element->m_isChecked) {
+                char *name = element->base.vtable->GetTagName(&element->base);
+                char *value = element->m_value;
+                if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+                    Set(&EncryptedQueryParams, name, value, 0);
+                else
+                    Set(&QueryParams, name, value, 0);
+                break;
+            }
+        }
+    }
+    for (i = 0; i < form->m_numCheckboxElements; i++) {
+        CheckboxInputTagState *element = form->m_checkboxElements[i];
+        if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x23E);
+        if (element->m_isChecked) {
+            char *name = element->base.vtable->GetTagName(&element->base);
+            char *value = element->m_value;
+            if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+                Set(&EncryptedQueryParams, name, value, 0);
+            else
+                Set(&QueryParams, name, value, 0);
+        }
+    }
+    for (i = 0; i < form->m_numTextElements; i++) {
+        TextInputTagState *element = form->m_textElements[i];
+        if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x255);
+        char *name = element->base.vtable->GetTagName(&element->base);
+        char *value = FORM_VALUE(element);
+        if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+            Set(&EncryptedQueryParams, name, value, 0);
+        else
+            Set(&QueryParams, name, value, 0);
+    }
+    for (i = 0; i < form->m_numPasswordElements; i++) {
+        TextInputTagState *element = form->m_passwordElements[i];
+        char *name = element->base.vtable->GetTagName(&element->base);
+        char *value = FORM_VALUE(element);
+        if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+            Set(&EncryptedQueryParams, name, value, 0);
+        else
+            Set(&QueryParams, name, value, 0);
+    }
+    for (i = 0; i < form->m_numHiddenElements; i++) {
+        HiddenInputTagState *element = form->m_hiddenElements[i];
+        Set(&QueryParams, element->base.vtable->GetTagName(&element->base), element->m_value, 0);
+    }
+    for (i = 0; i < form->m_numSelectElements; i++) {
+        SelectTagState *element = form->m_selectElements[i];
+        char *name = element->base.vtable->GetTagName(&element->base);
+        char *value = GetValue(element);
+        if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+            Set(&EncryptedQueryParams, name, value, 0);
+        else
+            Set(&QueryParams, name, value, 0);
+    }
+    for (i = 0; i < form->m_numTextAreaElements; i++) {
+        TextAreaTagState *element = form->m_textAreaElements[i];
+        char *name = element->base.vtable->GetTagName(&element->base);
+        char *value = FORM_VALUE(element);
+        if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+            Set(&EncryptedQueryParams, name, value, 0);
+        else
+            Set(&QueryParams, name, value, 0);
+    }
+    for (i = 0; i < GetParamCount(&QueryParams); i++) {
+    }
+    int bStoreInHistory = form->m_method != 0;
+    if (!form->m_bEncryptionErrorOccurred)
+        doPost(page, form->m_url, &QueryParams, form->m_methodType, bStoreInHistory);
+    _CQueryParamList(&EncryptedQueryParams, 2);
+    _CQueryParamList(&QueryParams, 2);
+}

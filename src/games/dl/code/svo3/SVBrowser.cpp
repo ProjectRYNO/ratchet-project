@@ -1,11 +1,53 @@
 #include "SVBrowser.h"
+#include "SVPersistentData.h"
+#include "SVDownloadManager.h"
+#include "CMemoryContextBase.h"
+#include "CConfig.h"
+#include "CPage.h"
+#include "CError.h"
+#include "URISchemeMgr.h"
+#include "string.h"
+#include "stdio.h"
+extern "C" {
+extern SVBrowserPrefix *svoBrowserInstance;
+extern char svoBrowserSource[];
+extern char svoBrowserAllocationSource[];
+extern char svoBrowserConfigFilename[];
+extern char svoBrowserConfigHeader[];
+extern char svoBrowserServerFormat[];
+extern char svoBrowserPersistentFormat[];
+void DefaultInit(SVBrowserPrefix *);
+char *SV_CheckVersion(char *);
+void RTCommInit(SVBrowserPrefix *);
+void SetAlternateContexts(SVBrowserPrefix *, CAllContextData *);
+void SetupTargetInfo(SVBrowserPrefix *, SVTargetInfo *);
+void *SV_IKS_Malloc(unsigned int);
+void SV_IKS_Free(void *);
+void iks_set_malloc_func(void *(*)(unsigned int));
+void iks_set_free_func(void (*)(void *));
+void InitURISchemas(SVBrowserPrefix *);
+void *FileDownloadQueueNew(unsigned int) __asm__("operator.new___dupe14");
+void FileDownloadQueue(FileDownloadQueueState *);
+void *PageNew(unsigned int) __asm__("operator.new___dupe3");
+void PageConstruct(CPage *, char *, int, int) __asm__("CPage");
+void *DownloadManagerNew(unsigned int) __asm__("operator.new___dupe13");
+void BrowserDownloadManagerConstruct(SVDownloadManagerState *, char *, char *, char *, int, CPage *, CMemoryContextBaseState *, unsigned int) __asm__("SVDownloadManager");
+void RegisterCommonTagModules();
+void Activate(SVBrowserPrefix *);
+void InitalizePluginManagerAndPlugins(SVBrowserPrefix *);
+void *ChronographNew(unsigned int) __asm__("operator.new___dupe5");
+int ReturnFromGame(SVBrowserPrefix *, SVPersistentData *);
+void FreeResources(SVBrowserPrefix *);
+}
+
+#include "SVBrowser.h"
 #include "RTCommSock.h"
 #include "string.h"
 extern "C" {
 void rt_comm_startup();
 void rt_comm_update();
 void rt_comm_get_local_ip(RTLinkAddress *);
-void rt_comm_linkaddress_tostr(char *, unsigned long);
+void rt_comm_linkaddress_tostr(char *, unsigned int);
 }
 
 
@@ -36,11 +78,11 @@ void *BrowserHttpsNew(unsigned int, CMemoryContextBaseState *) __asm__("operator
 void Http(HttpState *, CMemoryContextBaseState *, int);
 void HttpSecure(HttpSecureState *, CMemoryContextBaseState *, int);
 char *find___dupe2(FileDownloadQueueState *, char *);
-long doRequest___dupe4(SVDownloadManager *, char *, char *, int, char *);
+int doRequest___dupe4(SVDownloadManager *, char *, char *, int, char *);
 void download___dupe3(SVDownloadManager *);
-long HasEntries(FileDownloadQueueState *);
+int HasEntries(FileDownloadQueueState *);
 void GetNextEntry(FileDownloadQueueState *, char *, int, char *, int);
-void draw(CPage *, long);
+void draw(CPage *, int);
 void draw___dupe2(SVDownloadManager *);
 }
 
@@ -55,7 +97,7 @@ extern "C" CInputContextBaseState *GetInputContext();
 extern "C" {
 void setPageState(CPage *, int);
 void CalculatePersistentDataMd5Sum(SVBrowserPrefix *, SVPersistentData *, char *, int);
-long LoadStatePostGameFromPersistentData(CPage *, SVPersistentData *);
+int LoadStatePostGameFromPersistentData(CPage *, SVPersistentData *);
 }
 
 #include "CCookie.h"
@@ -65,7 +107,7 @@ extern "C" {
 void DestroyInTransitionArray(CPage *);
 void DestroyPostTransitionArray(CPage *);
 void DestroyPreTransitionArray(CPage *);
-long shutdown(CPage *);
+int shutdown(CPage *);
 void _CPage(CPage *, unsigned int);
 void FreeResources___dupe54(FileDownloadQueueState *);
 void freeResources___dupe4(SVDownloadManager *, int);
@@ -77,12 +119,12 @@ void DeInitializePluginManagerAndPluggins(SVBrowserPrefix *);
 
 
 extern "C" {
-long IsActive(SVBrowserPrefix *);
+int IsActive(SVBrowserPrefix *);
 int download(CPage *);
 LoginTagModuleState *getInstance___dupe27();
-long UnhandledLoginResponseExists(LoginTagModuleState *, int *);
+int UnhandledLoginResponseExists(LoginTagModuleState *, int *);
 void DoFrameUpdates(SVBrowserPrefix *);
-long okToNavigate___dupe4(SVDownloadManager *);
+int okToNavigate___dupe4(SVDownloadManager *);
 void HandleInputPages(SVBrowserPrefix *, CPage *);
 void HandleUpdatePages(SVBrowserPrefix *, CPage *);
 }
@@ -132,13 +174,13 @@ extern char svoBrowserSource[];
 
 }
 extern "C" {
-long handleInput(CPage *);
+int handleInput(CPage *);
 char *GetTagTypeName(SVTag *);
 extern char svoBrowserPageIDTagName[];
 void download___dupe3(SVDownloadManager *);
-long HasEntries(FileDownloadQueueState *);
+int HasEntries(FileDownloadQueueState *);
 void GetNextEntry(FileDownloadQueueState *, char *, int, char *, int);
-long DownloadFile(SVBrowserPrefix *, char *, char *);
+int DownloadFile(SVBrowserPrefix *, char *, char *);
 
 }
 #define SECTION(name) __attribute__((section(".svo_SVBrowser_" #name)))
@@ -239,7 +281,10 @@ SECTION(GetDrawContext) CDrawContextBase *GetDrawContext(void)
 }
 
 void *SV_IKS_Malloc(unsigned int size);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", SV_IKS_Malloc);
+extern "C" SECTION(SV_IKS_Malloc) void * SV_IKS_Malloc(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0x4, 0xC0, svoBrowserSource);
+}
 
 SECTION(SV_IKS_Free) void SV_IKS_Free(void *memory)
 {
@@ -250,7 +295,7 @@ SECTION(SetupTargetInfo) void SetupTargetInfo(SVBrowserPrefix *browser, SVTarget
 {
     browser->m_targetInfo.targetType = target->targetType;
     unsigned int length = 64;
-    if (target->targetType == 1) length = 20;
+    if (browser->m_targetInfo.targetType == 1) length = 20;
     else __SVO_Assert_Handler(svoBrowserSource, 0x106);
     memcpy(browser->m_targetInfo.targetSpecialID, target->targetSpecialID, length);
     if (browser->m_targetInfo.targetSpecialID[length]) __SVO_Assert_Handler(svoBrowserSource, 0x10C);
@@ -278,8 +323,9 @@ SECTION(SetAlternateContexts) void SetAlternateContexts(SVBrowserPrefix *browser
 int BrowserIsIdle(SVBrowserPrefix *browser);
 extern "C" SECTION(BrowserIsIdle) int BrowserIsIdle(SVBrowserPrefix *browser)
 {
-    if (browser->m_pMainPage->m_state != 0) return 0;
-    return browser->m_pPopupPage->m_state == 0;
+    int idle = 0;
+    if (!browser->m_pMainPage->m_state) idle = !browser->m_pPopupPage->m_state;
+    return idle;
 }
 
 SECTION(SetExternalIPAddress) void SetExternalIPAddress(SVBrowserPrefix *browser, char *ip)
@@ -302,7 +348,7 @@ SECTION(SetLogout) void SetLogout(SVBrowserPrefix *browser)
     browser->m_bLogout = 1;
 }
 
-SECTION(ExitOnline) void ExitOnline(SVBrowserPrefix *browser, long force)
+SECTION(ExitOnline) void ExitOnline(SVBrowserPrefix *browser, int force)
 {
     if (svoBrowserInstance) {
         FreeResources(browser);
@@ -310,7 +356,7 @@ SECTION(ExitOnline) void ExitOnline(SVBrowserPrefix *browser, long force)
     }
 }
 
-SECTION(IsActive) long IsActive(SVBrowserPrefix *browser)
+SECTION(IsActive) int IsActive(SVBrowserPrefix *browser)
 {
     return browser->m_bIsActive;
 }
@@ -359,7 +405,14 @@ SECTION(SignalPluginEvent) void SignalPluginEvent(SVBrowserPrefix *browser, int 
 }
 
 void InitalizePluginManagerAndPlugins(SVBrowserPrefix *browser);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", InitalizePluginManagerAndPlugins);
+SECTION(InitalizePluginManagerAndPlugins) void InitalizePluginManagerAndPlugins(SVBrowserPrefix *browser)
+{
+    SVBrowserPrefix *instance = svoBrowserInstance;
+    CPluginManagerState *manager = (CPluginManagerState *)PluginManagerNew(0x58);
+    CPluginManager(manager);
+    instance->m_pPluginManager = manager;
+    if (!svoBrowserInstance->m_pPluginManager) __SVO_Assert_Handler(svoBrowserSource, 0x5DE);
+}
 
 SECTION(DeInitializePluginManagerAndPluggins) void DeInitializePluginManagerAndPluggins(SVBrowserPrefix *browser)
 {
@@ -383,7 +436,12 @@ SECTION(URIStoreAdd) void URIStoreAdd(char *lookup, char *value)
 }
 
 char *URIStoreFind(char *lookup);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", URIStoreFind);
+SECTION(URIStoreFind) char *URIStoreFind(char *lookup)
+{
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x6B4);
+    if (!svoBrowserInstance->m_pURIStore) __SVO_Assert_Handler(svoBrowserSource, 0x6B5);
+    return find(svoBrowserInstance->m_pURIStore, lookup);
+}
 
 SECTION(FileDownloadQueueAdd) void FileDownloadQueueAdd(char *id, char *path)
 {
@@ -398,7 +456,15 @@ SECTION(FileDownloadQueueAdd) void FileDownloadQueueAdd(char *id, char *path)
 }
 
 void reset(DownloadThrobberInfo *info);
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", reset);
+SECTION(reset) void reset(DownloadThrobberInfo *info)
+{
+    info->tagClass = gTagNotSetStr;
+    info->width = 150.0f;
+    info->x = 245.0f;
+    info->y = 20.0f;
+    info->height = 25.0f;
+    info->tagid = 0;
+}
 
 SECTION(RTCommDestroy) void RTCommDestroy(SVBrowserPrefix *browser)
 {
@@ -436,7 +502,7 @@ extern "C" SECTION(DeInitURISchemas) void DeInitURISchemas(SVBrowserPrefix *brow
     }
 }
 
-extern "C" SECTION(DownloadFile) long DownloadFile(SVBrowserPrefix *browser, char *path, char *id)
+extern "C" SECTION(DownloadFile) int DownloadFile(SVBrowserPrefix *browser, char *path, char *id)
 {
     if (!path) __SVO_Assert_Handler(svoBrowserSource, 0x427);
     if (browser->m_bUseDownloadManger) {
@@ -448,7 +514,25 @@ extern "C" SECTION(DownloadFile) long DownloadFile(SVBrowserPrefix *browser, cha
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", DrawPages);
+extern "C" SECTION(DrawPages) void DrawPages(SVBrowserPrefix *browser, CPage **activePage, int drawTags)
+{
+    if (browser->m_pMainPage->m_bIsActive) {
+        if (!*activePage) *activePage = browser->m_pMainPage;
+        draw(browser->m_pMainPage, 1);
+    }
+    if (browser->m_pPopupPage->m_bIsActive) {
+        *activePage = browser->m_pPopupPage;
+        draw(browser->m_pPopupPage, 1);
+    }
+    if (browser->m_bUseDownloadManger && browser->m_pDownloadManager) draw___dupe2(browser->m_pDownloadManager);
+    if (!BrowserIsIdle(browser)) {
+        CDrawContextBase *drawContext = GetDrawContext();
+        drawContext->vtable->DrawDownloadThrobber(drawContext, browser->m_downloadThrobberInfo.tagid,
+            browser->m_downloadThrobberInfo.x, browser->m_downloadThrobberInfo.y,
+            browser->m_downloadThrobberInfo.width, browser->m_downloadThrobberInfo.height,
+            browser->m_downloadThrobberInfo.tagClass);
+    }
+}
 
 extern "C" SECTION(FreeResources) void FreeResources(SVBrowserPrefix *browser)
 {
@@ -513,7 +597,7 @@ extern "C" SECTION(GetPageName) char *GetPageName(SVBrowserPrefix *browser)
 
 extern "C" SECTION(HandleInputPages) void HandleInputPages(SVBrowserPrefix *browser, CPage *page)
 {
-    long handled = handleInput(page);
+    int handled = handleInput(page);
     SVTagModuleState **entry = getInstance___dupe3()->m_modules;
     if (handled && *entry) {
         int count = 0;
@@ -526,7 +610,122 @@ extern "C" SECTION(HandleInputPages) void HandleInputPages(SVBrowserPrefix *brow
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", Initialize___dupe4);
+extern "C" SECTION(Initialize___dupe4) SVBrowserPrefix *Initialize___dupe4(SVInitializeParams *params)
+{
+    SetErrorCode(0);
+    svoBrowserInstance = (SVBrowserPrefix *)svAllocSafe(params->mainContextData->memoryContext, 0x3140, 0, 0, svoBrowserAllocationSource);
+    if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x134);
+    CAllContextData *contexts = params->mainContextData;
+    if (!contexts || !contexts->drawContext || !contexts->inputContext || !contexts->memoryContext || !contexts->audioContext || !contexts->systemContext) __SVO_Assert_Handler(svoBrowserSource, 0x13B);
+    DefaultInit(svoBrowserInstance);
+    SVBrowserPrefix *browser = svoBrowserInstance;
+    contexts = params->mainContextData;
+    browser->m_pDrawContext = contexts->drawContext;
+    browser->m_pVKBDrawContext = contexts->drawContext;
+    browser->m_pAudioContext = contexts->audioContext;
+    browser->m_pMemoryContext = contexts->memoryContext;
+    browser->m_pInputContext = contexts->inputContext;
+    browser->m_pSystemContext = contexts->systemContext;
+    SV_CheckVersion(params->headerVersion);
+    RTCommInit(svoBrowserInstance);
+    if (params->altContextData->memoryContext != params->mainContextData->memoryContext) __SVO_Assert_Handler(svoBrowserSource, 0x153);
+    browser = svoBrowserInstance;
+    contexts = params->altContextData;
+    contexts->memoryContext = params->mainContextData->memoryContext;
+    SetAlternateContexts(browser, contexts);
+    browser = svoBrowserInstance;
+    browser->m_pCurrentTextEditableTag = 0;
+    browser->m_textEditPosition = 0;
+    memset(browser->m_textBuffer, 0, 0x3000);
+    browser = svoBrowserInstance;
+    browser->m_textIsPassword = 0;
+    browser->m_textMaxBytes = 0;
+    browser->m_textMaxChars = 0;
+    if (!params->targetInfo) __SVO_Assert_Handler(svoBrowserSource, 0x163);
+    SetupTargetInfo(svoBrowserInstance, params->targetInfo);
+    iks_set_malloc_func(SV_IKS_Malloc);
+    iks_set_free_func(SV_IKS_Free);
+    CConfigState config;
+    char firstPage[272];
+    CConfig(&config);
+    if (params->eURL == 2) {
+        if (!params->a_pPersistentData) __SVO_Assert_Handler(svoBrowserSource, 0x183);
+        sprintf(firstPage, svoBrowserPersistentFormat, params->a_pPersistentData->homeURI);
+    } else if (params->eURL == 1) {
+        loadConfigurationFile(&config, svoBrowserConfigFilename);
+        int port = config.m_port;
+        if (!config.m_bFileRead) {
+            __SVO_Assert_Handler(svoBrowserConfigHeader, 0x23);
+            port = config.m_port;
+            if (!config.m_bFileRead) {
+                __SVO_Assert_Handler(svoBrowserConfigHeader, 0x2D);
+                port = config.m_port;
+                if (!config.m_bFileRead) __SVO_Assert_Handler(svoBrowserConfigHeader, 0x37);
+            }
+        }
+        sprintf(firstPage, svoBrowserServerFormat, config.m_ip, port, config.m_firstPage);
+    } else if (params->eURL == 3) {
+        SVServerInfo *server = params->serverInfo;
+        sprintf(firstPage, svoBrowserServerFormat, server->serverName, server->port, server->firstPage);
+    } else __SVO_Assert_Handler(svoBrowserSource, 0x190);
+    CURISchemeMgrState *schemes = Get();
+    init___dupe2(schemes, svoBrowserInstance->m_pMemoryContext);
+    InitURISchemas(svoBrowserInstance);
+    browser = svoBrowserInstance;
+    browser->m_pMainPage = 0;
+    browser->m_pPopupPage = 0;
+    browser->m_pDownloadManager = 0;
+    URIStoreState *store = (URIStoreState *)URIStoreNew(0x204);
+    URIStore(store);
+    browser->m_pURIStore = store;
+    browser = svoBrowserInstance;
+    if (browser->m_bUseDownloadManger) {
+        FileDownloadQueueState *queue = (FileDownloadQueueState *)FileDownloadQueueNew(0x28);
+        FileDownloadQueue(queue);
+        browser->m_pFileDownloadQueue = queue;
+        if (!svoBrowserInstance->m_pFileDownloadQueue) __SVO_Assert_Handler(svoBrowserSource, 0x1A0);
+    }
+    if (!svoBrowserInstance->m_pURIStore) __SVO_Assert_Handler(svoBrowserSource, 0x1AC);
+    browser = svoBrowserInstance;
+    CPage *page = (CPage *)PageNew(0x637C);
+    PageConstruct(page, firstPage, 0, -1);
+    browser->m_pMainPage = page;
+    if (!svoBrowserInstance->m_pMainPage) __SVO_Assert_Handler(svoBrowserSource, 0x1B4);
+    if (GetErrorCode()) return 0;
+    browser = svoBrowserInstance;
+    page = (CPage *)PageNew(0x637C);
+    PageConstruct(page, 0, 1, -1);
+    browser->m_pPopupPage = page;
+    if (!svoBrowserInstance->m_pPopupPage) __SVO_Assert_Handler(svoBrowserSource, 0x1C4);
+    browser = svoBrowserInstance;
+    if (browser->m_bUseDownloadManger) {
+        SVDownloadManagerState *manager = (SVDownloadManagerState *)DownloadManagerNew(0x8CD8);
+        BrowserDownloadManagerConstruct(manager, firstPage, 0, 0, 0, svoBrowserInstance->m_pMainPage, svoBrowserInstance->m_pMemoryContext, params->downloadBufferSize);
+        browser->m_pDownloadManager = (SVDownloadManager *)manager;
+        if (!svoBrowserInstance->m_pDownloadManager) __SVO_Assert_Handler(svoBrowserSource, 0x1C9);
+    }
+    RegisterCommonTagModules();
+    Activate(svoBrowserInstance);
+    browser = svoBrowserInstance;
+    browser->m_bOkToNavigate = 1;
+    browser->m_bLogout = 0;
+    browser->m_bShowVKB = 0;
+    browser->m_bIsXMPPActive = 0;
+    InitalizePluginManagerAndPlugins(browser);
+    browser = svoBrowserInstance;
+    SVChronographState *timer = (SVChronographState *)ChronographNew(0x10);
+    SVChronograph(timer, 0);
+    browser->m_pTimer = timer;
+    DefineDefaultButtonMap(svoBrowserInstance->m_pInputContext, params->defaultButtonMap);
+    SetDefaultButtonMap(svoBrowserInstance->m_pInputContext);
+    if (params->eURL == 2) {
+        if (!ReturnFromGame(GetInstance(), params->a_pPersistentData)) {
+            FreeResources(GetInstance());
+            svoBrowserInstance = 0;
+        }
+    } else if (params->eURL != 1 && params->eURL != 3) __SVO_Assert_Handler(svoBrowserSource, 0x1F5);
+    return svoBrowserInstance;
+}
 
 extern "C" SECTION(InitURISchemas) void InitURISchemas(SVBrowserPrefix *browser)
 {
@@ -552,17 +751,18 @@ extern "C" SECTION(LoadStatePostGameFromPersistentData___dupe3) int LoadStatePos
     if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x3EE);
     char hash[48];
     CalculatePersistentDataMd5Sum(browser, persist, hash, 33);
-    int result = strncmp(hash, persist->szMD5Hash, 33);
-    if (!result) {
-        LoadInFromMemory(browser->m_pURIStore, persist->szURIStore, 0x1000);
-        LoadStatePostGameFromPersistentData(browser->m_pMainPage, persist);
-        LoadStatePostGameFromPersistentData___dupe4(Get(), persist);
-        persist->SVOGameID = 0;
-    }
-    return result == 0;
+    if (strncmp(hash, persist->szMD5Hash, 33)) return 0;
+    LoadInFromMemory(browser->m_pURIStore, persist->szURIStore, 0x1000);
+    LoadStatePostGameFromPersistentData(browser->m_pMainPage, persist);
+    LoadStatePostGameFromPersistentData___dupe4(Get(), persist);
+    persist->SVOGameID = 0;
+    return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", ReturnFromGame);
+extern "C" SECTION(ReturnFromGame) int ReturnFromGame(SVBrowserPrefix *browser, SVPersistentData *persist)
+{
+    return LoadStatePostGameFromPersistentData___dupe3(browser, persist);
+}
 
 extern "C" SECTION(RTCommInit) void RTCommInit(SVBrowserPrefix *browser)
 {
@@ -631,4 +831,22 @@ extern "C" SECTION(Update___dupe109) int Update___dupe109(SVBrowserPrefix *brows
     return EnsureCleanBlocks(GetMemoryContext());
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVBrowser", UpdateDownloadManager);
+extern "C" SECTION(UpdateDownloadManager) int UpdateDownloadManager(SVBrowserPrefix *browser)
+{
+    if (!browser->m_bUseDownloadManger) {
+        SetErrorCode(31);
+        if (!browser->m_bUseDownloadManger) __SVO_Assert_Handler(svoBrowserSource, 0x753);
+        return 0;
+    }
+    if (browser->m_pDownloadManager) {
+        download___dupe3(browser->m_pDownloadManager);
+        if (((SVDownloadManagerState *)browser->m_pDownloadManager)->m_state) return 1;
+        if (HasEntries(browser->m_pFileDownloadQueue)) {
+            char lookup[257];
+            char value[257];
+            GetNextEntry(browser->m_pFileDownloadQueue, lookup, 257, value, 257);
+            DownloadFile(browser, lookup, value);
+        }
+    }
+    return 1;
+}

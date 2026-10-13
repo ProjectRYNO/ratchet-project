@@ -52,7 +52,7 @@ char HTTP_SECTION(decodeEntityChar) decodeEntityChar(char *text, unsigned int *p
         if (current[1] == '#') {
             if (svisdigit(current[2])) {
                 char *end;
-                long value = strtol(text + *position + 2, &end, 10);
+                int value = strtol(text + *position + 2, &end, 10);
                 if (*end == ';' && value < 256) {
                     *position = end + 1 - text;
                     return (char)value;

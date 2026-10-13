@@ -1,4 +1,4 @@
-.PHONY: dump config split iso FORCE elf
+.PHONY: dump config split iso FORCE elf ps2dev ee-gcc296
 .DEFAULT_GOAL := elf
 
 SHELL := /bin/bash
@@ -41,6 +41,12 @@ CLI_CONFIG ?= $(ASSETS)/config.ini
 PS2DEV_DIR ?= /opt/ps2dev
 EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
 EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
+# SVO3 is Sony middleware built with SCE ee-gcc 2.96 (see DOCS/libraries/SVO3_TAIL_CALL_BLOCKERS.md).
+# Its 32-bit binaries need the stat shim on Docker Desktop bind mounts.
+EEGCC296_DIR ?= /opt/ee-gcc2.96
+EEGCC296_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.96.tar.xz
+EEGXX296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/bin/ee-g++
+EEAS296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/ee/bin/as
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
@@ -64,16 +70,21 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # Keep the recovered EE sound functions inside their original address slots.
 # The only division has a constant, nonzero divisor (741).
 $(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
-# Retail iksemel/SVO string helpers use four-byte function boundaries.
+# Retail iksemel string helpers use four-byte function boundaries.
 $(OBJ_DIR)/iksemel/src/iks.o: COMMON_COMPILE_FLAGS += -falign-functions=4
-$(OBJ_DIR)/svo3/SVOString.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -falign-functions=4
-# SVO3 core replacements retain fixed retail slots; matching remains tracked separately.
-$(OBJ_DIR)/svo3/DownloadBinary.o $(OBJ_DIR)/svo3/ParseXML.o $(OBJ_DIR)/svo3/ParseSVMLAddObjects.o $(OBJ_DIR)/svo3/ParseSVMLForDownloads.o $(OBJ_DIR)/svo3/ParseXMLInfo.o $(OBJ_DIR)/svo3/PageRequestListener.o $(OBJ_DIR)/svo3/SVFileDownloadQueue.o $(OBJ_DIR)/svo3/TagUtils.o $(OBJ_DIR)/svo3/SVBrowser.o $(OBJ_DIR)/svo3/buttonTag.o $(OBJ_DIR)/svo3/CheckboxInputTag.o $(OBJ_DIR)/svo3/CHttp.o $(OBJ_DIR)/svo3/HttpSecure.o $(OBJ_DIR)/svo3/SetVariableTag.o $(OBJ_DIR)/svo3/TextTag.o $(OBJ_DIR)/svo3/TickerTag.o $(OBJ_DIR)/svo3/CDrawContextBase.o $(OBJ_DIR)/svo3/FormTag.o $(OBJ_DIR)/svo3/HiddenInputTag.o $(OBJ_DIR)/svo3/PopupTag.o $(OBJ_DIR)/svo3/QuickLinkTag.o $(OBJ_DIR)/svo3/SubmitInputTag.o $(OBJ_DIR)/svo3/DataTag.o $(OBJ_DIR)/svo3/ImageTag.o $(OBJ_DIR)/svo3/PageIDTag.o $(OBJ_DIR)/svo3/RadioInputTag.o $(OBJ_DIR)/svo3/SelectTag.o $(OBJ_DIR)/svo3/StaticImageTag.o $(OBJ_DIR)/svo3/TextInputTag.o $(OBJ_DIR)/svo3/CPage.o $(OBJ_DIR)/svo3/CreateGameTagModule.o $(OBJ_DIR)/svo3/GenericListBoxTag.o $(OBJ_DIR)/svo3/ListBoxTag.o $(OBJ_DIR)/svo3/LoginTagModule.o $(OBJ_DIR)/svo3/Navigation.o $(OBJ_DIR)/svo3/RTCommSock.o $(OBJ_DIR)/svo3/SVDownloadManager.o $(OBJ_DIR)/svo3/SVO_DBG.o $(OBJ_DIR)/svo3/SVTagModule.o $(OBJ_DIR)/svo3/TextAreaTag.o $(OBJ_DIR)/svo3/ImageTagModule.o $(OBJ_DIR)/svo3/DataTagModule.o $(OBJ_DIR)/svo3/PasswordInputTag.o $(OBJ_DIR)/svo3/GridTag.o $(OBJ_DIR)/svo3/md5.o $(OBJ_DIR)/svo3/LineTag.o $(OBJ_DIR)/svo3/RectangleTag.o $(OBJ_DIR)/svo3/SVTag.o $(OBJ_DIR)/svo3/LogoutTag.o $(OBJ_DIR)/svo3/RedirectTag.o $(OBJ_DIR)/svo3/BrowserInitTag.o $(OBJ_DIR)/svo3/SVURIStore.o $(OBJ_DIR)/svo3/URISchemeMgr.o $(OBJ_DIR)/svo3/RedirectTagModule.o $(OBJ_DIR)/svo3/CPluginManager.o $(OBJ_DIR)/svo3/CCookie.o $(OBJ_DIR)/svo3/SVTagModuleList.o $(OBJ_DIR)/svo3/HttpUtils.o $(OBJ_DIR)/svo3/DNSCache.o $(OBJ_DIR)/svo3/PageHistory.o $(OBJ_DIR)/svo3/SVChronograph.o $(OBJ_DIR)/svo3/SVSock.o $(OBJ_DIR)/svo3/UTF8_Util.o $(OBJ_DIR)/svo3/ButtonTagModule.o $(OBJ_DIR)/svo3/LineTagModule.o $(OBJ_DIR)/svo3/RectangleTagModule.o $(OBJ_DIR)/svo3/HiddenInputTagModule.o $(OBJ_DIR)/svo3/PasswordInputTagModule.o $(OBJ_DIR)/svo3/SubmitInputTagModule.o $(OBJ_DIR)/svo3/RadioInputTagModule.o $(OBJ_DIR)/svo3/TextInputTagModule.o $(OBJ_DIR)/svo3/TextTagModule.o $(OBJ_DIR)/svo3/TickerTagModule.o $(OBJ_DIR)/svo3/PageIDTagModule.o $(OBJ_DIR)/svo3/BrowserInitTagModule.o $(OBJ_DIR)/svo3/CheckboxInputTagModule.o $(OBJ_DIR)/svo3/FormTagModule.o $(OBJ_DIR)/svo3/GenericListBoxTagModule.o $(OBJ_DIR)/svo3/GridTagModule.o $(OBJ_DIR)/svo3/ListBoxTagModule.o $(OBJ_DIR)/svo3/LogoutTagModule.o $(OBJ_DIR)/svo3/PopupTagModule.o $(OBJ_DIR)/svo3/QuickLinkTagModule.o $(OBJ_DIR)/svo3/SelectTagModule.o $(OBJ_DIR)/svo3/SetVariableTagModule.o $(OBJ_DIR)/svo3/StaticImageTagModule.o $(OBJ_DIR)/svo3/TextAreaTagModule.o $(OBJ_DIR)/svo3/CPluginBase.o $(OBJ_DIR)/svo3/CQueryParams.o $(OBJ_DIR)/svo3/CConfig.o $(OBJ_DIR)/svo3/CMemoryContextBase.o $(OBJ_DIR)/svo3/CInputContextBase.o $(OBJ_DIR)/svo3/CError.o $(OBJ_DIR)/svo3/CSystemContextBase.o $(OBJ_DIR)/svo3/CAudioContextBase.o $(OBJ_DIR)/svo3/TextEditableTag.o: COMMON_COMPILE_FLAGS += -G0 -Os -fno-schedule-insns -fno-reorder-blocks -falign-functions=4
-# HTTP decoding fits its original slots with instruction scheduling enabled.
-$(OBJ_DIR)/svo3/HttpUtils.o: COMMON_COMPILE_FLAGS += -fschedule-insns
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
+
+# Flags chosen by measured byte matches across SVO3 (see SVO3_TAIL_CALL_BLOCKERS.md).
+# 2.96 has no compiler headers of its own; newlib and the generic builtin headers are shared.
+SVO3_COMPILE_FLAGS = -G0 -Os -fno-exceptions -mno-split-addresses -falign-functions=4 -falign-loops=1 -falign-jumps=1 -falign-labels=1 \
+	-isystem $(PS2DEV_DIR)/ee/ee/include -isystem $(PS2DEV_DIR)/ee/lib/gcc-lib/ee/3.2.3/include
+ifeq ($(ALLOW_NONMATCHING),1)
+	SVO3_COMPILE_FLAGS += -DALLOW_NONMATCHING
+endif
+# Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
+SVO3_AS_FLAGS = -EL -G0 -Icode/include
 
 elf: $(TARGET)
 
@@ -87,13 +98,24 @@ ps2dev:
 		echo "[Project RYNO] ps2dev installed."; \
 	fi
 
+ee-gcc296: ps2dev
+	@if [ ! -f "$(EEGCC296_DIR)/ee296_statshim.so" ]; then \
+		echo "[Project RYNO] Downloading SCE ee-gcc 2.96..."; \
+		curl -L -o /tmp/ee-gcc2.96.tar.xz $(EEGCC296_URL) && \
+		$(MKDIR) -p $(EEGCC296_DIR) && \
+		tar -xJf /tmp/ee-gcc2.96.tar.xz -C $(EEGCC296_DIR) && \
+		rm /tmp/ee-gcc2.96.tar.xz && \
+		gcc -m32 -shared -fPIC -O2 -o $(EEGCC296_DIR)/ee296_statshim.so $(TOOLS)/ee296_statshim.c && \
+		echo "[Project RYNO] ee-gcc 2.96 installed."; \
+	fi
+
 dump:
 ifndef iso
 	$(error ISO is not set. Usage: make dump iso='/isos/SCUS_974.65.Ratchet Deadlocked.iso')
 endif
 	$(RATCHET_CLI) map export-executables --game DL --input "$(iso)" --output "$(ASSETS)" --boot-elf "$(CURDIR)/$(TARGET)" --output-iso "$(CURDIR)/$(BUILD_DIR)/new_$(GAME).iso"
 
-rom: ps2dev
+rom: ps2dev ee-gcc296
 	@echo "[Project RYNO] Extracting ROM only..."
 	$(PYTHON) $(TOOLS)/elf_to_rom.py $(ASSETS)/boot.elf $(CONFIG)/$(BASENAME).yaml $(CONFIG)/$(BASENAME).rom
 
@@ -130,6 +152,11 @@ $(OBJ_DIR)/%.o: code/%.s
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
+
+$(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
+	@$(MKDIR) -p $(dir $@)
+	$(EEGXX296) -S $(SVO3_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)

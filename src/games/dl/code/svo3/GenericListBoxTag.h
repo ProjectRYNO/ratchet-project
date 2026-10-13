@@ -13,7 +13,7 @@ typedef struct { // 0x84 (vtable prefix)
     /* 0x74 */ int (*getSelectedIndex)(GenericListBoxTagState *tag);
     /* 0x78 */ void *unknown78;
     /* 0x7C */ void (*changeSelectedItem)(GenericListBoxTagState *tag, int amount);
-    /* 0x80 */ long (*getIndexOfHandle)(GenericListBoxTagState *tag, svo_listbox_handle handle);
+    /* 0x80 */ int (*getIndexOfHandle)(GenericListBoxTagState *tag, svo_listbox_handle handle);
 } GenericListBoxTagVtablePrefix;
 
 struct GenericListBoxTagState { // 0xE4

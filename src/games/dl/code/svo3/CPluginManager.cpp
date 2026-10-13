@@ -32,7 +32,11 @@ void __SVO_Assert_Handler(const char *file, int line);
 #define PLUGIN_MANAGER_SECTION(name) __attribute__((section(".svo_plugin_manager_" #name)))
 
 // Retail tail-call wrappers await compact compiler output.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPluginManager", CPluginManager);
+void PLUGIN_MANAGER_SECTION(CPluginManager) CPluginManager(CPluginManagerState *manager)
+{
+    Initialize___dupe5(manager);
+    return;
+}
 
 void PLUGIN_MANAGER_SECTION(Initialize___dupe5) Initialize___dupe5(CPluginManagerState *manager)
 {
@@ -44,7 +48,7 @@ void PLUGIN_MANAGER_SECTION(Initialize___dupe5) Initialize___dupe5(CPluginManage
     manager->m_numPlugins = 0;
 }
 
-void PLUGIN_MANAGER_SECTION(Update___dupe112) Update___dupe112(CPluginManagerState *manager, long updateType)
+void PLUGIN_MANAGER_SECTION(Update___dupe112) Update___dupe112(CPluginManagerState *manager, int updateType)
 {
     for (int i = 0; i < manager->m_numPlugins; ++i) {
         CPluginBaseState *plugin = manager->m_pluginList[i];
@@ -78,4 +82,7 @@ void PLUGIN_MANAGER_SECTION(EmptyMessageQueue) EmptyMessageQueue(CPluginManagerS
         emptyMessageQueue(&manager->m_pluginList[i]->queue);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/CPluginManager", operator.new___dupe11);
+extern "C" SECTION(operator.new___dupe11) void * CPluginManageroperator_new___dupe11(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0xDD, svoPluginManagerSource);
+}

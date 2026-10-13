@@ -18,7 +18,7 @@ void SVO_SYSTEM_SECTION(EnterStaticScreen) EnterStaticScreen(
     __SVO_Assert_Handler(svoSystemContextSource, 0xE0);
 }
 
-long SVO_SYSTEM_SECTION(GetElapsedMS) GetElapsedMS(CSystemContextBase *context)
+int SVO_SYSTEM_SECTION(GetElapsedMS) GetElapsedMS(CSystemContextBase *context)
 {
     __SVO_Assert_Handler(svoSystemContextSource, 0xE7);
     return 0;

@@ -74,4 +74,7 @@ int MODULE_LIST_SECTION(AddTagModule) AddTagModule(SVTagModuleListState *list, S
 }
 
 // Same retail tail-jump allocator as SVChronograph; matching compiler work remains.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVTagModuleList", operator.new___dupe6);
+extern "C" SECTION(operator.new___dupe6) void * SVTagModuleListoperator_new___dupe6(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0x51, svoTagModuleListSource);
+}

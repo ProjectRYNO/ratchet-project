@@ -44,7 +44,7 @@ extern char svoLoginMaxLengthAttribute[];
 extern char svoLoginNameAttribute[];
 extern char svoLoginAccountIDName[];
 extern char *svoLoginResultNames[2];
-const void *DownloadBinary(DownloadBinaryState *);
+void DownloadBinary(DownloadBinaryState *);
 void _DownloadBinary(DownloadBinaryState *, int);
 void SetPath(DownloadBinaryState *, char *);
 void SetFormMethodType(DownloadBinaryState *, int);
@@ -59,11 +59,10 @@ void PushPostTransitionArray(CPage *, DownloadBinaryState *, DownloadBinaryState
 }
 #define SECTION(name) __attribute__((section(".svo_LoginTagModule_" #name)))
 
-SECTION(LoginTagModule) const SVTagModuleVtablePrefix *LoginTagModule(LoginTagModuleState *module)
+SECTION(LoginTagModule) void LoginTagModule(LoginTagModuleState *module)
 {
     module->m_bHaveUnhandledLoginResponse = 0;
     module->base.vtable = &svoLoginTagModuleVtable;
-    return &svoLoginTagModuleVtable;
 }
 
 }
@@ -71,7 +70,7 @@ SECTION(LoginTagModule) const SVTagModuleVtablePrefix *LoginTagModule(LoginTagMo
 extern "C" SECTION(_LoginTagModule) void _LoginTagModule(LoginTagModuleState *module, int flags)
 {
     module->base.vtable = &svoBaseTagModuleVtable;
-    if (flags & 1) LoginTagModuleDelete11(module);
+    if (flags & 1) { LoginTagModuleDelete11(module); return; }
 }
 
 extern "C" SECTION(FreeResources___dupe52) void FreeResources___dupe52(LoginTagModuleState *module)
@@ -115,7 +114,12 @@ extern "C" SECTION(operator.new___dupe12) void *LoginTagModuleNew(unsigned int s
     return memory;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LoginTagModule", ScanTags___dupe6);
+extern "C" SECTION(ScanTags___dupe6) void ScanTags___dupe6(LoginTagModuleState *module, iks *xml, SVTag **tags, CAllContextData *contexts, CTagModuleActions *actions)
+{
+    char *action = iks_find_attrib(xml, svoLoginDTDAttribute);
+    if (action) ScanTagsHandleLoginDTD(module, xml, contexts, action, actions);
+    if (!action) ScanTagsHandleLoginSubmitResponse(module, xml, contexts, actions);
+}
 
 extern "C" SECTION(ScanTagsHandleLoginDTD) void ScanTagsHandleLoginDTD(LoginTagModuleState *module, iks *xml, CAllContextData *contexts, char *action, CTagModuleActions *actions)
 {
@@ -170,7 +174,7 @@ extern "C" SECTION(ScanTagsHandleLoginSubmitResponse) void ScanTagsHandleLoginSu
     }
 }
 
-extern "C" SECTION(UnhandledLoginResponseExists) long UnhandledLoginResponseExists(LoginTagModuleState *module, int *result)
+extern "C" SECTION(UnhandledLoginResponseExists) int UnhandledLoginResponseExists(LoginTagModuleState *module, int *result)
 {
     if (!result) __SVO_Assert_Handler(svoLoginTagModuleSource, 0xB1);
     if (!module->m_bHaveUnhandledLoginResponse) return 0;

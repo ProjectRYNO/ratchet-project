@@ -63,19 +63,19 @@ SECTION(FreeResources___dupe9) void FreeResources___dupe9(void *self)
     // Retail implements this callback as a no-op.
 }
 
-SECTION(IsSelectable___dupe7) long IsSelectable___dupe7(void *self)
+SECTION(IsSelectable___dupe7) int IsSelectable___dupe7(void *self)
 {
     return 0;
 }
 
 }
 
-extern "C" SECTION(_SetVariableTag) void _SetVariableTag(SVTag *tag, unsigned long flags)
+extern "C" SECTION(_SetVariableTag) void _SetVariableTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoSetVariableTagVtable;
     FreeResources___dupe9((void *)tag);
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(DefaultInit___dupe6) char * DefaultInit___dupe6(SetVariableTagState *tag)
@@ -91,7 +91,21 @@ extern "C" SECTION(Draw___dupe11) void Draw___dupe11(SetVariableTagState *tag)
     if (!tag->base.m_contexts->drawContext) __SVO_Assert_Handler(svoSetVariableSource, 0x6C);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SetVariableTag", handleDownloadThrobber);
+extern "C" SECTION(handleDownloadThrobber) void handleDownloadThrobber(SetVariableTagState *tag)
+{
+    SVBrowserPrefix *browser = GetInstance();
+    if (!browser) __SVO_Assert_Handler(svoSetVariableSource, 0x82);
+    float x = 0;
+    if (getFloatAttrib(tag->base.m_xml, svoThrobberXAttribute, &x)) browser->m_downloadThrobberInfo.x = x;
+    float y = 0;
+    if (getFloatAttrib(tag->base.m_xml, svoThrobberYAttribute, &y)) browser->m_downloadThrobberInfo.y = y;
+    float width = 0;
+    if (getFloatAttrib(tag->base.m_xml, svoThrobberWAttribute, &width)) browser->m_downloadThrobberInfo.width = width;
+    float height = 0;
+    if (getFloatAttrib(tag->base.m_xml, svoThrobberHAttribute, &height)) browser->m_downloadThrobberInfo.height = height;
+    char *name = 0;
+    if (getStringAttrib(tag->base.m_xml, svoThrobberClassAttribute, &name)) browser->m_downloadThrobberInfo.tagClass = name;
+}
 
 extern "C" SECTION(handleHTTPSBuffers) void handleHTTPSBuffers(SetVariableTagState *tag)
 {
@@ -110,7 +124,7 @@ extern "C" SECTION(handleHTTPSendBuffer) void handleHTTPSendBuffer(SetVariableTa
     if (size != -1) SetSockSendBufferSize(size);
 }
 
-extern "C" SECTION(HandleInput___dupe37) long HandleInput___dupe37(SetVariableTagState *tag, CPage *page)
+extern "C" SECTION(HandleInput___dupe37) int HandleInput___dupe37(SetVariableTagState *tag, CPage *page)
 {
     CInputContextBaseState *input = tag->base.m_contexts->inputContext;
     if (!tag->base.m_xml) __SVO_Assert_Handler(svoSetVariableSource, 0x5D);
@@ -125,7 +139,7 @@ extern "C" SECTION(handleTTYDebugServerSetup) void handleTTYDebugServerSetup(Set
     if (!GetInstance()) __SVO_Assert_Handler(svoSetVariableSource, 0xB5);
     char *name = 0;
     int port = -1;
-    long found = getStringAttrib(tag->base.m_xml, svoTTYServerNameAttribute, &name);
+    int found = getStringAttrib(tag->base.m_xml, svoTTYServerNameAttribute, &name);
     getIntAttrib(tag->base.m_xml, svoTTYServerPortAttribute, &port);
     if (found && port != -1) {
         if (!GetInstance()) __SVO_Assert_Handler(svoSetVariableSource, 0xCB);
@@ -145,4 +159,5 @@ extern "C" SECTION(SetVariableTag) void SetVariableTag(SetVariableTagState *tag,
     handleHTTPSBuffers(tag);
     handleDownloadThrobber(tag);
     handleTTYDebugServerSetup(tag);
+    return;
 }

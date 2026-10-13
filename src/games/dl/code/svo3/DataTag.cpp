@@ -39,9 +39,9 @@ extern "C" {
 extern const SVTagVtablePrefix svoDataTagVtable;
 extern char svoDataTypeAttribute[];
 void DefaultInit___dupe21(DataTagState *);
-long getDataTypeAttrib(void *, iks *, char *, unsigned int *);
-long ParseURITag(DataTagState *, iks *);
-long ParseFileTag(DataTagState *, iks *);
+int getDataTypeAttrib(void *, iks *, char *, unsigned int *);
+int ParseURITag(DataTagState *, iks *);
+int ParseFileTag(DataTagState *, iks *);
 }
 #define SECTION(name) __attribute__((section(".svo_DataTag_" #name)))
 
@@ -50,7 +50,7 @@ SECTION(FreeResources___dupe46) void FreeResources___dupe46(SVTag *tag)
     FreeContexts(tag);
 }
 
-SECTION(okToNavigate___dupe3) long okToNavigate___dupe3(DataTagState *tag)
+SECTION(okToNavigate___dupe3) int okToNavigate___dupe3(DataTagState *tag)
 {
     return tag->m_bAllowNavigationDuringDownload;
 }
@@ -60,19 +60,27 @@ SECTION(okToNavigate___dupe3) long okToNavigate___dupe3(DataTagState *tag)
 extern "C" SECTION(_DataTag) void _DataTag(DataTagState *tag, int flags)
 {
     tag->base.vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(&tag->base);
+    if (flags & 1) { SVTagDelete(&tag->base); return; }
 }
 
-extern "C" SECTION(DataTag) void DataTag(DataTagState *tag, iks *xml, CAllContextData *contexts)
+SECTION(DataTag) DataTagState::DataTagState(iks *xml, CAllContextData *contexts)
 {
-    SVTagConstruct(&tag->base, xml, contexts);
-    tag->base.vtable = &svoDataTagVtable;
-    DefaultInit___dupe21(tag);
-    getDataTypeAttrib(tag, xml, svoDataTypeAttribute, (unsigned int *)&tag->m_dataTagType);
-    int type = tag->m_dataTagType;
-    if (type >= 0 && type < 2) ParseURITag(tag, xml);
-    else if (type == 2) ParseFileTag(tag, xml);
-    else __SVO_Assert_Handler(svoDataTagSource, 0x32);
+    SVTagConstruct(&base, xml, contexts);
+    base.vtable = &svoDataTagVtable;
+    DefaultInit___dupe21(this);
+    getDataTypeAttrib(this, xml, svoDataTypeAttribute, (unsigned int *)&m_dataTagType);
+    switch (m_dataTagType) {
+    case 0:
+    case 1:
+        ParseURITag(this, xml);
+        break;
+    case 2:
+        ParseFileTag(this, xml);
+        break;
+    default:
+        __SVO_Assert_Handler(svoDataTagSource, 0x32);
+        break;
+    }
 }
 
 extern "C" SECTION(DefaultInit___dupe21) void DefaultInit___dupe21(DataTagState *tag)
@@ -81,9 +89,21 @@ extern "C" SECTION(DefaultInit___dupe21) void DefaultInit___dupe21(DataTagState 
     tag->m_bAllowNavigationDuringDownload = 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DataTag", getDataTypeAttrib);
+extern "C" SECTION(getDataTypeAttrib) int getDataTypeAttrib(void *tag, iks *xml, char *name, unsigned int *value)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text) {
+        for (int i = 0; i < 3; i++) {
+            if (!strcmp(text, _data_type_strings[i])) {
+                *value = i;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
-extern "C" SECTION(ParseFileTag) long ParseFileTag(DataTagState *tag, iks *xml)
+extern "C" SECTION(ParseFileTag) int ParseFileTag(DataTagState *tag, iks *xml)
 {
     char *id = iks_find_attrib(xml, svoDataIDAttribute);
     char *src = iks_find_attrib(xml, svoDataSrcAttribute);
@@ -103,7 +123,7 @@ extern "C" SECTION(ParseFileTag) long ParseFileTag(DataTagState *tag, iks *xml)
     return 1;
 }
 
-extern "C" SECTION(ParseURITag) long ParseURITag(DataTagState *tag, iks *xml)
+extern "C" SECTION(ParseURITag) int ParseURITag(DataTagState *tag, iks *xml)
 {
     char *id = iks_find_attrib(xml, svoDataIDAttribute);
     char *uri = iks_find_attrib(xml, svoDataURIAttribute);

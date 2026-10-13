@@ -33,13 +33,14 @@ SECTION(PageRequestListener) void PageRequestListener(PageRequestListenerState *
     listener->m_pMemoryContext = memory;
     listener->m_pBodyData = 0;
     Reset___dupe6(listener);
+    return;
 }
 
 SECTION(_PageRequestListener) void _PageRequestListener(PageRequestListenerState *listener, int flags)
 {
     listener->vtable = svoPageRequestListenerVtable;
     Reset___dupe6(listener);
-    if (flags & 1) PageRequestListenerDelete(listener);
+    if (flags & 1) { PageRequestListenerDelete(listener); return; }
 }
 
 SECTION(operator.delete___dupe14) void PageRequestListenerDelete(PageRequestListenerState *listener)

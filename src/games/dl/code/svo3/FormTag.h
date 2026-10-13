@@ -43,5 +43,6 @@ struct FormTag { // 0x69EC
     /* 0x67E8 */ SelectTagState *m_selectElements[64];
     /* 0x68E8 */ TextAreaTagState *m_textAreaElements[64];
     /* 0x69E8 */ FormChildrenInfo_t *m_pChildrenInfoList;
+    FormTag(iks *xml, CAllContextData *contexts) __asm__("FormTag");
 };
 #endif

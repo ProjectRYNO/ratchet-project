@@ -81,7 +81,10 @@ void STORE_SECTION(setURIProps) setURIProps(URIEntryState *entry, char *lookup, 
 }
 
 // Retail tail-jump allocator awaits compact compiler output.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVURIStore", operator.new___dupe10);
+extern "C" SECTION(operator.new___dupe10) void * SVURIStoreoperator_new___dupe10(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0x4A, svoURIStoreSource);
+}
 
 STORE_SECTION(URIStore) void *URIStore(URIStoreState *store)
 {

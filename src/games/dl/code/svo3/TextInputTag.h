@@ -35,7 +35,9 @@ struct TextInputTagState { // 0x514
 
 typedef struct { // 0x80 (vtable prefix)
     /* 0x00 */ SVTagVtablePrefix base;
-    /* 0x4C */ unsigned char unrecovered4C[0x30];
+    /* 0x4C */ unsigned char unrecovered4C[0x28];
+    /* 0x74 */ void (*defaultInit)(TextInputTagState *, iks *, SVTag **, CAllContextData *);
+    /* 0x78 */ void (*registerWithForm)(TextInputTagState *, iks *, SVTag **);
     /* 0x7C */ float (*getSubstringPixelWidth)(TextInputTagState *, int, int);
 } TextInputTagVtablePrefix;
 #endif

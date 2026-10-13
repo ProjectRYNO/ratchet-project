@@ -36,7 +36,7 @@ typedef struct { // 0x3C (vtable prefix, not the full table)
     /* 0x2C */ void *unknown2C;
     /* 0x30 */ void (*FileDownloadCallback)(CSystemContextBase *, CFileDownloadInfo *);
     /* 0x34 */ void *unknown34;
-    /* 0x38 */ long (*GetElapsedMS)(CSystemContextBase *context);
+    /* 0x38 */ int (*GetElapsedMS)(CSystemContextBase *context);
 } CSystemContextVtablePrefix;
 
 struct CSystemContextBase { // 0x14
@@ -47,7 +47,7 @@ struct CSystemContextBase { // 0x14
 extern "C" {
 void FileDownloadCallback(CSystemContextBase *context, CFileDownloadInfo *info);
 void EnterStaticScreen(CSystemContextBase *context, char *screenName);
-long GetElapsedMS(CSystemContextBase *context);
+int GetElapsedMS(CSystemContextBase *context);
 int OkToFreeFileDownloadBuffer(CSystemContextBase *context, void *data);
 CSystemContextBase *GetSystemContext(void);
 }

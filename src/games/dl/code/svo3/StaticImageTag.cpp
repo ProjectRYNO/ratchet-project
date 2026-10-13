@@ -49,15 +49,25 @@ SECTION(FreeResources___dupe20) void FreeResources___dupe20(SVTag *tag)
     FreeContexts(tag);
 }
 
-long IsSelectable___dupe12(SVTag *tag);
-extern "C" SECTION(IsSelectable___dupe12) long IsSelectable___dupe12(SVTag *tag)
+int IsSelectable___dupe12(SVTag *tag);
+extern "C" SECTION(IsSelectable___dupe12) int IsSelectable___dupe12(SVTag *tag)
 {
     return (tag->m_bSelectable != 0) & ((unsigned int)tag != 0xFFFFFF4Cu);
 }
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/StaticImageTag", DefaultInit___dupe11);
+extern "C" SECTION(DefaultInit___dupe11) char *DefaultInit___dupe11(StaticImageTagState *self)
+{
+    svstrncpy(self->base.m_tagTypeName, svoStaticImageTagName, 64);
+    memset(self->m_link, 0, 128);
+    self->m_index = -1;
+    self->base.m_fillColor = 0xFFFFFFFF;
+    self->base.m_lineColor = 0xFF000000;
+    self->m_imageWidth = 0;
+    self->m_imageHeight = 0;
+    return svstrncpy(self->m_imageName, svoStaticImageUnsetName, 32);
+}
 
 extern "C" SECTION(Draw___dupe15) void Draw___dupe15(StaticImageTagState *self)
 {

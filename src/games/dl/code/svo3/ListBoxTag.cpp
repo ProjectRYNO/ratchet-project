@@ -82,15 +82,15 @@ SECTION(SetExternalDrawFunction) void SetExternalDrawFunction(ListBoxTagState *t
 
 }
 
-extern "C" SECTION(_ListBoxTag) void _ListBoxTag(SVTag *tag, unsigned long flags)
+extern "C" SECTION(_ListBoxTag) void _ListBoxTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoListBoxTagVtable;
     FreeResources___dupe48((ListBoxTagState *)tag);
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
-extern "C" SECTION(addItem) long addItem(ListBoxTagState *tag, char *itemName)
+extern "C" SECTION(addItem) int addItem(ListBoxTagState *tag, char *itemName)
 {
     if (!itemName) __SVO_Assert_Handler(svoListBoxTagSource, 0x253);
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x254);
@@ -160,7 +160,7 @@ extern "C" SECTION(clearItems) void clearItems(ListBoxTagState *tag)
     tag->m_topVisibleIndex = 0;
 }
 
-extern "C" SECTION(countItems) long countItems(ListBoxTagState *tag)
+extern "C" SECTION(countItems) int countItems(ListBoxTagState *tag)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x163);
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x164);
@@ -189,7 +189,7 @@ extern "C" SECTION(DefaultInit___dupe22) void DefaultInit___dupe22(ListBoxTagSta
     vtable->clearItems(tag);
 }
 
-extern "C" SECTION(deleteItem) long deleteItem(ListBoxTagState *tag, int index)
+extern "C" SECTION(deleteItem) int deleteItem(ListBoxTagState *tag, int index)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x273);
     int count = tag->m_numItems;
@@ -222,7 +222,7 @@ extern "C" SECTION(Draw___dupe25) void Draw___dupe25(ListBoxTagState *tag)
     if (tag->m_maxVisibleItems < count) count = tag->m_maxVisibleItems;
     tag->m_scrollBarPercentage = calculateScrollBarPercentage(tag);
     float fraction = (float)count / (float)((const ListBoxTagVtablePrefix *)tag->base.vtable)->countItems(tag);
-    long active = tag->base.vtable->IsSelected(&tag->base);
+    int active = tag->base.vtable->IsSelected(&tag->base);
     draw->vtable->DrawListBox(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
         tag->base.m_z, tag->base.m_width, tag->base.m_height, tag->base.m_lineColor,
         tag->base.m_fillColor, tag->m_scrollBarPercentage, fraction, active, tag->base.m_tagClass);
@@ -261,7 +261,7 @@ extern "C" SECTION(getItem) ListBoxItem * getItem(ListBoxTagState *tag, int inde
     return tag->m_items[index];
 }
 
-extern "C" SECTION(getNumVisibleRows) long getNumVisibleRows(ListBoxTagState *tag)
+extern "C" SECTION(getNumVisibleRows) int getNumVisibleRows(ListBoxTagState *tag)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x2aa);
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x2ab);
@@ -269,7 +269,7 @@ extern "C" SECTION(getNumVisibleRows) long getNumVisibleRows(ListBoxTagState *ta
     return tag->m_maxVisibleItems;
 }
 
-extern "C" SECTION(getSelectedIndex) long getSelectedIndex(ListBoxTagState *tag)
+extern "C" SECTION(getSelectedIndex) int getSelectedIndex(ListBoxTagState *tag)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x287);
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x288);
@@ -277,9 +277,19 @@ extern "C" SECTION(getSelectedIndex) long getSelectedIndex(ListBoxTagState *tag)
     return tag->m_selectedIndex;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", getSelectedItem);
+extern "C" SECTION(getSelectedItem) ListBoxItem *getSelectedItem(ListBoxTagState *tag)
+{
+    if (tag->m_numItems) {
+        if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x190);
+        if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x191);
+        if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x192);
+        if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x193);
+        return tag->m_items[tag->m_selectedIndex];
+    }
+    return 0;
+}
 
-extern "C" SECTION(getTopVisibleIndex) long getTopVisibleIndex(ListBoxTagState *tag)
+extern "C" SECTION(getTopVisibleIndex) int getTopVisibleIndex(ListBoxTagState *tag)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x29a);
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x29b);
@@ -373,11 +383,35 @@ extern "C" SECTION(ListBoxTag) void ListBoxTag(ListBoxTagState *tag, iks *xml, C
     SVChronograph(timer, 0);
     tag->m_pTimer = timer;
     Start___dupe3(timer);
+    return;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/ListBoxTag", populateListboxItems);
+extern "C" SECTION(populateListboxItems) void populateListboxItems(ListBoxTagState *tag)
+{
+    iks *nodes[100];
+    if (!iks_has_children(tag->base.m_xml)) __SVO_Assert_Handler(svoListBoxTagSource, 0x208);
+    iks_child(tag->base.m_xml);
+    int count = getChildIksStructList(tag->base.m_xml, svoListBoxItemName, nodes, 100);
+    for (int i = 0; i < count; ++i) {
+        iks *xml = nodes[i];
+        tag->m_items[i] = (ListBoxItem *)svAllocSafe(tag->base.m_contexts->memoryContext, sizeof(ListBoxItem), 0, 0x214, svoListBoxTagSource);
+        initListboxItem(tag, tag->m_items[i]);
+        tag->m_items[i]->displayStr = iks_cdata(iks_child(xml));
+        tag->m_items[i]->h_ref = iks_find_attrib(xml, svoListBoxHrefAttribute);
+        tag->m_items[i]->tagClass = iks_find_attrib(xml, svoListBoxClassAttribute);
+        if (!tag->m_items[i]->tagClass) tag->m_items[i]->tagClass = svoListBoxDefaultItemClass;
+        tag->m_items[i]->name = iks_find_attrib(xml, svoListBoxNameAttribute);
+        if (!tag->m_items[i]->name) __SVO_Assert_Handler(svoListBoxTagSource, 0x227);
+        tag->m_items[i]->tagid = svoNextTagId++;
+        if (tag->m_items[i]->h_ref) {
+            decodeEntityText(tag->m_items[i]->h_ref);
+            getLinkOptionAttrib(xml, svoListBoxLinkOptionAttribute, &tag->m_items[i]->linkOption);
+        }
+    }
+    tag->m_numItems = count;
+}
 
-extern "C" SECTION(replaceItem) long replaceItem(ListBoxTagState *tag, ListBoxItem *item, int index)
+extern "C" SECTION(replaceItem) int replaceItem(ListBoxTagState *tag, ListBoxItem *item, int index)
 {
     if (!tag->m_numItems) return 0;
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x1a0);
@@ -389,7 +423,7 @@ extern "C" SECTION(replaceItem) long replaceItem(ListBoxTagState *tag, ListBoxIt
     return 1;
 }
 
-extern "C" SECTION(selectIndex) long selectIndex(ListBoxTagState *tag, int index)
+extern "C" SECTION(selectIndex) int selectIndex(ListBoxTagState *tag, int index)
 {
     if (!tag->m_numItems) return 0;
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x1b3);

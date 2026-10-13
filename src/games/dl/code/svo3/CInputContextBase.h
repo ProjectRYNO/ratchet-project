@@ -38,7 +38,7 @@ typedef struct { // 0x4C (verified vtable prefix)
     /* 0x04 */ void *unknown04;
     /* 0x08 */ void *unknown08;
     /* 0x0C */ int (*IsButtonDown)(CInputContextBaseState *, unsigned int, unsigned short);
-    /* 0x10 */ long (*SetButtonMapForPage)(CInputContextBaseState *, char *);
+    /* 0x10 */ int (*SetButtonMapForPage)(CInputContextBaseState *, char *);
     /* 0x14 */ int (*LeftHorizontal)(CInputContextBaseState *, unsigned int);
     /* 0x18 */ int (*RightHorizontal)(CInputContextBaseState *, unsigned int);
     /* 0x1C */ int (*LeftVertical)(CInputContextBaseState *, unsigned int);
@@ -48,7 +48,7 @@ typedef struct { // 0x4C (verified vtable prefix)
     /* 0x30 */ void (*HandleVKBInput)(CInputContextBaseState *, void *);
     /* 0x34 */ unsigned char unrecovered34[0x0C];
     /* 0x40 */ void (*ResetKeyboardInput)(CInputContextBaseState *);
-    /* 0x44 */ void *unknown44;
+    /* 0x44 */ int (*WrapSelections)(CInputContextBaseState *);
     /* 0x48 */ void (*GetScreenDimensions)(CInputContextBaseState *, float *, float *, float *, float *);
 } CInputContextVtablePrefix;
 

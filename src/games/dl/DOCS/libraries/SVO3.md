@@ -1,10 +1,13 @@
 # SVO3 library
 
-## Current scope (2026-10-09)
+## Current scope (2026-10-13)
 
-SVO3 is **not fully decompiled**. The corrected source inventory has 935 functions
-across 97 files: **842 compiled C/C++ functions (90.1%) and 93 INCLUDE_ASM entries**.
-57 translation units are entirely free of INCLUDE_ASM; 40 still contain assembly.
+The source inventory has 935 slots across 97 files: **934 compiled C/C++ functions;
+603 byte-exact and 331 nonmatching that fit their original slots**. The one remaining
+INCLUDE_ASM (`PageRequestListener func_01F27658`) is padding, not a function. SVO3 now
+builds with SCE ee-gcc 2.96-ee-001003-1 (DECISIONS.md K07); see the
+[handoff](SVO3_HANDOFF.md) for toolchain, patterns and validation. Strict whole-ELF
+matching is unfinished and behavior suites were deferred.
 This inventory includes dotted operator symbols previously missed by the tracker.
 The table below describes earlier batches; subsequent batches are recorded below.
 
@@ -935,3 +938,32 @@ and populateListboxItems (0x1CC/0x1C4), GridTag CalculateGridHeight (0xB0/0xA8)
 and HandleColumnShuffling (0x130/0x12C). Source bodies are preserved in
 SVO3_GRID_LIST_SLOT_BLOCKERS.md. Earlier blocker documents are historical;
 consult current source before repeating experiments.
+
+
+## Download/page/text/grid continuation (2026-10-12)
+
+**861/935 (92.1%) compiled; 74 INCLUDE_ASM entries remain.** Adds 19 C/C++ replacements:
+six SVDownloadManager functions, SVFileDownloadQueue find, CPage requestBinary,
+SVBrowser Initialize, four attribute-list parsers, the TextTag constructor/Draw/
+IsSelectable, and the TextAreaTag, TextInputTag InitialiseFromXml and GridTag
+constructors. 97 retail globals and three instruction-confirmed header fields were
+recovered; see the [handoff](SVO3_HANDOFF.md) for evidence and validation.
+
+Eight further recovered bodies overrun their slots and remain assembly. The main
+remaining obstacle is the compiler: ps2dev ee-gcc 3.2.3 never emits MIPS tail calls,
+while 29 of the remaining retail functions end in one. See
+[SVO3_TAIL_CALL_BLOCKERS.md](SVO3_TAIL_CALL_BLOCKERS.md).
+
+Forced build, slot audit (101,803 changed bytes inside slots), layout and global checks
+PASS. Strict comparison remains NONMATCH; behavior and gameplay tests were deferred.
+
+
+## Toolchain switch and completion batch (2026-10-13)
+
+**934/935 compiled; 603 byte-exact, 331 fit.** SVO3 moved to SCE ee-gcc 2.96 with its
+bundled assembler, which reproduces retail sibling calls, register allocation and
+branch-likely use. The tail-call blockers below are resolved. The final batch adds
+SVDownloadManager `draw___dupe2`, FormTag `Submit`, GridTag `Draw___dupe23` and
+`FindAndSetSelectedCell`, CQueryParams `toString`, and if-chain versions of the two
+jump-table functions (CPage `setPageState`, TextAreaTag `handleSpecialKeys`). Those two
+are nonmatching until rodata slots are supported. Details: [SVO3_HANDOFF.md](SVO3_HANDOFF.md).

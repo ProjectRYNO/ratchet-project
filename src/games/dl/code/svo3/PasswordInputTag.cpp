@@ -31,7 +31,11 @@ void InitialiseFromXml(TextInputTagState *, iks *, SVTag **, CAllContextData *);
             ".set reorder\n.set at\n.text\n")
 #endif
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PasswordInputTag", defaultInit___dupe2);
+extern "C" SECTION(defaultInit___dupe2) char *defaultInit___dupe2(TextInputTagState *tag)
+{
+    defaultInit(tag);
+    return svstrncpy(tag->base.m_tagTypeName, svoPasswordInputTagName, 64);
+}
 
 extern "C" SECTION(PasswordInputTag) void PasswordInputTag(TextInputTagState *tag, iks *xml, SVTag **tags, CAllContextData *contexts)
 {

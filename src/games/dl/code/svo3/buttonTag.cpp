@@ -77,12 +77,12 @@ SECTION(FreeResources___dupe5) void FreeResources___dupe5(void *self)
 
 }
 
-extern "C" SECTION(_ButtonTag) void _ButtonTag(SVTag *tag, unsigned long flags)
+extern "C" SECTION(_ButtonTag) void _ButtonTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoButtonTagVtable;
     FreeResources___dupe5((void *)tag);
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(ButtonTag) void ButtonTag(ButtonTagState *self, iks *xml, CAllContextData *contexts)

@@ -8,21 +8,20 @@ extern char svoParseSVMLAddObjectsCheckString[];
 SECTION(_ParseXML) void _ParseXML(ParseXMLState *parser, int flags)
 {
     parser->vtable = svoParseXMLVtable;
-    if (flags & 1) SvoBuiltinDelete(parser);
+    if (flags & 1) { SvoBuiltinDelete(parser); return; }
 }
 
-SECTION(ParseSVMLAddObjects) const void *ParseSVMLAddObjects(ParseXMLState *parser)
+SECTION(ParseSVMLAddObjects) void ParseSVMLAddObjects(ParseXMLState *parser)
 {
     ParseXML(parser);
     parser->vtable = svoParseSVMLAddObjectsVtable;
-    return svoParseSVMLAddObjectsVtable;
 }
 
 SECTION(_ParseSVMLAddObjects) void _ParseSVMLAddObjects(ParseXMLState *parser, int flags)
 {
     parser->vtable = svoParseSVMLAddObjectsVtable;
     _ParseXML(parser, 0);
-    if (flags & 1) SvoBuiltinDelete(parser);
+    if (flags & 1) { SvoBuiltinDelete(parser); return; }
 }
 
 SECTION(ShouldFreeResources) int ShouldFreeResources(ParseXMLState *parser)

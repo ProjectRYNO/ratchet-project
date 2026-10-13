@@ -131,3 +131,6 @@ Text-area/select/image continuation: **797/935 (85.2%) compiled; 138 INCLUDE_ASM
 
 
 Browser/page/grid/list/login continuation: **842/935 (90.1%) compiled; 93 INCLUDE_ASM entries remain**. Forced build, slot audit, layout and globals pass. Strict comparison remains NONMATCH; gameplay untested.
+
+
+Download/page/text/grid continuation: **861/935 (92.1%) compiled; 74 INCLUDE_ASM entries remain**. Forced build, slot audit, layout and globals pass. Strict comparison remains NONMATCH; gameplay untested. Remaining tail-call functions cannot fit with ee-gcc 3.2.3; see SVO3_TAIL_CALL_BLOCKERS.md.

@@ -14,6 +14,7 @@
 #endif
 
 #include "SVTag.h"
+#include "CDrawContextBase.h"
 
 extern "C" {
 
@@ -23,14 +24,43 @@ extern char svoVersionMessage[];
 
 #define SECTION(name) __attribute__((section(".svo_SVO_DBG_" #name)))
 
-SECTION(sv_connect_to_log_server) long sv_connect_to_log_server(void *memory, char *serverName, int port)
+SECTION(sv_connect_to_log_server) int sv_connect_to_log_server(void *memory, char *serverName, int port)
 {
     return 0;
 }
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVO_DBG", __SVO_Assert_Handler);
+extern "C" {
+extern int svoAssertTrip;
+extern char svoAssertMessage[];
+extern char svoAssertMessageFormat[];
+extern char svoAssertBanner[];
+extern char svoAssertLineFormat[];
+extern char svoAssertFooter[];
+void cleanFileString(char *text);
+CDrawContextBase *GetDrawContext(void);
+}
+extern "C" SECTION(__SVO_Assert_Handler) void __SVO_Assert_Handler(const char *file, int line)
+{
+    char localFile[256];
+    char *message = svoAssertMessage;
+    svoAssertTrip = 1;
+    strncpy(localFile, file, 0xFF);
+    cleanFileString(localFile);
+    sprintf(message, svoAssertMessageFormat, localFile, line);
+    CDrawContextBase *draw = GetDrawContext();
+    if (draw) {
+        if (draw->vtable->RenderAssert(draw, message)) return;
+        for (;;) {
+        }
+    }
+    printf(svoAssertBanner);
+    printf(svoAssertLineFormat, localFile, line);
+    printf(svoAssertFooter);
+    for (;;) {
+    }
+}
 
 extern "C" SECTION(cleanFileString) void cleanFileString(char *text)
 {

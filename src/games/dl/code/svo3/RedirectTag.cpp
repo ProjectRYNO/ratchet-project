@@ -16,17 +16,17 @@ TAG_SECTION(DefaultInit___dupe20) void DefaultInit___dupe20(RedirectTagState *ta
     tag->m_alreadyRedirected = 0;
 }
 
-TAG_SECTION(RedirectTag) void RedirectTag(RedirectTagState *tag, iks *xml, CAllContextData *contexts)
+TAG_SECTION(RedirectTag) RedirectTagState::RedirectTagState(iks *xml, CAllContextData *contexts)
 {
-    SVTagConstruct(&tag->base, xml, contexts);
-    tag->base.vtable = &svoRedirectTagVtable;
-    DefaultInit___dupe20(tag);
-    tag->m_link = iks_find_attrib(tag->base.m_xml, svoRedirectLinkAttribute);
-    if (tag->m_link) {
-        tag->base.m_bSelectable = 1;
-        decodeEntityText(tag->m_link);
+    SVTagConstruct(&base, xml, contexts);
+    base.vtable = &svoRedirectTagVtable;
+    DefaultInit___dupe20(this);
+    m_link = iks_find_attrib(base.m_xml, svoRedirectLinkAttribute);
+    if (m_link) {
+        base.m_bSelectable = 1;
+        decodeEntityText(m_link);
     } else {
-        tag->base.m_bSelectable = 0;
+        base.m_bSelectable = 0;
     }
 }
 

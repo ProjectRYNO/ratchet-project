@@ -28,10 +28,16 @@ TAG_SECTION(DefaultInit___dupe25) void DefaultInit___dupe25(SVTag *tag)
 TAG_SECTION(_BrowserInitTag) void _BrowserInitTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/BrowserInitTag", BrowserInitTag);
+TAG_SECTION(BrowserInitTag) void BrowserInitTag(SVTag *tag, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(tag, xml, contexts);
+    tag->vtable = &svoBrowserInitTagVtable;
+    DefaultInit___dupe25(tag);
+    return;
+}
 
 TAG_SECTION(Update___dupe113) void Update___dupe113(SVTag *tag, CPage *page)
 {

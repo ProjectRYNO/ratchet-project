@@ -46,13 +46,12 @@ int ParseCreateGameParamsXML(CreateGameTagModuleState *, iks *);
 }
 #define SECTION(name) __attribute__((section(".svo_CreateGameTagModule_" #name)))
 
-SECTION(CreateGameTagModule) const SVTagModuleVtablePrefix *CreateGameTagModule(CreateGameTagModuleState *module)
+SECTION(CreateGameTagModule) void CreateGameTagModule(CreateGameTagModuleState *module)
 {
     module->m_SVOGameID = 0;
     module->base.vtable = &svoCreateGameTagModuleVtable;
     module->m_createGameParamStrPtrs = 0;
     module->m_createGameNumOfParams = 0;
-    return &svoCreateGameTagModuleVtable;
 }
 
 SECTION(BuildTag___dupe26) void BuildTag___dupe26(CreateGameTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
@@ -67,7 +66,7 @@ extern "C" SECTION(_CreateGameTagModule) void _CreateGameTagModule(CreateGameTag
     module->base.vtable = &svoCreateGameTagModuleVtable;
     if (module->m_createGameParamStrPtrs) svFreeSafe(GetMemoryContext(), module->m_createGameParamStrPtrs);
     module->base.vtable = &svoBaseTagModuleVtable;
-    if (flags & 1) CreateGameTagModuleDelete13(module);
+    if (flags & 1) { CreateGameTagModuleDelete13(module); return; }
 }
 
 extern "C" SECTION(FreeResources___dupe55) void FreeResources___dupe55(CreateGameTagModuleState *module)
@@ -162,12 +161,12 @@ extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleSt
         iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
         if (!status) {
             if (!ParseCreateGameParamsXML(module, xml)) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x7B);
-        } else {
+        }
+        if (status) {
             int result = GetCreateGameSubmitResponse(module, status);
             iks *id = getChildIksStruct(xml, svoCreateGameIDName);
             if (id) module->m_SVOGameID = atoi(iks_cdata(iks_child(id)));
-            CSystemContextBase *system = contexts->systemContext;
-            system->vtable->HandleCreateGameResponse(system, result);
+            contexts->systemContext->vtable->HandleCreateGameResponse(contexts->systemContext, result);
         }
     } else if (!strcmp(iks_name(xml), svoGamePlayerName)) {
         int result = 1;
@@ -176,7 +175,8 @@ extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleSt
             iks *id = getChildIksStruct(status, svoCreateGameStatusIDName);
             if (id) result = atoi(iks_cdata(iks_child(id))) != 0x4FC6;
         }
-        CSystemContextBase *system = contexts->systemContext;
-        system->vtable->HandleJoinGameResponse(system, result);
-    } else __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xA1);
+        contexts->systemContext->vtable->HandleJoinGameResponse(contexts->systemContext, result);
+    } else {
+        __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xA1);
+    }
 }

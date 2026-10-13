@@ -11,6 +11,16 @@ void __SVO_Assert_Handler(const char *file, int line);
 void __builtin_delete(void *memory);
 }
 #define SVO_QUERY_SECTION(name) __attribute__((section(".svo_query_" #name)))
+#include "common.h"
+// Keep unreplaced assembly in its original function slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .svo_query_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
 
 SVO_QUERY_SECTION(CQueryParamList) void *CQueryParamList(CQueryParamListState *list)
 {
@@ -21,26 +31,26 @@ void SVO_QUERY_SECTION(_CQueryParamList) _CQueryParamList(
     CQueryParamListState *list, unsigned int flags)
 {
     // Retail does not implicitly free the parameter strings here.
-    if (flags & 1) __builtin_delete(list);
+    if (flags & 1) { __builtin_delete(list); return; }
 }
 
 int SVO_QUERY_SECTION(toString) toString(CQueryParamListState *list, char *text, int capacity)
 {
-    memset(text, 0, capacity);
+    unsigned int i = 0;
     char *cursor = text;
-    for (unsigned int i = 0; i < 128; ++i) {
-        CQueryParam *param = &list->m_params[i];
-        if (!param->key || !param->value) break;
+    memset(text, 0, capacity);
+    do {
+        if (!list->m_params[i].key) break;
+        if (!list->m_params[i].value) break;
         if (cursor != text) *cursor++ = '&';
-        cursor += escapeString(param->key, cursor, capacity - (cursor - text));
+        cursor += escapeString(list->m_params[i].key, cursor, capacity - (cursor - text));
         *cursor++ = '=';
-        cursor += escapeString(param->value, cursor, capacity - (cursor - text));
+        cursor += escapeString(list->m_params[i].value, cursor, capacity - (cursor - text));
         if (cursor - text > capacity) {
             __SVO_Assert_Handler(svoQueryParamsSource, 0x4F);
             return 0;
         }
-    }
-    // Successful serialization consumes the list, using the current memory context.
+    } while (++i < 128);
     FreeAll(list, 0);
     return 1;
 }

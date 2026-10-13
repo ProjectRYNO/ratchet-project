@@ -19,7 +19,7 @@ void SVO_MEMORY_SECTION(_CMemoryContextBase) _CMemoryContextBase(
 {
     context->vtable = &svoMemoryContextVtable;
     Cleanup(context);
-    if (flags & 1) __builtin_delete(context);
+    if (flags & 1) { __builtin_delete(context); return; }
 }
 
 void SVO_MEMORY_SECTION(CMemoryContextBase) CMemoryContextBase(CMemoryContextBaseState *context)

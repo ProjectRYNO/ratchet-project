@@ -6,18 +6,17 @@ extern const unsigned char svoDownloadBinaryVtable[];
 void DownloadBinaryDelete(void *memory) __asm__("operator.delete___dupe10");
 #define SECTION(name) __attribute__((section(".svo_DownloadBinary_" #name)))
 
-SECTION(DownloadBinary) const void *DownloadBinary(DownloadBinaryState *record)
+SECTION(DownloadBinary) void DownloadBinary(DownloadBinaryState *record)
 {
     record->bDestroyWhenRequestSent = 0;
     record->vtable = svoDownloadBinaryVtable;
     record->eMethod = 0;
-    return svoDownloadBinaryVtable;
 }
 
 SECTION(_DownloadBinary) void _DownloadBinary(DownloadBinaryState *record, int flags)
 {
     record->vtable = svoDownloadBinaryVtable;
-    if (flags & 1) DownloadBinaryDelete(record);
+    if (flags & 1) { DownloadBinaryDelete(record); return; }
 }
 
 SECTION(GetPath) char * GetPath(DownloadBinaryState *record)

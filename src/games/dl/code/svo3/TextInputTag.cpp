@@ -1,3 +1,4 @@
+#include "TagUtils.h"
 #include "CPage.h"
 #include "SVBrowser.h"
 #include "TextEditableTag.h"
@@ -43,7 +44,7 @@ extern "C" {
 }
 int Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
 void ShowVKB(SVBrowserPrefix *, SVTag *);
-long GetVisible(SVTag *);
+int GetVisible(SVTag *);
 void drawCursor(TextInputTagState *, CDrawContextBase *, int);
 void handleSpecialKeys___dupe2(TextInputTagState *, unsigned char);
 void scrollTextLeftToFillWindow(TextInputTagState *);
@@ -57,6 +58,29 @@ extern char svoTextInputSmoothScroll[];
 
 void SignalPluginEvent(SVBrowserPrefix *, int, SVTag *);
 void scrollTextRightToFillWindow(TextInputTagState *);
+extern "C" {
+extern char svoTextInputFillColorAttribute[];
+extern char svoTextInputLineColorAttribute[];
+extern char svoTextInputTextColorAttribute[];
+extern char svoTextInputHighlightFillColorAttribute[];
+extern char svoTextInputHighlightLineColorAttribute[];
+extern char svoTextInputHighlightTextColorAttribute[];
+extern char svoTextInputFontSizeAttribute[];
+extern char svoTextInputClassAttribute[];
+extern char svoTextInputMaxLengthAttribute[];
+extern char svoTextInputValueAttribute[];
+extern char svoTextInputOptionalAttribute[];
+extern char svoTextInputYesValue[];
+extern char svoTextInputBlinkCursorAttribute[];
+extern char svoTextInputTrueValue[];
+extern char svoTextInputReadOnlyAttribute[];
+extern char svoTextInputEditableAttribute[];
+extern char svoTextInputFalseValue[];
+extern char svoTextInputSelectableAttribute[];
+extern char svoTextInputDefaultTextEntryAttribute[];
+extern char svoTextInputSubmitAsEncryptedAttribute[];
+extern char svoTextInputRequiredForPostAttribute[];
+}
 #define SECTION(name) __attribute__((section(".svo_TextInputTag_" #name)))
 
 SECTION(FreeResources___dupe23) void FreeResources___dupe23(SVTag *tag)
@@ -69,12 +93,12 @@ SECTION(Draw___dupe17) void Draw___dupe17(TextInputTagState *tag)
     DrawImpl(tag, tag->m_text);
 }
 
-SECTION(GetMaxLengthUTF8Chars___dupe2) long GetMaxLengthUTF8Chars___dupe2(TextInputTagState *tag)
+SECTION(GetMaxLengthUTF8Chars___dupe2) int GetMaxLengthUTF8Chars___dupe2(TextInputTagState *tag)
 {
     return tag->m_maxLengthUTF8Chars;
 }
 
-SECTION(GetMaxLengthBytes___dupe2) long GetMaxLengthBytes___dupe2(TextInputTagState *tag)
+SECTION(GetMaxLengthBytes___dupe2) int GetMaxLengthBytes___dupe2(TextInputTagState *tag)
 {
     return 0x200;
 }
@@ -111,7 +135,29 @@ extern "C" SECTION(defaultInit) void defaultInit(TextInputTagState *tag)
     tag->m_bSubmitAsEncryped = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", drawCursor);
+extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawContextBase *draw, int visible)
+{
+    if (!visible) return;
+    SVTag *tag = &self->base;
+    float x = tag->m_x + ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
+    unsigned int color = tag->m_bSelected ? self->m_highlightTextColor : self->m_textColor;
+    float top;
+    float bottom;
+    float thickness;
+    if (self->m_node == -1) {
+        thickness = 3.0f;
+        top = tag->m_y + 4.0f;
+        bottom = tag->m_y + (tag->m_height - 2.0f);
+        x += 6.0f;
+    } else {
+        float height = tag->m_height - 4.0f;
+        top = tag->m_y - height * 0.5f;
+        bottom = top + height;
+        thickness = draw->vtable->GetStringWidth(draw, self->m_fontSize, svoTextInputCursorGlyph, 1) * 0.75f;
+    }
+    // Retail passes x again as the depth coordinate.
+    draw->vtable->DrawLine(draw, tag->m_tagid, x, top, x, bottom, tag->m_x, thickness, color, 0);
+}
 
 extern "C" SECTION(DrawImpl) void DrawImpl(TextInputTagState *self, char *text)
 {
@@ -150,7 +196,7 @@ extern "C" SECTION(DrawImpl) void DrawImpl(TextInputTagState *self, char *text)
 extern "C" SECTION(DumpSubstring) void DumpSubstring(char *comment, float width, int left, int right, char *text)
 {
     int length = (unsigned int)right - left;
-    if ((unsigned long)(long)length < 128) {
+    if ((unsigned int)(int)length < 128) {
         char buffer[128];
         memset(buffer, 0, 128);
         memcpy(buffer, text + left, length);
@@ -176,9 +222,15 @@ extern "C" SECTION(findParentForm) FormTag *findParentForm(TextInputTagState *ta
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", GetEditPosition___dupe2);
+extern "C" SECTION(GetEditPosition___dupe2) unsigned int GetEditPosition___dupe2(TextInputTagState *tag)
+{
+    return strlen(tag->m_text);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", getSubstringPixelWidth);
+extern "C" SECTION(getSubstringPixelWidth) float getSubstringPixelWidth(TextInputTagState *tag, int left, int right)
+{
+    return getSubstringPixelWidthImpl(tag, tag->m_text, left, right);
+}
 
 extern "C" SECTION(getSubstringPixelWidthImpl) float getSubstringPixelWidthImpl(TextInputTagState *tag, char *text, int start, int end)
 {
@@ -222,28 +274,129 @@ extern "C" SECTION(HandleInput___dupe44) int HandleInput___dupe44(TextInputTagSt
 
 extern "C" SECTION(handleKeyboardInput___dupe2) void handleKeyboardInput___dupe2(TextInputTagState *self, CInputContextBaseState *input)
 {
-    char *text = input->vtable->GetKeyboardBuffer(input);
-    size_t length = strlen(text);
-    size_t oldLength = strlen(self->m_text);
-    if (input->specialKeyCode) {
-        handleSpecialKeys___dupe2(self, input->specialKeyCode);
+    char *text = self->m_text;
+    char *kbBuffer = input->vtable->GetKeyboardBuffer(input);
+    int kbLength = strlen(kbBuffer);
+    int textLength = strlen(text);
+    unsigned char key = input->specialKeyCode;
+    if (key) {
+        handleSpecialKeys___dupe2(self, key);
         return;
     }
-    if ((long)length > 0 && *text && (unsigned int)(oldLength + strlen(text)) <= 512) {
-        if (UTF8_CountCharacters(self->m_text, strlen(self->m_text)) < self->m_maxLengthUTF8Chars) {
-            int previous = self->m_curEditOffset;
-            self->m_curEditOffset = UTF8_AddCharToString(self->m_text, 512, text, strlen(text), self->m_curEditOffset);
+    if (kbLength > 0 && *kbBuffer && (unsigned int)(textLength + strlen(kbBuffer)) <= 512) {
+        if (UTF8_CountCharacters(text, strlen(text)) < self->m_maxLengthUTF8Chars) {
+            unsigned int prevEditOffset = self->m_curEditOffset;
+            self->m_curEditOffset = UTF8_AddCharToString(text, 512, kbBuffer, strlen(kbBuffer), self->m_curEditOffset);
             if (self->m_curRightOffset < self->m_curEditOffset) self->m_curRightOffset = self->m_curEditOffset;
-            else self->m_curRightOffset = (unsigned int)self->m_curRightOffset + ((unsigned int)self->m_curEditOffset - previous);
+            else self->m_curRightOffset = self->m_curRightOffset + (self->m_curEditOffset - prevEditOffset);
             scrollTextLeftToFillWindow(self);
         }
     }
     input->vtable->ResetKeyboardInput(input);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", handleSpecialKeys___dupe2);
+extern "C" SECTION(handleSpecialKeys___dupe2) void handleSpecialKeys___dupe2(TextInputTagState *self, unsigned char key)
+{
+    size_t length = strlen(self->m_text);
+    SVTag *tag = &self->base;
+    CDrawContextBase *draw = tag->m_contexts->drawContext;
+    CInputContextBaseState *input = tag->m_contexts->inputContext;
+    if (key == 0x88 || key == 0x81 || key == 0x82) {
+        int line = 0x1C0;
+        if (key == 0x88) {
+            SignalPluginEvent(GetInstance(), 10, tag);
+            self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
+            line = 0x187;
+        }
+        CPage *page = GetInstance()->m_pMainPage;
+        if (!page->m_bIsActive) page = GetInstance()->m_pPopupPage;
+        if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, line);
+        Navigate(tag, input, draw, tag->m_xml, page);
+    } else if (key == 0x83 || key == 0x89) {
+        if (key == 0x83) self->m_curEditOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curEditOffset);
+        else self->m_curEditOffset = UTF8_RemoveCharFromStringBACKSPACE(self->m_text, self->m_curEditOffset);
+        scrollTextRightToFillWindow(self);
+    } else if (key == 0x84 || key == 0x87) {
+        if (key == 0x84) self->m_curEditOffset = UTF8_GetNextCharIndexFromString(self->m_text, self->m_curEditOffset);
+        else self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
+        scrollTextLeftToFillWindow(self);
+    } else if (key == 0x85) {
+        self->m_curEditOffset = 0;
+        self->m_curLeftOffset = 0;
+        self->m_curRightOffset = 0;
+        float width;
+        do {
+            ++self->m_curRightOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
+        } while (width < self->m_maxWrap && (int)self->m_curRightOffset < (int)length);
+        while (width > self->m_maxWrap) {
+            --self->m_curRightOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
+        }
+    } else if (key == 0x86) {
+        int end = strlen(self->m_text);
+        self->m_curRightOffset = end;
+        self->m_curEditOffset = end;
+        self->m_curLeftOffset = end;
+        float width;
+        do {
+            --self->m_curLeftOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
+        } while (width < self->m_maxWrap && self->m_curLeftOffset > 0);
+        while (width > self->m_maxWrap) {
+            ++self->m_curLeftOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curRightOffset);
+        }
+    }
+    input->specialKeyCode = 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", InitialiseFromXml);
+extern "C" SECTION(InitialiseFromXml) void InitialiseFromXml(TextInputTagState *tag, iks *xml, SVTag **tagList, CAllContextData *contexts)
+{
+    char optionalBuffer[16];
+    char *optional = optionalBuffer;
+    ((TextInputTagVtablePrefix *)tag->base.vtable)->defaultInit(tag, xml, tagList, contexts);
+    getIntAttrib(tag->base.m_xml, svoTextInputMaxLengthAttribute, &tag->m_maxLengthUTF8Chars);
+    if (tag->m_maxLengthUTF8Chars > 512) __SVO_Assert_Handler(svoTextInputTagSource, 0x5C);
+    if (tag->m_maxLengthUTF8Chars < 1) {
+        __SVO_Assert_Handler(svoTextInputTagSource, 0x60);
+        tag->m_maxLengthUTF8Chars = 0;
+    }
+    getColorAttrib(tag->base.m_xml, svoTextInputFillColorAttribute, &tag->base.m_fillColor);
+    getColorAttrib(tag->base.m_xml, svoTextInputLineColorAttribute, &tag->base.m_lineColor);
+    getColorAttrib(tag->base.m_xml, svoTextInputTextColorAttribute, &tag->m_textColor);
+    getColorAttrib(tag->base.m_xml, svoTextInputHighlightFillColorAttribute, &tag->m_highlightFillColor);
+    getColorAttrib(tag->base.m_xml, svoTextInputHighlightLineColorAttribute, &tag->m_highlightLineColor);
+    getColorAttrib(tag->base.m_xml, svoTextInputHighlightTextColorAttribute, &tag->m_highlightTextColor);
+    getIntAttrib(tag->base.m_xml, svoTextInputFontSizeAttribute, &tag->m_fontSize);
+    getStringAttrib(tag->base.m_xml, svoTextInputClassAttribute, &tag->base.m_tagClass);
+    char *value = iks_find_attrib(tag->base.m_xml, svoTextInputValueAttribute);
+    if (value) setText(tag, value, strlen(value));
+    if (iks_find_attrib(tag->base.m_xml, svoTextInputOptionalAttribute)) {
+        getStringAttrib(tag->base.m_xml, svoTextInputOptionalAttribute, &optional);
+        if (!strncmp(optional, svoTextInputYesValue, 4)) tag->base.m_bOptional = 1;
+    }
+    char *blink = iks_find_attrib(tag->base.m_xml, svoTextInputBlinkCursorAttribute);
+    if (blink) tag->m_blinkCursor = !strcmp(blink, svoTextInputTrueValue);
+    char *readOnly = iks_find_attrib(tag->base.m_xml, svoTextInputReadOnlyAttribute);
+    char *editable = iks_find_attrib(tag->base.m_xml, svoTextInputEditableAttribute);
+    if (readOnly || editable) {
+        int result;
+        if (readOnly) {
+            if (editable) __SVO_Assert_Handler(svoTextInputTagSource, 0x9E);
+            result = strcmp(readOnly, svoTextInputFalseValue);
+        } else result = strcmp(editable, svoTextInputTrueValue);
+        if (!result) {
+            tag->base.m_bSelectable = 1;
+            tag->m_bEditable = 1;
+        } else tag->m_bEditable = 0;
+    }
+    getBoolAttrib(tag->base.m_xml, svoTextInputSelectableAttribute, &tag->base.m_bSelectable);
+    getBoolAttrib(tag->base.m_xml, svoTextInputDefaultTextEntryAttribute, &tag->base.m_isDefTextEntry);
+    if (!getBoolAttrib(tag->base.m_xml, svoTextInputSubmitAsEncryptedAttribute, &tag->m_bSubmitAsEncryped)) tag->m_bSubmitAsEncryped = 0;
+    if (!getBoolAttrib(tag->base.m_xml, svoTextInputRequiredForPostAttribute, &tag->m_bRequiredForSubmit)) tag->m_bRequiredForSubmit = 0;
+    ((TextInputTagVtablePrefix *)tag->base.vtable)->registerWithForm(tag, iks_parent(tag->base.m_xml), tagList);
+}
 
 extern "C" SECTION(registerWithForm) void registerWithForm(TextInputTagState *tag, iks *parent, SVTag **tagList)
 {
@@ -268,9 +421,47 @@ extern "C" SECTION(scrollTextLeftToFillWindow) void scrollTextLeftToFillWindow(T
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", scrollTextRightToFillWindow);
+extern "C" SECTION(scrollTextRightToFillWindow) void scrollTextRightToFillWindow(TextInputTagState *self)
+{
+    if (self->m_curEditOffset != self->m_curLeftOffset || self->m_curEditOffset <= 0) return;
+    if (svoTextInputJumpScroll) {
+        float width;
+        do {
+            self->m_curLeftOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curLeftOffset);
+            width = ((const TextInputTagVtablePrefix *)self->base.vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
+            DumpSubstring(svoTextInputJumpPart1, width, self->m_curLeftOffset, self->m_curEditOffset, self->m_text);
+        } while (width < self->m_maxWrap && self->m_curLeftOffset > 0);
+        do {
+            self->m_curRightOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curRightOffset);
+            width = ((const TextInputTagVtablePrefix *)self->base.vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curRightOffset);
+            DumpSubstring(svoTextInputJumpPart2, width, self->m_curLeftOffset, self->m_curRightOffset, self->m_text);
+        } while (width > self->m_maxWrap);
+    } else {
+        self->m_curLeftOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curEditOffset);
+        float width;
+        do {
+            self->m_curRightOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curRightOffset);
+            width = ((const TextInputTagVtablePrefix *)self->base.vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curRightOffset);
+            DumpSubstring(svoTextInputSmoothScroll, width, self->m_curLeftOffset, self->m_curRightOffset, self->m_text);
+        } while (width > self->m_maxWrap);
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/TextInputTag", setText);
+extern "C" SECTION(setText) void setText(TextInputTagState *tag, char *text, unsigned int length)
+{
+    resetTextInput(tag);
+    strncpy(tag->m_text, text, 512);
+    tag->m_curEditOffset = length;
+    tag->m_curRightOffset = length;
+    float width = ((TextInputTagVtablePrefix *)tag->base.vtable)->getSubstringPixelWidth(tag, 0, length);
+    if (tag->m_curEditOffset > 0 && tag->m_maxWrap < width) {
+        tag->m_curLeftOffset = tag->m_curEditOffset;
+        do {
+            --tag->m_curLeftOffset;
+            width = ((TextInputTagVtablePrefix *)tag->base.vtable)->getSubstringPixelWidth(tag, tag->m_curLeftOffset, tag->m_curEditOffset);
+        } while (width < tag->m_maxWrap);
+    }
+}
 
 extern "C" SECTION(SetText___dupe4) void SetText___dupe4(TextInputTagState *tag, char *text)
 {

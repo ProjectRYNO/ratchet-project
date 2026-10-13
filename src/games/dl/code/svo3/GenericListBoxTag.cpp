@@ -41,7 +41,7 @@ CAudioContextBaseState *GetAudioContext();
 CMemoryContextBaseState *GetMemoryContext();
 }
 extern "C" {
-long Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
+int Navigate(SVTag *, CInputContextBaseState *, CDrawContextBase *, iks *, CPage *);
 void DefaultInit___dupe23(GenericListBoxTagState *);
 extern unsigned int svoNextTagId;
 }
@@ -71,10 +71,10 @@ extern "C" SECTION(_GenericListBoxTag) void _GenericListBoxTag(GenericListBoxTag
     if (tag->m_handles) svFreeSafe(tag->base.m_contexts->memoryContext, tag->m_handles);
     if (tag->m_entryTagIDs) svFreeSafe(tag->base.m_contexts->memoryContext, tag->m_entryTagIDs);
     tag->base.vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(&tag->base);
+    if (flags & 1) { SVTagDelete(&tag->base); return; }
 }
 
-extern "C" SECTION(addHandle) long addHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
+extern "C" SECTION(addHandle) int addHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
 {
     if (tag->m_numItems >= tag->m_maxNumItems) return 0;
     if (!handle) {
@@ -147,10 +147,10 @@ extern "C" SECTION(DefaultInit___dupe23) void DefaultInit___dupe23(GenericListBo
     vtable->clearList(tag);
 }
 
-extern "C" SECTION(deleteHandle) long deleteHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
+extern "C" SECTION(deleteHandle) int deleteHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
 {
     const GenericListBoxTagVtablePrefix *vtable = (const GenericListBoxTagVtablePrefix *)tag->base.vtable;
-    long index = vtable->getIndexOfHandle(tag, handle);
+    int index = vtable->getIndexOfHandle(tag, handle);
     if (index == -1) return 0;
     if (index >= tag->m_numItems) {
         __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x1D6);
@@ -223,9 +223,10 @@ extern "C" SECTION(GenericListBoxTag) void GenericListBoxTag(GenericListBoxTagSt
     SVChronograph(timer, 0);
     tag->m_pTimer = timer;
     Start___dupe3(timer);
+    return;
 }
 
-extern "C" SECTION(getHandleByIndex) long getHandleByIndex(GenericListBoxTagState *tag, int index)
+extern "C" SECTION(getHandleByIndex) int getHandleByIndex(GenericListBoxTagState *tag, int index)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x219);
     if (index < 0 || index >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x21a);
@@ -233,24 +234,24 @@ extern "C" SECTION(getHandleByIndex) long getHandleByIndex(GenericListBoxTagStat
     return (int)tag->m_handles[index];
 }
 
-extern "C" SECTION(getIndexOfHandle) long getIndexOfHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
+extern "C" SECTION(getIndexOfHandle) int getIndexOfHandle(GenericListBoxTagState *tag, svo_listbox_handle handle)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x180);
     if (tag->m_maxVisibleItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x181);
-    int count = tag->m_maxNumItems;
-    svo_listbox_handle *item = tag->m_handles;
-    for (int i = 0; i < count; ++i) if (*item++ == handle) return i;
+    for (int i = 0; i < tag->m_maxNumItems; ++i) {
+        if (tag->m_handles[i] == handle) return i;
+    }
     return -1;
 }
 
-extern "C" SECTION(getNumVisibleRows___dupe2) long getNumVisibleRows___dupe2(GenericListBoxTagState *tag)
+extern "C" SECTION(getNumVisibleRows___dupe2) int getNumVisibleRows___dupe2(GenericListBoxTagState *tag)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x211);
     if (tag->m_maxVisibleItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x212);
     return tag->m_maxVisibleItems;
 }
 
-extern "C" SECTION(getSelectedHandle) long getSelectedHandle(GenericListBoxTagState *tag)
+extern "C" SECTION(getSelectedHandle) int getSelectedHandle(GenericListBoxTagState *tag)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x223);
     if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x224);
@@ -258,14 +259,14 @@ extern "C" SECTION(getSelectedHandle) long getSelectedHandle(GenericListBoxTagSt
     return (int)tag->m_handles[tag->m_selectedIndex];
 }
 
-extern "C" SECTION(getSelectedIndex___dupe2) long getSelectedIndex___dupe2(GenericListBoxTagState *tag)
+extern "C" SECTION(getSelectedIndex___dupe2) int getSelectedIndex___dupe2(GenericListBoxTagState *tag)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x190);
     if (tag->m_selectedIndex >= tag->m_numItems && tag->m_numItems != 0) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x191);
     return tag->m_selectedIndex;
 }
 
-extern "C" SECTION(getTopVisibleIndex___dupe2) long getTopVisibleIndex___dupe2(GenericListBoxTagState *tag)
+extern "C" SECTION(getTopVisibleIndex___dupe2) int getTopVisibleIndex___dupe2(GenericListBoxTagState *tag)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x202);
     if (tag->m_maxVisibleItems < tag->m_numItems) {
@@ -303,7 +304,7 @@ extern "C" SECTION(HandleInput___dupe54) int HandleInput___dupe54(GenericListBox
     return 1;
 }
 
-extern "C" SECTION(selectIndex___dupe2) long selectIndex___dupe2(GenericListBoxTagState *tag, int index)
+extern "C" SECTION(selectIndex___dupe2) int selectIndex___dupe2(GenericListBoxTagState *tag, int index)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x137);
     if (index < 0 || index >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x138);
@@ -311,7 +312,7 @@ extern "C" SECTION(selectIndex___dupe2) long selectIndex___dupe2(GenericListBoxT
     return 1;
 }
 
-extern "C" SECTION(size) long size(GenericListBoxTagState *tag)
+extern "C" SECTION(size) int size(GenericListBoxTagState *tag)
 {
     if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x113);
     if (tag->m_numItems < 0) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x114);

@@ -72,12 +72,12 @@ SECTION(FreeResources___dupe28) void FreeResources___dupe28(void *self)
 
 }
 
-extern "C" SECTION(_CheckboxInputTag) void _CheckboxInputTag(SVTag *tag, unsigned long flags)
+extern "C" SECTION(_CheckboxInputTag) void _CheckboxInputTag(SVTag *tag, int flags)
 {
     tag->vtable = &svoCheckboxInputTagVtable;
     FreeResources___dupe28((void *)tag);
     tag->vtable = &svoTagVtable;
-    if (flags & 1) SVTagDelete(tag);
+    if (flags & 1) { SVTagDelete(tag); return; }
 }
 
 extern "C" SECTION(CheckboxInputTag) void CheckboxInputTag(CheckboxInputTagState *self, iks *xml, SVTag **tagList, CAllContextData *contexts)
@@ -100,6 +100,7 @@ extern "C" SECTION(CheckboxInputTag) void CheckboxInputTag(CheckboxInputTagState
     if (!self->m_text) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x69);
     decodeEntityText(self->m_text);
     RegisterWithForm___dupe4(self, iks_parent(tag->m_xml), tagList);
+    return;
 }
 
 extern "C" SECTION(DefaultInit___dupe14) void DefaultInit___dupe14(CheckboxInputTagState *tag)

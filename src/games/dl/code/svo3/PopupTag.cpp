@@ -10,7 +10,7 @@ extern const SVTagVtablePrefix svoPopupTagVtable;
 
 #define SECTION(name) __attribute__((section(".svo_PopupTag_" #name)))
 
-SECTION(IsSelectable___dupe15) long IsSelectable___dupe15(void *self)
+SECTION(IsSelectable___dupe15) int IsSelectable___dupe15(void *self)
 {
     return 0;
 }

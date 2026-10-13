@@ -36,12 +36,12 @@ void RegisterWithForm___dupe6(HiddenInputTagState *, iks *, SVTag **);
 }
 #define SECTION(name) __attribute__((section(".svo_HiddenInputTag_" #name)))
 
-SECTION(HandleInput___dupe51) long HandleInput___dupe51(void *self, void *context)
+SECTION(HandleInput___dupe51) int HandleInput___dupe51(void *self, void *context)
 {
     return 1;
 }
 
-SECTION(IsSelectable___dupe16) long IsSelectable___dupe16(void *self)
+SECTION(IsSelectable___dupe16) int IsSelectable___dupe16(void *self)
 {
     return 0;
 }
@@ -93,6 +93,7 @@ extern "C" SECTION(HiddenInputTag) void HiddenInputTag(HiddenInputTagState *tag,
     else __SVO_Assert_Handler(svoHiddenInputTagSource, 0x2F);
     if (!getBoolAttrib(tag->base.m_xml, svoHiddenEncryptedAttribute, &tag->m_bSubmitAsEncryped)) tag->m_bSubmitAsEncryped = 0;
     RegisterWithForm___dupe6(tag, iks_parent(tag->base.m_xml), tags);
+    return;
 }
 
 extern "C" SECTION(RegisterWithForm___dupe6) void RegisterWithForm___dupe6(HiddenInputTagState *tag, iks *parent, SVTag **tagList)

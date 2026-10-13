@@ -161,6 +161,7 @@ extern "C" SECTION(RadioInputTag) void RadioInputTag(RadioInputTagState *self, i
     if (!getBoolAttrib(tag->m_xml, svoRadioInputTagAttrSubmitAsEncrypted, &self->m_bSubmitAsEncryped)) self->m_bSubmitAsEncryped = 0;
     if (!getBoolAttrib(tag->m_xml, svoRadioInputTagAttrRequiredForPost, &self->m_bRequiredForSubmit)) self->m_bRequiredForSubmit = 0;
     RegisterWithForm___dupe3(self, iks_parent(tag->m_xml), tagList);
+    return;
 }
 
 extern "C" SECTION(RegisterWithForm___dupe3) void RegisterWithForm___dupe3(RadioInputTagState *tag, iks *parent, SVTag **tagList)

@@ -60,7 +60,7 @@ extern char svoSubmitDefaultText[] __attribute__((aligned(4)));
 }
 #define SECTION(name) __attribute__((section(".svo_SubmitInputTag_" #name)))
 
-SECTION(IsSelectable___dupe14) long IsSelectable___dupe14(void *self)
+SECTION(IsSelectable___dupe14) int IsSelectable___dupe14(void *self)
 {
     return 1;
 }
@@ -165,4 +165,25 @@ extern "C" SECTION(RegisterWithForm___dupe5) void RegisterWithForm___dupe5(Submi
     AddSubmitElement(tag->m_parentForm, tag);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SubmitInputTag", SubmitInputTag);
+extern "C" SECTION(SubmitInputTag) void SubmitInputTag(SubmitInputTagState *self, iks *xml, SVTag **tagList, CAllContextData *contexts)
+{
+    SVTag *tag = &self->base;
+    SVTagConstruct(tag, xml, contexts);
+    tag->vtable = &svoSubmitInputTagVtable;
+    DefaultInit___dupe16(self);
+    if (!tagList || !xml) __SVO_Assert_Handler(svoSubmitInputTagSource, 0x35);
+    getIntAttrib(tag->m_xml, svoSubmitInputTagAttrFontSize, &self->m_fontSize);
+    getFloatAttrib(tag->m_xml, svoSubmitInputTagAttrDisplayLength, &self->m_displayLength);
+    getAlignAttrib(tag->m_xml, svoSubmitInputTagAttrAlign, &self->m_align);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrFillColor, &tag->m_fillColor);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrLineColor, &tag->m_lineColor);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrTextColor, &self->m_textColor);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrHighlightFillColor, &self->m_highlightFillColor);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrHighlightLineColor, &self->m_highlightLineColor);
+    getColorAttrib(tag->m_xml, svoSubmitInputTagAttrHighlightTextColor, &self->m_highlightTextColor);
+    getStringAttrib(tag->m_xml, svoSubmitInputTagAttrClass, &tag->m_tagClass);
+    char *value = iks_find_attrib(tag->m_xml, svoSubmitInputTagAttrValue);
+    if (value) svstrncpy(self->m_value, value, strlen(value) + 1);
+    RegisterWithForm___dupe5(self, iks_parent(tag->m_xml), tagList);
+    return;
+}

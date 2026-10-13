@@ -27,7 +27,7 @@ typedef struct { // 0x14 (vtable prefix)
     /* 0x00 */ void *unknown00;
     /* 0x04 */ void *unknown04;
     /* 0x08 */ void *unknown08;
-    /* 0x0C */ void (*Process)(CPluginBaseState *plugin, long updateType);
+    /* 0x0C */ void (*Process)(CPluginBaseState *plugin, int updateType);
     /* 0x10 */ void (*AddMessage)(CPluginBaseState *plugin, SVTag *sender, int event);
 } CPluginBaseVtablePrefix;
 

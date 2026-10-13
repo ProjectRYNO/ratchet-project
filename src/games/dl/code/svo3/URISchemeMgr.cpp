@@ -23,20 +23,22 @@ void __SVO_Assert_Handler(const char *file, int line);
 }
 #define SCHEME_SECTION(name) __attribute__((section(".svo_uri_scheme_" #name)))
 
-SCHEME_SECTION(IURISchemeProvider) const IURISchemeProviderVtablePrefix *IURISchemeProvider(IURISchemeProviderState *provider)
+SCHEME_SECTION(IURISchemeProvider) void IURISchemeProvider(IURISchemeProviderState *provider)
 {
     provider->vtable = &svoURISchemeProviderVtable;
-    return &svoURISchemeProviderVtable;
 }
 
 void SCHEME_SECTION(_IURISchemeProvider) _IURISchemeProvider(IURISchemeProviderState *provider, unsigned int flags)
 {
     provider->vtable = &svoURISchemeProviderVtable;
-    if (flags & 1) __builtin_delete(provider);
+    if (flags & 1) { __builtin_delete(provider); return; }
 }
 
 // Recovered C exceeds the retail tail-call slot; see SVO3.md.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/URISchemeMgr", Register);
+SCHEME_SECTION(Register) int Register(IURISchemeProviderState *provider, char **schemes)
+{
+    return Register___dupe2(Get(), provider, schemes);
+}
 
 void SCHEME_SECTION(DeRegister) DeRegister(IURISchemeProviderState *provider)
 {
@@ -54,11 +56,14 @@ SCHEME_SECTION(Get) CURISchemeMgrState *Get()
 }
 
 // Recovered C exceeds the retail tail-call slot; see SVO3.md.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/URISchemeMgr", CURISchemeMgr);
+SCHEME_SECTION(CURISchemeMgr) void *CURISchemeMgr(CURISchemeMgrState *manager)
+{
+    return memset(manager, 0, 0x40);
+}
 
 void SCHEME_SECTION(_CURISchemeMgr) _CURISchemeMgr(CURISchemeMgrState *manager, unsigned int flags)
 {
-    if (flags & 1) __builtin_delete(manager);
+    if (flags & 1) { __builtin_delete(manager); return; }
 }
 
 int SCHEME_SECTION(Register___dupe2) Register___dupe2(CURISchemeMgrState *manager, IURISchemeProviderState *provider, char **schemes)
@@ -156,9 +161,9 @@ void SCHEME_SECTION(shutdown___dupe2) shutdown___dupe2(CURISchemeMgrState *manag
     }
 }
 
-long SCHEME_SECTION(LoadStatePostGameFromPersistentData___dupe4) LoadStatePostGameFromPersistentData___dupe4(CURISchemeMgrState *manager, SVPersistentData *persist)
+int SCHEME_SECTION(LoadStatePostGameFromPersistentData___dupe4) LoadStatePostGameFromPersistentData___dupe4(CURISchemeMgrState *manager, SVPersistentData *persist)
 {
-    long result = 1;
+    int result = 1;
     sProviderEntry *entry = manager->m_providers;
     for (int i = 0; i < 8 && result; ++i, ++entry) {
         IURISchemeProviderState *provider = entry->provider;

@@ -14,7 +14,7 @@ void SVO_INPUT_SECTION(_CAudioContextBase) _CAudioContextBase(
     CAudioContextBaseState *context, unsigned int flags)
 {
     context->vtable = svoAudioContextVtable;
-    if (flags & 1) __builtin_delete(context);
+    if (flags & 1) { __builtin_delete(context); return; }
 }
 
 SVO_INPUT_SECTION(CInputContextBase) void *CInputContextBase(CInputContextBaseState *context)

@@ -25,7 +25,13 @@ TAG_SECTION(DefaultInit___dupe17) void DefaultInit___dupe17(SVTag *tag)
     tag->m_bSelected = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LogoutTag", LogoutTag);
+TAG_SECTION(LogoutTag) void LogoutTag(SVTag *tag, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(tag, xml, contexts);
+    tag->vtable = &svoLogoutTagVtable;
+    DefaultInit___dupe17(tag);
+    return;
+}
 
 TAG_SECTION(FreeResources___dupe34) void FreeResources___dupe34(SVTag *tag)
 {

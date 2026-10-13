@@ -8,9 +8,12 @@ RUN dotnet publish src/RatchetPs2.Cli/RatchetPs2.Cli.csproj \
 
 FROM debian:13-slim
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && \
+# i386 libc and gcc-multilib run SCE ee-gcc 2.96 (SVO3) and build its stat shim.
+RUN dpkg --add-architecture i386 && \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
-        make curl ca-certificates unzip g++ python3 python3-pip python-is-python3 \
+        make curl ca-certificates unzip xz-utils g++ gcc-multilib libc6:i386 \
+        python3 python3-pip python-is-python3 \
         binutils-mips-linux-gnu libicu76 libssl3t64 zlib1g \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=cli-build /cli /opt/ratchet-ps2

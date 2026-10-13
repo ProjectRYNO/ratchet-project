@@ -24,7 +24,10 @@ char *URIStoreFind(char *name);
 #define HISTORY_SECTION(name) __attribute__((section(".svo_history_" #name)))
 
 // Recovered C currently emits 0x1C bytes for this 0x14-byte slot.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageHistory", PageHistory);
+HISTORY_SECTION(PageHistory) void *PageHistory(PageHistoryState *history)
+{
+    return init(history);
+}
 
 void HISTORY_SECTION(clear) clear(PageHistoryState *history)
 {

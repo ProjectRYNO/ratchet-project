@@ -14,6 +14,10 @@
 #endif
 
 #include "SVTag.h"
+#include "SVBrowser.h"
+#include "CPage.h"
+#include "CInputContextBase.h"
+#include "CAudioContextBase.h"
 
 extern "C" {
 
@@ -27,7 +31,7 @@ extern char svoQuickLinkButtonAttribute[];
 extern char svoQuickLinkOptionAttribute[];
 extern char svoQuickLinkLinkAttribute[];
 void DefaultInit___dupe8(QuickLinkTagState *);
-long getPadLinkButtonAttrib(QuickLinkTagState *, iks *, char *, int *);
+int getPadLinkButtonAttrib(QuickLinkTagState *, iks *, char *, int *);
 
 }
 extern "C" {
@@ -36,7 +40,7 @@ extern int svoPadLinkButtonValues[25];
 }
 #define SECTION(name) __attribute__((section(".svo_QuickLinkTag_" #name)))
 
-SECTION(IsSelectable___dupe9) long IsSelectable___dupe9(void *self)
+SECTION(IsSelectable___dupe9) int IsSelectable___dupe9(void *self)
 {
     return 0;
 }
@@ -55,7 +59,7 @@ extern "C" SECTION(DefaultInit___dupe8) void DefaultInit___dupe8(QuickLinkTagSta
     tag->m_link = 0;
 }
 
-extern "C" SECTION(getPadLinkButtonAttrib) long getPadLinkButtonAttrib(QuickLinkTagState *tag, iks *xml, char *name, int *value)
+extern "C" SECTION(getPadLinkButtonAttrib) int getPadLinkButtonAttrib(QuickLinkTagState *tag, iks *xml, char *name, int *value)
 {
     char *text = iks_find_attrib(xml, name);
     if (text) {
@@ -69,7 +73,45 @@ extern "C" SECTION(getPadLinkButtonAttrib) long getPadLinkButtonAttrib(QuickLink
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/QuickLinkTag", HandleInput___dupe39);
+extern "C" {
+extern char svoQuickLinkTagSource[];
+extern char svoQuickLinkSoundClass[];
+void SignalPluginEvent(SVBrowserPrefix *browser, int event, SVTag *sender);
+CAudioContextBaseState *GetAudioContext(void);
+}
+extern "C" SECTION(HandleInput___dupe39) int HandleInput___dupe39(QuickLinkTagState *tag, CPage *page)
+{
+    CInputContextBaseState *input = tag->base.m_contexts->inputContext;
+    SVBrowserPrefix *browser = GetInstance();
+    if (!tag->base.m_xml) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x7B);
+    if (!input) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x7C);
+    if (!page) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x7D);
+    if (tag->m_padLinkButton == -1) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x82);
+    if (!tag->m_link) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x88);
+    if (browser->m_bShowVKB) return 1;
+    if (!input->vtable->IsButtonDown(input, 0x11, tag->m_padLinkButton)) return 1;
+    switch (tag->m_padLinkButton) {
+    case 0x40: SignalPluginEvent(browser, 0, &tag->base); break;
+    case 0x10: SignalPluginEvent(browser, 1, &tag->base); break;
+    case 0x80: SignalPluginEvent(browser, 2, &tag->base); break;
+    case 0x20: SignalPluginEvent(browser, 3, &tag->base); break;
+    case 0x08: SignalPluginEvent(browser, 4, &tag->base); break;
+    case 0x02: SignalPluginEvent(browser, 5, &tag->base); break;
+    case 0x04: SignalPluginEvent(browser, 6, &tag->base); break;
+    case 0x01: SignalPluginEvent(browser, 7, &tag->base); break;
+    // The retail compare tree also balances two buttons that raise no plugin event.
+    case 0x100:
+    case 0x200:
+        break;
+    }
+    if (page->m_state) return 1;
+    if (strlen(tag->m_link)) {
+        followLink(page, tag->m_link, tag->m_linkOption);
+        CAudioContextBaseState *audio = GetAudioContext();
+        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoQuickLinkSoundClass);
+    }
+    return 0;
+}
 
 extern "C" SECTION(QuickLinkTag) void QuickLinkTag(QuickLinkTagState *tag, iks *xml, CAllContextData *contexts)
 {

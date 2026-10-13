@@ -32,13 +32,24 @@ void DefaultInit___dupe7(LineTagState *);
 TAG_SECTION(DefaultInit___dupe7) void DefaultInit___dupe7(LineTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoLineTagName, 64);
-    tag->m_thickness = 2.0f;
     tag->base.m_lineColor = 0xFFFFFFFF;
     tag->m_endX = tag->base.m_x;
     tag->m_endY = tag->base.m_y;
+    tag->m_thickness = 2.0f;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/LineTag", LineTag);
+extern "C" SECTION(LineTag) void LineTag(LineTagState *tag, iks *xml, CAllContextData *contexts)
+{
+    SVTagConstruct(&tag->base, xml, contexts);
+    tag->base.vtable = &svoLineTagVtable;
+    DefaultInit___dupe7(tag);
+    getFloatAttrib(tag->base.m_xml, svoLineEndXAttribute, &tag->m_endX);
+    getFloatAttrib(tag->base.m_xml, svoLineEndYAttribute, &tag->m_endY);
+    getFloatAttrib(tag->base.m_xml, svoLineThicknessAttribute, &tag->m_thickness);
+    getColorAttrib(tag->base.m_xml, svoLineColorAttribute, &tag->base.m_lineColor);
+    getStringAttrib(tag->base.m_xml, svoLineClassAttribute, &tag->base.m_tagClass);
+    return;
+}
 
 TAG_SECTION(FreeResources___dupe12) void FreeResources___dupe12(SVTag *tag)
 {

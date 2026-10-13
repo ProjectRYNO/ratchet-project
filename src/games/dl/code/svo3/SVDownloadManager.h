@@ -29,4 +29,9 @@ typedef struct { // 0x8CD8
     /* 0x8BD4 */ char m_fileID[257];
     /* 0x8CD5 */ unsigned char padding8CD5[3];
 } SVDownloadManagerState;
+struct CSystemContextBase;
+struct DownloadSystemVtable { // 0x38
+    /* 0x00 */ unsigned char prefix[0x34];
+    /* 0x34 */ int (*OkToFreeFileDownloadBuffer)(CSystemContextBase *, void *);
+};
 #endif

@@ -15,7 +15,7 @@ extern char svoImageModuleEmptyString[];
 extern char svoImageModuleDownloadAttribute[];
 extern char svoImageModulePreValue[];
 extern char svoImageModuleTagType[];
-const void *DownloadBinary(DownloadBinaryState *);
+void DownloadBinary(DownloadBinaryState *);
 void _DownloadBinary(DownloadBinaryState *, int);
 void SetDimensions___dupe2(DownloadBinaryState *, unsigned short, unsigned short);
 void SetPath(DownloadBinaryState *, char *);

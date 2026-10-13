@@ -13,7 +13,7 @@ extern "C" {
 void CPluginManager(CPluginManagerState *manager);
 void Initialize___dupe5(CPluginManagerState *manager);
 // Retail forwards the full 64-bit argument register to Process.
-void Update___dupe112(CPluginManagerState *manager, long updateType);
+void Update___dupe112(CPluginManagerState *manager, int updateType);
 void AddMessage(CPluginManagerState *manager, SVTag *sender, int event);
 void EmptyMessageQueue(CPluginManagerState *manager);
 }

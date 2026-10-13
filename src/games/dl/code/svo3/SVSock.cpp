@@ -24,19 +24,19 @@ void * SVSockoperator_new___dupe9(unsigned int size, CMemoryContextBaseState *me
 
 extern "C" const unsigned int svoSockVtable[];
 
-__attribute__((section(".svo_sock_SVSock"))) const void * SVSock(
-    SVSockState *socket, CMemoryContextBaseState *memory)
+__attribute__((section(".svo_sock_SVSock"))) SVSockState::SVSockState(CMemoryContextBaseState *memory)
 {
-    socket->m_pMemoryContext = memory;
-    socket->vtable = svoSockVtable;
-    socket->m_errNo = 0;
-    return svoSockVtable;
+    m_pMemoryContext = memory;
+    vtable = svoSockVtable;
+    m_errNo = 0;
 }
 
 extern "C" char svoSockSource[];
 
-// Recovered C currently emits 0x34 bytes for this 0x30-byte slot.
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVSock", operator.new___dupe9);
+__attribute__((section(".svo_sock_operator.new___dupe9"))) void *SVSockoperator_new___dupe9(unsigned int size, CMemoryContextBaseState *memory)
+{
+    return svAllocSafe(memory, size, 0, 0x18, svoSockSource);
+}
 
 __attribute__((section(".svo_sock_SVSockDelete"))) void SVSockDelete(SVSockState *socket)
 {

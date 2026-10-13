@@ -50,7 +50,7 @@ struct CPage { // 0x637C
     /* 0x6374 */ int m_iCURIContentLength;
     /* 0x6378 */ int m_bPreserveCurrentPage;
 };
-extern "C" long followLink(CPage *page, char *link, int option);
+extern "C" int followLink(CPage *page, char *link, int option);
 struct SVTag;
 struct CDrawContextBase;
 
@@ -61,8 +61,8 @@ struct PageProviderDownloadVtable { // 0x14
 
 struct PageAnimationVtable { // 0x70
     /* 0x00 */ unsigned char prefix[0x68];
-    /* 0x68 */ long (*AnimateOut)(CDrawContextBase *);
-    /* 0x6C */ long (*AnimateIn)(CDrawContextBase *);
+    /* 0x68 */ int (*AnimateOut)(CDrawContextBase *);
+    /* 0x6C */ int (*AnimateIn)(CDrawContextBase *);
 };
 
 struct PageDownloadVtable { // 0xC
@@ -72,13 +72,13 @@ struct PageDownloadVtable { // 0xC
 
 struct PageTagInputVtable { // 0x10
     /* 0x00 */ unsigned char prefix[0x0C];
-    /* 0x0C */ long (*HandleInput)(SVTag *, CPage *);
+    /* 0x0C */ int (*HandleInput)(SVTag *, CPage *);
 };
 
 struct PageInputQueryVtable { // 0x40
     /* 0x00 */ unsigned char prefix[0x38];
-    /* 0x38 */ long (*QueryBackInput)(CInputContextBaseState *);
-    /* 0x3C */ long (*QueryRefreshInput)(CInputContextBaseState *);
+    /* 0x38 */ int (*QueryBackInput)(CInputContextBaseState *);
+    /* 0x3C */ int (*QueryRefreshInput)(CInputContextBaseState *);
 };
 struct CSystemContextBase;
 struct PageStaticScreenVtable { // 0x30

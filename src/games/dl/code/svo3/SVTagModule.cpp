@@ -38,6 +38,17 @@ extern "C" SECTION(operator.delete___dupe6) void SVTagModuleoperator_delete___du
     svFreeSafe(GetMemoryContext(), memory);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVTagModule", operator.new___dupe7);
+extern "C" SECTION(operator.new___dupe7) void * SVTagModuleoperator_new___dupe7(unsigned int size)
+{
+    return svAllocSafe(GetMemoryContext(), size, 0, 0xC, svoSVTagModuleSource);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/SVTagModule", ScanTags___dupe2);
+extern "C" SECTION(ScanTags___dupe2) void ScanTags___dupe2(SVTagModuleState *module, iks *xml, SVTag **tagList, CAllContextData *contexts, CTagModuleActions *actions)
+{
+    for (int i = 0; i < 2; i++) {
+        CScanTagAction *action = &actions->action[i];
+        action->type = 0;
+        action->ptr = 0;
+    }
+    module->vtable->ScanTagsDefault(module, xml, tagList, contexts);
+}

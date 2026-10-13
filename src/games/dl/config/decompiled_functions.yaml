@@ -223,7 +223,6 @@ functions:
   emptyMessageQueue: 0x01F04BF0
   CQueryParamList: 0x01EF21FC
   _CQueryParamList: 0x01EF221C
-  toString: 0x01EF2244
   Set: 0x01EF235C
   FreeAll: 0x01EF24D4
   SetFromParamList: 0x01EF2588
@@ -724,7 +723,6 @@ functions:
   AlignVisibleColumns: 0x01F03110
   CreateAndInitColumnIndexArray: 0x01F0306C
   GetCurrentSelectedCell: 0x01F02B38
-  FindAndSetSelectedCell: 0x01F01F00
   InitGridCells: 0x01F01DD0
   GetToolTipText___dupe2: 0x01F02FB0
   ChangeSelectedColumn: 0x01F0316C
@@ -871,7 +869,6 @@ functions:
   GetNextWord: 0x01EFA794
   ParseText: 0x01EFA604
   SetArrowOffsets: 0x01EFAD0C
-  handleSpecialKeys: 0x01EF9E90
   HandleInput___dupe43: 0x01EF989C
   Draw___dupe16: 0x01EF9B50
 
@@ -893,7 +890,6 @@ functions:
   IsMyTag___dupe26: 0x01F0A398
   GetCreateGameSubmitResponse: 0x01F0A710
   ParseCreateGameParamsXML: 0x01F0A870
-  ScanTags___dupe7: 0x01F0A454
   ScanTagsHandleLoginSubmitResponse: 0x01F077F8
   ScanTagsHandleLoginDTD: 0x01F0792C
   isIndexSelected: 0x01F06188
@@ -924,7 +920,6 @@ functions:
   LoadStatePostGameFromPersistentData___dupe3: 0x01EEF088
   CPage: 0x01EE5CF0
   frameUpdate: 0x01EE7620
-  setPageState: 0x01EE955C
   FreeResources: 0x01EEEE20
   Update___dupe109: 0x01EEF414
   _CPage: 0x01EE5BD0
@@ -935,6 +930,143 @@ functions:
   download: 0x01EE635C
   callGenericDownloadCallback: 0x01EE8D18
   doRequest: 0x01EE6B80
+
+  _SVDownloadManager: 0x01F084C8
+  SVDownloadManager: 0x01F085A8
+  OnURIRequestIsOkContinueDownload: 0x01F09964
+  UpdateFileDownload: 0x01F0953C
+  doRequest___dupe4: 0x01F088D0
+  formatDownloadStatusText: 0x01F092E4
+  find___dupe2: 0x01F0A0AC
+  requestBinary: 0x01EE83D8
+  Initialize___dupe4: 0x01EEE654
+  getDataTypeAttrib: 0x01F048C4
+  getImageTypeAttrib: 0x01EF89D8
+  getLinkOptionAttrib: 0x01EF3318
+  getTickerTypeAttrib: 0x01F0BEE0
+  TextTag: 0x01EF2700
+  Draw___dupe8: 0x01EF2A3C
+  IsSelectable___dupe6: 0x01EF2B20
+  TextAreaTag: 0x01EF9350
+  InitialiseFromXml: 0x01EFB8A8
+  GridTag: 0x01F007EC
+
+  DrawGridHeader: 0x01EECB30
+  DrawGridScrollbars: 0x01EEC818
+  DrawImage: 0x01EECF0C
+  DrawPopupBackground: 0x01EECC40
+  DrawStaticImage: 0x01EED0B8
+  TrimToFitDisplaySize: 0x01EEC4E8
+  operator.new___dupe4: 0x01EE9D40
+  getTopOfHistory: 0x01EE6B4C
+  operator.new___dupe3: 0x01EE5B64
+  setPageContextData: 0x01EE7E60
+  operator.new___dupe11: 0x01F04E88
+  CalculateGridHeight: 0x01F020DC
+  HandleColumnShuffling: 0x01F0331C
+  HTTPS_Malloc: 0x01EE5000
+  populateListboxItems: 0x01F05D6C
+  defaultInit___dupe2: 0x01EFD2FC
+  SV_IKS_Malloc: 0x01EEE51C
+  InitalizePluginManagerAndPlugins: 0x01EEF83C
+  URIStoreFind: 0x01EEFB08
+  reset: 0x01EEFE08
+  UpdateDownloadManager: 0x01EEFD40
+  operator.new___dupe5: 0x01EF0B3C
+  operator.new___dupe13: 0x01F0845C
+  setFileDownloadProps: 0x01F09D00
+  operator.new___dupe14: 0x01F09F0C
+  operator.new___dupe8: 0x01EF370C
+  operator.new___dupe7: 0x01EF3654
+  operator.new___dupe6: 0x01EF2DB8
+  operator.new___dupe10: 0x01F042B8
+  handleDownloadThrobber: 0x01EF6720
+  DefaultInit___dupe11: 0x01EF8CB4
+  DrawCursor: 0x01EFACA0
+  UpdateCursorPosition: 0x01EFAA2C
+  drawCursor: 0x01EFC3A4
+  GetEditPosition___dupe2: 0x01EFCB84
+  getSubstringPixelWidth: 0x01EFC2CC
+  handleSpecialKeys___dupe2: 0x01EFC000
+  scrollTextRightToFillWindow: 0x01EFC814
+  setText: 0x01EFC598
+  HandleInput___dupe34: 0x01EF28AC
+
+  operator.new___dupe9: 0x01EF58C4
+
+  getDataTypeAttrib___dupe2: 0x01F04A5C
+
+  LineTag: 0x01EF6CC0
+
+  getSelectedItem: 0x01F058D8
+
+  SubmitInputTag: 0x01EFFAC0
+
+  changeCurOptionToNextLetterInAlphabet: 0x01EF7B14
+
+  Draw___dupe13: 0x01EF7830
+
+  downloadHeaders: 0x01EEAB08
+
+  DrawListBox: 0x01EED26C
+
+  ScanTags___dupe6: 0x01F07B48
+
+  ScanTags___dupe7: 0x01F0A454
+
+  PageHistory: 0x01EF0734
+
+  CPluginManager: 0x01F04C2C
+
+  ReturnFromGame: 0x01EEF074
+
+  CURISchemeMgr: 0x01F07154
+
+  Register: 0x01F07094
+
+  doPost: 0x01EE6B64
+
+  shutdown___dupe3: 0x01F08888
+
+  BrowserInitTag: 0x01F0C1F8
+
+  LogoutTag: 0x01F002A4
+
+  ScanTags___dupe2: 0x01EF36C0
+
+  ScanTags___dupe5: 0x01F049B8
+
+  DrawPages: 0x01EEF28C
+
+  okToNavigate___dupe4: 0x01F09218
+
+  Draw___dupe27: 0x01F0BDDC
+
+  __SVO_Assert_Handler: 0x01F0C090
+
+  HandleInput___dupe39: 0x01EF6F04
+
+  SVTag: 0x01EF382C
+
+  getDistanceAutoNav: 0x01EF3EEC
+
+  Navigate: 0x01EF4188
+
+  autoNavigate: 0x01EF4504
+
+  draw___dupe2: 0x01F08B94
+
+  Submit: 0x01EFF30C
+
+  Draw___dupe23: 0x01F0139C
+
+  FindAndSetSelectedCell: 0x01F01F00
+
+  toString: 0x01EF2244
+
+  setPageState: 0x01EE955C
+
+  handleSpecialKeys: 0x01EF9E90
 
 objects:
   game/boot:

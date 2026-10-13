@@ -21,12 +21,12 @@ typedef struct { // 0x58 (vtable prefix)
     /* 0x0C */ int (*doRequest)(HttpState *, URIRequest *, IRequestListenerState *, void *);
     /* 0x10 */ unsigned char unrecovered10[0x24];
     /* 0x34 */ void (*HttpSendRequest)(HttpState *, char *, int, char **, int *);
-    /* 0x38 */ long (*HttpsDownload)(HttpState *, char *, int, char **, int *, char **, int *);
+    /* 0x38 */ int (*HttpsDownload)(HttpState *, char *, int, char **, int *, char **, int *);
     /* 0x3C */ void (*PrintHeader)(HttpState *);
     /* 0x40 */ void (*PrintFooter)(HttpState *);
     /* 0x44 */ void (*PrintRequestHeader)(HttpState *);
     /* 0x48 */ void (*PrintRequestFooter)(HttpState *);
-    /* 0x4C */ long (*IsSecure)(HttpState *http);
+    /* 0x4C */ int (*IsSecure)(HttpState *http);
     /* 0x50 */ void (*HttpCleanup)(HttpState *);
     /* 0x54 */ void (*States)(HttpState *http);
 } HttpVtablePrefix;

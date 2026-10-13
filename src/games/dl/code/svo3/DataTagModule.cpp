@@ -64,6 +64,34 @@ SECTION(FreeResources___dupe47) void FreeResources___dupe47(SVTagModuleState *mo
 
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DataTagModule", getDataTypeAttrib___dupe2);
+extern "C" SECTION(getDataTypeAttrib___dupe2) int getDataTypeAttrib___dupe2(void *tag, iks *xml, char *name, unsigned int *value)
+{
+    char *text = iks_find_attrib(xml, name);
+    if (text) {
+        for (int i = 0; i < 3; i++) {
+            if (!strcmp(text, _data_type_strings[i])) {
+                *value = i;
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/DataTagModule", ScanTags___dupe5);
+extern "C" {
+extern char svoDataTagModuleTypeAttribute[];
+extern char svoDataTagModuleNameAttribute[];
+extern char svoDataTagModuleValueAttribute[];
+extern char svoDataTagModuleEncryptedURIName[];
+}
+extern "C" SECTION(ScanTags___dupe5) void ScanTags___dupe5(SVTagModuleState *module, iks *xml, SVTag **tagList, CAllContextData *contexts, CTagModuleActions *actions)
+{
+    unsigned int type;
+    getDataTypeAttrib___dupe2(module, xml, svoDataTagModuleTypeAttribute, &type);
+    if (type == 1) {
+        char *name = iks_find_attrib(xml, svoDataTagModuleNameAttribute);
+        char *value = iks_find_attrib(xml, svoDataTagModuleValueAttribute);
+        if (name && value) strcmp(svoDataTagModuleEncryptedURIName, name);
+        else __SVO_Assert_Handler(svoDataTagModuleSource, 0x42);
+    }
+}
