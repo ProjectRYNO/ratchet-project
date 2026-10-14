@@ -26,11 +26,11 @@ void SVO_MEMORY_SECTION(CMemoryContextBase) CMemoryContextBase(CMemoryContextBas
 {
     context->vtable = &svoMemoryContextVtable;
     context->pageBeginHighWaterMark = 0;
-    context->m_TotalBytes = 0;
     context->m_MaxAllocated = 0;
     context->m_AllocCounter = 0;
     context->m_FreeCounter = 0;
     context->buCnt = 0;
+    context->m_TotalBytes = 0;
     InitMemChunks(context);
 }
 

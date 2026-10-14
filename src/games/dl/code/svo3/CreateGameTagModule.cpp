@@ -166,14 +166,14 @@ extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleSt
 {
     if (!strcmp(iks_name(xml), svoCreateGameName)) {
         iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
-        if (!status) {
-            if (!ParseCreateGameParamsXML(module, xml)) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x7B);
-        }
         if (status) {
             int result = GetCreateGameSubmitResponse(module, status);
             iks *id = getChildIksStruct(xml, svoCreateGameIDName);
             if (id) module->m_SVOGameID = atoi(iks_cdata(iks_child(id)));
             contexts->systemContext->vtable->HandleCreateGameResponse(contexts->systemContext, result);
+        } else {
+            if (ParseCreateGameParamsXML(module, xml)) return;
+            __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x7B);
         }
     } else if (!strcmp(iks_name(xml), svoGamePlayerName)) {
         int result = 1;

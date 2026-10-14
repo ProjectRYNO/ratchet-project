@@ -119,7 +119,8 @@ extern "C" SECTION(addrAsString) int addrAsString(RTCommSockState *socket, SVAdd
 
 extern "C" SECTION(BufferHasEndSVMLTag) int BufferHasEndSVMLTag(RTCommSockState *socket, char *buffer, int length)
 {
-    if (1024 < length) length -= 1024; else length = 0;
+    int lim = 1024;
+    length = length > lim ? length - lim : 0;
     char *tail = buffer + length;
     if (strstr(tail, svoRTCommEndSVML)) return 1;
     return strstr(tail, svoRTCommEndXML) != 0;
@@ -162,10 +163,11 @@ extern "C" SECTION(Connect) int Connect(RTCommSockState *socket, SVAddr *address
         break;
     }
     void *channel = 0;
-    unsigned long ip = ((SVRTCommAddrState *)address)->address[0];
-    int result = rt_comm_create(&channel, *(RTLinkAddress *)&ip, port, &options);
+    RTLinkAddress link;
+    *(unsigned long *)&link = ((SVRTCommAddrState *)address)->address[0];
+    int result = rt_comm_create(&channel, link, port, &options);
     socket->m_rtCommCID = channel;
-    ((SVRTCommAddrState *)address)->address[0] = ip;
+    ((SVRTCommAddrState *)address)->address[0] = *(unsigned long *)&link;
     if (result) return 0;
     rt_comm_update();
     socket->m_pScratchBuffer = 0;
@@ -197,8 +199,8 @@ extern "C" SECTION(dnsLookup) SVAddr *dnsLookup(RTCommSockState *socket, char *h
 
 extern "C" SECTION(dnsLookupBlocking) SVAddr *dnsLookupBlocking(RTCommSockState *socket, char *hostname, CMemoryContextBaseState *memory, int *success)
 {
-    unsigned long address;
-    char text[32];
+    RTLinkAddress address;
+    char text[16];
     *success = 0;
     if (!hostname || !memory) socket->base.m_errNo = 3;
     if (socket->base.m_errNo) return 0;
@@ -206,12 +208,12 @@ extern "C" SECTION(dnsLookupBlocking) SVAddr *dnsLookupBlocking(RTCommSockState 
         if (rt_comm_linkaddress_toint(&address, hostname)) __SVO_Assert_Handler(svoRTCommSockSource, 0x74);
     } else if (!CacheRetrieve(Get___dupe2(), hostname, &address)) {
         int result = rt_comm_get_host_by_name(hostname, &address);
-        rt_comm_linkaddress_tostr(text, *(RTLinkAddress *)&address);
+        rt_comm_linkaddress_tostr(text, address);
         if (result) return 0;
         CacheStore(Get___dupe2(), hostname, &address);
     }
     *success = 1;
-    socket->address = address;
+    socket->address = *(unsigned long *)&address;
     return (SVAddr *)&socket->addressVtable;
 }
 
@@ -283,8 +285,13 @@ extern "C" SECTION(Recv) int Recv(RTCommSockState *socket, char *buffer, int siz
     return 1;
 }
 
-extern "C" SECTION(RTCommSock) void RTCommSock(RTCommSockState *socket, CMemoryContextBaseState *memory)
+struct RTCommSockCtor {
+    char data[sizeof(RTCommSockState)];
+    RTCommSockCtor(CMemoryContextBaseState *memory) __asm__("RTCommSock");
+};
+SECTION(RTCommSock) RTCommSockCtor::RTCommSockCtor(CMemoryContextBaseState *memory)
 {
+    RTCommSockState *socket = (RTCommSockState *)this;
     SVSock(&socket->base, memory);
     socket->base.vtable = svoRTCommSockVtable;
     socket->addressVtable = svoRTCommAddrVtable;
@@ -310,32 +317,38 @@ extern "C" SECTION(Send) int Send(RTCommSockState *socket, char *buffer, int len
         return 0;
     }
     *sent = (long)length;
-    if (rt_circ_buf_get_used_nowrap(ring, &used)) return 0;
-    if (used) {
-        start = 0;
-        if (rt_circ_buf_get_start_used_ptr(ring, &start)) return 1;
-        count = 0;
-        int result = rt_comm_send(socket->m_rtCommCID, start, used, &count);
-        *sent = count;
-        if (result) return 0;
-        rt_circ_buf_free(ring, (unsigned int)*sent);
-        rt_circ_buf_normalize(ring, 1);
-        if (rt_comm_update()) __SVO_Assert_Handler(svoRTCommSockSource, 0x207);
-    } else {
-        if (length > 0) __SVO_Assert_Handler(svoRTCommSockSource, 0x20D);
+    if (!rt_circ_buf_get_used_nowrap(ring, &used)) {
+        if (used) {
+            start = 0;
+            if (!rt_circ_buf_get_start_used_ptr(ring, &start)) {
+                count = 0;
+                int result = rt_comm_send(socket->m_rtCommCID, start, used, &count);
+                *sent = count;
+                if (result) return 0;
+                rt_circ_buf_free(ring, (unsigned int)*sent);
+                rt_circ_buf_normalize(ring, 1);
+                if (rt_comm_update()) __SVO_Assert_Handler(svoRTCommSockSource, 0x207);
+            }
+        } else if (length > 0) __SVO_Assert_Handler(svoRTCommSockSource, 0x20D);
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 extern "C" SECTION(WaitForConnect) int WaitForConnect(RTCommSockState *socket)
 {
-    if (rt_comm_update()) return 0;
-    int connected;
-    long result = rt_comm_is_connected(socket->m_rtCommCID, &connected);
-    if (connected == 1 && !result) return 1;
-    if (connected || result) {
-        SetErrorCode(0x26);
-        if (!result) __SVO_Assert_Handler(svoRTCommSockSource, 0x1CA);
+    if (!rt_comm_update()) {
+        int connected;
+        long result = rt_comm_is_connected(socket->m_rtCommCID, &connected);
+        if (connected == 1 && !result) return 1;
+        if (connected || result) {
+            if (result) {
+                SetErrorCode(0x26);
+            } else {
+                SetErrorCode(0x26);
+                __SVO_Assert_Handler(svoRTCommSockSource, 0x1CA);
+            }
+        }
     }
     return 0;
 }

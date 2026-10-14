@@ -181,24 +181,27 @@ extern "C" SECTION(Draw___dupe26) void Draw___dupe26(GenericListBoxTagState *tag
     float fraction = 0.0f;
     if (tag->m_numItems > 0) {
         int selected = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
-        float count = (float)tag->m_numItems;
-        if ((float)tag->m_maxNumItems <= count) count = (float)tag->m_maxNumItems;
-        fraction = ((float)selected + 1.0f) / count;
+        float pos = (float)selected + 1.0f;
+        float maximum = (float)tag->m_maxNumItems;
+        float total = (float)tag->m_numItems;
+        float count;
+        if (maximum <= total) count = maximum;
+        else count = total;
+        fraction = pos / count;
     }
     draw->vtable->DrawGenericListboxFrame(draw, tag->base.m_tagid, tag->base.m_x,
         tag->base.m_y, tag->base.m_width, tag->base.m_height, line, fill,
         tag->m_maxVisibleItems, fraction, tag->base.m_tagClass);
-    int count = tag->m_numItems;
-    if (count > 0) {
+    if (tag->m_numItems > 0) {
+        int count = tag->m_numItems;
         if (tag->m_maxVisibleItems < count) count = tag->m_maxVisibleItems;
         for (int i = 0; i < count; ++i) {
-            int item = i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
-            int selected = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
-            int top = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
-            unsigned int *id = tag->m_entryTagIDs + i + top;
-            top = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            int item = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            int isSelected = i + item == ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
+            unsigned int *id = tag->m_entryTagIDs + i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            svo_listbox_handle handle = tag->m_handles[i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag)];
             draw->vtable->DrawGenericListboxEntry(draw, *id, tag->base.m_name,
-                tag->m_handles[i + top], i, item == selected, tag->base.m_lineColor,
+                handle, i, isSelected, tag->base.m_lineColor,
                 tag->base.m_fillColor, tag->base.m_tagClass);
         }
     }

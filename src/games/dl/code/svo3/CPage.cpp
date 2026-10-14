@@ -589,6 +589,7 @@ extern "C" SECTION(doPost) int doPost(CPage *page, char *path, CQueryParamListSt
     return doRequest(page, path, params, method, storeHistory, svoPagePostCommand);
 }
 
+struct SVPathCtor : SVPath { SVPathCtor(char *scheme, char *server, unsigned short *port, char *path, unsigned int length) { m_scheme = scheme; m_server = server; m_port = port; m_path = path; m_pathMaxLength = length; } };
 extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParamListState *params, int method, int storeHistory, char *command)
 {
     char newPath[272];
@@ -603,12 +604,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
         return 1;
     }
     if (pathIsFullyQualified(page, path)) {
-        SVPath split;
-        split.m_scheme = page->m_scheme;
-        split.m_server = page->m_serverName;
-        split.m_port = &page->m_port;
-        split.m_path = newPath;
-        split.m_pathMaxLength = 257;
+        SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(path, &split);
     } else if (*path != '/') {
         memset(fullPath, 0, 257);
@@ -617,12 +613,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
             __SVO_Assert_Handler(svoPageSource, 0x34B);
             return 0;
         }
-        SVPath split;
-        split.m_scheme = page->m_scheme;
-        split.m_server = page->m_serverName;
-        split.m_port = &page->m_port;
-        split.m_path = newPath;
-        split.m_pathMaxLength = 257;
+        SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(fullPath, &split);
         path = fullPath;
     } else {
@@ -663,6 +654,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     return 1;
 }
 
+static inline int PreTransitionPending(CPage *page) { return page->preTransitionCount != 0; }
 extern "C" SECTION(download) int download(CPage *page)
 {
     rt_comm_update();
@@ -686,7 +678,7 @@ extern "C" SECTION(download) int download(CPage *page)
             callGenericDownloadCallback(page, &page->m_pCURIContent, &page->m_iCURIContentLength);
             if (GetTagAtIndex(page, 0)) {
                 if (!((InTransitArray *)page->inTransition)->GetCount() && page->preTransitionCount && requestBinary(page, 1) != 1) setPageState(page, 9);
-            } else if (!((InTransitArray *)page->inTransition)->GetCount() && page->preTransitionCount) {
+            } else if (!((InTransitArray *)page->inTransition)->GetCount() && PreTransitionPending(page)) {
                 if (requestBinary(page, 1) != 1) setPageState(page, 8);
             } else if (!page->m_pCURIContent) setPageState(page, 0);
         }
@@ -951,29 +943,19 @@ extern "C" SECTION(GenerateLagListInfo) void GenerateLagListInfo(CPage *page)
     if (!memory) __SVO_Assert_Handler(svoPageSource, 0xAA3);
     SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
     if (!tags) __SVO_Assert_Handler(svoPageSource, 0xAA5);
-    int count = 0;
-    SVTag **p = tags;
-    if (*p) {
-        count++;
-    more:
-        if (count < 256) {
-            p++;
-            if (*p) {
-                count++;
-                goto more;
-            }
-        }
+    int count;
+    for (count = 0; count < 256 && tags[count]; count++) {
     }
     SVTagInfo *info = (SVTagInfo *)svAllocSafe(memory, count * sizeof(SVTagInfo), 0, 0xAB7, svoPageSource);
     if (!info) return;
     memset(info, 0, count * sizeof(SVTagInfo));
-    for (int i = 0; i < count; ++i, ++tags) {
-        if (!*tags) __SVO_Assert_Handler(svoPageSource, 0xAC2);
-        info[i].tag = *tags;
-        info[i].tagID = (*tags)->vtable->GetTagID(*tags);
-        info[i].name = (*tags)->vtable->GetTagName(*tags);
-        info[i].typeName = GetTagTypeName(*tags);
-        info[i].tagClass = (*tags)->m_tagClass;
+    for (int i = 0; i < count; ++i) {
+        if (!tags[i]) __SVO_Assert_Handler(svoPageSource, 0xAC2);
+        info[i].tag = tags[i];
+        info[i].tagID = tags[i]->vtable->GetTagID(tags[i]);
+        info[i].name = tags[i]->vtable->GetTagName(tags[i]);
+        info[i].typeName = GetTagTypeName(tags[i]);
+        info[i].tagClass = tags[i]->m_tagClass;
     }
     SignalPluginEvent(GetInstance(), 11, 0);
     CSystemContextBase *system = GetSystemContext();
@@ -1265,12 +1247,7 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
         break;
     }
     char path[272];
-    SVPath split;
-    split.m_scheme = page->m_scheme;
-    split.m_server = page->m_serverName;
-    split.m_port = &page->m_port;
-    split.m_path = path;
-    split.m_pathMaxLength = 257;
+    SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, path, 257);
     parseFullyQualifiedPath(GetPath(&record), &split);
     int type = 1;
     if (!strstr(GetPath(&record), svoPageSvmlExtension)) {
@@ -1369,13 +1346,18 @@ extern "C" SECTION(scanForDownloadablesCB) void scanForDownloadablesCB(unsigned 
     _ParseSVMLForDownloads(&parser, 2);
 }
 
-struct ScanResultCtor : SVTagScanResult { ScanResultCtor() { action = 0; download = 0; } }; extern "C" SECTION(scanObject) void scanObject(CPage *page, iks *xml)
+extern "C" SECTION(scanObject) void scanObject(CPage *page, iks *xml)
 {
     SVTagModuleState **modules = getInstance___dupe3()->m_modules;
-    for (int i = 0; i < 128 && *modules; i++) {
-        SVTagModuleState *module = *modules++;
+    for (int i = 0; i < 128 && modules[i]; i++) {
+        SVTagModuleState *module = modules[i];
         if (!module->vtable->IsMyTag(module, xml)) continue;
-        ScanResultCtor results[2];
+        SVTagScanResult results[2];
+        for (int k = 0; k < 2; k++) {
+            SVTagScanResult *r = &results[k];
+            r->action = 0;
+            r->download = 0;
+        }
         svoPageContextData.pMain = page;
         module->vtable->ScanTag(module, xml, page->m_pFrontDisplayBuffer->tagList, &svoPageContextData, results);
         for (int j = 0; j < 2; ++j) {

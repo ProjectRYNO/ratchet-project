@@ -53,10 +53,10 @@ TAG_SECTION(operator.delete___dupe7) void SVTagDelete(SVTag *tag)
 TAG_SECTION(DefaultInit___dupe3) void DefaultInit___dupe3(SVTag *tag)
 {
     memset(tag->m_tagTypeName, 0, 64);
+    tag->m_xml = 0;
+    tag->m_bSelectable = 1;
     tag->m_fillColor = 0xFFFF0000;
     tag->m_tagClass = gTagNotSetStr;
-    tag->m_bSelectable = 1;
-    tag->m_xml = 0;
     tag->m_tagid = 0;
     tag->m_bSelected = 0;
     tag->m_x = 0;
@@ -73,8 +73,8 @@ TAG_SECTION(DefaultInit___dupe3) void DefaultInit___dupe3(SVTag *tag)
     tag->vtable->SetVisible(tag, 1);
     reset___dupe2(&tag->m_navInfo);
     tag->m_isDefTextEntry = 0;
-    tag->m_bNeverSelectable = 0;
     tag->m_isDefTextScroll = 0;
+    tag->m_bNeverSelectable = 0;
 }
 
 extern char svoTagNameAttribute[];
@@ -110,8 +110,7 @@ TAG_SECTION(SVTag) void SVTagConstruct(SVTag *tag, iks *xml, CAllContextData *co
     tag->m_name = iks_find_attrib(xml, svoTagNameAttribute);
     if (!tag->m_name) __SVO_Assert_Handler(svoTagSource, 0x55);
     tag->m_info = iks_find_attrib(xml, svoTagInfoAttribute);
-    unsigned int id = svoNextTagId;
-    svoNextTagId = id + 1;
+    unsigned int id = svoNextTagId++;
     tag->m_tagid = id;
     tag->m_bSelected = 0;
     tag->m_bSelectable = 0;
@@ -141,7 +140,7 @@ TAG_SECTION(SVTag) void SVTagConstruct(SVTag *tag, iks *xml, CAllContextData *co
     if (!getFloatAttrib(xml, svoTagWidthAttribute, &tag->m_width)) getFloatAttrib(xml, svoTagWAttribute, &tag->m_width);
     if (!getFloatAttrib(xml, svoTagHeightAttribute, &tag->m_height)) getFloatAttrib(xml, svoTagHAttribute, &tag->m_height);
     getFloatAttrib(xml, svoTagZAttribute, &tag->m_z);
-    if (tag->m_z < 0.0f || tag->m_z >= 100000.0f) __SVO_Assert_Handler(svoTagSource, 0x9A);
+    if (!(tag->m_z >= 0.0f && tag->m_z < 100000.0f)) __SVO_Assert_Handler(svoTagSource, 0x9A);
     if (GetInstance()->m_pPopupPage->m_bIsActive) tag->m_z = tag->m_z + 200000.0f;
     else tag->m_z = tag->m_z + 100000.0f;
     GetNavigationAttributes(tag, &tag->m_navInfo, tag->m_xml);
@@ -154,8 +153,8 @@ TAG_SECTION(SVTag) void SVTagConstruct(SVTag *tag, iks *xml, CAllContextData *co
 
 TAG_SECTION(SetSelectedState) void SetSelectedState(SVTag *tag, int selected)
 {
-    int value = selected != 0;
-    if (!tag->vtable->IsSelectable(tag) || tag->m_bNeverSelectable) value = 0;
+    int value = 0;
+    if (tag->vtable->IsSelectable(tag) && !tag->m_bNeverSelectable) value = selected != 0;
     tag->m_bSelected = value;
 }
 
@@ -174,10 +173,10 @@ TAG_SECTION(GetDimensions) void GetDimensions(SVTag *tag, float *x, float *y, fl
 
 TAG_SECTION(SetDimensions) void SetDimensions(SVTag *tag, float x, float y, float width, float height)
 {
-    tag->m_height = height;
     tag->m_x = x;
     tag->m_y = y;
     tag->m_width = width;
+    tag->m_height = height;
 }
 
 TAG_SECTION(GetQueryParams) void GetQueryParams(SVTag *tag, char **name, char **value)

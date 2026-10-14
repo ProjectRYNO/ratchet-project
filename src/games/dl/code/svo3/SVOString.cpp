@@ -12,40 +12,50 @@ void __SVO_Assert_Handler(const char *file, int line);
 SVO_STRING_SECTION(svstrncpy) char *svstrncpy(char *dst, char *src, unsigned int size)
 {
     unsigned int i = 0;
+    char *target;
+    char *source;
     if (!src) __SVO_Assert_Handler(svoStringSource, 0x1E);
     if (!dst) __SVO_Assert_Handler(svoStringSource, 0x1F);
     if (size >= 0xA000) __SVO_Assert_Handler(svoStringSource, 0x20);
-    for (;;) {
-        if (i >= size) {
-            // Retail also writes dst[-1] when size is zero; callers must provide capacity.
-            dst[i - 1] = 0;
-            __SVO_Assert_Handler(svoStringSource, 0x28);
-            return dst;
-        }
-        char *target = &dst[i];
-        char *source = &src[i];
-        i++;
-        if (!*source) {
-            *target = 0;
-            return dst;
-        }
-        *target = *source;
+    goto test;
+copy:
+    *target = *source;
+test:
+    if (i >= size) {
+        // Retail also writes dst[-1] when size is zero; callers must provide capacity.
+        dst[i - 1] = 0;
+        __SVO_Assert_Handler(svoStringSource, 0x28);
+        return dst;
     }
+    target = &dst[i];
+    source = &src[i];
+    i++;
+    if (*source) goto copy;
+    *target = 0;
+    return dst;
 }
 
 SVO_STRING_SECTION(svsubstrncpy) char *svsubstrncpy(char *dst, char *src, unsigned int size)
 {
     unsigned int i = 0;
+    char *target;
+    char *source;
     if (!src) __SVO_Assert_Handler(svoStringSource, 0x44);
     if (!dst) __SVO_Assert_Handler(svoStringSource, 0x45);
     if (!size) __SVO_Assert_Handler(svoStringSource, 0x48);
-    while (i < size) {
-        char c = src[i];
-        dst[i] = c;
-        if (!c) return dst;
-        ++i;
+    goto test;
+copy:
+    *target = *source;
+test:
+    if (i >= size) {
+        dst[i - 1] = 0;
+        return dst;
     }
-    dst[i - 1] = 0;
+    target = &dst[i];
+    source = &src[i];
+    i++;
+    if (*source) goto copy;
+    *target = 0;
     return dst;
 }
 

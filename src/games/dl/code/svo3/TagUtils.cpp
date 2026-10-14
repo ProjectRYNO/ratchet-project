@@ -111,9 +111,11 @@ SECTION(RegisterCommonTagModules) void RegisterCommonTagModules(void)
 SECTION(getIntAttrib) int getIntAttrib(iks *xml, char *name, int *value)
 {
     char *text = iks_find_attrib(xml, name);
-    if (!text || !svisdigit((signed char)*text)) return 0;
-    *value = atoi(text);
-    return 1;
+    if (text && svisdigit((signed char)*text)) {
+        *value = atoi(text);
+        return 1;
+    }
+    return 0;
 }
 
 SECTION(getBoolAttrib) int getBoolAttrib(iks *xml, char *name, int *value)

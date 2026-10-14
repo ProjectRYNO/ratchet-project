@@ -54,6 +54,33 @@ with no regressions. It only changes the `.mdebug` section, which the linker scr
 
 ## 2.96 source-shape patterns established (in addition to the earlier list)
 
+- **Real C++ constructors** for constructor-named functions, with raw storage when the state type
+  can't be a member: `struct XCtor { char data[sizeof(XState)]; XCtor(args) __asm__("X"); };`
+  (SVChronograph, RTCommSock). Not universal: CMemoryContextBase got worse (tail call).
+- **Inline helper constructors for value structs:** `SVPathCtor(scheme, server, &port, path, 257)`
+  (SVPath holds a C++ reference) reproduces retail's store-through-`this` sequence (CPage
+  `doRequest`, `requestBinary`).
+- **Late address computation:** `DLBuffer *second; if (!first->x && !(second = &m->m_buffers[1])->x)`
+  (two SVDownloadManager functions). Splitting one reused variable into two changes allocation
+  priority (SelectTag `changeCurOptionToNextLetterInAlphabet`).
+- **Wider locals:** retail sometimes used a wider local type (RTCommSock `Connect`: `RTLinkAddress`
+  local instead of `unsigned long` gives retail's frame layout).
+- **Copy from a retail data symbol:** `extern L obj __asm__("svoHttpSchemes"); L copy = obj;`
+  (CHttp/HttpSecure DoRegistrations).
+- **Success-path-first nesting** (`if (!a) { if (!b) {...} return 1; } return 0;`) controls where the
+  shared `return 0` block lands (RTCommSock `Send`, TagUtils `getIntAttrib`).
+- **Indexed loops** `for (i...) { T *p = &arr[i]; ... }` give retail's counted `bgez` loops (CPage
+  `scanObject`); `tags[i]` indexing instead of walking pointers (CPage `GenerateLagListInfo`).
+- **Not the cause:** `-fno-strict-aliasing` (global test: 862 -> 806 exact), and none of
+  `-fno-cse-follow-jumps`, `-fno-gcse`, `-fno-rerun-loop-opt`, `-fno-cse-skip-blocks`.
+- **Rejected:** empty `__asm__ __volatile__("" : : "r"(x))` to force a dead load (CHttp
+  `downloadBody`); it emits no bytes but is not real source.
+- **Unsolved residual classes:** branch-likely choice (`beql`/`beqz`, e.g. CPage `download`,
+  `callGenericDownloadCallback`, `LeaveCurrentPage`), scheduler order of independent argument
+  moves (`SVMLparseCB`, `GetPageName`, `decodeEntityChar`), and loop-carried reuse of a reloaded
+  pointer (CPage `FreeBack/FrontDisplayBuffer`; a `volatile` read gets within 2 lines but is not
+  the original).
+
 - **Store order:** 2.96 emits the LAST of a group of independent stores FIRST, then the rest in
   source order. To get retail order X1..Xn, write X2..Xn, X1.
 - **Index-based loops** `for (i = 0; i < N && a[i]; i++) { T *t = a[i]; ... }` reproduce retail's

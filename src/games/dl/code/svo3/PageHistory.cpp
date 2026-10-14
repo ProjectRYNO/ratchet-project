@@ -76,14 +76,13 @@ HISTORY_SECTION(pop) char * pop(PageHistoryState *history)
 {
     if (history->m_next_index < 1) {
         __SVO_Assert_Handler(svoPageHistorySource, 0x6E);
+        return history->m_history[history->m_next_index];
     } else if (history->m_next_index == 1) {
         char *home = URIStoreFind(svoHistoryHomePage);
         if (home) svstrncpy(history->m_history[0], home, 257);
         return 0;
-    } else {
-        --history->m_next_index;
     }
-    return history->m_history[history->m_next_index];
+    return history->m_history[--history->m_next_index];
 }
 
 HISTORY_SECTION(top) char * top(PageHistoryState *history)

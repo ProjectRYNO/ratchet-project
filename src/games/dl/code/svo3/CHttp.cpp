@@ -280,12 +280,12 @@ extern "C" SECTION(closeSocket) void closeSocket(HttpState *http)
     }
 }
 
+struct SVHttpSchemeList { char *schemes[2]; };
+extern SVHttpSchemeList svoHttpSchemesList __asm__("svoHttpSchemes");
 extern "C" SECTION(DoRegistrations2) void DoRegistrations2(HttpState *http)
 {
-    typedef struct __attribute__((packed)) { unsigned long value; } SchemeList;
-    char *schemes[2];
-    *(SchemeList *)schemes = *(SchemeList *)svoHttpSchemes;
-    Register((IURISchemeProviderState *)http, schemes);
+    SVHttpSchemeList schemes = svoHttpSchemesList;
+    Register((IURISchemeProviderState *)http, schemes.schemes);
 }
 
 extern "C" SECTION(doRequest___dupe2) int doRequest___dupe2(HttpState *http, URIRequest *request, IRequestListenerState *listener, void *context)
@@ -765,29 +765,28 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
             http->m_serverParamsTooLong = 1;
             if (NotEmpty(&http->m_savedServerParams)) __SVO_Assert_Handler(svoHttpSource, 0x3AE);
             *cursor = strstr(*cursor, svoHttpQueryDelimiter);
-        nextParam:
-            if (*cursor) {
+            for (;;) {
+                if (!*cursor) goto paramsDone;
                 char key[32];
                 char value[0x3000];
-                char *equals = *cursor;
+                char *p = *cursor;
                 memset(key, 0, sizeof(key));
                 memset(value, 0, sizeof(value));
-                do { ++equals; } while (*equals != '=');
+                do { ++p; } while (*p != '=');
                 ++*cursor;
-                if (equals - *cursor > 31) __SVO_Assert_Handler(svoHttpSource, 0x3C8);
-                memcpy(key, *cursor, equals - *cursor);
-                *cursor = equals + 1;
-                end = *cursor;
-                if (*end == '&') value[0] = 0;
+                if (p - *cursor > 31) __SVO_Assert_Handler(svoHttpSource, 0x3C8);
+                memcpy(key, *cursor, p - *cursor);
+                *cursor = ++p;
+                if (*p == '&') value[0] = 0;
                 else {
-                    do { ++end; } while (*end != '&' && *end != '\r');
-                    if (end - *cursor >= 0x3000) __SVO_Assert_Handler(svoHttpSource, 0x3E0);
-                    memcpy(value, *cursor, end - *cursor);
+                    do { ++p; } while (*p != '&' && *p != '\r');
+                    if (p - *cursor >= 0x3000) __SVO_Assert_Handler(svoHttpSource, 0x3E0);
+                    memcpy(value, *cursor, p - *cursor);
                 }
                 decodeURLEntityText(key);
                 decodeURLEntityText(value);
                 Set(&http->m_savedServerParams, key, value, 0);
-                if (*end == '\r') {
+                if (*p == '\r') {
                     *cursor = strchr(header, '\n') + 1;
                     char *path = strstr(header + 9, svoHttpHostDelimiter) + 2;
                     path = strstr(path, svoHttpPathDelimiter);
@@ -799,20 +798,18 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
                     return 1;
                 }
                 *cursor = strstr(*cursor, svoHttpParamDelimiter);
-                goto nextParam;
             }
+        paramsDone:;
         } else strncpy(location, *cursor, end - *cursor);
     } else if (!strncmp(*cursor, svoHttpContentTypePrefix, 13)) {
         char *type = *cursor + 14;
-        int result;
-        if (!strncmp(type, svoHttpSVMLType, 9)) result = 1;
-        else if (!strncmp(type, svoHttpXMLType, 8)) result = 2;
-        else if (!strncmp(type, svoHttpHTMLType, 9)) result = 3;
-        else if (!strncmp(type, svoHttpGIFType, 9) || !strncmp(type, svoHttpTM2Type, 9)) result = 5;
-        else if (!strncmp(type, svoHttpAMXType, 15)) result = 4;
-        else if (!strncmp(type, svoHttpBinaryType, 24)) result = 6;
-        else result = 7;
-        *contentType = result;
+        if (!strncmp(type, svoHttpSVMLType, 9)) *contentType = 1;
+        else if (!strncmp(type, svoHttpXMLType, 8)) *contentType = 2;
+        else if (!strncmp(type, svoHttpHTMLType, 9)) *contentType = 3;
+        else if (!strncmp(type, svoHttpGIFType, 9) || !strncmp(type, svoHttpTM2Type, 9)) *contentType = 5;
+        else if (!strncmp(type, svoHttpAMXType, 15)) *contentType = 4;
+        else if (!strncmp(type, svoHttpBinaryType, 24)) *contentType = 6;
+        else *contentType = 7;
     }
     char *newline = strchr(*cursor, '\n');
     if (newline) {

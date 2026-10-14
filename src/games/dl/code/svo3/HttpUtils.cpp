@@ -22,8 +22,8 @@ int HTTP_SECTION(escapeString) escapeString(char *source, char *destination, uns
     unsigned int written = 0;
     unsigned int position = 0;
     if (capacity <= length) __SVO_Assert_Handler(svoHttpUtilsSource, 0x3B);
-    while (written < capacity && position < length && source[position]) {
-        char *current = source + position++;
+    for (; written < capacity && position < length && source[position]; position++) {
+        char *current = source + position;
         if (strchr(svoHttpInvalidChars, *current))
             written += svsnprintf(destination + written, capacity - written, svoHttpEscapeFormat, *current);
         else

@@ -140,18 +140,22 @@ extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawCon
     if (!visible) return;
     SVTag *tag = &self->base;
     float x = tag->m_x + ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
+    int node = self->m_node;
+    float y = tag->m_y;
+    float height = tag->m_height;
     unsigned int color = tag->m_bSelected ? self->m_highlightTextColor : self->m_textColor;
     float top;
     float bottom;
     float thickness;
-    if (self->m_node == -1) {
+    if (node == -1) {
         thickness = 3.0f;
-        top = tag->m_y + 4.0f;
-        bottom = tag->m_y + (tag->m_height - 2.0f);
+        height -= 2.0f;
+        top = y + 4.0f;
+        bottom = y + height;
         x += 6.0f;
     } else {
-        float height = tag->m_height - 4.0f;
-        top = tag->m_y - height * 0.5f;
+        height -= 4.0f;
+        top = y - height * 0.5f;
         bottom = top + height;
         thickness = draw->vtable->GetStringWidth(draw, self->m_fontSize, svoTextInputCursorGlyph, 1) * 0.75f;
     }
@@ -391,18 +395,22 @@ extern "C" SECTION(InitialiseFromXml) void InitialiseFromXml(TextInputTagState *
         if (!strncmp(optional, svoTextInputYesValue, 4)) tag->base.m_bOptional = 1;
     }
     char *blink = iks_find_attrib(tag->base.m_xml, svoTextInputBlinkCursorAttribute);
-    if (blink) tag->m_blinkCursor = !strcmp(blink, svoTextInputTrueValue);
-    char *readOnly = iks_find_attrib(tag->base.m_xml, svoTextInputReadOnlyAttribute);
-    char *editable = iks_find_attrib(tag->base.m_xml, svoTextInputEditableAttribute);
-    if (readOnly || editable) {
-        int result;
-        if (readOnly) {
-            if (editable) __SVO_Assert_Handler(svoTextInputTagSource, 0x9E);
-            result = strcmp(readOnly, svoTextInputFalseValue);
-        } else result = strcmp(editable, svoTextInputTrueValue);
-        if (!result) {
-            tag->base.m_bSelectable = 1;
+    if (blink) {
+        if (!strcmp(blink, svoTextInputTrueValue)) tag->m_blinkCursor = 1;
+        else tag->m_blinkCursor = 0;
+    }
+    char *readOnly = iks_find_attrib(xml, svoTextInputReadOnlyAttribute);
+    char *editable = iks_find_attrib(xml, svoTextInputEditableAttribute);
+    if (readOnly) {
+        if (editable) __SVO_Assert_Handler(svoTextInputTagSource, 0x9E);
+        if (!strcmp(readOnly, svoTextInputFalseValue)) {
             tag->m_bEditable = 1;
+            tag->base.m_bSelectable = 1;
+        } else tag->m_bEditable = 0;
+    } else if (editable) {
+        if (!strcmp(editable, svoTextInputTrueValue)) {
+            tag->m_bEditable = 1;
+            tag->base.m_bSelectable = 1;
         } else tag->m_bEditable = 0;
     }
     getBoolAttrib(tag->base.m_xml, svoTextInputSelectableAttribute, &tag->base.m_bSelectable);

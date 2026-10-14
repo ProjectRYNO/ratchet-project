@@ -71,8 +71,8 @@ extern "C" SECTION(cleanFileString) void cleanFileString(char *text)
     i = 0;
 loop:
     if (i < len) {
-        i++;
         if (text[cur] == '/' || text[cur] == 92) goto found;
+        i++;
         cur--;
         goto loop;
     }

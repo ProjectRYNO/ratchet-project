@@ -470,9 +470,11 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     }
     row_x = tag->base.m_x + (float)tag->m_borderWidth;
     for (r = 0; r < tag->m_origNumVisRows; r++) {
+        int rowNum = r + tag->m_currTopRow;
+        int isCur = rowNum == tag->m_currCellRowNum;
         draw->vtable->DrawGridRow(draw, tag->m_rows[r].row_tagID, row_x, tag->m_rows[r].row_y + (float)tag->m_borderHeight,
-                                  tag->base.m_z, tag->base.m_width, tag->m_rows[r].height, r + tag->m_currTopRow,
-                                  r + tag->m_currTopRow == tag->m_currCellRowNum, tag->m_rows[r].rowClass);
+                                  tag->base.m_z, tag->base.m_width, tag->m_rows[r].height, rowNum,
+                                  isCur, tag->m_rows[r].rowClass);
     }
     if (tag->m_numTotalRows <= 0) return;
     selected = 0;
@@ -485,12 +487,13 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     for (r = 0; r < tag->m_numVisRowsWithCells; r++) {
         for (c = 0; c < tag->m_numVisColumns; c++) {
             col_num = tag->m_columnIndexes[c];
-            cText = tag->m_cells[r + tag->m_currTopRow][col_num].cell_text;
+            SVGridCell *cell = &tag->m_cells[r + tag->m_currTopRow][col_num];
+            cText = cell->cell_text;
             if (!cText) cText = svoGridEmptyCellText;
-            selected = selectedCell == &tag->m_cells[r + tag->m_currTopRow][col_num];
+            selected = selectedCell == cell;
             strLen = TrimToFitDisplaySize(draw, cText, tag->m_columns[col_num].width, tag->m_defCellFontSize);
-            _classString = tag->m_cells[r + tag->m_currTopRow][col_num].cellClass;
-            if (!_classString) _classString = tag->base.m_tagClass;
+            if (tag->m_cells[r + tag->m_currTopRow][col_num].cellClass) _classString = tag->m_cells[r + tag->m_currTopRow][col_num].cellClass;
+            else _classString = tag->base.m_tagClass;
             if (selected && tag->m_bIsClickedIn) {
                 fillColor = tag->m_highlightCellFillColor;
                 lineColor = tag->m_highlightCellLineColor;
@@ -531,7 +534,7 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     }
     _grid_height = tag->base.m_height + (float)(tag->m_borderHeight * 2);
     _grid_width = tag->base.m_width + (float)(tag->m_borderWidth * 2);
-    if (tag->m_numVisColumns < tag->m_numTotalColumns) {
+    if (tag->m_numTotalColumns > tag->m_numVisColumns) {
         float denominator = (float)tag->m_numTotalColumns;
         float numerator = (float)tag->m_columnIndexes[tag->m_numLockedColumns] - (float)tag->m_numLockedColumns;
         if (denominator == 0.0f) __SVO_Assert_Handler(svoGridTagSource, 0x365);
@@ -542,7 +545,7 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
         h_sb_percentage = 0.0f;
         h_sb_size_percentage = 1.0f;
     }
-    if (tag->m_numVisRowsWithCells < tag->m_numTotalRows) {
+    if (tag->m_numTotalRows > tag->m_numVisRowsWithCells) {
         float denominator = (float)tag->m_numTotalRows;
         float numerator = (float)tag->m_currTopRow;
         if (denominator == 0.0f) __SVO_Assert_Handler(svoGridTagSource, 0x37C);
@@ -726,7 +729,7 @@ extern "C" SECTION(ParseColumns) int ParseColumns(GridTagState *tag, iks *xml)
         column->colAlign = tag->m_defCellAlign;
         column->width = tag->m_defaultColWidth;
         column->colName = 0;
-        column->linkOption = 0;
+        *(void **)&column->linkOption = 0;
     }
     ParseGridHeader(tag, xml);
     if (!iks_has_children(xml)) __SVO_Assert_Handler(svoGridTagSource, 0x4E3);

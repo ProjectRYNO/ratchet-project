@@ -130,12 +130,12 @@ extern "C" SECTION(changeCurOptionToNextLetterInAlphabet) void changeCurOptionTo
         int letter = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
         if (initial != letter) {
             if (direction == svoSelectPreviousDirection) {
-                initial = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+                char current = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
                 int previous;
                 do {
                     advanceCurrOption(tag, svoSelectPreviousDirection);
                     previous = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
-                } while (initial == previous);
+                } while (current == previous);
                 advanceCurrOption(tag, svoSelectNextDirection);
             }
             return;
@@ -148,23 +148,23 @@ extern "C" SECTION(DefaultInit___dupe9) void DefaultInit___dupe9(SelectTagState 
 {
     svstrncpy(tag->base.m_tagTypeName, svoSelectTagName, 64);
     tag->m_fontSize = 14;
+    tag->m_textColor = 0xFFFFFFFF;
     tag->m_align = 1;
     tag->base.m_lineColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFF0000FF;
-    tag->m_highlightLineColor = 0xFF00FF00;
-    tag->m_highlightFillColor = 0xFFFFFF00;
-    tag->m_bRequiredForSubmit = 0;
-    tag->m_displayLength = 0;
     tag->m_text = 0;
     tag->m_parentForm = 0;
     tag->m_enableGroupSelection = 0;
-    tag->m_textColor = 0xFFFFFFFF;
+    tag->m_displayLength = 0;
     tag->m_highlightTextColor = 0xFF00FF00;
     tag->m_numOptions = 0;
+    tag->m_highlightLineColor = 0xFF00FF00;
     tag->m_currOptionIdx = 0;
     tag->m_options = 0;
+    tag->m_highlightFillColor = 0xFFFFFF00;
     tag->m_values = 0;
     tag->m_bSubmitAsEncryped = 0;
+    tag->m_bRequiredForSubmit = 0;
 }
 
 extern "C" SECTION(Draw___dupe13) void Draw___dupe13(SelectTagState *tag)

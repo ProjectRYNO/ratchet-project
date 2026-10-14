@@ -53,13 +53,18 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
     tPoint cur[5];
     SVTag *closest = 0;
     float shortest = 9999.0f;
-    float x = 0.0f;
-    float y = 0.0f;
-    float width = 0.0f;
-    float height = 0.0f;
+    float x;
+    float y;
+    float width;
+    float height;
     int ignoreZone;
+    int i;
     curFrom.x = -1.0f;
     curFrom.y = -1.0f;
+    x = 0.0f;
+    y = 0.0f;
+    width = 0.0f;
+    height = 0.0f;
     selected->vtable->GetDimensions(selected, &x, &y, &width, &height);
     int tryWrapMax = 1;
     int tryWrapCnt = 0;
@@ -75,8 +80,8 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
         int xPos = (int)x;
         int yPos = (int)y;
         int inc = (int)width / 4;
-        int curinc = 0;
-        for (int i = 0; i < 5; i++) {
+        int curinc;
+        for (i = 0, curinc = 0; i < 5; i++) {
             cur[i].x = xPos + (float)curinc;
             cur[i].y = yPos + height * 0.5f;
             curinc += inc;
@@ -85,8 +90,8 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
         getIntAttrib(xml, svoNavigationZoneAttribute, &ignoreZone);
         SVTag **tagList = page->m_pFrontDisplayBuffer->tagList;
         if (!tagList) __SVO_Assert_Handler(svoNavigationSource, 0x180);
-        for (int n = 0; tagList[n] && n < 256; n++) {
-            SVTag *tag = tagList[n];
+        for (i = 0; tagList[i] && i < 256; i++) {
+            SVTag *tag = tagList[i];
             if (tag->vtable->IsSelected(tag) || !tag->vtable->IsSelectable(tag)) continue;
             float fbx = 0.0f;
             float fby = 0.0f;
@@ -94,8 +99,9 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
             float fbh = 0.0f;
             tag->vtable->GetDimensions(tag, &fbx, &fby, &fbw, &fbh);
             int targetInc = (int)fbw / 4;
-            int targetPos = 0;
-            for (int j = 0; j < 5; j++) {
+            int targetPos;
+            int j;
+            for (j = 0, targetPos = 0; j < 5; j++) {
                 target[j].x = fbx + (float)targetPos;
                 target[j].y = fby + fbh * 0.5f;
                 targetPos += targetInc;
@@ -120,7 +126,7 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                 }
                 break;
             case 1:
-                if (cur[2].y < target[2].y) {
+                if (target[2].y > cur[2].y) {
                     curTo.x = target[2].x;
                     curTo.y = target[2].y;
                     for (int k = 0; k < 5; k++) {
@@ -136,6 +142,19 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                     curFrom.y = cur[2].y;
                 }
                 break;
+            case 3:
+                if (target[0].x > cur[4].x) {
+                    curTo.x = target[0].x;
+                    curTo.y = target[0].y;
+                    dist = getDistanceAutoNav((int)cur[4].x, (int)cur[4].y, (int)target[0].x, (int)target[0].y, 3, ignoreZone, 5);
+                    if (lt_double(dist, shortest)) {
+                        shortest = dist;
+                        closest = tag;
+                    }
+                    curFrom.x = cur[4].x;
+                    curFrom.y = cur[4].y;
+                }
+                break;
             case 2:
                 if (target[4].x < cur[0].x) {
                     curTo.x = target[4].x;
@@ -149,25 +168,15 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                     curFrom.y = cur[0].y;
                 }
                 break;
-            case 3:
-                if (cur[4].x < target[0].x) {
-                    curTo.x = target[0].x;
-                    curTo.y = target[0].y;
-                    dist = getDistanceAutoNav((int)cur[4].x, (int)cur[4].y, (int)target[0].x, (int)target[0].y, 3, ignoreZone, 5);
-                    if (lt_double(dist, shortest)) {
-                        shortest = dist;
-                        closest = tag;
-                    }
-                    curFrom.x = cur[4].x;
-                    curFrom.y = cur[4].y;
-                }
-                break;
             default:
                 __SVO_Assert_Handler(svoNavigationSource, 0x1E9);
                 break;
             }
         }
-        if (closest) {
+        if (!closest) {
+            if (input->vtable->WrapSelections(input)) setWrapDimensions(direction, &x, &y, &width, &height, input);
+            else return 0;
+        } else {
             selected->vtable->SetSelectedState(selected, 0);
             closest->vtable->SetSelectedState(closest, 1);
             if (selected != closest) {
@@ -177,8 +186,6 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
             draw->vtable->AnimateHighlight(draw, selected->vtable->GetTagID(selected), closest->vtable->GetTagID(closest));
             return 1;
         }
-        if (!input->vtable->WrapSelections(input)) return 0;
-        setWrapDimensions(direction, &x, &y, &width, &height, input);
     }
     return 0;
 }

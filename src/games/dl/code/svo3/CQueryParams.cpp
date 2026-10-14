@@ -61,8 +61,8 @@ void SVO_QUERY_SECTION(Set) Set(CQueryParamListState *list, char *key, char *val
 {
     unsigned int keySize = svstrlen(key);
     unsigned int valueSize = svstrlen(value);
-    CMemoryContextBaseState *context = memory;
-    if (!memory) context = GetMemoryContext();
+    CMemoryContextBaseState *context;
+    if (!memory) context = GetMemoryContext(); else context = memory;
     if (list->m_params[list->m_iIndex].key) __SVO_Assert_Handler(svoQueryParamsSource, 0x70);
     if (list->m_params[list->m_iIndex].value) __SVO_Assert_Handler(svoQueryParamsSource, 0x71);
 
@@ -78,11 +78,12 @@ void SVO_QUERY_SECTION(Set) Set(CQueryParamListState *list, char *key, char *val
 
 void SVO_QUERY_SECTION(FreeAll) FreeAll(CQueryParamListState *list, CMemoryContextBaseState *memory)
 {
-    if (!memory) memory = GetMemoryContext();
+    CMemoryContextBaseState *mem;
+    if (!memory) mem = GetMemoryContext(); else mem = memory;
     for (int i = 0; i < list->m_iIndex; ++i) {
-        svFreeSafe(memory, list->m_params[i].key);
+        svFreeSafe(mem, list->m_params[i].key);
         list->m_params[i].key = 0;
-        svFreeSafe(memory, list->m_params[i].value);
+        svFreeSafe(mem, list->m_params[i].value);
         list->m_params[i].value = 0;
         list->m_params[i].key = 0;
         list->m_params[i].value = 0;

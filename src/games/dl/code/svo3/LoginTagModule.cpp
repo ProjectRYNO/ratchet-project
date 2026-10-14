@@ -163,13 +163,13 @@ extern "C" SECTION(ScanTagsHandleLoginSubmitResponse) void ScanTagsHandleLoginSu
         if (!message) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x49);
         else {
             char *text = iks_cdata(iks_child(message));
-            for (int i = 0; i < 2; ++i) {
-                if (text && !strcmp(text, svoLoginResultNames[i])) {
-                    module->m_bHaveUnhandledLoginResponse = 1;
-                    m_loginResult = i;
-                    return;
-                }
+            int i;
+            for (i = 0; i < 2; ++i) {
+                if (text && !strcmp(text, svoLoginResultNames[i])) break;
             }
+            if (i >= 2) return;
+            module->m_bHaveUnhandledLoginResponse = 1;
+            m_loginResult = i;
         }
     }
 }

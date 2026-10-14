@@ -125,12 +125,12 @@ extern "C" SECTION(_HttpSecure) void _HttpSecure(HttpSecureState *http, unsigned
     if (flags & 1) { HttpSecureoperator_delete(http); return; }
 }
 
+struct SVHttpsSchemeList { char *schemes[2]; };
+extern SVHttpsSchemeList svoHttpsSchemesList __asm__("svoHttpsSchemes");
 extern "C" SECTION(DoRegistrations) void DoRegistrations(HttpSecureState *http)
 {
-    typedef struct __attribute__((packed)) { unsigned long value; } SchemeList;
-    char *schemes[2];
-    *(SchemeList *)schemes = *(SchemeList *)svoHttpsSchemes;
-    Register((IURISchemeProviderState *)http, schemes);
+    SVHttpsSchemeList schemes = svoHttpsSchemesList;
+    Register((IURISchemeProviderState *)http, schemes.schemes);
 }
 
 extern "C" SECTION(HttpCleanup) void HttpCleanup(HttpSecureState *http)

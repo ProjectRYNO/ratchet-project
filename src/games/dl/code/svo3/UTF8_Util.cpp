@@ -92,13 +92,13 @@ int UTF8_SECTION(UTF8_RemoveCharFromStringDELETE) UTF8_RemoveCharFromStringDELET
 int UTF8_SECTION(UTF8_AddCharToString) UTF8_AddCharToString(
     char *text, unsigned int capacity, char *input, int inputSize, int index)
 {
-    char *insert = text + index;
-    int end = index + inputSize;
     int length = strlen(text);
-    int tail = length - index;
     if (length < index) __SVO_Assert_Handler(svoUTF8Source, 0xA3);
     if (length + inputSize >= (int)capacity) __SVO_Assert_Handler(svoUTF8Source, 0xA4);
     if (index < length) {
+        char *insert = text + index;
+        int end = index + inputSize;
+        int tail = length - index;
         memmove(text + end, insert, tail);
         memcpy(insert, input, inputSize);
         text[end + tail] = 0;

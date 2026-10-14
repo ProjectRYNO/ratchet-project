@@ -198,10 +198,10 @@ extern "C" SECTION(DefaultInit___dupe22) void DefaultInit___dupe22(ListBoxTagSta
 extern "C" SECTION(deleteItem) int deleteItem(ListBoxTagState *tag, int index)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x273);
+    if (index >= tag->m_numItems) return 0;
+    if (!tag->m_items[index]) return 0;
+    for (int i = index; i < tag->m_numItems - 1; ++i) tag->m_items[i] = tag->m_items[i + 1];
     int count = tag->m_numItems;
-    if (index >= count || !tag->m_items[index]) return 0;
-    for (; index < count - 1; ++index) tag->m_items[index] = tag->m_items[index + 1];
-    count = tag->m_numItems;
     tag->m_numItems = count - 1;
     // Retail clears the old count index, not the last occupied index.
     tag->m_items[count] = 0;
@@ -233,17 +233,17 @@ extern "C" SECTION(Draw___dupe25) void Draw___dupe25(ListBoxTagState *tag)
         tag->base.m_z, tag->base.m_width, tag->base.m_height, tag->base.m_lineColor,
         tag->base.m_fillColor, tag->m_scrollBarPercentage, fraction, active, tag->base.m_tagClass);
     float y = tag->base.m_y;
-    ListBoxItem **item = tag->m_items + tag->m_topVisibleIndex;
-    for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i, ++item) {
-        strlen((*item)->displayStr);
+    for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i) {
+        strlen(tag->m_items[i]->displayStr);
         float x = tag->base.m_x + 10.0f;
         unsigned int color = i == selected ? tag->m_selectedItemColor : tag->m_defaultItemColor;
-        if (tag->m_displayLength > 0.0f) TrimToFitDisplaySize(draw, (*item)->displayStr, tag->m_displayLength, tag->m_fontSize);
+        if (tag->m_displayLength > 0.0f) TrimToFitDisplaySize(draw, tag->m_items[i]->displayStr, tag->m_displayLength, tag->m_fontSize);
         float height = tag->m_buttonHeight;
-        int length = strlen((*item)->displayStr);
-        draw->vtable->DrawButton(draw, (*item)->tagid, x, y, 100000.0f, tag->base.m_width,
-            height, 0xFF000000, 0xFF0000FF, color, i == selected, (*item)->displayStr,
-            length, tag->m_fontSize, tag->m_align, (*item)->tagClass, 0);
+        int isSelected = i == selected;
+        int length = strlen(tag->m_items[i]->displayStr);
+        draw->vtable->DrawButton(draw, tag->m_items[i]->tagid, x, y, 100000.0f, tag->base.m_width,
+            height, 0xFF000000, 0xFF0000FF, color, isSelected, tag->m_items[i]->displayStr,
+            length, tag->m_fontSize, tag->m_align, tag->m_items[i]->tagClass, 0);
         y = tag->base.m_y + tag->m_lineSpacing * (float)(i - tag->m_topVisibleIndex + 1);
     }
 }

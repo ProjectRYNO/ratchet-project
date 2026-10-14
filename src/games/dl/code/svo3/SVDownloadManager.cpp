@@ -216,63 +216,76 @@ static inline int DLBufferIsFull(DLBuffer *buffer)
 extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manager)
 {
     if (manager->m_state == 1 || manager->m_state == 3) {
-        CAllContextData contexts = svoPageContextData;
-        CDrawContextBase *draw = contexts.drawContext;
-        int w = 200;
-        int h = 30;
-        float percent = (float)manager->m_fileBytesReceived / (float)manager->m_fileContentLength;
-        SVTag *back = getTagByName(svoDownloadProgressRectName, manager->m_page);
-        TextTagState *text = (TextTagState *)getTagByName(svoDownloadProgressTextName, manager->m_page);
-        SVTag *pct = getTagByName(svoDownloadProgressPercentName, manager->m_page);
-        int x, y;
+        CAllContextData contexts;
+        CDrawContextBase *draw;
+        int x;
+        int progW;
+        int y;
+        int w;
+        int h;
+        unsigned int outlineColor;
+        unsigned int fillColor;
+        float percentComplete;
+        SVTag *back;
+        TextTagState *text;
+        SVTag *pct;
         char dstr[128];
+        unsigned int tagID;
+        float kBytesPerSecond;
+        w = 200;
+        contexts = svoPageContextData;
+        draw = contexts.drawContext;
+        h = 30;
+        percentComplete = (float)manager->m_fileBytesReceived / (float)manager->m_fileContentLength;
+        back = getTagByName(svoDownloadProgressRectName, manager->m_page);
+        text = (TextTagState *)getTagByName(svoDownloadProgressTextName, manager->m_page);
+        pct = getTagByName(svoDownloadProgressPercentName, manager->m_page);
         if (back) {
-            unsigned int tagid = back->vtable->GetTagID(back);
+            tagID = back->vtable->GetTagID(back);
             x = (int)back->m_x;
             y = (int)back->m_y;
             w = (int)back->m_width;
             h = (int)back->m_height;
             back->vtable->SetVisible(back, 0);
-            unsigned int line = back->m_lineColor;
-            draw->vtable->DrawRectangle(draw, tagid, (float)x, (float)y, (float)w, (float)h, line, line, 1, 0, 100000.0f, 0, svoDownloadOutlineRectClass);
-            unsigned int fill = back->m_fillColor;
+            outlineColor = back->m_lineColor;
+            fillColor = back->m_fillColor;
+            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)w, (float)h, outlineColor, outlineColor, 1, 0, 100000.0f, 0, svoDownloadOutlineRectClass);
             if (pct) {
-                tagid = pct->vtable->GetTagID(pct);
+                tagID = pct->vtable->GetTagID(pct);
                 x = (int)pct->m_x;
                 y = (int)pct->m_y;
                 w = (int)pct->m_width;
                 h = (int)pct->m_height;
                 pct->vtable->SetVisible(pct, 0);
-                fill = pct->m_fillColor;
-                line = pct->m_lineColor;
+                outlineColor = pct->m_lineColor;
+                fillColor = pct->m_fillColor;
             }
-            draw->vtable->DrawRectangle(draw, tagid, (float)x, (float)y, (float)(int)((float)w * percent), (float)h, line, fill, 1, 0, 100000.0f, 0, svoDownloadFillRectClass);
+            progW = (int)((float)w * percentComplete);
+            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)progW, (float)h, outlineColor, fillColor, 1, 0, 100000.0f, 0, svoDownloadFillRectClass);
         }
         memset(dstr, 0, 128);
         if (text) {
-            int tx = (int)text->base.m_x;
-            int ty = (int)text->base.m_y;
-            float rate = (float)manager->m_fileBytesReceived / (float)Elapsed(&manager->m_timer);
-            sprintf(dstr, svoDownloadRateFormat, Elapsed(&manager->m_timer), (double)rate);
-            draw->vtable->SVDrawText(draw, 0, (float)tx + (float)(w / 2), (float)ty - (float)(h * 2 + h), 0xFFFFFFFF, dstr, strlen(dstr), 12, 1, svoDownloadRateClass);
+            x = (int)text->base.m_x;
+            y = (int)text->base.m_y;
+            kBytesPerSecond = (float)manager->m_fileBytesReceived / (float)Elapsed(&manager->m_timer);
+            sprintf(dstr, svoDownloadRateFormat, Elapsed(&manager->m_timer), (double)kBytesPerSecond);
+            draw->vtable->SVDrawText(draw, 0, (float)x + (float)(w / 2), (float)y - (float)(h * 2 + h), 0xFFFFFFFF, dstr, strlen(dstr), 12, 1, svoDownloadRateClass);
             sprintf(dstr, svoDownloadBytesFormat, manager->m_fileBytesReceived, manager->m_fileContentLength);
-            draw->vtable->SVDrawText(draw, 0, (float)tx, (float)ty - (float)(h * 2), 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
+            draw->vtable->SVDrawText(draw, 0, (float)x, (float)y - (float)(h * 2), 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
             DLBuffer *buffer0 = &manager->m_buffers[0];
-            DLBuffer *buffer1 = &manager->m_buffers[1];
-            if (DLBufferIsFull(buffer0) && DLBufferIsFull(buffer1)
+            DLBuffer *buffer1;
+            if (DLBufferIsFull(buffer0) && DLBufferIsFull(buffer1 = &manager->m_buffers[1])
                 && (buffer0->bWaitingForSystemOk || buffer1->bWaitingForSystemOk)) {
-                long long *d = (long long *)dstr;
-                d[0] = svoDownloadBlockedText[0];
-                d[1] = svoDownloadBlockedText[1];
-                d[2] = svoDownloadBlockedText[2];
-                d[3] = svoDownloadBlockedText[3];
-                d[4] = svoDownloadBlockedText[4];
-                dstr[40] = ((const char *)svoDownloadBlockedText)[40];
-                draw->vtable->SVDrawText(draw, 0, (float)tx, (float)ty - (float)h, 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
+                memcpy(dstr, svoDownloadBlockedText, 41);
+                draw->vtable->SVDrawText(draw, 0, (float)x, (float)y - (float)h, 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
             }
-            formatDownloadStatusText(manager, dstr, text->m_text, manager->m_fileID, (int)((double)percent * 100.0));
+            int percent = (int)((double)percentComplete * 100.0);
+            formatDownloadStatusText(manager, dstr, text->m_text, manager->m_fileID, percent);
             text->base.vtable->SetVisible(&text->base, 0);
-            draw->vtable->SVDrawText(draw, 0, text->base.m_x, text->base.m_y, text->m_textColor, dstr, strlen(dstr), text->m_fontSize, text->m_align, text->base.m_tagClass);
+            float tx = text->base.m_x;
+            float ty = text->base.m_y;
+            unsigned int color = text->m_textColor;
+            draw->vtable->SVDrawText(draw, 0, tx, ty, color, dstr, strlen(dstr), text->m_fontSize, text->m_align, text->base.m_tagClass);
         }
     }
 }
@@ -312,9 +325,9 @@ extern "C" SECTION(freeResources___dupe4) void freeResources___dupe4(SVDownloadM
 extern "C" SECTION(IsSystemFinishedWithBuffers) int IsSystemFinishedWithBuffers(SVDownloadManagerState *manager)
 {
     DLBuffer *first = &manager->m_buffers[0];
-    DLBuffer *second = &manager->m_buffers[1];
     int finished = 0;
-    if (!first->bWaitingForSystemOk && !second->bWaitingForSystemOk) {
+    DLBuffer *second;
+    if (!first->bWaitingForSystemOk && !(second = &manager->m_buffers[1])->bWaitingForSystemOk) {
         if (first->bytesReceived || second->bytesReceived) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x398);
         finished = 1;
     }
@@ -409,8 +422,8 @@ extern "C" SECTION(OnURIRequestIsOkContinueDownload) int OnURIRequestIsOkContinu
     DLBuffer *buffer = 0;
     int ok = 0;
     DLBuffer *first = &manager->m_buffers[0];
-    DLBuffer *second = &manager->m_buffers[1];
-    if (!first->bWaitingForSystemOk && !second->bWaitingForSystemOk) {
+    DLBuffer *second;
+    if (!first->bWaitingForSystemOk && !(second = &manager->m_buffers[1])->bWaitingForSystemOk) {
         if (!first->bytesReceived) {
             buffer = !second->bytesReceived ? first : second;
         } else if (!second->bytesReceived) {
@@ -492,6 +505,8 @@ extern "C" SECTION(SVDownloadManager) void DownloadManagerConstruct(SVDownloadMa
     }
 }
 
+static inline int DLBufferHasData(DLBuffer *b) { return b->bytesReceived != 0; }
+
 extern "C" SECTION(UpdateFileDownload) void UpdateFileDownload(SVDownloadManagerState *manager)
 {
     DLBuffer *first = &manager->m_buffers[0];
@@ -501,7 +516,7 @@ extern "C" SECTION(UpdateFileDownload) void UpdateFileDownload(SVDownloadManager
         CSystemContextBase *system = GetSystemContext();
         if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, manager->m_buffers[0].pData)) {
             ResetDLBuffer(first);
-            if (DLBufferIsFull(second) || (manager->m_state == 3 && second->bytesReceived)) {
+            if (DLBufferIsFull(second) || (manager->m_state == 3 && DLBufferHasData(second))) {
                 NotifySystemContextOfChunk(manager, second);
                 return;
             }
@@ -512,7 +527,7 @@ extern "C" SECTION(UpdateFileDownload) void UpdateFileDownload(SVDownloadManager
             CSystemContextBase *system = GetSystemContext();
             if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, manager->m_buffers[1].pData)) {
                 ResetDLBuffer(second);
-                if (DLBufferIsFull(first) || (manager->m_state == 3 && first->bytesReceived)) {
+                if (DLBufferIsFull(first) || (manager->m_state == 3 && DLBufferHasData(first))) {
                     NotifySystemContextOfChunk(manager, first);
                     return;
                 }

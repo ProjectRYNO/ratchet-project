@@ -47,13 +47,17 @@ int CHRONO_SECTION(SV_timerGetMilliseconds) SV_timerGetMilliseconds(CSystemConte
     return svoTimerMilliseconds;
 }
 
-void CHRONO_SECTION(SVChronograph) SVChronograph(SVChronographState *timer, int startnow)
+struct SVChronographCtor {
+    SVChronographState timer;
+    SVChronographCtor(int startnow) __asm__("SVChronograph");
+};
+CHRONO_SECTION(SVChronograph) SVChronographCtor::SVChronographCtor(int startnow)
 {
-    timer->stop = 1;
-    timer->lastlap = 1;
-    timer->start = 1;
-    timer->m_pSystemContext = 0;
-    if (startnow) Start___dupe3(timer);
+    timer.stop = 1;
+    timer.lastlap = 1;
+    timer.start = 1;
+    timer.m_pSystemContext = 0;
+    if (startnow) Start___dupe3(&timer);
 }
 
 void CHRONO_SECTION(_SVChronograph) _SVChronograph(SVChronographState *timer, unsigned int flags)
@@ -77,9 +81,9 @@ void CHRONO_SECTION(Start___dupe3) Start___dupe3(SVChronographState *timer)
     int now = SV_timerGetMilliseconds(timer->m_pSystemContext);
     if (IsStopped(timer)) {
         unsigned int pause = (unsigned int)now - timer->stop;
-        timer->stop = 0;
         timer->start = (unsigned int)timer->start + pause;
         timer->lastlap = (unsigned int)timer->lastlap + pause;
+        timer->stop = 0;
     } else {
         Reset___dupe5(timer);
     }
