@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "i18n.h"
+#include "i18n_inet.h"
 
 extern void scePrintf(const char *, ...);
 extern int sceSifSearchModuleByName(const char *);
@@ -52,7 +52,6 @@ extern char sdkCtlClient[];
 extern char sdkCnfBuffer[];
 extern char sdkCtlBuffer[];
 extern EzNetCtlInfo sdkCtlIfInfo;
-extern void ezNetCtlRecreateIfstat(const char *, ezNetCtlStatus *, EzNetCtlInfo *);
 
 int ezNetCtlWaitEventTO(int);
 

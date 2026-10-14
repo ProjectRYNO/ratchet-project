@@ -1566,3 +1566,14 @@ sdkPPPprefix,0x001946A8,core.data,,,,,,,accepted,SDK retail instruction operands
 sdkMessageLog,0x00194678,core.data,,,,,,,accepted,SDK retail instruction operands; exact linked libezcnf/libezctl/i18n comparison; TESTS/sdk_expected.json
 sdkMessageFunction,0x00194680,core.data,,,,,,,accepted,SDK retail instruction operands; exact linked libezcnf/libezctl/i18n comparison; TESTS/sdk_expected.json
 sdkMessageMissing,0x00194690,core.data,,,,,,,accepted,SDK retail instruction operands; exact linked libezcnf/libezctl/i18n comparison; TESTS/sdk_expected.json
+sdkPPPStatusList,0x001946B0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetAbort,0x00194780,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetBusy,0x00194788,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetLineInUse,0x00194790,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetNoDialtone,0x001947A0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetNoAnswer,0x001947B0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetNoCarrier,0x001947C0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetAuthFailed,0x001947D0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetPhase,0x001947E0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetDisconnect,0x001947E8,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+sdkInetTimeout,0x001947F8,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json

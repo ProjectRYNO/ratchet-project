@@ -34,7 +34,7 @@ def main():
         source.write_text('\n'.join(lines) + '\n')
         subprocess.run([args.compiler_root + '/bin/ee-gcc', '-fno-builtin', '-fsyntax-only',
                         '-I' + str(root), str(source)], env=env, check=True)
-    print('PASS: SCE 2.96 SDK pointer width, three type sizes, and all declared/nested field offsets')
+    print('PASS: SCE 2.96 SDK pointer width, four type sizes, and all declared/nested field offsets')
 
 
 if __name__ == '__main__':

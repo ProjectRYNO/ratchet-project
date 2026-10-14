@@ -88,4 +88,3 @@ __pycache__/
 !src/games/dl/TESTS/check_sdk.py
 !src/games/dl/TESTS/check_sdk_layouts.py
 !src/games/dl/TESTS/sdk_expected.json
-!src/games/dl/TESTS/sdk_inet_unmatched.c

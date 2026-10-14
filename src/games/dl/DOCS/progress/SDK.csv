@@ -20,4 +20,4 @@ cbFormatAuthMessage,code/sdk/i18n.c,0x01E9ACB0,compiled,0x01E9ACF8,0x48,matching
 cbFormatPPPStatus,code/sdk/i18n.c,0x01E9ACF8,compiled,0x01E9AD78,0x7C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
 cbFormatLineSpeed,code/sdk/i18n.c,0x01E9AD78,compiled,0x01E9AE30,0xB8,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
 cbFormatPhoneNumber,code/sdk/i18n.c,0x01E9AE30,compiled,0x01E9AE48,0x18,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
-ezNetCtlRecreateIfstat,code/sdk/i18n_inet.c,0x01E9AE48,assembly,,,not_measured,,not inventoried,Recover ABI and retail behavior before replacing assembly.,668-byte C research probe has 648 equal bytes; production remains assembly.
+ezNetCtlRecreateIfstat,code/sdk/i18n_inet.c,0x01E9AE48,compiled,0x01E9B0F0,0x29C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,

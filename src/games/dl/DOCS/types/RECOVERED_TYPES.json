@@ -11315,5 +11315,32 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "SdkPPPStatus",
+    "size": "0x0c",
+    "line": null,
+    "owners": [
+      "sdk/i18n_inet"
+    ],
+    "header": "code/sdk/i18n_inet.h",
+    "evidence": "retail-instruction-layout",
+    "fields": [
+      {
+        "name": "text",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "phase",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "error",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
   }
 ]

@@ -3309,3 +3309,16 @@ sdkPPPprefix = 0x001946A8;
 sdkMessageLog = 0x00194678;
 sdkMessageFunction = 0x00194680;
 sdkMessageMissing = 0x00194690;
+
+// SDK interface-status parser: retail table and string operands.
+sdkPPPStatusList = 0x001946B0;
+sdkInetAbort = 0x00194780;
+sdkInetBusy = 0x00194788;
+sdkInetLineInUse = 0x00194790;
+sdkInetNoDialtone = 0x001947A0;
+sdkInetNoAnswer = 0x001947B0;
+sdkInetNoCarrier = 0x001947C0;
+sdkInetAuthFailed = 0x001947D0;
+sdkInetPhase = 0x001947E0;
+sdkInetDisconnect = 0x001947E8;
+sdkInetTimeout = 0x001947F8;

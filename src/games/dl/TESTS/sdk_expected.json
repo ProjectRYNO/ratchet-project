@@ -94,6 +94,11 @@
       "address": 32091696,
       "size": 24,
       "module": "i18n"
+    },
+    "ezNetCtlRecreateIfstat": {
+      "address": 32091720,
+      "size": 668,
+      "module": "i18n_inet"
     }
   },
   "bindings": {
@@ -160,7 +165,20 @@
     "sdkMessageFunction": 1656448,
     "sdkMessageMissing": 1656464,
     "_ctype_": 1646336,
-    "_gp": 2251135
+    "_gp": 2251135,
+    "strchr": 1156864,
+    "strcmp": 1157280,
+    "sdkPPPStatusList": 1656496,
+    "sdkInetAbort": 1656704,
+    "sdkInetBusy": 1656712,
+    "sdkInetLineInUse": 1656720,
+    "sdkInetNoDialtone": 1656736,
+    "sdkInetNoAnswer": 1656752,
+    "sdkInetNoCarrier": 1656768,
+    "sdkInetAuthFailed": 1656784,
+    "sdkInetPhase": 1656800,
+    "sdkInetDisconnect": 1656808,
+    "sdkInetTimeout": 1656824
   },
   "modules": {
     "libezcnf": [
@@ -174,6 +192,10 @@
     "i18n": [
       32090744,
       32091720
+    ],
+    "i18n_inet": [
+      32091720,
+      32092400
     ]
   }
 }

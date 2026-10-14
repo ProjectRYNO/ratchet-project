@@ -1125,6 +1125,8 @@ functions:
   cbFormatLineSpeed: 0x01E9AD78
   cbFormatPhoneNumber: 0x01E9AE30
 
+  ezNetCtlRecreateIfstat: 0x01E9AE48
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -2646,6 +2648,12 @@ objects:
       - {object: sdk/i18n, section: .sdk_i18n_cbFormatPPPStatus, start: 0x01E9ACF8, end: 0x01E9AD78}
       - {object: sdk/i18n, section: .sdk_i18n_cbFormatLineSpeed, start: 0x01E9AD78, end: 0x01E9AE30}
       - {object: sdk/i18n, section: .sdk_i18n_cbFormatPhoneNumber, start: 0x01E9AE30, end: 0x01E9AE48}
+
+  sdk/i18n_inet:
+    text_start: 0x01E9AE48
+    text_end: 0x01E9B0F0
+    slots:
+      - {object: sdk/i18n_inet, section: .sdk_i18n_inet_ezNetCtlRecreateIfstat, start: 0x01E9AE48, end: 0x01E9B0F0}
 
 # Switch jump tables of compiled functions. Retail keeps them in the main read-only data;
 # each slot is exactly the retail table extent (code-address entries only). A compiled

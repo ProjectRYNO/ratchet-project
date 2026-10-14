@@ -243,3 +243,7 @@ SDK recovery (2026-10-14) adds `ezNetCtlStatus`, `EzNetCtlInfo`, and
 `SDKMessageEntry` in `code/sdk/i18n.h`. `TESTS/check_sdk_layouts.py` checks
 their PS2 layouts, including nested union fields, using production SCE 2.96.
 The shared layout registry also includes their top-level fields.
+
+The final SDK parser adds `SdkPPPStatus` in `code/sdk/i18n_inet.h`: 0x0c bytes,
+with text/phase/error at offsets 0/4/8, verified by retail instructions and the
+SCE 2.96 layout checker. All four SDK type layouts pass.

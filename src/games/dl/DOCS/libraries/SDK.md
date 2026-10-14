@@ -1,6 +1,41 @@
 # Deadlocked SDK compiler profile
 
-## Integrated decompilation (2026-10-14)
+## Final parser integration (2026-10-14)
+
+**20/20 real SDK functions (100.00%) now compile to exact retail bytes.**
+All 4,276 function bytes match, with resolved calls and data references. The
+complete four-module region, 0x01E9A000..0x01E9B0F0 (4,336 bytes), also matches
+retail including padding and the two retained unused instruction fragments.
+Those fragments are not independent functions: the raw inventory is 20 compiled
+entries out of 22 (90.91%). [SDK.json](../progress/SDK.json) and
+[SDK.csv](../progress/SDK.csv) record the measured result.
+
+The final `ezNetCtlRecreateIfstat` at 0x01E9AE48 is now in `code/sdk/i18n_inet.c`.
+Its 668-byte body matches with the existing SDK compiler profile. Keeping the
+phase store in the interface dispatch and publishing the detail field afterward
+reproduces the retail register allocation. The dispatch is intentional even
+though both branches currently perform the same store; simplifying it changes
+compiler output. No fixed-register bindings, injected instructions, or masked
+comparisons are used. The earlier unmatched research file has been removed.
+
+`i18n_inet.h` owns the 12-byte `SdkPPPStatus` entry and parser declarations.
+Its table/string addresses come from retail instructions. SCE 2.96 layout checks
+now cover four SDK types. The split YAML assigns the verified twelve zero tail
+bytes at ROM 0x44F0E4..0x44F0F0 to i18n_inet. Old generated copies of
+`code/asm/build/junk/net.text/44f0e4_44f0f0.s` and
+`assets/junk/net.text/44f0e4_44f0f0.textbin.bin` must be removed before resplitting
+an older generated tree; they are obsolete untracked output.
+
+The isolated snapshot was refreshed from revision `ed29792` to include the
+current iksemel/SVO3 work, then overlaid with this SDK change. Serial split and
+forced full compilation passed with ALLOW_NONMATCHING=0. Exact SDK comparison,
+SDK layout checks, and the full placement/outside-slot audit all passed.
+Whole-game strict comparison remains NONMATCH: 15,834 differing bytes in other
+registered replacements (5,135 main; 10,699 network). Runtime headers match.
+No ISO or gameplay test was performed. The reproduction commands below apply
+to all 20 SDK functions now; the following sections retain the earlier history.
+
+## Earlier 95% integration (2026-10-14)
 
 **19/20 real SDK functions (95.00%) now compile to exact retail bytes.**
 `libezcnf.c` contributes five functions, `libezctl.c` seven, and `i18n.c` seven.
@@ -18,8 +53,8 @@ Retail accesses establish the used layouts; union views and callback signatures
 are recovered from retail. Globals reference existing storage. The character
 table reuses the existing libc `_ctype_` symbol.
 
-`ezNetCtlRecreateIfstat` at 0x01E9AE48 remains assembly. Its research source is
-`TESTS/sdk_inet_unmatched.c`: 668 bytes, 648 equal bytes, with remaining register
+`ezNetCtlRecreateIfstat` at 0x01E9AE48 remains assembly. Its research source was
+`TESTS/sdk_inet_unmatched.c` (removed after exact integration): 668 bytes, 648 equal bytes, with remaining register
 allocation differences. It is excluded from completed C counts. `ezNetCnfExit`
 preserves the retail uninitialized result when the module is not running.
 

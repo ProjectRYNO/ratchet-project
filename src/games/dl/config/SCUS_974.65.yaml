@@ -671,7 +671,7 @@ segments:
       # libezctl owns its four zero tail-padding bytes through 0x44ea78.
       - [0x44ea78, c, sdk/i18n]
       - [0x44ee48, c, sdk/i18n_inet]
-      - [0x44f0e4, textbin, junk/net.text/44f0e4_44f0f0]
+      # i18n_inet owns its twelve zero tail-padding bytes through 0x44f0f0.
       - [0x44f0f0, c, medius/rt_libnet/common/src/dma_pump]
       - [0x44f784, textbin, junk/net.text/44f784_44f788]
       - [0x44f788, c, medius/rt_libnet/ee/src/libnet]
