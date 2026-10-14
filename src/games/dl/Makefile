@@ -45,6 +45,7 @@ EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
 # Its 32-bit binaries need the stat shim on Docker Desktop bind mounts.
 EEGCC296_DIR ?= /opt/ee-gcc2.96
 EEGCC296_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.96.tar.xz
+EEGCC296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/bin/ee-gcc
 EEGXX296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/bin/ee-g++
 EEAS296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/ee/bin/as
 
@@ -85,6 +86,20 @@ ifeq ($(ALLOW_NONMATCHING),1)
 endif
 # Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
 SVO3_AS_FLAGS = -EL -G0 -Icode/include
+
+# Medius rt_memory: measured retail matches; keep the default split-address pass.
+# Enable additional objects here as their C replacements are verified.
+MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o
+MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections -falign-functions=4 -falign-loops=1 -falign-jumps=1 -falign-labels=1
+MEDIUS_AS_FLAGS = -EL -G0 -g -Icode/include
+ifeq ($(ALLOW_NONMATCHING),1)
+    MEDIUS_COMPILE_FLAGS += -DALLOW_NONMATCHING
+endif
+
+$(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC296) -S $(MEDIUS_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
 elf: $(TARGET)
 

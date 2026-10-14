@@ -79,3 +79,6 @@ __pycache__/
 !src/games/dl/TESTS/check_svo_input.py
 !src/games/dl/TESTS/check_svo_memory.py
 !src/games/dl/TESTS/check_svo_config.py
+
+!src/games/dl/TESTS/check_medius.py
+!src/games/dl/TESTS/medius_compiler_probes.c

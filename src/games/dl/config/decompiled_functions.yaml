@@ -1,6 +1,9 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  rt_memory_free: 0x01EA95C0
+  rt_memory_register_callbacks: 0x01EA9768
+  rt_memory_get_aligned_address: 0x01EA9790
   DefaultInit___dupe3: 0x01EF3780
   FreeContexts: 0x01EF3CF0
   GetDimensions: 0x01EF3C2C
@@ -2505,3 +2508,18 @@ objects:
     text_end: 0x01F03E04
     slots:
       - {object: svo3/TextEditableTag, section: .svo_TextEditableTag_DefaultHandleInput, start: 0x01F03D08, end: 0x01F03E04}
+
+  medius/rt_util/rt_memory:
+    text_start: 0x01EA94D0
+    text_end: 0x01EA97D8
+    slots:
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_allocate, start: 0x01EA94D0, end: 0x01EA9548}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_func_01EA9548, start: 0x01EA9548, end: 0x01EA9550}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_allocate_init_zero, start: 0x01EA9550, end: 0x01EA95C0}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_free, start: 0x01EA95C0, end: 0x01EA9618}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_align_alloc, start: 0x01EA9618, end: 0x01EA96A8}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_align_alloc_init_zero, start: 0x01EA96A8, end: 0x01EA9718}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_align_free, start: 0x01EA9718, end: 0x01EA9768}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_callbacks, start: 0x01EA9768, end: 0x01EA9780}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_another_callback, start: 0x01EA9780, end: 0x01EA9790}
+      - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_get_aligned_address, start: 0x01EA9790, end: 0x01EA97D8}

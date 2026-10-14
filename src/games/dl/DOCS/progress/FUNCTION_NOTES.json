@@ -1,4 +1,7 @@
 {
+  "code/medius/rt_util/rt_memory.c:rt_memory_free": "Retail 0x01EA95C0; SCE 2.96-ee-001003-1 -O2 -G0 and bundled as yield all 88 exact bytes. check_medius.py verifies compiled definition and complete 776-byte module. See libraries/MEDIUS.md; gameplay not tested.",
+  "code/medius/rt_util/rt_memory.c:rt_memory_register_callbacks": "Retail 0x01EA9768; 24-byte exact C replacement. Existing callback globals retained. check_medius.py passes; see libraries/MEDIUS.md.",
+  "code/medius/rt_util/rt_memory.c:rt_memory_get_aligned_address": "Retail 0x01EA9790; all 72 compiled bytes match with SCE 2.96 -O2 -G0, including unsigned division handling. check_medius.py passes; see libraries/MEDIUS.md.",
   "code/game/boot.cpp:main": "Explicit __main runtime initialization and cache operations are intentional; compare against retail control flow before changing them.",
   "code/game/boot.cpp:GetBootOptionsFromSettings": "Current encoder zeros reserved bits that were uninitialized in retail. Reconcile this documented behavior with matching; do not silently restore undefined reads.",
   "code/game/boot.cpp:ApplyBootOptionsToSettings": "Current decoder bounds malformed input and zero-fills missing bytes. Matching and valid-input behavior are separate questions.",

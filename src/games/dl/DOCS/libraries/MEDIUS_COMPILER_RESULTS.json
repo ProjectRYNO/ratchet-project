@@ -1,0 +1,995 @@
+{
+  "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
+  "source_sha256": "09dd4cda20462d1b126d35488524e9702018c9c34a6362cd9e0937d7ff6737af",
+  "compilers": [
+    {
+      "name": "sony296",
+      "cc": "/opt/ee-gcc2.96/bin/ee-gcc",
+      "assembler": "/opt/ee-gcc2.96/ee/bin/as",
+      "cc_sha256": "b8c284d16c9c0a0e8788e9522c46881e224ad01fa1c732aed43f821cc32f168b",
+      "assembler_sha256": "b8cfdb6ecb6931642914020f92a62e653378f57230eed4895f69afa050d47b5e",
+      "version": "2.96-ee-001003-1",
+      "assembler_version": "GNU assembler 2.10-ee-001003-1\nCopyright 2000 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License.  This program has absolutely no warranty.\nThis assembler was configured for a target of `ee'."
+    },
+    {
+      "name": "sony32",
+      "cc": "/probe/sony32/bin/ee-gcc",
+      "assembler": "/probe/sony32/ee/bin/as",
+      "cc_sha256": "a5095b5d7b55f91535b12e48e9d808170fa9fb8c0620c43c2fb61379b1a3663a",
+      "assembler_sha256": "cf85edec3ea30b0918e8a78ac49affca111a45e5b0ca9a776b6ded5c0118379b",
+      "version": "ee-gcc (GCC) 3.2-ee-040921\nCopyright (C) 2002 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "assembler_version": "GNU assembler 2.12-ee-040921 20020315\nCopyright 2002 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License.  This program has absolutely no warranty.\nThis assembler was configured for a target of `ee'."
+    },
+    {
+      "name": "ps2dev323",
+      "cc": "/opt/ps2dev/ee/bin/ee-gcc",
+      "assembler": "/opt/ps2dev/ee/bin/ee-as",
+      "cc_sha256": "9bec38263e406e02c1f1622b6e0fc467cbac529278730b29127b5726962d4fa8",
+      "assembler_sha256": "375ea034df1d6bf9e9b5f6e8c74fb448b9e76101c59ef4da5b852c5207b78e5c",
+      "version": "ee-gcc (GCC) 3.2.3\nCopyright (C) 2002 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "assembler_version": "GNU assembler 2.14 20030612\nCopyright 2002 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License.  This program has absolutely no warranty.\nThis assembler was configured for a target of `ee'."
+    }
+  ],
+  "results": [
+    {
+      "compiler": "sony296",
+      "optimization": "O1",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 80
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O1",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 44
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O1",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 92,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 56
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O1",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 8
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O2",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 80
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O2",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": true,
+      "equal_bytes": 72
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O2",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": true,
+      "equal_bytes": 88
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O2",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": true,
+      "equal_bytes": 24
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "Os",
+      "function": "rt_strnlen",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 80
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "Os",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": true,
+      "equal_bytes": 72
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "Os",
+      "function": "rt_memory_free",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": true,
+      "equal_bytes": 88
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "Os",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": true,
+      "equal_bytes": 24
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O3",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 80
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O3",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": true,
+      "equal_bytes": 72
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O3",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": true,
+      "equal_bytes": 88
+    },
+    {
+      "compiler": "sony296",
+      "optimization": "O3",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": true,
+      "equal_bytes": 24
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O1",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 33
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O1",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 51
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O1",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 92,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 49
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O1",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 7
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O2",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 33
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O2",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 62
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O2",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 41
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O2",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 11
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "Os",
+      "function": "rt_strnlen",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 31
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "Os",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 62
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "Os",
+      "function": "rt_memory_free",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 41
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "Os",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 11
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O3",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 34
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O3",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 70
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O3",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 43
+    },
+    {
+      "compiler": "sony32",
+      "optimization": "O3",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 16
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O1",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 48
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O1",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 44
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O1",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 92,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 52
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O1",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O1",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 8
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O2",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 48
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O2",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 47
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O2",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 41
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O2",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": true,
+      "equal_bytes": 24
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "Os",
+      "function": "rt_strnlen",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 48
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "Os",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 47
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "Os",
+      "function": "rt_memory_free",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 88,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 41
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "Os",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-Os",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": true,
+      "equal_bytes": 24
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O3",
+      "function": "rt_strnlen",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 76,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 40
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O3",
+      "function": "rt_memory_get_aligned_address",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 72,
+      "retail_size": 72,
+      "exact": false,
+      "equal_bytes": 42
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O3",
+      "function": "rt_memory_free",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 92,
+      "retail_size": 88,
+      "exact": false,
+      "equal_bytes": 23
+    },
+    {
+      "compiler": "ps2dev323",
+      "optimization": "O3",
+      "function": "rt_memory_register_callbacks",
+      "flags": [
+        "-O3",
+        "-G0",
+        "-fno-builtin",
+        "-fno-common",
+        "-ffunction-sections",
+        "-falign-functions=4",
+        "-falign-loops=1",
+        "-falign-jumps=1",
+        "-falign-labels=1"
+      ],
+      "size": 24,
+      "retail_size": 24,
+      "exact": false,
+      "equal_bytes": 13
+    }
+  ]
+}

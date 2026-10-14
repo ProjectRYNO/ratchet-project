@@ -28,6 +28,15 @@ changing a mechanism; this is not a ban on justified improvements.
 | K06 | Retired asset-bank repacking could corrupt debug-font extraction in rebuilt discs. | Superseded by boot-only CLI replacement, which preserves original game data. Full-disc byte comparison verifies preservation; keep emulator checks separate. |
 | K07 | ps2dev ee-gcc 3.2.3 never emits MIPS sibling (tail) calls; retail does. Tail-calling functions and wrappers cannot fit retail slots. | **Decided 2026-10-13 (user):** SVO3 objects build with SCE ee-gcc 2.96-ee-001003-1 and its bundled `as` (Makefile `ee-gcc296` target, SVO3 rule); the rest of the game stays on 3.2.3. The compiler is 32-bit and runs through `src/games/tools/ee296_statshim.c` (LD_PRELOAD) for bind-mount stat. Evidence: `src/games/dl/DOCS/libraries/SVO3_TAIL_CALL_BLOCKERS.md`. Do not widen slots. |
 
+Medius compiler finding (2026-10-13): the recovered
+`medius/rt_util/rt_memory` functions use SCE `2.96-ee-001003-1` plus bundled
+`as`, with `-O2 -G0` and default split-address optimization. Three functions
+(184 bytes) match retail exactly; the complete 776-byte module is preserved.
+Only this verified object uses the new Medius rule. Other Medius components and
+historical compiler identity remain unproven. See
+[src/games/dl/DOCS/libraries/MEDIUS.md](../../src/games/dl/DOCS/libraries/MEDIUS.md)
+for the controlled compiler matrix, flags, and verification limits.
+
 Historical failures to avoid repeating include exit/Exit filename collisions on
 Windows, incorrect HI16/LO16 target aliases, misplaced section-relative linker
 assignments, and stale lowercase test paths on Linux. The
