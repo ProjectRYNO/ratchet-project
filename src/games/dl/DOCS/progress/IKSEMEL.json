@@ -1,0 +1,386 @@
+{
+  "base_commit": "48d9259",
+  "compiled_functions": 40,
+  "exact_functions": 40,
+  "library_bytes": 7428,
+  "differing_bytes": 0,
+  "functions": [
+    {
+      "name": "iks_new_within",
+      "address": "0x1ee3570",
+      "compiled_size": 144,
+      "slot_size": 144,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_insert",
+      "address": "0x1ee3600",
+      "compiled_size": 108,
+      "slot_size": 108,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_insert_cdata",
+      "address": "0x1ee366c",
+      "compiled_size": 260,
+      "slot_size": 260,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_insert_attrib",
+      "address": "0x1ee3770",
+      "compiled_size": 340,
+      "slot_size": 340,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_delete",
+      "address": "0x1ee38c4",
+      "compiled_size": 40,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_next",
+      "address": "0x1ee38ec",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_next_tag",
+      "address": "0x1ee3900",
+      "compiled_size": 76,
+      "slot_size": 76,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_parent",
+      "address": "0x1ee394c",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_child",
+      "address": "0x1ee3960",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_find",
+      "address": "0x1ee3974",
+      "compiled_size": 108,
+      "slot_size": 108,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_find_cdata",
+      "address": "0x1ee39e0",
+      "compiled_size": 56,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_find_attrib",
+      "address": "0x1ee3a18",
+      "compiled_size": 108,
+      "slot_size": 108,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_type",
+      "address": "0x1ee3a84",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_name",
+      "address": "0x1ee3a98",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_cdata",
+      "address": "0x1ee3aac",
+      "compiled_size": 20,
+      "slot_size": 20,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_has_children",
+      "address": "0x1ee3ac0",
+      "compiled_size": 32,
+      "slot_size": 32,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "escape_size",
+      "address": "0x1ee3ae0",
+      "compiled_size": 112,
+      "slot_size": 112,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "my_strcat",
+      "address": "0x1ee3b50",
+      "compiled_size": 92,
+      "slot_size": 92,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "escape",
+      "address": "0x1ee3bac",
+      "compiled_size": 320,
+      "slot_size": 320,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "tagHook",
+      "address": "0x1ee32fc",
+      "compiled_size": 384,
+      "slot_size": 384,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "cdataHook",
+      "address": "0x1ee347c",
+      "compiled_size": 44,
+      "slot_size": 44,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "deleteHook",
+      "address": "0x1ee34a8",
+      "compiled_size": 56,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_dom_new",
+      "address": "0x1ee34e0",
+      "compiled_size": 144,
+      "slot_size": 144,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "find_space",
+      "address": "0x1ee3cec",
+      "compiled_size": 92,
+      "slot_size": 92,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_stack_new",
+      "address": "0x1ee3d48",
+      "compiled_size": 104,
+      "slot_size": 104,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_stack_alloc",
+      "address": "0x1ee3db0",
+      "compiled_size": 100,
+      "slot_size": 100,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_stack_strdup",
+      "address": "0x1ee3e14",
+      "compiled_size": 136,
+      "slot_size": 136,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_stack_strecat",
+      "address": "0x1ee3e9c",
+      "compiled_size": 480,
+      "slot_size": 480,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_stack_delete",
+      "address": "0x1ee407c",
+      "compiled_size": 60,
+      "slot_size": 60,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_sax_extend",
+      "address": "0x1ee40b8",
+      "compiled_size": 148,
+      "slot_size": 148,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_nr_bytes",
+      "address": "0x1ee414c",
+      "compiled_size": 8,
+      "slot_size": 8,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_nr_lines",
+      "address": "0x1ee4154",
+      "compiled_size": 8,
+      "slot_size": 8,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "AllocateMoreAttrs",
+      "address": "0x1ee415c",
+      "compiled_size": 168,
+      "slot_size": 168,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "sax_core",
+      "address": "0x1ee4204",
+      "compiled_size": 2204,
+      "slot_size": 2204,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_parse",
+      "address": "0x1ee4aa0",
+      "compiled_size": 572,
+      "slot_size": 572,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_parser_reset",
+      "address": "0x1ee4cdc",
+      "compiled_size": 108,
+      "slot_size": 108,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_parser_delete",
+      "address": "0x1ee4d48",
+      "compiled_size": 144,
+      "slot_size": 144,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_set_malloc_func",
+      "address": "0x1ee4dd8",
+      "compiled_size": 12,
+      "slot_size": 12,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_set_free_func",
+      "address": "0x1ee4de4",
+      "compiled_size": 12,
+      "slot_size": 12,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "iks_escape",
+      "address": "0x1ee4df0",
+      "compiled_size": 528,
+      "slot_size": 528,
+      "differing_bytes": 0,
+      "exact": true
+    }
+  ],
+  "tables": [
+    {
+      "section": ".iks_escape_size.rodata",
+      "address": "0x19ae40",
+      "size": 116,
+      "differing_bytes": 0
+    },
+    {
+      "section": ".iks_escape.rodata",
+      "address": "0x19aee0",
+      "size": 116,
+      "differing_bytes": 0
+    },
+    {
+      "section": ".iks_sax_core.rodata",
+      "address": "0x19afa0",
+      "size": 112,
+      "differing_bytes": 0
+    },
+    {
+      "section": ".iks_iks_escape.rodata",
+      "address": "0x19b040",
+      "size": 116,
+      "differing_bytes": 0
+    },
+    {
+      "section": ".iks_iks_escape.rodata.1",
+      "address": "0x19b0c0",
+      "size": 116,
+      "differing_bytes": 0
+    }
+  ],
+  "generated_utc": "2026-10-14T17:26:56.009132+00:00",
+  "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
+  "rebuilt_sha256": "d9c382746375b56a87636ccccdb624e0f471ae0ae1751151c86d34690c167eb7",
+  "decompiled_percent": 100.0,
+  "matching_function_percent": 100.0,
+  "matching_jump_tables": 5,
+  "jump_table_bytes": 576,
+  "whole_game_differing_bytes": 13751,
+  "runtime_headers": "match",
+  "placement_audit": "pass",
+  "layout_checks": 45,
+  "global_checks": 25,
+  "accessor_cases": 774,
+  "escape_cases": 600,
+  "sax_core_cases": 306,
+  "gameplay_tested": false,
+  "source_sha256": {
+    "code\\iksemel\\src\\dom.c": "95d8e01d43e83a9adc35f19bbe97f9d766a9bfce7644c7c15b96290388300992",
+    "code\\iksemel\\src\\iks.c": "3c439baffa3a4bbd9dfd326b8efac4f4b89edbc052910df621c27fd27ba4f60a",
+    "code\\iksemel\\src\\iks.h": "7f604e306f0536a190e28d0713e3a6a02af38dd2a7ece27a7cfdae4bec272b7f",
+    "code\\iksemel\\src\\iksemel.h": "3da05dcb02cf10e7c179ba73a5bdee9be015b8521bb17891c9f28a65eb51234f",
+    "code\\iksemel\\src\\ikstack.c": "630b1073a596d6665de05e7e8b8895c3f674f2b398ff6f112c9e9ae47b6a8738",
+    "code\\iksemel\\src\\sax.c": "91f5789816607c04a2c138d4b6ac2702eb7bdb32f9d09b841c2baf72d8078753",
+    "code\\iksemel\\src\\utility.c": "9df4aa54c5c1f2b9ada5f5edbc7ddbdd0f79aeb836472e0018a17ab2a538935b"
+  }
+}

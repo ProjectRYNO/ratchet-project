@@ -144,3 +144,8 @@ The 2026-10-14 SDK snapshot is in [SDK.json](SDK.json) and [SDK.csv](SDK.csv),
 kept separate to preserve concurrent SVO3 tracking. SDK has 20/20 real functions
 compiled and byte-exact (100.00%); two unused instruction fragments are excluded
 from that percentage. See [SDK evidence](../libraries/SDK.md).
+
+The 2026-10-14 iksemel jump-table integration reaches **40/40 compiled and
+byte-exact functions (100.00%)**, with five exact jump tables. Scoped measurements
+are in [IKSEMEL.json](IKSEMEL.json) and [IKSEMEL.csv](IKSEMEL.csv); see
+[verification details](../libraries/IKSEMEL.md).

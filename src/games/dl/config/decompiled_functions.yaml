@@ -2661,6 +2661,11 @@ objects:
 rodata:
   asm/build/core.data/091E80.rodata:
     slots:
+      - {object: iksemel/src/iks, function: escape_size, section: .iks_escape_size.rodata, start: 0x0019AE40, end: 0x0019AEB4}
+      - {object: iksemel/src/iks, function: escape, section: .iks_escape.rodata, start: 0x0019AEE0, end: 0x0019AF54}
+      - {object: iksemel/src/sax, function: sax_core, section: .iks_sax_core.rodata, start: 0x0019AFA0, end: 0x0019B010}
+      - {object: iksemel/src/utility, function: iks_escape, section: .iks_iks_escape.rodata, start: 0x0019B040, end: 0x0019B0B4}
+      - {object: iksemel/src/utility, function: iks_escape, section: .iks_iks_escape.rodata.1, start: 0x0019B0C0, end: 0x0019B134}
       - {object: svo3/CPage, function: download, section: .svo_CPage_download.rodata, start: 0x0019B480, end: 0x0019B4B8}
       - {object: svo3/CPage, function: followLink, section: .svo_CPage_followLink.rodata, start: 0x0019B4D0, end: 0x0019B4F4}
       - {object: svo3/CPage, function: frameUpdate, section: .svo_CPage_frameUpdate.rodata, start: 0x0019B510, end: 0x0019B53C}

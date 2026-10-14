@@ -191,6 +191,7 @@ $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 $(OBJ_DIR)/iksemel/%.o: code/iksemel/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC296) -S $(IKSEMEL_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
 	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp

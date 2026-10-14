@@ -1,6 +1,55 @@
 # iksemel XML library
 
-## Current scope (2026-10-13)
+## Current scope (2026-10-14)
+
+**All 40 functions are compiled C and byte-exact (100.00%).** The complete
+7,428-byte library range 0x01EE32FC..0x01EE5000 matches retail. All five
+compiler-generated jump tables (576 bytes) match at their retail addresses,
+and their intervening strings/padding remain unchanged. No `INCLUDE_ASM`
+implementation remains. See [measured results](../progress/IKSEMEL.json) and
+[function progress](../progress/IKSEMEL.csv).
+
+This applies the SVO3 fix documented in DECISIONS.md D09 and
+[SVO3_HANDOFF.md](SVO3_HANDOFF.md#jump-tables-and-padding-2026-10-14-decisionsmd-d09d10).
+The previously recovered `switch` bodies replace the four if-chains. The shared
+`svo3_rodata_sections.py` helper now also routes `.iks_*` table data, and the
+iksemel Makefile rule invokes it before assembling. Five `rodata:` slots use the
+existing splitter/linker mechanism; no new linker relaxation or copied retail
+table data is involved. All table targets are linked from compiler output.
+
+| Function | Table address | Table bytes |
+| --- | --- | ---: |
+| escape_size | 0x0019AE40 | 116 |
+| escape | 0x0019AEE0 | 116 |
+| sax_core | 0x0019AFA0 | 112 |
+| iks_escape, size loop | 0x0019B040 | 116 |
+| iks_escape, copy loop | 0x0019B0C0 | 116 |
+
+The two `iks_escape` tables require separate sections (`.rodata` and `.rodata.1`)
+to preserve the original twelve padding bytes between them. The helper retains
+SVO3's existing section routing; regression tests cover this and multiple iksemel
+tables. The compiler flags are unchanged.
+
+Validation from base revision `48d9259` plus this change: serial split and forced
+full build pass. `check_iksemel.py` has **no nonmatching exemptions** and requires
+all 40 compiled definitions, exact code/library bytes, all five exact tables,
+and unchanged surrounding read-only data. It passes 45 layout checks, 25 globals,
+774 accessor cases, 600 escape cases, and 306 sax_core differential cases.
+Section-routing tests, the full placement audit, and the SDK's 20-function exact
+comparison also pass. Whole-game strict comparison still reports 13,751 differing
+bytes in other registered replacements (5,135 main, 8,616 network); this removes
+all 2,083 iksemel differences. Runtime headers match. No gameplay test was run.
+
+Reproduce after `make split`, then a forced build:
+
+```sh
+PYTHONPATH=../tools python3 TESTS/check_iksemel.py ../assets/dl/boot.elf build/boot_elf.elf
+python3 TESTS/test_rodata_sections.py
+```
+
+The following sections preserve the earlier 90% stage and its recovery evidence.
+
+## Earlier scope (2026-10-13)
 
 **All 40 functions are compiled C: 36 byte-exact, 4 nonmatching.** Every byte of the
 library range 0x01EE32FC-0x01EE5000 equals retail outside the four nonmatching slots.

@@ -202,11 +202,14 @@ unsigned int IKS_SECTION(escape_size) escape_size(char *src, unsigned int len)
     sz = 0;
     for (i = 0; i < len; i++) {
         c = src[i];
-        // Retail dispatches through a .rodata jump table; this if-chain needs none and fits the slot.
-        if (c == '&') sz += 4;
-        else if (c == '\'' || c == '"') sz += 5;
-        else if (c == '<' || c == '>') sz += 3;
-        else sz++;
+        switch (c) {
+            case '&': sz += 4; break;
+            case '\'': sz += 5; break;
+            case '"': sz += 5; break;
+            case '<': sz += 3; break;
+            case '>': sz += 3; break;
+            default: sz++; break;
+        }
     }
     return sz;
 }
@@ -221,8 +224,6 @@ char *IKS_SECTION(my_strcat) my_strcat(char *dest, char *src, unsigned int len)
 char *IKS_SECTION(escape) escape(char *dest, char *src, unsigned int len)
 {
     char c;
-    char *entity;
-    unsigned int size;
     unsigned int i;
     unsigned int j = 0;
 
@@ -231,24 +232,13 @@ char *IKS_SECTION(escape) escape(char *dest, char *src, unsigned int len)
         if ('&' == c || '<' == c || '>' == c || '\'' == c || '"' == c) {
             if (i - j > 0) dest = my_strcat(dest, src + j, i - j);
             j = i + 1;
-            // Retail dispatches through a .rodata jump table; the chain selects the entity for one shared call.
-            if (c == '&') {
-                entity = (char *)iksEntityAmp;
-                size = 5;
-            } else if (c == '\'') {
-                entity = (char *)iksEntityApos;
-                size = 6;
-            } else if (c == '"') {
-                entity = (char *)iksEntityQuot;
-                size = 6;
-            } else if (c == '<') {
-                entity = (char *)iksEntityLt;
-                size = 4;
-            } else {
-                entity = (char *)iksEntityGt;
-                size = 4;
+            switch (c) {
+                case '&': dest = my_strcat(dest, (char *)iksEntityAmp, 5); break;
+                case '\'': dest = my_strcat(dest, (char *)iksEntityApos, 6); break;
+                case '"': dest = my_strcat(dest, (char *)iksEntityQuot, 6); break;
+                case '<': dest = my_strcat(dest, (char *)iksEntityLt, 4); break;
+                case '>': dest = my_strcat(dest, (char *)iksEntityGt, 4); break;
             }
-            dest = my_strcat(dest, entity, size);
         }
     }
     if (i - j > 0) dest = my_strcat(dest, src + j, i - j);

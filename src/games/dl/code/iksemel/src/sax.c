@@ -64,9 +64,7 @@ int IKS_SECTION(sax_core) sax_core(iksparser *prs, char *buf, int len)
 {
     int err;
     int pos = 0, old = 0, re;
-    int ctx;
     unsigned char c;
-    unsigned char expect;
 
     while (pos < len) {
         re = 0;
@@ -79,94 +77,122 @@ int IKS_SECTION(sax_core) sax_core(iksparser *prs, char *buf, int len)
             goto cont;
         } else {
             if (c & 0x80) {
-                // Lead byte 110xxxxx..1111110x: count the 1 bits after bit 7 to get the sequence length.
                 unsigned char mask;
-                int n;
-                if (!(c & 0x40)) return IKS_BADXML;
-                mask = 0x1F;
-                n = 2;
-                while (c & (mask + 1)) {
-                    mask >>= 1;
-                    n++;
-                    if (n > 6) return IKS_BADXML;
+                if ((c & 0x60) == 0x40) {
+                    prs->uni_max = 2;
+                    mask = 0x1F;
+                } else if ((c & 0x70) == 0x60) {
+                    prs->uni_max = 3;
+                    mask = 0x0F;
+                } else if ((c & 0x78) == 0x70) {
+                    prs->uni_max = 4;
+                    mask = 0x07;
+                } else if ((c & 0x7C) == 0x78) {
+                    prs->uni_max = 5;
+                    mask = 0x03;
+                } else if ((c & 0x7E) == 0x7C) {
+                    prs->uni_max = 6;
+                    mask = 0x01;
+                } else {
+                    return IKS_BADXML;
                 }
-                prs->uni_max = n;
                 if ((c & mask) == 0) return IKS_BADXML;
                 prs->uni_len = 1;
                 goto cont;
             }
         }
 
-        // Retail dispatches through a .rodata jump table. This if-chain needs none; the shared
-        // flush, the CDATA[ letter states and the UTF-8 loop keep it inside the slot.
-        ctx = prs->context;
-        if (ctx == C_CDATA) {
-            if ('&' == c || '<' == c) {
-                if ('&' == c) buf[pos] = '\0';
-                if (old < pos && prs->cdataHook) {
-                    err = prs->cdataHook(prs->user_data, &buf[old], pos - old);
-                    if (IKS_OK != err) return err;
-                }
+        switch (prs->context) {
+            case C_CDATA:
                 if ('&' == c) {
+                    buf[pos] = '\0';
+                    if (old < pos && prs->cdataHook) {
+                        err = prs->cdataHook(prs->user_data, &buf[old], pos - old);
+                        if (IKS_OK != err) return err;
+                    }
                     prs->entpos = 0;
                     prs->context = C_ENTITY;
-                } else {
+                    break;
+                }
+                if ('<' == c) {
+                    if (old < pos && prs->cdataHook) {
+                        err = prs->cdataHook(prs->user_data, &buf[old], pos - old);
+                        if (IKS_OK != err) return err;
+                    }
                     prs->tag_open = 1;
                     prs->context = C_TAG_START;
                     prs->token_pos = buf - prs->stack + pos;
                 }
-            }
-        } else if (ctx == C_TAG_START) {
-            prs->context = C_TAG;
-            if ('/' == c) {
-                prs->tagtype = IKS_CLOSE;
-                prs->token_pos++;
-            } else if ('?' == c) {
-                prs->context = C_PI;
-            } else if ('!' == c) {
-                prs->context = C_MARKUP;
-            } else {
+                break;
+
+            case C_TAG_START:
+                prs->context = C_TAG;
+                if ('/' == c) {
+                    prs->tagtype = IKS_CLOSE;
+                    prs->token_pos++;
+                    break;
+                }
+                if ('?' == c) {
+                    prs->context = C_PI;
+                    break;
+                }
+                if ('!' == c) {
+                    prs->context = C_MARKUP;
+                    break;
+                }
                 prs->tagtype = IKS_OPEN;
-            }
-        } else if (ctx == C_TAG) {
-            if (' ' == c || '\t' == c || '\r' == c || '\n' == c) {
+                break;
+
+            case C_TAG:
+                if (' ' == c || '\t' == c || '\r' == c || '\n' == c) {
+                    buf[pos] = '\0';
+                    if (IKS_CLOSE == prs->tagtype)
+                        prs->oldcontext = C_TAG_END;
+                    else
+                        prs->oldcontext = C_ATTRIBUTE;
+                    prs->context = C_WHITESPACE;
+                    break;
+                }
+                if ('/' == c) {
+                    if (IKS_CLOSE == prs->tagtype) return IKS_BADXML;
+                    buf[pos] = '\0';
+                    prs->tagtype = IKS_SINGLE;
+                    prs->context = C_TAG_END;
+                    break;
+                }
+                if ('>' == c) {
+                    prs->context = C_TAG_END;
+                    re = 1;
+                }
+                break;
+
+            case C_TAG_END:
+                if (c != '>') return IKS_BADXML;
                 buf[pos] = '\0';
-                if (IKS_CLOSE == prs->tagtype)
-                    prs->oldcontext = C_TAG_END;
-                else
-                    prs->oldcontext = C_ATTRIBUTE;
-                prs->context = C_WHITESPACE;
-            } else if ('/' == c) {
-                if (IKS_CLOSE == prs->tagtype) return IKS_BADXML;
-                buf[pos] = '\0';
-                prs->tagtype = IKS_SINGLE;
-                prs->context = C_TAG_END;
-            } else if ('>' == c) {
-                prs->context = C_TAG_END;
-                re = 1;
-            }
-        } else if (ctx == C_TAG_END) {
-            if (c != '>') return IKS_BADXML;
-            buf[pos] = '\0';
-            if (prs->tagHook) {
-                char **tmp;
-                if (prs->attcur == 0) tmp = 0; else tmp = prs->atts;
-                err = prs->tagHook(prs->user_data, prs->stack + prs->token_pos + 1, tmp, prs->tagtype);
-                if (IKS_OK != err) return err;
-            }
-            prs->attcur = 0;
-            old = pos + 1;
-            prs->attflag = 0;
-            prs->tag_open = 0;
-            prs->context = C_CDATA;
-        } else if (ctx == C_ATTRIBUTE) {
-            if ('/' == c) {
-                prs->tagtype = IKS_SINGLE;
-                prs->context = C_TAG_END;
-            } else if ('>' == c) {
-                prs->context = C_TAG_END;
-                re = 1;
-            } else {
+                if (prs->tagHook) {
+                    char **tmp;
+                    if (prs->attcur == 0) tmp = 0; else tmp = prs->atts;
+                    err = prs->tagHook(prs->user_data, prs->stack + prs->token_pos + 1, tmp, prs->tagtype);
+                    if (IKS_OK != err) return err;
+                }
+                prs->attcur = 0;
+                old = pos + 1;
+                prs->attflag = 0;
+                prs->tag_open = 0;
+                prs->context = C_CDATA;
+                break;
+
+            case C_ATTRIBUTE:
+                if ('/' == c) {
+                    prs->tagtype = IKS_SINGLE;
+                    prs->context = C_TAG_END;
+                    break;
+                }
+                if ('>' == c) {
+                    prs->context = C_TAG_END;
+                    re = 1;
+                    break;
+                }
                 if (!prs->atts) {
                     prs->attmax = 12;
                     prs->atts = my_malloc_func(sizeof(char *) * 2 * 12);
@@ -179,155 +205,210 @@ int IKS_SECTION(sax_core) sax_core(iksparser *prs, char *buf, int len)
                 prs->attflag = 1;
                 prs->context = C_ATTRIBUTE_1;
                 prs->atts[prs->attcur] = &buf[pos];
-            }
-        } else if (ctx == C_ATTRIBUTE_1) {
-            if ('=' == c) {
-                buf[pos] = '\0';
-                prs->context = C_VALUE;
-            }
-        } else if (ctx == C_ATTRIBUTE_2) {
-            if ('/' == c) {
-                prs->tagtype = IKS_SINGLE;
-                if (AllocateMoreAttrs(prs)) return IKS_NOMEM;
-                prs->atts[prs->attcur] = 0;
-                prs->context = C_TAG_END;
-            } else if ('>' == c) {
+                break;
+
+            case C_ATTRIBUTE_1:
+                if ('=' == c) {
+                    buf[pos] = '\0';
+                    prs->context = C_VALUE;
+                }
+                break;
+
+            case C_ATTRIBUTE_2:
+                if ('/' == c) {
+                    prs->tagtype = IKS_SINGLE;
+                    if (AllocateMoreAttrs(prs)) return IKS_NOMEM;
+                    prs->atts[prs->attcur] = 0;
+                    prs->context = C_TAG_END;
+                    break;
+                }
+                if ('>' != c) {
+                    prs->context = C_ATTRIBUTE;
+                    re = 1;
+                    break;
+                }
                 if (AllocateMoreAttrs(prs)) return IKS_NOMEM;
                 prs->atts[prs->attcur] = 0;
                 prs->context = C_TAG_END;
                 re = 1;
-            } else {
-                prs->context = C_ATTRIBUTE;
-                re = 1;
-            }
-        } else if (ctx == C_VALUE) {
-            prs->atts[prs->attcur + 1] = &buf[pos + 1];
-            if ('\'' == c)
-                prs->context = C_VALUE_APOS;
-            else if ('"' == c)
-                prs->context = C_VALUE_QUOT;
-            else
+                break;
+
+            case C_VALUE:
+                prs->atts[prs->attcur + 1] = &buf[pos + 1];
+                if ('\'' == c) {
+                    prs->context = C_VALUE_APOS;
+                    break;
+                }
+                if ('"' == c) {
+                    prs->context = C_VALUE_QUOT;
+                    break;
+                }
                 return IKS_BADXML;
-        } else if (ctx == C_VALUE_APOS) {
-            if ('\'' == c) {
-                buf[pos] = '\0';
-                prs->oldcontext = C_ATTRIBUTE_2;
-                prs->context = C_WHITESPACE;
-                prs->attcur += 2;
-            }
-        } else if (ctx == C_VALUE_QUOT) {
-            if ('"' == c) {
-                buf[pos] = '\0';
-                prs->oldcontext = C_ATTRIBUTE_2;
-                prs->context = C_WHITESPACE;
-                prs->attcur += 2;
-            }
-        } else if (ctx == C_WHITESPACE) {
-            if (' ' != c && '\t' != c && '\r' != c && '\n' != c) {
-                prs->context = prs->oldcontext;
-                re = 1;
-            }
-        } else if (ctx == C_ENTITY) {
-            if (';' == c) {
-                char t = '?';
-                prs->entity[prs->entpos] = '\0';
-                if (strcmp(prs->entity, iksEntityNameAmp) == 0)
-                    t = '&';
-                else if (strcmp(prs->entity, iksEntityNameQuot) == 0)
-                    t = '"';
-                else if (strcmp(prs->entity, iksEntityNameApos) == 0)
-                    t = '\'';
-                else if (strcmp(prs->entity, iksEntityNameLt) == 0)
-                    t = '<';
-                else if (strcmp(prs->entity, iksEntityNameGt) == 0)
-                    t = '>';
-                buf[pos] = t;
-                old = pos;
-                prs->context = C_CDATA;
-            } else {
-                prs->entity[prs->entpos++] = buf[pos];
-                if (prs->entpos > 7) return IKS_BADXML;
-            }
-        } else if (ctx == C_COMMENT) {
-            if ('-' != c) return IKS_BADXML;
-            prs->context = C_COMMENT_1;
-        } else if (ctx == C_COMMENT_1) {
-            if ('-' == c) prs->context = C_COMMENT_2;
-        } else if (ctx == C_COMMENT_2) {
-            if ('-' == c)
-                prs->context = C_COMMENT_3;
-            else
+
+            case C_VALUE_APOS:
+                if ('\'' == c) {
+                    buf[pos] = '\0';
+                    prs->oldcontext = C_ATTRIBUTE_2;
+                    prs->context = C_WHITESPACE;
+                    prs->attcur += 2;
+                }
+                break;
+
+            case C_VALUE_QUOT:
+                if ('"' == c) {
+                    buf[pos] = '\0';
+                    prs->oldcontext = C_ATTRIBUTE_2;
+                    prs->context = C_WHITESPACE;
+                    prs->attcur += 2;
+                }
+                break;
+
+            case C_WHITESPACE:
+                if (' ' != c && '\t' != c && '\r' != c && '\n' != c) {
+                    prs->context = prs->oldcontext;
+                    re = 1;
+                }
+                break;
+
+            case C_ENTITY:
+                if (';' == c) {
+                    char t = '?';
+                    prs->entity[prs->entpos] = '\0';
+                    if (strcmp(prs->entity, iksEntityNameAmp) == 0)
+                        t = '&';
+                    else if (strcmp(prs->entity, iksEntityNameQuot) == 0)
+                        t = '"';
+                    else if (strcmp(prs->entity, iksEntityNameApos) == 0)
+                        t = '\'';
+                    else if (strcmp(prs->entity, iksEntityNameLt) == 0)
+                        t = '<';
+                    else if (strcmp(prs->entity, iksEntityNameGt) == 0)
+                        t = '>';
+                    buf[pos] = t;
+                    old = pos;
+                    prs->context = C_CDATA;
+                } else {
+                    prs->entity[prs->entpos++] = buf[pos];
+                    if (prs->entpos > 7) return IKS_BADXML;
+                }
+                break;
+
+            case C_COMMENT:
+                if ('-' != c) return IKS_BADXML;
                 prs->context = C_COMMENT_1;
-        } else if (ctx == C_COMMENT_3) {
-            if ('>' != c) return IKS_BADXML;
-            prs->context = C_CDATA;
-            old = pos + 1;
-        } else if (ctx == C_MARKUP) {
-            prs->tag_open = 0;
-            if ('[' == c) {
-                prs->context = C_SECT;
-            } else if ('-' == c) {
-                prs->context = C_COMMENT;
-            } else {
+                break;
+
+            case C_COMMENT_1:
+                if ('-' == c) prs->context = C_COMMENT_2;
+                break;
+
+            case C_COMMENT_2:
+                if ('-' == c)
+                    prs->context = C_COMMENT_3;
+                else
+                    prs->context = C_COMMENT_1;
+                break;
+
+            case C_COMMENT_3:
+                if ('>' != c) return IKS_BADXML;
+                prs->context = C_CDATA;
+                old = pos + 1;
+                break;
+
+            case C_MARKUP:
+                prs->tag_open = 0;
+                if ('[' == c) {
+                    prs->context = C_SECT;
+                    break;
+                }
+                if ('-' == c) {
+                    prs->context = C_COMMENT;
+                    break;
+                }
                 prs->context = C_MARKUP_1;
-                goto markup_1;
-            }
-        } else if (ctx == C_MARKUP_1) {
-        markup_1:
-            if ('>' == c) {
-                prs->context = C_CDATA;
+
+            case C_MARKUP_1:
+                if ('>' == c) {
+                    prs->context = C_CDATA;
+                    old = pos + 1;
+                }
+                break;
+
+            case C_SECT:
+                if ('C' == c) {
+                    prs->context = C_SECT_CDATA;
+                    break;
+                }
+                return IKS_BADXML;
+
+            case C_SECT_CDATA:
+                if ('D' != c) return IKS_BADXML;
+                prs->context = C_SECT_CDATA_1;
+                break;
+
+            case C_SECT_CDATA_1:
+                if ('A' != c) return IKS_BADXML;
+                prs->context = C_SECT_CDATA_2;
+                break;
+
+            case C_SECT_CDATA_2:
+                if ('T' != c) return IKS_BADXML;
+                prs->context = C_SECT_CDATA_3;
+                break;
+
+            case C_SECT_CDATA_3:
+                if ('A' != c) return IKS_BADXML;
+                prs->context = C_SECT_CDATA_4;
+                break;
+
+            case C_SECT_CDATA_4:
+                if ('[' != c) return IKS_BADXML;
                 old = pos + 1;
-            }
-        } else if (ctx >= C_SECT && ctx <= C_SECT_CDATA_4) {
-            // "<![" was read; the fixed letters of "CDATA[" each advance one state.
-            if (ctx == C_SECT)
-                expect = 'C';
-            else if (ctx == C_SECT_CDATA)
-                expect = 'D';
-            else if (ctx == C_SECT_CDATA_2)
-                expect = 'T';
-            else if (ctx == C_SECT_CDATA_4)
-                expect = '[';
-            else
-                expect = 'A';
-            if (expect != c) return IKS_BADXML;
-            if (ctx == C_SECT_CDATA_4) old = pos + 1;
-            prs->context = ctx + 1;
-        } else if (ctx == C_SECT_CDATA_C) {
-            if (']' == c) {
-                prs->context = C_SECT_CDATA_E;
-                if (prs->cdataHook && old < pos) {
-                    err = prs->cdataHook(prs->user_data, &buf[old], pos - old);
-                    if (IKS_OK != err) return err;
-                }
-            }
-        } else if (ctx == C_SECT_CDATA_E) {
-            if (']' == c) {
-                prs->context = C_SECT_CDATA_E2;
-            } else {
-                if (prs->cdataHook) {
-                    err = prs->cdataHook(prs->user_data, (char *)iksCDataBracket, 1);
-                    if (IKS_OK != err) return err;
-                }
-                old = pos;
                 prs->context = C_SECT_CDATA_C;
-            }
-        } else if (ctx == C_SECT_CDATA_E2) {
-            if ('>' == c) {
-                prs->context = C_CDATA;
+                break;
+
+            case C_SECT_CDATA_C:
+                if (']' == c) {
+                    prs->context = C_SECT_CDATA_E;
+                    if (prs->cdataHook && old < pos) {
+                        err = prs->cdataHook(prs->user_data, &buf[old], pos - old);
+                        if (IKS_OK != err) return err;
+                    }
+                }
+                break;
+
+            case C_SECT_CDATA_E:
+                if (']' == c) {
+                    prs->context = C_SECT_CDATA_E2;
+                } else {
+                    if (prs->cdataHook) {
+                        err = prs->cdataHook(prs->user_data, (char *)iksCDataBracket, 1);
+                        if (IKS_OK != err) return err;
+                    }
+                    old = pos;
+                    prs->context = C_SECT_CDATA_C;
+                }
+                break;
+
+            case C_SECT_CDATA_E2:
+                if ('>' == c) {
+                    prs->context = C_CDATA;
+                    old = pos + 1;
+                } else {
+                    if (prs->cdataHook) {
+                        err = prs->cdataHook(prs->user_data, (char *)iksCDataBrackets, 2);
+                        if (IKS_OK != err) return err;
+                    }
+                    old = pos;
+                    prs->context = C_SECT_CDATA_C;
+                }
+                break;
+
+            case C_PI:
+                prs->tag_open = 0;
                 old = pos + 1;
-            } else {
-                if (prs->cdataHook) {
-                    err = prs->cdataHook(prs->user_data, (char *)iksCDataBrackets, 2);
-                    if (IKS_OK != err) return err;
-                }
-                old = pos;
-                prs->context = C_SECT_CDATA_C;
-            }
-        } else if (ctx == C_PI) {
-            prs->tag_open = 0;
-            old = pos + 1;
-            if ('>' == c) prs->context = C_CDATA;
+                if ('>' == c) prs->context = C_CDATA;
+                break;
         }
 cont:
         if (0 == re) {

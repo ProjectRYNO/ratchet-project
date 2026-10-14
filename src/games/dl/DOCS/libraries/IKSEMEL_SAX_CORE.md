@@ -1,12 +1,10 @@
 # iksemel sax_core: byte-exact switch version
 
-`sax_core` (0x01EE4204, 0x89C) builds from a compact, nonmatching if-chain in
-`code/iksemel/src/sax.c` (0x898 bytes; see [IKSEMEL.md](IKSEMEL.md#jump-table-functions)).
-The C below is the recovered `switch` form. With only the jump-table address fields masked,
-it compiles to retail's exact 551 instructions under SCE ee-gcc 2.96 `-Os`
-(`IKSEMEL_COMPILE_FLAGS`; probe, 2026-10-13). Its `switch` dispatches through `jtbl_0019AFA0`
-in core.rdata, and no iksemel object can place `.rodata`. With rodata slot support, this
-version replaces the if-chain as a byte-exact function. The if-chain was derived from it.
+`sax_core` (0x01EE4204, 0x89C) now builds from this recovered `switch` form in
+`code/iksemel/src/sax.c`. The SVO3 read-only-data placement mechanism also supports
+iksemel: its 112-byte table is linked at 0x0019AFA0. All 551 instructions and every
+table byte match retail without masking relocation fields. The former nonmatching
+if-chain has been replaced. See [current verification](IKSEMEL.md).
 
 Its strings use the same names as sax.c (`iksEntityNameAmp`..`iksEntityNameGt`,
 `iksCDataBracket`, `iksCDataBrackets`; see [IKSEMEL_GLOBALS.csv](../symbols/IKSEMEL_GLOBALS.csv)).

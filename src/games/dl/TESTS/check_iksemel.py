@@ -24,9 +24,6 @@ FUNCTIONS = {
 }
 # dom.c through utility.c, from tagHook to the end of iks_escape.
 LIBRARY = (0x01EE32FC, 0x01EE5000)
-# Retail dispatches these through .rodata jump tables; their C uses if-chains, so the
-# slot bytes differ. Everything else in LIBRARY must equal retail.
-NONMATCHING = {'escape_size', 'escape', 'iks_escape', 'sax_core'}
 LAYOUTS = [
     ('iks', 0x30, [(f, i*4) for i, f in enumerate(
         'next prev children last_child attributes last_attribute parent type stack name cdata cdata_size'.split())]),
@@ -273,31 +270,38 @@ def main():
     linked = symbols(args.rebuilt)
     manifest = yaml.safe_load((game/'config/decompiled_functions.yaml').read_text())
     compiled = exact = 0
-    skipped = []
     for obj, bounds in manifest['objects'].items():
         if not obj.startswith('iksemel/'):
             continue
+        obj_symbols = symbols(game / 'build/code' / (obj + '.o'))
         for slot in bounds['slots']:
             name = slot['section'][len('.iks_'):]
-            if name not in manifest['functions']:
-                assert name not in NONMATCHING, name
-                continue
+            assert name in manifest['functions'], name
             actual, size, info, section = linked[name]
             allocation = slot['end'] - slot['start']
-            assert (actual, info & 15) == (slot['start'], 2), name
-            assert section not in (0, 0xFFF1) and name+'.NON_MATCHING' not in linked, name
-            if name in NONMATCHING:
-                assert size <= allocation, name
-                skipped.append((slot['start'], slot['end']))
-            else:
-                assert size == allocation, name
-                exact += 1
+            assert (actual, size, info & 15) == (slot['start'], allocation, 2), name
+            for table in (linked, obj_symbols):
+                definition = table[name]
+                assert definition[2] & 15 == 2 and definition[3] not in (0, 0xFFF1), name
+                assert name + '.NON_MATCHING' not in table, name
+            assert region(old, slot['start'], slot['end']) == region(new, slot['start'], slot['end']), name
+            exact += 1
             compiled += 1
-    # Compare the whole library, including retained assembly, outside the nonmatching slots.
-    start = LIBRARY[0]
-    for low, high in sorted(skipped) + [(LIBRARY[1], LIBRARY[1])]:
-        assert region(old, start, low) == region(new, start, low), 'iksemel bytes changed in %#x-%#x' % (start, low)
-        start = high
+    assert compiled == 40, 'incomplete iksemel function inventory'
+    assert region(old, *LIBRARY) == region(new, *LIBRARY), 'iksemel library bytes differ'
+    tables = 0
+    for bounds in manifest.get('rodata', {}).values():
+        for slot in bounds['slots']:
+            if not slot['object'].startswith('iksemel/'):
+                continue
+            assert slot['function'] in manifest['functions'], slot['function']
+            sections = dict(read_elf(game / 'build/code' / (slot['object'] + '.o'))[2])
+            assert sections[slot['section']][5] == slot['end'] - slot['start'], slot['section']
+            assert region(old, slot['start'], slot['end']) == region(new, slot['start'], slot['end']), slot['section']
+            tables += 1
+    assert tables == 5, 'incomplete iksemel jump-table inventory'
+    # Also retain retail strings and padding between the five tables.
+    assert region(old, 0x0019AE40, 0x0019B134) == region(new, 0x0019AE40, 0x0019B134), 'iksemel rodata differs'
     with (game/'DOCS/symbols/IKSEMEL_GLOBALS.csv').open() as inventory:
         names = 0
         for row in csv.DictReader(inventory):
@@ -330,9 +334,9 @@ def main():
             cases += 1
     escapes = escape_cases(old, new, linked)
     parses = sax_cases(old, new, linked)
-    print('PASS: %d iksemel layout checks; library bytes exact outside %d nonmatching slots; '
+    print('PASS: %d iksemel layout checks; entire library and %d jump tables byte-exact; '
           '%d compiled functions (%d exact); %d globals; %d accessor, %d escape and %d sax_core '
-          'differential cases' % (checks, len(skipped), compiled, exact, names, cases, escapes, parses))
+          'differential cases' % (checks, tables, compiled, exact, names, cases, escapes, parses))
 
 
 if __name__ == '__main__':
