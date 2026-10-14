@@ -1,0 +1,30 @@
+{
+  "generated_utc": "2026-10-14T11:46:35.635068+00:00",
+  "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
+  "rebuilt_sha256": "251a8845cb3d8d73f9724026a9f25c90973726bc766b009d51cb732b70b07a6f",
+  "real_functions": 20,
+  "compiled_functions": 19,
+  "matching_functions": 19,
+  "real_function_percent": 95.0,
+  "retained_instruction_fragments": 2,
+  "raw_inventory_entries": 22,
+  "raw_inventory_compiled_percent": 86.36,
+  "matching_compiled_bytes": 3608,
+  "total_real_function_bytes": 4276,
+  "compiled_byte_percent": 84.38,
+  "remaining_function": "ezNetCtlRecreateIfstat",
+  "runtime_headers": "match",
+  "placement_audit": "pass",
+  "whole_elf_differing_bytes": 9770,
+  "gameplay_tested": false,
+  "compiler": "SCE ee-gcc 2.96-ee-001003-1",
+  "flags": "-G0 -O2 -fno-builtin -fno-common -ffunction-sections",
+  "source_sha256": {
+    "code\\sdk\\eznet_rpc.h": "61b8643d08b4eb9e3f29fdef623b870f952552ee56b19086637788b24dff57c3",
+    "code\\sdk\\i18n.c": "3196efea964d94b7cf2e833cf360fc82e88cd76b2c7bd0a5f9ffb1befc7ce8be",
+    "code\\sdk\\i18n.h": "de305b1a8ae27bdc24eb672077458341247cb7e88974457dca56c62bb98d0fb6",
+    "code\\sdk\\i18n_inet.c": "bc0cbbdad11b476f60722e8a0c5fa632c79e45c89e8a44513c40aa58d32cfa25",
+    "code\\sdk\\libezcnf.c": "f026a14b6de5652420cb16248c8c0216bb6689cb0bc77dfa528d76dc15ea764c",
+    "code\\sdk\\libezctl.c": "0717b6e8a6a051bea0eef3d153b835809da8e735f133adc2e507094a0717a136"
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "functions": {
+    "ezNetCnfExit": {
+      "address": 32088304,
+      "size": 128,
+      "module": "libezcnf"
+    },
+    "ezNetCnfGetCombination": {
+      "address": 32088752,
+      "size": 176,
+      "module": "libezcnf"
+    },
+    "ezNetCnfGetCombinationList": {
+      "address": 32088440,
+      "size": 308,
+      "module": "libezcnf"
+    },
+    "ezNetCnfGetProperties": {
+      "address": 32088928,
+      "size": 320,
+      "module": "libezcnf"
+    },
+    "ezNetCnfInit": {
+      "address": 32088064,
+      "size": 240,
+      "module": "libezcnf"
+    },
+    "ezNetCtlDownInterface": {
+      "address": 32090056,
+      "size": 140,
+      "module": "libezctl"
+    },
+    "ezNetCtlExit": {
+      "address": 32089488,
+      "size": 136,
+      "module": "libezctl"
+    },
+    "ezNetCtlGetStatus": {
+      "address": 32090200,
+      "size": 336,
+      "module": "libezctl"
+    },
+    "ezNetCtlInit": {
+      "address": 32089248,
+      "size": 240,
+      "module": "libezctl"
+    },
+    "ezNetCtlSetProperties": {
+      "address": 32089624,
+      "size": 280,
+      "module": "libezctl"
+    },
+    "ezNetCtlUpInterface": {
+      "address": 32089912,
+      "size": 140,
+      "module": "libezctl"
+    },
+    "ezNetCtlWaitEventTO": {
+      "address": 32090536,
+      "size": 204,
+      "module": "libezctl"
+    },
+    "ezNetCtlSwapMessageTables": {
+      "address": 32090744,
+      "size": 76,
+      "module": "i18n"
+    },
+    "getMsgEntry": {
+      "address": 32090824,
+      "size": 132,
+      "module": "i18n"
+    },
+    "ezNetCtlLocalizeMessage": {
+      "address": 32090960,
+      "size": 348,
+      "module": "i18n"
+    },
+    "cbFormatAuthMessage": {
+      "address": 32091312,
+      "size": 72,
+      "module": "i18n"
+    },
+    "cbFormatPPPStatus": {
+      "address": 32091384,
+      "size": 124,
+      "module": "i18n"
+    },
+    "cbFormatLineSpeed": {
+      "address": 32091512,
+      "size": 184,
+      "module": "i18n"
+    },
+    "cbFormatPhoneNumber": {
+      "address": 32091696,
+      "size": 24,
+      "module": "i18n"
+    }
+  },
+  "bindings": {
+    "sceSifStopModule": 1230984,
+    "sceSifUnloadModule": 1231504,
+    "scePrintf": 1217776,
+    "InvalidDCache": 1209704,
+    "strncpy": 1159112,
+    "sceSifCallRpc": 1222424,
+    "sceSifSearchModuleByName": 1231648,
+    "DelayThread": 1210888,
+    "sceSifBindRpc": 1221944,
+    "ezNetCtlRecreateIfstat": 32091720,
+    "ezNetCtlLocalizeMessage": 32090960,
+    "SyncDCache": 1209400,
+    "ezNetCtlWaitEventTO": 32090536,
+    "sdkCnfRunning": 1757676,
+    "sdkCnfModuleId": 1757672,
+    "sdkCtlRunning": 1758124,
+    "sdkCtlModuleId": 1758120,
+    "sdkCnfClient": 1757632,
+    "sdkCtlClient": 1758080,
+    "sdkCnfBuffer": 1757248,
+    "sdkCtlBuffer": 1757696,
+    "sdkCtlIfInfo": 1758128,
+    "sdkCnfModuleName": 1654736,
+    "sdkCnfLog": 1654752,
+    "sdkCnfInitName": 1654760,
+    "sdkCnfModuleMissing": 1654776,
+    "sdkCnfBindFailed": 1654800,
+    "sdkCnfNotRunning": 1654856,
+    "sdkCnfListName": 1654952,
+    "sdkCnfAlignError": 1654984,
+    "sdkCnfResult": 1654936,
+    "sdkCnfCombinationName": 1655024,
+    "sdkCnfEmpty": 1655048,
+    "sdkCnfBadIndex": 1655064,
+    "sdkCnfPropertiesName": 1655176,
+    "sdkCtlModuleName": 1655200,
+    "sdkCtlLog": 1655216,
+    "sdkCtlInitName": 1655224,
+    "sdkCtlModuleMissing": 1655240,
+    "sdkCtlBindFailed": 1655264,
+    "sdkCtlNotRunning": 1655320,
+    "sdkCtlSetName": 1655296,
+    "sdkCtlAlignError": 1655400,
+    "sdkCtlResult": 1655440,
+    "sdkCtlUpName": 1655528,
+    "sdkCtlDownName": 1655552,
+    "sdkCtlStatusName": 1655576,
+    "sdkCtlWaitName": 1655600,
+    "snprintf": 1169528,
+    "strncmp": 1158656,
+    "strlen": 1157892,
+    "memset": 1156376,
+    "sdkErrorMessages": 1466240,
+    "sdkPhaseMessages": 1466244,
+    "sdkStateMessages": 1466248,
+    "sdkErrorEnglish": 1465728,
+    "sdkPhaseEnglish": 1465888,
+    "sdkStateEnglish": 1466112,
+    "sdkPPPprefix": 1656488,
+    "sdkMessageLog": 1656440,
+    "sdkMessageFunction": 1656448,
+    "sdkMessageMissing": 1656464,
+    "_ctype_": 1646336,
+    "_gp": 2251135
+  },
+  "modules": {
+    "libezcnf": [
+      32088064,
+      32089248
+    ],
+    "libezctl": [
+      32089248,
+      32090744
+    ],
+    "i18n": [
+      32090744,
+      32091720
+    ]
+  }
+}

@@ -229,3 +229,8 @@ Text-area/image drawing callbacks (2026-10-09): recovered DrawTextArea at 0x48 a
 
 
 Browser/page/grid/list/login continuation (2026-10-09): recovered CTagModuleActions, callback prefixes, full CPage tail (0x637C), persistent state (0x1B9C), browser VKB storage and list vtables. Retail split offsets and callback arguments take precedence over Ghidra labels. PASS: independent header includes and 10 EE boot-option packing vectors; PASS: 1889 PS2 sizes/field offsets across 210 types and 101 headers
+
+SDK recovery (2026-10-14) adds `ezNetCtlStatus`, `EzNetCtlInfo`, and
+`SDKMessageEntry` in `code/sdk/i18n.h`. `TESTS/check_sdk_layouts.py` checks
+their PS2 layouts, including nested union fields, using production SCE 2.96.
+The shared layout registry also includes their top-level fields.

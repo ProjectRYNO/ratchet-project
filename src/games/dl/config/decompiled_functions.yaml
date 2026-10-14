@@ -1071,6 +1071,26 @@ functions:
 
   handleSpecialKeys: 0x01EF9E90
 
+  ezNetCnfExit: 0x01E9A0F0
+  ezNetCnfGetCombination: 0x01E9A2B0
+  ezNetCnfGetCombinationList: 0x01E9A178
+  ezNetCnfGetProperties: 0x01E9A360
+  ezNetCnfInit: 0x01E9A000
+  ezNetCtlDownInterface: 0x01E9A7C8
+  ezNetCtlExit: 0x01E9A590
+  ezNetCtlGetStatus: 0x01E9A858
+  ezNetCtlInit: 0x01E9A4A0
+  ezNetCtlSetProperties: 0x01E9A618
+  ezNetCtlUpInterface: 0x01E9A738
+  ezNetCtlWaitEventTO: 0x01E9A9A8
+  ezNetCtlSwapMessageTables: 0x01E9AA78
+  getMsgEntry: 0x01E9AAC8
+  ezNetCtlLocalizeMessage: 0x01E9AB50
+  cbFormatAuthMessage: 0x01E9ACB0
+  cbFormatPPPStatus: 0x01E9ACF8
+  cbFormatLineSpeed: 0x01E9AD78
+  cbFormatPhoneNumber: 0x01E9AE30
+
 objects:
   game/boot:
     text_start: 0x00157738
@@ -2522,6 +2542,40 @@ objects:
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_callbacks, start: 0x01EA9768, end: 0x01EA9780}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_another_callback, start: 0x01EA9780, end: 0x01EA9790}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_get_aligned_address, start: 0x01EA9790, end: 0x01EA97D8}
+  sdk/libezcnf:
+    text_start: 0x01E9A000
+    text_end: 0x01E9A4A0
+    slots:
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_ezNetCnfInit, start: 0x01E9A000, end: 0x01E9A0F0}
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_ezNetCnfExit, start: 0x01E9A0F0, end: 0x01E9A170}
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_func_01E9A170, start: 0x01E9A170, end: 0x01E9A178}
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_ezNetCnfGetCombinationList, start: 0x01E9A178, end: 0x01E9A2B0}
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_ezNetCnfGetCombination, start: 0x01E9A2B0, end: 0x01E9A360}
+      - {object: sdk/libezcnf, section: .sdk_libezcnf_ezNetCnfGetProperties, start: 0x01E9A360, end: 0x01E9A4A0}
+  sdk/libezctl:
+    text_start: 0x01E9A4A0
+    text_end: 0x01E9AA78
+    slots:
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlInit, start: 0x01E9A4A0, end: 0x01E9A590}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlExit, start: 0x01E9A590, end: 0x01E9A618}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlSetProperties, start: 0x01E9A618, end: 0x01E9A730}
+      - {object: sdk/libezctl, section: .sdk_libezctl_func_01E9A730, start: 0x01E9A730, end: 0x01E9A738}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlUpInterface, start: 0x01E9A738, end: 0x01E9A7C8}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlDownInterface, start: 0x01E9A7C8, end: 0x01E9A858}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlGetStatus, start: 0x01E9A858, end: 0x01E9A9A8}
+      - {object: sdk/libezctl, section: .sdk_libezctl_ezNetCtlWaitEventTO, start: 0x01E9A9A8, end: 0x01E9AA78}
+  sdk/i18n:
+    text_start: 0x01E9AA78
+    text_end: 0x01E9AE48
+    slots:
+      - {object: sdk/i18n, section: .sdk_i18n_ezNetCtlSwapMessageTables, start: 0x01E9AA78, end: 0x01E9AAC8}
+      - {object: sdk/i18n, section: .sdk_i18n_getMsgEntry, start: 0x01E9AAC8, end: 0x01E9AB50}
+      - {object: sdk/i18n, section: .sdk_i18n_ezNetCtlLocalizeMessage, start: 0x01E9AB50, end: 0x01E9ACB0}
+      - {object: sdk/i18n, section: .sdk_i18n_cbFormatAuthMessage, start: 0x01E9ACB0, end: 0x01E9ACF8}
+      - {object: sdk/i18n, section: .sdk_i18n_cbFormatPPPStatus, start: 0x01E9ACF8, end: 0x01E9AD78}
+      - {object: sdk/i18n, section: .sdk_i18n_cbFormatLineSpeed, start: 0x01E9AD78, end: 0x01E9AE30}
+      - {object: sdk/i18n, section: .sdk_i18n_cbFormatPhoneNumber, start: 0x01E9AE30, end: 0x01E9AE48}
+
 # Switch jump tables of compiled functions. Retail keeps them in the main read-only data;
 # each slot is exactly the retail table extent (code-address entries only). A compiled
 # function's tables are placed there and may only change bytes inside its slot.
