@@ -88,10 +88,13 @@ SVO3_AS_FLAGS = -EL -G0 -Icode/include
 # (iks_stack_new), which -mno-split-addresses prevents (see DOCS/libraries/IKSEMEL.md).
 IKSEMEL_COMPILE_FLAGS = $(filter-out -mno-split-addresses,$(SVO3_COMPILE_FLAGS))
 
-# Medius rt_memory: measured retail matches; keep the default split-address pass.
+# Medius rt_memory: measured retail matches with default split-address and alignment passes;
+# retail pads labels after unconditional branches to 8 bytes (rt_memory_allocate).
 # Enable additional objects here as their C replacements are verified.
-MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o
-MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections -falign-functions=4 -falign-loops=1 -falign-jumps=1 -falign-labels=1
+MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util/rt_constraint.o \
+	$(OBJ_DIR)/medius/rt_util/rt_string.o $(OBJ_DIR)/medius/rt_util/rt_mutex.o \
+	$(OBJ_DIR)/medius/rt_util/rt_pack.o $(OBJ_DIR)/medius/rt_util/rt_msg_util.o $(OBJ_DIR)/medius/rt_util/rt_timebase.o
+MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections
 MEDIUS_AS_FLAGS = -EL -G0 -g -Icode/include
 ifeq ($(ALLOW_NONMATCHING),1)
     MEDIUS_COMPILE_FLAGS += -DALLOW_NONMATCHING

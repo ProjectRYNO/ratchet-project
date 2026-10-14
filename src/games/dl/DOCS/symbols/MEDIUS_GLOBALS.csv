@@ -1,0 +1,7 @@
+name,address,owner,evidence,references
+rtTimebaseLastLocalTime,0x00168BA4,code/medius/rt_util/rt_timebase.c,"core.data word, 0 in retail; rt_timebase_get_globaltime stores the latest rt_time_get_local value; rt_timebase_restart clears it",rt_timebase
+rtTimebaseGlobalTime,0x00168BA8,code/medius/rt_util/rt_timebase.c,"core.data word, 0 in retail; advanced by local-time deltas in rt_timebase_get_globaltime, set by rt_timebase_reset_globaltime",rt_timebase
+rtTimebaseStarted,0x00168BAC,code/medius/rt_util/rt_timebase.c,"core.data word, 0 in retail; set to 1 by rt_timebase_start, tested by update_globaltime",rt_timebase
+rtTimebaseQueryInterval,0x00168BB0,code/medius/rt_util/rt_timebase.c,"core.data word, 3000 in retail; rt_timebase_is_query_ready compares elapsed milliseconds against it",rt_timebase
+rtTimebaseDelays,0x001B2420,code/medius/rt_util/rt_timebase.c,"core.bss 0x198 bytes; 100 delay words, count at 0x190, index at 0x194 (restart/start memset 0x198, update and percentile index it)",rt_timebase
+rtTimebaseQueryTimer,0x001B25B8,code/medius/rt_util/rt_timebase.c,"core.bss 8 bytes directly after rtTimebaseDelays; rt_time_start/rt_time_platform_fast_elapsed_msecs timer, cleared by restart",rt_timebase
