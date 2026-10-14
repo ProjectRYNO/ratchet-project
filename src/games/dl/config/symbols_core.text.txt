@@ -1597,6 +1597,7 @@ gpSystemMessageCallbackData = 0x00167F68;
 gCryptGlobals = 0x0016819C;
 gCryptInterfacePtr = 0x001681A0;
 gpfMallocCallback = 0x001681A4;
+gpfReallocCallback = 0x001681A8;
 gpfFreeCallback = 0x001681AC;
 GlobalInitFlag = 0x00169CD0;
 ghMyConnection = 0x00169CD4;
@@ -3322,3 +3323,11 @@ sdkInetAuthFailed = 0x001947D0;
 sdkInetPhase = 0x001947E0;
 sdkInetDisconnect = 0x001947E8;
 sdkInetTimeout = 0x001947F8;
+
+// Medius rt_timebase statics (no prototype dlglobals entry; names describe retail use).
+rtTimebaseLastLocalTime = 0x00168BA4;
+rtTimebaseGlobalTime = 0x00168BA8;
+rtTimebaseStarted = 0x00168BAC;
+rtTimebaseQueryInterval = 0x00168BB0;
+rtTimebaseDelays = 0x001B2420;
+rtTimebaseQueryTimer = 0x001B25B8;

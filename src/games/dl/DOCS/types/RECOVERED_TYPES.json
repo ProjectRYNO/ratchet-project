@@ -11342,5 +11342,224 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "RT_MEMORY_ALIGNED",
+    "size": "0x08",
+    "owners": [
+      "medius/rt_util/rt_memory.c"
+    ],
+    "header": "code/medius/rt_util/rt_memory.h",
+    "evidence": "prototype dltypes.txt layout (pAlloc, pUse); retail rt_memory_align_alloc/_init_zero/_free store and load 0x0 and 0x4",
+    "fields": [
+      {
+        "name": "pAlloc",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pUse",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_U1BYTE_CONSTRAINT",
+    "size": "0x02",
+    "owners": [
+      "medius/rt_util/rt_constraint.c"
+    ],
+    "header": "code/medius/rt_util/rt_constraint.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_constraint_check_* read the low/min field at 0x0 and the high/max field after it",
+    "fields": [
+      {
+        "name": "lowVal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "highVal",
+        "offset": 1,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_4BYTE_CONSTRAINT",
+    "size": "0x08",
+    "owners": [
+      "medius/rt_util/rt_constraint.c"
+    ],
+    "header": "code/medius/rt_util/rt_constraint.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_constraint_check_* read the low/min field at 0x0 and the high/max field after it",
+    "fields": [
+      {
+        "name": "lowVal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "highVal",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_U4BYTE_CONSTRAINT",
+    "size": "0x08",
+    "owners": [
+      "medius/rt_util/rt_constraint.c"
+    ],
+    "header": "code/medius/rt_util/rt_constraint.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_constraint_check_* read the low/min field at 0x0 and the high/max field after it",
+    "fields": [
+      {
+        "name": "lowVal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "highVal",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_CSTRING_CONSTRAINT",
+    "size": "0x08",
+    "owners": [
+      "medius/rt_util/rt_constraint.c"
+    ],
+    "header": "code/medius/rt_util/rt_constraint.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_constraint_check_* read the low/min field at 0x0 and the high/max field after it",
+    "fields": [
+      {
+        "name": "minSize",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "maxSize",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_PACK_BUFFER",
+    "size": "0x14",
+    "owners": [
+      "medius/rt_util/rt_pack.c"
+    ],
+    "header": "code/medius/rt_util/rt_pack.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_init_pack_buffer stores all five fields and the pack functions use end, cursor and lastError",
+    "fields": [
+      {
+        "name": "begin",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "end",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "cursor",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "bitOffset",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "lastError",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_MUTEX",
+    "size": "0x10",
+    "owners": [
+      "medius/rt_util/rt_mutex.c"
+    ],
+    "header": "code/medius/rt_util/rt_mutex.h",
+    "evidence": "retail-instructions only (no prototype type): rt_mutex_* use 0x0 (byte), 0x4, 0x8; rt_mutex_platform_* use 0xC; size is the highest observed offset, not a verified sizeof",
+    "fields": [
+      {
+        "name": "created",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "lockCount",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "ownerThread",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "semaphore",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TIME_STAMP",
+    "size": "0x08",
+    "owners": [
+      "medius/rt_util/rt_time.c"
+    ],
+    "header": "code/medius/rt_util/rt_time.h",
+    "evidence": "prototype dltypes.txt layout; rt_timebase_restart clears 8 bytes of the query timer",
+    "fields": [
+      {
+        "name": "Secs",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "USecs",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TIMEBASE_DELAYS",
+    "size": "0x198",
+    "owners": [
+      "medius/rt_util/rt_timebase.c"
+    ],
+    "header": "code/medius/rt_util/rt_timebase.h",
+    "evidence": "retail-instructions: restart/start memset 0x198; update stores delay[index] and reads count 0x190/index 0x194; percentile copies 100 words",
+    "fields": [
+      {
+        "name": "delay",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "count",
+        "offset": 400,
+        "bitfield": false
+      },
+      {
+        "name": "index",
+        "offset": 404,
+        "bitfield": false
+      }
+    ]
   }
 ]

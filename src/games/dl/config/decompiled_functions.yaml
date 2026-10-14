@@ -4,6 +4,40 @@ functions:
   rt_memory_free: 0x01EA95C0
   rt_memory_register_callbacks: 0x01EA9768
   rt_memory_get_aligned_address: 0x01EA9790
+  rt_memory_allocate: 0x01EA94D0
+  rt_memory_allocate_init_zero: 0x01EA9550
+  rt_memory_align_alloc: 0x01EA9618
+  rt_memory_align_alloc_init_zero: 0x01EA96A8
+  rt_memory_align_free: 0x01EA9718
+  rt_memory_register_another_callback: 0x01EA9780
+  rt_constraint_check_RT_U1BYTE: 0x01EA8DF0
+  rt_constraint_check_RT_4BYTE: 0x01EA8E18
+  rt_constraint_check_RT_U4BYTE: 0x01EA8E40
+  rt_constraint_check_RT_CSTRING: 0x01EA8E80
+  rt_strnlen: 0x01EAB1B8
+  rt_mutex_create: 0x01EA9D98
+  rt_mutex_destroy: 0x01EA9DE0
+  rt_mutex_lock: 0x01EA9E28
+  rt_mutex_unlock: 0x01EA9ED8
+  rt_init_pack_buffer: 0x01EAA0D0
+  rt_pack_anything: 0x01EAA130
+  rt_pack_1byte: 0x01EAA218
+  rt_pack_cu2byte: 0x01EAA2A8
+  rt_msg_set_ubyte: 0x01EA97E0
+  rt_msg_get_ubyte: 0x01EA9800
+  rt_msg_set_u2byte: 0x01EA9828
+  rt_msg_get_u2byte: 0x01EA9850
+  rt_msg_set_u4byte: 0x01EA9888
+  rt_msg_get_u4byte: 0x01EA98C0
+  rt_msg_set_u2byte_be: 0x01EA9928
+  rt_msg_get_u2byte_be: 0x01EA9950
+  rt_timebase_get_globaltime: 0x01EABC10
+  rt_timebase_get_localtime: 0x01EABC68
+  rt_timebase_restart: 0x01EABC80
+  rt_timebase_reset_globaltime: 0x01EABCD0
+  rt_timebase_get_percentiledelay: 0x01EABDA0
+  rt_timebase_is_query_ready: 0x01EABE78
+  rt_timebase_start: 0x01EABEE0
   DefaultInit___dupe3: 0x01EF3780
   FreeContexts: 0x01EF3CF0
   GetDimensions: 0x01EF3C2C
@@ -2601,6 +2635,62 @@ objects:
     slots:
       - {object: svo3/TextEditableTag, section: .svo_TextEditableTag_DefaultHandleInput, start: 0x01F03D08, end: 0x01F03E04}
 
+  medius/rt_util/rt_timebase:
+    text_start: 0x01EABC10
+    text_end: 0x01EABF38
+    slots:
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_get_globaltime, start: 0x01EABC10, end: 0x01EABC68}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_get_localtime, start: 0x01EABC68, end: 0x01EABC80}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_restart, start: 0x01EABC80, end: 0x01EABCD0}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_reset_globaltime, start: 0x01EABCD0, end: 0x01EABCE0}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_update_globaltime, start: 0x01EABCE0, end: 0x01EABDA0}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_get_percentiledelay, start: 0x01EABDA0, end: 0x01EABE78}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_is_query_ready, start: 0x01EABE78, end: 0x01EABEE0}
+      - {object: medius/rt_util/rt_timebase, section: .medius_timebase_rt_timebase_start, start: 0x01EABEE0, end: 0x01EABF38}
+  medius/rt_util/rt_msg_util:
+    text_start: 0x01EA97E0
+    text_end: 0x01EA9984
+    slots:
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_set_ubyte, start: 0x01EA97E0, end: 0x01EA9800}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_get_ubyte, start: 0x01EA9800, end: 0x01EA9828}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_set_u2byte, start: 0x01EA9828, end: 0x01EA9850}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_get_u2byte, start: 0x01EA9850, end: 0x01EA9888}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_set_u4byte, start: 0x01EA9888, end: 0x01EA98C0}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_get_u4byte, start: 0x01EA98C0, end: 0x01EA9928}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_set_u2byte_be, start: 0x01EA9928, end: 0x01EA9950}
+      - {object: medius/rt_util/rt_msg_util, section: .medius_msg_rt_msg_get_u2byte_be, start: 0x01EA9950, end: 0x01EA9984}
+  medius/rt_util/rt_mutex:
+    text_start: 0x01EA9D98
+    text_end: 0x01EA9F7C
+    slots:
+      - {object: medius/rt_util/rt_mutex, section: .medius_mutex_rt_mutex_create, start: 0x01EA9D98, end: 0x01EA9DE0}
+      - {object: medius/rt_util/rt_mutex, section: .medius_mutex_rt_mutex_destroy, start: 0x01EA9DE0, end: 0x01EA9E28}
+      - {object: medius/rt_util/rt_mutex, section: .medius_mutex_rt_mutex_lock, start: 0x01EA9E28, end: 0x01EA9ED0}
+      - {object: medius/rt_util/rt_mutex, section: .medius_mutex_func_01EA9ED0, start: 0x01EA9ED0, end: 0x01EA9ED8}
+      - {object: medius/rt_util/rt_mutex, section: .medius_mutex_rt_mutex_unlock, start: 0x01EA9ED8, end: 0x01EA9F7C}
+  medius/rt_util/rt_pack:
+    text_start: 0x01EAA0D0
+    text_end: 0x01EAA4BC
+    slots:
+      - {object: medius/rt_util/rt_pack, section: .medius_pack_rt_init_pack_buffer, start: 0x01EAA0D0, end: 0x01EAA130}
+      - {object: medius/rt_util/rt_pack, section: .medius_pack_rt_pack_anything, start: 0x01EAA130, end: 0x01EAA218}
+      - {object: medius/rt_util/rt_pack, section: .medius_pack_rt_pack_1byte, start: 0x01EAA218, end: 0x01EAA2A8}
+      - {object: medius/rt_util/rt_pack, section: .medius_pack_rt_pack_cu2byte, start: 0x01EAA2A8, end: 0x01EAA3B8}
+      - {object: medius/rt_util/rt_pack, section: .medius_pack_rt_pack_cstring, start: 0x01EAA3B8, end: 0x01EAA4BC}
+  medius/rt_util/rt_constraint:
+    text_start: 0x01EA8DF0
+    text_end: 0x01EA8EC8
+    slots:
+      - {object: medius/rt_util/rt_constraint, section: .medius_constraint_rt_constraint_check_RT_U1BYTE, start: 0x01EA8DF0, end: 0x01EA8E18}
+      - {object: medius/rt_util/rt_constraint, section: .medius_constraint_rt_constraint_check_RT_4BYTE, start: 0x01EA8E18, end: 0x01EA8E40}
+      - {object: medius/rt_util/rt_constraint, section: .medius_constraint_rt_constraint_check_RT_U4BYTE, start: 0x01EA8E40, end: 0x01EA8E68}
+      - {object: medius/rt_util/rt_constraint, section: .medius_constraint_func_01EA8E68, start: 0x01EA8E68, end: 0x01EA8E80}
+      - {object: medius/rt_util/rt_constraint, section: .medius_constraint_rt_constraint_check_RT_CSTRING, start: 0x01EA8E80, end: 0x01EA8EC8}
+  medius/rt_util/rt_string:
+    text_start: 0x01EAB1B8
+    text_end: 0x01EAB210
+    slots:
+      - {object: medius/rt_util/rt_string, section: .medius_string_rt_strnlen, start: 0x01EAB1B8, end: 0x01EAB210}
   medius/rt_util/rt_memory:
     text_start: 0x01EA94D0
     text_end: 0x01EA97D8

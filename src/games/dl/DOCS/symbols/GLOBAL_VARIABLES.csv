@@ -60,6 +60,7 @@ gLookupIndex,0x00167F90,core.data,undefined2,2,,,,,deferred,missing prototype de
 gCryptGlobals,0x0016819C,core.data,pointer,24,CRYPT_DME_BASE_GLOBALS *gCryptGlobals;,/public/work/210/rt_crypt/src/rt_crypt_public.c,4860,medius/rt_crypt/src/rt_crypt_public.c:179,mapped,unique retail data label and matching prototype declaration/source
 gCryptInterfacePtr,0x001681A0,core.data,undefined4,53,CRYPT_INTERFACE *gCryptInterfacePtr;,/public/work/210/rt_crypt/src/rt_crypt_public.c,4861,medius/rt_crypt/src/rt_crypt_public.c:180,mapped,unique retail data label and matching prototype declaration/source
 gpfMallocCallback,0x001681A4,core.data,undefined4,2,pf_rt_memory_malloc_callback gpfMallocCallback;,/public/work/210/rt_util/rt_memory.c,4877,medius/rt_util/rt_memory.c:8,mapped,unique retail data label and matching prototype declaration/source
+gpfReallocCallback,0x001681A8,core.data,undefined4,1,pf_rt_memory_realloc_callback gpfReallocCallback;,/public/work/210/rt_util/rt_memory.c,4878,medius/rt_util/rt_memory.c:9,mapped,prototype declares it between the malloc and free callbacks; retail rt_memory_register_another_callback stores its argument here
 gpfFreeCallback,0x001681AC,core.data,undefined4,2,pf_rt_memory_free_callback gpfFreeCallback;,/public/work/210/rt_util/rt_memory.c,4879,medius/rt_util/rt_memory.c:10,mapped,unique retail data label and matching prototype declaration/source
 gMT,0x001681B0,core.data,undefined4,6,,,,,deferred,missing prototype declaration
 y,0x00168B80,core.data,undefined4,2,,,,,deferred,missing prototype declaration
