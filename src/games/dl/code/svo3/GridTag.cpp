@@ -131,8 +131,8 @@ extern "C" SECTION(ClearRows) int ClearRows(GridTagState *tag)
         tag->m_cells = 0;
         svFreeSafe(tag->base.m_contexts->memoryContext, tag->m_rows);
         tag->m_rows = 0;
-        tag->m_numVisRowsWithCells = 0;
         tag->m_numTotalRows = 0;
+        tag->m_numVisRowsWithCells = 0;
     }
     return 1;
 }
@@ -146,7 +146,10 @@ extern "C" SECTION(FreeResources___dupe36) void FreeResources___dupe36(GridTagSt
         if (tag->m_myRecordRow->cells) svFreeSafe(tag->base.m_contexts->memoryContext, tag->m_myRecordRow->cells);
         svFreeSafe(tag->base.m_contexts->memoryContext, tag->m_myRecordRow);
     }
-    if (tag->m_pTimer) _SVChronograph(tag->m_pTimer, 3);
+    if (tag->m_pTimer) {
+        _SVChronograph(tag->m_pTimer, 3);
+        return;
+    }
 }
 
 extern "C" SECTION(DefaultInit___dupe18) void DefaultInit___dupe18(GridTagState *tag)
@@ -326,24 +329,14 @@ extern "C" SECTION(HandleModalInput) int HandleModalInput(GridTagState *tag, CPa
         tag->m_bIsClickedIn = 0;
         return 0;
     }
-    int direction;
-    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT)) direction = -2;
-    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) direction = 2;
-    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP)) direction = -1;
-    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)) direction = 1;
-    else {
-        if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
-            FollowLink(tag, page);
-            return 0;
-        }
-        if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) direction = 1;
-        else if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) direction = -1;
-        else return 1;
-        AdvanceCurrTopRow(tag, direction, 1);
-        return 0;
-    }
-    ChangeSelectedCell(tag, direction);
-    return 0;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT)) { ChangeSelectedCell(tag, -2); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) { ChangeSelectedCell(tag, 2); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP)) { ChangeSelectedCell(tag, -1); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)) { ChangeSelectedCell(tag, 1); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) { FollowLink(tag, page); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) { AdvanceCurrTopRow(tag, 1, 1); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) { AdvanceCurrTopRow(tag, -1, 1); return 0; }
+    return 1;
 }
 
 extern "C" SECTION(HandleInput___dupe50) int HandleInput___dupe50(GridTagState *tag, CPage *page)
@@ -362,7 +355,8 @@ extern "C" SECTION(HandleInput___dupe50) int HandleInput___dupe50(GridTagState *
         int magnitude = action < 0 ? -action : action;
         if (magnitude > 45) {
             Reset___dupe5(tag->m_pTimer);
-            ChangeSelectedCell(tag, action > 0 ? 2 : -2);
+            if (action > 0) ChangeSelectedCell(tag, 2);
+            else ChangeSelectedCell(tag, -2);
             return 0;
         }
     }
@@ -372,19 +366,15 @@ extern "C" SECTION(HandleInput___dupe50) int HandleInput___dupe50(GridTagState *
         int magnitude = action < 0 ? -action : action;
         if (magnitude > 45) {
             Reset___dupe5(tag->m_pTimer);
-            ChangeSelectedCell(tag, action < 0 ? -1 : 1);
+            if (action < 0) ChangeSelectedCell(tag, -1);
+            else ChangeSelectedCell(tag, 1);
             return 0;
         }
     }
-    if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) FollowLink(tag, page);
-    else {
-        int direction;
-        if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) direction = 1;
-        else if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) direction = -1;
-        else return 1;
-        AdvanceCurrTopRow(tag, direction, 1);
-    }
-    return 0;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) { FollowLink(tag, page); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN)) { AdvanceCurrTopRow(tag, 1, 1); return 0; }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP)) { AdvanceCurrTopRow(tag, -1, 1); return 0; }
+    return 1;
 }
 
 #include "CDrawContextBase.h"
@@ -399,6 +389,7 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     int c;
     int strLen;
     int col_num;
+    float header_x;
     float header_y;
     int visiblySelected;
     float row_x;
@@ -433,10 +424,11 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
                                      tag->base.m_height + (float)(tag->m_borderHeight * 2) + spaceForMyRecordRow,
                                      _border_line_color, _border_fill_color, tag->m_borderClass);
     }
+    header_x = tag->base.m_x + (float)tag->m_borderWidth;
     visiblySelected = 0;
     header_y = tag->base.m_y + (float)tag->m_borderHeight;
     if (tag->m_headerSelected) visiblySelected = tag->m_bIsClickedIn != 0;
-    draw->vtable->DrawGridHeader(draw, tag->m_header_tagID, tag->base.m_x + (float)tag->m_borderWidth, header_y,
+    draw->vtable->DrawGridHeader(draw, tag->m_header_tagID, header_x, header_y,
                                  tag->base.m_z, tag->base.m_width, tag->m_headerHeight,
                                  tag->m_columns[tag->m_currCellColNum].col_x + (float)tag->m_borderWidth,
                                  tag->m_columns[tag->m_currCellColNum].width,
@@ -444,17 +436,21 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     for (c = 0; c < tag->m_numVisColumns; c++) {
         col_num = tag->m_columnIndexes[c];
         if (tag->m_columns[col_num].colName) {
-            float _smallIndentFactor = 5.0f;
             float _xval;
+            float _yval;
+            float _textSizeInPixels;
+            float _smallIndentFactor;
+            unsigned int _headerTextColor;
             strLen = TrimToFitDisplaySize(draw, tag->m_columns[col_num].colName, tag->m_columns[col_num].width, tag->m_headerFontSize);
-            float _yval = header_y + (tag->m_headerHeight - (float)tag->m_headerFontSize) * 0.5f;
-            float _textSizeInPixels = draw->vtable->GetStringWidth(draw, tag->m_headerFontSize, tag->m_columns[col_num].colName, strLen);
+            _yval = header_y + (tag->m_headerHeight - (float)tag->m_headerFontSize) * 0.5f;
+            _textSizeInPixels = draw->vtable->GetStringWidth(draw, tag->m_headerFontSize, tag->m_columns[col_num].colName, strLen);
+            _smallIndentFactor = 5.0f;
             switch (tag->m_columns[col_num].colAlign) {
-            case 1:
-                _xval = tag->m_columns[col_num].col_x + _textSizeInPixels * 0.5f + (float)tag->m_borderWidth;
-                break;
             case 0:
                 _xval = tag->m_columns[col_num].col_x + (float)tag->m_borderWidth + _smallIndentFactor;
+                break;
+            case 1:
+                _xval = tag->m_columns[col_num].col_x + _textSizeInPixels * 0.5f + (float)tag->m_borderWidth;
                 break;
             case 2:
                 _xval = tag->m_columns[col_num].col_x + tag->m_columns[col_num].width + (float)tag->m_borderWidth - (_textSizeInPixels + _smallIndentFactor);
@@ -464,20 +460,21 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
                 _xval = tag->m_columns[col_num].col_x + _textSizeInPixels * 0.5f + (float)tag->m_borderWidth;
                 break;
             }
-            unsigned int _headerTextColor = tag->m_headerTextColor;
             if (tag->m_currCellRowNum == -1 && col_num == tag->m_currCellColNum && tag->m_bIsClickedIn)
                 _headerTextColor = tag->m_headerHighlightTextColor;
+            else
+                _headerTextColor = tag->m_headerTextColor;
             draw->vtable->SVDrawText(draw, tag->m_header_tagID, _xval, _yval, _headerTextColor,
                                      tag->m_columns[col_num].colName, strLen, tag->m_headerFontSize, 0, tag->base.m_tagClass);
         }
     }
     row_x = tag->base.m_x + (float)tag->m_borderWidth;
     for (r = 0; r < tag->m_origNumVisRows; r++) {
-        SVGridRow *row = &tag->m_rows[r];
         int rowNum = r + tag->m_currTopRow;
-        draw->vtable->DrawGridRow(draw, row->row_tagID, row_x, row->row_y + (float)tag->m_borderHeight,
-                                  tag->base.m_z, tag->base.m_width, row->height, rowNum,
-                                  rowNum == tag->m_currCellRowNum, row->rowClass);
+        int isCur = rowNum == tag->m_currCellRowNum;
+        draw->vtable->DrawGridRow(draw, tag->m_rows[r].row_tagID, row_x, tag->m_rows[r].row_y + (float)tag->m_borderHeight,
+                                  tag->base.m_z, tag->base.m_width, tag->m_rows[r].height, rowNum,
+                                  isCur, tag->m_rows[r].rowClass);
     }
     if (tag->m_numTotalRows <= 0) return;
     selected = 0;
@@ -490,12 +487,13 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     for (r = 0; r < tag->m_numVisRowsWithCells; r++) {
         for (c = 0; c < tag->m_numVisColumns; c++) {
             col_num = tag->m_columnIndexes[c];
-            cText = tag->m_cells[r + tag->m_currTopRow][col_num].cell_text;
+            SVGridCell *cell = &tag->m_cells[r + tag->m_currTopRow][col_num];
+            cText = cell->cell_text;
             if (!cText) cText = svoGridEmptyCellText;
-            selected = selectedCell == &tag->m_cells[r + tag->m_currTopRow][col_num];
+            selected = selectedCell == cell;
             strLen = TrimToFitDisplaySize(draw, cText, tag->m_columns[col_num].width, tag->m_defCellFontSize);
-            _classString = tag->m_cells[r + tag->m_currTopRow][col_num].cellClass;
-            if (!_classString) _classString = tag->base.m_tagClass;
+            if (tag->m_cells[r + tag->m_currTopRow][col_num].cellClass) _classString = tag->m_cells[r + tag->m_currTopRow][col_num].cellClass;
+            else _classString = tag->base.m_tagClass;
             if (selected && tag->m_bIsClickedIn) {
                 fillColor = tag->m_highlightCellFillColor;
                 lineColor = tag->m_highlightCellLineColor;
@@ -520,9 +518,9 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
             cText = tag->m_myRecordRow->cells[col_num].cell_text;
             if (!cText) cText = svoGridEmptyCellText;
             strLen = TrimToFitDisplaySize(draw, cText, tag->m_columns[col_num].width, tag->m_defCellFontSize);
-            _classString = tag->m_myRecordRow->cells[col_num].cellClass;
-            if (!_classString) _classString = tag->m_myRecordRow->row.rowClass;
-            if (!_classString) _classString = tag->base.m_tagClass;
+            if (tag->m_myRecordRow->cells[col_num].cellClass) _classString = tag->m_myRecordRow->cells[col_num].cellClass;
+            else if (tag->m_myRecordRow->row.rowClass) _classString = tag->m_myRecordRow->row.rowClass;
+            else _classString = tag->base.m_tagClass;
             textColor = tag->m_myRecordRow->textColor;
             fillColor = tag->m_defCellFillColor;
             lineColor = tag->m_defCellLineColor;
@@ -536,7 +534,7 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     }
     _grid_height = tag->base.m_height + (float)(tag->m_borderHeight * 2);
     _grid_width = tag->base.m_width + (float)(tag->m_borderWidth * 2);
-    if (tag->m_numVisColumns < tag->m_numTotalColumns) {
+    if (tag->m_numTotalColumns > tag->m_numVisColumns) {
         float denominator = (float)tag->m_numTotalColumns;
         float numerator = (float)tag->m_columnIndexes[tag->m_numLockedColumns] - (float)tag->m_numLockedColumns;
         if (denominator == 0.0f) __SVO_Assert_Handler(svoGridTagSource, 0x365);
@@ -547,7 +545,7 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
         h_sb_percentage = 0.0f;
         h_sb_size_percentage = 1.0f;
     }
-    if (tag->m_numVisRowsWithCells < tag->m_numTotalRows) {
+    if (tag->m_numTotalRows > tag->m_numVisRowsWithCells) {
         float denominator = (float)tag->m_numTotalRows;
         float numerator = (float)tag->m_currTopRow;
         if (denominator == 0.0f) __SVO_Assert_Handler(svoGridTagSource, 0x37C);
@@ -626,23 +624,23 @@ extern "C" SECTION(InitRowsAndColumns) int InitRowsAndColumns(GridTagState *tag)
 
 extern "C" SECTION(CalculateGridHeight) void CalculateGridHeight(GridTagState *tag)
 {
-    float y = tag->base.m_y + tag->m_headerHeight;
+    float temp_y;
+    int r;
     tag->base.m_height = tag->m_headerHeight;
-    for (int i = 0; i < tag->m_origNumVisRows; ++i) {
-        SVGridRow *row = &tag->m_rows[i];
-        row->row_y = y;
-        tag->base.m_height += row->height;
-        y += row->height;
-        if (y != tag->base.m_height + tag->base.m_y) __SVO_Assert_Handler(svoGridTagSource, 0x423);
+    temp_y = tag->base.m_y + tag->m_headerHeight;
+    for (r = 0; r < tag->m_origNumVisRows; r++) {
+        tag->m_rows[r].row_y = temp_y;
+        tag->base.m_height += tag->m_rows[r].height;
+        temp_y += tag->m_rows[r].height;
+        if (temp_y != tag->base.m_height + tag->base.m_y) __SVO_Assert_Handler(svoGridTagSource, 0x423);
     }
 }
 
 extern "C" SECTION(initSVGridRow) void initSVGridRow(GridTagState *tag, SVGridRow *row)
 {
     row->height = tag->m_defaultRowHeight;
-    unsigned int id = svoNextTagId;
     row->rowClass = 0;
-    svoNextTagId = id + 1;
+    unsigned int id = svoNextTagId++;
     row->row_tagID = id;
 }
 
@@ -680,29 +678,45 @@ extern "C" SECTION(ParseRows) int ParseRows(GridTagState *tag, iks *xml)
 
 extern "C" SECTION(ParseSingleRow) int ParseSingleRow(GridTagState *tag, iks *xml, int record)
 {
-    if (tag->m_numTotalRows <= 0) return 1;
-    SVGridRow *row;
-    if (!record) row = &tag->m_rows[g_rowNumParseCntr];
-    else {
-        row = &tag->m_myRecordRow->row;
-        getFloatAttrib(xml, svoGridRecordSpaceAttribute, &tag->m_spaceBetweenLastRowAndMyRecord);
-        getColorAttrib(xml, svoGridTextColorAttribute, &tag->m_myRecordRow->textColor);
+    char *child_name;
+    iks *curr_child;
+    SVGridRow *thisRow;
+    int colNum;
+    int okToParseCell;
+    SVGridCell *cell;
+    if (tag->m_numTotalRows > 0) {
+        if (!record) thisRow = &tag->m_rows[g_rowNumParseCntr];
+        else {
+            thisRow = &tag->m_myRecordRow->row;
+            getFloatAttrib(xml, svoGridRecordSpaceAttribute, &tag->m_spaceBetweenLastRowAndMyRecord);
+            getColorAttrib(xml, svoGridTextColorAttribute, &tag->m_myRecordRow->textColor);
+        }
+        if (!xml) {
+            __SVO_Assert_Handler(svoGridTagSource, 0x48A);
+            return 0;
+        } else {
+            colNum = 0;
+            getFloatAttrib(xml, svoGridRowHeightAttribute, &thisRow->height);
+            thisRow->rowClass = iks_find_attrib(xml, svoGridClassAttribute);
+            for (curr_child = iks_child(xml); curr_child; curr_child = iks_next(curr_child)) {
+                child_name = iks_name(curr_child);
+                if (child_name && !strcmp(child_name, svoGridCellName)) {
+                    okToParseCell = 0;
+                    if (record || g_rowNumParseCntr < tag->m_numTotalRows) okToParseCell = 1;
+                    if (okToParseCell) {
+                        if (colNum < tag->m_numTotalColumns) {
+                            if (!record) cell = &tag->m_cells[g_rowNumParseCntr][colNum];
+                            else cell = &tag->m_myRecordRow->cells[colNum];
+                            ParseSingleCell(tag, curr_child, cell);
+                            colNum++;
+                        } else __SVO_Assert_Handler(svoGridTagSource, 0x4B4);
+                    } else if (!record) __SVO_Assert_Handler(svoGridTagSource, 0x4BA);
+                }
+            }
+            if (!record) g_rowNumParseCntr = (unsigned int)g_rowNumParseCntr + 1;
+            return 1;
+        }
     }
-    if (!xml) { __SVO_Assert_Handler(svoGridTagSource, 0x48A); return 0; }
-    int col = 0;
-    getFloatAttrib(xml, svoGridRowHeightAttribute, &row->height);
-    row->rowClass = iks_find_attrib(xml, svoGridClassAttribute);
-    for (iks *child = iks_child(xml); child; child = iks_next(child)) {
-        char *name = iks_name(child);
-        if (!name || strcmp(name, svoGridCellName)) continue;
-        if (record || g_rowNumParseCntr < tag->m_numTotalRows) {
-            if (col < tag->m_numTotalColumns) {
-                SVGridCell *cells = record ? tag->m_myRecordRow->cells : tag->m_cells[g_rowNumParseCntr];
-                ParseSingleCell(tag, child, &cells[col++]);
-            } else __SVO_Assert_Handler(svoGridTagSource, 0x4B4);
-        } else if (!record) __SVO_Assert_Handler(svoGridTagSource, 0x4BA);
-    }
-    if (!record) g_rowNumParseCntr = (unsigned int)g_rowNumParseCntr + 1;
     return 1;
 }
 
@@ -715,7 +729,7 @@ extern "C" SECTION(ParseColumns) int ParseColumns(GridTagState *tag, iks *xml)
         column->colAlign = tag->m_defCellAlign;
         column->width = tag->m_defaultColWidth;
         column->colName = 0;
-        column->linkOption = 0;
+        *(void **)&column->linkOption = 0;
     }
     ParseGridHeader(tag, xml);
     if (!iks_has_children(xml)) __SVO_Assert_Handler(svoGridTagSource, 0x4E3);
@@ -763,8 +777,7 @@ extern "C" SECTION(ParseGridHeader) int ParseGridHeader(GridTagState *tag, iks *
     // Retail writes highlightFillColor into the highlight-line field too.
     getColorAttrib(xml, svoGridHighlightFillAttribute, &tag->m_headerHighlightLineColor);
     tag->m_headerClass = iks_find_attrib(xml, svoGridClassAttribute);
-    unsigned int id = svoNextTagId;
-    svoNextTagId = id + 1;
+    unsigned int id = svoNextTagId++;
     tag->m_header_tagID = id;
     return 1;
 }
@@ -775,7 +788,8 @@ extern "C" SECTION(ParseSingleCell) int ParseSingleCell(GridTagState *tag, iks *
         __SVO_Assert_Handler(svoGridTagSource, 0x549);
         return 0;
     }
-    cell->cell_tagID = svoNextTagId++;
+    unsigned int id = svoNextTagId++;
+    cell->cell_tagID = id;
     cell->cellClass = iks_find_attrib(xml, svoGridClassAttribute);
     if (iks_has_children(xml)) {
         if (iks_has_children(xml)) cell->cell_text = iks_cdata(iks_child(xml));
@@ -799,7 +813,7 @@ extern "C" SECTION(AdvanceCurrTopRow) void AdvanceCurrTopRow(GridTagState *tag, 
     } else if (direction == 1) {
         int top = tag->m_currTopRow + records;
         int limit = tag->m_numTotalRows - tag->m_numVisRowsWithCells;
-        tag->m_currTopRow = top < limit ? top : limit;
+        if (top < limit) limit = top; tag->m_currTopRow = limit;
     }
 }
 
@@ -810,12 +824,14 @@ extern "C" SECTION(GetCurrentSelectedCell) int GetCurrentSelectedCell(GridTagSta
         __SVO_Assert_Handler(svoGridTagSource, 0x598);
     if (tag->m_currCellRowNum < -1 || tag->m_currCellRowNum >= tag->m_numTotalRows)
         __SVO_Assert_Handler(svoGridTagSource, 0x599);
-    *cell = tag->m_currCellRowNum == -1 ? 0 : &tag->m_cells[tag->m_currCellRowNum][tag->m_currCellColNum];
+    if (tag->m_currCellRowNum != -1) *cell = &tag->m_cells[tag->m_currCellRowNum][tag->m_currCellColNum];
+    else *cell = 0;
     return 1;
 }
 
 extern "C" SECTION(ChangeSelectedCell) void ChangeSelectedCell(GridTagState *tag, int direction)
 {
+    int lrChoice = 0;
     switch (direction) {
     case -1: {
         tag->m_headerSelected = 0;
@@ -865,20 +881,22 @@ extern "C" SECTION(ChangeSelectedCell) void ChangeSelectedCell(GridTagState *tag
         return;
     }
     case -2:
+        lrChoice = -1;
     case 2: {
-        int step = direction < 0 ? -1 : 1;
-        int offset = step;
-        for (int tried = 1; tried < tag->m_numTotalColumns; ++tried, offset += step) {
+        if (!lrChoice) lrChoice = 1;
+        for (int i = 1; i < tag->m_numTotalColumns; i++) {
             int previous = tag->m_currCellColNum;
-            int column = (previous + tag->m_numTotalColumns + offset) % tag->m_numTotalColumns;
+            int column = (previous + tag->m_numTotalColumns + lrChoice * i) % tag->m_numTotalColumns;
             if (!tag->m_bSideWrapAllowed) {
                 if (direction == -2 && previous < column) return;
                 if (direction == 2 && column < previous) return;
             }
-            char *link;
-            if (tag->m_currCellRowNum == -1) link = tag->m_columns[column].colHdrLink;
-            else link = tag->m_cells[tag->m_currCellRowNum][column].cell_link;
-            if (link) {
+            if (tag->m_currCellRowNum != -1) {
+                if (tag->m_cells[tag->m_currCellRowNum][column].cell_link) {
+                    ChangeSelectedColumn(tag, column);
+                    return;
+                }
+            } else if (tag->m_columns[column].colHdrLink) {
                 ChangeSelectedColumn(tag, column);
                 return;
             }
@@ -921,20 +939,17 @@ extern "C" SECTION(CreateAndInitColumnIndexArray) void CreateAndInitColumnIndexA
 
 extern "C" SECTION(ResetIndexArray) void ResetIndexArray(GridTagState *tag)
 {
-    int *index = tag->m_columnIndexes;
-    for (int i = 0; i < tag->m_numVisColumns; ++i) *index++ = i;
+    int i;
+    for (i = 0; i < tag->m_numVisColumns; i++) tag->m_columnIndexes[i] = i;
 }
 
 extern "C" SECTION(AlignVisibleColumns) void AlignVisibleColumns(GridTagState *tag)
 {
-    int count = tag->m_numVisColumns;
+    int i;
     tag->base.m_width = 0;
-    SVGridColumn *columns = tag->m_columns;
-    int *indexes = tag->m_columnIndexes;
-    for (int i = 0; i < count; ++i) {
-        SVGridColumn *col = &columns[*indexes++];
-        col->col_x = tag->base.m_x + tag->base.m_width;
-        tag->base.m_width += col->width;
+    for (i = 0; i < tag->m_numVisColumns; i++) {
+        tag->m_columns[tag->m_columnIndexes[i]].col_x = tag->base.m_x + tag->base.m_width;
+        tag->base.m_width += tag->m_columns[tag->m_columnIndexes[i]].width;
     }
 }
 
@@ -944,34 +959,51 @@ extern "C" SECTION(ChangeSelectedColumn) void ChangeSelectedColumn(GridTagState 
         __SVO_Assert_Handler(svoGridTagSource, 0x689);
     int locked = tag->m_numLockedColumns;
     tag->m_currCellColNum = selected;
-    int leftmost;
     if (locked < 1) {
-        if (selected < tag->m_columnIndexes[0]) leftmost = selected;
-        else if (selected >= tag->m_columnIndexes[0] + tag->m_numVisColumns)
-            leftmost = selected - tag->m_numVisColumns + 1;
-        else return;
+        if (selected < tag->m_columnIndexes[0]) {
+            HandleColumnShuffling(tag, selected);
+            AlignVisibleColumns(tag);
+            return;
+        }
+        if (selected >= tag->m_columnIndexes[0] + tag->m_numVisColumns) {
+            HandleColumnShuffling(tag, selected - tag->m_numVisColumns + 1);
+            AlignVisibleColumns(tag);
+            return;
+        }
     } else {
-        if (selected < locked) {
+        int leftmost = locked;
+        if (selected < leftmost) {
             if (selected < 0) __SVO_Assert_Handler(svoGridTagSource, 0x6AA);
-            leftmost = locked;
-        } else if (selected < tag->m_columnIndexes[locked]) leftmost = selected;
-        else if (selected > tag->m_columnIndexes[tag->m_numVisColumns - 1])
-            leftmost = selected + locked - tag->m_numVisColumns + 1;
-        else return;
+            HandleColumnShuffling(tag, leftmost);
+            AlignVisibleColumns(tag);
+            return;
+        }
+        if (selected < tag->m_columnIndexes[leftmost]) {
+            leftmost = selected;
+            HandleColumnShuffling(tag, leftmost);
+            AlignVisibleColumns(tag);
+            return;
+        }
+        if (selected > tag->m_columnIndexes[tag->m_numVisColumns - 1]) {
+            leftmost = selected + (locked - tag->m_numVisColumns) + 1;
+            HandleColumnShuffling(tag, leftmost);
+            AlignVisibleColumns(tag);
+            return;
+        }
     }
-    HandleColumnShuffling(tag, leftmost);
-    AlignVisibleColumns(tag);
-    return;
 }
 
 extern "C" SECTION(HandleColumnShuffling) void HandleColumnShuffling(GridTagState *tag, int leftmostCol)
 {
+    int i;
     if (leftmostCol < 0) __SVO_Assert_Handler(svoGridTagSource, 0x6CB);
     if (leftmostCol > tag->m_numTotalColumns - tag->m_numVisColumns + tag->m_numLockedColumns)
         __SVO_Assert_Handler(svoGridTagSource, 0x6CC);
-    for (int i = 0; i < tag->m_numLockedColumns; ++i)
-        if (tag->m_columnIndexes[i] != i) __SVO_Assert_Handler(svoGridTagSource, 0x6D2);
-    for (int i = tag->m_numLockedColumns; i < tag->m_numVisColumns; ++i) {
+    if (tag->m_numLockedColumns > 0) {
+        for (i = 0; i < tag->m_numLockedColumns; ++i)
+            if (tag->m_columnIndexes[i] != i) __SVO_Assert_Handler(svoGridTagSource, 0x6D2);
+    }
+    for (i = tag->m_numLockedColumns; i < tag->m_numVisColumns; ++i) {
         if (i + leftmostCol - tag->m_numLockedColumns >= tag->m_numTotalColumns)
             __SVO_Assert_Handler(svoGridTagSource, 0x6D8);
         tag->m_columnIndexes[i] = i + leftmostCol - tag->m_numLockedColumns;

@@ -84,8 +84,9 @@ SECTION(FreeResources___dupe15) void FreeResources___dupe15(SVTag *tag)
 int IsSelectable___dupe10(SelectTagState *tag);
 extern "C" SECTION(IsSelectable___dupe10) int IsSelectable___dupe10(SelectTagState *tag)
 {
-    if (!tag->base.m_bSelectable) return 0;
-    return tag->m_numOptions > 0;
+    int result = 0;
+    if (tag->base.m_bSelectable) result = tag->m_numOptions > 0;
+    return result;
 }
 
 SECTION(GetValue) char *GetValue(SelectTagState *tag)
@@ -129,12 +130,12 @@ extern "C" SECTION(changeCurOptionToNextLetterInAlphabet) void changeCurOptionTo
         int letter = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
         if (initial != letter) {
             if (direction == svoSelectPreviousDirection) {
-                initial = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
+                char current = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
                 int previous;
                 do {
                     advanceCurrOption(tag, svoSelectPreviousDirection);
                     previous = SVO_TOLOWER(*getCurrOptionStrPtr(tag));
-                } while (initial == previous);
+                } while (current == previous);
                 advanceCurrOption(tag, svoSelectNextDirection);
             }
             return;
@@ -147,23 +148,23 @@ extern "C" SECTION(DefaultInit___dupe9) void DefaultInit___dupe9(SelectTagState 
 {
     svstrncpy(tag->base.m_tagTypeName, svoSelectTagName, 64);
     tag->m_fontSize = 14;
+    tag->m_textColor = 0xFFFFFFFF;
     tag->m_align = 1;
     tag->base.m_lineColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFF0000FF;
-    tag->m_highlightLineColor = 0xFF00FF00;
-    tag->m_highlightFillColor = 0xFFFFFF00;
-    tag->m_bRequiredForSubmit = 0;
-    tag->m_displayLength = 0;
     tag->m_text = 0;
     tag->m_parentForm = 0;
     tag->m_enableGroupSelection = 0;
-    tag->m_textColor = 0xFFFFFFFF;
+    tag->m_displayLength = 0;
     tag->m_highlightTextColor = 0xFF00FF00;
     tag->m_numOptions = 0;
+    tag->m_highlightLineColor = 0xFF00FF00;
     tag->m_currOptionIdx = 0;
     tag->m_options = 0;
+    tag->m_highlightFillColor = 0xFFFFFF00;
     tag->m_values = 0;
     tag->m_bSubmitAsEncryped = 0;
+    tag->m_bRequiredForSubmit = 0;
 }
 
 extern "C" SECTION(Draw___dupe13) void Draw___dupe13(SelectTagState *tag)
@@ -205,8 +206,8 @@ extern "C" SECTION(FindParentForm) FormTag *FindParentForm(SelectTagState *tag, 
 
 extern "C" SECTION(getCurrOptionStrPtr) char *getCurrOptionStrPtr(SelectTagState *tag)
 {
-    if (tag->m_numOptions > 0) return iks_cdata(iks_child(tag->m_options[tag->m_currOptionIdx]));
-    return svoSelectEmptyOption;
+    if (tag->m_numOptions <= 0) return svoSelectEmptyOption;
+    return iks_cdata(iks_child(tag->m_options[tag->m_currOptionIdx]));
 }
 
 extern "C" SECTION(HandleInput___dupe40) int HandleInput___dupe40(SelectTagState *tag, CPage *page)
@@ -222,18 +223,23 @@ extern "C" SECTION(HandleInput___dupe40) int HandleInput___dupe40(SelectTagState
         advanceCurrOption(tag, svoSelectPreviousDirection);
         return 0;
     }
-    int direction;
-    if (HasActionOccurred(input, 0x11, SV_ACTION_SELECT_PREV_GROUP)) direction = svoSelectPreviousDirection;
-    else if (HasActionOccurred(input, 0x11, SV_ACTION_SELECT_NEXT_GROUP)) direction = svoSelectNextDirection;
-    else {
-        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT))
-            return Navigate(base, input, base->m_contexts->drawContext, base->m_xml, page) == 0;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SELECT_PREV_GROUP)) {
+        if (tag->m_enableGroupSelection) {
+            changeCurOptionToNextLetterInAlphabet(tag, svoSelectPreviousDirection);
+            return 0;
+        }
         return 1;
     }
-    if (tag->m_enableGroupSelection) {
-        changeCurOptionToNextLetterInAlphabet(tag, direction);
-        return 0;
+    if (HasActionOccurred(input, 0x11, SV_ACTION_SELECT_NEXT_GROUP)) {
+        if (tag->m_enableGroupSelection) {
+            changeCurOptionToNextLetterInAlphabet(tag, svoSelectNextDirection);
+            return 0;
+        }
+        return 1;
     }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+        || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT))
+        return Navigate(base, input, base->m_contexts->drawContext, base->m_xml, page) == 0;
     return 1;
 }
 

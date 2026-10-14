@@ -44,14 +44,73 @@ def normalize_assembly(text, crt0=False):
     return re.sub(r"/\*\s*\w+\s+\w+\s+(\w{8})\s*\*/\s+bgezal\s+[^\n]+", branch, text)
 
 
+def carve_rodata(text, slots):
+    """Move the retail bytes of each registered rodata slot into their own section.
+
+    The bytes before, between and after slots go to `.rodata` and `.rodata.after_<end>`,
+    which the linker script places around the compiled tables. The retail slot bytes go to
+    `.rodata.slot_<start>`, which is not placed (the compiled table replaces it).
+    """
+    bounds = sorted([(s["start"], f".rodata.slot_{s['start']:08X}") for s in slots]
+                    + [(s["end"], f".rodata.after_{s['end']:08X}") for s in slots])
+    section = ".rodata"
+    label_section = {}
+    out = []
+    lines = text.splitlines(keepends=True)
+    # Labels belong with the data that follows them, so a boundary switches sections before
+    # the `nonmatching`/`dlabel` lines that introduce the first data line at that address.
+    following = [None] * len(lines)
+    address = None
+    for index in range(len(lines) - 1, -1, -1):
+        match = re.match(r"\s*/\* \w+ ([0-9A-F]{8}) ", lines[index])
+        if match:
+            address = int(match[1], 16)
+        following[index] = address
+    for index, line in enumerate(lines):
+        if re.match(r"\s*(?:/\* |nonmatching\s|dlabel\s)", line) and following[index] is not None:
+            address = following[index]
+            while bounds and bounds[0][0] <= address:
+                if bounds[0][0] < address:
+                    raise SystemExit(f"rodata slot boundary 0x{bounds[0][0]:08X} is inside a data line")
+                section = bounds.pop(0)[1]
+                out.append(f'.section {section}, "a"\n')
+        match = re.match(r"\s*dlabel\s+(\S+)", line)
+        if match:
+            label_section[match[1]] = section
+        match = re.match(r"\s*enddlabel\s+(\S+)", line)
+        if match and label_section.get(match[1]) != section:
+            # A retail symbol split by a slot boundary has no single-section size.
+            continue
+        out.append(line)
+    if bounds:
+        raise SystemExit(f"rodata slot boundary 0x{bounds[0][0]:08X} not found")
+    return "".join(out)
+
+
 def runtime_linker_script(text, config, replacements=None):
     replacements = replacements or {}
+    rodata_lines = {}
+    for obj, bounds in replacements.get("rodata", {}).items():
+        placed = [f"        build/code/{obj}.o(.rodata);"]
+        for slot in sorted(bounds["slots"], key=lambda s: s["start"]):
+            placed += [
+                f'        ASSERT(ABSOLUTE(.) <= 0x{slot["start"]:X}, "data overlaps {slot["section"]}");',
+                f'        . = ABSOLUTE(0x{slot["start"]:X});',
+                f'        build/code/{slot["object"]}.o({slot["section"]});',
+                f'        ASSERT(ABSOLUTE(.) <= 0x{slot["end"]:X}, "{slot["section"]} exceeds its original allocation");',
+                f'        . = ABSOLUTE(0x{slot["end"]:X});',
+                f'        build/code/{obj}.o(.rodata.after_{slot["end"]:08X});',
+            ]
+        rodata_lines[f"        build/code/{obj}.o(.rodata*);"] = placed
     # Splat's AT(ROM offset) is for ROM images. A PS2 ELF needs physical load
     # addresses equal to virtual addresses, with two independent PT_LOADs.
     text = re.sub(r" AT\([^)]*\)", "", text)
     lines = ["PHDRS { main PT_LOAD FLAGS(7); net PT_LOAD FLAGS(7); }"]
     current = None
     for line in text.splitlines():
+        if line in rodata_lines:
+            lines += rodata_lines.pop(line)
+            continue
         for obj, bounds in replacements.get("objects", {}).items():
             if line.strip() == f"build/code/{obj}.o(.text*);":
                 lines.append(f'        ASSERT(ABSOLUTE(.) == 0x{bounds["text_start"]:X}, "{obj} moved from its original address");')
@@ -71,6 +130,8 @@ def runtime_linker_script(text, config, replacements=None):
             line += " :net" if current.startswith(".net_") else " :main"
             current = None
         lines.append(line)
+    if rodata_lines:
+        raise SystemExit(f"rodata object not in linker script: {next(iter(rodata_lines))}")
     # Do not let --no-check-sections hide the kind of overflow that broke the
     # previous build. These are bounds, not copied bytes or forced entrypoints.
     assertions = []
@@ -119,6 +180,9 @@ def main():
     for path in (root / opts["asm_path"]).rglob("*.s"):
         original = path.read_text()
         normalized = normalize_assembly(original, path.name == "crt0.s")
+        relative = path.relative_to(root / opts["src_path"]).with_suffix("").as_posix()
+        if relative in replacements.get("rodata", {}):
+            normalized = carve_rodata(normalized, replacements["rodata"][relative]["slots"])
         if normalized != original:
             path.write_text(normalized, newline="\n")
     linker = root / opts["ld_script_path"]

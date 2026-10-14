@@ -12,34 +12,50 @@ void __SVO_Assert_Handler(const char *file, int line);
 SVO_STRING_SECTION(svstrncpy) char *svstrncpy(char *dst, char *src, unsigned int size)
 {
     unsigned int i = 0;
+    char *target;
+    char *source;
     if (!src) __SVO_Assert_Handler(svoStringSource, 0x1E);
     if (!dst) __SVO_Assert_Handler(svoStringSource, 0x1F);
     if (size >= 0xA000) __SVO_Assert_Handler(svoStringSource, 0x20);
-    while (i < size) {
-        char c = src[i];
-        dst[i] = c;
-        if (!c) return dst;
-        ++i;
+    goto test;
+copy:
+    *target = *source;
+test:
+    if (i >= size) {
+        // Retail also writes dst[-1] when size is zero; callers must provide capacity.
+        dst[i - 1] = 0;
+        __SVO_Assert_Handler(svoStringSource, 0x28);
+        return dst;
     }
-    // Retail also writes dst[-1] when size is zero; callers must provide capacity.
-    dst[i - 1] = 0;
-    __SVO_Assert_Handler(svoStringSource, 0x28);
+    target = &dst[i];
+    source = &src[i];
+    i++;
+    if (*source) goto copy;
+    *target = 0;
     return dst;
 }
 
 SVO_STRING_SECTION(svsubstrncpy) char *svsubstrncpy(char *dst, char *src, unsigned int size)
 {
     unsigned int i = 0;
+    char *target;
+    char *source;
     if (!src) __SVO_Assert_Handler(svoStringSource, 0x44);
     if (!dst) __SVO_Assert_Handler(svoStringSource, 0x45);
     if (!size) __SVO_Assert_Handler(svoStringSource, 0x48);
-    while (i < size) {
-        char c = src[i];
-        dst[i] = c;
-        if (!c) return dst;
-        ++i;
+    goto test;
+copy:
+    *target = *source;
+test:
+    if (i >= size) {
+        dst[i - 1] = 0;
+        return dst;
     }
-    dst[i - 1] = 0;
+    target = &dst[i];
+    source = &src[i];
+    i++;
+    if (*source) goto copy;
+    *target = 0;
     return dst;
 }
 
@@ -77,7 +93,8 @@ int SVO_STRING_SECTION(svstrlen) svstrlen(char *text)
 
 int SVO_STRING_SECTION(svisalpha) svisalpha(int c)
 {
-    return ((unsigned int)c - 'A' < 26) | ((unsigned int)c - 'a' < 26);
+    if ((unsigned int)c - 'A' < 26 || (unsigned int)c - 'a' < 26) return 1;
+    return 0;
 }
 
 int SVO_STRING_SECTION(svisxdigit) svisxdigit(int c)
@@ -94,5 +111,10 @@ int SVO_STRING_SECTION(svisdigit) svisdigit(int c)
 
 int SVO_STRING_SECTION(svisspace) svisspace(int c)
 {
-    return c == ' ' || (unsigned int)c - 9 < 5;
+    if (c == ' ') return 1;
+    if (c == '\f') return 1;
+    if (c == '\n') return 1;
+    if (c == '\r') return 1;
+    if (c == '\t') return 1;
+    return c == '\v';
 }

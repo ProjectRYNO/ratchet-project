@@ -25,10 +25,10 @@ extern char svoNavigationSource[];
 
 SECTION(reset___dupe2) void reset___dupe2(CNavInfoState *navigation)
 {
-    navigation->right = 0;
     navigation->up = 0;
     navigation->down = 0;
     navigation->left = 0;
+    navigation->right = 0;
 }
 
 }
@@ -53,13 +53,18 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
     tPoint cur[5];
     SVTag *closest = 0;
     float shortest = 9999.0f;
-    float x = 0.0f;
-    float y = 0.0f;
-    float width = 0.0f;
-    float height = 0.0f;
+    float x;
+    float y;
+    float width;
+    float height;
     int ignoreZone;
+    int i;
     curFrom.x = -1.0f;
     curFrom.y = -1.0f;
+    x = 0.0f;
+    y = 0.0f;
+    width = 0.0f;
+    height = 0.0f;
     selected->vtable->GetDimensions(selected, &x, &y, &width, &height);
     int tryWrapMax = 1;
     int tryWrapCnt = 0;
@@ -67,15 +72,16 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
     for (; tryWrapCnt < tryWrapMax; tryWrapCnt++) {
         int direction;
         if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || input->specialKeyCode == 0x81) direction = 0;
-        else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) || input->specialKeyCode == 0x82 || input->specialKeyCode == 0x88) direction = 1;
+        else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) || input->specialKeyCode == 0x82) direction = 1;
+        else if (input->specialKeyCode == 0x88) direction = 1;
         else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT) || input->specialKeyCode == 0x84) direction = 3;
         else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || input->specialKeyCode == 0x83) direction = 2;
         else return 0;
         int xPos = (int)x;
         int yPos = (int)y;
         int inc = (int)width / 4;
-        int curinc = 0;
-        for (int i = 0; i < 5; i++) {
+        int curinc;
+        for (i = 0, curinc = 0; i < 5; i++) {
             cur[i].x = xPos + (float)curinc;
             cur[i].y = yPos + height * 0.5f;
             curinc += inc;
@@ -84,8 +90,8 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
         getIntAttrib(xml, svoNavigationZoneAttribute, &ignoreZone);
         SVTag **tagList = page->m_pFrontDisplayBuffer->tagList;
         if (!tagList) __SVO_Assert_Handler(svoNavigationSource, 0x180);
-        for (int n = 0; *tagList && n < 256; n++, tagList++) {
-            SVTag *tag = *tagList;
+        for (i = 0; tagList[i] && i < 256; i++) {
+            SVTag *tag = tagList[i];
             if (tag->vtable->IsSelected(tag) || !tag->vtable->IsSelectable(tag)) continue;
             float fbx = 0.0f;
             float fby = 0.0f;
@@ -93,8 +99,9 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
             float fbh = 0.0f;
             tag->vtable->GetDimensions(tag, &fbx, &fby, &fbw, &fbh);
             int targetInc = (int)fbw / 4;
-            int targetPos = 0;
-            for (int j = 0; j < 5; j++) {
+            int targetPos;
+            int j;
+            for (j = 0, targetPos = 0; j < 5; j++) {
                 target[j].x = fbx + (float)targetPos;
                 target[j].y = fby + fbh * 0.5f;
                 targetPos += targetInc;
@@ -119,7 +126,7 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                 }
                 break;
             case 1:
-                if (cur[2].y < target[2].y) {
+                if (target[2].y > cur[2].y) {
                     curTo.x = target[2].x;
                     curTo.y = target[2].y;
                     for (int k = 0; k < 5; k++) {
@@ -135,6 +142,19 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                     curFrom.y = cur[2].y;
                 }
                 break;
+            case 3:
+                if (target[0].x > cur[4].x) {
+                    curTo.x = target[0].x;
+                    curTo.y = target[0].y;
+                    dist = getDistanceAutoNav((int)cur[4].x, (int)cur[4].y, (int)target[0].x, (int)target[0].y, 3, ignoreZone, 5);
+                    if (lt_double(dist, shortest)) {
+                        shortest = dist;
+                        closest = tag;
+                    }
+                    curFrom.x = cur[4].x;
+                    curFrom.y = cur[4].y;
+                }
+                break;
             case 2:
                 if (target[4].x < cur[0].x) {
                     curTo.x = target[4].x;
@@ -148,25 +168,15 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
                     curFrom.y = cur[0].y;
                 }
                 break;
-            case 3:
-                if (cur[4].x < target[0].x) {
-                    curTo.x = target[0].x;
-                    curTo.y = target[0].y;
-                    dist = getDistanceAutoNav((int)cur[4].x, (int)cur[4].y, (int)target[0].x, (int)target[0].y, 3, ignoreZone, 5);
-                    if (lt_double(dist, shortest)) {
-                        shortest = dist;
-                        closest = tag;
-                    }
-                    curFrom.x = cur[4].x;
-                    curFrom.y = cur[4].y;
-                }
-                break;
             default:
                 __SVO_Assert_Handler(svoNavigationSource, 0x1E9);
                 break;
             }
         }
-        if (closest) {
+        if (!closest) {
+            if (input->vtable->WrapSelections(input)) setWrapDimensions(direction, &x, &y, &width, &height, input);
+            else return 0;
+        } else {
             selected->vtable->SetSelectedState(selected, 0);
             closest->vtable->SetSelectedState(closest, 1);
             if (selected != closest) {
@@ -176,52 +186,48 @@ extern "C" SECTION(autoNavigate) int autoNavigate(SVTag *selected, CInputContext
             draw->vtable->AnimateHighlight(draw, selected->vtable->GetTagID(selected), closest->vtable->GetTagID(closest));
             return 1;
         }
-        if (!input->vtable->WrapSelections(input)) return 0;
-        setWrapDimensions(direction, &x, &y, &width, &height, input);
     }
     return 0;
 }
 
 extern "C" SECTION(CNavInfo) void CNavInfo(CNavInfoState *nav)
 {
-    nav->right = 0;
-    nav->up = 0;
-    nav->down = 0;
-    nav->left = 0;
+    reset___dupe2(nav);
+    return;
 }
 
 extern "C" double pow(double, double);
 double sqrt(double);
 extern "C" SECTION(getDistanceAutoNav) float getDistanceAutoNav(int x, int y, int tx, int ty, int direction, int ignoreZone, int ignoreMult)
 {
-    if (direction >= 0) {
-        if (direction < 2) {
-            if (tx < x - ignoreZone) {
-                double distance = (float)(x - tx);
-                if (distance < 0) distance = 0 - distance;
-                tx -= (int)distance * ignoreMult;
-            } else if (tx > x + ignoreZone) {
-                double distance = (float)(tx - x);
-                if (distance < 0) distance = 0 - distance;
-                tx += (int)distance * ignoreMult;
-            }
-            goto done;
+    switch (direction) {
+    case 0:
+    case 1:
+        if (tx < x - ignoreZone) {
+            double distance = (float)(x - tx);
+            if (distance < 0) distance = 0 - distance;
+            tx -= (int)distance * ignoreMult;
+        } else if (tx > x + ignoreZone) {
+            double distance = (float)(tx - x);
+            if (distance < 0) distance = 0 - distance;
+            tx += (int)distance * ignoreMult;
         }
-        if (direction < 4) {
-            if (ty < y - ignoreZone) {
-                double distance = (float)(y - ty);
-                if (distance < 0) distance = 0 - distance;
-                ty -= (int)distance * ignoreMult;
-            } else if (ty > y + ignoreZone) {
-                double distance = (float)(y - ty);
-                if (distance < 0) distance = 0 - distance;
-                ty += (int)distance * ignoreMult;
-            }
-            goto done;
+        break;
+    case 2:
+    case 3:
+        if (ty < y - ignoreZone) {
+            double distance = (float)(y - ty);
+            if (distance < 0) distance = 0 - distance;
+            ty -= (int)distance * ignoreMult;
+        } else if (ty > y + ignoreZone) {
+            double distance = (float)(y - ty);
+            if (distance < 0) distance = 0 - distance;
+            ty += (int)distance * ignoreMult;
         }
+        break;
+    default:
+        __SVO_Assert_Handler(svoNavigationSource, 0x5B);
     }
-    __SVO_Assert_Handler(svoNavigationSource, 0x5B);
-done:
     return sqrt(pow(tx - x, 2.0) + pow(ty - y, 2.0));
 }
 
@@ -243,7 +249,8 @@ extern "C" SECTION(Navigate) int Navigate(SVTag *selected, CInputContextBaseStat
     int changed = 0;
     int direction;
     if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || input->specialKeyCode == 0x81) direction = 0;
-    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) || input->specialKeyCode == 0x82 || input->specialKeyCode == 0x88) direction = 1;
+    else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN) || input->specialKeyCode == 0x82) direction = 1;
+    else if (input->specialKeyCode == 0x88) direction = 1;
     else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT) || input->specialKeyCode == 0x84) direction = 3;
     else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || input->specialKeyCode == 0x83) direction = 2;
     else return 0;
@@ -269,12 +276,11 @@ extern "C" SECTION(Navigate) int Navigate(SVTag *selected, CInputContextBaseStat
     if (changed) {
         selected->vtable->SetSelectedState(selected, 0);
         target->vtable->SetSelectedState(target, 1);
-        CAudioContextBaseState *audio;
         if (target != selected) {
-            audio = GetAudioContext();
+            CAudioContextBaseState *audio = GetAudioContext();
             ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 0, svoNavigationSoundClass);
         } else {
-            audio = GetAudioContext();
+            CAudioContextBaseState *audio = GetAudioContext();
             ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 6, svoNavigationSoundClass);
         }
         draw->vtable->AnimateHighlight(draw, selected->vtable->GetTagID(selected), target->vtable->GetTagID(target));
@@ -293,9 +299,11 @@ extern "C" SECTION(setWrapDimensions) void setWrapDimensions(int direction, floa
     float screenX;
     float screenY;
     input->vtable->GetScreenDimensions(input, &screenX, &screenY, width, height);
-    if (direction == 0) *y = screenY + 1000.0f;
-    else if (direction == 1) *y = -1000.0f;
-    else if (direction == 2) *x = screenX + 1000.0f;
-    else if (direction == 3) *x = -1000.0f;
-    else __SVO_Assert_Handler(svoNavigationSource, 0x27B);
+    switch (direction) {
+    case 0: *y = screenY + 1000.0f; break;
+    case 1: *y = -1000.0f; break;
+    case 3: *x = -1000.0f; break;
+    case 2: *x = screenX + 1000.0f; break;
+    default: __SVO_Assert_Handler(svoNavigationSource, 0x27B); break;
+    }
 }

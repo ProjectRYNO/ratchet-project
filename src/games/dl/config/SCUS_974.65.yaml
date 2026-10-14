@@ -668,7 +668,7 @@ segments:
     subsegments:
       - [0x44e000, c, sdk/libezcnf]
       - [0x44e4a0, c, sdk/libezctl]
-      - [0x44ea74, textbin, junk/net.text/44ea74_44ea78]
+      # libezctl owns its four zero tail-padding bytes through 0x44ea78.
       - [0x44ea78, c, sdk/i18n]
       - [0x44ee48, c, sdk/i18n_inet]
       - [0x44f0e4, textbin, junk/net.text/44f0e4_44f0f0]
@@ -900,6 +900,7 @@ segments:
       - [0x4c019c, cpp, svo3/BrowserInitTag]
       - [0x4c02a8, cpp, svo3/BrowserInitTagModule]
       - [0x4c0410, cpp, svo3/PageRequestListener]
+      - [0x4c0844, textbin, junk/net.text/4c0844_4e5380]
 
 
   - name: net.nostomp

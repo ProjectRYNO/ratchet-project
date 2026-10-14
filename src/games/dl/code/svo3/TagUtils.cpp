@@ -111,9 +111,11 @@ SECTION(RegisterCommonTagModules) void RegisterCommonTagModules(void)
 SECTION(getIntAttrib) int getIntAttrib(iks *xml, char *name, int *value)
 {
     char *text = iks_find_attrib(xml, name);
-    if (!text || !svisdigit((signed char)*text)) return 0;
-    *value = atoi(text);
-    return 1;
+    if (text && svisdigit((signed char)*text)) {
+        *value = atoi(text);
+        return 1;
+    }
+    return 0;
 }
 
 SECTION(getBoolAttrib) int getBoolAttrib(iks *xml, char *name, int *value)
@@ -185,18 +187,17 @@ extern "C" SECTION(getLinkOptionAttrib) int getLinkOptionAttrib(iks *xml, char *
 SECTION(getStringAttrib) int getStringAttrib(iks *xml, char *name, char **value)
 {
     char *text = iks_find_attrib(xml, name);
-    if (text) *value = text;
-    return text != 0;
+    if (!text) return 0;
+    *value = text;
+    return 1;
 }
 
 SECTION(getTagByName) SVTag *getTagByName(char *name, CPage *page)
 {
     SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
-    int count = 0;
-    while (*tags && count < 256) {
-        SVTag *tag = *tags++;
+    for (int i = 0; tags[i] && i < 256; i++) {
+        SVTag *tag = tags[i];
         if (!strcasecmp(tag->vtable->GetTagName(tag), name)) return tag;
-        ++count;
     }
     return 0;
 }
@@ -205,7 +206,8 @@ iks *getChildIksStruct(iks *xml, char *name);
 extern "C" SECTION(getChildIksStruct) iks *getChildIksStruct(iks *xml, char *name)
 {
     if (!xml) __SVO_Assert_Handler(svoTagUtilsSource, 0x149);
-    iks *child = iks_has_children(xml) ? iks_child(xml) : 0;
+    iks *child = 0;
+    if (iks_has_children(xml)) child = iks_child(xml);
     while (child) {
         if (iks_name(child) && !strcmp(name, iks_name(child))) return child;
         child = iks_next(child);

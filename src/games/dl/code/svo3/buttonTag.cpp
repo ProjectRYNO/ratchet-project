@@ -121,17 +121,17 @@ extern "C" SECTION(ButtonTag) void ButtonTag(ButtonTagState *self, iks *xml, CAl
 extern "C" SECTION(DefaultInit___dupe4) void DefaultInit___dupe4(ButtonTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoButtonTagName, 64);
-    tag->m_highlightTextColor = 0xFF000000;
     tag->m_fontSize = 14;
-    tag->m_drawBorder = 1;
-    tag->m_textColor = 0xFFFFFFFF;
-    tag->m_highlightFillColor = 0xFFFFFF00;
     tag->m_align = 1;
     tag->m_displayLength = 0.0f;
     tag->m_link = 0;
     tag->base.m_fillColor = 0xFF000000;
+    tag->m_drawBorder = 1;
     tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->m_textColor = 0xFFFFFFFF;
+    tag->m_highlightFillColor = 0xFFFFFF00;
     tag->m_highlightLineColor = 0xFF000000;
+    tag->m_highlightTextColor = 0xFF000000;
 }
 
 extern "C" SECTION(Draw___dupe9) void Draw___dupe9(ButtonTagState *self)
@@ -178,12 +178,11 @@ extern "C" SECTION(HandleInput___dupe35) int HandleInput___dupe35(ButtonTagState
         CAudioContextBaseState *audio = GetAudioContext();
         ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 6, svoButtonAudioClass);
     }
-    for (int action = 0; action < 4; ++action) {
-        if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-            CDrawContextBase *draw = tag->m_contexts->drawContext;
-            if (!draw) __SVO_Assert_Handler(svoButtonSource, 0xCE);
-            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-        }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+        || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+        CDrawContextBase *draw = tag->m_contexts->drawContext;
+        if (!draw) __SVO_Assert_Handler(svoButtonSource, 0xCE);
+        return Navigate(tag, input, draw, tag->m_xml, page) == 0;
     }
     return 1;
 }

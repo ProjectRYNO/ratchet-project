@@ -19,21 +19,33 @@ extern char *svoMD5HexDigits;
 
 extern "C" SECTION(md5_starts) void md5_starts(md5_context *ctx)
 {
-    ctx->state[0] = 0x67452301UL;
-    ctx->state[3] = 0x10325476UL;
-    ctx->state[1] = 0xEFCDAB89UL;
-    ctx->state[2] = 0x98BADCFEUL;
     ctx->total[0] = 0;
     ctx->total[1] = 0;
+    ctx->state[0] = 0x67452301UL;
+    ctx->state[1] = 0xEFCDAB89UL;
+    ctx->state[2] = 0x98BADCFEUL;
+    ctx->state[3] = 0x10325476UL;
 }
 
 extern "C" SECTION(md5_process) void md5_process(md5_context *ctx, unsigned char *data)
 {
     unsigned long words[16];
-    for (int i = 0; i < 16; ++i) {
-        unsigned char *p = data + i * 4;
-        words[i] = (unsigned long)p[0] | ((unsigned long)p[1] << 8) | ((unsigned long)p[2] << 16) | ((unsigned long)p[3] << 24);
-    }
+    words[0] = (unsigned long)data[0] | ((unsigned long)data[1] << 8) | ((unsigned long)data[2] << 16) | ((unsigned long)data[3] << 24);
+    words[1] = (unsigned long)data[4] | ((unsigned long)data[5] << 8) | ((unsigned long)data[6] << 16) | ((unsigned long)data[7] << 24);
+    words[2] = (unsigned long)data[8] | ((unsigned long)data[9] << 8) | ((unsigned long)data[10] << 16) | ((unsigned long)data[11] << 24);
+    words[3] = (unsigned long)data[12] | ((unsigned long)data[13] << 8) | ((unsigned long)data[14] << 16) | ((unsigned long)data[15] << 24);
+    words[4] = (unsigned long)data[16] | ((unsigned long)data[17] << 8) | ((unsigned long)data[18] << 16) | ((unsigned long)data[19] << 24);
+    words[5] = (unsigned long)data[20] | ((unsigned long)data[21] << 8) | ((unsigned long)data[22] << 16) | ((unsigned long)data[23] << 24);
+    words[6] = (unsigned long)data[24] | ((unsigned long)data[25] << 8) | ((unsigned long)data[26] << 16) | ((unsigned long)data[27] << 24);
+    words[7] = (unsigned long)data[28] | ((unsigned long)data[29] << 8) | ((unsigned long)data[30] << 16) | ((unsigned long)data[31] << 24);
+    words[8] = (unsigned long)data[32] | ((unsigned long)data[33] << 8) | ((unsigned long)data[34] << 16) | ((unsigned long)data[35] << 24);
+    words[9] = (unsigned long)data[36] | ((unsigned long)data[37] << 8) | ((unsigned long)data[38] << 16) | ((unsigned long)data[39] << 24);
+    words[10] = (unsigned long)data[40] | ((unsigned long)data[41] << 8) | ((unsigned long)data[42] << 16) | ((unsigned long)data[43] << 24);
+    words[11] = (unsigned long)data[44] | ((unsigned long)data[45] << 8) | ((unsigned long)data[46] << 16) | ((unsigned long)data[47] << 24);
+    words[12] = (unsigned long)data[48] | ((unsigned long)data[49] << 8) | ((unsigned long)data[50] << 16) | ((unsigned long)data[51] << 24);
+    words[13] = (unsigned long)data[52] | ((unsigned long)data[53] << 8) | ((unsigned long)data[54] << 16) | ((unsigned long)data[55] << 24);
+    words[14] = (unsigned long)data[56] | ((unsigned long)data[57] << 8) | ((unsigned long)data[58] << 16) | ((unsigned long)data[59] << 24);
+    words[15] = (unsigned long)data[60] | ((unsigned long)data[61] << 8) | ((unsigned long)data[62] << 16) | ((unsigned long)data[63] << 24);
     unsigned long a = ctx->state[0];
     unsigned long b = ctx->state[1];
     unsigned long c = ctx->state[2];
@@ -167,43 +179,68 @@ extern "C" SECTION(md5_process) void md5_process(md5_context *ctx, unsigned char
     b += (d ^ (c | ~a)) + words[9] + 0xEB86D391UL;
     b = ((b << 21) | ((b & 0xFFFFFFFFUL) >> 11)) + c;
     ctx->state[0] += a;
-    ctx->state[3] += d;
-    ctx->state[2] += c;
     ctx->state[1] += b;
+    ctx->state[2] += c;
+    ctx->state[3] += d;
 }
 
 extern "C" SECTION(md5_update) void md5_update(md5_context *ctx, unsigned char *input, unsigned long length)
 {
+    unsigned long left, fill;
     if (!length) return;
-    int left = (ctx->total[0] >> 3) & 63;
-    int fill = 64 - left;
-    unsigned long bits = length << 3;
-    unsigned long total = (ctx->total[0] + bits) & 0xFFFFFFFFUL;
-    ctx->total[1] += (length >> 29) + (total < bits);
-    ctx->total[0] = total;
+    left = (ctx->total[0] >> 3) & 0x3F;
+    fill = 64 - left;
+    ctx->total[0] += length << 3;
+    ctx->total[0] &= 0xFFFFFFFFUL;
+    ctx->total[1] += length >> 29;
+    ctx->total[1] += ctx->total[0] < (length << 3);
     if (left && length >= fill) {
-        memcpy(ctx->buffer + (int)left, input, (int)fill);
-        length -= fill;
+        memcpy(ctx->buffer + left, input, fill);
         md5_process(ctx, ctx->buffer);
-        input += (int)fill;
+        length -= fill;
+        input += fill;
         left = 0;
     }
     while (length >= 64) {
         md5_process(ctx, input);
-        input += 64;
         length -= 64;
+        input += 64;
     }
-    if (length) memcpy(ctx->buffer + (int)left, input, (int)length);
+    if (length) memcpy(ctx->buffer + left, input, length);
 }
 
 extern "C" SECTION(md5_finish) void md5_finish(md5_context *ctx, unsigned char *digest)
 {
-    unsigned char bits[8];
-    for (int i = 0; i < 8; ++i) bits[i] = ctx->total[i / 4] >> ((i % 4) * 8);
-    unsigned long last = (ctx->total[0] >> 3) & 63;
-    md5_update(ctx, svoMD5Padding, (last < 56 ? 56 : 120) - last);
-    md5_update(ctx, bits, 8);
-    for (int i = 0; i < 16; ++i) digest[i] = ctx->state[i / 4] >> ((i % 4) * 8);
+    unsigned long last, padn;
+    unsigned char msglen[8];
+    msglen[0] = (unsigned char)((ctx->total[0]) & 0xFF);
+    msglen[1] = (unsigned char)((ctx->total[0] >> 8) & 0xFF);
+    msglen[2] = (unsigned char)((ctx->total[0] >> 16) & 0xFF);
+    msglen[3] = (unsigned char)((ctx->total[0] >> 24) & 0xFF);
+    msglen[4] = (unsigned char)((ctx->total[1]) & 0xFF);
+    msglen[5] = (unsigned char)((ctx->total[1] >> 8) & 0xFF);
+    msglen[6] = (unsigned char)((ctx->total[1] >> 16) & 0xFF);
+    msglen[7] = (unsigned char)((ctx->total[1] >> 24) & 0xFF);
+    last = (ctx->total[0] >> 3) & 0x3F;
+    padn = (last < 56) ? (56 - last) : (120 - last);
+    md5_update(ctx, svoMD5Padding, padn);
+    md5_update(ctx, msglen, 8);
+    digest[0] = (unsigned char)((ctx->state[0]) & 0xFF);
+    digest[1] = (unsigned char)((ctx->state[0] >> 8) & 0xFF);
+    digest[2] = (unsigned char)((ctx->state[0] >> 16) & 0xFF);
+    digest[3] = (unsigned char)((ctx->state[0] >> 24) & 0xFF);
+    digest[4] = (unsigned char)((ctx->state[1]) & 0xFF);
+    digest[5] = (unsigned char)((ctx->state[1] >> 8) & 0xFF);
+    digest[6] = (unsigned char)((ctx->state[1] >> 16) & 0xFF);
+    digest[7] = (unsigned char)((ctx->state[1] >> 24) & 0xFF);
+    digest[8] = (unsigned char)((ctx->state[2]) & 0xFF);
+    digest[9] = (unsigned char)((ctx->state[2] >> 8) & 0xFF);
+    digest[10] = (unsigned char)((ctx->state[2] >> 16) & 0xFF);
+    digest[11] = (unsigned char)((ctx->state[2] >> 24) & 0xFF);
+    digest[12] = (unsigned char)((ctx->state[3]) & 0xFF);
+    digest[13] = (unsigned char)((ctx->state[3] >> 8) & 0xFF);
+    digest[14] = (unsigned char)((ctx->state[3] >> 16) & 0xFF);
+    digest[15] = (unsigned char)((ctx->state[3] >> 24) & 0xFF);
 }
 
 extern "C" SECTION(md5_hex) char *md5_hex(unsigned char *digest, char *text)

@@ -17,8 +17,9 @@ MODULE_SECTION(IsMyTag___dupe14) int IsMyTag___dupe14(SVTagModuleState *module, 
     if (iks_type(xml) != IKS_TAG)
         __SVO_Assert_Handler(svoCheckboxInputTagModuleSource, 0x14);
     char *type = iks_find_attrib(xml, svoCheckboxInputTagModuleTypeAttribute);
-    if (strcmp(iks_name(xml), svoCheckboxInputTagModuleTagName)) return 0;
-    return strcmp(type, svoCheckboxInputTagModuleInputType) == 0;
+    int result = 0;
+    if (!strcmp(iks_name(xml), svoCheckboxInputTagModuleTagName)) result = strcmp(type, svoCheckboxInputTagModuleInputType) == 0;
+    return result;
 }
 
 MODULE_SECTION(BuildTag___dupe15) void BuildTag___dupe15(

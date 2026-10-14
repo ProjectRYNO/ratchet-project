@@ -141,7 +141,7 @@ extern "C" void CPageConstruct(CPage *page, char *firstPage, int popup, int list
 
 
 extern "C" {
-int shutdown(CPage *);
+void shutdown(CPage *);
 void _PageRequestListener(PageRequestListenerState *, int);
 void PageDelete(void *) __asm__("operator.delete___dupe2");
 }
@@ -292,10 +292,15 @@ extern char svoPageErrorBackText[];
 extern char svoPageSvmlClose[];
 }
 #define SECTION(name) __attribute__((section(".svo_CPage_" #name)))
+// g++ 2.x object view of DownloadBinary: vptr after the data, so the implicit operator= saves and restores it.
+struct DownloadBinaryObj { char data[0x264]; DownloadBinaryObj() __asm__("DownloadBinary"); virtual void destroy(int); };
+struct InTransitArray { DownloadBinaryObj data[2]; int count; char used[32]; int GetCount() { return count; } };
+struct PostTransitArray { DownloadBinaryObj data[11]; int count; char used[32]; int GetCount() { return count; } };
 
 SECTION(okToNavigate___dupe2) int okToNavigate___dupe2(CPage *page)
 {
-    return page->m_bIsActive && page->m_state == 0;
+    if (page->m_bIsActive && page->m_state == 0) return 1;
+    return 0;
 }
 
 SECTION(GetTagAtIndex) SVTag *GetTagAtIndex(CPage *page, int index)
@@ -315,29 +320,35 @@ extern "C" SECTION(_CPage) void _CPage(CPage *page, unsigned int flags)
     shutdown(page);
     _PageRequestListener(&page->m_requestListener, 2);
     _SVChronograph(&page->m_pageRefreshTimer, 2);
-    DownloadBinaryState *begin = page->inTransition;
-    if ((unsigned int)begin) {
-        DownloadBinaryState *item = begin + 2;
-        do {
-            --item;
-            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
-        } while (item != begin);
+    {
+        DownloadBinaryState *a = page->inTransition;
+        if ((unsigned int)a) {
+            DownloadBinaryState *item = a + 2;
+            while (a != item) {
+                --item;
+                ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+            }
+        }
     }
-    begin = page->postTransition;
-    if ((unsigned int)begin) {
-        DownloadBinaryState *item = begin + 11;
-        do {
-            --item;
-            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
-        } while (item != begin);
+    {
+        DownloadBinaryState *b = page->postTransition;
+        if ((unsigned int)b) {
+            DownloadBinaryState *item = b + 11;
+            while (b != item) {
+                --item;
+                ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+            }
+        }
     }
-    begin = page->preTransition;
-    if ((unsigned int)begin) {
-        DownloadBinaryState *item = begin + 11;
-        do {
-            --item;
-            ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
-        } while (item != begin);
+    {
+        DownloadBinaryState *c = page->preTransition;
+        if ((unsigned int)c) {
+            DownloadBinaryState *item = c + 11;
+            while (c != item) {
+                --item;
+                ((const PageDownloadVtable *)item->vtable)->destroy(item, 2);
+            }
+        }
     }
     if (flags & 1) { PageDelete(page); return; }
 }
@@ -345,8 +356,8 @@ extern "C" SECTION(_CPage) void _CPage(CPage *page, unsigned int flags)
 extern "C" SECTION(addObject) void addObject(CPage *page, iks *xml)
 {
     SVTagModuleState **modules = getInstance___dupe3()->m_modules;
-    for (int remaining = 128; remaining && *modules; --remaining) {
-        SVTagModuleState *module = *modules++;
+    for (int i = 0; i < 128 && modules[i]; i++) {
+        SVTagModuleState *module = modules[i];
         if (module->vtable->IsMyTag(module, xml)) {
             SVTag *tag = 0;
             module->vtable->InitTag(module, xml, &tag, page->m_pBackDisplayBuffer->tagList, &svoPageContextData);
@@ -374,23 +385,23 @@ extern "C" SECTION(adjustPathBinaryDownload) void adjustPathBinaryDownload(CPage
     char *source = GetPath(download);
     int length = strlen(GetPath(download));
     svstrncpy(path, source, length + 1);
-    if (!pathIsFullyQualified(page, path)) {
-        if (path[0] == '/') {
-            memset(resolved, 0, 257);
-            strncpy(resolved, top(&page->m_history), 257);
-            char *replace = strstr(resolved, svoPageDownloadHostSeparator);
-            replace = strstr(replace + 2, svoPageDownloadPathSeparator);
-            if (!replace) __SVO_Assert_Handler(svoPageSource, 0x7AD);
-            strncpy(replace, path, strlen(path));
-        } else {
-            memset(resolved, 0, 257);
-            strncpy(resolved, top(&page->m_history), 257);
-            if (!resolveRelativePath(page, resolved, path)) {
-                __SVO_Assert_Handler(svoPageSource, 0x7A1);
-                return;
-            }
+    if (pathIsFullyQualified(page, path)) {
+        strncpy(resolved, path, 257);
+    } else if (path[0] != '/') {
+        memset(resolved, 0, 257);
+        strncpy(resolved, top(&page->m_history), 257);
+        if (!resolveRelativePath(page, resolved, path)) {
+            __SVO_Assert_Handler(svoPageSource, 0x7A1);
+            return;
         }
-    } else strncpy(resolved, path, 257);
+    } else {
+        memset(resolved, 0, 257);
+        strncpy(resolved, top(&page->m_history), 257);
+        char *replace = strstr(resolved, svoPageDownloadHostSeparator);
+        replace = strstr(replace + 2, svoPageDownloadPathSeparator);
+        if (!replace) __SVO_Assert_Handler(svoPageSource, 0x7AD);
+        strncpy(replace, path, strlen(path));
+    }
     if (page->m_state != 1) __SVO_Assert_Handler(svoPageSource, 0x7B3);
     SetPath(download, resolved);
 }
@@ -398,11 +409,26 @@ extern "C" SECTION(adjustPathBinaryDownload) void adjustPathBinaryDownload(CPage
 extern "C" SECTION(autoRefreshPage) int autoRefreshPage(CPage *page)
 {
     SVChronographState *timer = &page->m_pageRefreshTimer;
-    if (!IsRunning(timer) || Elapsed(timer) < page->m_pageRefreshSeconds) return 0;
-    Reset___dupe5(timer);
-    return 1;
+    if (IsRunning(timer) && Elapsed(timer) >= page->m_pageRefreshSeconds) {
+        Reset___dupe5(timer);
+        return 1;
+    }
+    return 0;
 }
 
+static inline void InTransitPop(InTransitArray *array, DownloadBinaryObj *out)
+{
+    for (int i = 0; i < 2; i++) {
+        if (array->used[i]) {
+            *out = array->data[i];
+            memset(&array->data[i], 0, sizeof(DownloadBinaryObj));
+            array->used[i] = 0;
+            int *count = &array->count;
+            (*count)--;
+            return;
+        }
+    }
+}
 extern "C" SECTION(callGenericDownloadCallback) int callGenericDownloadCallback(CPage *page, char **data, int *length)
 {
     if (!GetResponse(&page->m_requestListener, data, length)) {
@@ -410,52 +436,56 @@ extern "C" SECTION(callGenericDownloadCallback) int callGenericDownloadCallback(
         return 0;
     }
     page->m_lastHttpStatus = GetLastStatus(&page->m_requestListener);
-    int type = GetLastContentType(&page->m_requestListener);
+    unsigned int type = GetLastContentType(&page->m_requestListener);
     page->m_lastCURIContentType = type;
-    if (type == 3) {
+    switch (type) {
+    case 3: {
         int state = page->m_state;
         if (state == 1) {
             int size = substituteErrorPage(page, page->m_lastHttpStatus, *data, *length);
-            page->m_lastCURIContentType = 1;
+            page->m_lastCURIContentType = state;
             *length = size;
             goto scanSVML;
         }
         if ((unsigned int)(state - 8) < 3 || state == 6) {
-            DownloadBinaryState item;
-            DownloadBinary(&item);
-            for (int i = 0; i < 2; ++i) {
-                if (page->inTransitionUsed[i]) {
-                    const void *vtable = item.vtable;
-                    item = page->inTransition[i];
-                    item.vtable = vtable;
-                    memset(&page->inTransition[i], 0, sizeof(item));
-                    page->inTransitionUsed[i] = 0;
-                    --page->inTransitionCount;
-                    break;
-                }
-            }
-            _DownloadBinary(&item, 2);
+            DownloadBinaryObj item;
+            InTransitPop((InTransitArray *)page->inTransition, &item);
+            _DownloadBinary((DownloadBinaryState *)&item, 2);
         }
-    } else if (type == 1) {
-scanSVML:
+        break;
+    }
+    case 1:
+    scanSVML:
         if (!page->m_pfSVMLPreTagCreateScanCB) __SVO_Assert_Handler(svoPageSource, 0x88A);
         page->m_pfSVMLPreTagCreateScanCB(page->m_lastHttpStatus, *data, *length, page, 0);
         setPageState(page, 2);
-    } else if (type == 2) {
+        break;
+    case 2:
         if (!page->m_pfXMLScanCB) __SVO_Assert_Handler(svoPageSource, 0x8A3);
         page->m_pfXMLScanCB(page->m_lastHttpStatus, *data, *length, page, 0);
         Reset___dupe6(&page->m_requestListener);
         setPageState(page, 0);
-    } else if (type == 4 || type == 5) {
+        break;
+    case 4:
+    case 5:
         if (!page->m_pfBinaryDownloadCB) __SVO_Assert_Handler(svoPageSource, 0x8BA);
         page->m_pfBinaryDownloadCB(page->m_lastHttpStatus, *data, *length, page, 0);
-    } else if (type == 8) __SVO_Assert_Handler(svoPageSource, 0x8C5);
-    else if (type == -1) __SVO_Assert_Handler(svoPageSource, 0x8C9);
-    else if (type != 0) __SVO_Assert_Handler(svoPageSource, 0x8CD);
+        break;
+    case 8:
+        __SVO_Assert_Handler(svoPageSource, 0x8C5);
+        break;
+    case 0xFFFFFFFF:
+        __SVO_Assert_Handler(svoPageSource, 0x8C9);
+        break;
+    case 0:
+        break;
+    default:
+        __SVO_Assert_Handler(svoPageSource, 0x8CD);
+        break;
+    }
     if (!page->m_pRequestProvider) __SVO_Assert_Handler(svoPageSource, 0x8D2);
-    IURISchemeProviderState *provider = page->m_pRequestProvider;
-    if (provider) {
-        provider->vtable->freeResources(provider, 0);
+    if (page->m_pRequestProvider) {
+        page->m_pRequestProvider->vtable->freeResources(page->m_pRequestProvider, 0);
         page->m_pRequestProvider = 0;
     }
     return page->m_lastCURIContentType;
@@ -471,11 +501,9 @@ extern "C" SECTION(ClosePopup) int ClosePopup(CPage *page)
     return 1;
 }
 
-extern "C" SECTION(CPage) void CPageConstruct(CPage *page, char *firstPage, int popup, int listenPort)
+struct DownloadBinaryMember { char data[0x264]; void *vtable; DownloadBinaryMember() __asm__("DownloadBinary"); }; struct CPageShell { DownloadBinaryMember pre[11]; int preCount; char preUsed[32]; DownloadBinaryMember post[11]; int postCount; char postUsed[32]; DownloadBinaryMember in[2]; int inCount; char inUsed[32]; char rest[0x637C - 0x3A2C]; CPageShell(char *firstPage, int popup, int listenPort) __asm__("CPage"); }; SECTION(CPage) CPageShell::CPageShell(char *firstPage, int popup, int listenPort)
 {
-    for (int i = 0; i < 11; ++i) DownloadBinary(&page->preTransition[i]);
-    for (int i = 0; i < 11; ++i) DownloadBinary(&page->postTransition[i]);
-    for (int i = 0; i < 2; ++i) DownloadBinary(&page->inTransition[i]);
+    CPage *page = (CPage *)this;
     PageHistory(&page->m_history);
     SVChronograph(&page->m_pageRefreshTimer, 0);
     PageRequestListener(&page->m_requestListener, GetMemoryContext(), 0xA000);
@@ -537,10 +565,16 @@ extern "C" SECTION(doAfterParseTags) void doAfterParseTags(CPage *page)
 {
     SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
     if (!tags) __SVO_Assert_Handler(svoPageSource, 0x933);
-    for (int i = 0; i < 256; ++i) {
-        SVTag *tag = *tags++;
-        if (!tag) break;
-        if (!page->m_defTextScrollTag && tag->m_isDefTextScroll) SetDefaultTextScrollTag(page, tag);
+    int i = 0;
+    SVTag *tag;
+next:
+    if (i < 256) {
+        i++;
+        tag = *tags++;
+        if (tag) {
+            if (!page->m_defTextScrollTag && tag->m_isDefTextScroll) SetDefaultTextScrollTag(page, tag);
+            goto next;
+        }
     }
     char *name = GetPageName(GetInstance());
     CInputContextBaseState *input = GetInputContext();
@@ -555,12 +589,12 @@ extern "C" SECTION(doPost) int doPost(CPage *page, char *path, CQueryParamListSt
     return doRequest(page, path, params, method, storeHistory, svoPagePostCommand);
 }
 
+struct SVPathCtor : SVPath { SVPathCtor(char *scheme, char *server, unsigned short *port, char *path, unsigned int length) { m_scheme = scheme; m_server = server; m_port = port; m_path = path; m_pathMaxLength = length; } };
 extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParamListState *params, int method, int storeHistory, char *command)
 {
     char newPath[272];
     char oldPath[272];
     char fullPath[272];
-    char *historyPath = newPath;
     if (!path) __SVO_Assert_Handler(svoPageSource, 0x327);
     svstrncpy(oldPath, path, 257);
     if (pathIsStatic(page, path)) {
@@ -570,39 +604,29 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
         return 1;
     }
     if (pathIsFullyQualified(page, path)) {
-        SVPath split;
-        split.m_scheme = page->m_scheme;
-        split.m_server = page->m_serverName;
-        split.m_port = &page->m_port;
-        split.m_path = newPath;
-        split.m_pathMaxLength = 257;
+        SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(path, &split);
-        historyPath = path;
-    } else if (*path == '/') {
-        memset(newPath, 0, 257);
-        char *base = top(&page->m_history);
-        if (!base) base = page->m_serverName;
-        strncpy(newPath, base, 257);
-        char *replace = strstr(newPath, svoPageDownloadHostSeparator);
-        replace = strstr(replace + 2, svoPageDownloadPathSeparator);
-        if (!replace) __SVO_Assert_Handler(svoPageSource, 0x372);
-        strncpy(replace, oldPath, strlen(oldPath) + 1);
-        if (strlen(newPath) >= 257) __SVO_Assert_Handler(svoPageSource, 0x375);
-    } else {
+    } else if (*path != '/') {
         memset(fullPath, 0, 257);
         svstrncpy(fullPath, top(&page->m_history), 257);
         if (!resolveRelativePath(page, fullPath, oldPath)) {
             __SVO_Assert_Handler(svoPageSource, 0x34B);
             return 0;
         }
-        SVPath split;
-        split.m_scheme = page->m_scheme;
-        split.m_server = page->m_serverName;
-        split.m_port = &page->m_port;
-        split.m_path = newPath;
-        split.m_pathMaxLength = 257;
+        SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(fullPath, &split);
-        historyPath = fullPath;
+        path = fullPath;
+    } else {
+        memset(newPath, 0, 257);
+        char *base = top(&page->m_history);
+        if (!base) base = (unsigned int)page != (unsigned int)-0x3A56 ? page->m_serverName : 0;
+        strncpy(newPath, base, 257);
+        char *replace = strstr(newPath, svoPageDownloadHostSeparator);
+        replace = strstr(replace + 2, svoPageDownloadPathSeparator);
+        if (!replace) __SVO_Assert_Handler(svoPageSource, 0x372);
+        strncpy(replace, oldPath, strlen(oldPath) + 1);
+        path = newPath;
+        if (strlen(newPath) >= 257) __SVO_Assert_Handler(svoPageSource, 0x375);
     }
     if (page->m_state) __SVO_Assert_Handler(svoPageSource, 0x37E);
     URIRequest request;
@@ -618,7 +642,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     IURISchemeProviderState *provider = doRequest___dupe3(Get(), (URIRequestPrefix *)&request, (IRequestListener *)&page->m_requestListener, page);
     page->m_pRequestProvider = provider;
     if (!provider) return 0;
-    if (storeHistory) push(&page->m_history, historyPath);
+    if (storeHistory) push(&page->m_history, path);
     page->m_pfSVMLPreTagCreateScanCB = (DownloadCallback)scanForDownloadablesCB;
     page->m_pfXMLScanCB = (DownloadCallback)scanXMLCB;
     page->m_pfSVMLTagCreateCB = (DownloadCallback)parseTagsCB;
@@ -630,6 +654,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     return 1;
 }
 
+static inline int PreTransitionPending(CPage *page) { return page->preTransitionCount != 0; }
 extern "C" SECTION(download) int download(CPage *page)
 {
     rt_comm_update();
@@ -642,41 +667,72 @@ extern "C" SECTION(download) int download(CPage *page)
     IURISchemeProviderState *provider = page->m_pRequestProvider;
     if (provider) ((const PageProviderDownloadVtable *)provider->vtable)->download(provider);
     EnsureCleanBlocks(GetMemoryContext());
-    if (state == 1) {
+    char *data;
+    int length;
+    switch (state) {
+    case 1:
         freeResources(page, 1);
         if (!page->m_pRequestProvider) __SVO_Assert_Handler(svoPageSource, 0x169);
         provider = page->m_pRequestProvider;
         if (!provider->vtable->IsBusy(provider)) {
             callGenericDownloadCallback(page, &page->m_pCURIContent, &page->m_iCURIContentLength);
             if (GetTagAtIndex(page, 0)) {
-                if (!page->inTransitionCount && page->preTransitionCount && requestBinary(page, 1) != 1) setPageState(page, 9);
-            } else if (!page->inTransitionCount && page->preTransitionCount) {
+                if (!((InTransitArray *)page->inTransition)->GetCount() && page->preTransitionCount && requestBinary(page, 1) != 1) setPageState(page, 9);
+            } else if (!((InTransitArray *)page->inTransition)->GetCount() && PreTransitionPending(page)) {
                 if (requestBinary(page, 1) != 1) setPageState(page, 8);
             } else if (!page->m_pCURIContent) setPageState(page, 0);
         }
-    } else if (state == 6 || state == 8 || state == 9 || state == 10) {
+        break;
+    case 10:
         provider = page->m_pRequestProvider;
         if (!provider->vtable->IsBusy(provider)) {
-            char *data;
-            int length;
             callGenericDownloadCallback(page, &data, &length);
-            int queue = -1;
-            if (state == 6) {
-                if (page->inTransitionCount || !page->postTransitionCount) setPageState(page, 3);
-                else queue = 2;
-            } else if (state == 8) {
-                if (state == page->m_state && (page->inTransitionCount || !page->preTransitionCount)) setPageState(page, 11);
-                else queue = 1;
-            } else if (state == 9) {
-                if (page->inTransitionCount || !page->preTransitionCount) setPageState(page, 2);
-                else queue = 1;
-            } else {
-                if (!page->inTransitionCount && page->postTransitionCount) queue = 2;
-                else setPageState(page, 0);
-            }
-            if (queue != -1 && requestBinary(page, queue) == 1) setPageState(page, 1);
+            if (!page->inTransitionCount && page->postTransitionCount) {
+                if (requestBinary(page, 2) == 1) setPageState(page, 1);
+            } else setPageState(page, 0);
         }
-    } else if (state != -1 && state != 0 && state != 2 && state != 3 && state != 4 && state != 11 && state != 12) __SVO_Assert_Handler(svoPageSource, 0x212);
+        break;
+    case 6:
+        provider = page->m_pRequestProvider;
+        if (!provider->vtable->IsBusy(provider)) {
+            callGenericDownloadCallback(page, &data, &length);
+            if (!page->inTransitionCount && page->postTransitionCount) {
+                if (requestBinary(page, 2) == 1) setPageState(page, 1);
+            } else setPageState(page, 3);
+        }
+        break;
+    case 9:
+        provider = page->m_pRequestProvider;
+        if (!provider->vtable->IsBusy(provider)) {
+            callGenericDownloadCallback(page, &data, &length);
+            if (!page->inTransitionCount && page->preTransitionCount) {
+                if (requestBinary(page, 1) == 1) setPageState(page, 1);
+            } else setPageState(page, 2);
+        }
+        break;
+    case 8:
+        provider = page->m_pRequestProvider;
+        if (!provider->vtable->IsBusy(provider)) {
+            callGenericDownloadCallback(page, &data, &length);
+            if (state == page->m_state) {
+                if (!page->inTransitionCount && page->preTransitionCount) {
+                    if (requestBinary(page, 1) == 1) setPageState(page, 1);
+                } else setPageState(page, 11);
+            } else if (requestBinary(page, 1) == 1) setPageState(page, 1);
+        }
+        break;
+    case -1:
+    case 0:
+    case 2:
+    case 3:
+    case 4:
+    case 11:
+    case 12:
+        break;
+    default:
+        __SVO_Assert_Handler(svoPageSource, 0x212);
+        break;
+    }
     if (GetErrorCode()) setPageState(page, -1);
     return page->m_state;
 }
@@ -695,24 +751,27 @@ extern "C" SECTION(draw) void draw(CPage *page, int active)
 
 extern "C" SECTION(EnterNewPage___dupe30) void EnterNewPage___dupe30(CPage *page)
 {
-    SVTagModuleState **entry = getInstance___dupe3()->m_modules + 1;
-    while (*entry) {
-        SVTagModuleState *module = *entry++;
-        module->vtable->EnterNewPage(module);
-    }
+    SVTagModuleListState *instance = getInstance___dupe3();
+    int i = 1;
+    while (instance->m_modules[i]) { instance->m_modules[i]->vtable->EnterNewPage(instance->m_modules[i]); i++; }
 }
 
 extern "C" SECTION(FindAndSetDefualtTextAreaScroll) void FindAndSetDefualtTextAreaScroll(CPage *page)
 {
     SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
+    int multiple = 0;
     int found = -1;
-    for (int i = 0; i < 256 && tags[i]; ++i) {
-        if (!strcmp(svoPageTextAreaTagName, GetTagTypeName(tags[i]))) {
-            if (found != -1) return;
-            found = i;
+    SVTag **entry = tags;
+    for (int i = 0; i < 256; i++) {
+        SVTag *tag = *entry++;
+        if (!tag) break;
+        if (!strcmp(svoPageTextAreaTagName, GetTagTypeName(tag))) {
+            if (found == -1) { found = i; continue; }
+            multiple = 1;
+            break;
         }
     }
-    if (found != -1) {
+    if (!multiple && found != -1) {
         tags[found]->m_isDefTextScroll = 1;
         SetDefaultTextScrollTag(page, tags[found]);
     }
@@ -722,66 +781,104 @@ extern "C" SECTION(followLink) int followLink(CPage *page, char *filePath, int o
 {
     char path[257];
     if (!filePath) __SVO_Assert_Handler(svoPageSource, 0x2BF);
-    memset(path, 0, sizeof(path));
     int history = 1;
-    CPage *target = page;
+    for (int i = 0; i < 257; i++) path[i] = 0;
     char *requestPath = filePath;
-    if (option == 2) {
-        if (!pathIsFullyQualified(page, filePath)) {
+    CPage *target = page;
+    switch (option) {
+    case 3:
+        target = GetInstance()->m_pPopupPage;
+        break;
+    case 2:
+        if (pathIsFullyQualified(page, filePath)) requestPath = filePath;
+        else {
             svstrncpy(path, getTopOfHistory(GetInstance()->m_pMainPage), 257);
             resolveRelativePath(page, path, filePath);
             requestPath = path;
         }
         target = GetInstance()->m_pPopupPage;
         target->m_bIsActive = 1;
-    } else if (option == 3) target = GetInstance()->m_pPopupPage;
-    else if (option == 4) {
-        ClosePopup(page);
-        return 1;
-    } else if (option == 5) {
+        break;
+    case 5:
         svstrncpy(path, top(&GetInstance()->m_pMainPage->m_history), 257);
         requestPath = path;
         goto closeAndLoadMain;
-    } else if (option == 6) {
+    case 6:
         svstrncpy(path, top(&GetInstance()->m_pPopupPage->m_history), 257);
-        if (!pathIsFullyQualified(page, filePath)) {
+        if (pathIsFullyQualified(page, filePath)) requestPath = filePath;
+        else {
             resolveRelativePath(page, path, filePath);
             requestPath = path;
         }
-closeAndLoadMain:
+    closeAndLoadMain:
         target = GetInstance()->m_pMainPage;
         ClosePopup(page);
-    } else if (option == 7 || option == 8) history = 0;
-    else if (option != 0 && option != 1) __SVO_Assert_Handler(svoPageSource, 0x301);
+        break;
+    case 4:
+        ClosePopup(page);
+        return 1;
+    case 7:
+    case 8:
+        history = 0;
+        break;
+    case 0:
+    case 1:
+        break;
+    default:
+        __SVO_Assert_Handler(svoPageSource, 0x301);
+        break;
+    }
     return doRequest(target, requestPath, 0, 0, history, svoPageGetCommand);
 }
 
 extern "C" SECTION(frameUpdate) void frameUpdate(CPage *page)
 {
-    int state = page->m_state;
-    if (state == 2 || state == 12) {
-        CDrawContextBase *draw = svoPageContextData.drawContext;
-        int done = ((PageAnimationVtable *)draw->vtable)->AnimateOut(draw);
-        if (state == 2 && done == 1) setPageState(page, 11);
-    } else if (state == 3 || state == 6) {
-        CDrawContextBase *draw = svoPageContextData.drawContext;
-        if (((PageAnimationVtable *)draw->vtable)->AnimateIn(draw) == 1) setPageState(page, state == 3 ? 0 : 10);
-    } else if (state == 11) {
-        unsigned int type = page->m_lastCURIContentType;
-        if (type == 2) return;
-        if (type < 2) {
+    do switch (page->m_state) {
+    case 12: {
+        ((PageAnimationVtable *)svoPageContextData.drawContext->vtable)->AnimateOut(svoPageContextData.drawContext);
+        break;
+    }
+    case 6: {
+        if (((PageAnimationVtable *)svoPageContextData.drawContext->vtable)->AnimateIn(svoPageContextData.drawContext) == 1) setPageState(page, 10);
+        break;
+    }
+    case 3: {
+        if (((PageAnimationVtable *)svoPageContextData.drawContext->vtable)->AnimateIn(svoPageContextData.drawContext) == 1) setPageState(page, 0);
+        break;
+    }
+    case 2: {
+        if (((PageAnimationVtable *)svoPageContextData.drawContext->vtable)->AnimateOut(svoPageContextData.drawContext) == 1) setPageState(page, 11);
+        break;
+    }
+    case 11:
+        switch ((unsigned int)page->m_lastCURIContentType) {
+        case 0:
+        case 1:
             page->m_pfSVMLTagCreateCB(page->m_lastHttpStatus, page->m_pCURIContent, page->m_iCURIContentLength, page, 1);
             Reset___dupe6(&page->m_requestListener);
             doAfterParseTags(page);
             if (!page->inTransitionCount && page->postTransitionCount) {
-                int result = requestBinary(page, 2);
-                setPageState(page, result == 1 ? 1 : 6);
+                if (requestBinary(page, 2) == 1) setPageState(page, 1);
+                else setPageState(page, 6);
             } else setPageState(page, 3);
-        } else if (type == 4) page->m_lastCURIContentType = 1;
-        else if (type == 8) __SVO_Assert_Handler(svoPageSource, 0x519);
-        else if (type == 0xFFFFFFFF) __SVO_Assert_Handler(svoPageSource, 0x51C);
-        else __SVO_Assert_Handler(svoPageSource, 0x51F);
-    }
+            break;
+        case 2:
+            break;
+        case 4:
+            page->m_lastCURIContentType = 1;
+            break;
+        case 8:
+            __SVO_Assert_Handler(svoPageSource, 0x519);
+            break;
+        case 0xFFFFFFFF:
+            __SVO_Assert_Handler(svoPageSource, 0x51C);
+            break;
+        default:
+            __SVO_Assert_Handler(svoPageSource, 0x51F);
+            break;
+        }
+        break;
+    } while (0);
 }
 
 extern "C" SECTION(FreeBackDisplayBuffer) void FreeBackDisplayBuffer(CPage *page)
@@ -846,18 +943,19 @@ extern "C" SECTION(GenerateLagListInfo) void GenerateLagListInfo(CPage *page)
     if (!memory) __SVO_Assert_Handler(svoPageSource, 0xAA3);
     SVTag **tags = page->m_pFrontDisplayBuffer->tagList;
     if (!tags) __SVO_Assert_Handler(svoPageSource, 0xAA5);
-    int count = 0;
-    while (count < 256 && tags[count]) ++count;
+    int count;
+    for (count = 0; count < 256 && tags[count]; count++) {
+    }
     SVTagInfo *info = (SVTagInfo *)svAllocSafe(memory, count * sizeof(SVTagInfo), 0, 0xAB7, svoPageSource);
     if (!info) return;
     memset(info, 0, count * sizeof(SVTagInfo));
-    for (int i = 0; i < count; ++i, ++tags) {
-        if (!*tags) __SVO_Assert_Handler(svoPageSource, 0xAC2);
-        info[i].tag = *tags;
-        info[i].tagID = (*tags)->vtable->GetTagID(*tags);
-        info[i].name = (*tags)->vtable->GetTagName(*tags);
-        info[i].typeName = GetTagTypeName(*tags);
-        info[i].tagClass = (*tags)->m_tagClass;
+    for (int i = 0; i < count; ++i) {
+        if (!tags[i]) __SVO_Assert_Handler(svoPageSource, 0xAC2);
+        info[i].tag = tags[i];
+        info[i].tagID = tags[i]->vtable->GetTagID(tags[i]);
+        info[i].name = tags[i]->vtable->GetTagName(tags[i]);
+        info[i].typeName = GetTagTypeName(tags[i]);
+        info[i].tagClass = tags[i]->m_tagClass;
     }
     SignalPluginEvent(GetInstance(), 11, 0);
     CSystemContextBase *system = GetSystemContext();
@@ -879,11 +977,8 @@ extern "C" SECTION(GetSelectedTagName) char *GetSelectedTagName(CPage *page)
 {
     SVTag **entries = page->m_pFrontDisplayBuffer->tagList;
     for (int i = 0; i < 256 && entries[i]; ++i) {
-        SVTag *tag = entries[i];
-        if (tag->vtable->IsSelected(tag)) {
-            tag = entries[i];
-            return tag->vtable->GetTagName(tag);
-        }
+        if (entries[i]->vtable->IsSelected(entries[i]))
+            return entries[i]->vtable->GetTagName(entries[i]);
     }
     return 0;
 }
@@ -893,15 +988,19 @@ extern "C" SECTION(getTopOfHistory) char *getTopOfHistory(CPage *page) { return 
 extern "C" SECTION(handleDefaultSelection) void handleDefaultSelection(CPage *page)
 {
     SVTag *first = 0;
-    bool selected = false;
-    SVTag *tag;
-    for (int i = 0; i < 256 && (tag = GetTagAtIndex(page, i)); ++i) {
-        if (tag->vtable->IsSelected(tag)) { selected = true; continue; }
-        tag = GetTagAtIndex(page, i);
-        if (tag->vtable->IsSelectable(tag) && !first) { first = GetTagAtIndex(page, i); continue; }
-        if (selected) {
-            tag = GetTagAtIndex(page, i);
-            if (tag->vtable->IsSelected(tag)) __SVO_Assert_Handler(svoPageSource, 0x488);
+    int selected = 0;
+    for (int i = 0; i < 256 && GetTagAtIndex(page, i); i++) {
+        SVTag *a = GetTagAtIndex(page, i);
+        if (a->vtable->IsSelected(a)) {
+            selected = 1;
+        } else {
+            SVTag *b = GetTagAtIndex(page, i);
+            if (b->vtable->IsSelectable(b) && !first) {
+                first = GetTagAtIndex(page, i);
+            } else if (selected) {
+                SVTag *c = GetTagAtIndex(page, i);
+                if (c->vtable->IsSelected(c)) __SVO_Assert_Handler(svoPageSource, 0x488);
+            }
         }
     }
     if (first && !selected) first->vtable->SetSelectedState(first, 1);
@@ -944,20 +1043,20 @@ extern "C" SECTION(handleInput) int handleInput(CPage *page)
 
 extern "C" SECTION(handleTextEntryDefaultInput) int handleTextEntryDefaultInput(CPage *page)
 {
-    if (page->m_defTextEntryTag) return DefaultHandleInput(page->m_defTextEntryTag, page);
-    return 1;
+    if (!page->m_defTextEntryTag) return 1;
+    return DefaultHandleInput(page->m_defTextEntryTag, page);
 }
 
 extern "C" SECTION(handleTextScrollDefaultInput) int handleTextScrollDefaultInput(CPage *page)
 {
-    if (page->m_defTextScrollTag) return DefaultHandleInput(page->m_defTextScrollTag, page);
-    return 1;
+    if (!page->m_defTextScrollTag) return 1;
+    return DefaultHandleInput(page->m_defTextScrollTag, page);
 }
 
 extern "C" SECTION(handleUpdate) void handleUpdate(CPage *page)
 {
-    SVTag *tag;
-    for (int i = 0; i < 256 && (tag = GetTagAtIndex(page, i)); ++i) {
+    for (int i = 0; i < 256 && GetTagAtIndex(page, i); i++) {
+        SVTag *tag = GetTagAtIndex(page, i);
         if (!tag) __SVO_Assert_Handler(svoPageSource, 0x638);
         tag->vtable->Update(tag, page);
     }
@@ -965,20 +1064,19 @@ extern "C" SECTION(handleUpdate) void handleUpdate(CPage *page)
 
 extern "C" SECTION(LeaveCurrentPage) void LeaveCurrentPage(CPage *page)
 {
-    SVTagModuleState **entry = getInstance___dupe3()->m_modules + 1;
-    while (*entry) {
-        SVTagModuleState *module = *entry++;
-        module->vtable->LeaveCurrentPage(module);
-    }
+    SVTagModuleListState *instance = getInstance___dupe3();
+    int i = 1;
+    while (instance->m_modules[i]) { instance->m_modules[i]->vtable->LeaveCurrentPage(instance->m_modules[i]); i++; }
     char *name = GetPageName(GetInstance());
-    if (name && strcmp(name, svoTournamentHomeName) == 0)
-        svoTournamentSelectedTagName = GetSelectedTagName(page);
+    if (name) {
+        if (!strcmp(name, svoTournamentHomeName)) svoTournamentSelectedTagName = GetSelectedTagName(page);
+    }
 }
 
-extern "C" SECTION(LoadStatePostGameFromPersistentData) int LoadStatePostGameFromPersistentData(CPage *page, SVPersistentData *persist)
+struct ServerNameBlock { char text[128]; }; extern "C" SECTION(LoadStatePostGameFromPersistentData) int LoadStatePostGameFromPersistentData(CPage *page, SVPersistentData *persist)
 {
     LoadStatePostGameFromPersistentData___dupe4(Get(), persist);
-    for (int i = 0; i < 128; ++i) page->m_serverName[i] = persist->serverName[i];
+    *(ServerNameBlock *)page->m_serverName = *(ServerNameBlock *)persist->serverName;
     page->m_port = persist->port;
     return 1;
 }
@@ -996,11 +1094,20 @@ extern "C" SECTION(operator.new___dupe3) void * CPageoperator_new___dupe3(unsign
 extern "C" SECTION(parseCBHelper) void parseCBHelper(CPage *page, iks *xml, ParseXMLState *parser, int depth)
 {
     for (iks *child = iks_child(xml); child; child = iks_next(child)) {
-        int type = iks_type(child);
-        if (type == 1) ((const ParseXMLVtablePrefix *)parser->vtable)->CallFunction(parser, child, page);
-        else if (!type) __SVO_Assert_Handler(svoPageSource, 0x45B);
-        else if (type != 2 && type != 3) __SVO_Assert_Handler(svoPageSource, 0x465);
-        // Retail increments this local across siblings as well as recursion.
+        switch (iks_type(child)) {
+        case 0:
+            __SVO_Assert_Handler(svoPageSource, 0x45B);
+            break;
+        case 1:
+            ((const ParseXMLVtablePrefix *)parser->vtable)->CallFunction(parser, child, page);
+            break;
+        case 2:
+        case 3:
+            break;
+        default:
+            __SVO_Assert_Handler(svoPageSource, 0x465);
+            break;
+        }
         if (iks_has_children(child)) parseCBHelper(page, child, parser, ++depth);
     }
 }
@@ -1016,54 +1123,62 @@ extern "C" SECTION(parseTagsCB) void parseTagsCB(unsigned int status, char *buff
 
 extern "C" SECTION(pathIsFullyQualified) int pathIsFullyQualified(CPage *page, char *path)
 {
+    int result = 0;
     char *colon = strstr(path, svoPageSchemeSeparator);
-    if (!colon) return 0;
-    int length = colon - path;
-    if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x74d);
-    char scheme[15];
-    memcpy(scheme, path, 15);
-    scheme[length] = 0;
-    int result = HasProvider(Get(), scheme);
-    if (!result) SetErrorCode(32);
+    if (colon) {
+        int length = colon - path;
+        if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x74d);
+        char scheme[15];
+        memcpy(scheme, path, 15);
+        scheme[length] = 0;
+        result = HasProvider(Get(), scheme);
+        if (!result) SetErrorCode(32);
+    }
     return result;
 }
 
 extern "C" SECTION(pathIsStatic) int pathIsStatic(CPage *page, char *path)
 {
+    int result = 0;
     char *colon = strstr(path, svoPageSchemeSeparator);
-    if (!colon) return 0;
-    int length = colon - path;
-    if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x777);
-    char scheme[15];
-    memcpy(scheme, path, 15);
-    scheme[length] = 0;
-    return strcmp(scheme, svoPageStaticScheme) == 0;
+    if (colon) {
+        int length = colon - path;
+        if (length > 14) __SVO_Assert_Handler(svoPageSource, 0x777);
+        char scheme[15];
+        memcpy(scheme, path, 15);
+        scheme[length] = 0;
+        result = strcmp(scheme, svoPageStaticScheme) == 0;
+    }
+    return result;
 }
 
 extern "C" SECTION(PopInTransitArray) void PopInTransitArray(CPage *page, DownloadBinaryState *out)
 {
-    for (int i = 0; i < 2; ++i) if (page->inTransitionUsed[i]) {
-        const void *vtable = out->vtable;
-        *out = page->inTransition[i];
-        out->vtable = vtable;
-        memset(&page->inTransition[i], 0, sizeof(DownloadBinaryState));
-        page->inTransitionUsed[i] = 0;
-        --page->inTransitionCount;
-        return;
+    InTransitArray *array = (InTransitArray *)page->inTransition;
+    for (int i = 0; i < 2; i++) {
+        if (array->used[i]) {
+            *(DownloadBinaryObj *)out = array->data[i];
+            memset(&array->data[i], 0, sizeof(DownloadBinaryObj));
+            array->used[i] = 0;
+            int *count = &array->count;
+            (*count)--;
+            return;
+        }
     }
 }
 
 extern "C" SECTION(PushPostTransitionArray) void PushPostTransitionArray(CPage *page, DownloadBinaryState *item, DownloadBinaryState **out)
 {
-    for (int i = 0; i < 11; ++i) if (!page->postTransitionUsed[i]) {
-        DownloadBinaryState *dest = &page->postTransition[i];
-        const void *vtable = dest->vtable;
-        *dest = *item;
-        *out = dest;
-        dest->vtable = vtable;
-        page->postTransitionUsed[i] = 1;
-        ++page->postTransitionCount;
-        return;
+    PostTransitArray *array = (PostTransitArray *)page->postTransition;
+    for (int i = 0; i < 11; i++) {
+        if (!array->used[i]) {
+            array->data[i] = *(DownloadBinaryObj *)item;
+            *out = (DownloadBinaryState *)&array->data[i];
+            array->used[i] = 1;
+            int *count = &array->count;
+            (*count)++;
+            return;
+        }
     }
 }
 
@@ -1076,46 +1191,63 @@ extern "C" SECTION(ReAllocBackDisplayBufferParser) void ReAllocBackDisplayBuffer
     iks_parser_reset(page->m_pBackDisplayBuffer->parser);
 }
 
+static inline void TransitPop(PostTransitArray *array, DownloadBinaryObj *out)
+{
+    for (int i = 0; i < 11; i++) {
+        if (array->used[i]) {
+            *out = array->data[i];
+            memset(&array->data[i], 0, sizeof(DownloadBinaryObj));
+            array->used[i] = 0;
+            int *count = &array->count;
+            (*count)--;
+            return;
+        }
+    }
+}
+static inline void InTransitPush(InTransitArray *array, DownloadBinaryObj *item)
+{
+    for (int i = 0; i < 2; i++) {
+        if (!array->used[i]) {
+            array->data[i] = *item;
+            array->used[i] = 1;
+            int *count = &array->count;
+            (*count)++;
+            return;
+        }
+    }
+}
+static inline void CopyBytes(char *dst, const char *src, int n)
+{
+    do {
+        *dst++ = *src++;
+    } while (--n != -1);
+}
 extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
 {
     char unused[1024];
     CQueryParamListState params;
-    DownloadBinaryState record;
     CQueryParamList(&params);
-    DownloadBinary(&record);
-    DownloadBinaryState *entries = 0;
-    unsigned char *used = 0;
-    int *count = 0;
-    if (queue == 1) {
-        entries = page->preTransition;
-        used = page->preTransitionUsed;
-        count = &page->preTransitionCount;
-    } else if (queue == 2) {
-        entries = page->postTransition;
-        used = page->postTransitionUsed;
-        count = &page->postTransitionCount;
-    } else if (queue == 0) __SVO_Assert_Handler(svoPageSource, 0x7C7);
-    else if (queue == 3) __SVO_Assert_Handler(svoPageSource, 0x7D0);
-    else if (queue == 0x7FFFFFFF) __SVO_Assert_Handler(svoPageSource, 0x7D3);
-    if (entries) {
-        for (int i = 0; i < 11; ++i) {
-            if (!used[i]) continue;
-            const void *vtable = record.vtable;
-            record = entries[i];
-            record.vtable = vtable;
-            memset(&entries[i], 0, sizeof(record));
-            used[i] = 0;
-            --*count;
-            break;
-        }
+    DownloadBinaryObj recordObj;
+    DownloadBinaryState &record = *(DownloadBinaryState *)&recordObj;
+    switch (queue) {
+    case 0:
+        __SVO_Assert_Handler(svoPageSource, 0x7C7);
+        break;
+    case 1:
+        TransitPop((PostTransitArray *)page->preTransition, &recordObj);
+        break;
+    case 2:
+        TransitPop((PostTransitArray *)page->postTransition, &recordObj);
+        break;
+    case 3:
+        __SVO_Assert_Handler(svoPageSource, 0x7D0);
+        break;
+    case 0x7FFFFFFF:
+        __SVO_Assert_Handler(svoPageSource, 0x7D3);
+        break;
     }
     char path[272];
-    SVPath split;
-    split.m_scheme = page->m_scheme;
-    split.m_server = page->m_serverName;
-    split.m_port = &page->m_port;
-    split.m_path = path;
-    split.m_pathMaxLength = 257;
+    SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, path, 257);
     parseFullyQualifiedPath(GetPath(&record), &split);
     int type = 1;
     if (!strstr(GetPath(&record), svoPageSvmlExtension)) {
@@ -1156,7 +1288,7 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
         if (!DestroyOnRequestSend(&record)) {
             DownloadBinaryState copy;
             copy.vtable = svoDownloadBinaryVtable;
-            memcpy(copy.szPath, record.szPath, sizeof(copy.szPath));
+            CopyBytes(copy.szPath, record.szPath, 0x100);
             copy.bRequested = record.bRequested;
             copy.eMethod = record.eMethod;
             copy.bDestroyWhenRequestSent = record.bDestroyWhenRequestSent;
@@ -1166,18 +1298,10 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
             copy.eMethodType = record.eMethodType;
             copy.pDownloadCallback = record.pDownloadCallback;
             copy.m_iUserNameMaxLength = record.m_iUserNameMaxLength;
-            memcpy(copy.m_szActionStringParameter, record.m_szActionStringParameter, sizeof(copy.m_szActionStringParameter));
-            memcpy(copy.m_szUserNameParameter, record.m_szUserNameParameter, sizeof(copy.m_szUserNameParameter));
-            memcpy(copy.m_szAccountIDParameter, record.m_szAccountIDParameter, sizeof(copy.m_szAccountIDParameter));
-            for (int i = 0; i < 2; ++i) {
-                if (page->inTransitionUsed[i]) continue;
-                const void *vtable = page->inTransition[i].vtable;
-                page->inTransition[i] = copy;
-                page->inTransition[i].vtable = vtable;
-                page->inTransitionUsed[i] = 1;
-                ++page->inTransitionCount;
-                break;
-            }
+            CopyBytes(copy.m_szActionStringParameter, record.m_szActionStringParameter, 0xFF);
+            CopyBytes(copy.m_szUserNameParameter, record.m_szUserNameParameter, 0x1F);
+            CopyBytes(copy.m_szAccountIDParameter, record.m_szAccountIDParameter, 0x1F);
+            InTransitPush((InTransitArray *)page->inTransition, (DownloadBinaryObj *)&copy);
             _DownloadBinary(&copy, 2);
         }
     }
@@ -1195,20 +1319,21 @@ extern "C" SECTION(ResetBackDisplayBuffer) void ResetBackDisplayBuffer(CPage *pa
 extern "C" SECTION(resolveRelativePath) int resolveRelativePath(CPage *page, char *current, char *relative)
 {
     if (!*current || !relative) __SVO_Assert_Handler(svoPageSource, 0x291);
+    char *path = relative;
     int parents = 0;
     for (;;) {
-        while (!strncmp(svoPageParentPath, relative, 3)) { relative += 3; ++parents; }
-        if (strncmp(svoPageCurrentPath, relative, 2)) break;
-        relative += 2;
+        if (!strncmp(svoPageParentPath, path, 3)) { path += 3; parents++; }
+        else if (!strncmp(svoPageCurrentPath, path, 2)) path += 2;
+        else break;
     }
-    while (parents > 0) {
+    for (int i = parents; i > 0; i--) {
         char *slash = strrchr(current, '/');
         if (!slash) __SVO_Assert_Handler(svoPageSource, 0x2AB);
-        --parents;
         *slash = '-';
     }
-    char *tail = strrchr(current, '/') + 1;
-    svstrncpy(tail, relative, 0x101 - (tail - current));
+    char *tail = strrchr(current, '/');
+    tail++;
+    svstrncpy(tail, path, 0x101 - (tail - current));
     return 1;
 }
 
@@ -1224,17 +1349,21 @@ extern "C" SECTION(scanForDownloadablesCB) void scanForDownloadablesCB(unsigned 
 extern "C" SECTION(scanObject) void scanObject(CPage *page, iks *xml)
 {
     SVTagModuleState **modules = getInstance___dupe3()->m_modules;
-    for (int i = 0; i < 128 && modules[i]; ++i) {
+    for (int i = 0; i < 128 && modules[i]; i++) {
         SVTagModuleState *module = modules[i];
         if (!module->vtable->IsMyTag(module, xml)) continue;
         SVTagScanResult results[2];
-        for (int j = 0; j < 2; ++j) { results[j].action = 0; results[j].download = 0; }
+        for (int k = 0; k < 2; k++) {
+            SVTagScanResult *r = &results[k];
+            r->action = 0;
+            r->download = 0;
+        }
         svoPageContextData.pMain = page;
         module->vtable->ScanTag(module, xml, page->m_pFrontDisplayBuffer->tagList, &svoPageContextData, results);
         for (int j = 0; j < 2; ++j) {
-            switch (results[j].action) {
+            switch ((unsigned int)results[j].action) {
+            case 1: adjustPathBinaryDownload(page, results[j].download); break;
             case 0: break;
-            case 1:
             case 2: adjustPathBinaryDownload(page, results[j].download); break;
             case 3: setPageState(page, 1); break;
             default: __SVO_Assert_Handler(svoPageSource, 0x84E); break;
@@ -1291,54 +1420,53 @@ extern "C" SECTION(setPageState) void setPageState(CPage *page, int nextState)
     char message[128];
     char oldText[64];
     char newText[64];
-    char *name;
     memset(message, 0, 120);
-    name = 0;
-    if (page->m_state == -1) name = svoPageStateError;
-    else if (page->m_state == 0) name = svoPageStateIdle;
-    else if (page->m_state == 1) name = svoPageStateDlPage;
-    else if (page->m_state == 11) name = svoPageStateCreatePage;
-    else if (page->m_state == 2) name = svoPageStateAniOut;
-    else if (page->m_state == 3) name = svoPageStateAniIn;
-    else if (page->m_state == 4) name = svoPageStateSubmit;
-    else if (page->m_state == 5) name = svoPageStateSubmitFail;
-    else if (page->m_state == 6) name = svoPageStateDlObjWhileAniIn;
-    else if (page->m_state == 8) name = svoPageStateDlObjThenAniIn;
-    else if (page->m_state == 9) name = svoPageStateDlObjThenAniOut;
-    else if (page->m_state == 10) name = svoPageStateDlObj;
-    else if (page->m_state == 12) name = svoPageStateShuttingDown;
-    else __SVO_Assert_Handler(svoPageSource, 0x9ec);
-    if (name) sprintf(oldText, name);
+    switch (page->m_state) {
+    case -1: sprintf(oldText, svoPageStateError); break;
+    case 0: sprintf(oldText, svoPageStateIdle); break;
+    case 1: sprintf(oldText, svoPageStateDlPage); break;
+    case 11: sprintf(oldText, svoPageStateCreatePage); break;
+    case 2: sprintf(oldText, svoPageStateAniOut); break;
+    case 3: sprintf(oldText, svoPageStateAniIn); break;
+    case 4: sprintf(oldText, svoPageStateSubmit); break;
+    case 5: sprintf(oldText, svoPageStateSubmitFail); break;
+    case 6: sprintf(oldText, svoPageStateDlObjWhileAniIn); break;
+    case 8: sprintf(oldText, svoPageStateDlObjThenAniIn); break;
+    case 9: sprintf(oldText, svoPageStateDlObjThenAniOut); break;
+    case 10: sprintf(oldText, svoPageStateDlObj); break;
+    case 12: sprintf(oldText, svoPageStateShuttingDown); break;
+    default: __SVO_Assert_Handler(svoPageSource, 0x9ec); break;
+    }
     strcpy(message, oldText);
     strcat(message, svoPageStateTransition);
-    name = 0;
-    if (nextState == -1) name = svoPageStateError;
-    else if (nextState == 0) name = svoPageStateIdle;
-    else if (nextState == 1) name = svoPageStateDlPage;
-    else if (nextState == 11) name = svoPageStateCreatePage;
-    else if (nextState == 2) name = svoPageStateAniOut;
-    else if (nextState == 3) name = svoPageStateAniIn;
-    else if (nextState == 4) name = svoPageStateSubmit;
-    else if (nextState == 5) name = svoPageStateSubmitFail;
-    else if (nextState == 6) name = svoPageStateDlObjWhileAniIn;
-    else if (nextState == 8) name = svoPageStateDlObjThenAniIn;
-    else if (nextState == 9) name = svoPageStateDlObjThenAniOut;
-    else if (nextState == 10) name = svoPageStateDlObj;
-    else if (nextState == 12) name = svoPageStateShuttingDown;
-    else __SVO_Assert_Handler(svoPageSource, 0xa1c);
-    if (name) sprintf(newText, name);
+    switch (nextState) {
+    case -1: sprintf(newText, svoPageStateError); break;
+    case 0: sprintf(newText, svoPageStateIdle); break;
+    case 11: sprintf(newText, svoPageStateCreatePage); break;
+    case 1: sprintf(newText, svoPageStateDlPage); break;
+    case 2: sprintf(newText, svoPageStateAniOut); break;
+    case 3: sprintf(newText, svoPageStateAniIn); break;
+    case 4: sprintf(newText, svoPageStateSubmit); break;
+    case 5: sprintf(newText, svoPageStateSubmitFail); break;
+    case 6: sprintf(newText, svoPageStateDlObjWhileAniIn); break;
+    case 8: sprintf(newText, svoPageStateDlObjThenAniIn); break;
+    case 9: sprintf(newText, svoPageStateDlObjThenAniOut); break;
+    case 10: sprintf(newText, svoPageStateDlObj); break;
+    case 12: sprintf(newText, svoPageStateShuttingDown); break;
+    default: __SVO_Assert_Handler(svoPageSource, 0xa1c); break;
+    }
     strcat(message, newText);
     page->m_state = nextState;
 }
 
-extern "C" SECTION(shutdown) int shutdown(CPage *page)
+extern "C" SECTION(shutdown) void shutdown(CPage *page)
 {
     freeResources(page, 0);
     FreeDisplayBuffers(page);
     if (page->m_parser) { iks_parser_delete(page->m_parser); page->m_parser = 0; }
     IURISchemeProviderState *provider = page->m_pRequestProvider;
     if (provider) { provider->vtable->freeResources(provider, 0); page->m_pRequestProvider = 0; }
-    return SSL_Cleanup();
+    SSL_Cleanup();
 }
 
 extern "C" SECTION(substituteErrorPage) int substituteErrorPage(CPage *page, unsigned int status, char *buffer, int length)
@@ -1389,11 +1517,11 @@ extern "C" SECTION(SwapDisplayBuffers) void SwapDisplayBuffers(CPage *page)
 {
     SVDisplayBufferState *first = &page->m_displayBuffers[0];
     if (page->m_pBackDisplayBuffer == first) {
-        page->m_pFrontDisplayBuffer = first;
         page->m_pBackDisplayBuffer = &page->m_displayBuffers[1];
+        page->m_pFrontDisplayBuffer = first;
     } else {
-        page->m_pFrontDisplayBuffer = &page->m_displayBuffers[1];
         page->m_pBackDisplayBuffer = first;
+        page->m_pFrontDisplayBuffer = &page->m_displayBuffers[1];
     }
 }
 

@@ -93,28 +93,29 @@ extern "C" SECTION(changeSelectedItem___dupe2) void changeSelectedItem___dupe2(G
 {
     if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x141);
     if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x142);
-    if (!tag->m_numItems) return;
+    int count = tag->m_numItems;
+    if (!count) return;
     int old = tag->m_selectedIndex;
-    int selected = tag->m_selectedIndex;
     int top = tag->m_topVisibleIndex;
-    if (direction == -1) {
-        if (selected == -1) tag->m_selectedIndex = tag->m_numItems - 1;
+    switch (direction) {
+    case -1:
+        if (old == direction) tag->m_selectedIndex = count - 1;
         else {
-            int count = tag->m_numItems;
-            int next = (selected - 1 + count) % count;
+            int next = (old + direction + count) % count;
             tag->m_selectedIndex = next;
             if (next < top) tag->m_topVisibleIndex = next;
-            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + count - tag->m_maxVisibleItems;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + (count - tag->m_maxVisibleItems);
         }
-    } else if (direction == 1) {
-        if (selected == -1) tag->m_selectedIndex = 0;
+        break;
+    case 1:
+        if (old == -1) tag->m_selectedIndex = 0;
         else {
-            int count = tag->m_numItems;
-            int next = (selected + 1 + count) % count;
+            int next = (old + direction + count) % count;
             tag->m_selectedIndex = next;
             if (next < top) tag->m_topVisibleIndex = next;
-            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + 1;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + direction;
         }
+        break;
     }
     if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x175);
     if (tag->m_selectedIndex >= tag->m_numItems) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x176);
@@ -128,9 +129,9 @@ extern "C" SECTION(changeSelectedItem___dupe2) void changeSelectedItem___dupe2(G
 extern "C" SECTION(clearList) void clearList(GenericListBoxTagState *tag)
 {
     if (tag->m_handles) memset(tag->m_handles, 0, tag->m_maxNumItems * 4);
-    tag->m_topVisibleIndex = 0;
     tag->m_numItems = 0;
     tag->m_selectedIndex = 0;
+    tag->m_topVisibleIndex = 0;
 }
 
 extern "C" SECTION(DefaultInit___dupe23) void DefaultInit___dupe23(GenericListBoxTagState *tag)
@@ -139,8 +140,8 @@ extern "C" SECTION(DefaultInit___dupe23) void DefaultInit___dupe23(GenericListBo
     const GenericListBoxTagVtablePrefix *vtable = (const GenericListBoxTagVtablePrefix *)tag->base.vtable;
     tag->base.m_lineColor = 0xFF00FF00;
     tag->m_highlightFillColor = 0xFF808080;
-    tag->m_highlightLineColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFFFFFFFF;
+    tag->m_highlightLineColor = 0xFFFFFFFF;
     tag->m_handles = 0;
     tag->m_turnOffDraw = 0;
     tag->m_entryTagIDs = 0;
@@ -180,24 +181,27 @@ extern "C" SECTION(Draw___dupe26) void Draw___dupe26(GenericListBoxTagState *tag
     float fraction = 0.0f;
     if (tag->m_numItems > 0) {
         int selected = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
-        float count = (float)tag->m_numItems;
-        if ((float)tag->m_maxNumItems <= count) count = (float)tag->m_maxNumItems;
-        fraction = ((float)selected + 1.0f) / count;
+        float pos = (float)selected + 1.0f;
+        float maximum = (float)tag->m_maxNumItems;
+        float total = (float)tag->m_numItems;
+        float count;
+        if (maximum <= total) count = maximum;
+        else count = total;
+        fraction = pos / count;
     }
     draw->vtable->DrawGenericListboxFrame(draw, tag->base.m_tagid, tag->base.m_x,
         tag->base.m_y, tag->base.m_width, tag->base.m_height, line, fill,
         tag->m_maxVisibleItems, fraction, tag->base.m_tagClass);
-    int count = tag->m_numItems;
-    if (count > 0) {
+    if (tag->m_numItems > 0) {
+        int count = tag->m_numItems;
         if (tag->m_maxVisibleItems < count) count = tag->m_maxVisibleItems;
         for (int i = 0; i < count; ++i) {
-            int item = i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
-            int selected = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
-            int top = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
-            unsigned int *id = tag->m_entryTagIDs + i + top;
-            top = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            int item = ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            int isSelected = i + item == ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
+            unsigned int *id = tag->m_entryTagIDs + i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag);
+            svo_listbox_handle handle = tag->m_handles[i + ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->getTopVisibleIndex(tag)];
             draw->vtable->DrawGenericListboxEntry(draw, *id, tag->base.m_name,
-                tag->m_handles[i + top], i, item == selected, tag->base.m_lineColor,
+                handle, i, isSelected, tag->base.m_lineColor,
                 tag->base.m_fillColor, tag->base.m_tagClass);
         }
     }
@@ -215,9 +219,11 @@ extern "C" SECTION(GenericListBoxTag) void GenericListBoxTag(GenericListBoxTagSt
     tag->m_handles = (svo_listbox_handle *)svAllocSafe(GetMemoryContext(), tag->m_maxNumItems << 2, 0, 0x41, svoGenericListBoxTagSource);
     getIntAttrib(tag->base.m_xml, svoGenericListBoxMaxVisibleItemsAttribute, &tag->m_maxVisibleItems);
     if (tag->m_maxVisibleItems < 1) __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x45);
-    unsigned int *ids = (unsigned int *)svAllocSafe(GetMemoryContext(), tag->m_maxVisibleItems << 2, 0, 0x48, svoGenericListBoxTagSource);
-    tag->m_entryTagIDs = ids;
-    for (int i = 0; i < tag->m_maxVisibleItems; ++i) *ids++ = svoNextTagId++;
+    tag->m_entryTagIDs = (unsigned int *)svAllocSafe(GetMemoryContext(), tag->m_maxVisibleItems << 2, 0, 0x48, svoGenericListBoxTagSource);
+    for (int i = 0; i < tag->m_maxVisibleItems; ++i) {
+        unsigned int id = svoNextTagId++;
+        tag->m_entryTagIDs[i] = id;
+    }
     getStringAttrib(tag->base.m_xml, svoGenericListBoxClassAttribute, &tag->base.m_tagClass);
     SVChronographState *timer = (SVChronographState *)SVChronographNew(0x10);
     SVChronograph(timer, 0);
@@ -289,7 +295,10 @@ extern "C" SECTION(HandleInput___dupe54) int HandleInput___dupe54(GenericListBox
         int magnitude = analog < 0 ? -analog : analog;
         if (magnitude > 45) {
             Reset___dupe5(tag->m_pTimer);
-            ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, analog < 0 ? -1 : 1);
+            if (analog < 0)
+                ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, -1);
+            else
+                ((const GenericListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, 1);
             return 0;
         }
     }

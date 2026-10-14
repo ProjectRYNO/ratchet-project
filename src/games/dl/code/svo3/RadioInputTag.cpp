@@ -77,10 +77,10 @@ extern "C" SECTION(DefaultInit___dupe13) void DefaultInit___dupe13(RadioInputTag
     tag->m_fontSize = 14;
     tag->m_textColor = 0xFFFFFFFF;
     tag->m_highlightColor = 0xFFFFFF00;
-    tag->m_bRequiredForSubmit = 0;
     tag->m_isChecked = 0;
     tag->m_parentForm = 0;
     tag->m_bSubmitAsEncryped = 0;
+    tag->m_bRequiredForSubmit = 0;
 }
 
 extern "C" SECTION(Draw___dupe19) void Draw___dupe19(RadioInputTagState *self)
@@ -130,12 +130,11 @@ extern "C" SECTION(HandleInput___dupe45) int HandleInput___dupe45(RadioInputTagS
         if (!self->m_parentForm) __SVO_Assert_Handler(svoRadioInputTagSource, 0x81);
         CheckRadioElement(self->m_parentForm, self);
     }
-    for (int action = 0; action < 4; ++action) {
-        if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-            CDrawContextBase *draw = tag->m_contexts->drawContext;
-            if (!draw) __SVO_Assert_Handler(svoRadioInputTagSource, 0x8B);
-            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-        }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+        || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+        CDrawContextBase *draw = tag->m_contexts->drawContext;
+        if (!draw) __SVO_Assert_Handler(svoRadioInputTagSource, 0x8B);
+        return Navigate(tag, input, draw, tag->m_xml, page) == 0;
     }
     return 1;
 }

@@ -1,4 +1,171 @@
-# SVO3 current handoff, 2026-10-13
+# SVO3 current handoff, 2026-10-14 (byte-matching push)
+
+**934 functions: 853 byte-exact in the linked ELF, 81 compiled C functions that fit their slots
+but are not exact. No SVO3 assembly remains.** Up from 603 exact at the start of this push.
+Uncommitted. ALLOW_NONMATCHING=0, original slots unchanged.
+
+## What is left ([SVO3_REMAINING.csv](SVO3_REMAINING.csv))
+
+81 fit-not-exact functions, mostly register numbering, branch-likely/delay-slot choice and store
+order. Notable blockers:
+
+- CPage `Destroy{Pre,Post,In}TransitionArray` and the CPage constructor: retail keeps a dead
+  clearing loop (`b` out of the loop at its head, body never executed) that 2.96 deletes in
+  every source form tried, including inlined member functions.
+- GridTag constructor: retail hoists ~25 field addresses into saved registers/stack before
+  the first check; no C shape found.
+- CPage `download` (one instruction): retail tests `preTransitionCount == 0` with a
+  branch-likely; `> 0` gives the branch-likely but `blez`, every `== 0`/`!= 0` spelling tried gives
+  a plain `beqz`. Its jump table already matches.
+- UTF8 `CountCharacters`: `size` and `continuations` swap `$16`/`$17`; no declaration or loop
+  shape tried changes it. Its jump table already matches.
+- Navigation `autoNavigate`, RTCommSock `dnsLookupBlocking`/`WaitForConnect`, CHttp
+  `parseHttpHeaderLine`, CPage `requestBinary`/`doRequest`: large register-allocation residue.
+
+## Jump tables and padding (2026-10-14, DECISIONS.md D09/D10)
+
+- Switch jump tables now link at their retail `.rodata` addresses. `tools/svo3_rodata_sections.py`
+  (run by the SVO3 Makefile rule) moves each function's `.rdata` into `.svo_<Module>_<fn>.rodata`;
+  `decompiled_functions.yaml` `rodata:` registers each slot (retail table extent, owning function);
+  `split_dl.py` carves the retail data around the slots and asserts on overflow;
+  `check_main_elf.py` allows changes only inside registered slots of compiled functions. A switch
+  in a function without a registered slot fails the link (its section is discarded).
+- Ten functions use it, all ten tables byte-identical to retail: CPage `setPageState`,
+  `followLink`, `frameUpdate`, `download`; TextAreaTag `handleSpecialKeys`; TextInputTag
+  `handleSpecialKeys___dupe2`; SVDownloadManager `download___dupe3`; CInputContextBase
+  `HasActionOccurred`; UTF8 `GetNextCharIndexFromString`, `CountCharacters`. Eight of the ten
+  functions are byte-exact.
+- To add one: find the `jtbl_*` the retail asm loads, count its code-address words in
+  `core.data/091E80.rodata.s`, add a `rodata:` slot, write the `switch` with case bodies in
+  retail code order, then split and build.
+- `func_01F27658` was a splat label inside 150,332 zero bytes after the last SVO3 function. The
+  whole range 0x01F0C844..0x01F31380 is now `junk/net.text/4c0844_4e5380`; the fake function and
+  its slot were removed (loaded bytes unchanged).
+- `svoTextAreaNewline = 0x0019D408` names the retail `"
+"` literal that TextAreaTag
+  `handleSpecialKeys` copies (same convention as the other SVO3 string externs).
+
+## Toolchain change in this push
+
+`SVO3_AS_FLAGS` now includes `-g` (Sony `as`). With `-g` the assembler does not move
+instructions into branch/jal delay slots, which retail clearly did not do; it gained exactness
+with no regressions. It only changes the `.mdebug` section, which the linker script discards
+(`/DISCARD/ : { *(*) }`); loaded bytes and audits are unaffected.
+
+## 2.96 source-shape patterns established (in addition to the earlier list)
+
+- **Real C++ constructors** for constructor-named functions, with raw storage when the state type
+  can't be a member: `struct XCtor { char data[sizeof(XState)]; XCtor(args) __asm__("X"); };`
+  (SVChronograph, RTCommSock). Not universal: CMemoryContextBase got worse (tail call).
+- **Inline helper constructors for value structs:** `SVPathCtor(scheme, server, &port, path, 257)`
+  (SVPath holds a C++ reference) reproduces retail's store-through-`this` sequence (CPage
+  `doRequest`, `requestBinary`).
+- **Late address computation:** `DLBuffer *second; if (!first->x && !(second = &m->m_buffers[1])->x)`
+  (two SVDownloadManager functions). Splitting one reused variable into two changes allocation
+  priority (SelectTag `changeCurOptionToNextLetterInAlphabet`).
+- **Wider locals:** retail sometimes used a wider local type (RTCommSock `Connect`: `RTLinkAddress`
+  local instead of `unsigned long` gives retail's frame layout).
+- **Copy from a retail data symbol:** `extern L obj __asm__("svoHttpSchemes"); L copy = obj;`
+  (CHttp/HttpSecure DoRegistrations).
+- **Success-path-first nesting** (`if (!a) { if (!b) {...} return 1; } return 0;`) controls where the
+  shared `return 0` block lands (RTCommSock `Send`, TagUtils `getIntAttrib`).
+- **Indexed loops** `for (i...) { T *p = &arr[i]; ... }` give retail's counted `bgez` loops (CPage
+  `scanObject`); `tags[i]` indexing instead of walking pointers (CPage `GenerateLagListInfo`).
+- **Not the cause:** `-fno-strict-aliasing` (global test: 862 -> 806 exact), and none of
+  `-fno-cse-follow-jumps`, `-fno-gcse`, `-fno-rerun-loop-opt`, `-fno-cse-skip-blocks`.
+- **Rejected:** empty `__asm__ __volatile__("" : : "r"(x))` to force a dead load (CHttp
+  `downloadBody`); it emits no bytes but is not real source.
+- **Unsolved residual classes:** branch-likely choice (`beql`/`beqz`, e.g. CPage `download`,
+  `callGenericDownloadCallback`, `LeaveCurrentPage`), scheduler order of independent argument
+  moves (`SVMLparseCB`, `GetPageName`, `decodeEntityChar`), and loop-carried reuse of a reloaded
+  pointer (CPage `FreeBack/FrontDisplayBuffer`; a `volatile` read gets within 2 lines but is not
+  the original).
+
+- **Store order:** 2.96 emits the LAST of a group of independent stores FIRST, then the rest in
+  source order. To get retail order X1..Xn, write X2..Xn, X1.
+- **Index-based loops** `for (i = 0; i < N && a[i]; i++) { T *t = a[i]; ... }` reproduce retail's
+  "test a[0] in one register, walk a copied pointer" shape; pointer-walking source does not.
+  Indexed `for (i = 0; i < 64; i++)` gives GCC loop reversal (count-down `bgez`).
+- **Unrotated loops** (test at the top, several backward branches) come from `goto` loops or
+  `for` loops whose body uses `continue`.
+- **Counters initialised far before their loop** need an explicit pre-check
+  (`if (i < n) { do { ... i++; } while (i < n); }`) — FormTag `Submit`.
+- **Guard-first returns** (`if (!x) return 1; return f(x);`); single-exit `int result = 0; if (...)
+  { ...; result = ...; } return result;`; `return obj->field = 1;`.
+- **Separate local per vtable call** (`SVTag *a = f(); a->vt->X(a); SVTag *b = f(); ...`) fixes
+  vtable-load ordering; **duplicated full calls per branch** let 2.96 cross-jump the common
+  tail exactly like retail.
+- **Real C++ constructors** (`Struct(args) __asm__("Name")`) fix epilogue `ld` order and
+  branch-likely loop exits (PopupTag, PasswordInputTag, RectangleTag).
+- **g++ 2.x DownloadBinary model:** `DownloadBinaryObj` (CPage.cpp) has the vptr after the data
+  and a declared ctor bound to `DownloadBinary`; its implicit `operator=` saves/restores the vptr
+  around a block copy. `InTransitArray`/`PostTransitArray` model the StaticArray objects, with
+  `static inline` Pop/Push helpers that inline away (no extra symbols are emitted; checked).
+- **g++ array-constructor loops** (counter n-1 down to -1) come from member arrays of a class
+  with a declared constructor (CPage constructor `CPageShell`).
+- Retail `lb` means signed `char` (CPage `*TransitionUsed` arrays changed to `char`, layout
+  unchanged); `switch` case-body order follows source order; `(unsigned int)` switch values
+  and extra case labels change the compare tree.
+
+- **Switch shapes:** case bodies are emitted in source order, so order cases by retail code
+  address (read the table). Retail often calls inside each case (`case 1: sprintf(buf, X); break;`)
+  rather than selecting a value. `(unsigned int)` switch values or sparse cases give a compare tree
+  instead of a second table. Identical case bodies differing only in a symbol are invisible to
+  `sbs.py`/`byte-compare.py` (relocated words compare opcode bits only): check the linked table.
+- **`do { switch ... } while (0);`** stops 2.96 turning `setPageState(...); break;` at the end of a
+  `void` function into tail calls (CPage `frameUpdate`).
+- **Inline member accessors** (`InTransitArray::GetCount()`) keep retail's separate
+  `addiu base; lw off(base)` instead of a folded offset: g++ 2.x copies `this` per inlined call.
+- **`goto` to a later label** places a block after the fall-through code (CInputContextBase
+  `HasActionOccurred`: analog call and clamp before the button test).
+- **Retail clearing loops** with three `nop`s are plain C byte loops (`for (i = 0; i < 257; i++)
+  path[i] = 0;`); the EE assembler pads short loops.
+
+## Behaviour corrections made while matching (review)
+
+- SVBrowser `rt_comm_linkaddress_tostr` declaration: the earlier long→int conversion had made
+  the 8-byte `RTLinkAddress` argument 32-bit (only half the address was passed). It now takes
+  `RTLinkAddress` by value, as retail does; `RTCommInit` uses the prototype's 16-byte buffer.
+- CPage `shutdown` is `void` (retail calls `SSL_Cleanup()` without using a result; callers
+  ignore the return value).
+- From agent 2: CHttp `States___dupe2` now hits the default assert for state 14 (retail compares
+  against 0x7FFFFFFF); SVDownloadManager `doRequest___dupe4` copies `path+1` at position 0 as
+  retail does; `init___dupe2`, the CInputContextBase constructor and PageRequestListener
+  `OnURIRequestChunkReceived___dupe2` fall off the end of a non-void function to keep retail's
+  `v0` (compiler warning, identical bytes).
+
+## Validation (2026-10-14, final)
+
+The working tree's `code/sdk/i18n.c`/`i18n.h` had in-progress edits from outside this session
+that move later objects ("rt_memory moved from its original address"). They were not touched;
+validation ran in an isolated container copy (`/tmp/ckroot`) with the committed `i18n.c` and a
+`DnsCache.h` -> `DNSCache.h` link (the include's case only resolves on the Windows bind mount).
+
+- Sequential `make split`, then `make -B -j8 elf`: PASS.
+- `check_main_elf.py`: PASS, 19,602 changed loaded bytes (was 23,368), all inside registered
+  function and jump-table slots.
+- `check_global_map.py`: PASS (806). `check_type_layouts.py`: PASS (1,905 across 211 types).
+- `compare_elf.py`: NONMATCH (expected while 81 functions are not exact).
+- Linked-ELF slot compare: compiled exact 853, compiled differs 81, rodata slots exact 10/10.
+- Progress: project 1,005 compiled / 7,619 assembly; 868 matching, 137 nonmatching slots.
+- NOT RUN: behaviour suites, regressions, ISO packing, emulator/gameplay (deferred).
+
+Rebuilt SHA-256 (isolated copy): `3f62a90b866922b645b52be5a0ecb0722f26199318c3a3b2913a5758ed7135bb`.
+
+## Tools (build/svo-library-work/)
+
+`perm.py` (test a replacement body; `--perm A B` permutes lines), `multi.py` (variants separated
+by `----`, `--install`), `climb.py` (statement-order hill climber scored by diff lines plus
+store-offset LCS), `install.py`, `family.py`, `cmpvar.sh` (per-function before/after for a
+module), `hdrtest.sh` (effect of a header edit across modules), `try.sh`, `sbs.py`,
+`byte-compare.py`, `ck4.sh` (full checkpoint). Note: `sbs.py` prints EE `cvt.w.s` as `.word`
+on the retail side and objdump prints the same encoding as `trunc.w.s`, so those lines show as
+`!!` although the bytes are equal; `byte-compare.py` is authoritative. Agent scratch files use
+`h2_`/`h3_` prefixes.
+
+---
+
+# Earlier handoff, 2026-10-13 (toolchain switch)
 
 **934/935 slots compiled from C/C++; 603 byte-exact, 331 fit their original slots.**
 The one remaining `INCLUDE_ASM` is `PageRequestListener func_01F27658`. It is a 4-byte

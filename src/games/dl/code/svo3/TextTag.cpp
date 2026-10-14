@@ -71,14 +71,14 @@ extern "C" SECTION(_TextTag) void _TextTag(SVTag *tag, int flags)
 extern "C" SECTION(DefaultInit___dupe2) void DefaultInit___dupe2(TextTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoTextTagName, 64);
-    tag->m_align = 0;
     tag->m_fontSize = 14;
+    tag->m_align = 0;
     tag->m_displayLength = 0.0f;
     memset(tag->m_text, 0, 128);
     tag->m_link = 0;
-    tag->m_textColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFFFFFF00;
     tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->m_textColor = 0xFFFFFFFF;
 }
 
 extern "C" SECTION(Draw___dupe8) void Draw___dupe8(TextTagState *tag)
@@ -124,8 +124,8 @@ extern "C" SECTION(TextTag) void TextTag(TextTagState *tag, iks *xml, CAllContex
     getIntAttrib(tag->base.m_xml, svoTextFontSizeAttribute, &tag->m_fontSize);
     getFloatAttrib(tag->base.m_xml, svoTextDisplayLengthAttribute, &tag->m_displayLength);
     getAlignAttrib(tag->base.m_xml, svoTextAlignAttribute, &tag->m_align);
-    tag->base.m_lineColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFFFFFF00;
+    tag->base.m_lineColor = 0xFFFFFFFF;
     getColorAttrib(tag->base.m_xml, svoTextHighlightColorAttribute, &tag->base.m_fillColor);
     getColorAttrib(tag->base.m_xml, svoTextColorAttribute, &tag->m_textColor);
     unsigned int color;
@@ -134,13 +134,15 @@ extern "C" SECTION(TextTag) void TextTag(TextTagState *tag, iks *xml, CAllContex
     if (tag->m_link) decodeEntityText(tag->m_link);
     tag->m_linkOption = 0;
     getLinkOptionAttrib(tag->base.m_xml, svoTextLinkOptionAttribute, &tag->m_linkOption);
-    tag->base.m_bSelectable = tag->m_link != 0;
+    if (tag->m_link) tag->base.m_bSelectable = 1;
+    else tag->base.m_bSelectable = 0;
     getStringAttrib(tag->base.m_xml, svoTextClassAttribute, &tag->base.m_tagClass);
-    memset(tag->m_text, 0, 128);
+    char *buffer = tag->m_text;
+    memset(buffer, 0, 128);
     if (iks_has_children(tag->base.m_xml)) {
         char *text = iks_cdata(iks_child(tag->base.m_xml));
         if (!text) __SVO_Assert_Handler(svoTextTagSource, 0x61);
-        svstrncpy(tag->m_text, text, 128);
+        svstrncpy(buffer, text, 128);
     }
-    decodeEntityText(tag->m_text);
+    decodeEntityText(buffer);
 }

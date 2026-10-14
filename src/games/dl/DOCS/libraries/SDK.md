@@ -1,5 +1,55 @@
 # Deadlocked SDK compiler profile
 
+## Integrated decompilation (2026-10-14)
+
+**19/20 real SDK functions (95.00%) now compile to exact retail bytes.**
+`libezcnf.c` contributes five functions, `libezctl.c` seven, and `i18n.c` seven.
+All 3,608 compiled bytes match with resolved calls and data references. All three
+complete module ranges match, including padding and two retained unused
+instruction fragments. Including those fragments, the raw inventory is 19/22
+entries (86.36%). Function-byte progress is 3,608/4,276 (84.38%).
+See [SDK progress](../progress/SDK.json) and [function rows](../progress/SDK.csv).
+
+The compiler profile below remains unchanged. Production functions use fixed
+retail slots in `config/decompiled_functions.yaml`. `eznet_rpc.h` owns RPC
+declarations; `i18n.h` owns the shared 0x38-byte `ezNetCtlStatus` (dltypes.txt
+line 11229), 0x1fc-byte interface-info union, and 0x10-byte message-table entry.
+Retail accesses establish the used layouts; union views and callback signatures
+are recovered from retail. Globals reference existing storage. The character
+table reuses the existing libc `_ctype_` symbol.
+
+`ezNetCtlRecreateIfstat` at 0x01E9AE48 remains assembly. Its research source is
+`TESTS/sdk_inet_unmatched.c`: 668 bytes, 648 equal bytes, with remaining register
+allocation differences. It is excluded from completed C counts. `ezNetCnfExit`
+preserves the retail uninitialized result when the module is not running.
+
+Validation: isolated forced full build with ALLOW_NONMATCHING=0 passed;
+`check_sdk.py` passed exact functions and complete module ranges;
+`check_sdk_layouts.py` passed with SCE 2.96; the full placement/outside-slot audit
+passed. Strict whole-game comparison reports 9,770 differing bytes (5,130 main,
+4,640 network), all outside this SDK work and inside other registered replacements.
+Runtime headers match. No ISO, emulator, or gameplay test was performed.
+
+The snapshot is `/tmp/sdk-integration` in `projectryno-medius-probe`, using
+rewritten absolute include paths and the snapshot-only `DnsCache.h` case alias.
+It does not rebuild the concurrent SVO3 checkout. The YAML now assigns the four
+zero padding bytes at ROM 0x44EA74..0x44EA78 to libezctl, where the compiler emits
+the same padding. On an old generated tree, remove the obsolete untracked files
+`code/asm/build/junk/net.text/44ea74_44ea78.s` and
+`assets/junk/net.text/44ea74_44ea78.textbin.bin` before resplitting, to avoid
+emitting the padding twice.
+
+After `make split`, then a forced build:
+
+```sh
+python3 TESTS/check_sdk.py ../assets/dl/boot.elf build/boot_elf.elf build/code/sdk
+python3 TESTS/check_sdk_layouts.py
+python3 TESTS/check_main_elf.py ../assets/dl/boot.elf build/boot_elf.elf build/code/game/boot.o
+python3 ../tools/compare_elf.py ../assets/dl/boot.elf build/boot_elf.elf
+```
+
+The research below describes the earlier compiler-only stage.
+
 ## Finding (2026-10-13)
 
 For `src/games/dl/code/sdk`, the strongest tested compiler is Sony SCE
@@ -87,9 +137,9 @@ The build uses the existing `/tmp/medius-integration` snapshot in
 case alias and rewritten absolute INCLUDE_ASM paths. It does not rebuild or
 clean the actively edited SVO3 checkout. Counts describe this saved snapshot.
 
-All 22 SDK INCLUDE_ASM entries remain in production source (two are split
+At the initial compiler-only stage, all 22 SDK INCLUDE_ASM entries remained in production source (two are split
 instruction remnants, not complete independent functions). These C bodies are
-compiler probes only, so **SDK production C decompilation progress remains 0%**.
+compiler probes only, so **SDK production C decompilation progress was 0%**.
 Medius remains 3/1,462 (0.21%). Integrating the SDK probes into original module
 headers/source and registering their slots is separate follow-up work.
 

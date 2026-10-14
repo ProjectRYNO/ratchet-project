@@ -25,12 +25,13 @@ DNS_SECTION(Get___dupe2) DNSCacheState *Get___dupe2()
 void DNS_SECTION(DNSCache) DNSCache(DNSCacheState *cache)
 {
     DNSCacheEntry *entry = cache->m_entries;
-    DNSCacheEntry *end = entry + 8;
+    int i = 7;
     do {
         entry->name[0] = 0;
         memset(entry->rtIP, 0, 8);
         entry->age = -1;
-    } while (++entry != end);
+        entry++;
+    } while (--i != -1);
 }
 
 void DNS_SECTION(CacheStore) CacheStore(DNSCacheState *cache, char *name, const void *address)
@@ -45,20 +46,19 @@ void DNS_SECTION(CacheStore) CacheStore(DNSCacheState *cache, char *name, const 
     DNSCacheEntry *available = 0;
     DNSCacheEntry *oldest = 0;
     DNSCacheEntry *found = 0;
-    DNSCacheEntry *entry = cache->m_entries;
-    DNSCacheEntry *end = entry + 8;
-    do {
-        if (entry->age == -1) {
-            if (!available) available = entry;
-        } else if (!oldest || oldest->age < entry->age) {
-            oldest = entry;
-        } else if (!strncmp(entry->name, normalized, 64)) {
+    for (int i = 0; i < 8 && !found; i++) {
+        if (cache->m_entries[i].age == -1) {
+            if (!available) available = &cache->m_entries[i];
+        } else if (!oldest || oldest->age < cache->m_entries[i].age) {
+            oldest = &cache->m_entries[i];
+        } else if (!strncmp(cache->m_entries[i].name, normalized, 64)) {
             // Retail skips this comparison when selecting a new oldest entry.
-            found = entry;
+            found = &cache->m_entries[i];
         }
-    } while (++entry != end && !found);
+    }
     if (!found) {
-        found = available ? available : oldest;
+        if (available) found = available;
+        else found = oldest;
         svstrncpy(found->name, normalized, 129);
         memcpy(found->rtIP, address, 8);
     }
@@ -78,20 +78,19 @@ void DNS_SECTION(CacheStore2) CacheStore2(DNSCacheState *cache, char *name, cons
     DNSCacheEntry *available = 0;
     DNSCacheEntry *oldest = 0;
     DNSCacheEntry *found = 0;
-    DNSCacheEntry *entry = cache->m_entries;
-    DNSCacheEntry *end = entry + 8;
-    do {
-        if (entry->age == -1) {
-            if (!available) available = entry;
-        } else if (!oldest || oldest->age < entry->age) {
-            oldest = entry;
-        } else if (!strncmp(entry->name, normalized, 64)) {
+    for (int i = 0; i < 8 && !found; i++) {
+        if (cache->m_entries[i].age == -1) {
+            if (!available) available = &cache->m_entries[i];
+        } else if (!oldest || oldest->age < cache->m_entries[i].age) {
+            oldest = &cache->m_entries[i];
+        } else if (!strncmp(cache->m_entries[i].name, normalized, 64)) {
             // Retail skips this comparison when selecting a new oldest entry.
-            found = entry;
+            found = &cache->m_entries[i];
         }
-    } while (++entry != end && !found);
+    }
     if (!found) {
-        found = available ? available : oldest;
+        if (available) found = available;
+        else found = oldest;
         svstrncpy(found->name, normalized, 129);
         memcpy(found->rtIP, address, 8);
     }
@@ -102,21 +101,25 @@ void DNS_SECTION(CacheStore2) CacheStore2(DNSCacheState *cache, char *name, cons
 int DNS_SECTION(CacheRetrieve) CacheRetrieve(DNSCacheState *cache, char *name, void *address)
 {
     char normalized[64];
+    int found = 0;
     svstrncpy(normalized, name, 65);
     normalized[63] = 0;
     strlwr(normalized);
-    for (int i = 0; i < 8; ++i) {
-        DNSCacheEntry *entry = &cache->m_entries[i];
-        if (entry->age >= 0 && !strncmp(entry->name, normalized, 128)) {
-            memcpy(address, entry->rtIP, 8);
-            entry->age = 0;
-            return 1;
+    for (int i = 0; i < 8 && !found; i++) {
+        if (cache->m_entries[i].age >= 0 && !strncmp(cache->m_entries[i].name, normalized, 128)) {
+            memcpy(address, cache->m_entries[i].rtIP, 8);
+            found = 1;
+            cache->m_entries[i].age = 0;
         }
     }
-    return 0;
+    return found;
 }
 
 void DNS_SECTION(__tcf_0___dupe2) __tcf_0___dupe2()
 {
-    // Retail only walks eight entries backwards: no calls or observable stores.
+    // Static array destructor for the eight cache entries; the element destructor is empty.
+    if (svoDNSCache.m_entries) {
+        DNSCacheEntry *entry = svoDNSCache.m_entries + 8;
+        while (entry != svoDNSCache.m_entries) --entry;
+    }
 }

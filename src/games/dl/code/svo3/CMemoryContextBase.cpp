@@ -26,19 +26,20 @@ void SVO_MEMORY_SECTION(CMemoryContextBase) CMemoryContextBase(CMemoryContextBas
 {
     context->vtable = &svoMemoryContextVtable;
     context->pageBeginHighWaterMark = 0;
-    context->m_TotalBytes = 0;
     context->m_MaxAllocated = 0;
     context->m_AllocCounter = 0;
     context->m_FreeCounter = 0;
     context->buCnt = 0;
+    context->m_TotalBytes = 0;
     InitMemChunks(context);
 }
 
 SVO_MEMORY_SECTION(svAllocSafe) void *svAllocSafe(CMemoryContextBaseState *context,
     unsigned int size, unsigned int align, int line, char *file)
 {
+    unsigned int padding = 4;
     if (align >= 256) __SVO_Assert_Handler(svoMemoryContextSource, 0x52);
-    unsigned int padding = align > 4 ? align : 4;
+    if (align != 0) { if (align > 4) padding = align; }
     void *memory = context->vtable->svAlloc(context, size + padding * 2, align);
     // Retail counts every attempt, including an allocator returning NULL.
     ++context->m_AllocCounter;
@@ -55,10 +56,10 @@ void SVO_MEMORY_SECTION(InitMemChunks) InitMemChunks(CMemoryContextBaseState *co
 {
     context->m_curMemChunk = 0;
     CMemChunk *chunk = context->m_memChunks;
-    int remaining = 640;
+    int i = 639;
     do {
         Init___dupe39(chunk++, 0, 0, svoMemoryUnused);
-    } while (--remaining);
+    } while (--i >= 0);
 }
 
 void SVO_MEMORY_SECTION(Cleanup) Cleanup(CMemoryContextBaseState *context)
@@ -82,10 +83,10 @@ void SVO_MEMORY_SECTION(Init___dupe39) Init___dupe39(
     if (strcmp(chunk->idStr, svoMemoryNotSet) == 0) {
         __SVO_Assert_Handler(svoMemoryContextSource, 0x1E2);
     }
-    if (strcmp(shortName, svoMemoryFreed) == 0) {
-        chunk->id = ~0U;
-    } else {
+    if (strcmp(shortName, svoMemoryFreed) != 0) {
         chunk->id = svoMemChunkIdCount++;
+    } else {
+        chunk->id = ~0U;
     }
 }
 

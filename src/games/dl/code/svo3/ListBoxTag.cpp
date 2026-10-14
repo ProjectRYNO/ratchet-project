@@ -94,14 +94,16 @@ extern "C" SECTION(addItem) int addItem(ListBoxTagState *tag, char *itemName)
 {
     if (!itemName) __SVO_Assert_Handler(svoListBoxTagSource, 0x253);
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x254);
-    if (tag->m_numItems >= tag->m_maxNumItems) return 0;
-    ListBoxItem *item = (ListBoxItem *)svAllocSafe(tag->base.m_contexts->memoryContext,
+    if (tag->m_numItems < tag->m_maxNumItems) {
+        ListBoxItem *item = (ListBoxItem *)svAllocSafe(tag->base.m_contexts->memoryContext,
         sizeof(ListBoxItem), 0, 0x258, svoListBoxTagSource);
-    int index = tag->m_numItems;
-    item->displayStr = itemName;
-    tag->m_numItems = index + 1;
-    tag->m_items[index] = item;
-    return 1;
+        int index = tag->m_numItems;
+        item->displayStr = itemName;
+        tag->m_numItems = index + 1;
+        tag->m_items[index] = item;
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" SECTION(calculateScrollBarPercentage) float calculateScrollBarPercentage(ListBoxTagState *tag)
@@ -122,24 +124,28 @@ extern "C" SECTION(changeSelectedItem) void changeSelectedItem(ListBoxTagState *
     if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x1c4);
     int selected = tag->m_selectedIndex;
     int top = tag->m_topVisibleIndex;
-    if (direction == -1) {
-        if (selected == -1) tag->m_selectedIndex = tag->m_numItems - 1;
+    switch (direction) {
+    case -1: {
+        int count = tag->m_numItems;
+        if (selected == direction) tag->m_selectedIndex = count - 1;
         else {
-            int count = tag->m_numItems;
-            int next = (selected - 1 + count) % count;
+            int next = (selected + direction + count) % count;
             tag->m_selectedIndex = next;
             if (next < top) tag->m_topVisibleIndex = next;
-            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + count - tag->m_maxVisibleItems;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + (count - tag->m_maxVisibleItems);
         }
-    } else if (direction == 1) {
+        break;
+    }
+    case 1:
         if (selected == -1) tag->m_selectedIndex = 0;
         else {
             int count = tag->m_numItems;
-            int next = (selected + 1 + count) % count;
+            int next = (selected + direction + count) % count;
             tag->m_selectedIndex = next;
             if (next < top) tag->m_topVisibleIndex = next;
-            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + 1;
+            else if (next >= top + tag->m_maxVisibleItems) tag->m_topVisibleIndex = top + direction;
         }
+        break;
     }
     if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x1ef);
     if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x1f0);
@@ -153,11 +159,11 @@ extern "C" SECTION(clearItems) void clearItems(ListBoxTagState *tag)
 {
     memset(tag->m_items, 0, sizeof(tag->m_items));
     tag->m_maxNumItems = 0;
-    tag->m_bPopulatedByPage = 0;
     tag->m_maxVisibleItems = 0;
     tag->m_numItems = 0;
     tag->m_selectedIndex = 0;
     tag->m_topVisibleIndex = 0;
+    tag->m_bPopulatedByPage = 0;
 }
 
 extern "C" SECTION(countItems) int countItems(ListBoxTagState *tag)
@@ -171,15 +177,15 @@ extern "C" SECTION(countItems) int countItems(ListBoxTagState *tag)
 extern "C" SECTION(DefaultInit___dupe22) void DefaultInit___dupe22(ListBoxTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoListBoxTagName, 64);
-    const ListBoxTagVtablePrefix *vtable = (const ListBoxTagVtablePrefix *)tag->base.vtable;
     tag->m_fontSize = 14;
+    const ListBoxTagVtablePrefix *vtable = (const ListBoxTagVtablePrefix *)tag->base.vtable;
     tag->m_align = 1;
     tag->base.m_fillColor = 0xFFFFFFFF;
     tag->base.m_lineColor = 0xFF00FF00;
     tag->m_defaultItemColor = 0xFF000000;
     tag->m_selectedItemColor = 0xFFFFFF00;
-    tag->m_buttonHeight = 20.0f;
     tag->m_lineSpacing = 20.0f;
+    tag->m_buttonHeight = 20.0f;
     tag->m_displayLength = 0.0f;
     tag->m_turnOffDraw = 0;
     tag->m_selectFocusAreaMode = 0;
@@ -192,10 +198,10 @@ extern "C" SECTION(DefaultInit___dupe22) void DefaultInit___dupe22(ListBoxTagSta
 extern "C" SECTION(deleteItem) int deleteItem(ListBoxTagState *tag, int index)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x273);
+    if (index >= tag->m_numItems) return 0;
+    if (!tag->m_items[index]) return 0;
+    for (int i = index; i < tag->m_numItems - 1; ++i) tag->m_items[i] = tag->m_items[i + 1];
     int count = tag->m_numItems;
-    if (index >= count || !tag->m_items[index]) return 0;
-    for (; index < count - 1; ++index) tag->m_items[index] = tag->m_items[index + 1];
-    count = tag->m_numItems;
     tag->m_numItems = count - 1;
     // Retail clears the old count index, not the last occupied index.
     tag->m_items[count] = 0;
@@ -227,17 +233,17 @@ extern "C" SECTION(Draw___dupe25) void Draw___dupe25(ListBoxTagState *tag)
         tag->base.m_z, tag->base.m_width, tag->base.m_height, tag->base.m_lineColor,
         tag->base.m_fillColor, tag->m_scrollBarPercentage, fraction, active, tag->base.m_tagClass);
     float y = tag->base.m_y;
-    ListBoxItem **item = tag->m_items + tag->m_topVisibleIndex;
-    for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i, ++item) {
-        strlen((*item)->displayStr);
+    for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i) {
+        strlen(tag->m_items[i]->displayStr);
         float x = tag->base.m_x + 10.0f;
         unsigned int color = i == selected ? tag->m_selectedItemColor : tag->m_defaultItemColor;
-        if (tag->m_displayLength > 0.0f) TrimToFitDisplaySize(draw, (*item)->displayStr, tag->m_displayLength, tag->m_fontSize);
+        if (tag->m_displayLength > 0.0f) TrimToFitDisplaySize(draw, tag->m_items[i]->displayStr, tag->m_displayLength, tag->m_fontSize);
         float height = tag->m_buttonHeight;
-        int length = strlen((*item)->displayStr);
-        draw->vtable->DrawButton(draw, (*item)->tagid, x, y, 100000.0f, tag->base.m_width,
-            height, 0xFF000000, 0xFF0000FF, color, i == selected, (*item)->displayStr,
-            length, tag->m_fontSize, tag->m_align, (*item)->tagClass, 0);
+        int isSelected = i == selected;
+        int length = strlen(tag->m_items[i]->displayStr);
+        draw->vtable->DrawButton(draw, tag->m_items[i]->tagid, x, y, 100000.0f, tag->base.m_width,
+            height, 0xFF000000, 0xFF0000FF, color, isSelected, tag->m_items[i]->displayStr,
+            length, tag->m_fontSize, tag->m_align, tag->m_items[i]->tagClass, 0);
         y = tag->base.m_y + tag->m_lineSpacing * (float)(i - tag->m_topVisibleIndex + 1);
     }
 }
@@ -279,14 +285,12 @@ extern "C" SECTION(getSelectedIndex) int getSelectedIndex(ListBoxTagState *tag)
 
 extern "C" SECTION(getSelectedItem) ListBoxItem *getSelectedItem(ListBoxTagState *tag)
 {
-    if (tag->m_numItems) {
-        if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x190);
-        if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x191);
-        if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x192);
-        if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x193);
-        return tag->m_items[tag->m_selectedIndex];
-    }
-    return 0;
+    if (!tag->m_numItems) return 0;
+    if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x190);
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x191);
+    if (tag->m_selectedIndex < tag->m_topVisibleIndex) __SVO_Assert_Handler(svoListBoxTagSource, 0x192);
+    if (tag->m_selectedIndex >= tag->m_topVisibleIndex + tag->m_maxVisibleItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x193);
+    return tag->m_items[tag->m_selectedIndex];
 }
 
 extern "C" SECTION(getTopVisibleIndex) int getTopVisibleIndex(ListBoxTagState *tag)
@@ -303,54 +307,56 @@ extern "C" SECTION(getTopVisibleIndex) int getTopVisibleIndex(ListBoxTagState *t
 
 extern "C" SECTION(HandleInput___dupe53) int HandleInput___dupe53(ListBoxTagState *tag, CPage *page)
 {
+    int result = 1;
     CInputContextBaseState *input = tag->base.m_contexts->inputContext;
     if (!tag->base.m_xml) __SVO_Assert_Handler(svoListBoxTagSource, 0x95);
     if (!input) __SVO_Assert_Handler(svoListBoxTagSource, 0x96);
     if (!page) __SVO_Assert_Handler(svoListBoxTagSource, 0x97);
-    if (!tag->m_selectFocusAreaMode && tag->base.vtable->IsSelected(&tag->base)) {
+    if (tag->m_selectFocusAreaMode) return result;
+    if (tag->base.vtable->IsSelected(&tag->base)) {
         if (tag->m_bPopulatedByPage) {
             if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
-                if (page->m_state) return 0;
-                int selected = ((const ListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
-                ListBoxItem *item = tag->m_items[selected];
-                if (!item->h_ref) return 0;
-                followLink(page, item->h_ref, item->linkOption);
-                CAudioContextBaseState *audio = GetAudioContext();
-                ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoListBoxMoveClass);
-                return 0;
+                result = 0;
+                if (!page->m_state) {
+                    int selected = ((const ListBoxTagVtablePrefix *)tag->base.vtable)->getSelectedIndex(tag);
+                    ListBoxItem *item = tag->m_items[selected];
+                    if (item->h_ref) {
+                        followLink(page, item->h_ref, item->linkOption);
+                        CAudioContextBaseState *audio = GetAudioContext();
+                        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoListBoxMoveClass);
+                    }
+                }
+                return result;
             }
         } else if (HasActionOccurred(input, 0x11, SV_ACTION_ACTIVATE)) {
             SignalPluginEvent(GetInstance(), 0, tag);
         }
-        int direction;
-        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP)) direction = -1;
-        else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)) direction = 1;
-        else {
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP))
+            ((const ListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, -1);
+        else if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN))
+            ((const ListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, 1);
+        else
             HasActionOccurred(input, 0x11, SV_ACTION_LEAVE_FOCUS_GROUP);
-            return 1;
-        }
-        ((const ListBoxTagVtablePrefix *)tag->base.vtable)->changeSelectedItem(tag, direction);
     }
-    return 1;
+    return result;
 }
 
 extern "C" SECTION(initListboxItem) void initListboxItem(ListBoxTagState *tag, ListBoxItem *item)
 {
-    unsigned int id = svoNextTagId;
     item->displayStr = 0;
     item->h_ref = 0;
     item->linkOption = 0;
     item->tagClass = 0;
     item->name = 0;
     item->info = 0;
-    svoNextTagId = id + 1;
+    unsigned int id = svoNextTagId++;
     item->tagid = id;
 }
 
 extern "C" SECTION(isIndexSelected) int isIndexSelected(ListBoxTagState *tag, int index)
 {
     if (tag->m_maxNumItems > 100) __SVO_Assert_Handler(svoListBoxTagSource, 0x290);
-    if (tag->m_maxNumItems < tag->m_numItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x291);
+    if (tag->m_numItems > tag->m_maxNumItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x291);
     if (index >= tag->m_numItems) __SVO_Assert_Handler(svoListBoxTagSource, 0x292);
     if (!tag->m_items[index]) __SVO_Assert_Handler(svoListBoxTagSource, 0x293);
     return index == tag->m_selectedIndex;
@@ -402,7 +408,8 @@ extern "C" SECTION(populateListboxItems) void populateListboxItems(ListBoxTagSta
         if (!tag->m_items[i]->tagClass) tag->m_items[i]->tagClass = svoListBoxDefaultItemClass;
         tag->m_items[i]->name = iks_find_attrib(xml, svoListBoxNameAttribute);
         if (!tag->m_items[i]->name) __SVO_Assert_Handler(svoListBoxTagSource, 0x227);
-        tag->m_items[i]->tagid = svoNextTagId++;
+        unsigned int id = svoNextTagId++;
+        tag->m_items[i]->tagid = id;
         if (tag->m_items[i]->h_ref) {
             decodeEntityText(tag->m_items[i]->h_ref);
             getLinkOptionAttrib(xml, svoListBoxLinkOptionAttribute, &tag->m_items[i]->linkOption);

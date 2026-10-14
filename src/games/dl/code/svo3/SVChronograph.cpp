@@ -33,25 +33,31 @@ CMemoryContextBaseState *GetMemoryContext(void);
 
 int CHRONO_SECTION(SV_timerGetMilliseconds) SV_timerGetMilliseconds(CSystemContextBase *context)
 {
+    // The retail vtable slot returns a 64-bit value that is narrowed to int.
+    typedef long (*ElapsedFunction)(CSystemContextBase *);
     SVBrowserPrefix *browser = GetInstance();
-    if (!context) {
-        if (!browser) {
-            svoTimerMilliseconds = 0;
-            return svoTimerMilliseconds;
-        }
-        context = GetSystemContext();
+    if (context) {
+        svoTimerMilliseconds = ((ElapsedFunction)context->vtable->GetElapsedMS)(context);
+    } else if (browser) {
+        CSystemContextBase *system = GetSystemContext();
+        svoTimerMilliseconds = ((ElapsedFunction)system->vtable->GetElapsedMS)(system);
+    } else {
+        svoTimerMilliseconds = 0;
     }
-    svoTimerMilliseconds = context->vtable->GetElapsedMS(context);
     return svoTimerMilliseconds;
 }
 
-void CHRONO_SECTION(SVChronograph) SVChronograph(SVChronographState *timer, int startnow)
+struct SVChronographCtor {
+    SVChronographState timer;
+    SVChronographCtor(int startnow) __asm__("SVChronograph");
+};
+CHRONO_SECTION(SVChronograph) SVChronographCtor::SVChronographCtor(int startnow)
 {
-    timer->start = 1;
-    timer->m_pSystemContext = 0;
-    timer->stop = 1;
-    timer->lastlap = 1;
-    if (startnow) Start___dupe3(timer);
+    timer.stop = 1;
+    timer.lastlap = 1;
+    timer.start = 1;
+    timer.m_pSystemContext = 0;
+    if (startnow) Start___dupe3(&timer);
 }
 
 void CHRONO_SECTION(_SVChronograph) _SVChronograph(SVChronographState *timer, unsigned int flags)
@@ -75,9 +81,9 @@ void CHRONO_SECTION(Start___dupe3) Start___dupe3(SVChronographState *timer)
     int now = SV_timerGetMilliseconds(timer->m_pSystemContext);
     if (IsStopped(timer)) {
         unsigned int pause = (unsigned int)now - timer->stop;
-        timer->stop = 0;
         timer->start = (unsigned int)timer->start + pause;
         timer->lastlap = (unsigned int)timer->lastlap + pause;
+        timer->stop = 0;
     } else {
         Reset___dupe5(timer);
     }
@@ -91,8 +97,8 @@ void CHRONO_SECTION(Stop___dupe3) Stop___dupe3(SVChronographState *timer)
 void CHRONO_SECTION(Reset___dupe5) Reset___dupe5(SVChronographState *timer)
 {
     int now = SV_timerGetMilliseconds(timer->m_pSystemContext);
-    timer->start = now;
     timer->lastlap = now;
+    timer->start = now;
 }
 
 int CHRONO_SECTION(Elapsed) Elapsed(SVChronographState *timer)

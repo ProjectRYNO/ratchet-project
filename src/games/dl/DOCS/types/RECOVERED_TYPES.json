@@ -11201,5 +11201,119 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "ezNetCtlStatus",
+    "size": "0x38",
+    "line": 11229,
+    "owners": [
+      "sdk/libezctl",
+      "sdk/i18n"
+    ],
+    "header": "code/sdk/i18n.h",
+    "evidence": "retail-instruction-layout",
+    "fields": [
+      {
+        "name": "ifid",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ifid2",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "ifname",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "ifname2",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "iftype",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "error",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "link",
+        "offset": 52,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "EzNetCtlInfo",
+    "size": "0x1fc",
+    "line": null,
+    "owners": [
+      "sdk/libezctl",
+      "sdk/i18n"
+    ],
+    "header": "code/sdk/i18n.h",
+    "evidence": "retail-instruction-layout",
+    "fields": [
+      {
+        "name": "raw",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "common",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ppp",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SDKMessageEntry",
+    "size": "0x10",
+    "line": null,
+    "owners": [
+      "sdk/libezctl",
+      "sdk/i18n"
+    ],
+    "header": "code/sdk/i18n.h",
+    "evidence": "retail-instruction-layout",
+    "fields": [
+      {
+        "name": "first",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "last",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "message",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "formatter",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
   }
 ]

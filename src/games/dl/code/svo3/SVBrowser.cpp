@@ -47,7 +47,7 @@ extern "C" {
 void rt_comm_startup();
 void rt_comm_update();
 void rt_comm_get_local_ip(RTLinkAddress *);
-void rt_comm_linkaddress_tostr(char *, unsigned int);
+void rt_comm_linkaddress_tostr(char *, RTLinkAddress);
 }
 
 
@@ -107,7 +107,7 @@ extern "C" {
 void DestroyInTransitionArray(CPage *);
 void DestroyPostTransitionArray(CPage *);
 void DestroyPreTransitionArray(CPage *);
-int shutdown(CPage *);
+void shutdown(CPage *);
 void _CPage(CPage *, unsigned int);
 void FreeResources___dupe54(FileDownloadQueueState *);
 void freeResources___dupe4(SVDownloadManager *, int);
@@ -308,16 +308,16 @@ SECTION(SetAlternateContexts) void SetAlternateContexts(SVBrowserPrefix *browser
     if (!contexts->drawContext || !contexts->inputContext || !contexts->memoryContext || !contexts->audioContext || !contexts->systemContext)
         __SVO_Assert_Handler(svoBrowserSource, 0x1FF);
     SVBrowserPrefix *instance = svoBrowserInstance;
-    CSystemContextBase *system = contexts->systemContext;
     CDrawContextBase *draw = contexts->drawContext;
     CAudioContextBaseState *audio = contexts->audioContext;
     CMemoryContextBaseState *memory = contexts->memoryContext;
     CInputContextBaseState *input = contexts->inputContext;
-    instance->m_pAltSystemContext = system;
+    CSystemContextBase *system = contexts->systemContext;
     instance->m_pAltDrawContext = draw;
     instance->m_pAltAudioContext = audio;
     instance->m_pAltMemoryContext = memory;
     instance->m_pAltInputContext = input;
+    instance->m_pAltSystemContext = system;
 }
 
 int BrowserIsIdle(SVBrowserPrefix *browser);
@@ -336,11 +336,10 @@ SECTION(SetExternalIPAddress) void SetExternalIPAddress(SVBrowserPrefix *browser
 
 SECTION(GetLoginInfo) void GetLoginInfo(SVBrowserPrefix *browser, char **user, char **password, int *account, char **ip)
 {
-    int id = browser->m_loginInfo.MediusAccountID;
     *user = browser->m_loginInfo.MediusUserName;
-    *account = id;
     *password = browser->m_loginInfo.MediusPassWord;
     *ip = browser->m_loginInfo.ExternalIP;
+    *account = browser->m_loginInfo.MediusAccountID;
 }
 
 SECTION(SetLogout) void SetLogout(SVBrowserPrefix *browser)
@@ -381,13 +380,12 @@ void InitServerInfo(SVServerInfo *info);
 extern "C" SECTION(InitServerInfo) void InitServerInfo(SVServerInfo *info)
 {
     info->port = -1;
-    // The two adjacent character arrays occupy exactly 514 bytes; padding and port are preserved.
-    memset(info, 0, sizeof(info->serverName) + sizeof(info->firstPage));
+    memset(info->serverName, 0, 257);
+    memset(info->firstPage, 0, 257);
 }
 
 SECTION(InitInitializeParams) void InitInitializeParams(SVInitializeParams *params)
 {
-    params->iShouldListenForAuthoringToolPort = 0;
     params->downloadBufferSize = 0x80000;
     params->mainContextData = 0;
     params->altContextData = 0;
@@ -397,6 +395,7 @@ SECTION(InitInitializeParams) void InitInitializeParams(SVInitializeParams *para
     params->headerVersion = 0;
     params->defaultButtonMap = 0;
     params->targetInfo = 0;
+    params->iShouldListenForAuthoringToolPort = 0;
 }
 
 SECTION(SignalPluginEvent) void SignalPluginEvent(SVBrowserPrefix *browser, int event, SVTag *sender)
@@ -505,13 +504,14 @@ extern "C" SECTION(DeInitURISchemas) void DeInitURISchemas(SVBrowserPrefix *brow
 extern "C" SECTION(DownloadFile) int DownloadFile(SVBrowserPrefix *browser, char *path, char *id)
 {
     if (!path) __SVO_Assert_Handler(svoBrowserSource, 0x427);
-    if (browser->m_bUseDownloadManger) {
-        char *stored = find___dupe2(browser->m_pFileDownloadQueue, path);
-        return doRequest___dupe4(browser->m_pDownloadManager, stored ? stored : path, 0, 0, id);
+    if (!browser->m_bUseDownloadManger) {
+        SetErrorCode(0x1F);
+        if (!browser->m_bUseDownloadManger) __SVO_Assert_Handler(svoBrowserSource, 0x42B);
+        return 0;
     }
-    SetErrorCode(0x1F);
-    if (!browser->m_bUseDownloadManger) __SVO_Assert_Handler(svoBrowserSource, 0x42B);
-    return 0;
+    char *stored = find___dupe2(browser->m_pFileDownloadQueue, path);
+    if (stored) return doRequest___dupe4(browser->m_pDownloadManager, stored, 0, 0, id);
+    return doRequest___dupe4(browser->m_pDownloadManager, path, 0, 0, id);
 }
 
 extern "C" SECTION(DrawPages) void DrawPages(SVBrowserPrefix *browser, CPage **activePage, int drawTags)
@@ -582,65 +582,59 @@ extern "C" SECTION(FreeResources) void FreeResources(SVBrowserPrefix *browser)
 extern "C" SECTION(GetPageName) char *GetPageName(SVBrowserPrefix *browser)
 {
     CPage *main = svoBrowserInstance->m_pMainPage;
-    if (!main) return 0;
-    CPage *popup = svoBrowserInstance->m_pPopupPage;
-    if (!popup) return 0;
-    SVTag **tags = (popup->m_bIsActive ? popup : main)->m_pFrontDisplayBuffer->tagList;
+    CPage *popup;
+    if (main && (popup = svoBrowserInstance->m_pPopupPage)) {
+    SVTag **tags;
+    if (popup->m_bIsActive) tags = popup->m_pFrontDisplayBuffer->tagList;
+    else tags = main->m_pFrontDisplayBuffer->tagList;
     for (int i = 0; i < 256 && tags[i]; ++i) {
         char *name = GetTagTypeName(tags[i]);
         if (!name) __SVO_Assert_Handler(svoBrowserSource, 0x71C);
         if (strncmp(name, svoBrowserPageIDTagName, 9) == 0)
             return tags[i]->vtable->GetTagName(tags[i]);
     }
+    }
     return 0;
 }
 
 extern "C" SECTION(HandleInputPages) void HandleInputPages(SVBrowserPrefix *browser, CPage *page)
 {
+    int i = 0;
     int handled = handleInput(page);
-    SVTagModuleState **entry = getInstance___dupe3()->m_modules;
-    if (handled && *entry) {
-        int count = 0;
-        do {
-            SVTagModuleState *module = *entry++;
-            ++count;
-            handled = module->vtable->HandleInput(module, page);
-            if (count >= 128 || !handled) break;
-        } while (*entry);
+    SVTagModuleState **modules = getInstance___dupe3()->m_modules;
+    for (; i < 128 && handled && modules[i]; i++) {
+        SVTagModuleState *module = modules[i];
+        handled = module->vtable->HandleInput(module, page);
     }
 }
 
+static inline char *ConfigIP(CConfigState *c) { if (!c->m_bFileRead) __SVO_Assert_Handler(svoBrowserConfigHeader, 0x23); return c->m_ip; }
+static inline int ConfigPort(CConfigState *c) { if (!c->m_bFileRead) __SVO_Assert_Handler(svoBrowserConfigHeader, 0x2D); return c->m_port; }
+static inline char *ConfigFirstPage(CConfigState *c) { if (!c->m_bFileRead) __SVO_Assert_Handler(svoBrowserConfigHeader, 0x37); return c->m_firstPage; }
 extern "C" SECTION(Initialize___dupe4) SVBrowserPrefix *Initialize___dupe4(SVInitializeParams *params)
 {
     SetErrorCode(0);
     svoBrowserInstance = (SVBrowserPrefix *)svAllocSafe(params->mainContextData->memoryContext, 0x3140, 0, 0, svoBrowserAllocationSource);
     if (!svoBrowserInstance) __SVO_Assert_Handler(svoBrowserSource, 0x134);
-    CAllContextData *contexts = params->mainContextData;
-    if (!contexts || !contexts->drawContext || !contexts->inputContext || !contexts->memoryContext || !contexts->audioContext || !contexts->systemContext) __SVO_Assert_Handler(svoBrowserSource, 0x13B);
+    if (!params->mainContextData || !params->mainContextData->drawContext || !params->mainContextData->inputContext || !params->mainContextData->memoryContext || !params->mainContextData->audioContext || !params->mainContextData->systemContext) __SVO_Assert_Handler(svoBrowserSource, 0x13B);
     DefaultInit(svoBrowserInstance);
-    SVBrowserPrefix *browser = svoBrowserInstance;
-    contexts = params->mainContextData;
-    browser->m_pDrawContext = contexts->drawContext;
-    browser->m_pVKBDrawContext = contexts->drawContext;
-    browser->m_pAudioContext = contexts->audioContext;
-    browser->m_pMemoryContext = contexts->memoryContext;
-    browser->m_pInputContext = contexts->inputContext;
-    browser->m_pSystemContext = contexts->systemContext;
+    svoBrowserInstance->m_pDrawContext = params->mainContextData->drawContext;
+    svoBrowserInstance->m_pAudioContext = params->mainContextData->audioContext;
+    svoBrowserInstance->m_pMemoryContext = params->mainContextData->memoryContext;
+    svoBrowserInstance->m_pInputContext = params->mainContextData->inputContext;
+    svoBrowserInstance->m_pSystemContext = params->mainContextData->systemContext;
+    svoBrowserInstance->m_pVKBDrawContext = params->mainContextData->drawContext;
     SV_CheckVersion(params->headerVersion);
     RTCommInit(svoBrowserInstance);
     if (params->altContextData->memoryContext != params->mainContextData->memoryContext) __SVO_Assert_Handler(svoBrowserSource, 0x153);
-    browser = svoBrowserInstance;
-    contexts = params->altContextData;
-    contexts->memoryContext = params->mainContextData->memoryContext;
-    SetAlternateContexts(browser, contexts);
-    browser = svoBrowserInstance;
-    browser->m_pCurrentTextEditableTag = 0;
-    browser->m_textEditPosition = 0;
-    memset(browser->m_textBuffer, 0, 0x3000);
-    browser = svoBrowserInstance;
-    browser->m_textIsPassword = 0;
-    browser->m_textMaxBytes = 0;
-    browser->m_textMaxChars = 0;
+    params->altContextData->memoryContext = params->mainContextData->memoryContext;
+    SetAlternateContexts(svoBrowserInstance, params->altContextData);
+    svoBrowserInstance->m_pCurrentTextEditableTag = 0;
+    svoBrowserInstance->m_textEditPosition = 0;
+    memset(svoBrowserInstance->m_textBuffer, 0, 0x3000);
+    svoBrowserInstance->m_textMaxBytes = 0;
+    svoBrowserInstance->m_textMaxChars = 0;
+    svoBrowserInstance->m_textIsPassword = 0;
     if (!params->targetInfo) __SVO_Assert_Handler(svoBrowserSource, 0x163);
     SetupTargetInfo(svoBrowserInstance, params->targetInfo);
     iks_set_malloc_func(SV_IKS_Malloc);
@@ -648,37 +642,35 @@ extern "C" SECTION(Initialize___dupe4) SVBrowserPrefix *Initialize___dupe4(SVIni
     CConfigState config;
     char firstPage[272];
     CConfig(&config);
-    if (params->eURL == 2) {
+    switch (params->eURL) {
+    case 1: {
+        loadConfigurationFile(&config, svoBrowserConfigFilename);
+        char *ip = ConfigIP(&config);
+        int port = ConfigPort(&config);
+        char *fp = ConfigFirstPage(&config);
+        sprintf(firstPage, svoBrowserServerFormat, ip, port, fp);
+        break;
+    }
+    case 2:
         if (!params->a_pPersistentData) __SVO_Assert_Handler(svoBrowserSource, 0x183);
         sprintf(firstPage, svoBrowserPersistentFormat, params->a_pPersistentData->homeURI);
-    } else if (params->eURL == 1) {
-        loadConfigurationFile(&config, svoBrowserConfigFilename);
-        int port = config.m_port;
-        if (!config.m_bFileRead) {
-            __SVO_Assert_Handler(svoBrowserConfigHeader, 0x23);
-            port = config.m_port;
-            if (!config.m_bFileRead) {
-                __SVO_Assert_Handler(svoBrowserConfigHeader, 0x2D);
-                port = config.m_port;
-                if (!config.m_bFileRead) __SVO_Assert_Handler(svoBrowserConfigHeader, 0x37);
-            }
-        }
-        sprintf(firstPage, svoBrowserServerFormat, config.m_ip, port, config.m_firstPage);
-    } else if (params->eURL == 3) {
-        SVServerInfo *server = params->serverInfo;
-        sprintf(firstPage, svoBrowserServerFormat, server->serverName, server->port, server->firstPage);
-    } else __SVO_Assert_Handler(svoBrowserSource, 0x190);
-    CURISchemeMgrState *schemes = Get();
-    init___dupe2(schemes, svoBrowserInstance->m_pMemoryContext);
+        break;
+    case 3:
+        sprintf(firstPage, svoBrowserServerFormat, params->serverInfo->serverName, params->serverInfo->port, params->serverInfo->firstPage);
+        break;
+    default:
+        __SVO_Assert_Handler(svoBrowserSource, 0x190);
+    }
+    init___dupe2(Get(), svoBrowserInstance->m_pMemoryContext);
     InitURISchemas(svoBrowserInstance);
-    browser = svoBrowserInstance;
-    browser->m_pMainPage = 0;
-    browser->m_pPopupPage = 0;
-    browser->m_pDownloadManager = 0;
+    SVBrowserPrefix *inst = svoBrowserInstance;
+    inst->m_pMainPage = 0;
+    inst->m_pPopupPage = 0;
+    inst->m_pDownloadManager = 0;
     URIStoreState *store = (URIStoreState *)URIStoreNew(0x204);
     URIStore(store);
-    browser->m_pURIStore = store;
-    browser = svoBrowserInstance;
+    inst->m_pURIStore = store;
+    SVBrowserPrefix *browser = svoBrowserInstance;
     if (browser->m_bUseDownloadManger) {
         FileDownloadQueueState *queue = (FileDownloadQueueState *)FileDownloadQueueNew(0x28);
         FileDownloadQueue(queue);
@@ -706,24 +698,30 @@ extern "C" SECTION(Initialize___dupe4) SVBrowserPrefix *Initialize___dupe4(SVIni
     }
     RegisterCommonTagModules();
     Activate(svoBrowserInstance);
-    browser = svoBrowserInstance;
-    browser->m_bOkToNavigate = 1;
-    browser->m_bLogout = 0;
-    browser->m_bShowVKB = 0;
-    browser->m_bIsXMPPActive = 0;
-    InitalizePluginManagerAndPlugins(browser);
+    svoBrowserInstance->m_bOkToNavigate = 1;
+    svoBrowserInstance->m_bLogout = 0;
+    svoBrowserInstance->m_bShowVKB = 0;
+    svoBrowserInstance->m_bIsXMPPActive = 0;
+    InitalizePluginManagerAndPlugins(svoBrowserInstance);
     browser = svoBrowserInstance;
     SVChronographState *timer = (SVChronographState *)ChronographNew(0x10);
     SVChronograph(timer, 0);
     browser->m_pTimer = timer;
     DefineDefaultButtonMap(svoBrowserInstance->m_pInputContext, params->defaultButtonMap);
     SetDefaultButtonMap(svoBrowserInstance->m_pInputContext);
-    if (params->eURL == 2) {
+    switch (params->eURL) {
+    case 2:
         if (!ReturnFromGame(GetInstance(), params->a_pPersistentData)) {
             FreeResources(GetInstance());
             svoBrowserInstance = 0;
         }
-    } else if (params->eURL != 1 && params->eURL != 3) __SVO_Assert_Handler(svoBrowserSource, 0x1F5);
+        break;
+    case 1:
+    case 3:
+        break;
+    default:
+        __SVO_Assert_Handler(svoBrowserSource, 0x1F5);
+    }
     return svoBrowserInstance;
 }
 
@@ -767,11 +765,11 @@ extern "C" SECTION(ReturnFromGame) int ReturnFromGame(SVBrowserPrefix *browser, 
 extern "C" SECTION(RTCommInit) void RTCommInit(SVBrowserPrefix *browser)
 {
     RTLinkAddress address;
-    char text[32];
+    char text[16];
     rt_comm_startup();
     rt_comm_update();
     rt_comm_get_local_ip(&address);
-    rt_comm_linkaddress_tostr(text, ((RTUnalignedWord *)&address)->value);
+    rt_comm_linkaddress_tostr(text, address);
 }
 
 extern "C" SECTION(ShowVKB) void ShowVKB(SVBrowserPrefix *browser, SVTag *tag)
@@ -811,19 +809,30 @@ extern "C" SECTION(Update___dupe109) int Update___dupe109(SVBrowserPrefix *brows
         }
         if (browser->m_bUseDownloadManger) UpdateDownloadManager(browser);
         DoFrameUpdates(browser);
-        if (updateType == 0 || updateType == 1) {
+        switch (updateType) {
+        case 0:
             DrawPages(browser, &active, 1);
-            if (updateType == 0 && browser->m_bOkToNavigate && active && (!browser->m_bUseDownloadManger || okToNavigate___dupe4(browser->m_pDownloadManager))) HandleInputPages(browser, active);
-            Update___dupe112(browser->m_pPluginManager, updateType);
+            if (browser->m_bOkToNavigate && active && (!browser->m_bUseDownloadManger || okToNavigate___dupe4(browser->m_pDownloadManager))) HandleInputPages(browser, active);
+            Update___dupe112(browser->m_pPluginManager, 0);
             if (browser->m_bShowVKB) {
                 CDrawContextBase *draw = browser->m_pVKBDrawContext;
                 ((BrowserVKBVtable *)draw->vtable)->DrawVKB(draw);
             }
-        } else if (updateType == 2) {
+            break;
+        case 1:
+            DrawPages(browser, &active, 1);
+            Update___dupe112(browser->m_pPluginManager, 1);
+            if (browser->m_bShowVKB) {
+                CDrawContextBase *draw = browser->m_pVKBDrawContext;
+                ((BrowserVKBVtable *)draw->vtable)->DrawVKB(draw);
+            }
+            break;
+        case 2:
             if (browser->m_pMainPage->m_bIsActive) active = browser->m_pMainPage;
             else if (browser->m_pPopupPage->m_bIsActive) active = browser->m_pPopupPage;
             if (browser->m_bOkToNavigate && active && (!browser->m_bUseDownloadManger || okToNavigate___dupe4(browser->m_pDownloadManager))) HandleInputPages(browser, active);
             Update___dupe112(browser->m_pPluginManager, 2);
+            break;
         }
         if (browser->m_pMainPage) HandleUpdatePages(browser, browser->m_pMainPage);
         if (browser->m_pPopupPage) HandleUpdatePages(browser, browser->m_pPopupPage);
@@ -840,8 +849,7 @@ extern "C" SECTION(UpdateDownloadManager) int UpdateDownloadManager(SVBrowserPre
     }
     if (browser->m_pDownloadManager) {
         download___dupe3(browser->m_pDownloadManager);
-        if (((SVDownloadManagerState *)browser->m_pDownloadManager)->m_state) return 1;
-        if (HasEntries(browser->m_pFileDownloadQueue)) {
+        if (!((SVDownloadManagerState *)browser->m_pDownloadManager)->m_state && HasEntries(browser->m_pFileDownloadQueue)) {
             char lookup[257];
             char value[257];
             GetNextEntry(browser->m_pFileDownloadQueue, lookup, 257, value, 257);

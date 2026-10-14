@@ -38,6 +38,10 @@ def main():
     manifest = yaml.safe_load((Path(__file__).resolve().parents[1] / 'config/decompiled_functions.yaml').read_text())
     all_slots = [slot for bounds in manifest['objects'].values() for slot in bounds.get('slots', [])]
     slots = [slot for slot in all_slots if slot['start'] in manifest['functions'].values()]
+    rodata_slots = [slot for bounds in manifest.get('rodata', {}).values() for slot in bounds['slots']]
+    for slot in rodata_slots:
+        if slot['function'] not in manifest['functions']:
+            raise SystemExit(f"FAIL: rodata slot {slot['section']} belongs to no compiled function")
     object_root = Path(args.boot_object).parents[1]
     for name, expected in manifest['functions'].items():
         slot = next(s for s in slots if s['start'] == expected)
@@ -57,11 +61,11 @@ def main():
     count = 0
     for (address, original), (_, rebuilt) in zip(old_segments, new_segments):
         changed = [address+i for i, (a, b) in enumerate(zip(original, rebuilt)) if a != b]
-        unexpected = [a for a in changed if not any(s['start'] <= a < s['end'] for s in slots)]
+        unexpected = [a for a in changed if not any(s['start'] <= a < s['end'] for s in slots + rodata_slots)]
         if unexpected:
             raise SystemExit(f"FAIL: {len(unexpected)} unexpected differences; first at 0x{unexpected[0]:08X}")
         count += len(changed)
-    print(f"PASS: {count} changed bytes, all within registered compiled function slots; every other loaded byte and runtime header matches")
+    print(f"PASS: {count} changed bytes, all within registered compiled function slots and their jump-table slots; every other loaded byte and runtime header matches")
 
 
 if __name__ == "__main__":

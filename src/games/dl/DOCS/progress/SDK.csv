@@ -1,0 +1,23 @@
+name,source,address,implementation,slot_end,compiled_size,slot_match,differing_bytes,test_scope,question,notes
+ezNetCnfInit,code/sdk/libezcnf.c,0x01E9A000,compiled,0x01E9A0F0,0xF0,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCnfExit,code/sdk/libezcnf.c,0x01E9A0F0,compiled,0x01E9A170,0x80,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+func_01E9A170,code/sdk/libezcnf.c,0x01E9A170,assembly,,,not_measured,,not inventoried,Recover ABI and retail behavior before replacing assembly.,"Unused instruction fragment, excluded from real-function percentage."
+ezNetCnfGetCombinationList,code/sdk/libezcnf.c,0x01E9A178,compiled,0x01E9A2B0,0x134,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCnfGetCombination,code/sdk/libezcnf.c,0x01E9A2B0,compiled,0x01E9A360,0xB0,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCnfGetProperties,code/sdk/libezcnf.c,0x01E9A360,compiled,0x01E9A4A0,0x140,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlInit,code/sdk/libezctl.c,0x01E9A4A0,compiled,0x01E9A590,0xF0,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlExit,code/sdk/libezctl.c,0x01E9A590,compiled,0x01E9A618,0x88,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlSetProperties,code/sdk/libezctl.c,0x01E9A618,compiled,0x01E9A730,0x118,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+func_01E9A730,code/sdk/libezctl.c,0x01E9A730,assembly,,,not_measured,,not inventoried,Recover ABI and retail behavior before replacing assembly.,"Unused instruction fragment, excluded from real-function percentage."
+ezNetCtlUpInterface,code/sdk/libezctl.c,0x01E9A738,compiled,0x01E9A7C8,0x8C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlDownInterface,code/sdk/libezctl.c,0x01E9A7C8,compiled,0x01E9A858,0x8C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlGetStatus,code/sdk/libezctl.c,0x01E9A858,compiled,0x01E9A9A8,0x150,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlWaitEventTO,code/sdk/libezctl.c,0x01E9A9A8,compiled,0x01E9AA78,0xCC,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlSwapMessageTables,code/sdk/i18n.c,0x01E9AA78,compiled,0x01E9AAC8,0x4C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+getMsgEntry,code/sdk/i18n.c,0x01E9AAC8,compiled,0x01E9AB50,0x84,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlLocalizeMessage,code/sdk/i18n.c,0x01E9AB50,compiled,0x01E9ACB0,0x15C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+cbFormatAuthMessage,code/sdk/i18n.c,0x01E9ACB0,compiled,0x01E9ACF8,0x48,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+cbFormatPPPStatus,code/sdk/i18n.c,0x01E9ACF8,compiled,0x01E9AD78,0x7C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+cbFormatLineSpeed,code/sdk/i18n.c,0x01E9AD78,compiled,0x01E9AE30,0xB8,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+cbFormatPhoneNumber,code/sdk/i18n.c,0x01E9AE30,compiled,0x01E9AE48,0x18,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+ezNetCtlRecreateIfstat,code/sdk/i18n_inet.c,0x01E9AE48,assembly,,,not_measured,,not inventoried,Recover ABI and retail behavior before replacing assembly.,668-byte C research probe has 648 equal bytes; production remains assembly.

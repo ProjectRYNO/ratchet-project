@@ -31,10 +31,14 @@ extern "C" SECTION(Draw___dupe24) void Draw___dupe24(SVTag *tag)
                                       tag->m_lineColor, tag->m_fillColor, tag->m_tagClass);
 }
 
-extern "C" SECTION(PopupTag) void PopupTag(SVTag *tag, iks *xml, CAllContextData *contexts)
+struct PopupTagState { // 0xB4
+    /* 0x00 */ SVTag base;
+    PopupTagState(iks *xml, CAllContextData *contexts) __asm__("PopupTag");
+};
+SECTION(PopupTag) PopupTagState::PopupTagState(iks *xml, CAllContextData *contexts)
 {
-    SVTagConstruct(tag, xml, contexts);
-    tag->vtable = &svoPopupTagVtable;
-    svstrncpy(tag->m_tagTypeName, svoPopupTagName, 64);
-    tag->m_tagClass = iks_find_attrib(tag->m_xml, svoPopupClassAttribute);
+    SVTagConstruct(&base, xml, contexts);
+    base.vtable = &svoPopupTagVtable;
+    svstrncpy(base.m_tagTypeName, svoPopupTagName, 64);
+    base.m_tagClass = iks_find_attrib(base.m_xml, svoPopupClassAttribute);
 }

@@ -140,3 +140,7 @@ The iksemel batch (2026-10-13) compiles the remaining 34 library functions with 
 2.96. All 40 iksemel functions are C: 36 byte-exact and 4 nonmatching jump-table if-chains.
 With the Medius batch, the snapshot has 7,586 assembly entries, 1,039 compiled functions,
 648 matching and 391 nonmatching slots. See [library notes](../libraries/IKSEMEL.md).
+The 2026-10-14 SDK snapshot is in [SDK.json](SDK.json) and [SDK.csv](SDK.csv),
+kept separate to preserve concurrent SVO3 tracking. SDK has 19/20 real functions
+compiled and byte-exact (95.00%); two unused instruction fragments are excluded
+from that percentage. See [SDK evidence](../libraries/SDK.md).

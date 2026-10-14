@@ -19,13 +19,13 @@ extern "C" {
 
 
 extern unsigned int svoDrawThrobberCount;
-extern char svoDrawDownloading[] __attribute__((aligned(8)));
+extern const char svoDrawDownloading[] __attribute__((aligned(8)));
 extern char svoDrawDot[];
 extern char svoDrawTwoDots[];
 extern char svoDrawThreeDots[];
 extern char svoDrawThrobberClass[];
 extern char svoDrawImageLineClass[];
-extern char svoDrawImageText[] __attribute__((aligned(8)));
+extern char svoDrawImageText[];
 extern char svoDrawImageTextClass[];
 extern char svoDrawStaticImageFormat[];
 #define SECTION(name) __attribute__((section(".svo_CDrawContextBase_" #name)))
@@ -70,12 +70,13 @@ extern "C" SECTION(DrawButton) void DrawButton(CDrawContextBase *draw, unsigned 
 extern "C" SECTION(DrawDownloadThrobber) void DrawDownloadThrobber(CDrawContextBase *draw, unsigned int id, float x, float y, float width, float height, char *tagClass)
 {
     char text[32] __attribute__((aligned(8)));
+    unsigned int lo = 15, mid = 30, hi = 45, top = 60;
     ++svoDrawThrobberCount;
     memcpy(text, svoDrawDownloading, 12);
-    if (svoDrawThrobberCount > 15 && svoDrawThrobberCount < 30) strcat(text, svoDrawDot);
-    else if (svoDrawThrobberCount > 30 && svoDrawThrobberCount < 45) strcat(text, svoDrawTwoDots);
-    else if (svoDrawThrobberCount > 45 && svoDrawThrobberCount < 60) strcat(text, svoDrawThreeDots);
-    else if (svoDrawThrobberCount > 60) svoDrawThrobberCount = 0;
+    if (svoDrawThrobberCount > lo && svoDrawThrobberCount < mid) strcat(text, svoDrawDot);
+    else if (svoDrawThrobberCount > mid && svoDrawThrobberCount < hi) strcat(text, svoDrawTwoDots);
+    else if (svoDrawThrobberCount > hi && svoDrawThrobberCount < top) strcat(text, svoDrawThreeDots);
+    else if (svoDrawThrobberCount > top) svoDrawThrobberCount = 0;
     draw->vtable->DrawRectangle(draw, id, x, y, width, height, 0xFF000000, 0xFF0000FF, 2, 0, 1000000.0f, 0, svoDrawThrobberClass);
     draw->vtable->SVDrawText(draw, id, x + 5.0f, y + 5.0f, 0xFFBBBBBB, text, 14, 12, 0, svoDrawThrobberClass);
 }
@@ -114,7 +115,8 @@ extern "C" SECTION(DrawGridScrollbars) void DrawGridScrollbars(CDrawContextBase 
             if (vp + vs < 0.98999995f) down = 0xFFFF0000;
         }
         draw->vtable->DrawRectangle(draw, id, right, y, vw, vw, 0xFFFFFFFF, up, 1, 0, 100000.0f, 0, 0);
-        draw->vtable->DrawRectangle(draw, id, right, y + vh - vw, vw, vw, 0xFFFFFFFF, down, 1, 0, 100000.0f, 0, 0);
+        float by = y + vh - vw;
+        draw->vtable->DrawRectangle(draw, id, right, by, vw, vw, 0xFFFFFFFF, down, 1, 0, 100000.0f, 0, 0);
     }
     float bottom = y + height + 1.0f;
     if (hp >= 0.0f) {
@@ -126,7 +128,8 @@ extern "C" SECTION(DrawGridScrollbars) void DrawGridScrollbars(CDrawContextBase 
             if (hp + hs < 0.98999995f) rightColor = 0xFFFF0000;
         }
         draw->vtable->DrawRectangle(draw, id, x, bottom, hh, hh, 0xFFFFFFFF, left, 1, 0, 100000.0f, 0, 0);
-        draw->vtable->DrawRectangle(draw, id, x + hw - hh, bottom, hh, hh, 0xFFFFFFFF, rightColor, 1, 0, 100000.0f, 0, 0);
+        float bx = x + hw - hh;
+        draw->vtable->DrawRectangle(draw, id, bx, bottom, hh, hh, 0xFFFFFFFF, rightColor, 1, 0, 100000.0f, 0, 0);
     }
 }
 
@@ -136,9 +139,10 @@ extern "C" SECTION(DrawImage) void DrawImage(CDrawContextBase *draw, unsigned in
     float fy = (float)y;
     float fw = (float)w;
     float fh = (float)h;
-    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, 100000.0f, 0, 0);
-    draw->vtable->DrawLine(draw, id, fx, fy, fx + fw, fy + fh, 100000.0f, 2.0f, 0xFFFFFF00, svoDrawImageLineClass);
-    char text[32] __attribute__((aligned(8)));
+    float depth = 100000.0f;
+    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, depth, 0, 0);
+    draw->vtable->DrawLine(draw, id, fx, fy, fx + fw, fy + fh, depth, 2.0f, 0xFFFFFF00, svoDrawImageLineClass);
+    char text[24];
     memcpy(text, svoDrawImageText, 24);
     draw->vtable->SVDrawText(draw, id, fx + (float)(w / 2), fy + (float)(h / 2), 0xFFFFFFFF, text, strlen(text), 12, 1, svoDrawImageTextClass);
 }

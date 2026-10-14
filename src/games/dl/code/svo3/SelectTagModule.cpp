@@ -20,7 +20,7 @@ MODULE_SECTION(IsMyTag___dupe7) int IsMyTag___dupe7(SVTagModuleState *module, ik
 MODULE_SECTION(BuildTag___dupe8) void BuildTag___dupe8(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoSelectTagModuleSource, 0x1B);
     void *memory = SVTagNew(0xF4);
     SelectTag(memory, xml, tagList, contexts);

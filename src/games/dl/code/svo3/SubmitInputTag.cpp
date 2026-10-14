@@ -77,16 +77,16 @@ extern "C" SECTION(DefaultInit___dupe16) void DefaultInit___dupe16(SubmitInputTa
     svstrncpy(self->base.m_tagTypeName, svoSubmitTagName, 64);
     memset(self->m_value, 0, 128);
     memcpy(self->m_value, svoSubmitDefaultText, 7);
-    self->base.m_bSelectable = 1;
-    self->m_fontSize = 14;
-    self->m_textColor = 0xFFFFFFFF;
-    self->m_highlightFillColor = 0xFFFFFF00;
-    self->m_highlightTextColor = 0xFF000000;
     self->m_align = 1;
     self->m_displayLength = 0;
     self->base.m_fillColor = 0xFF000000;
     self->base.m_lineColor = 0xFFFFFFFF;
+    self->m_fontSize = 14;
+    self->m_textColor = 0xFFFFFFFF;
+    self->m_highlightFillColor = 0xFFFFFF00;
     self->m_highlightLineColor = 0xFF000000;
+    self->m_highlightTextColor = 0xFF000000;
+    self->base.m_bSelectable = 1;
 }
 
 extern "C" SECTION(Draw___dupe22) void Draw___dupe22(SubmitInputTagState *self)
@@ -148,12 +148,11 @@ extern "C" SECTION(HandleInput___dupe48) int HandleInput___dupe48(SubmitInputTag
         CAudioContextBaseState *audio = GetAudioContext();
         ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoSubmitAudioClass);
     }
-    for (int action = 0; action < 4; ++action) {
-        if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-            CDrawContextBase *draw = tag->m_contexts->drawContext;
-            if (!draw) __SVO_Assert_Handler(svoSubmitInputTagSource, 0x71);
-            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-        }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+        || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+        CDrawContextBase *draw = tag->m_contexts->drawContext;
+        if (!draw) __SVO_Assert_Handler(svoSubmitInputTagSource, 0x71);
+        return Navigate(tag, input, draw, tag->m_xml, page) == 0;
     }
     return 1;
 }

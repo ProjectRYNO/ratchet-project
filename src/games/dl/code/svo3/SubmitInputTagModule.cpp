@@ -17,14 +17,15 @@ MODULE_SECTION(IsMyTag___dupe16) int IsMyTag___dupe16(SVTagModuleState *module, 
     if (iks_type(xml) != IKS_TAG)
         __SVO_Assert_Handler(svoSubmitInputTagModuleSource, 0x14);
     char *type = iks_find_attrib(xml, svoSubmitInputTagModuleTypeAttribute);
-    if (strcmp(iks_name(xml), svoSubmitInputTagModuleTagName)) return 0;
-    return strcmp(type, svoSubmitInputTagModuleInputType) == 0;
+    int result = 0;
+    if (!strcmp(iks_name(xml), svoSubmitInputTagModuleTagName)) result = strcmp(type, svoSubmitInputTagModuleInputType) == 0;
+    return result;
 }
 
 MODULE_SECTION(BuildTag___dupe17) void BuildTag___dupe17(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoSubmitInputTagModuleSource, 0x1F);
     void *memory = SVTagNew(0x158);
     SubmitInputTag(memory, xml, tagList, contexts);

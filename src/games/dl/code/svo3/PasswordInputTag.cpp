@@ -31,18 +31,22 @@ void InitialiseFromXml(TextInputTagState *, iks *, SVTag **, CAllContextData *);
             ".set reorder\n.set at\n.text\n")
 #endif
 
-extern "C" SECTION(defaultInit___dupe2) char *defaultInit___dupe2(TextInputTagState *tag)
+extern "C" SECTION(defaultInit___dupe2) void defaultInit___dupe2(TextInputTagState *tag)
 {
     defaultInit(tag);
-    return svstrncpy(tag->base.m_tagTypeName, svoPasswordInputTagName, 64);
+    svstrncpy(tag->base.m_tagTypeName, svoPasswordInputTagName, 64);
 }
 
-extern "C" SECTION(PasswordInputTag) void PasswordInputTag(TextInputTagState *tag, iks *xml, SVTag **tags, CAllContextData *contexts)
+struct PasswordInputTagState { // 0x514
+    /* 0x000 */ TextInputTagState text;
+    PasswordInputTagState(iks *xml, SVTag **tags, CAllContextData *contexts) __asm__("PasswordInputTag");
+};
+SECTION(PasswordInputTag) PasswordInputTagState::PasswordInputTagState(iks *xml, SVTag **tags, CAllContextData *contexts)
 {
-    TextInputTag(tag, xml, tags, contexts, 1);
-    tag->base.vtable = &svoPasswordInputTagVtable;
-    InitialiseFromXml(tag, xml, tags, contexts);
-    tag->m_bEditable = 1;
+    TextInputTag(&text, xml, tags, contexts, 1);
+    text.base.vtable = &svoPasswordInputTagVtable;
+    InitialiseFromXml(&text, xml, tags, contexts);
+    text.m_bEditable = 1;
 }
 
 extern "C" SECTION(Draw___dupe18) void Draw___dupe18(TextInputTagState *tag)

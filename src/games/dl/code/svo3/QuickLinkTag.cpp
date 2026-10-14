@@ -88,29 +88,31 @@ extern "C" SECTION(HandleInput___dupe39) int HandleInput___dupe39(QuickLinkTagSt
     if (!page) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x7D);
     if (tag->m_padLinkButton == -1) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x82);
     if (!tag->m_link) __SVO_Assert_Handler(svoQuickLinkTagSource, 0x88);
-    if (browser->m_bShowVKB) return 1;
-    if (!input->vtable->IsButtonDown(input, 0x11, tag->m_padLinkButton)) return 1;
-    switch (tag->m_padLinkButton) {
-    case 0x40: SignalPluginEvent(browser, 0, &tag->base); break;
-    case 0x10: SignalPluginEvent(browser, 1, &tag->base); break;
-    case 0x80: SignalPluginEvent(browser, 2, &tag->base); break;
-    case 0x20: SignalPluginEvent(browser, 3, &tag->base); break;
-    case 0x08: SignalPluginEvent(browser, 4, &tag->base); break;
-    case 0x02: SignalPluginEvent(browser, 5, &tag->base); break;
-    case 0x04: SignalPluginEvent(browser, 6, &tag->base); break;
-    case 0x01: SignalPluginEvent(browser, 7, &tag->base); break;
-    // The retail compare tree also balances two buttons that raise no plugin event.
-    case 0x100:
-    case 0x200:
-        break;
+    if (!browser->m_bShowVKB && input->vtable->IsButtonDown(input, 0x11, tag->m_padLinkButton)) {
+        switch (tag->m_padLinkButton) {
+        case 0x10: SignalPluginEvent(browser, 1, &tag->base); break;
+        case 0x40: SignalPluginEvent(browser, 0, &tag->base); break;
+        case 0x80: SignalPluginEvent(browser, 2, &tag->base); break;
+        case 0x20: SignalPluginEvent(browser, 3, &tag->base); break;
+        case 0x04: SignalPluginEvent(browser, 6, &tag->base); break;
+        case 0x01: SignalPluginEvent(browser, 7, &tag->base); break;
+        case 0x08: SignalPluginEvent(browser, 4, &tag->base); break;
+        case 0x02: SignalPluginEvent(browser, 5, &tag->base); break;
+        // The retail compare tree also balances two buttons that raise no plugin event.
+        case 0x100:
+        case 0x200:
+            break;
+        }
+        if (!page->m_state) {
+            if (strlen(tag->m_link)) {
+                followLink(page, tag->m_link, tag->m_linkOption);
+                CAudioContextBaseState *audio = GetAudioContext();
+                ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoQuickLinkSoundClass);
+            }
+            return 0;
+        }
     }
-    if (page->m_state) return 1;
-    if (strlen(tag->m_link)) {
-        followLink(page, tag->m_link, tag->m_linkOption);
-        CAudioContextBaseState *audio = GetAudioContext();
-        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 1, svoQuickLinkSoundClass);
-    }
-    return 0;
+    return 1;
 }
 
 extern "C" SECTION(QuickLinkTag) void QuickLinkTag(QuickLinkTagState *tag, iks *xml, CAllContextData *contexts)

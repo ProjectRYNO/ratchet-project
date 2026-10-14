@@ -35,9 +35,9 @@ int COOKIE_SECTION(setCookie) setCookie(CCookieJar *jar, char *name, char *value
         return 0;
     }
     char *available = 0;
+    char *destination = jar->m_cookies[0] + nameLength + 1;
     char *entry = jar->m_cookies[0];
-    char *destination = entry + nameLength + 1;
-    for (unsigned int i = 0; i < 16; ++i, entry += 127, destination += 127) {
+    for (unsigned int i = 0; i < 16; ++i, destination += 127, entry += 127) {
         if (entry[126]) __SVO_Assert_Handler(svoCookieSource, 0x60);
         if (!entry[0] && !available) {
             available = entry;

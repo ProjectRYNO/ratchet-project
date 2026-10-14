@@ -41,7 +41,7 @@ extern char svoStaticImageTagAttrX[];
 extern char svoStaticImageTagAttrY[];
 extern char svoStaticImageTagAttrHref[];
 extern char svoStaticImageTagAttrName[];
-char *DefaultInit___dupe11(StaticImageTagState *);
+void DefaultInit___dupe11(StaticImageTagState *);
 #define SECTION(name) __attribute__((section(".svo_StaticImageTag_" #name)))
 
 SECTION(FreeResources___dupe20) void FreeResources___dupe20(SVTag *tag)
@@ -52,21 +52,23 @@ SECTION(FreeResources___dupe20) void FreeResources___dupe20(SVTag *tag)
 int IsSelectable___dupe12(SVTag *tag);
 extern "C" SECTION(IsSelectable___dupe12) int IsSelectable___dupe12(SVTag *tag)
 {
-    return (tag->m_bSelectable != 0) & ((unsigned int)tag != 0xFFFFFF4Cu);
+    int result = 0;
+    if (tag->m_bSelectable) result = (unsigned int)tag != 0xFFFFFF4Cu;
+    return result;
 }
 
 }
 
-extern "C" SECTION(DefaultInit___dupe11) char *DefaultInit___dupe11(StaticImageTagState *self)
+extern "C" SECTION(DefaultInit___dupe11) void DefaultInit___dupe11(StaticImageTagState *self)
 {
     svstrncpy(self->base.m_tagTypeName, svoStaticImageTagName, 64);
     memset(self->m_link, 0, 128);
-    self->m_index = -1;
     self->base.m_fillColor = 0xFFFFFFFF;
     self->base.m_lineColor = 0xFF000000;
+    self->m_index = -1;
     self->m_imageWidth = 0;
     self->m_imageHeight = 0;
-    return svstrncpy(self->m_imageName, svoStaticImageUnsetName, 32);
+    svstrncpy(self->m_imageName, svoStaticImageUnsetName, 32);
 }
 
 extern "C" SECTION(Draw___dupe15) void Draw___dupe15(StaticImageTagState *self)
@@ -74,8 +76,11 @@ extern "C" SECTION(Draw___dupe15) void Draw___dupe15(StaticImageTagState *self)
     SVTag *tag = &self->base;
     CDrawContextBase *draw = tag->m_contexts->drawContext;
     if (!draw) __SVO_Assert_Handler(svoStaticImageTagSource, 0x87);
-    int selected = tag->vtable->IsSelected(tag) != 0;
-    draw->vtable->DrawStaticImage(draw, tag->m_tagid, self->m_imageName, self->m_index, self->m_imageX, self->m_imageY, self->m_imageWidth, self->m_imageHeight, self->u0, self->v0, selected, 255);
+    int alpha = 255;
+    if (tag->vtable->IsSelected(tag))
+        draw->vtable->DrawStaticImage(draw, tag->m_tagid, self->m_imageName, self->m_index, self->m_imageX, self->m_imageY, self->m_imageWidth, self->m_imageHeight, self->u0, self->v0, 1, alpha);
+    else
+        draw->vtable->DrawStaticImage(draw, tag->m_tagid, self->m_imageName, self->m_index, self->m_imageX, self->m_imageY, self->m_imageWidth, self->m_imageHeight, self->u0, self->v0, 0, alpha);
 }
 
 extern "C" SECTION(HandleInput___dupe42) int HandleInput___dupe42(StaticImageTagState *self, CPage *page)
@@ -95,12 +100,11 @@ extern "C" SECTION(HandleInput___dupe42) int HandleInput___dupe42(StaticImageTag
         }
     }
     if (tag->vtable->IsSelected(tag)) {
-        for (int action = 0; action < 4; ++action) {
-            if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-                CDrawContextBase *draw = tag->m_contexts->drawContext;
-                if (!draw) __SVO_Assert_Handler(svoStaticImageTagSource, 0x77);
-                return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-            }
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+            || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+            CDrawContextBase *draw = tag->m_contexts->drawContext;
+            if (!draw) __SVO_Assert_Handler(svoStaticImageTagSource, 0x77);
+            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
         }
     }
     return 1;

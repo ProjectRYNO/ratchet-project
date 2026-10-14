@@ -17,8 +17,9 @@ MODULE_SECTION(IsMyTag___dupe13) int IsMyTag___dupe13(SVTagModuleState *module, 
     if (iks_type(xml) != IKS_TAG)
         __SVO_Assert_Handler(svoRadioInputTagModuleSource, 0x14);
     char *type = iks_find_attrib(xml, svoRadioInputTagModuleTypeAttribute);
-    if (strcmp(iks_name(xml), svoRadioInputTagModuleTagName)) return 0;
-    return strcmp(type, svoRadioInputTagModuleInputType) == 0;
+    int result = 0;
+    if (!strcmp(iks_name(xml), svoRadioInputTagModuleTagName)) result = strcmp(type, svoRadioInputTagModuleInputType) == 0;
+    return result;
 }
 
 MODULE_SECTION(BuildTag___dupe14) void BuildTag___dupe14(
