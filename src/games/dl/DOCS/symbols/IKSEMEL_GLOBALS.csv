@@ -1,0 +1,26 @@
+name,address,owner,evidence,references
+my_malloc_func,0x0016AC68,code/iksemel/src/utility.c,"core.data word, zero in retail; stored by iks_set_malloc_func and called through by iks_stack_new, AllocateMoreAttrs, iks_parse; upstream iksemel name; existing storage, no allocation",iks_set_malloc_func iks_stack_new AllocateMoreAttrs iks_parse
+my_free_func,0x0016AC6C,code/iksemel/src/utility.c,"core.data word, zero in retail; stored by iks_set_free_func and called through by iks_stack_delete, AllocateMoreAttrs, iks_parse, iks_parser_delete; upstream iksemel name; existing storage, no allocation",iks_set_free_func iks_stack_delete AllocateMoreAttrs iks_parse iks_parser_delete
+iksDomErrorBlankLines,0x0019AD38,code/iksemel/src/dom.c,"core.rdata string ""\n\n""; first and last tagHook printf",tagHook
+iksDomErrorBorder,0x0019AD40,code/iksemel/src/dom.c,"core.rdata string of 40 '&' plus newline; four tagHook printfs",tagHook
+iksDomErrorParsing,0x0019AD70,code/iksemel/src/dom.c,"core.rdata string ""&&&         parsing ERROR....        &&&\n""",tagHook
+iksDomErrorTwoTags,0x0019ADA0,code/iksemel/src/dom.c,"core.rdata string ""&&& There are (at least) two tags at &&&\n""",tagHook
+iksDomErrorRootLevel,0x0019ADD0,code/iksemel/src/dom.c,"core.rdata string ""&&&       the root tag level.        &&&\n""",tagHook
+iksDomErrorNotAllowed,0x0019AE00,code/iksemel/src/dom.c,"core.rdata string ""&&&       This is not allowed.       &&&\n""",tagHook
+iksEntityAmp,0x0019AEB8,code/iksemel/src/iks.c,"core.rdata string ""&amp;""; escape's '&' case",escape
+iksEntityApos,0x0019AEC0,code/iksemel/src/iks.c,"core.rdata string ""&apos;""; escape's apostrophe case",escape
+iksEntityQuot,0x0019AEC8,code/iksemel/src/iks.c,"core.rdata string ""&quot;""; escape's quote case",escape
+iksEntityLt,0x0019AED0,code/iksemel/src/iks.c,"core.rdata string ""&lt;""; escape's '<' case",escape
+iksEntityGt,0x0019AED8,code/iksemel/src/iks.c,"core.rdata string ""&gt;""; escape's '>' case",escape
+iksEscapeAmp,0x0019B010,code/iksemel/src/utility.c,"core.rdata string ""&amp;"", a separate copy; iks_escape inlines a 5-byte copy",iks_escape
+iksEscapeApos,0x0019B018,code/iksemel/src/utility.c,"core.rdata string ""&apos;""; iks_escape inlines a 6-byte copy",iks_escape
+iksEscapeQuot,0x0019B020,code/iksemel/src/utility.c,"core.rdata string ""&quot;""; iks_escape inlines a 6-byte copy",iks_escape
+iksEscapeLt,0x0019B028,code/iksemel/src/utility.c,"core.rdata string ""&lt;""; iks_escape inlines a 4-byte copy",iks_escape
+iksEscapeGt,0x0019B030,code/iksemel/src/utility.c,"core.rdata string ""&gt;""; iks_escape inlines a 4-byte copy",iks_escape
+iksEntityNameAmp,0x0019AF60,code/iksemel/src/sax.c,"core.rdata string ""amp""; first sax_core entity strcmp",sax_core
+iksEntityNameQuot,0x0019AF68,code/iksemel/src/sax.c,"core.rdata string ""quot""; second sax_core entity strcmp",sax_core
+iksEntityNameApos,0x0019AF70,code/iksemel/src/sax.c,"core.rdata string ""apos""; third sax_core entity strcmp",sax_core
+iksEntityNameLt,0x0019AF78,code/iksemel/src/sax.c,"core.rdata string ""lt""; fourth sax_core entity strcmp",sax_core
+iksEntityNameGt,0x0019AF80,code/iksemel/src/sax.c,"core.rdata string ""gt""; fifth sax_core entity strcmp",sax_core
+iksCDataBracket,0x0019AF88,code/iksemel/src/sax.c,"core.rdata string ""]""; cdataHook length 1 when a CDATA section has a lone ]",sax_core
+iksCDataBrackets,0x0019AF90,code/iksemel/src/sax.c,"core.rdata string ""]]""; cdataHook length 2 when ]] is not followed by >",sax_core

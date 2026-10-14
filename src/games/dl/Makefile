@@ -41,7 +41,7 @@ CLI_CONFIG ?= $(ASSETS)/config.ini
 PS2DEV_DIR ?= /opt/ps2dev
 EEGCC = $(PS2DEV_DIR)/ee/bin/ee-gcc
 EEGXX = $(PS2DEV_DIR)/ee/bin/ee-g++
-# SVO3 is Sony middleware built with SCE ee-gcc 2.96 (see DOCS/libraries/SVO3_TAIL_CALL_BLOCKERS.md).
+# SVO3 and iksemel are Sony middleware built with SCE ee-gcc 2.96 (see DOCS/libraries/SVO3_TAIL_CALL_BLOCKERS.md).
 # Its 32-bit binaries need the stat shim on Docker Desktop bind mounts.
 EEGCC296_DIR ?= /opt/ee-gcc2.96
 EEGCC296_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.96.tar.xz
@@ -71,8 +71,6 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # Keep the recovered EE sound functions inside their original address slots.
 # The only division has a constant, nonzero divisor (741).
 $(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
-# Retail iksemel string helpers use four-byte function boundaries.
-$(OBJ_DIR)/iksemel/src/iks.o: COMMON_COMPILE_FLAGS += -falign-functions=4
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
@@ -86,6 +84,9 @@ ifeq ($(ALLOW_NONMATCHING),1)
 endif
 # Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
 SVO3_AS_FLAGS = -EL -G0 -Icode/include
+# iksemel ships with SVO3 and uses the same compiler. Retail schedules lui/lw pairs apart
+# (iks_stack_new), which -mno-split-addresses prevents (see DOCS/libraries/IKSEMEL.md).
+IKSEMEL_COMPILE_FLAGS = $(filter-out -mno-split-addresses,$(SVO3_COMPILE_FLAGS))
 
 # Medius rt_memory: measured retail matches; keep the default split-address pass.
 # Enable additional objects here as their C replacements are verified.
@@ -184,6 +185,11 @@ $(OBJ_DIR)/%.o: code/%.c
 $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGXX296) -S $(SVO3_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/iksemel/%.o: code/iksemel/%.c
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC296) -S $(IKSEMEL_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp

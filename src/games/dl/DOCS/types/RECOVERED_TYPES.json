@@ -4325,6 +4325,178 @@
     ]
   },
   {
+    "name": "ikstack",
+    "size": "0x18",
+    "owners": [
+      "iksemel/src/ikstack.c"
+    ],
+    "header": "code/iksemel/src/iksemel.h",
+    "evidence": "retail-instructions: iks_stack_new mallocs 0x18 + aligned size and initialises 0x00-0x10; alloc/strecat use used 0x04, last 0x0C, next 0x10, data at 0x14; pad_0 is only set to -1",
+    "fields": [
+      {
+        "name": "len",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "used",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pad_0",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "last",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "next",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "data",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "iksparser",
+    "size": "0x64",
+    "owners": [
+      "iksemel/src/sax.c"
+    ],
+    "header": "code/iksemel/src/iksemel.h",
+    "evidence": "retail-instructions: iks_sax_extend memsets 0x64 and stores 0x00-0x10; iks_parse/AllocateMoreAttrs/iks_parser_reset/delete access 0x14-0x60; sax_core reads uni_max 0x5C; upstream iksemel names plus one SCE field (token_pos 0x2C)",
+    "fields": [
+      {
+        "name": "s",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "user_data",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "tagHook",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "cdataHook",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "deleteHook",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "stack",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "stack_max",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "stack_pos",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "context",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "oldcontext",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "tag_open",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "token_pos",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "tagtype",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "attmax",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "attcur",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "attflag",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "atts",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "valflag",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "entpos",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "entity",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "nr_bytes",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "nr_lines",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "uni_max",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "uni_len",
+        "offset": 96,
+        "bitfield": false
+      }
+    ]
+  },
+  {
     "name": "CSystemContextVtablePrefix",
     "size": "0x3C",
     "line": 0,

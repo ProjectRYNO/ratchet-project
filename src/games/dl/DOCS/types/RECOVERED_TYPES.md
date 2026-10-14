@@ -83,6 +83,15 @@ using the EE compiler. Retail allocation/insertion/accessor instructions establi
 the layout; dltypes.txt only supplies an incomplete iks_struct and node enum.
 See [iksemel evidence and tests](../libraries/IKSEMEL.md).
 
+## iksemel stack and parser (2026-10-13)
+
+Added `ikstack` (0x18) and `iksparser` (0x64) in the library-private
+`code/iksemel/src/iksemel.h`. Retail iks_stack_new/alloc/strecat and
+iks_sax_extend/parse/parser_reset/delete/AllocateMoreAttrs establish every offset;
+the parser is upstream iksemel's layout plus an SCE `token_pos` word at 0x2C, and
+upstream's `tag_name` pointer is an `int tag_open` flag (sax_core stores only 1 or 0).
+check_iksemel.py and check_type_layouts.py verify both with the EE compiler.
+
 ## SVO3 core contexts (2026-10-07)
 
 Added ten types across five headers: audio/system/input/memory contexts, explicitly
