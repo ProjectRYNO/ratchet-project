@@ -20,7 +20,7 @@ MODULE_SECTION(IsMyTag___dupe23) int IsMyTag___dupe23(SVTagModuleState *module, 
 MODULE_SECTION(BuildTag___dupe24) void BuildTag___dupe24(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoListBoxTagModuleSource, 0x1A);
     void *memory = SVTagNew(0x288);
     ListBoxTag(memory, xml, contexts);

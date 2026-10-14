@@ -10,24 +10,39 @@ void __SVO_Assert_Handler(const char *file, int line);
 
 eUTF8CharacterType UTF8_SECTION(UTF8_GetCharacterType) UTF8_GetCharacterType(char byte)
 {
+    eUTF8CharacterType type;
     int upper = byte & 0xF0;
-    if (upper < 0x80) return kTypeStartSingleByte;
-    if ((byte & 0xC0) == 0x80) return kTypeContinuationByte;
-    if (upper == 0xC0) return kTypeStartTwoBytes;
-    // Retail classifies 0xD0..0xDF as three-byte starts, too.
-    if (upper == 0xD0 || upper == 0xE0) return kTypeStartThreeBytes;
-    if (upper == 0xF0) return kTypeStartFourBytes;
-    __SVO_Assert_Handler(svoUTF8Source, 0x38);
-    return kTypeInvalid;
+    if (upper < 0x80) {
+        type = kTypeStartSingleByte;
+    } else if ((byte & 0xC0) == 0x80) {
+        type = kTypeContinuationByte;
+    } else {
+        switch (upper) {
+        case 0xF0:
+            type = kTypeStartFourBytes;
+            break;
+        case 0xC0:
+            type = kTypeStartTwoBytes;
+            break;
+        // Retail classifies 0xD0..0xDF as three-byte starts, too.
+        case 0xD0:
+        case 0xE0:
+            type = kTypeStartThreeBytes;
+            break;
+        default:
+            __SVO_Assert_Handler(svoUTF8Source, 0x38);
+            type = kTypeInvalid;
+            break;
+        }
+    }
+    return type;
 }
 
 int UTF8_SECTION(UTF8_GetPrevCharIndexFromString) UTF8_GetPrevCharIndexFromString(char *text, int index)
 {
     if (index > 0) {
-        do {
-            --index;
-            if (index <= 0) break;
-        } while (UTF8_GetCharacterType(text[index]) == kTypeContinuationByte);
+        index--;
+        while (index > 0 && UTF8_GetCharacterType(text[index]) == kTypeContinuationByte) index--;
     }
     return index;
 }
@@ -36,13 +51,23 @@ int UTF8_SECTION(UTF8_GetNextCharIndexFromString) UTF8_GetNextCharIndexFromStrin
 {
     int length = strlen(text);
     if (index >= length) return length;
-    int type = UTF8_GetCharacterType(text[index]);
-    if (type == kTypeStartTwoBytes) return index + 2;
-    if (type == kTypeStartThreeBytes) return index + 3;
-    if (type == kTypeStartFourBytes) return index + 4;
-    if (type == kTypeContinuationByte || type == kTypeInvalid)
+    switch (UTF8_GetCharacterType(text[index])) {
+    case kTypeStartTwoBytes:
+        index += 2;
+        break;
+    case kTypeStartThreeBytes:
+        index += 3;
+        break;
+    case kTypeStartFourBytes:
+        index += 4;
+        break;
+    case kTypeContinuationByte:
+    case kTypeInvalid:
         __SVO_Assert_Handler(svoUTF8Source, 0x75);
-    if ((unsigned int)type < 6) ++index;
+    case kTypeStartSingleByte:
+        ++index;
+        break;
+    }
     return index;
 }
 
@@ -67,19 +92,20 @@ int UTF8_SECTION(UTF8_RemoveCharFromStringDELETE) UTF8_RemoveCharFromStringDELET
 int UTF8_SECTION(UTF8_AddCharToString) UTF8_AddCharToString(
     char *text, unsigned int capacity, char *input, int inputSize, int index)
 {
+    char *insert = text + index;
+    int end = index + inputSize;
     int length = strlen(text);
-    int tail = (unsigned int)length - index;
+    int tail = length - index;
     if (length < index) __SVO_Assert_Handler(svoUTF8Source, 0xA3);
-    if ((int)capacity <= (int)((unsigned int)length + inputSize))
-        __SVO_Assert_Handler(svoUTF8Source, 0xA4);
+    if (length + inputSize >= (int)capacity) __SVO_Assert_Handler(svoUTF8Source, 0xA4);
     if (index < length) {
-        memmove(text + index + inputSize, text + index, tail);
-        memcpy(text + index, input, inputSize);
-        text[index + inputSize + tail] = 0;
+        memmove(text + end, insert, tail);
+        memcpy(insert, input, inputSize);
+        text[end + tail] = 0;
     } else {
         strcat(text, input);
     }
-    return (unsigned int)index + inputSize;
+    return index + inputSize;
 }
 
 int UTF8_SECTION(UTF8_TrimStringToFitLength) UTF8_TrimStringToFitLength(
@@ -89,8 +115,10 @@ int UTF8_SECTION(UTF8_TrimStringToFitLength) UTF8_TrimStringToFitLength(
     int currentLength = originalLength;
     int removed = 0;
     // The width callback always receives the original byte count in retail.
-    while (length < draw->vtable->GetStringWidth(draw, fontSize, text, originalLength)) {
+    float width = draw->vtable->GetStringWidth(draw, fontSize, text, originalLength);
+    while (length < width) {
         currentLength = UTF8_RemoveCharFromStringBACKSPACE(text, currentLength);
+        width = draw->vtable->GetStringWidth(draw, fontSize, text, originalLength);
         ++removed;
     }
     return originalLength - removed;
@@ -99,12 +127,13 @@ int UTF8_SECTION(UTF8_TrimStringToFitLength) UTF8_TrimStringToFitLength(
 int UTF8_SECTION(CheckContinuationCharacters) CheckContinuationCharacters(
     char *text, unsigned int size, unsigned int count)
 {
-    // Preserve retail's success result when the remaining buffer is too short.
-    if (count > size) return 1;
+    // Retail reports success when the remaining buffer is too short.
     int valid = 1;
-    while (count && valid) {
-        valid = UTF8_GetCharacterType(*text++) == kTypeContinuationByte;
-        --count;
+    if (size >= count) {
+        unsigned int i = 0;
+        while (i < count && valid) {
+            if (UTF8_GetCharacterType(text[i++]) != kTypeContinuationByte) valid = 0;
+        }
     }
     return valid;
 }
@@ -113,17 +142,30 @@ int UTF8_SECTION(UTF8_CountCharacters) UTF8_CountCharacters(char *text, unsigned
 {
     unsigned int count = 0;
     while (size) {
-        unsigned int continuations = 0;
-        int type = UTF8_GetCharacterType(*text);
-        if (type >= kTypeStartTwoBytes && type <= kTypeStartFourBytes)
-            continuations = type;
-        else if (type != kTypeStartSingleByte && type != kTypeContinuationByte)
+        unsigned int continuations;
+        switch (UTF8_GetCharacterType(*text)) {
+        case kTypeStartFourBytes:
+            continuations = 3;
+            break;
+        case kTypeStartThreeBytes:
+            continuations = 2;
+            break;
+        case kTypeStartTwoBytes:
+            continuations = 1;
+            break;
+        case kTypeInvalid:
+        default:
             __SVO_Assert_Handler(svoUTF8Source, 0x103);
+        case kTypeStartSingleByte:
+        case kTypeContinuationByte:
+            continuations = 0;
+            break;
+        }
         ++text;
         --size;
         if (CheckContinuationCharacters(text, size, continuations)) {
-            size -= continuations;
             text += continuations;
+            size -= continuations;
             ++count;
         }
     }

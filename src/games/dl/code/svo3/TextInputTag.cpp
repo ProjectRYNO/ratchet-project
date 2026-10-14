@@ -184,12 +184,11 @@ extern "C" SECTION(DrawImpl) void DrawImpl(TextInputTagState *self, char *text)
     int length = strlen(visibleText);
     draw->vtable->DrawInputBox(draw, tag->m_tagid, tag->m_x, tag->m_y, tag->m_z, tag->m_width, tag->m_height, line, fill, color, tag->m_bSelected, visibleText, length, self->m_fontSize, tag->m_tagClass);
     if (tag->vtable->IsEditable(tag) && tag->m_bSelected) {
-        if (!self->m_blinkCursor) drawCursor(self, draw, 1);
-        else {
+        if (self->m_blinkCursor) {
             if (svoTextInputBlinkCount % 30 == 0) self->m_drawCursor = !self->m_drawCursor;
             ++svoTextInputBlinkCount;
             drawCursor(self, draw, self->m_drawCursor);
-        }
+        } else drawCursor(self, draw, 1);
     }
 }
 
@@ -259,12 +258,11 @@ extern "C" SECTION(HandleInput___dupe44) int HandleInput___dupe44(TextInputTagSt
     if (!tag->vtable->IsSelected(tag)) return 1;
     SVBrowserPrefix *browser = GetInstance();
     if (!browser->m_bShowVKB) {
-        for (int action = 0; action < 4; ++action) {
-            if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-                CDrawContextBase *draw = tag->m_contexts->drawContext;
-                if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0xF2);
-                return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-            }
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+            || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+            CDrawContextBase *draw = tag->m_contexts->drawContext;
+            if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0xF2);
+            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
         }
         if (HasActionOccurred(input, 0x11, SV_ACTION_VKB_ACTIVATE) && tag->vtable->IsEditable(tag)) ShowVKB(browser, tag);
         if (tag->vtable->IsEditable(tag)) ((const TextEditableTagVtablePrefix *)tag->vtable)->HandleTextEntry(tag, input);
@@ -299,46 +297,47 @@ extern "C" SECTION(handleSpecialKeys___dupe2) void handleSpecialKeys___dupe2(Tex
 {
     size_t length = strlen(self->m_text);
     SVTag *tag = &self->base;
-    CDrawContextBase *draw = tag->m_contexts->drawContext;
     CInputContextBaseState *input = tag->m_contexts->inputContext;
-    if (key == 0x88 || key == 0x81 || key == 0x82) {
-        int line = 0x1C0;
-        if (key == 0x88) {
-            SignalPluginEvent(GetInstance(), 10, tag);
-            self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
-            line = 0x187;
-        }
-        CPage *page = GetInstance()->m_pMainPage;
+    CDrawContextBase *draw = tag->m_contexts->drawContext;
+    CPage *page;
+    float width;
+    switch (key) {
+    case 0x88:
+        SignalPluginEvent(GetInstance(), 10, tag);
+        self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
+        page = GetInstance()->m_pMainPage;
         if (!page->m_bIsActive) page = GetInstance()->m_pPopupPage;
-        if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, line);
+        if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0x187);
         Navigate(tag, input, draw, tag->m_xml, page);
-    } else if (key == 0x83 || key == 0x89) {
-        if (key == 0x83) self->m_curEditOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curEditOffset);
-        else self->m_curEditOffset = UTF8_RemoveCharFromStringBACKSPACE(self->m_text, self->m_curEditOffset);
+        break;
+    case 0x89:
+        self->m_curEditOffset = UTF8_RemoveCharFromStringBACKSPACE(self->m_text, self->m_curEditOffset);
         scrollTextRightToFillWindow(self);
-    } else if (key == 0x84 || key == 0x87) {
-        if (key == 0x84) self->m_curEditOffset = UTF8_GetNextCharIndexFromString(self->m_text, self->m_curEditOffset);
-        else self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
+        break;
+    case 0x87:
+        self->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(self->m_text, self->m_curEditOffset);
         scrollTextLeftToFillWindow(self);
-    } else if (key == 0x85) {
-        self->m_curEditOffset = 0;
-        self->m_curLeftOffset = 0;
-        self->m_curRightOffset = 0;
-        float width;
-        do {
-            ++self->m_curRightOffset;
-            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
-        } while (width < self->m_maxWrap && (int)self->m_curRightOffset < (int)length);
-        while (width > self->m_maxWrap) {
-            --self->m_curRightOffset;
-            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
-        }
-    } else if (key == 0x86) {
+        break;
+    case 0x83:
+        self->m_curEditOffset = UTF8_GetPrevCharIndexFromString(self->m_text, self->m_curEditOffset);
+        scrollTextRightToFillWindow(self);
+        break;
+    case 0x84:
+        self->m_curEditOffset = UTF8_GetNextCharIndexFromString(self->m_text, self->m_curEditOffset);
+        scrollTextLeftToFillWindow(self);
+        break;
+    case 0x81:
+    case 0x82:
+        page = GetInstance()->m_pMainPage;
+        if (!page->m_bIsActive) page = GetInstance()->m_pPopupPage;
+        if (!draw) __SVO_Assert_Handler(svoTextInputTagSource, 0x1C0);
+        Navigate(tag, input, draw, tag->m_xml, page);
+        break;
+    case 0x86: {
         int end = strlen(self->m_text);
-        self->m_curRightOffset = end;
         self->m_curEditOffset = end;
         self->m_curLeftOffset = end;
-        float width;
+        self->m_curRightOffset = end;
         do {
             --self->m_curLeftOffset;
             width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
@@ -347,6 +346,21 @@ extern "C" SECTION(handleSpecialKeys___dupe2) void handleSpecialKeys___dupe2(Tex
             ++self->m_curLeftOffset;
             width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curRightOffset);
         }
+        break;
+    }
+    case 0x85:
+        self->m_curEditOffset = 0;
+        self->m_curLeftOffset = 0;
+        self->m_curRightOffset = 0;
+        do {
+            ++self->m_curRightOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
+        } while (width < self->m_maxWrap && (int)self->m_curRightOffset < (int)length);
+        while (width > self->m_maxWrap) {
+            --self->m_curRightOffset;
+            width = ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, 0, self->m_curRightOffset);
+        }
+        break;
     }
     input->specialKeyCode = 0;
 }
@@ -409,15 +423,17 @@ extern "C" SECTION(resetTextInput) void resetTextInput(TextInputTagState *tag)
     memset(tag->m_text, 0, 512);
     memset(tag->m_keyboardInput, 0, 512);
     tag->m_curEditOffset = 0;
-    tag->m_curRightOffset = 0;
     tag->m_curLeftOffset = 0;
+    tag->m_curRightOffset = 0;
 }
 
 extern "C" SECTION(scrollTextLeftToFillWindow) void scrollTextLeftToFillWindow(TextInputTagState *tag)
 {
-    while (((const TextInputTagVtablePrefix *)tag->base.vtable)->getSubstringPixelWidth(tag, tag->m_curLeftOffset, tag->m_curEditOffset) > tag->m_maxWrap) {
+    float width = ((const TextInputTagVtablePrefix *)tag->base.vtable)->getSubstringPixelWidth(tag, tag->m_curLeftOffset, tag->m_curEditOffset);
+    while (width > tag->m_maxWrap) {
         tag->m_curLeftOffset = UTF8_GetNextCharIndexFromString(tag->m_text, tag->m_curLeftOffset);
         tag->m_curRightOffset = UTF8_GetNextCharIndexFromString(tag->m_text, tag->m_curRightOffset);
+        width = ((const TextInputTagVtablePrefix *)tag->base.vtable)->getSubstringPixelWidth(tag, tag->m_curLeftOffset, tag->m_curEditOffset);
     }
 }
 

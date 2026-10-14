@@ -44,8 +44,8 @@ void PLUGIN_MANAGER_SECTION(Initialize___dupe5) Initialize___dupe5(CPluginManage
         manager->m_pluginList[i] = 0;
         manager->m_popupRequests[i] = 0;
     }
-    manager->m_curPopupRequest = 0;
     manager->m_numPlugins = 0;
+    manager->m_curPopupRequest = 0;
 }
 
 void PLUGIN_MANAGER_SECTION(Update___dupe112) Update___dupe112(CPluginManagerState *manager, int updateType)
@@ -59,7 +59,8 @@ void PLUGIN_MANAGER_SECTION(Update___dupe112) Update___dupe112(CPluginManagerSta
 void PLUGIN_MANAGER_SECTION(AddMessage) AddMessage(CPluginManagerState *manager, SVTag *sender, int event)
 {
     for (int i = 0; i < manager->m_numPlugins; ++i) {
-        for (int j = 0; j < 32; ++j) {
+        int j = 0;
+        do {
             // Reload the plugin each iteration: callbacks may change the list.
             PluginExpectedMessage *expected = &manager->m_pluginList[i]->queue.m_expectedMessages[j];
             int expectedEvent = expected->event;
@@ -72,7 +73,7 @@ void PLUGIN_MANAGER_SECTION(AddMessage) AddMessage(CPluginManagerState *manager,
                 CPluginBaseState *plugin = manager->m_pluginList[i];
                 plugin->vtable->AddMessage(plugin, sender, event);
             }
-        }
+        } while (++j < 32);
     }
 }
 

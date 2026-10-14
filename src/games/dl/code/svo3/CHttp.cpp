@@ -282,8 +282,9 @@ extern "C" SECTION(closeSocket) void closeSocket(HttpState *http)
 
 extern "C" SECTION(DoRegistrations2) void DoRegistrations2(HttpState *http)
 {
-    char *schemes[2] __attribute__((aligned(8)));
-    memcpy(schemes, svoHttpSchemes, sizeof(schemes));
+    typedef struct __attribute__((packed)) { unsigned long value; } SchemeList;
+    char *schemes[2];
+    *(SchemeList *)schemes = *(SchemeList *)svoHttpSchemes;
     Register((IURISchemeProviderState *)http, schemes);
 }
 
@@ -322,8 +323,8 @@ extern "C" SECTION(doRequest___dupe2) int doRequest___dupe2(HttpState *http, URI
     SetStatePostRequest(http);
     Reset___dupe5(&http->m_timer);
     Start___dupe3(&http->m_timer);
-    listener = http->m_pListener;
-    listener->vtable->OnURIRequestStart(listener, http->m_pListenerContext);
+    IRequestListenerState *current = http->m_pListener;
+    current->vtable->OnURIRequestStart(current, http->m_pListenerContext);
     return 1;
 }
 
@@ -419,14 +420,16 @@ extern "C" SECTION(formRequestText) int formRequestText(HttpState *http, char *f
     cursor = strchr(cursor, 0);
     if (!cursor) __SVO_Assert_Handler(svoHttpSource, 0x14E);
     cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpVersionFormat, svoHttpVersionValue);
-    SVBrowserPrefix *browser = GetInstance();
-    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTargetTypeFormat, browser->m_targetInfo.targetType);
-    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTargetIDFormat, browser->m_targetInfo.targetSpecialID);
-    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTitleIDFormat, (int)browser->m_targetInfo.targetAppID);
-    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), methodType == 1 ? svoHttpLoginMacFormat : svoHttpMacFormat, hash);
+    SVTargetInfo *info = &GetInstance()->m_targetInfo;
+    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTargetTypeFormat, info->targetType);
+    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTargetIDFormat, info->targetSpecialID);
+    cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpTitleIDFormat, (int)info->targetAppID);
+    if (methodType == 1) cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpLoginMacFormat, hash);
+    else cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpMacFormat, hash);
     if (hasParams && post[0]) cursor += svsnprintf(cursor, 0x1C00 - (cursor - request), svoHttpBodyFormat, strlen(post), post);
     svstrncpy(cursor, svoHttpCRLF, 0x1C00 - (cursor - request));
-    return cursor + 2 - request;
+    cursor += 2;
+    return cursor - request;
 }
 
 extern "C" SECTION(freeResources___dupe2) void freeResources___dupe2(HttpState *http, int shutdown)
@@ -444,7 +447,10 @@ extern "C" SECTION(freeResources___dupe2) void freeResources___dupe2(HttpState *
         http->m_sock = 0;
     }
     if (http->m_addr) http->m_addr = 0;
-    if (!shutdown) InitRequest(http, getSocketType(http));
+    if (!shutdown) {
+        InitRequest(http, getSocketType(http));
+        return;
+    }
 }
 
 extern "C" SECTION(getSocketType) int getSocketType(HttpState *http)
@@ -512,22 +518,32 @@ extern "C" SECTION(Http) void Http(HttpState *http, CMemoryContextBaseState *mem
 
 extern "C" SECTION(HttpConnectWaitOnEnter) void HttpConnectWaitOnEnter(HttpState *http)
 {
-    SVSockState *socket = http->m_sock;
-    if (!((const SVSockVtablePrefix *)socket->vtable)->Connect(socket, http->m_addr, http->m_port)) {
+    if (!((const SVSockVtablePrefix *)http->m_sock->vtable)->Connect(http->m_sock, http->m_addr, http->m_port)) {
         SetErrorCode(0xF);
         return;
     }
     http->m_bConnectionOpen = 1;
-    socket = http->m_sock;
-    if (((const SVSockVtablePrefix *)socket->vtable)->GetNonBlocking(socket)) SetHttpState(http, 6);
-    else SetHttpState(http, http->vtable->IsSecure(http) ? 7 : 10);
+    SVSockState *socket = http->m_sock;
+    if (!((const SVSockVtablePrefix *)socket->vtable)->GetNonBlocking(socket)) {
+        if (!http->vtable->IsSecure(http)) {
+            SetHttpState(http, 10);
+            return;
+        }
+        SetHttpState(http, 7);
+        return;
+    }
+    SetHttpState(http, 6);
 }
 
 extern "C" SECTION(HttpConnectWaitOnUpdate) void HttpConnectWaitOnUpdate(HttpState *http)
 {
     SVSockState *socket = http->m_sock;
     if (((const SVSockVtablePrefix *)socket->vtable)->isConnected(socket)) {
-        SetHttpState(http, http->vtable->IsSecure(http) ? 7 : 10);
+        if (http->vtable->IsSecure(http)) {
+            SetHttpState(http, 7);
+            return;
+        }
+        SetHttpState(http, 10);
     }
 }
 
@@ -539,7 +555,8 @@ extern "C" SECTION(HttpGetHostByNameOnEnter) void HttpGetHostByNameOnEnter(HttpS
         socket, http->m_szHostname, http->m_memoryContextPtr, &complete);
     http->m_addr = address;
     if (!address) SetErrorCode(0x12);
-    else SetHttpState(http, complete ? 5 : 4);
+    else if (complete) SetHttpState(http, 5);
+    else SetHttpState(http, 4);
 }
 
 extern "C" SECTION(HttpGetHostByNameOnUpdate) void HttpGetHostByNameOnUpdate(HttpState *http)
@@ -572,15 +589,15 @@ extern "C" SECTION(HttpRecvOnUpdate) void HttpRecvOnUpdate(HttpState *http)
 
 extern "C" SECTION(HttpSendOnEnter) void HttpSendOnEnter(HttpState *http)
 {
+    unsigned long sent;
     char request[0x1C00];
+    char *data;
+    int bytes;
     int length = formRequestText(http, http->m_szFilePath, request, http->m_iMethodType, 0x1C00, http->m_httpCommandStr);
     if (strlen(request) >= 0x1C00) __SVO_Assert_Handler(svoHttpSource, 0x51B);
     http->vtable->PrintRequestHeader(http);
     http->vtable->PrintRequestFooter(http);
-    char *data;
-    int bytes;
     http->vtable->HttpSendRequest(http, request, length, &data, &bytes);
-    unsigned long sent;
     SVSockState *socket = http->m_sock;
     if (!((const SVSockVtablePrefix *)socket->vtable)->Send(socket, data, bytes, &sent)) SetErrorCode(0xF);
     SetHttpState(http, 11);
@@ -609,7 +626,8 @@ extern "C" SECTION(InitRequest) void InitRequest(HttpState *http, int type)
 extern "C" SECTION(IsBusy) int IsBusy(HttpState *http)
 {
     int state = GetHttpState(http);
-    return state != 0 && state != 2;
+    if (state != 0 && state != 2) return 1;
+    return 0;
 }
 
 extern "C" SECTION(LoadStatePostGameFromPersistentData___dupe2) int LoadStatePostGameFromPersistentData___dupe2(HttpState *http, SVPersistentData *persist)
@@ -629,11 +647,8 @@ extern "C" SECTION(md5request) char *md5request(HttpState *http, char *path, cha
     int hasCookies = *cookies;
     cookies += 8;
     if (hasCookies) md5_update(&context, (unsigned char *)cookies, (unsigned int)(strlen(cookies) - 2));
-    char *chunk = post;
-    for (int i = 0; i < 2; ++i) {
-        if (chunk) md5_update(&context, (unsigned char *)chunk, (unsigned int)strlen(chunk));
-        chunk = svoHttpMD5Suffix;
-    }
+    if (post) md5_update(&context, (unsigned char *)post, (unsigned int)strlen(post));
+    md5_update(&context, (unsigned char *)svoHttpMD5Suffix, (unsigned int)strlen(svoHttpMD5Suffix));
     md5_finish(&context, digest);
     return md5_hex(digest, output);
 }
@@ -645,7 +660,7 @@ extern "C" SECTION(md5requestLogin) char *md5requestLogin(HttpState *http, char 
     char user[257];
     char pass[257];
     md5_starts(&context);
-    char initial = svoHttpEmptyString[0];
+    unsigned char initial = svoHttpEmptyString[0];
     user[0] = initial;
     memset(user + 1, 0, 256);
     pass[0] = initial;
@@ -654,14 +669,11 @@ extern "C" SECTION(md5requestLogin) char *md5requestLogin(HttpState *http, char 
     strcat(user, username);
     if (strlen(password) > 256) __SVO_Assert_Handler(svoHttpSource, 0x1D8);
     strcat(pass, password);
-    char *chunks[3];
-    chunks[0] = strlwr(user);
-    chunks[1] = strlwr(pass);
-    chunks[2] = ip;
-    for (int i = 0; i < 3; ++i) {
-        char *chunk = chunks[i];
-        md5_update(&context, (unsigned char *)chunk, (unsigned int)strlen(chunk));
-    }
+    char *lowerUser = strlwr(user);
+    char *lowerPass = strlwr(pass);
+    md5_update(&context, (unsigned char *)lowerUser, (unsigned int)strlen(lowerUser));
+    md5_update(&context, (unsigned char *)lowerPass, (unsigned int)strlen(lowerPass));
+    md5_update(&context, (unsigned char *)ip, (unsigned int)strlen(ip));
     md5_finish(&context, digest);
     return md5_hex(digest, output);
 }
@@ -712,7 +724,8 @@ extern "C" SECTION(operator.new___dupe4) void * CHttpoperator_new___dupe4(unsign
 extern "C" SECTION(parseHeaderBuf) int parseHeaderBuf(HttpState *http)
 {
     int contentType = 0;
-    char *cursor = parseHttpStatusLine(http, http->m_headerBuf);
+    char *cursor = http->m_headerBuf;
+    cursor = parseHttpStatusLine(http, cursor);
     if (!cursor) {
         __SVO_Assert_Handler(svoHttpSource, 0x2B3);
         http->m_status = 600;
@@ -751,13 +764,14 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
         if (end - *cursor > 199) {
             http->m_serverParamsTooLong = 1;
             if (NotEmpty(&http->m_savedServerParams)) __SVO_Assert_Handler(svoHttpSource, 0x3AE);
-            char *separator = svoHttpQueryDelimiter;
-            while ((*cursor = strstr(*cursor, separator)) != 0) {
+            *cursor = strstr(*cursor, svoHttpQueryDelimiter);
+        nextParam:
+            if (*cursor) {
                 char key[32];
                 char value[0x3000];
+                char *equals = *cursor;
                 memset(key, 0, sizeof(key));
                 memset(value, 0, sizeof(value));
-                char *equals = *cursor;
                 do { ++equals; } while (*equals != '=');
                 ++*cursor;
                 if (equals - *cursor > 31) __SVO_Assert_Handler(svoHttpSource, 0x3C8);
@@ -784,7 +798,8 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
                     http->m_bNeedToPost302 = 1;
                     return 1;
                 }
-                separator = svoHttpParamDelimiter;
+                *cursor = strstr(*cursor, svoHttpParamDelimiter);
+                goto nextParam;
             }
         } else strncpy(location, *cursor, end - *cursor);
     } else if (!strncmp(*cursor, svoHttpContentTypePrefix, 13)) {
@@ -810,11 +825,10 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
 
 extern "C" SECTION(parseHttpStatusLine) char *parseHttpStatusLine(HttpState *http, char *cursor)
 {
-    int *status = &http->m_status;
     if (strncmp(cursor, svoHttpVersionPrefix, 7)) return 0;
     cursor += 9;
-    if (!svisdigit((signed char)*cursor)) { *status = 600; return 0; }
-    *status = atoi(cursor);
+    if (!svisdigit((signed char)*cursor)) { http->m_status = 600; return 0; }
+    http->m_status = atoi(cursor);
     char *end = strchr(cursor, 10);
     return end ? end + 1 : 0;
 }
@@ -831,66 +845,67 @@ extern "C" SECTION(SetHttpState) void SetHttpState(HttpState *http, int nextStat
 {
     char oldText[64];
     char newText[64];
-    int state = GetHttpState(http);
-    char *format;
-    if (state == 1) format = svoHttpStateIdleEnterOld;
-    else if (state == 2) format = svoHttpStateIdleUpdateOld;
-    else if (state == 3) format = svoHttpStateDNSLookupEnterOld;
-    else if (state == 4) format = svoHttpStateDNSLookupUpdateOld;
-    else if (state == 5) format = svoHttpStateConnectWaitEnterOld;
-    else if (state == 6) format = svoHttpStateConnectWaitUpdateOld;
-    else if (state == 10) format = svoHttpStateSendEnterOld;
-    else if (state == 11) format = svoHttpStateSendUpdateOld;
-    else if (state == 12) format = svoHttpStateReceiveEnterOld;
-    else if (state == 13) format = svoHttpStateReceiveUpdateOld;
-    else if (state == 0) format = svoHttpStateNotSetOld;
-    else if (state == 7) format = svoHttpStateSecureConnectEnterOld;
-    else if (state == 8) format = svoHttpStateSecureConnectUpdate1Old;
-    else if (state == 9) format = svoHttpStateSecureConnectUpdate2Old;
-    else if (state == 2147483647) format = svoHttpStateMaxOld;
-    else format = svoHttpStateDefaultOld;
-    int oldLength = sprintf(oldText, format);
+    int length;
+    switch (GetHttpState(http)) {
+    case 1: length = sprintf(oldText, svoHttpStateIdleEnterOld); break;
+    case 2: length = sprintf(oldText, svoHttpStateIdleUpdateOld); break;
+    case 3: length = sprintf(oldText, svoHttpStateDNSLookupEnterOld); break;
+    case 4: length = sprintf(oldText, svoHttpStateDNSLookupUpdateOld); break;
+    case 5: length = sprintf(oldText, svoHttpStateConnectWaitEnterOld); break;
+    case 6: length = sprintf(oldText, svoHttpStateConnectWaitUpdateOld); break;
+    case 10: length = sprintf(oldText, svoHttpStateSendEnterOld); break;
+    case 11: length = sprintf(oldText, svoHttpStateSendUpdateOld); break;
+    case 12: length = sprintf(oldText, svoHttpStateReceiveEnterOld); break;
+    case 13: length = sprintf(oldText, svoHttpStateReceiveUpdateOld); break;
+    case 0: length = sprintf(oldText, svoHttpStateNotSetOld); break;
+    case 7: length = sprintf(oldText, svoHttpStateSecureConnectEnterOld); break;
+    case 8: length = sprintf(oldText, svoHttpStateSecureConnectUpdate1Old); break;
+    case 9: length = sprintf(oldText, svoHttpStateSecureConnectUpdate2Old); break;
+    case 0x7FFFFFFF: length = sprintf(oldText, svoHttpStateMaxOld); break;
+    default: length = sprintf(oldText, svoHttpStateDefaultOld); break;
+    }
     http->m_HttpState = nextState;
-    state = GetHttpState(http);
-    if (state == 1) format = svoHttpStateIdleEnterNew;
-    else if (state == 2) format = svoHttpStateIdleUpdateNew;
-    else if (state == 3) format = svoHttpStateDNSLookupEnterNew;
-    else if (state == 4) format = svoHttpStateDNSLookupUpdateNew;
-    else if (state == 5) format = svoHttpStateConnectWaitEnterNew;
-    else if (state == 6) format = svoHttpStateConnectWaitUpdateNew;
-    else if (state == 10) format = svoHttpStateSendEnterNew;
-    else if (state == 11) format = svoHttpStateSendUpdateNew;
-    else if (state == 12) format = svoHttpStateReceiveEnterNew;
-    else if (state == 13) format = svoHttpStateReceiveUpdateNew;
-    else if (state == 0) format = svoHttpStateNotSetNew;
-    else if (state == 7) format = svoHttpStateSecureConnectEnterNew;
-    else if (state == 8) format = svoHttpStateSecureConnectUpdate1New;
-    else if (state == 9) format = svoHttpStateSecureConnectUpdate2New;
-    else if (state == 2147483647) format = svoHttpStateMaxNew;
-    else format = svoHttpStateDefaultNew;
-    int newLength = sprintf(newText, format);
-    if (oldLength + newLength > 127) __SVO_Assert_Handler(svoHttpSource, 0x625);
+    switch (GetHttpState(http)) {
+    case 1: length += sprintf(newText, svoHttpStateIdleEnterNew); break;
+    case 2: length += sprintf(newText, svoHttpStateIdleUpdateNew); break;
+    case 3: length += sprintf(newText, svoHttpStateDNSLookupEnterNew); break;
+    case 4: length += sprintf(newText, svoHttpStateDNSLookupUpdateNew); break;
+    case 5: length += sprintf(newText, svoHttpStateConnectWaitEnterNew); break;
+    case 6: length += sprintf(newText, svoHttpStateConnectWaitUpdateNew); break;
+    case 10: length += sprintf(newText, svoHttpStateSendEnterNew); break;
+    case 11: length += sprintf(newText, svoHttpStateSendUpdateNew); break;
+    case 12: length += sprintf(newText, svoHttpStateReceiveEnterNew); break;
+    case 13: length += sprintf(newText, svoHttpStateReceiveUpdateNew); break;
+    case 0: length += sprintf(newText, svoHttpStateNotSetNew); break;
+    case 7: length += sprintf(newText, svoHttpStateSecureConnectEnterNew); break;
+    case 8: length += sprintf(newText, svoHttpStateSecureConnectUpdate1New); break;
+    case 9: length += sprintf(newText, svoHttpStateSecureConnectUpdate2New); break;
+    case 0x7FFFFFFF: length += sprintf(newText, svoHttpStateMaxNew); break;
+    default: length += sprintf(newText, svoHttpStateDefaultNew); break;
+    }
+    if (length > 127) __SVO_Assert_Handler(svoHttpSource, 0x625);
 }
 
 extern "C" SECTION(States___dupe2) int States___dupe2(HttpState *http)
 {
-    int state = GetHttpState(http);
-    if (state == 1) { HttpIdleOnEnter(http); return 0; }
-    if (state == 2) { HttpIdleOnUpdate(http); return 1; }
-    if (state == 3) { HttpGetHostByNameOnEnter(http); return 0; }
-    if (state == 4) { HttpGetHostByNameOnUpdate(http); return 0; }
-    if (state == 5) { HttpConnectWaitOnEnter(http); return 0; }
-    if (state == 6) { HttpConnectWaitOnUpdate(http); return 0; }
-    if (state == 10) { HttpSendOnEnter(http); return 0; }
-    if (state == 11) { HttpSendOnUpdate(http); return 0; }
-    if (state == 12) { HttpRecvOnEnter(http); return 0; }
-    if (state == 13) { HttpRecvOnUpdate(http); return 0; }
-    int line = 0x66B;
-    if (state == 0) line = 0x65C;
-    else if (state == 7) line = 0x65F;
-    else if (state == 8) line = 0x662;
-    else if (state == 9) line = 0x665;
-    else if (state == 14) line = 0x668;
-    __SVO_Assert_Handler(svoHttpSource, line);
-    return 0;
+    int result = 0;
+    switch (GetHttpState(http)) {
+    case 1: HttpIdleOnEnter(http); break;
+    case 2: result = 1; HttpIdleOnUpdate(http); break;
+    case 3: HttpGetHostByNameOnEnter(http); break;
+    case 4: HttpGetHostByNameOnUpdate(http); break;
+    case 5: HttpConnectWaitOnEnter(http); break;
+    case 6: HttpConnectWaitOnUpdate(http); break;
+    case 10: HttpSendOnEnter(http); break;
+    case 11: HttpSendOnUpdate(http); break;
+    case 12: HttpRecvOnEnter(http); break;
+    case 13: HttpRecvOnUpdate(http); break;
+    case 0: __SVO_Assert_Handler(svoHttpSource, 0x65C); break;
+    case 7: __SVO_Assert_Handler(svoHttpSource, 0x65F); break;
+    case 8: __SVO_Assert_Handler(svoHttpSource, 0x662); break;
+    case 9: __SVO_Assert_Handler(svoHttpSource, 0x665); break;
+    case 0x7FFFFFFF: __SVO_Assert_Handler(svoHttpSource, 0x668); break;
+    default: __SVO_Assert_Handler(svoHttpSource, 0x66B); break;
+    }
+    return result;
 }

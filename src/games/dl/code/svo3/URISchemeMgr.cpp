@@ -69,43 +69,50 @@ void SCHEME_SECTION(_CURISchemeMgr) _CURISchemeMgr(CURISchemeMgrState *manager, 
 int SCHEME_SECTION(Register___dupe2) Register___dupe2(CURISchemeMgrState *manager, IURISchemeProviderState *provider, char **schemes)
 {
     int result = 1;
-    while (*schemes) {
-        char *scheme = *schemes;
-        sProviderEntry *available = 0;
-        sProviderEntry *duplicate = 0;
-        for (int i = 0; i < 8; ++i) {
-            sProviderEntry *entry = &manager->m_providers[i];
-            if (!entry->provider) {
-                available = entry; // Retail deliberately keeps the last vacant slot.
-            } else if (entry->scheme && !strcmp(entry->scheme, scheme) && entry->provider == provider) {
-                duplicate = entry;
+    if (*schemes) {
+        char **list = schemes;
+        while (1) {
+            char *scheme = *list;
+            sProviderEntry *available = 0;
+            sProviderEntry *duplicate = 0;
+            // A goto loop keeps retail's unreduced entry indexing.
+            int i = 0;
+        next:
+            if (!manager->m_providers[i].provider) {
+                available = &manager->m_providers[i]; // Retail deliberately keeps the last vacant slot.
+            } else if (manager->m_providers[i].scheme && !strcmp(manager->m_providers[i].scheme, scheme)
+                       && manager->m_providers[i].provider == provider) {
+                duplicate = &manager->m_providers[i];
             }
+            i++;
+            if (i < 8) goto next;
+            if (duplicate) {
+                __SVO_Assert_Handler(svoURISchemeSource, 0x6E);
+                result = 0;
+            } else if (available) {
+                available->scheme = scheme;
+                available->provider = provider;
+            } else {
+                __SVO_Assert_Handler(svoURISchemeSource, 0x79);
+                result = 0;
+            }
+            ++list;
+            if (!*list || !result) break;
         }
-        if (duplicate) {
-            result = 0;
-            __SVO_Assert_Handler(svoURISchemeSource, 0x6E);
-        } else if (available) {
-            available->scheme = scheme;
-            available->provider = provider;
-        } else {
-            result = 0;
-            __SVO_Assert_Handler(svoURISchemeSource, 0x79);
-        }
-        ++schemes;
-        if (!*schemes || !result) break;
     }
     return result;
 }
 
 void SCHEME_SECTION(DeRegister___dupe2) DeRegister___dupe2(CURISchemeMgrState *manager, IURISchemeProviderState *provider)
 {
-    for (int i = 0; i < 8; ++i) {
-        sProviderEntry *entry = &manager->m_providers[i];
-        if (entry->provider == provider) {
-            entry->provider = 0;
-            entry->scheme = 0;
-        }
+    int i = 0;
+next:
+    if (manager->m_providers[i].provider == provider) {
+        manager->m_providers[i].provider = 0;
+        manager->m_providers[i].scheme = 0;
     }
+    i++;
+    if (i < 8) goto next;
 }
 
 int SCHEME_SECTION(HasProvider) HasProvider(CURISchemeMgrState *manager, char *scheme)
@@ -116,23 +123,26 @@ int SCHEME_SECTION(HasProvider) HasProvider(CURISchemeMgrState *manager, char *s
 SCHEME_SECTION(GetProvider) IURISchemeProviderState *GetProvider(CURISchemeMgrState *manager, char *scheme)
 {
     IURISchemeProviderState *result = 0;
-    for (int i = 0; i < 8 && !result; ++i) {
-        sProviderEntry *entry = &manager->m_providers[i];
-        if (entry->provider && !strcmp(entry->scheme, scheme)) result = entry->provider;
-    }
+    int i = 0;
+next:
+    if (manager->m_providers[i].provider && !strcmp(manager->m_providers[i].scheme, scheme))
+        result = manager->m_providers[i].provider;
+    i++;
+    if (i < 8 && !result) goto next;
     return result;
 }
 
 SCHEME_SECTION(GetFreeProvider) IURISchemeProviderState *GetFreeProvider(CURISchemeMgrState *manager, char *scheme)
 {
     IURISchemeProviderState *result = 0;
-    for (int i = 0; i < 8 && !result; ++i) {
-        sProviderEntry *entry = &manager->m_providers[i];
-        if (entry->provider && !strcmp(entry->scheme, scheme)) {
-            IURISchemeProviderState *provider = entry->provider;
-            if (!provider->vtable->IsBusy(provider)) result = entry->provider;
-        }
+    int i = 0;
+next:
+    if (manager->m_providers[i].provider && !strcmp(manager->m_providers[i].scheme, scheme)) {
+        IURISchemeProviderState *provider = manager->m_providers[i].provider;
+        if (!provider->vtable->IsBusy(provider)) result = manager->m_providers[i].provider;
     }
+    i++;
+    if (i < 8 && !result) goto next;
     return result;
 }
 
@@ -145,11 +155,13 @@ SCHEME_SECTION(doRequest___dupe3) IURISchemeProviderState *doRequest___dupe3(CUR
 
 SCHEME_SECTION(init___dupe2) sProviderEntry *init___dupe2(CURISchemeMgrState *manager, CMemoryContextBaseState *memory)
 {
-    for (int i = 0; i < 8; ++i) {
-        manager->m_providers[i].scheme = 0;
-        manager->m_providers[i].provider = 0;
-    }
-    return &manager->m_providers[7];
+    int i = 0;
+next:
+    manager->m_providers[i].provider = 0;
+    manager->m_providers[i].scheme = 0;
+    i++;
+    if (i < 8) goto next;
+    // Retail falls off the end, leaving the last entry address in $2.
 }
 
 void SCHEME_SECTION(shutdown___dupe2) shutdown___dupe2(CURISchemeMgrState *manager)

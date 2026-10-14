@@ -24,8 +24,7 @@ SVO_INPUT_SECTION(CInputContextBase) void *CInputContextBase(CInputContextBaseSt
         context->m_actionButtons[i] = 0;
         context->m_defaultButtons[i] = 0;
     }
-    // Preserve the incidental v0 value left by the original constructor loop.
-    return (char *)context + 25 * 4;
+    // Retail falls off the end, leaving the constructor loop's last address in v0.
 }
 
 void SVO_INPUT_SECTION(DefineDefaultButtonMap) DefineDefaultButtonMap(
@@ -90,35 +89,88 @@ void SVO_INPUT_SECTION(DefineDefaultButtonMap) DefineDefaultButtonMap(
 
 void SVO_INPUT_SECTION(SetDefaultButtonMap) SetDefaultButtonMap(CInputContextBaseState *context)
 {
-    for (unsigned int i = 0; i < 26; ++i) {
-        context->m_actionButtons[i] = context->m_defaultButtons[i];
-    }
+    context->m_actionButtons[0] = context->m_defaultButtons[0];
+    context->m_actionButtons[1] = context->m_defaultButtons[1];
+    context->m_actionButtons[2] = context->m_defaultButtons[2];
+    context->m_actionButtons[3] = context->m_defaultButtons[3];
+    context->m_actionButtons[4] = context->m_defaultButtons[4];
+    context->m_actionButtons[5] = context->m_defaultButtons[5];
+    context->m_actionButtons[6] = context->m_defaultButtons[6];
+    context->m_actionButtons[7] = context->m_defaultButtons[7];
+    context->m_actionButtons[8] = context->m_defaultButtons[8];
+    context->m_actionButtons[9] = context->m_defaultButtons[9];
+    context->m_actionButtons[10] = context->m_defaultButtons[10];
+    context->m_actionButtons[11] = context->m_defaultButtons[11];
+    context->m_actionButtons[12] = context->m_defaultButtons[12];
+    context->m_actionButtons[13] = context->m_defaultButtons[13];
+    context->m_actionButtons[14] = context->m_defaultButtons[14];
+    context->m_actionButtons[15] = context->m_defaultButtons[15];
+    context->m_actionButtons[16] = context->m_defaultButtons[16];
+    context->m_actionButtons[17] = context->m_defaultButtons[17];
+    context->m_actionButtons[18] = context->m_defaultButtons[18];
+    context->m_actionButtons[19] = context->m_defaultButtons[19];
+    context->m_actionButtons[20] = context->m_defaultButtons[20];
+    context->m_actionButtons[21] = context->m_defaultButtons[21];
+    context->m_actionButtons[22] = context->m_defaultButtons[22];
+    context->m_actionButtons[23] = context->m_defaultButtons[23];
+    context->m_actionButtons[24] = context->m_defaultButtons[24];
+    context->m_actionButtons[25] = context->m_defaultButtons[25];
 }
 
 int SVO_INPUT_SECTION(HasActionOccurred) HasActionOccurred(
     CInputContextBaseState *context, unsigned int padmask, PadAction action)
 {
-    unsigned int button = context->m_actionButtons[action];
-    const CInputContextVtablePrefix *table = context->vtable;
-    if ((unsigned int)action - 4 >= 12) {
-        return table->IsButtonDown(context, padmask, (unsigned short)button) != 0;
+    int result = 0;
+    switch (action) {
+    case SV_ACTION_SCROLL_UP:
+    case SV_ACTION_SELECT_UP:
+        if (context->m_actionButtons[action] == 0x10000) result = context->vtable->RightVertical(context, padmask);
+        else if (context->m_actionButtons[action] == 0x20000) result = context->vtable->LeftVertical(context, padmask);
+        else goto button1;
+        if (result > 0) result = 0;
+        break;
+    button1:
+        if (context->vtable->IsButtonDown(context, padmask, context->m_actionButtons[action])) result = -127;
+        break;
+    case SV_ACTION_SCROLL_DOWN:
+    case SV_ACTION_SELECT_DOWN:
+        if (context->m_actionButtons[action] == 0x10000) result = context->vtable->RightVertical(context, padmask);
+        else if (context->m_actionButtons[action] == 0x20000) result = context->vtable->LeftVertical(context, padmask);
+        else goto button2;
+        if (result < 0) result = 0;
+        break;
+    button2:
+        if (context->vtable->IsButtonDown(context, padmask, context->m_actionButtons[action])) result = 127;
+        break;
+    case SV_ACTION_SCROLL_LEFT:
+    case SV_ACTION_SELECT_LEFT:
+    case SV_ACTION_SELECT_PREV_ITEM:
+    case SV_ACTION_SELECT_PREV_GROUP:
+        if (context->m_actionButtons[action] == 0x10000) result = context->vtable->RightHorizontal(context, padmask);
+        else if (context->m_actionButtons[action] == 0x20000) result = context->vtable->LeftHorizontal(context, padmask);
+        else goto button3;
+        if (result > 0) result = 0;
+        break;
+    button3:
+        if (context->vtable->IsButtonDown(context, padmask, context->m_actionButtons[action])) result = -127;
+        break;
+    case SV_ACTION_SCROLL_RIGHT:
+    case SV_ACTION_SELECT_RIGHT:
+    case SV_ACTION_SELECT_NEXT_ITEM:
+    case SV_ACTION_SELECT_NEXT_GROUP:
+        if (context->m_actionButtons[action] == 0x10000) result = context->vtable->RightHorizontal(context, padmask);
+        else if (context->m_actionButtons[action] == 0x20000) result = context->vtable->LeftHorizontal(context, padmask);
+        else goto button4;
+        if (result < 0) result = 0;
+        break;
+    button4:
+        if (context->vtable->IsButtonDown(context, padmask, context->m_actionButtons[action])) result = 127;
+        break;
+    default:
+        result = context->vtable->IsButtonDown(context, padmask, context->m_actionButtons[action]) != 0;
+        break;
     }
-    int negative = (action & 1) == 0;
-    if (button != 0x10000 && button != 0x20000) {
-        if (!table->IsButtonDown(context, padmask, (unsigned short)button)) return 0;
-        return negative ? -127 : 127;
-    }
-    int value;
-    if (action == SV_ACTION_SCROLL_UP || action == SV_ACTION_SCROLL_DOWN ||
-        action == SV_ACTION_SELECT_UP || action == SV_ACTION_SELECT_DOWN) {
-        value = button == 0x10000 ? table->RightVertical(context, padmask) :
-                                  table->LeftVertical(context, padmask);
-    } else {
-        value = button == 0x10000 ? table->RightHorizontal(context, padmask) :
-                                  table->LeftHorizontal(context, padmask);
-    }
-    if (negative) return value > 0 ? 0 : value;
-    return value < 0 ? 0 : value;
+    return result;
 }
 
 int SVO_INPUT_SECTION(SetButtonMapForPage) SetButtonMapForPage(

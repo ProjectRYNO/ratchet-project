@@ -71,14 +71,14 @@ extern "C" SECTION(_TextTag) void _TextTag(SVTag *tag, int flags)
 extern "C" SECTION(DefaultInit___dupe2) void DefaultInit___dupe2(TextTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoTextTagName, 64);
-    tag->m_align = 0;
     tag->m_fontSize = 14;
+    tag->m_align = 0;
     tag->m_displayLength = 0.0f;
     memset(tag->m_text, 0, 128);
     tag->m_link = 0;
-    tag->m_textColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFFFFFF00;
     tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->m_textColor = 0xFFFFFFFF;
 }
 
 extern "C" SECTION(Draw___dupe8) void Draw___dupe8(TextTagState *tag)

@@ -52,19 +52,18 @@ char HTTP_SECTION(decodeEntityChar) decodeEntityChar(char *text, unsigned int *p
         if (current[1] == '#') {
             if (svisdigit(current[2])) {
                 char *end;
-                int value = strtol(text + *position + 2, &end, 10);
-                if (*end == ';' && value < 256) {
-                    *position = end + 1 - text;
+                long value = strtol(text + *position + 2, &end, 10);
+                if (*end++ == ';' && value < 256) {
+                    *position = end - text;
                     return (char)value;
                 }
             }
         } else {
-            for (HTTPEntity *entry = svoHttpEntityMap; entry->str; ++entry) {
-                char *pattern = entry->str;
-                unsigned int length = strlen(pattern);
-                if (!strncmp(pattern, text + *position, length)) {
+            for (int i = 0; svoHttpEntityMap[i].str; i++) {
+                char *pattern = svoHttpEntityMap[i].str;
+                if (!strncmp(pattern, text + *position, strlen(pattern))) {
                     *position += strlen(pattern);
-                    return entry->val;
+                    return svoHttpEntityMap[i].val;
                 }
             }
         }
@@ -114,12 +113,12 @@ char HTTP_SECTION(decodeURLEntityChar) decodeURLEntityChar(char *text, unsigned 
 
 int HTTP_SECTION(isURLDigit) isURLDigit(char c)
 {
-    if (c >= 'A' && c <= 'F') return 1;
-    return svisdigit(c) != 0;
+    if (c < 'G') { if (c >= 'A') return 1; } return svisdigit(c) != 0;
 }
 
 void HTTP_SECTION(parseFullyQualifiedPath) parseFullyQualifiedPath(char *source, SVPath *path)
 {
+    char portText[6];
     if (!strstr(source, svoHttpDoubleSlash)) __SVO_Assert_Handler(svoHttpUtilsSource, 0x100);
     char *server = strstr(source, svoHttpDoubleSlash) + 2;
     int schemeLength = strstr(source, svoHttpColon) - source;
@@ -128,17 +127,17 @@ void HTTP_SECTION(parseFullyQualifiedPath) parseFullyQualifiedPath(char *source,
     path->m_scheme[schemeLength] = 0;
     char *colon = strstr(server, svoHttpColon);
     char *slash = strstr(server, svoHttpSlash);
-    int serverLength = (colon ? colon : slash) - server;
+    int serverLength = colon ? colon - server : slash - server;
+    int portLength = slash - colon;
     strncpy(path->m_server, server, serverLength);
+    char *portStart = server + serverLength + 1;
     path->m_server[serverLength] = 0;
     unsigned int port = 80;
     if (colon) {
-        int portLength = slash - colon;
         if (portLength > 6) __SVO_Assert_Handler(svoHttpUtilsSource, 0x11E);
-        char portText[6];
         memset(portText, 0, sizeof(portText));
         // The retail length includes the slash after the port digits.
-        strncpy(portText, server + serverLength + 1, portLength);
+        strncpy(portText, portStart, portLength);
         port = atoi(portText);
         if (port > 65535) {
             __SVO_Assert_Handler(svoHttpUtilsSource, 0x128);
@@ -152,14 +151,17 @@ void HTTP_SECTION(parseFullyQualifiedPath) parseFullyQualifiedPath(char *source,
 
 int HTTP_SECTION(pathIsFullyQualified___dupe2) pathIsFullyQualified___dupe2(char *source)
 {
+    int result = 0;
     char *colon = strstr(source, svoHttpColon);
-    if (!colon) return 0;
     int length = colon - source;
-    if (length > 14) __SVO_Assert_Handler(svoHttpUtilsSource, 0x14E);
-    char scheme[16];
-    memcpy(scheme, source, 15);
-    scheme[length] = 0;
-    return 1;
+    if (colon) {
+        if (length > 14) __SVO_Assert_Handler(svoHttpUtilsSource, 0x14E);
+        char scheme[16];
+        memcpy(scheme, source, 15);
+        scheme[length] = 0;
+        result = 1;
+    }
+    return result;
 }
 
 void HTTP_SECTION(printFormattedBody) printFormattedBody(char *body, unsigned int length, int contentType)
@@ -167,9 +169,8 @@ void HTTP_SECTION(printFormattedBody) printFormattedBody(char *body, unsigned in
     // The retail diagnostic output is disabled; only these local copies remain.
     char line[36];
     line[35] = 0;
-    unsigned int count = 0;
-    do {
+    for (unsigned int count = 0; count <= length / 35; count++) {
         memcpy(line, body, 35);
         body += 35;
-    } while (++count <= length / 35);
+    }
 }

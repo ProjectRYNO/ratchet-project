@@ -111,9 +111,9 @@ extern "C" SECTION(DefaultInit___dupe14) void DefaultInit___dupe14(CheckboxInput
     tag->m_fontSize = 14;
     tag->m_textColor = 0xFFFFFFFF;
     tag->m_highlightColor = 0xFFFFFF00;
-    tag->m_bSubmitAsEncryped = 0;
     tag->m_isChecked = 0;
     tag->m_parentForm = 0;
+    tag->m_bSubmitAsEncryped = 0;
 }
 
 extern "C" SECTION(Draw___dupe20) void Draw___dupe20(CheckboxInputTagState *self)
@@ -163,12 +163,11 @@ extern "C" SECTION(HandleInput___dupe46) int HandleInput___dupe46(CheckboxInputT
         if (!self->m_parentForm) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x83);
         CheckCheckboxElement(self->m_parentForm, self);
     }
-    for (int action = 0; action < 4; ++action) {
-        if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-            CDrawContextBase *draw = tag->m_contexts->drawContext;
-            if (!draw) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x8D);
-            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-        }
+    if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+        || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+        CDrawContextBase *draw = tag->m_contexts->drawContext;
+        if (!draw) __SVO_Assert_Handler(svoCheckboxInputTagSource, 0x8D);
+        return Navigate(tag, input, draw, tag->m_xml, page) == 0;
     }
     return 1;
 }
@@ -183,9 +182,13 @@ extern "C" SECTION(RegisterWithForm___dupe4) void RegisterWithForm___dupe4(Check
 extern "C" SECTION(ToggleChecked) void ToggleChecked(CheckboxInputTagState *tag)
 {
     if (tag->base.m_bSelectable) {
-        int sound = tag->m_isChecked ? 3 : 2;
-        CAudioContextBaseState *audio = GetAudioContext();
-        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, sound, svoCheckboxSoundClass);
+        if (!tag->m_isChecked) {
+            CAudioContextBaseState *audio = GetAudioContext();
+            ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 2, svoCheckboxSoundClass);
+        } else {
+            CAudioContextBaseState *audio = GetAudioContext();
+            ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 3, svoCheckboxSoundClass);
+        }
         tag->m_isChecked = !tag->m_isChecked;
     }
 }

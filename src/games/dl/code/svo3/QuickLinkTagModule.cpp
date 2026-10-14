@@ -20,7 +20,7 @@ MODULE_SECTION(IsMyTag___dupe6) int IsMyTag___dupe6(SVTagModuleState *module, ik
 MODULE_SECTION(BuildTag___dupe7) void BuildTag___dupe7(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoQuickLinkTagModuleSource, 0x1A);
     void *memory = SVTagNew(0xC0);
     QuickLinkTag(memory, xml, contexts);

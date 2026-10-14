@@ -61,7 +61,7 @@ SECTION(IsMyTag___dupe8) int IsMyTag___dupe8(SVTagModuleState *module, iks *xml)
 
 SECTION(BuildTag___dupe9) void BuildTag___dupe9(SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList) __SVO_Assert_Handler(svoImageTagModuleSource, 0x20);
+    if (!tagList || !xml) __SVO_Assert_Handler(svoImageTagModuleSource, 0x20);
     void *memory = SVTagNew(0x170);
     ImageTag(memory, xml, contexts);
     *outTag = (SVTag *)memory;
@@ -136,9 +136,13 @@ extern "C" SECTION(ScanTags___dupe4) void ScanTags___dupe4(SVTagModuleState *mod
         SetDownloadCallback(&download, processImageCB);
         SetID___dupe2(&download, id);
         PushPostTransitionArray(contexts->pMain, &download, &queued);
-        int action = strcmp(svoImageModulePreValue, mode) == 0 ? 1 : 2;
-        actions->download = queued;
-        actions->action = action;
+        if (!strcmp(svoImageModulePreValue, mode)) {
+            actions->action = 1;
+            actions->download = queued;
+        } else {
+            actions->action = 2;
+            actions->download = queued;
+        }
     }
     _DownloadBinary(&download, 2);
 }

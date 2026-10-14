@@ -85,7 +85,7 @@ ifeq ($(ALLOW_NONMATCHING),1)
 	SVO3_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
 # Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
-SVO3_AS_FLAGS = -EL -G0 -Icode/include
+SVO3_AS_FLAGS = -EL -G0 -g -Icode/include
 
 # Medius rt_memory: measured retail matches; keep the default split-address pass.
 # Enable additional objects here as their C replacements are verified.
@@ -184,6 +184,7 @@ $(OBJ_DIR)/%.o: code/%.c
 $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGXX296) -S $(SVO3_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
 	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp

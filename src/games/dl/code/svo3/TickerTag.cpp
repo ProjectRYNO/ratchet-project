@@ -79,10 +79,10 @@ extern "C" SECTION(DefaultInit___dupe24) void DefaultInit___dupe24(TickerTagStat
     tag->base.m_fillColor = 0xFFFFFF00;
     tag->base.m_lineColor = 0xFFFFFFFF;
     tag->base.m_tagClass = gTagNotSetStr;
-    tag->m_text = 0;
     tag->m_align = 0;
     tag->m_displayLength = 0.0f;
     tag->base.m_bSelectable = 0;
+    tag->m_text = 0;
 }
 
 extern "C" int TrimToFitDisplaySize(CDrawContextBase *, char *, float, int);
@@ -127,8 +127,8 @@ extern "C" SECTION(TickerTag) void TickerTag(TickerTagState *tag, iks *xml, CAll
     getIntAttrib(tag->base.m_xml, svoTickerFontSizeAttribute, &tag->m_fontSize);
     getFloatAttrib(tag->base.m_xml, svoTickerDisplayLengthAttribute, &tag->m_displayLength);
     getAlignAttrib(tag->base.m_xml, svoTickerAlignAttribute, &tag->m_align);
-    tag->base.m_lineColor = 0xFFFFFFFF;
     tag->base.m_fillColor = 0xFFFFFF00;
+    tag->base.m_lineColor = 0xFFFFFFFF;
     getColorAttrib(tag->base.m_xml, svoTickerHighlightAttribute, &tag->base.m_fillColor);
     getColorAttrib(tag->base.m_xml, svoTickerTextColorAttribute, &tag->base.m_lineColor);
     getStringAttrib(tag->base.m_xml, svoTickerClassAttribute, &tag->base.m_tagClass);

@@ -76,10 +76,10 @@ int doRequest___dupe2(HttpState *, URIRequest *, IRequestListenerState *, void *
 
 static inline void ResetDLBuffer(DLBuffer *buffer)
 {
-    buffer->startPos = 0xFFFFFFFF;
     buffer->bytesReceived = 0;
     buffer->bWaitingForSystemOk = 0;
     buffer->bBeingUsedForDownload = 0;
+    buffer->startPos = 0xFFFFFFFF;
 }
 
 SECTION(setState) void setState(SVDownloadManagerState *manager, int state)
@@ -98,15 +98,16 @@ extern "C" SECTION(_SVDownloadManager) void _SVDownloadManager(SVDownloadManager
 {
     manager->base.vtable = &svoDownloadManagerVtable;
     shutdown___dupe3(manager);
-    for (int i = 0; i < 2; ++i) {
-        DLBuffer *buffer = &manager->m_buffers[i];
-        if (buffer->pData) {
-            CMemoryContextBaseState *memory = GetMemoryContext();
-            svFreeSafe(memory, buffer->pData);
-            buffer->pData = 0;
-            buffer->dataSizeBytes = 0;
+    int index = 0;
+    int count = 1;
+    do {
+        if (manager->m_buffers[index].pData) {
+            svFreeSafe(GetMemoryContext(), manager->m_buffers[index].pData);
+            manager->m_buffers[index].pData = 0;
+            manager->m_buffers[index].dataSizeBytes = 0;
         }
-    }
+        index++;
+    } while (--count >= 0);
     _SVChronograph(&manager->m_timer, 2);
     _Http(&manager->m_http, 2);
     if (flags & 1) { DownloadManagerDelete(manager); return; }
@@ -116,6 +117,8 @@ extern "C" SECTION(doRequest___dupe4) int doRequest___dupe4(SVDownloadManagerSta
 {
     char requestPath[272];
     char originalPath[272];
+    SVPath split;
+    URIRequest request;
     char filename[32];
     if (!path) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x146);
     if (manager->m_bRequestInProgress) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x147);
@@ -123,28 +126,24 @@ extern "C" SECTION(doRequest___dupe4) int doRequest___dupe4(SVDownloadManagerSta
     Reset___dupe5(&manager->m_timer);
     Start___dupe3(&manager->m_timer);
     svstrncpy(originalPath, path, strlen(path) + 1);
-    if (!pathIsFullyQualified___dupe2(path)) {
+    if (pathIsFullyQualified___dupe2(path)) {
+        SVPath *target = &split;
+        target->m_scheme = manager->m_scheme;
+        target->m_server = manager->m_serverName;
+        target->m_port = &manager->m_port;
+        target->m_path = requestPath;
+        target->m_pathMaxLength = 257;
+        parseFullyQualifiedPath(path, target);
+    } else {
         __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x161);
         return 0;
     }
-    SVPath split;
-    split.m_scheme = manager->m_scheme;
-    split.m_server = manager->m_serverName;
-    split.m_port = &manager->m_port;
-    split.m_path = requestPath;
-    split.m_pathMaxLength = 257;
-    parseFullyQualifiedPath(path, &split);
     if (manager->m_state) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x16B);
-    DLBuffer *buffer = manager->m_buffers;
-    int count = 2;
-    do {
-        if (buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x170);
-        CMemoryContextBaseState *memory = GetMemoryContext();
-        buffer->pData = (char *)svAllocSafe(memory, buffer->dataSizeBytes, 4, 0x171, svoSVDownloadManagerSource);
-        if (!buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x172);
-        ++buffer;
-    } while (--count);
-    URIRequest request;
+    for (int index = 0; index < 2; index++) {
+        if (manager->m_buffers[index].pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x170);
+        manager->m_buffers[index].pData = (char *)svAllocSafe(GetMemoryContext(), manager->m_buffers[index].dataSizeBytes, 4, 0x171, svoSVDownloadManagerSource);
+        if (!manager->m_buffers[index].pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x172);
+    }
     request.scheme = svoDownloadHttpScheme;
     request.host = manager->m_serverName;
     request.port = manager->m_port;
@@ -158,11 +157,13 @@ extern "C" SECTION(doRequest___dupe4) int doRequest___dupe4(SVDownloadManagerSta
         return 0;
     }
     int length = strlen(path);
-    for (int position = length; position > 0; --position) {
-        if (path[position] == '/') {
-            svstrncpy(filename, path + position + 1, 32);
+    int position = length;
+    for (int i = 0; i < length; i++) {
+        if (path[position] == '/' || !position) {
+            svstrncpy(filename, &path[position] + 1, 32);
             break;
         }
+        position--;
     }
     svstrncpy(manager->m_fileName, filename, 32);
     setState(manager, 1);
@@ -175,16 +176,26 @@ extern "C" SECTION(download___dupe3) void download___dupe3(SVDownloadManagerStat
     int state = manager->m_state;
     if (GetErrorCode()) setState(manager, -1);
     if (manager->m_bRequestInProgress) UpdateFileDownload(manager);
-    if (state == 1) {
+    switch (state) {
+    case 1:
         freeResources___dupe4(manager, 1);
         download___dupe2(&manager->m_http);
-    } else if (state == 3) {
+        break;
+    case 3:
         if (IsSystemFinishedWithBuffers(manager)) {
             manager->m_bRequestInProgress = 0;
             freeResources___dupe4(manager, 0);
             setState(manager, 0);
         }
-    } else if (state != -1 && state != 0 && state != 2) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0xCA);
+        break;
+    case -1:
+    case 0:
+    case 2:
+        break;
+    default:
+        __SVO_Assert_Handler(svoSVDownloadManagerSource, 0xCA);
+        break;
+    }
     if (GetErrorCode()) setState(manager, -1);
 }
 
@@ -197,6 +208,11 @@ extern "C" char svoDownloadOutlineRectClass[], svoDownloadFillRectClass[], svoDo
 extern "C" const long long svoDownloadBlockedText[];
 extern "C" char svoDownloadRateClass[], svoDownloadBytesFormat[], svoDownloadNotSetClass[];
 extern "C" void formatDownloadStatusText(SVDownloadManagerState *manager, char *dst, char *src, char *id, int percent);
+static inline int DLBufferIsFull(DLBuffer *buffer)
+{
+    return buffer->bytesReceived >= buffer->dataSizeBytes;
+}
+
 extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manager)
 {
     if (manager->m_state == 1 || manager->m_state == 3) {
@@ -241,9 +257,10 @@ extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manag
             draw->vtable->SVDrawText(draw, 0, (float)tx + (float)(w / 2), (float)ty - (float)(h * 2 + h), 0xFFFFFFFF, dstr, strlen(dstr), 12, 1, svoDownloadRateClass);
             sprintf(dstr, svoDownloadBytesFormat, manager->m_fileBytesReceived, manager->m_fileContentLength);
             draw->vtable->SVDrawText(draw, 0, (float)tx, (float)ty - (float)(h * 2), 0xFFFFFF77, dstr, strlen(dstr), 12, 0, svoDownloadNotSetClass);
-            if (manager->m_buffers[0].bytesReceived >= manager->m_buffers[0].dataSizeBytes
-                && manager->m_buffers[1].bytesReceived >= manager->m_buffers[1].dataSizeBytes
-                && (manager->m_buffers[0].bWaitingForSystemOk || manager->m_buffers[1].bWaitingForSystemOk)) {
+            DLBuffer *buffer0 = &manager->m_buffers[0];
+            DLBuffer *buffer1 = &manager->m_buffers[1];
+            if (DLBufferIsFull(buffer0) && DLBufferIsFull(buffer1)
+                && (buffer0->bWaitingForSystemOk || buffer1->bWaitingForSystemOk)) {
                 long long *d = (long long *)dstr;
                 d[0] = svoDownloadBlockedText[0];
                 d[1] = svoDownloadBlockedText[1];
@@ -265,13 +282,14 @@ extern "C" SECTION(formatDownloadStatusText) void formatDownloadStatusText(SVDow
     char text[128];
     if (strlen(src) > 127) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x262);
     int position = my_strcspn(src, svoDownloadStatusToken);
+    int next = position + 6;
     if (position < 1) svstrncpy(dst, src, 128);
     else {
         memcpy(dst, src, position);
         dst[position - 1] = 0;
         sprintf(text, svoDownloadStatusFormat, manager->m_fileID, percent);
         strcat(dst, text);
-        svstrncpy(text, src + position + 6, strlen(src));
+        svstrncpy(text, src + next, strlen(src));
         strcat(dst, text);
     }
 }
@@ -313,8 +331,8 @@ extern "C" SECTION(NotifySystemContextOfChunk) void NotifySystemContextOfChunk(S
     info.pData = buffer->pData;
     info.dataLen = buffer->bytesReceived;
     info.partialDownloadInfo = manager->m_fileBytesReceived < manager->m_fileContentLength;
-    info.entireDataLen = manager->m_fileContentLength;
     info.curTotalDataLen = buffer->startPos + buffer->bytesReceived;
+    info.entireDataLen = manager->m_fileContentLength;
     CSystemContextBase *system = GetSystemContext();
     system->vtable->FileDownloadCallback(system, &info);
     buffer->bBeingUsedForDownload = 0;
@@ -328,9 +346,9 @@ extern "C" SECTION(NotifySystemContextOfFailure) void NotifySystemContextOfFailu
     info.fileID = manager->m_fileID;
     info.pData = 0;
     info.dataLen = 0;
+    info.curTotalDataLen = manager->m_fileBytesReceived;
     info.partialDownloadInfo = 2;
     info.entireDataLen = manager->m_fileContentLength;
-    info.curTotalDataLen = manager->m_fileBytesReceived;
     CSystemContextBase *system = GetSystemContext();
     system->vtable->FileDownloadCallback(system, &info);
 }
@@ -356,7 +374,7 @@ extern "C" SECTION(OnURIRequestChunkReceived) void OnURIRequestChunkReceived(SVD
     manager->m_fileBytesReceived += length;
     buffer->bytesReceived += length;
     if (buffer->dataSizeBytes < buffer->bytesReceived) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x329);
-    if (buffer->dataSizeBytes <= buffer->bytesReceived && !manager->m_buffers[0].bWaitingForSystemOk && !manager->m_buffers[1].bWaitingForSystemOk)
+    if (DLBufferIsFull(buffer) && !manager->m_buffers[0].bWaitingForSystemOk && !manager->m_buffers[1].bWaitingForSystemOk)
         NotifySystemContextOfChunk(manager, buffer);
 }
 
@@ -381,28 +399,43 @@ extern "C" SECTION(OnURIRequestHeaderReceived) int OnURIRequestHeaderReceived(SV
     return 1;
 }
 
+static inline int DLBufferHasRoom(DLBuffer *buffer)
+{
+    return buffer->bytesReceived < buffer->dataSizeBytes;
+}
+
 extern "C" SECTION(OnURIRequestIsOkContinueDownload) int OnURIRequestIsOkContinueDownload(SVDownloadManagerState *manager, void *context, URIReceiveBuffer *result)
 {
+    DLBuffer *buffer = 0;
+    int ok = 0;
     DLBuffer *first = &manager->m_buffers[0];
     DLBuffer *second = &manager->m_buffers[1];
-    DLBuffer *buffer = 0;
     if (!first->bWaitingForSystemOk && !second->bWaitingForSystemOk) {
-        if (!first->bytesReceived) buffer = second->bytesReceived ? second : first;
-        else if (!second->bytesReceived) buffer = first;
-        else __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x356);
-    } else if (first->bWaitingForSystemOk && second->bytesReceived < second->dataSizeBytes) buffer = second;
-    else if (second->bWaitingForSystemOk && first->bytesReceived < first->dataSizeBytes) buffer = first;
-    if (!buffer) return 0;
-    if (!buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x368);
-    unsigned int received = buffer->bytesReceived;
-    unsigned int size = buffer->dataSizeBytes;
-    char *data = buffer->pData;
-    result->context = buffer;
-    result->size = size - received;
-    result->data = data + received;
-    buffer->bBeingUsedForDownload = 1;
-    if (!buffer->bytesReceived) buffer->startPos = manager->m_fileBytesReceived;
-    return 1;
+        if (!first->bytesReceived) {
+            buffer = !second->bytesReceived ? first : second;
+        } else if (!second->bytesReceived) {
+            buffer = first;
+        } else {
+            __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x356);
+        }
+    } else {
+        if (manager->m_buffers[0].bWaitingForSystemOk && !DLBufferIsFull(&manager->m_buffers[1])) {
+            buffer = &manager->m_buffers[1];
+        } else if (manager->m_buffers[1].bWaitingForSystemOk) {
+            if (DLBufferHasRoom(&manager->m_buffers[0])) buffer = &manager->m_buffers[0];
+        }
+    }
+    if (buffer) {
+        if (!buffer->pData) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x368);
+        ok = 1;
+        unsigned int received = buffer->bytesReceived;
+        result->context = buffer;
+        result->size = buffer->dataSizeBytes - received;
+        result->data = buffer->pData + received;
+        buffer->bBeingUsedForDownload = ok;
+        if (!buffer->bytesReceived) buffer->startPos = manager->m_fileBytesReceived;
+    }
+    return ok;
 }
 
 extern "C" SECTION(OnURIRequestStart) void OnURIRequestStart(SVDownloadManagerState *manager, void *context)
@@ -435,7 +468,7 @@ extern "C" SECTION(SVDownloadManager) void DownloadManagerConstruct(SVDownloadMa
     manager->base.vtable = &svoDownloadManagerVtable;
     Http(&manager->m_http, memory, 2);
     DLBuffer *buffer = manager->m_buffers;
-    int count = 2;
+    int count = 1;
     do {
         buffer->dataSizeBytes = 0;
         buffer->bytesReceived = 0;
@@ -444,7 +477,7 @@ extern "C" SECTION(SVDownloadManager) void DownloadManagerConstruct(SVDownloadMa
         buffer->bBeingUsedForDownload = 0;
         buffer->startPos = 0xFFFFFFFFu;
         ++buffer;
-    } while (--count);
+    } while (--count != -1);
     SVChronograph(&manager->m_timer, 0);
     if (!page) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x5E);
     manager->m_page = page;
@@ -453,44 +486,44 @@ extern "C" SECTION(SVDownloadManager) void DownloadManagerConstruct(SVDownloadMa
     manager->m_bRequestInProgress = 0;
     if (bufferSize < 2) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x67);
     if (!(bufferSize >> 1)) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x6A);
-    buffer = manager->m_buffers;
-    count = 2;
-    do {
-        buffer->dataSizeBytes = bufferSize >> 1;
-        buffer->pData = 0;
-        ++buffer;
-    } while (--count);
+    for (int index = 0; index < 2; index++) {
+        manager->m_buffers[index].pData = 0;
+        manager->m_buffers[index].dataSizeBytes = bufferSize >> 1;
+    }
 }
 
 extern "C" SECTION(UpdateFileDownload) void UpdateFileDownload(SVDownloadManagerState *manager)
 {
     DLBuffer *first = &manager->m_buffers[0];
-    DLBuffer *second = &manager->m_buffers[1];
-    DLBuffer *waiting;
-    DLBuffer *other;
     if (first->bWaitingForSystemOk) {
+        DLBuffer *second = &manager->m_buffers[1];
         if (second->bWaitingForSystemOk) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x2C2);
-        waiting = first;
-        other = second;
-    } else if (second->bWaitingForSystemOk) {
-        waiting = second;
-        other = first;
+        CSystemContextBase *system = GetSystemContext();
+        if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, manager->m_buffers[0].pData)) {
+            ResetDLBuffer(first);
+            if (DLBufferIsFull(second) || (manager->m_state == 3 && second->bytesReceived)) {
+                NotifySystemContextOfChunk(manager, second);
+                return;
+            }
+        }
     } else {
-        if (manager->m_state == 3) {
+        DLBuffer *second = &manager->m_buffers[1];
+        if (second->bWaitingForSystemOk) {
+            CSystemContextBase *system = GetSystemContext();
+            if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, manager->m_buffers[1].pData)) {
+                ResetDLBuffer(second);
+                if (DLBufferIsFull(first) || (manager->m_state == 3 && first->bytesReceived)) {
+                    NotifySystemContextOfChunk(manager, first);
+                    return;
+                }
+            }
+        } else if (manager->m_state == 3) {
             if (first->bBeingUsedForDownload) {
                 if (second->bBeingUsedForDownload) __SVO_Assert_Handler(svoSVDownloadManagerSource, 0x2E3);
                 NotifySystemContextOfChunk(manager, first);
-            } else if (second->bBeingUsedForDownload) NotifySystemContextOfChunk(manager, second);
+                return;
+            }
+            if (second->bBeingUsedForDownload) NotifySystemContextOfChunk(manager, second);
         }
-        return;
-    }
-    CSystemContextBase *system = GetSystemContext();
-    if (((const DownloadSystemVtable *)system->vtable)->OkToFreeFileDownloadBuffer(system, waiting->pData)) {
-        waiting->bytesReceived = 0;
-        waiting->startPos = 0xFFFFFFFFu;
-        waiting->bWaitingForSystemOk = 0;
-        waiting->bBeingUsedForDownload = 0;
-        unsigned int received = other->bytesReceived;
-        if (received >= other->dataSizeBytes || (manager->m_state == 3 && received)) NotifySystemContextOfChunk(manager, other);
     }
 }

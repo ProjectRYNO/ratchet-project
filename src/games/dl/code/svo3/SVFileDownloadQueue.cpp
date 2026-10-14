@@ -34,8 +34,8 @@ void reset___dupe3(FileDownloadEntryState *);
 
 SECTION(FileDownloadEntry) void FileDownloadEntry(FileDownloadEntryState *entry)
 {
-    entry->m_valueStr = 0;
     entry->m_lookupStr = 0;
+    entry->m_valueStr = 0;
 }
 
 SECTION(FreeResources___dupe53) void FreeResources___dupe53(FileDownloadEntryState *entry)
@@ -111,7 +111,12 @@ extern "C" SECTION(operator.new___dupe14) void * SVFileDownloadQueueoperator_new
 
 SECTION(FileDownloadQueue) void FileDownloadQueue(FileDownloadQueueState *queue)
 {
-    for (int i = 0; i < 5; ++i) FileDownloadEntry(&queue->m_entries[i]);
+    FileDownloadEntryState *entry = queue->m_entries;
+    int i = 4;
+    do {
+        FileDownloadEntry(entry);
+        entry++;
+    } while (--i != -1);
     memset(queue->m_entries, 0, 0x28);
     allocateMemoryForEntries(queue);
     return;
@@ -144,11 +149,9 @@ extern "C" SECTION(find___dupe2) char *find___dupe2(FileDownloadQueueState *queu
 {
     if (!lookup) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xAC);
     FileDownloadEntryState *entry = queue->m_entries;
-    int count = 5;
-    do {
+    for (int i = 0; i < 5; i++, entry++) {
         if (matchesMyLookup___dupe2(entry, lookup)) return GetValueStr___dupe2(entry);
-        ++entry;
-    } while (--count);
+    }
     return 0;
 }
 
@@ -160,15 +163,16 @@ SECTION(FreeResources___dupe54) void FreeResources___dupe54(FileDownloadQueueSta
 void GetNextEntry(FileDownloadQueueState *queue, char *path, int pathSize, char *id, int idSize);
 extern "C" SECTION(GetNextEntry) void GetNextEntry(FileDownloadQueueState *queue, char *path, int pathSize, char *id, int idSize)
 {
-    FileDownloadEntryState *entry = &queue->m_entries[0];
+    int index = 0;
     for (int i = 0; i < 5; ++i) {
-        if (strlen(GetValueStr___dupe2(&queue->m_entries[i]))) { entry = &queue->m_entries[i]; break; }
+        if (strlen(GetValueStr___dupe2(&queue->m_entries[i]))) { index = i; break; }
     }
+    FileDownloadEntryState *entry = &queue->m_entries[index];
     char *value = GetValueStr___dupe2(entry);
-    if ((int)pathSize < (int)strlen(value)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xD5);
+    if (pathSize < (int)strlen(value)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xD5);
     svstrncpy(path, value, pathSize);
     char *name = GetNameStr(entry);
-    if ((int)idSize < (int)strlen(name)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xDC);
+    if (idSize < (int)strlen(name)) __SVO_Assert_Handler(svoFileDownloadQueueSource, 0xDC);
     svstrncpy(id, name, idSize);
     reset___dupe3(entry);
 }

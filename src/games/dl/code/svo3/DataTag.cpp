@@ -107,18 +107,19 @@ extern "C" SECTION(ParseFileTag) int ParseFileTag(DataTagState *tag, iks *xml)
 {
     char *id = iks_find_attrib(xml, svoDataIDAttribute);
     char *src = iks_find_attrib(xml, svoDataSrcAttribute);
-    if (!id || !src) {
+    if (id && src) FileDownloadQueueAdd(id, src);
+    else {
         __SVO_Assert_Handler(svoDataTagSource, 0x6C);
         return 0;
     }
-    FileDownloadQueueAdd(id, src);
     char *allow = iks_find_attrib(xml, svoDataAllowNavAttribute);
-    if (!allow) return 1;
-    if (!strcasecmp(allow, svoDataFalse)) tag->m_bAllowNavigationDuringDownload = 0;
-    else if (!strcasecmp(allow, svoDataTrue)) tag->m_bAllowNavigationDuringDownload = 1;
-    else {
-        __SVO_Assert_Handler(svoDataTagSource, 0x7F);
-        return 0;
+    if (allow) {
+        if (!strcasecmp(allow, svoDataFalse)) tag->m_bAllowNavigationDuringDownload = 0;
+        else if (!strcasecmp(allow, svoDataTrue)) tag->m_bAllowNavigationDuringDownload = 1;
+        else {
+            __SVO_Assert_Handler(svoDataTagSource, 0x7F);
+            return 0;
+        }
     }
     return 1;
 }
@@ -127,7 +128,7 @@ extern "C" SECTION(ParseURITag) int ParseURITag(DataTagState *tag, iks *xml)
 {
     char *id = iks_find_attrib(xml, svoDataIDAttribute);
     char *uri = iks_find_attrib(xml, svoDataURIAttribute);
-    if (!id || !uri) __SVO_Assert_Handler(svoDataTagSource, 0x4B);
-    else URIStoreAdd(id, uri);
+    if (id && uri) URIStoreAdd(id, uri);
+    else __SVO_Assert_Handler(svoDataTagSource, 0x4B);
     return 1;
 }

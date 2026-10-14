@@ -132,8 +132,8 @@ extern "C" SECTION(ScanTagsHandleLoginDTD) void ScanTagsHandleLoginDTD(LoginTagM
     SetToDestroyOnRequestSend(&download);
     SetDownloadCallback(&download, scanXMLCB);
     char *ip = iks_find_attrib(xml, svoLoginIPAddressAttribute);
-    if (!ip) __SVO_Assert_Handler(svoLoginTagModuleSource, 0x77);
-    else URIStoreAdd(svoLoginIPAddressAttribute, ip);
+    if (ip) URIStoreAdd(svoLoginIPAddressAttribute, ip);
+    else __SVO_Assert_Handler(svoLoginTagModuleSource, 0x77);
     if (iks_has_children(xml)) xml = iks_next(iks_child(xml));
     while (iks_name(xml)) {
         if (!strcmp(svoLoginUserName, iks_name(xml))) {
@@ -148,8 +148,8 @@ extern "C" SECTION(ScanTagsHandleLoginDTD) void ScanTagsHandleLoginDTD(LoginTagM
     }
     PushPostTransitionArray(contexts->pMain, &download, &queued);
     actions->action[0].type = 3;
-    actions->action[1].ptr = queued;
     actions->action[1].type = 1;
+    actions->action[1].ptr = queued;
     _DownloadBinary(&download, 2);
 }
 
@@ -177,9 +177,10 @@ extern "C" SECTION(ScanTagsHandleLoginSubmitResponse) void ScanTagsHandleLoginSu
 extern "C" SECTION(UnhandledLoginResponseExists) int UnhandledLoginResponseExists(LoginTagModuleState *module, int *result)
 {
     if (!result) __SVO_Assert_Handler(svoLoginTagModuleSource, 0xB1);
-    if (!module->m_bHaveUnhandledLoginResponse) return 0;
-    int value = m_loginResult;
-    module->m_bHaveUnhandledLoginResponse = 0;
-    *result = value;
-    return 1;
+    if (module->m_bHaveUnhandledLoginResponse) {
+        module->m_bHaveUnhandledLoginResponse = 0;
+        *result = m_loginResult;
+        return 1;
+    }
+    return 0;
 }

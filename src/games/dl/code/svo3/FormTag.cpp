@@ -95,22 +95,21 @@ extern "C" SECTION(AddRadioElement) void AddRadioElement(FormTag *form, RadioInp
     if (!tag) __SVO_Assert_Handler(svoFormTagSource, 0xC7);
     char *name = tag->base.vtable->GetTagName(&tag->base);
     if (!name) __SVO_Assert_Handler(svoFormTagSource, 0xCA);
-    for (int i = 0; i < 64; ++i) {
-        RadioElementGroup *group = &form->m_radioElementGroups[i];
-        if (!strcmp(name, group->name)) {
-            for (int j = 0; j < 64; ++j) {
-                if (!group->elements[j]) {
-                    group->elements[j] = tag;
-                    ++group->numElementsInGroup;
+    for (int i = 0; i < 64; i++) {
+        if (!strcmp(name, form->m_radioElementGroups[i].name)) {
+            for (int j = 0; j < 64; j++) {
+                if (!form->m_radioElementGroups[i].elements[j]) {
+                    form->m_radioElementGroups[i].elements[j] = tag;
+                    form->m_radioElementGroups[i].numElementsInGroup++;
                     return;
                 }
             }
             __SVO_Assert_Handler(svoFormTagSource, 0xDE);
-        } else if (!strcmp(group->name, svoFormUnsetGroup)) {
-            strcpy(group->name, name);
-            group->elements[0] = tag;
-            ++group->numElementsInGroup;
-            ++form->m_numRadioElementGroups;
+        } else if (!strcmp(form->m_radioElementGroups[i].name, svoFormUnsetGroup)) {
+            strcpy(form->m_radioElementGroups[i].name, name);
+            form->m_radioElementGroups[i].elements[0] = tag;
+            form->m_radioElementGroups[i].numElementsInGroup++;
+            form->m_numRadioElementGroups++;
             return;
         }
     }
@@ -178,25 +177,26 @@ extern "C" SECTION(CheckCheckboxElement) void CheckCheckboxElement(FormTag *form
 extern "C" SECTION(CheckRadioElement) void CheckRadioElement(FormTag *form, RadioInputTagState *tag)
 {
     char *name = tag->base.vtable->GetTagName(&tag->base);
-    for (int i = 0; i < 64; ++i) {
-        RadioElementGroup *group = &form->m_radioElementGroups[i];
-        if (!strcmp(group->name, svoFormUnsetGroup)) return;
-        if (strcmp(group->name, name)) continue;
-        int count = group->numElementsInGroup;
-        for (int j = 0; j < count; ++j) {
-            RadioInputTagState *element = group->elements[j];
-            if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x17A);
-            if (element == tag) {
-                int sound = 6;
-                if (!element->m_isChecked) {
-                    SetChecked(element, 1);
-                    sound = 2;
-                }
-                CAudioContextBaseState *audio = GetAudioContext();
-                ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, sound, svoFormAudioClass);
-            } else if (element->m_isChecked) SetChecked(element, 0);
+    for (int i = 0; i < 64; i++) {
+        if (!strcmp(form->m_radioElementGroups[i].name, svoFormUnsetGroup)) return;
+        if (!strcmp(form->m_radioElementGroups[i].name, name)) {
+            int count = form->m_radioElementGroups[i].numElementsInGroup;
+            for (int j = 0; j < count; j++) {
+                RadioInputTagState *element = form->m_radioElementGroups[i].elements[j];
+                if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x17A);
+                if (element == tag) {
+                    if (!element->m_isChecked) {
+                        SetChecked(element, 1);
+                        CAudioContextBaseState *audio = GetAudioContext();
+                        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 2, svoFormAudioClass);
+                    } else {
+                        CAudioContextBaseState *audio = GetAudioContext();
+                        ((const CAudioContextVtablePrefix *)audio->vtable)->Play(audio, 6, svoFormAudioClass);
+                    }
+                } else if (element->m_isChecked) SetChecked(element, 0);
+            }
+            return;
         }
-        return;
     }
 }
 
@@ -282,10 +282,10 @@ extern "C" SECTION(HandleInput___dupe47) int HandleInput___dupe47(FormTag *form,
 
 extern "C" SECTION(InitRadioGroups) void InitRadioGroups(FormTag *form)
 {
-    for (RadioElementGroup *group = form->m_radioElementGroups; group != form->m_radioElementGroups + 64; ++group) {
-        memset(group->elements, 0, sizeof(group->elements));
-        strcpy(group->name, svoFormUnsetGroup);
-        group->numElementsInGroup = 0;
+    for (int i = 0; i < 64; i++) {
+        memset(form->m_radioElementGroups[i].elements, 0, sizeof(form->m_radioElementGroups[i].elements));
+        strcpy(form->m_radioElementGroups[i].name, svoFormUnsetGroup);
+        form->m_radioElementGroups[i].numElementsInGroup = 0;
     }
 }
 
@@ -307,7 +307,7 @@ int DataCanBeEncrypedTag(FormTag *form, SVTag *tag) __asm__("DataCanBeEncryped")
 #define FORM_VALUE(tag) (((const FormValueVtable *)(tag)->base.vtable)->GetValue(&(tag)->base))
 extern "C" SECTION(Submit) void Submit(FormTag *form, CPage *page)
 {
-    int i;
+    int i = 0;
     CQueryParamListState QueryParams;
     CQueryParamListState EncryptedQueryParams;
     CQueryParamList(&QueryParams);
@@ -317,34 +317,34 @@ extern "C" SECTION(Submit) void Submit(FormTag *form, CPage *page)
         _CQueryParamList(&QueryParams, 2);
         return;
     }
-    for (i = 0; i < form->m_numRadioElementGroups; i++) {
-        RadioElementGroup *group = &form->m_radioElementGroups[i];
-        if (!strcmp(group->name, svoFormUnsetGroup)) break;
-        int numElements = group->numElementsInGroup;
-        for (int j = 0; j < numElements; j++) {
-            RadioInputTagState *element = group->elements[j];
-            if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x218);
-            if (element->m_isChecked) {
-                char *name = element->base.vtable->GetTagName(&element->base);
-                char *value = element->m_value;
-                if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
-                    Set(&EncryptedQueryParams, name, value, 0);
-                else
-                    Set(&QueryParams, name, value, 0);
-                break;
+    if (i < form->m_numRadioElementGroups) {
+        do {
+            if (!strcmp(form->m_radioElementGroups[i].name, svoFormUnsetGroup)) break;
+            int numElements = form->m_radioElementGroups[i].numElementsInGroup;
+            for (int j = 0; j < numElements; j++) {
+                RadioInputTagState *element = form->m_radioElementGroups[i].elements[j];
+                if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x218);
+                if (element->m_isChecked) {
+                    char *name = element->base.vtable->GetTagName(&element->base);
+                    if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
+                        Set(&EncryptedQueryParams, name, element->m_value, 0);
+                    else
+                        Set(&QueryParams, name, element->m_value, 0);
+                    break;
+                }
             }
-        }
+            i++;
+        } while (i < form->m_numRadioElementGroups);
     }
     for (i = 0; i < form->m_numCheckboxElements; i++) {
         CheckboxInputTagState *element = form->m_checkboxElements[i];
         if (!element) __SVO_Assert_Handler(svoFormTagSource, 0x23E);
         if (element->m_isChecked) {
             char *name = element->base.vtable->GetTagName(&element->base);
-            char *value = element->m_value;
             if (element->m_bSubmitAsEncryped && DataCanBeEncrypedTag(form, &element->base))
-                Set(&EncryptedQueryParams, name, value, 0);
+                Set(&EncryptedQueryParams, name, element->m_value, 0);
             else
-                Set(&QueryParams, name, value, 0);
+                Set(&QueryParams, name, element->m_value, 0);
         }
     }
     for (i = 0; i < form->m_numTextElements; i++) {

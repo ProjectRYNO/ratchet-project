@@ -900,6 +900,7 @@ segments:
       - [0x4c019c, cpp, svo3/BrowserInitTag]
       - [0x4c02a8, cpp, svo3/BrowserInitTagModule]
       - [0x4c0410, cpp, svo3/PageRequestListener]
+      - [0x4c0844, textbin, junk/net.text/4c0844_4e5380]
 
 
   - name: net.nostomp

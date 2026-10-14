@@ -27,6 +27,8 @@ void Scroll(TextAreaTagState *tag, signed char amount, int speed);
 extern "C" {
 SVTagModuleState *getInstance___dupe17(void);
 extern char svoTextAreaTagFormNameAttribute[];
+struct SVTextAreaNewline { char text[2]; };
+extern const SVTextAreaNewline svoTextAreaNewline;
 void AddTextAreaElement(FormTag *form, TextAreaTagState *tag);
 extern char svoTextAreaTagSource[];
 
@@ -137,13 +139,14 @@ extern "C" SECTION(_TextAreaTag) void _TextAreaTag(SVTag *tag, int flags)
 
 extern "C" SECTION(changeColorForAllLines) void changeColorForAllLines(TextAreaTagState *tag, unsigned int color)
 {
-    LineInfo *line = tag->m_textLines;
-    for (int i = 0; i < tag->m_maxTextLines + 1; ++i, ++line) line->color = color;
+    for (int i = 0; i < tag->m_maxTextLines + 1; i++) tag->m_textLines[i].color = color;
 }
 
 extern "C" SECTION(CheckForLongWord) int CheckForLongWord(TextAreaTagState *tag, char *text, int startOffset, int endOffset, float maxLength)
 {
-    return maxLength < GetSubstringPixelWidth(tag, tag->base.m_contexts->drawContext, text, startOffset, endOffset);
+    int result = 0;
+    if (maxLength < GetSubstringPixelWidth(tag, tag->base.m_contexts->drawContext, text, startOffset, endOffset)) result = 1;
+    return result;
 }
 
 extern "C" SECTION(DefaultInit___dupe12) void DefaultInit___dupe12(TextAreaTagState *tag)
@@ -269,10 +272,9 @@ extern "C" SECTION(FreeResources___dupe21) void FreeResources___dupe21(TextAreaT
 extern "C" SECTION(GetLineNumberAtOffset) int GetLineNumberAtOffset(TextAreaTagState *tag, char *text, int offset)
 {
     for (int i = 0; i < tag->m_maxTextLines; ++i) {
-        LineInfo *line = &tag->m_textLines[i];
-        if (line->lineStartIndex <= offset && offset <= line->lineEndIndex) {
-            if (line->lineNumber > tag->m_maxTextLines - 1) line->lineNumber = tag->m_maxTextLines - 1;
-            return line->lineNumber;
+        if (tag->m_textLines[i].lineStartIndex <= offset && offset <= tag->m_textLines[i].lineEndIndex) {
+            if (tag->m_textLines[i].lineNumber > tag->m_maxTextLines - 1) tag->m_textLines[i].lineNumber = tag->m_maxTextLines - 1;
+            return tag->m_textLines[i].lineNumber;
         }
     }
     __SVO_Assert_Handler(svoTextAreaTagSource, 0x742);
@@ -313,15 +315,17 @@ extern "C" SECTION(GetNextWord) int GetNextWord(TextAreaTagState *tag, char *tex
 extern "C" SECTION(GetSubstringPixelWidth) float GetSubstringPixelWidth(TextAreaTagState *tag, CDrawContextBase *unused, char *text, int start, int end)
 {
     int length = (unsigned int)end - start;
-    if (length <= 0) return 0;
-    if (length >= tag->m_maxTextSize) __SVO_Assert_Handler(svoTextAreaTagSource, 0x65D);
-    CDrawContextBase *draw = tag->base.m_contexts->drawContext;
-    char substring[12288];
-    memset(substring, 0, 12288);
-    memcpy(substring, text + start, length);
-    substring[length] = 0;
-    tag->m_tmpCallsToGSW = (unsigned int)tag->m_tmpCallsToGSW + 1;
-    return draw->vtable->GetStringWidth(draw, tag->m_fontSize, substring, strlen(substring));
+    if (length > 0) {
+        if (length >= tag->m_maxTextSize) __SVO_Assert_Handler(svoTextAreaTagSource, 0x65D);
+        CDrawContextBase *draw = tag->base.m_contexts->drawContext;
+        char substring[12288];
+        memset(substring, 0, 12288);
+        memcpy(substring, text + start, length);
+        substring[length] = 0;
+        tag->m_tmpCallsToGSW = (unsigned int)tag->m_tmpCallsToGSW + 1;
+        return draw->vtable->GetStringWidth(draw, tag->m_fontSize, substring, strlen(substring));
+    }
+    return 0;
 }
 
 extern "C" SECTION(HandleInput___dupe43) int HandleInput___dupe43(TextAreaTagState *self, CPage *page)
@@ -344,14 +348,12 @@ extern "C" SECTION(HandleInput___dupe43) int HandleInput___dupe43(TextAreaTagSta
     if (!page) __SVO_Assert_Handler(svoTextAreaTagSource, 0x13E);
     int scroll = HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_UP);
     if (scroll || (scroll = HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_DOWN))) Scroll(self, scroll, 0);
-    if (browser->m_bShowVKB) input->vtable->HandleVKBInput(input, tag);
-    else {
-        for (int action = 0; action < 4; ++action) {
-            if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-                CDrawContextBase *draw = tag->m_contexts->drawContext;
-                if (!draw) __SVO_Assert_Handler(svoTextAreaTagSource, 0x155);
-                return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-            }
+    if (!browser->m_bShowVKB) {
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+            || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+            CDrawContextBase *draw = tag->m_contexts->drawContext;
+            if (!draw) __SVO_Assert_Handler(svoTextAreaTagSource, 0x155);
+            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
         }
         if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_LEFT)) ProcessLeftArrow(self);
         if (HasActionOccurred(input, 0x11, SV_ACTION_SCROLL_RIGHT)) ProcessRightArrow(self);
@@ -359,7 +361,7 @@ extern "C" SECTION(HandleInput___dupe43) int HandleInput___dupe43(TextAreaTagSta
             if (HasActionOccurred(input, 0x11, SV_ACTION_VKB_ACTIVATE)) ShowVKB(browser, tag);
             ((const TextEditableTagVtablePrefix *)tag->vtable)->HandleTextEntry(tag, input);
         }
-    }
+    } else input->vtable->HandleVKBInput(input, tag);
     return 1;
 }
 
@@ -371,7 +373,8 @@ extern "C" SECTION(handleKeyboardInput) void handleKeyboardInput(TextAreaTagStat
     char last[16];
     last[0] = (int)length < 1 ? 0 : text[(int)length - 1];
     last[1] = 0;
-    if (input->specialKeyCode) handleSpecialKeys(tag, input->specialKeyCode);
+    unsigned char key = input->specialKeyCode;
+    if (key) handleSpecialKeys(tag, key);
     else if ((int)length > 0 && (int)oldLength < tag->m_maxTextSize - 1 && tag->m_curLine < tag->m_maxTextLines) {
         tag->m_curEditOffset = UTF8_AddCharToString(tag->m_text, tag->m_maxTextSize, last, strlen(last), tag->m_curEditOffset);
         UpdateAfterTextEntry(tag);
@@ -386,40 +389,52 @@ extern "C" SECTION(handleSpecialKeys) void handleSpecialKeys(TextAreaTagState *t
     CInputContextBaseState *input = contexts->inputContext;
     char newline[16];
     int first;
-    newline[0] = '\n';
-    newline[1] = 0;
-    // Retail dispatches through a .rodata jump table; the shared tails keep this if-chain inside the slot.
-    if (key == 0x81) ProcessUpArrow(tag);
-    else if (key == 0x82) ProcessDownArrow(tag);
-    else if (key == 0x83) ProcessLeftArrow(tag);
-    else if (key == 0x84) ProcessRightArrow(tag);
-    else if (key == 0x85) {
+    *(SVTextAreaNewline *)newline = svoTextAreaNewline;
+    switch (key) {
+    case 0x89:
+        if (tag->m_curEditOffset > 0) {
+            tag->m_curEditOffset = UTF8_RemoveCharFromStringBACKSPACE(tag->m_text, tag->m_curEditOffset);
+            UpdateAfterTextEntry(tag);
+        }
+        break;
+    case 0x87:
+        tag->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(tag->m_text, tag->m_curEditOffset);
+        UpdateAfterTextEntry(tag);
+        break;
+    case 0x83:
+        ProcessLeftArrow(tag);
+        break;
+    case 0x84:
+        ProcessRightArrow(tag);
+        break;
+    case 0x81:
+        ProcessUpArrow(tag);
+        break;
+    case 0x82:
+        ProcessDownArrow(tag);
+        break;
+    case 0x86:
+        tag->m_curLine = tag->m_textEndLine;
+        tag->m_curEditOffset = tag->m_textEndOffset;
+        first = tag->m_textEndLine - tag->m_maxNumViewableLines + 1;
+        if (first < 0) first = 0;
+        tag->m_minDisplayLine = first;
+        UpdateCursorPosition(tag, contexts->drawContext);
+        break;
+    case 0x85:
         tag->m_curEditOffset = 0;
         tag->m_curLine = 0;
         tag->m_minDisplayLine = 0;
-        goto cursor;
-    } else if (key == 0x86) {
-        tag->m_curLine = tag->m_textEndLine;
-        first = tag->m_textEndLine - tag->m_maxNumViewableLines + 1;
-        tag->m_curEditOffset = tag->m_textEndOffset;
-        if (first < 0) first = 0;
-        tag->m_minDisplayLine = first;
-    cursor:
         UpdateCursorPosition(tag, contexts->drawContext);
-    } else if (key == 0x87) {
-        tag->m_curEditOffset = UTF8_RemoveCharFromStringDELETE(tag->m_text, tag->m_curEditOffset);
-        goto update;
-    } else if (key == 0x88) {
+        break;
+    case 0x88:
         SignalPluginEvent(GetInstance(), 10, &tag->base);
         if (tag->m_curLine < tag->m_maxTextLines - 1 && (int)strlen(tag->m_text) + 2 < tag->m_maxTextSize) {
             tag->m_curEditOffset = UTF8_AddCharToString(tag->m_text, tag->m_maxTextSize, newline, strlen(newline), tag->m_curEditOffset);
             ++tag->m_curLine;
-            goto update;
+            UpdateAfterTextEntry(tag);
         }
-    } else if (key == 0x89 && tag->m_curEditOffset > 0) {
-        tag->m_curEditOffset = UTF8_RemoveCharFromStringBACKSPACE(tag->m_text, tag->m_curEditOffset);
-    update:
-        UpdateAfterTextEntry(tag);
+        break;
     }
     input->specialKeyCode = 0;
 }
@@ -438,16 +453,20 @@ extern "C" SECTION(ParseText) int ParseText(TextAreaTagState *tag, char *text, i
         memcpy(word, text + start, (int)((unsigned int)end - start));
         word[(int)((unsigned int)end - start)] = 0;
         float width = GetSubstringPixelWidth(tag, draw, text, start, end);
-        width = tag->m_overallLength + width;
-        if (width > tag->m_maxLineLength) {
+        float total = tag->m_overallLength + width;
+        if (total > tag->m_maxLineLength) {
             PutBackWord(tag, start, offset);
             if (!ProcessNewLine(tag, *offset)) break;
             ++lines;
         } else if ((unsigned int)result - 2 < 2) {
-            if (!ProcessNewLine(tag, *offset)) break;
-            if (result != 3) ++*offset;
-            if (text[*offset]) ++lines;
-        } else tag->m_overallLength = width;
+            if (ProcessNewLine(tag, *offset)) {
+                if (result != 3) ++*offset;
+                if (text[*offset]) ++lines;
+            } else {
+                tag->m_textEndOffset = *offset;
+                return lines;
+            }
+        } else tag->m_overallLength = total;
     }
     tag->m_textEndOffset = *offset;
     return lines;
@@ -491,9 +510,10 @@ extern "C" SECTION(ProcessLeftArrow) void ProcessLeftArrow(TextAreaTagState *tag
         if (line <= 0) return;
         if (line == tag->m_minDisplayLine) { Scroll(tag, -127, 1); return; }
         tag->m_curLine = line - 1;
+        UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
+        return;
     }
     UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
-    return;
 }
 
 extern "C" SECTION(ProcessNewLine) int ProcessNewLine(TextAreaTagState *tag, int offset)
@@ -525,9 +545,10 @@ extern "C" SECTION(ProcessRightArrow) void ProcessRightArrow(TextAreaTagState *t
         if (line == tag->m_minDisplayLine + tag->m_maxNumViewableLines) { Scroll(tag, 127, 1); return; }
         tag->m_curLine = line + 1;
         if (line + 1 >= tag->m_maxTextLines) __SVO_Assert_Handler(svoTextAreaTagSource, 0x649);
+        UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
+        return;
     }
     UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
-    return;
 }
 
 extern "C" SECTION(ProcessUpArrow) void ProcessUpArrow(TextAreaTagState *tag)
@@ -543,10 +564,9 @@ extern "C" SECTION(ProcessUpArrow) void ProcessUpArrow(TextAreaTagState *tag)
 
 extern "C" SECTION(PutBackWord) void PutBackWord(TextAreaTagState *tag, int startIndex, int *parseOffset)
 {
-    if (startIndex < 0) startIndex = 0;
     int *offset = parseOffset ? parseOffset : &tag->m_curParseOffset;
-    *offset = startIndex;
-    tag->m_textLines[tag->m_curParseLine].lineEndIndex = (short)*offset;
+    *offset = startIndex < 0 ? 0 : startIndex;
+    tag->m_textLines[tag->m_curParseLine].lineEndIndex = *offset;
 }
 
 extern "C" SECTION(RegisterWithForm___dupe2) void RegisterWithForm___dupe2(TextAreaTagState *tag, iks *parent, SVTag **tagList)
@@ -573,7 +593,8 @@ extern "C" SECTION(ResetParser) void ResetParser(TextAreaTagState *tag)
     tag->m_textEndLine = 0;
     tag->m_overallLength = 0;
     for (int i = 0; i < maximum; ++i) {
-        tag->m_textLines[i].lineStartIndex = i == 0 ? 0 : -1;
+        if (i == 0) tag->m_textLines[0].lineStartIndex = 0;
+        else tag->m_textLines[i].lineStartIndex = -1;
         tag->m_textLines[i].lineEndIndex = 0;
     }
 }
@@ -584,7 +605,8 @@ extern "C" SECTION(resetTextArea) void resetTextArea(TextAreaTagState *tag)
     if (!tag->m_textLines) __SVO_Assert_Handler(svoTextAreaTagSource, 0x1D2);
     for (int i = 0; i < tag->m_maxTextLines + 1; ++i) {
         unsigned int color = tag->m_textColor;
-        tag->m_textLines[i].lineStartIndex = i == 0 ? 0 : -1;
+        if (i == 0) tag->m_textLines[0].lineStartIndex = 0;
+        else tag->m_textLines[i].lineStartIndex = -1;
         tag->m_textLines[i].color = color;
         tag->m_textLines[i].lineNumber = i;
         tag->m_textLines[i].lineEndIndex = 0;
@@ -594,7 +616,6 @@ extern "C" SECTION(resetTextArea) void resetTextArea(TextAreaTagState *tag)
 
 extern "C" SECTION(ResetVariables) void ResetVariables(TextAreaTagState *tag)
 {
-    tag->m_firstAppendToChat = 1;
     tag->m_canScrollDown = 0;
     tag->m_scrollFrame = 0;
     tag->m_cursorX = tag->base.m_x + 7.0f;
@@ -614,43 +635,48 @@ extern "C" SECTION(ResetVariables) void ResetVariables(TextAreaTagState *tag)
     tag->m_rightArrowOffset = 0;
     tag->m_numTotalLines = 0;
     tag->m_canScrollUp = 0;
+    tag->m_firstAppendToChat = 1;
 }
 
 extern "C" SECTION(Scroll) void Scroll(TextAreaTagState *tag, signed char amount, int fromArrow)
 {
-    int frame = tag->m_scrollFrame;
-    tag->m_scrollFrame = (unsigned int)frame + 1;
-    if (frame < 3 && amount >= -120 && amount <= 120) return;
+    if (tag->m_scrollFrame++ < 3 && amount >= -120 && amount <= 120) return;
     tag->m_scrollFrame = 0;
-    int line;
     if (amount < 0) {
-        if (tag->m_minDisplayLine < tag->m_curLine) { --tag->m_curLine; line = 0x2A3; }
-        else {
-            if (tag->m_minDisplayLine <= 0) return;
-            --tag->m_minDisplayLine;
-            --tag->m_curLine;
-            line = 0x2B0;
-        }
-        if (!fromArrow) {
-            tag->m_curEditOffset = tag->m_upArrowOffset;
-            if (tag->m_upArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, line);
+        if (tag->m_curLine > tag->m_minDisplayLine) {
+            tag->m_curLine--;
+            if (!fromArrow) {
+                tag->m_curEditOffset = tag->m_upArrowOffset;
+                if (tag->m_upArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, 0x2A3);
+            }
+            UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
+        } else if (tag->m_minDisplayLine > 0) {
+            tag->m_minDisplayLine--;
+            tag->m_curLine--;
+            if (!fromArrow) {
+                tag->m_curEditOffset = tag->m_upArrowOffset;
+                if (tag->m_upArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, 0x2B0);
+            }
+            UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
         }
     } else if (amount > 0) {
         if (tag->m_curLine < tag->m_minDisplayLine + tag->m_numLinesInDisplay - 1) {
-            ++tag->m_curLine;
-            line = 0x2BF;
-        } else {
-            if (tag->m_curLine >= tag->m_numTotalLines - 1) return;
-            ++tag->m_minDisplayLine;
-            ++tag->m_curLine;
-            line = 0x2CC;
+            tag->m_curLine++;
+            if (!fromArrow) {
+                tag->m_curEditOffset = tag->m_downArrowOffset;
+                if (tag->m_downArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, 0x2BF);
+            }
+            UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
+        } else if (tag->m_curLine < tag->m_numTotalLines - 1) {
+            tag->m_minDisplayLine++;
+            tag->m_curLine++;
+            if (!fromArrow) {
+                tag->m_curEditOffset = tag->m_downArrowOffset;
+                if (tag->m_downArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, 0x2CC);
+            }
+            UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
         }
-        if (!fromArrow) {
-            tag->m_curEditOffset = tag->m_downArrowOffset;
-            if (tag->m_downArrowOffset < 0) __SVO_Assert_Handler(svoTextAreaTagSource, line);
-        }
-    } else return;
-    UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
+    }
 }
 
 extern "C" SECTION(SetArrowOffsets) void SetArrowOffsets(TextAreaTagState *tag)
@@ -715,14 +741,14 @@ extern "C" SECTION(SetArrowOffsets) void SetArrowOffsets(TextAreaTagState *tag)
 extern "C" SECTION(SetScrollBarPercentage) void SetScrollBarPercentage(TextAreaTagState *tag)
 {
     tag->m_scrollBarPercentage = 0;
-    if ((int)((unsigned int)tag->m_minDisplayLine + tag->m_numLinesInDisplay) < tag->m_minDisplayLine)
+    if (tag->m_minDisplayLine + tag->m_numLinesInDisplay < tag->m_minDisplayLine)
         __SVO_Assert_Handler(svoTextAreaTagSource, 0x275);
-    int maximum = tag->m_maxNumViewableLines;
-    int total = tag->m_numTotalLines;
-    if (maximum < total) tag->m_scrollBarPercentage = (float)tag->m_curLine / (float)total;
-    int first = tag->m_minDisplayLine;
-    tag->m_canScrollUp = first != 0;
-    tag->m_canScrollDown = first + maximum < total + 1;
+    if (tag->m_maxNumViewableLines < tag->m_numTotalLines)
+        tag->m_scrollBarPercentage = (float)tag->m_curLine / (float)tag->m_numTotalLines;
+    if (!tag->m_minDisplayLine) tag->m_canScrollUp = 0;
+    else tag->m_canScrollUp = 1;
+    if (tag->m_minDisplayLine + tag->m_maxNumViewableLines < tag->m_numTotalLines + 1) tag->m_canScrollDown = 1;
+    else tag->m_canScrollDown = 0;
 }
 
 extern "C" SECTION(SetText___dupe3) void SetText___dupe3(TextAreaTagState *tag, char *text)
@@ -818,9 +844,8 @@ extern "C" SECTION(UpdateAfterTextEntry) void UpdateAfterTextEntry(TextAreaTagSt
 {
     ResetParser(tag);
     ParseText(tag, tag->m_text, &tag->m_curParseOffset);
-    int line = GetLineNumberAtOffset(tag, tag->m_text, tag->m_curEditOffset);
-    tag->m_curLine = line;
-    if (line < tag->m_minDisplayLine) tag->m_minDisplayLine = line;
+    tag->m_curLine = GetLineNumberAtOffset(tag, tag->m_text, tag->m_curEditOffset);
+    while (tag->m_curLine < tag->m_minDisplayLine) tag->m_minDisplayLine--;
     UpdateCursorPosition(tag, tag->base.m_contexts->drawContext);
 }
 

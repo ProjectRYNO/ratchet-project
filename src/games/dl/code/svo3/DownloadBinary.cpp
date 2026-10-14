@@ -8,9 +8,9 @@ void DownloadBinaryDelete(void *memory) __asm__("operator.delete___dupe10");
 
 SECTION(DownloadBinary) void DownloadBinary(DownloadBinaryState *record)
 {
-    record->bDestroyWhenRequestSent = 0;
-    record->vtable = svoDownloadBinaryVtable;
     record->eMethod = 0;
+    record->vtable = svoDownloadBinaryVtable;
+    record->bDestroyWhenRequestSent = 0;
 }
 
 SECTION(_DownloadBinary) void _DownloadBinary(DownloadBinaryState *record, int flags)
@@ -102,8 +102,8 @@ SECTION(SetDownloadCallback) void SetDownloadCallback(DownloadBinaryState *recor
 
 SECTION(SetDimensions___dupe2) void SetDimensions___dupe2(DownloadBinaryState *record, unsigned short width, unsigned short height)
 {
-    record->usHeight = height;
     record->usWidth = width;
+    record->usHeight = height;
 }
 
 SECTION(SetToDestroyOnRequestSend) void SetToDestroyOnRequestSend(DownloadBinaryState *record)

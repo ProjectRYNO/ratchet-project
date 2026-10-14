@@ -17,7 +17,6 @@ extern const SVTagVtablePrefix svoRectangleTagVtable;
 TAG_SECTION(DefaultInit___dupe5) void DefaultInit___dupe5(RectangleTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoRectangleTagName, 64);
-    tag->m_gradientColor[3] = 0;
     tag->m_zVal = 100000.0f;
     tag->m_lineThickness = 2;
     tag->m_cornerRadius = 0;
@@ -25,19 +24,24 @@ TAG_SECTION(DefaultInit___dupe5) void DefaultInit___dupe5(RectangleTagState *tag
     tag->m_gradientColor[0] = 0;
     tag->m_gradientColor[1] = 0;
     tag->m_gradientColor[2] = 0;
+    tag->m_gradientColor[3] = 0;
 }
 
-TAG_SECTION(RectangleTag) void RectangleTag(RectangleTagState *tag, iks *xml, CAllContextData *contexts)
+struct RectangleTagCtor {
+    RectangleTagState state;
+    RectangleTagCtor(iks *xml, CAllContextData *contexts) __asm__("RectangleTag");
+};
+TAG_SECTION(RectangleTag) RectangleTagCtor::RectangleTagCtor(iks *xml, CAllContextData *contexts)
 {
-    SVTagConstruct(&tag->base, xml, contexts);
-    tag->base.vtable = &svoRectangleTagVtable;
-    DefaultInit___dupe5(tag);
-    getIntAttrib(tag->base.m_xml, svoRectangleThicknessAttribute, &tag->m_lineThickness);
-    getIntAttrib(tag->base.m_xml, svoRectangleRadiusAttribute, &tag->m_cornerRadius);
-    getFloatAttrib(tag->base.m_xml, svoRectangleZAttribute, &tag->m_zVal);
-    tag->base.m_tagClass = iks_find_attrib(tag->base.m_xml, svoRectangleClassAttribute);
+    SVTagConstruct(&state.base, xml, contexts);
+    state.base.vtable = &svoRectangleTagVtable;
+    DefaultInit___dupe5(&state);
+    getIntAttrib(state.base.m_xml, svoRectangleThicknessAttribute, &state.m_lineThickness);
+    getIntAttrib(state.base.m_xml, svoRectangleRadiusAttribute, &state.m_cornerRadius);
+    getFloatAttrib(state.base.m_xml, svoRectangleZAttribute, &state.m_zVal);
+    state.base.m_tagClass = iks_find_attrib(state.base.m_xml, svoRectangleClassAttribute);
     for (int i = 0; i < 4; ++i) {
-        if (!getColorAttrib(tag->base.m_xml, svoRectangleGradientAttributes[i], &tag->m_gradientColor[i]))
+        if (!getColorAttrib(state.base.m_xml, svoRectangleGradientAttributes[i], &state.m_gradientColor[i]))
             break;
     }
 }
@@ -61,14 +65,18 @@ TAG_SECTION(Draw___dupe10) void Draw___dupe10(RectangleTagState *tag)
     CDrawContextBase *draw = tag->base.m_contexts->drawContext;
     if (!draw) __SVO_Assert_Handler(svoRectangleTagSource, 0x63);
     if (!tag->base.m_xml) __SVO_Assert_Handler(svoRectangleTagSource, 0x64);
-    unsigned int *gradient = 0;
     if (tag->m_gradientColor[0] || tag->m_gradientColor[1] ||
         tag->m_gradientColor[2] || tag->m_gradientColor[3])
-        gradient = tag->m_gradientColor;
-    draw->vtable->DrawRectangle(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
-                                tag->base.m_width, tag->base.m_height,
-                                tag->base.m_lineColor, tag->base.m_fillColor,
-                                tag->m_lineThickness, tag->m_cornerRadius, tag->m_zVal,
-                                gradient, tag->base.m_tagClass);
+        draw->vtable->DrawRectangle(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
+                                    tag->base.m_width, tag->base.m_height,
+                                    tag->base.m_lineColor, tag->base.m_fillColor,
+                                    tag->m_lineThickness, tag->m_cornerRadius, tag->m_zVal,
+                                    tag->m_gradientColor, tag->base.m_tagClass);
+    else
+        draw->vtable->DrawRectangle(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
+                                    tag->base.m_width, tag->base.m_height,
+                                    tag->base.m_lineColor, tag->base.m_fillColor,
+                                    tag->m_lineThickness, tag->m_cornerRadius, tag->m_zVal,
+                                    0, tag->base.m_tagClass);
 }
 }

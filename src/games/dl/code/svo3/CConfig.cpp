@@ -30,9 +30,7 @@ SVO_CONFIG_SECTION(CConfig) void *CConfig(CConfigState *config)
 {
     config->m_port = -1;
     config->m_bFileRead = 0;
-    // Reuse memset's returned pointer to stay within the original constructor slot.
-    char *firstPage = (char *)memset(config->m_firstPage, 0, sizeof(config->m_firstPage));
-    config = (CConfigState *)(firstPage - offsetof(CConfigState, m_firstPage));
+    memset(config->m_firstPage, 0, sizeof(config->m_firstPage));
     return memset(config->m_ip, 0, sizeof(config->m_ip));
 }
 

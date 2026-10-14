@@ -13,13 +13,13 @@ struct SVTag;
 struct CPage { // 0x637C
     /* 0x0000 */ DownloadBinaryState preTransition[11];
     /* 0x1A78 */ int preTransitionCount;
-    /* 0x1A7C */ unsigned char preTransitionUsed[32];
+    /* 0x1A7C */ char preTransitionUsed[32];
     /* 0x1A9C */ DownloadBinaryState postTransition[11];
     /* 0x3514 */ int postTransitionCount;
-    /* 0x3518 */ unsigned char postTransitionUsed[32];
+    /* 0x3518 */ char postTransitionUsed[32];
     /* 0x3538 */ DownloadBinaryState inTransition[2];
     /* 0x3A08 */ int inTransitionCount;
-    /* 0x3A0C */ unsigned char inTransitionUsed[32];
+    /* 0x3A0C */ char inTransitionUsed[32];
     /* 0x3A2C */ int m_bIsPopup;
     /* 0x3A30 */ int m_bIsActive;
     /* 0x3A34 */ iks *m_XML;

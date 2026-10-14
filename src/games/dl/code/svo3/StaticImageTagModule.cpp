@@ -20,7 +20,7 @@ MODULE_SECTION(IsMyTag___dupe9) int IsMyTag___dupe9(SVTagModuleState *module, ik
 MODULE_SECTION(BuildTag___dupe10) void BuildTag___dupe10(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoStaticImageTagModuleSource, 0x1F);
     void *memory = SVTagNew(0x170);
     StaticImageTag(memory, xml, contexts);

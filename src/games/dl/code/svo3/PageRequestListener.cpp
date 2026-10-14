@@ -55,10 +55,10 @@ SECTION(Reset___dupe6) void Reset___dupe6(PageRequestListenerState *listener)
         svFreeSafe(listener->m_pMemoryContext, listener->m_pBodyData);
         listener->m_pBodyData = 0;
     }
-    listener->m_bFinished = 0;
     listener->m_bodyDataLength = 0;
     listener->m_bodyContentType = 0;
     listener->m_bodyDataAmountReceived = 0;
+    listener->m_bFinished = 0;
 }
 
 SECTION(OnURIRequestStart___dupe2) void OnURIRequestStart___dupe2(PageRequestListenerState *listener, void *context)
@@ -66,7 +66,7 @@ SECTION(OnURIRequestStart___dupe2) void OnURIRequestStart___dupe2(PageRequestLis
     Reset___dupe6(listener);
 }
 
-SECTION(OnURIRequestChunkReceived___dupe2) int OnURIRequestChunkReceived___dupe2(PageRequestListenerState *listener, void *context, void *bufferContext, char *data, unsigned int length)
+SECTION(OnURIRequestChunkReceived___dupe2) void OnURIRequestChunkReceived___dupe2(PageRequestListenerState *listener, void *context, void *bufferContext, char *data, unsigned int length)
 {
     if (!listener->m_pBodyData) __SVO_Assert_Handler(svoPageRequestListenerSource, 0xAD);
     EnsureCleanBlocks(listener->m_pMemoryContext);
@@ -77,16 +77,16 @@ SECTION(OnURIRequestChunkReceived___dupe2) int OnURIRequestChunkReceived___dupe2
     listener->m_bodyDataAmountReceived += length;
     if (listener->m_bodyDataLength < listener->m_bodyDataAmountReceived)
         __SVO_Assert_Handler(svoPageRequestListenerSource, 0xC6);
-    return EnsureCleanBlocks(listener->m_pMemoryContext);
+    EnsureCleanBlocks(listener->m_pMemoryContext);
 }
 
 SECTION(OnURIRequestIsOkContinueDownload___dupe2) int OnURIRequestIsOkContinueDownload___dupe2(PageRequestListenerState *listener, void *context, DownloadBuffer *buffer)
 {
-    buffer->length = listener->m_bodyDataLength - listener->m_bodyDataAmountReceived;
-    buffer->data = listener->m_pBodyData + listener->m_bodyDataAmountReceived;
-    svoPageRequestDownloadBuffer.data = buffer->data;
-    svoPageRequestDownloadBuffer.length = buffer->length;
-    svoPageRequestDownloadBuffer.context = buffer->context;
+    unsigned int received = listener->m_bodyDataAmountReceived;
+    char *data = listener->m_pBodyData + received;
+    buffer->length = listener->m_bodyDataLength - received;
+    buffer->data = data;
+    svoPageRequestDownloadBuffer = *buffer;
     return 1;
 }
 
@@ -112,7 +112,7 @@ SECTION(OnURIRequestRedirectReceived___dupe2) void OnURIRequestRedirectReceived_
     CPage *page = browser->m_pPopupPage;
     if (!page || !page->m_bIsActive) {
         page = browser->m_pMainPage;
-        if (page && !page->m_bIsActive) page = 0;
+        if (!page || !page->m_bIsActive) page = 0;
     }
     if (page) addToHistory(page, url);
 }
@@ -143,5 +143,3 @@ SECTION(GetLastContentType) int GetLastContentType(PageRequestListenerState *lis
 }
 
 }
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/svo3/PageRequestListener", func_01F27658);

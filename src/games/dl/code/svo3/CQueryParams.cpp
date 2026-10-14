@@ -24,7 +24,8 @@ void __builtin_delete(void *memory);
 
 SVO_QUERY_SECTION(CQueryParamList) void *CQueryParamList(CQueryParamListState *list)
 {
-    return memset(list, 0, sizeof(*list));
+    list->m_iIndex = 0;
+    return memset(list->m_params, 0, sizeof(list->m_params));
 }
 
 void SVO_QUERY_SECTION(_CQueryParamList) _CQueryParamList(
@@ -60,14 +61,15 @@ void SVO_QUERY_SECTION(Set) Set(CQueryParamListState *list, char *key, char *val
 {
     unsigned int keySize = svstrlen(key);
     unsigned int valueSize = svstrlen(value);
-    if (!memory) memory = GetMemoryContext();
+    CMemoryContextBaseState *context = memory;
+    if (!memory) context = GetMemoryContext();
     if (list->m_params[list->m_iIndex].key) __SVO_Assert_Handler(svoQueryParamsSource, 0x70);
     if (list->m_params[list->m_iIndex].value) __SVO_Assert_Handler(svoQueryParamsSource, 0x71);
 
     // Re-read the index after each allocation, as in retail's callback-aware stores.
-    char *allocated = (char *)svAllocSafe(memory, keySize, 0, 0x74, svoQueryParamsSource);
+    char *allocated = (char *)svAllocSafe(context, keySize, 0, 0x74, svoQueryParamsSource);
     list->m_params[list->m_iIndex].key = allocated;
-    allocated = (char *)svAllocSafe(memory, valueSize, 0, 0x75, svoQueryParamsSource);
+    allocated = (char *)svAllocSafe(context, valueSize, 0, 0x75, svoQueryParamsSource);
     list->m_params[list->m_iIndex].value = allocated;
     svstrncpy(list->m_params[list->m_iIndex].key, key, keySize);
     svstrncpy(list->m_params[list->m_iIndex].value, value, valueSize);
@@ -78,13 +80,12 @@ void SVO_QUERY_SECTION(FreeAll) FreeAll(CQueryParamListState *list, CMemoryConte
 {
     if (!memory) memory = GetMemoryContext();
     for (int i = 0; i < list->m_iIndex; ++i) {
-        CQueryParam *param = &list->m_params[i];
-        svFreeSafe(memory, param->key);
-        param->key = 0;
-        svFreeSafe(memory, param->value);
-        param->value = 0;
-        // A free callback may have modified the key again.
-        param->key = 0;
+        svFreeSafe(memory, list->m_params[i].key);
+        list->m_params[i].key = 0;
+        svFreeSafe(memory, list->m_params[i].value);
+        list->m_params[i].value = 0;
+        list->m_params[i].key = 0;
+        list->m_params[i].value = 0;
     }
     list->m_iIndex = 0;
 }

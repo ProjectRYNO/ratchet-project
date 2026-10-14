@@ -2673,6 +2673,7 @@ svoSelectEmptyOption = 0x0016E588;
 svoTextInputTagFormNameAttribute = 0x0019D718;
 svoTextInputTagSource = 0x0019D4A0;
 svoTextAreaTagFormNameAttribute = 0x0019D448;
+svoTextAreaNewline = 0x0019D408;
 svoTextAreaTagSource = 0x0019D240;
 svoTextAreaTagVtable = 0x00170508;
 svoRadioInputTagFormNameAttribute = 0x0019D8B0;

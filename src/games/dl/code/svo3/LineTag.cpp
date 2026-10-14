@@ -32,10 +32,10 @@ void DefaultInit___dupe7(LineTagState *);
 TAG_SECTION(DefaultInit___dupe7) void DefaultInit___dupe7(LineTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoLineTagName, 64);
-    tag->base.m_lineColor = 0xFFFFFFFF;
     tag->m_endX = tag->base.m_x;
     tag->m_endY = tag->base.m_y;
     tag->m_thickness = 2.0f;
+    tag->base.m_lineColor = 0xFFFFFFFF;
 }
 
 extern "C" SECTION(LineTag) void LineTag(LineTagState *tag, iks *xml, CAllContextData *contexts)

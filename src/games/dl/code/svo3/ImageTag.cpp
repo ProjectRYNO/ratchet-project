@@ -59,7 +59,9 @@ SECTION(FreeResources___dupe18) void FreeResources___dupe18(SVTag *tag)
 int IsSelectable___dupe11(SVTag *tag);
 extern "C" SECTION(IsSelectable___dupe11) int IsSelectable___dupe11(SVTag *tag)
 {
-    return (tag->m_bSelectable != 0) & ((unsigned int)tag != 0xFFFFFF44u);
+    int result = 0;
+    if (tag->m_bSelectable) result = (unsigned int)tag != 0xFFFFFF44u;
+    return result;
 }
 
 }
@@ -89,10 +91,10 @@ extern "C" SECTION(DefaultInit___dupe10) void DefaultInit___dupe10(ImageTagState
     tag->base.m_fillColor = 0xFFFFFFFF;
     tag->base.m_lineColor = 0xFF000000;
     tag->base.m_tagClass = gTagNotSetStr;
-    tag->Height = 0;
     tag->m_iID = 0;
     tag->ImageBuf = 0;
     tag->Width = 0;
+    tag->Height = 0;
 }
 
 extern "C" SECTION(Draw___dupe14) void Draw___dupe14(ImageTagState *self)
@@ -101,9 +103,12 @@ extern "C" SECTION(Draw___dupe14) void Draw___dupe14(ImageTagState *self)
     SVTag *tag = &self->base;
     CDrawContextBase *draw = tag->m_contexts->drawContext;
     if (!draw) __SVO_Assert_Handler(svoImageTagSource, 0x9F);
-    int selected = tag->vtable->IsSelected(tag) != 0;
     // Retail forwards v0 twice, not the separate u0 field.
-    draw->vtable->DrawImage(draw, tag->m_tagid, self->ImageBuf, self->PosX, self->PosY, self->Width, self->Height, self->v0, self->v0, selected, 255);
+    int alpha = 255;
+    if (tag->vtable->IsSelected(tag))
+        draw->vtable->DrawImage(draw, tag->m_tagid, self->ImageBuf, self->PosX, self->PosY, self->Width, self->Height, self->v0, self->v0, 1, alpha);
+    else
+        draw->vtable->DrawImage(draw, tag->m_tagid, self->ImageBuf, self->PosX, self->PosY, self->Width, self->Height, self->v0, self->v0, 0, alpha);
 }
 
 extern "C" SECTION(getImageTypeAttrib) int getImageTypeAttrib(ImageTagState *tag, iks *xml, char *name, unsigned int *value)
@@ -137,12 +142,11 @@ extern "C" SECTION(HandleInput___dupe41) int HandleInput___dupe41(ImageTagState 
         }
     }
     if (tag->vtable->IsSelected(tag)) {
-        for (int action = 0; action < 4; ++action) {
-            if (HasActionOccurred(input, 0x11, (PadAction)action)) {
-                CDrawContextBase *draw = tag->m_contexts->drawContext;
-                if (!draw) __SVO_Assert_Handler(svoImageTagSource, 0x8e);
-                return Navigate(tag, input, draw, tag->m_xml, page) == 0;
-            }
+        if (HasActionOccurred(input, 0x11, SV_ACTION_NAV_UP) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_DOWN)
+            || HasActionOccurred(input, 0x11, SV_ACTION_NAV_LEFT) || HasActionOccurred(input, 0x11, SV_ACTION_NAV_RIGHT)) {
+            CDrawContextBase *draw = tag->m_contexts->drawContext;
+            if (!draw) __SVO_Assert_Handler(svoImageTagSource, 0x8e);
+            return Navigate(tag, input, draw, tag->m_xml, page) == 0;
         }
     }
     return 1;
@@ -164,11 +168,11 @@ extern "C" SECTION(ImageTag) void ImageTag(ImageTagState *self, iks *xml, CAllCo
     getIntAttrib(xml, svoImageTagAttrY, &self->PosY);
     getStringAttrib(xml, svoImageTagAttrHref, &link);
     if (link) {
-        for (int i = 0; i < 128; ++i) self->m_link[i] = link[i];
+        memcpy(self->m_link, link, 128);
     }
     else self->m_link[0] = 0;
-    self->m_iID = id;
     tag->m_tagid = id;
+    self->m_iID = id;
     if (self->m_link[0]) {
         tag->m_bSelectable = 1;
         decodeEntityText(self->m_link);

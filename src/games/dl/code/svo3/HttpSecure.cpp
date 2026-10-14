@@ -127,8 +127,9 @@ extern "C" SECTION(_HttpSecure) void _HttpSecure(HttpSecureState *http, unsigned
 
 extern "C" SECTION(DoRegistrations) void DoRegistrations(HttpSecureState *http)
 {
-    char *schemes[2] __attribute__((aligned(8)));
-    memcpy(schemes, svoHttpsSchemes, sizeof(schemes));
+    typedef struct __attribute__((packed)) { unsigned long value; } SchemeList;
+    char *schemes[2];
+    *(SchemeList *)schemes = *(SchemeList *)svoHttpsSchemes;
     Register((IURISchemeProviderState *)http, schemes);
 }
 
@@ -160,8 +161,8 @@ extern "C" SECTION(HttpsDownload) int HttpsDownload(HttpSecureState *http, char 
 {
     SSLCallbackParams params;
     memset(&params, 0, sizeof(params));
-    params.received = data;
     params.receivedLength = length;
+    params.received = data;
     ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsCallEngine(http, &params);
     *outputLength = params.decryptedLength;
     *output = params.decrypted;
@@ -174,8 +175,8 @@ extern "C" SECTION(HttpsDownloadHello) int HttpsDownloadHello(HttpSecureState *h
 {
     SSLCallbackParams params;
     memset(&params, 0, sizeof(params));
-    params.received = data;
     params.receivedLength = length;
+    params.received = data;
     ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsCallEngine(http, &params);
     *outputLength = params.sendBackLength;
     *output = params.sendBack;
@@ -188,14 +189,14 @@ extern "C" SECTION(HttpSecure) void HttpSecure(HttpSecureState *http, CMemoryCon
     Http(&http->base, memory, socketType);
     http->base.vtable = &svoHttpSecureVtable.base;
     if (!svoSSLInitialized) {
-        svoHTTPSInterface.initialize = SSL_Initialize;
         svoHTTPSInterface.addCRL = SSL_AddCRL;
         svoHTTPSInterface.addRootCertificate = SSL_AddRootCertificate;
         svoHTTPSInterface.callback = SSL_Callback;
         svoHTTPSInterface.cleanup = SSL_Cleanup;
         svoHTTPSInterface.create = SSL_Create;
         svoHTTPSInterface.destroy = SSL_Destroy;
-        SSL_Initialize(HTTPS_Malloc, HTTPS_Free, randomMT, 0x4000, 0x4000);
+        svoHTTPSInterface.initialize = SSL_Initialize;
+        svoHTTPSInterface.initialize(HTTPS_Malloc, HTTPS_Free, randomMT, 0x4000, 0x4000);
         svoSSLInitialized = 1;
     }
 }
@@ -205,8 +206,8 @@ extern "C" SECTION(HttpSecureConnectingOnEnter) void HttpSecureConnectingOnEnter
     http->sendBufferIndex = 0;
     memset(&http->download, 0, sizeof(http->download));
     svoHTTPSInterface.create(&http->engine);
-    http->state = 3;
     http->download.state = 3;
+    http->state = 3;
     ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsCallEngine(http, &http->download);
     unsigned long sent;
     SVSockState *socket = http->base.m_sock;
@@ -248,24 +249,27 @@ extern "C" SECTION(HttpSecureConnectingOnUpdate1) void HttpSecureConnectingOnUpd
 
 extern "C" SECTION(HttpSecureConnectingOnUpdate2) void HttpSecureConnectingOnUpdate2(HttpSecureState *http)
 {
+    unsigned long sent;
     char buffer[0x8000];
+    char *reply;
+    int received;
+    int replyLength;
+    int finished;
     memset(buffer, 0, sizeof(buffer));
-    int received = 0;
-    int finished = 0;
-    if (http->state == 0x20) SetHttpState(&http->base, 10);
-    else {
+    received = 0;
+    finished = 0;
+    if (http->state != 0x20) {
         SVSockState *socket = http->base.m_sock;
         ((const SVSockVtablePrefix *)socket->vtable)->Recv(socket, buffer, sizeof(buffer), &received, &finished);
-        char *reply;
-        int replyLength;
         ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsKeyExchange(http, buffer, received, &reply, &replyLength);
         if (replyLength > 0) {
-            unsigned long sent;
             socket = http->base.m_sock;
             ((const SVSockVtablePrefix *)socket->vtable)->Send(socket, reply, replyLength, &sent);
         }
         memset(buffer, 0, sizeof(buffer));
         received = 0;
+    } else {
+        SetHttpState(&http->base, 10);
     }
 }
 
@@ -273,8 +277,8 @@ extern "C" SECTION(HttpSendRequest) void HttpSendRequest(HttpSecureState *http, 
 {
     SSLCallbackParams params;
     memset(&params, 0, sizeof(params));
-    params.request = data;
     params.requestLength = length;
+    params.request = data;
     ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsCallEngine(http, &params);
     *outputLength = params.sendBackLength;
     *output = params.sendBack;
@@ -284,8 +288,8 @@ extern "C" SECTION(HttpsKeyExchange) int HttpsKeyExchange(HttpSecureState *http,
 {
     SSLCallbackParams params;
     memset(&params, 0, sizeof(params));
-    params.received = data;
     params.receivedLength = length;
+    params.received = data;
     ((const HttpSecureVtablePrefix *)http->base.vtable)->HttpsCallEngine(http, &params);
     *outputLength = params.sendBackLength;
     *output = params.sendBack;
@@ -306,21 +310,23 @@ extern "C" SECTION(operator.new___dupe2) void * HttpSecureoperator_new___dupe2(u
 
 extern "C" SECTION(States) int States(HttpSecureState *http)
 {
-    int state = GetHttpState(&http->base);
-    if (state == 1) { HttpIdleOnEnter(&http->base); }
-    else if (state == 2) { HttpIdleOnUpdate(&http->base); return 1; }
-    else if (state == 3) { HttpGetHostByNameOnEnter(&http->base); }
-    else if (state == 4) { HttpGetHostByNameOnUpdate(&http->base); }
-    else if (state == 5) { HttpConnectWaitOnEnter(&http->base); }
-    else if (state == 6) { HttpConnectWaitOnUpdate(&http->base); }
-    else if (state == 10) { HttpSendOnEnter(&http->base); }
-    else if (state == 11) { HttpSendOnUpdate(&http->base); }
-    else if (state == 12) { HttpRecvOnEnter(&http->base); }
-    else if (state == 13) { HttpRecvOnUpdate(&http->base); }
-    else if (state == 7) ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnEnter(http);
-    else if (state == 8) ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnUpdate1(http);
-    else if (state == 9) ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnUpdate2(http);
-    else if (state == 0) __SVO_Assert_Handler(svoHttpSecureSource, 0x278);
-    else if (state == 0x7FFFFFFF) __SVO_Assert_Handler(svoHttpSecureSource, 0x27B);
-    return 0;
+    int result = 0;
+    switch (GetHttpState(&http->base)) {
+    case 0: __SVO_Assert_Handler(svoHttpSecureSource, 0x278); break;
+    case 0x7FFFFFFF: __SVO_Assert_Handler(svoHttpSecureSource, 0x27B); break;
+    case 1: HttpIdleOnEnter(&http->base); break;
+    case 2: result = 1; HttpIdleOnUpdate(&http->base); break;
+    case 3: HttpGetHostByNameOnEnter(&http->base); break;
+    case 4: HttpGetHostByNameOnUpdate(&http->base); break;
+    case 5: HttpConnectWaitOnEnter(&http->base); break;
+    case 6: HttpConnectWaitOnUpdate(&http->base); break;
+    case 10: HttpSendOnEnter(&http->base); break;
+    case 11: HttpSendOnUpdate(&http->base); break;
+    case 12: HttpRecvOnEnter(&http->base); break;
+    case 13: HttpRecvOnUpdate(&http->base); break;
+    case 7: ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnEnter(http); break;
+    case 8: ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnUpdate1(http); break;
+    case 9: ((const HttpSecureVtablePrefix *)http->base.vtable)->ConnectingOnUpdate2(http); break;
+    }
+    return result;
 }

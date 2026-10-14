@@ -42,8 +42,8 @@ void STORE_SECTION(FreeResources___dupe43) FreeResources___dupe43(SVTagModuleSta
 
 void STORE_SECTION(URIEntry) URIEntry(URIEntryState *entry)
 {
-    entry->m_valueStr = 0;
     entry->m_lookupStr = 0;
+    entry->m_valueStr = 0;
 }
 
 void STORE_SECTION(FreeResources___dupe44) FreeResources___dupe44(URIEntryState *entry)
@@ -68,16 +68,14 @@ int STORE_SECTION(matchesMyLookup) matchesMyLookup(URIEntryState *entry, char *l
 
 void STORE_SECTION(setURIProps) setURIProps(URIEntryState *entry, char *lookup, char *value)
 {
-    char *sourceFile = svoURIStoreSource;
-    // Inspect both pointer words together to keep this body in its retail slot.
-    if ((unsigned int)entry->m_lookupStr | (unsigned int)entry->m_valueStr) __SVO_Assert_Handler(sourceFile, 0x38);
+    if (entry->m_lookupStr || entry->m_valueStr) __SVO_Assert_Handler(svoURIStoreSource, 0x38);
     CMemoryContextBaseState *memory = GetMemoryContext();
-    entry->m_lookupStr = (char *)svAllocSafe(memory, (unsigned int)strlen(lookup) + 1, 0, 0x3A, sourceFile);
-    entry->m_valueStr = (char *)svAllocSafe(memory, (unsigned int)strlen(value) + 1, 0, 0x3B, sourceFile);
+    entry->m_lookupStr = (char *)svAllocSafe(memory, strlen(lookup) + 1, 0, 0x3A, svoURIStoreSource);
+    entry->m_valueStr = (char *)svAllocSafe(memory, strlen(value) + 1, 0, 0x3B, svoURIStoreSource);
     // The input assertion comes after allocation in retail.
-    if (!lookup || !value) __SVO_Assert_Handler(sourceFile, 0x3E);
-    svstrncpy(entry->m_lookupStr, lookup, (unsigned int)strlen(lookup) + 1);
-    svstrncpy(entry->m_valueStr, value, (unsigned int)strlen(value) + 1);
+    if (!lookup || !value) __SVO_Assert_Handler(svoURIStoreSource, 0x3E);
+    svstrncpy(entry->m_lookupStr, lookup, strlen(lookup) + 1);
+    svstrncpy(entry->m_valueStr, value, strlen(value) + 1);
 }
 
 // Retail tail-jump allocator awaits compact compiler output.
@@ -89,7 +87,11 @@ extern "C" SECTION(operator.new___dupe10) void * SVURIStoreoperator_new___dupe10
 STORE_SECTION(URIStore) void *URIStore(URIStoreState *store)
 {
     URIEntryState *entry = store->m_entries;
-    for (int i = 63; i >= 0; --i, ++entry) URIEntry(entry);
+    int i = 63;
+    do {
+        URIEntry(entry);
+        entry++;
+    } while (--i != -1);
     void *result = memset(store->m_entries, 0, 0x200);
     store->m_next_URI_index = 0;
     return result;
@@ -127,16 +129,15 @@ int STORE_SECTION(LoadInFromMemory) LoadInFromMemory(URIStoreState *store, char 
 {
     // Retail ignores size, consumes at most 64 pairs and mutates the input.
     if (strstr(memory, svoURIStoreDelimiter)) {
-        for (int remaining = 64; remaining; --remaining) {
+        for (int i = 0; i < 64; i++) {
             char *separator = strstr(memory, svoURIStoreDelimiter);
+            char *value = separator + 14;
             if (!separator) break;
             *separator = 0;
-            char *value = separator + 14;
             char *end = strstr(value, svoURIStoreDelimiter);
             *end = 0;
-            char *lookup = memory;
+            add(store, memory, value);
             memory = end + 14;
-            add(store, lookup, value);
         }
     }
     return 1;

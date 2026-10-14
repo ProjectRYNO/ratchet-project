@@ -1,32 +1,14 @@
 # SVO3 library
 
-## Current scope (2026-10-13)
+## Current scope (2026-10-14)
 
-The source inventory has 935 slots across 97 files: **934 compiled C/C++ functions;
-603 byte-exact and 331 nonmatching that fit their original slots**. The one remaining
-INCLUDE_ASM (`PageRequestListener func_01F27658`) is padding, not a function. SVO3 now
-builds with SCE ee-gcc 2.96-ee-001003-1 (DECISIONS.md K07); see the
-[handoff](SVO3_HANDOFF.md) for toolchain, patterns and validation. Strict whole-ELF
-matching is unfinished and behavior suites were deferred.
-This inventory includes dotted operator symbols previously missed by the tracker.
-The table below describes earlier batches; subsequent batches are recorded below.
-
-| Source file | Compiled functions | Coverage |
-| --- | ---: | --- |
-| SVOString.cpp | 9 | Copy/substring/format helpers and ASCII classifiers |
-| CError.cpp | 2 | First-error latch and system callback dispatch |
-| CSystemContextBase.cpp | 4 | Base callbacks, assertion paths, elapsed-time fallback |
-| CAudioContextBase.cpp | 1 | Retail vtable initialization and return register |
-| CInputContextBase.cpp | 6 | Audio destructor, input initialization, maps, action dispatch |
-| CMemoryContextBase.cpp | 8 | Allocation/free bookkeeping and memory-chunk initialization |
-| CConfig.cpp | 2 | Initialization and file/XML configuration loading |
-| CQueryParams.cpp | 8 | Query storage, serialization, copying and freeing; behavior tests deferred |
-| CPluginBase.cpp | 1 | Message queue reset; behavior tests deferred |
-
-The user explicitly authorized behavior-tested nonmatching C/C++ replacements
-on 2026-10-07. Such functions remain unfinished **matching** work. The progress
-tracker reports measured slot matching separately from compiled status. No
-replacement uses original machine-word arrays or fallback function symbols.
+934 functions across 97 files: **853 byte-exact in the linked ELF and 81 compiled C functions that
+fit their original slots but are not exact.** No SVO3 assembly remains. SVO3 builds with SCE ee-gcc
+2.96 and Sony `as -g` (DECISIONS.md K07). Ten functions dispatch through switch jump tables placed in
+registered read-only data slots at their retail addresses (DECISIONS.md D09); all ten tables match.
+The former `func_01F27658` was a label inside zero padding and is now a junk segment (D10). See
+[SVO3_HANDOFF.md](SVO3_HANDOFF.md) and [SVO3_REMAINING.csv](SVO3_REMAINING.csv). Strict whole-ELF
+matching is unfinished; behaviour suites were deferred.
 
 ## Evidence and placement
 

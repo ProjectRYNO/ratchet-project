@@ -20,7 +20,7 @@ MODULE_SECTION(IsMyTag___dupe21) int IsMyTag___dupe21(SVTagModuleState *module, 
 MODULE_SECTION(BuildTag___dupe22) void BuildTag___dupe22(
     SVTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
 {
-    if (!xml || !tagList)
+    if (!tagList || !xml)
         __SVO_Assert_Handler(svoRedirectTagModuleSource, 0x1A);
     void *memory = SVTagNew(0xBC);
     RedirectTag(memory, xml, contexts);

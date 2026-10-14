@@ -44,14 +44,13 @@ CDrawContextBase *GetDrawContext(void);
 extern "C" SECTION(__SVO_Assert_Handler) void __SVO_Assert_Handler(const char *file, int line)
 {
     char localFile[256];
-    char *message = svoAssertMessage;
     svoAssertTrip = 1;
     strncpy(localFile, file, 0xFF);
     cleanFileString(localFile);
-    sprintf(message, svoAssertMessageFormat, localFile, line);
+    sprintf(svoAssertMessage, svoAssertMessageFormat, localFile, line);
     CDrawContextBase *draw = GetDrawContext();
     if (draw) {
-        if (draw->vtable->RenderAssert(draw, message)) return;
+        if (draw->vtable->RenderAssert(draw, svoAssertMessage)) return;
         for (;;) {
         }
     }
@@ -64,13 +63,22 @@ extern "C" SECTION(__SVO_Assert_Handler) void __SVO_Assert_Handler(const char *f
 
 extern "C" SECTION(cleanFileString) void cleanFileString(char *text)
 {
-    int length = strlen(text);
-    for (int i = length - 1; i >= 0; --i) {
-        if (text[i] == '/' || text[i] == 92) {
-            strcpy(text, text + i + 1);
-            return;
-        }
+    int len;
+    int cur;
+    int i;
+    len = strlen(text);
+    cur = len - 1;
+    i = 0;
+loop:
+    if (i < len) {
+        i++;
+        if (text[cur] == '/' || text[cur] == 92) goto found;
+        cur--;
+        goto loop;
     }
+    return;
+found:
+    strcpy(text, &text[cur] + 1);
 }
 
 extern "C" SECTION(SV_CheckVersion) char *SV_CheckVersion(char *headerVersion)

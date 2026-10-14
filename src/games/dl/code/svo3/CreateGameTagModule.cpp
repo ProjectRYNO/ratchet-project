@@ -49,9 +49,9 @@ int ParseCreateGameParamsXML(CreateGameTagModuleState *, iks *);
 SECTION(CreateGameTagModule) void CreateGameTagModule(CreateGameTagModuleState *module)
 {
     module->m_SVOGameID = 0;
-    module->base.vtable = &svoCreateGameTagModuleVtable;
     module->m_createGameParamStrPtrs = 0;
     module->m_createGameNumOfParams = 0;
+    module->base.vtable = &svoCreateGameTagModuleVtable;
 }
 
 SECTION(BuildTag___dupe26) void BuildTag___dupe26(CreateGameTagModuleState *module, iks *xml, SVTag **outTag, SVTag **tagList, CAllContextData *contexts)
@@ -79,18 +79,24 @@ extern "C" SECTION(FreeResources___dupe55) void FreeResources___dupe55(CreateGam
 
 extern "C" SECTION(GetCreateGameSubmitResponse) int GetCreateGameSubmitResponse(CreateGameTagModuleState *module, iks *xml)
 {
+    int result = 1;
     if (!xml || strcmp(svoCreateGameStatusName, iks_name(xml))) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xD3);
-    iks *message = iks_child(xml);
-    while (message) {
-        if (iks_name(message) && !strcmp(svoCreateGameMessageName, iks_name(message))) break;
-        message = iks_next(message);
+    iks *message;
+    for (message = iks_child(xml); message; message = iks_next(message)) {
+        if (!iks_name(message)) continue;
+        if (!strcmp(svoCreateGameMessageName, iks_name(message))) break;
     }
     if (!message || strcmp(svoCreateGameMessageName, iks_name(message))) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xDF);
     if (message) {
         char *text = iks_cdata(iks_child(message));
-        for (int i = 0; i < 23; ++i) if (text && !strcmp(text, svoCreateGameResultNames[i])) return i;
+        for (int i = 0; i < 23; i++) {
+            if (!text) continue;
+            if (strcmp(text, svoCreateGameResultNames[i])) continue;
+            result = i;
+            break;
+        }
     }
-    return 1;
+    return result;
 }
 
 extern "C" SECTION(getInstance___dupe28) CreateGameTagModuleState *getInstance___dupe28(void)
@@ -106,8 +112,9 @@ extern "C" SECTION(getInstance___dupe28) CreateGameTagModuleState *getInstance__
 extern "C" SECTION(IsMyTag___dupe26) int IsMyTag___dupe26(CreateGameTagModuleState *module, iks *xml)
 {
     if (iks_type(xml) != IKS_TAG) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x2F);
-    if (!strcmp(iks_name(xml), svoCreateGameName)) return 1;
-    return strcmp(iks_name(xml), svoGamePlayerName) == 0;
+    int result = 0;
+    if (!strcmp(iks_name(xml), svoCreateGameName) || !strcmp(iks_name(xml), svoGamePlayerName)) result = 1;
+    return result;
 }
 
 extern "C" SECTION(operator.delete___dupe13) void CreateGameTagModuleDelete13(void *memory)
@@ -129,8 +136,8 @@ extern "C" SECTION(ParseCreateGameParamsXML) int ParseCreateGameParamsXML(Create
     memset(module->m_createGameParamNames, 0, 257);
     memset(module->m_createGameSubmitBaseURL, 0, 257);
     svstrncpy(module->m_createGameSubmitBaseURL, iks_find_attrib(xml, svoCreateGameActionAttribute), 257);
-    if (!module->m_createGameSubmitBaseURL[0]) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x105);
     int count = 0;
+    if (!module->m_createGameSubmitBaseURL[0]) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x105);
     while (child) {
         if (iks_name(child)) {
             ++count;
@@ -145,8 +152,8 @@ extern "C" SECTION(ParseCreateGameParamsXML) int ParseCreateGameParamsXML(Create
     if (!count) __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x116);
     module->m_createGameNumOfParams = count;
     if (module->m_createGameParamStrPtrs) svFreeSafe(GetMemoryContext(), module->m_createGameParamStrPtrs);
-    module->m_createGameParamStrPtrs = (char **)svAllocSafe(GetMemoryContext(), module->m_createGameNumOfParams << 2, 0, 0, svoCreateGameAllocationSource);
     char *text = module->m_createGameParamNames;
+    module->m_createGameParamStrPtrs = (char **)svAllocSafe(GetMemoryContext(), module->m_createGameNumOfParams << 2, 0, 0, svoCreateGameAllocationSource);
     for (int i = 0; i < module->m_createGameNumOfParams; ++i) {
         module->m_createGameParamStrPtrs[i] = text;
         text = strstr(text, svoCreateGameSeparator);

@@ -1722,7 +1722,7 @@ objects:
       - {object: svo3/ParseXMLInfo, section: .svo_ParseXMLInfo_CallFunction___dupe3, start: 0x01F07FC8, end: 0x01F07FE4}
   svo3/PageRequestListener:
     text_start: 0x01F0C410
-    text_end: 0x01F31380
+    text_end: 0x01F0C844
     slots:
       - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_PageRequestListener, start: 0x01F0C410, end: 0x01F0C470}
       - {object: svo3/PageRequestListener, section: .svo_PageRequestListener__PageRequestListener, start: 0x01F0C470, end: 0x01F0C4CC}
@@ -1737,7 +1737,6 @@ objects:
       - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetResponse, start: 0x01F0C7D4, end: 0x01F0C834}
       - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetLastStatus, start: 0x01F0C834, end: 0x01F0C83C}
       - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_GetLastContentType, start: 0x01F0C83C, end: 0x01F0C844}
-      - {object: svo3/PageRequestListener, section: .svo_PageRequestListener_func_01F27658, start: 0x01F27658, end: 0x01F31380}
   svo3/SVFileDownloadQueue:
     text_start: 0x01F09BBC
     text_end: 0x01F0A2FC
@@ -2523,3 +2522,19 @@ objects:
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_callbacks, start: 0x01EA9768, end: 0x01EA9780}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_another_callback, start: 0x01EA9780, end: 0x01EA9790}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_get_aligned_address, start: 0x01EA9790, end: 0x01EA97D8}
+# Switch jump tables of compiled functions. Retail keeps them in the main read-only data;
+# each slot is exactly the retail table extent (code-address entries only). A compiled
+# function's tables are placed there and may only change bytes inside its slot.
+rodata:
+  asm/build/core.data/091E80.rodata:
+    slots:
+      - {object: svo3/CPage, function: download, section: .svo_CPage_download.rodata, start: 0x0019B480, end: 0x0019B4B8}
+      - {object: svo3/CPage, function: followLink, section: .svo_CPage_followLink.rodata, start: 0x0019B4D0, end: 0x0019B4F4}
+      - {object: svo3/CPage, function: frameUpdate, section: .svo_CPage_frameUpdate.rodata, start: 0x0019B510, end: 0x0019B53C}
+      - {object: svo3/CPage, function: setPageState, section: .svo_CPage_setPageState.rodata, start: 0x0019B7F0, end: 0x0019B868}
+      - {object: svo3/TextAreaTag, function: handleSpecialKeys, section: .svo_TextAreaTag_handleSpecialKeys.rodata, start: 0x0019D410, end: 0x0019D434}
+      - {object: svo3/TextInputTag, function: handleSpecialKeys___dupe2, section: .svo_TextInputTag_handleSpecialKeys___dupe2.rodata, start: 0x0019D600, end: 0x0019D624}
+      - {object: svo3/SVDownloadManager, function: download___dupe3, section: .svo_SVDownloadManager_download___dupe3.rodata, start: 0x0019E490, end: 0x0019E4A4}
+      - {object: svo3/CInputContextBase, function: HasActionOccurred, section: .svo_input_HasActionOccurred.rodata, start: 0x0019C340, end: 0x0019C370}
+      - {object: svo3/UTF8_Util, function: UTF8_GetNextCharIndexFromString, section: .svo_utf8_UTF8_GetNextCharIndexFromString.rodata, start: 0x0019D760, end: 0x0019D778}
+      - {object: svo3/UTF8_Util, function: UTF8_CountCharacters, section: .svo_utf8_UTF8_CountCharacters.rodata, start: 0x0019D780, end: 0x0019D798}
