@@ -101,6 +101,19 @@ $(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
 	$(EEGCC296) -S $(MEDIUS_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
+# SDK networking/localization probes match SCE 2.96 with default alignment.
+# Keep this independent of Medius's minimal alignment and SVO3's size flags.
+SDK_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections
+SDK_AS_FLAGS = -EL -G0 -g -Icode/include
+ifeq ($(ALLOW_NONMATCHING),1)
+    SDK_COMPILE_FLAGS += -DALLOW_NONMATCHING
+endif
+
+$(OBJ_DIR)/sdk/%.o: code/sdk/%.c
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC296) -S $(SDK_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) $(SDK_AS_FLAGS) $(@:.o=.s) -o $@
+
 elf: $(TARGET)
 
 ps2dev:

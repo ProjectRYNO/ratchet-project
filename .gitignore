@@ -82,3 +82,5 @@ __pycache__/
 
 !src/games/dl/TESTS/check_medius.py
 !src/games/dl/TESTS/medius_compiler_probes.c
+
+!src/games/dl/TESTS/sdk_compiler_probes.c

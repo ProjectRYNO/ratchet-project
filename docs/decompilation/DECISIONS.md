@@ -37,6 +37,13 @@ historical compiler identity remain unproven. See
 [src/games/dl/DOCS/libraries/MEDIUS.md](../../src/games/dl/DOCS/libraries/MEDIUS.md)
 for the controlled compiler matrix, flags, and verification limits.
 
+SDK compiler finding (2026-10-13): `code/sdk` uses the SCE 2.96 compiler and
+bundled assembler with its own `-O2 -G0` profile, preserving default split-address
+optimization and alignment. Seven C probes across three modules match 744 retail
+bytes; the fourth module still needs a C probe. Switching the four assembly-only
+objects to this rule preserves every loaded byte in the isolated full rebuild.
+See [SDK compiler evidence](../../src/games/dl/DOCS/libraries/SDK.md).
+
 Historical failures to avoid repeating include exit/Exit filename collisions on
 Windows, incorrect HI16/LO16 target aliases, misplaced section-relative linker
 assignments, and stale lowercase test paths on Linux. The
