@@ -37,7 +37,8 @@ Check Docker and asset availability before a build. Build the image from
 `src/games` with `docker compose build projectryno`, then enter a shell with
 `docker compose run --rm projectryno`. Inspect existing containers before starting
 or stopping one; never assume another contributor's container can be reused.
-`make ps2dev` supplies the native Linux compiler used by Deadlocked (EE GCC 3.2.3).
+`make ps2dev` supplies the native Linux compiler used by Deadlocked (EE GCC 3.2.3);
+`make ee-gcc296` adds SCE ee-gcc 2.96 for the SVO3 and iksemel middleware (DECISIONS.md K07).
 Native executable extraction and boot-only ISO packing now use the sibling
 ratchet-ps2-cli checkout; see [the integration guide](../../docs/build/RATCHET_PS2_CLI.md).
 The Docker image builds the sibling CLI checkout as a self-contained Linux executable.

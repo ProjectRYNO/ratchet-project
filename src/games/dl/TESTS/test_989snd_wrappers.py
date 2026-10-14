@@ -187,6 +187,17 @@ class WrapperMachine:
                 if op in (0x1A,0x1B):
                     r[rt] = (r[rt]&~mask) | (self.read(base,count)<<shift)
                 else: self.write(base,r[rt]>>shift,count)
+            elif op in (0x22,0x26,0x2A,0x2E):  # LWL/LWR/SWL/SWR, little-endian
+                address = (r[rs]+imm)&0xFFFFFFFF
+                offset = address & 3
+                if op in (0x22,0x2A):
+                    count,base,shift = offset+1,address-offset,(3-offset)*8
+                else:
+                    count,base,shift = 4-offset,address,0
+                mask = ((1 << (count*8))-1) << shift
+                if op in (0x22,0x26):
+                    r[rt] = signed((r[rt]&~mask&0xFFFFFFFF) | (self.read(base,count)<<shift),32) & MASK
+                else: self.write(base,r[rt]>>shift,count)
             elif op == 0x39: self.write(r[rs]+imm,self.fpr[rt],4)  # SWC1
             elif op == 0x3F: self.write(r[rs]+imm,r[rt],8)
             else: raise AssertionError('unsupported instruction %#x at %#x' % (word,pc))

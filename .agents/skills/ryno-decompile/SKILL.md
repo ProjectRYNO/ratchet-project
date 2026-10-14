@@ -34,7 +34,8 @@ license requirements. An external reimplementation is not proof of PS2 ABI behav
 
 Keep the function in its original translation unit. Replace only its INCLUDE_ASM
 entry, retaining untouched functions. Use the established EE C/C++ dialect
-(GCC 3.2.3, C++98-compatible code), correct C linkage for assembly-facing names,
+(GCC 3.2.3 for game code; SCE ee-gcc 2.96 for SVO3 and iksemel, per DECISIONS.md K07;
+C++98-compatible code), correct C linkage for assembly-facing names,
 and verified globals/types. Do not assume host pointer or integer widths.
 
 Inspect `config/decompiled_functions.yaml`, `tools/split_dl.py`, and

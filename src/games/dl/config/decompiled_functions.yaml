@@ -330,6 +330,40 @@ functions:
   iks_type: 0x01EE3A84
   iks_name: 0x01EE3A98
   iks_cdata: 0x01EE3AAC
+  iks_new_within: 0x01EE3570
+  iks_insert: 0x01EE3600
+  iks_insert_cdata: 0x01EE366C
+  iks_insert_attrib: 0x01EE3770
+  iks_delete: 0x01EE38C4
+  iks_next_tag: 0x01EE3900
+  iks_find: 0x01EE3974
+  iks_find_cdata: 0x01EE39E0
+  iks_find_attrib: 0x01EE3A18
+  iks_has_children: 0x01EE3AC0
+  my_strcat: 0x01EE3B50
+  tagHook: 0x01EE32FC
+  cdataHook: 0x01EE347C
+  deleteHook: 0x01EE34A8
+  iks_dom_new: 0x01EE34E0
+  find_space: 0x01EE3CEC
+  iks_stack_new: 0x01EE3D48
+  iks_stack_alloc: 0x01EE3DB0
+  iks_stack_strdup: 0x01EE3E14
+  iks_stack_strecat: 0x01EE3E9C
+  iks_stack_delete: 0x01EE407C
+  iks_sax_extend: 0x01EE40B8
+  iks_nr_bytes: 0x01EE414C
+  iks_nr_lines: 0x01EE4154
+  AllocateMoreAttrs: 0x01EE415C
+  iks_parse: 0x01EE4AA0
+  iks_parser_reset: 0x01EE4CDC
+  iks_parser_delete: 0x01EE4D48
+  iks_set_malloc_func: 0x01EE4DD8
+  iks_set_free_func: 0x01EE4DE4
+  escape_size: 0x01EE3AE0
+  escape: 0x01EE3BAC
+  iks_escape: 0x01EE4DF0
+  sax_core: 0x01EE4204
 
   svstrlen: 0x01EEDFE0
   svisdigit: 0x01EEE070
@@ -1203,6 +1237,43 @@ objects:
       - {object: iksemel/src/iks, section: .iks_escape_size, start: 0x01EE3AE0, end: 0x01EE3B50}
       - {object: iksemel/src/iks, section: .iks_my_strcat, start: 0x01EE3B50, end: 0x01EE3BAC}
       - {object: iksemel/src/iks, section: .iks_escape, start: 0x01EE3BAC, end: 0x01EE3CEC}
+  iksemel/src/dom:
+    text_start: 0x01EE32FC
+    text_end: 0x01EE3570
+    slots:
+      - {object: iksemel/src/dom, section: .iks_tagHook, start: 0x01EE32FC, end: 0x01EE347C}
+      - {object: iksemel/src/dom, section: .iks_cdataHook, start: 0x01EE347C, end: 0x01EE34A8}
+      - {object: iksemel/src/dom, section: .iks_deleteHook, start: 0x01EE34A8, end: 0x01EE34E0}
+      - {object: iksemel/src/dom, section: .iks_iks_dom_new, start: 0x01EE34E0, end: 0x01EE3570}
+  iksemel/src/ikstack:
+    text_start: 0x01EE3CEC
+    text_end: 0x01EE40B8
+    slots:
+      - {object: iksemel/src/ikstack, section: .iks_find_space, start: 0x01EE3CEC, end: 0x01EE3D48}
+      - {object: iksemel/src/ikstack, section: .iks_iks_stack_new, start: 0x01EE3D48, end: 0x01EE3DB0}
+      - {object: iksemel/src/ikstack, section: .iks_iks_stack_alloc, start: 0x01EE3DB0, end: 0x01EE3E14}
+      - {object: iksemel/src/ikstack, section: .iks_iks_stack_strdup, start: 0x01EE3E14, end: 0x01EE3E9C}
+      - {object: iksemel/src/ikstack, section: .iks_iks_stack_strecat, start: 0x01EE3E9C, end: 0x01EE407C}
+      - {object: iksemel/src/ikstack, section: .iks_iks_stack_delete, start: 0x01EE407C, end: 0x01EE40B8}
+  iksemel/src/sax:
+    text_start: 0x01EE40B8
+    text_end: 0x01EE4DD8
+    slots:
+      - {object: iksemel/src/sax, section: .iks_iks_sax_extend, start: 0x01EE40B8, end: 0x01EE414C}
+      - {object: iksemel/src/sax, section: .iks_iks_nr_bytes, start: 0x01EE414C, end: 0x01EE4154}
+      - {object: iksemel/src/sax, section: .iks_iks_nr_lines, start: 0x01EE4154, end: 0x01EE415C}
+      - {object: iksemel/src/sax, section: .iks_AllocateMoreAttrs, start: 0x01EE415C, end: 0x01EE4204}
+      - {object: iksemel/src/sax, section: .iks_sax_core, start: 0x01EE4204, end: 0x01EE4AA0}
+      - {object: iksemel/src/sax, section: .iks_iks_parse, start: 0x01EE4AA0, end: 0x01EE4CDC}
+      - {object: iksemel/src/sax, section: .iks_iks_parser_reset, start: 0x01EE4CDC, end: 0x01EE4D48}
+      - {object: iksemel/src/sax, section: .iks_iks_parser_delete, start: 0x01EE4D48, end: 0x01EE4DD8}
+  iksemel/src/utility:
+    text_start: 0x01EE4DD8
+    text_end: 0x01EE5000
+    slots:
+      - {object: iksemel/src/utility, section: .iks_iks_set_malloc_func, start: 0x01EE4DD8, end: 0x01EE4DE4}
+      - {object: iksemel/src/utility, section: .iks_iks_set_free_func, start: 0x01EE4DE4, end: 0x01EE4DF0}
+      - {object: iksemel/src/utility, section: .iks_iks_escape, start: 0x01EE4DF0, end: 0x01EE5000}
   svo3/SVOString:
     text_start: 0x01EEDCD0
     text_end: 0x01EEE0BC
