@@ -1,25 +1,25 @@
 {
-  "base_commit": "7e84d27",
+  "base_commit": "0691b50",
   "compiled_functions": 59,
-  "exact_functions": 42,
+  "exact_functions": 49,
   "module_bytes": 7236,
-  "differing_bytes": 3021,
+  "differing_bytes": 2542,
   "exact_remnants": 18,
   "functions": [
     {
       "name": "snd_StartSoundSystemEx",
       "address": "0x157d60",
-      "size": 532,
+      "size": 564,
       "slot_size": 568,
-      "differing_bytes": 468,
+      "differing_bytes": 428,
       "exact": false
     },
     {
       "name": "snd_FlushSoundCommands",
       "address": "0x157f98",
-      "size": 496,
+      "size": 472,
       "slot_size": 496,
-      "differing_bytes": 398,
+      "differing_bytes": 236,
       "exact": false
     },
     {
@@ -27,23 +27,23 @@
       "address": "0x158198",
       "size": 164,
       "slot_size": 168,
-      "differing_bytes": 1,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_PrepareReturnBuffer",
       "address": "0x158240",
-      "size": 88,
+      "size": 92,
       "slot_size": 96,
-      "differing_bytes": 67,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_BankLoadByLoc_CB",
       "address": "0x1582a8",
       "size": 328,
       "slot_size": 344,
-      "differing_bytes": 205,
+      "differing_bytes": 186,
       "exact": false
     },
     {
@@ -51,7 +51,7 @@
       "address": "0x158400",
       "size": 324,
       "slot_size": 336,
-      "differing_bytes": 243,
+      "differing_bytes": 239,
       "exact": false
     },
     {
@@ -201,17 +201,17 @@
     {
       "name": "snd_SendIOPCommandAndWait",
       "address": "0x158a30",
-      "size": 504,
+      "size": 520,
       "slot_size": 560,
-      "differing_bytes": 416,
+      "differing_bytes": 433,
       "exact": false
     },
     {
       "name": "snd_SendIOPCommandNoWait",
       "address": "0x158c60",
-      "size": 820,
+      "size": 844,
       "slot_size": 864,
-      "differing_bytes": 716,
+      "differing_bytes": 705,
       "exact": false
     },
     {
@@ -225,10 +225,10 @@
     {
       "name": "snd_SendCurrentBatch",
       "address": "0x158ff8",
-      "size": 284,
+      "size": 292,
       "slot_size": 296,
-      "differing_bytes": 66,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_StartCaching",
@@ -251,7 +251,7 @@
       "address": "0x159130",
       "size": 160,
       "slot_size": 168,
-      "differing_bytes": 83,
+      "differing_bytes": 67,
       "exact": false
     },
     {
@@ -259,7 +259,7 @@
       "address": "0x1591f0",
       "size": 88,
       "slot_size": 96,
-      "differing_bytes": 50,
+      "differing_bytes": 43,
       "exact": false
     },
     {
@@ -267,8 +267,8 @@
       "address": "0x159258",
       "size": 112,
       "slot_size": 112,
-      "differing_bytes": 8,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_PauseVAGStream",
@@ -315,7 +315,7 @@
       "address": "0x1593c8",
       "size": 184,
       "slot_size": 192,
-      "differing_bytes": 105,
+      "differing_bytes": 85,
       "exact": false
     },
     {
@@ -337,10 +337,10 @@
     {
       "name": "snd_StreamSafeCdGetError",
       "address": "0x159570",
-      "size": 48,
+      "size": 56,
       "slot_size": 56,
-      "differing_bytes": 29,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_StreamSafeCdCallback",
@@ -457,10 +457,10 @@
     {
       "name": "snd_DoExternCall_CB",
       "address": "0x1598f8",
-      "size": 76,
+      "size": 80,
       "slot_size": 80,
-      "differing_bytes": 44,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_DoExternCallWithData",
@@ -475,16 +475,20 @@
       "address": "0x159988",
       "size": 28,
       "slot_size": 28,
-      "differing_bytes": 2,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     }
   ],
   "working_tree_changes": true,
   "verified_date": "2026-10-15",
-  "exact_percent": 71.19,
-  "compiler": "SCE 2.9-ee-990721",
-  "compiler_flags": "-G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions -mno-check-zero-division",
-  "source_sha256": "3981c6b685a9940240f56cacfcc489e45e6e850cef660afd4897e490d3dcb6a4",
+  "exact_percent": 83.05,
+  "compiler": "SN Systems GCC 2.95.3 v1.36",
+  "compiler_flags": "-G8 -O2 -fopt-stack -mno-check-zero-division",
+  "assembler": "SN-bundled GNU assembler 2.9-ee-991111b",
+  "assembler_flags": "-EL -G8 -g",
+  "compiler_runner": "wibo 1.2.0 i686",
+  "source_sha256": "e40a8983b60cdc3b942a24499d8840349c0d2af07519081ef9c47cf933c0784f",
+  "header_sha256": "4b341af11c24657327d74e10cbe47c0a18d28c68cee0d82084f0fca5f2a371d5",
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "4f9578772dd18ef003e00e726d9bca098fea539915cfcc8f5e8f99c13dcdb46f"
+  "rebuilt_sha256": "b90da6d50f146a51b682ed1b1b02cf4dc1d26d5f83f1961dc8bb0b09a1b699c5"
 }

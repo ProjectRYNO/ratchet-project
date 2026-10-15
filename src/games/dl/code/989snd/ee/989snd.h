@@ -3,7 +3,8 @@
 
 /* Names from the prototype decompilation; layout/addresses checked against retail. */
 typedef unsigned int SndWord;
-typedef unsigned long long SndUserData;
+/* SN's long long is 128 bits; the retail callback ABI uses 64 bits. */
+typedef unsigned int SndUserData __attribute__((mode(DI)));
 typedef void (*SndCompleteProc)(SndWord result, SndUserData user_data);
 typedef void (*SndCdCallback)(int reason);
 typedef struct { // 0x1000

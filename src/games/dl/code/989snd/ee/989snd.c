@@ -7,14 +7,14 @@
 void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int flags)
 {
     int data[2];
-    volatile int delay;
+    int delay;
     gSndCommandBuffePtr[0] = &gSndCommandBuffer1;
     gSndCommandBuffePtr[1] = &gSndCommandBuffer2;
     gReturnValuesPtr[0] = gActualReturnValues1;
     gReturnValuesPtr[1] = gActualReturnValues2;
     gSndCommandReturnDefPtr[0] = gSndCommandReturnDef1;
     gSndCommandReturnDefPtr[1] = gSndCommandReturnDef2;
-    gPrefs_Silent = (flags & 2) != 0;
+    if (flags & 2) gPrefs_Silent = 1; else gPrefs_Silent = 0;
     sceSifInitRpc(0);
     do {
         if (sceSifBindRpc(&gSLClientData, 0x123456, 0) < 0) {
@@ -96,7 +96,7 @@ int SND_SECTION(snd_GotReturns) snd_GotReturns(void)
 {
     if (!gCommBusy) return 1;
     if (sceSifCheckStatRpc(&gSLClientData)) return 0;
-    InvalidDCache(gCommBusy, gAwaitingInts + gCommBusy + 2);
+    InvalidDCache(gCommBusy, (void *)(gAwaitingInts * 4 + (unsigned int)gCommBusy + 8));
     if (gCommBusy[0] == ~0U && gCommBusy[gAwaitingInts + 1] == ~0U) {
         gCommBusy = 0;
         return 1;
@@ -111,9 +111,9 @@ void SND_SECTION(snd_PrepareReturnBuffer) snd_PrepareReturnBuffer(SndWord *buffe
     gAwaitingInts = num_ints;
     buffer[num_ints + 1] = 0;
     buffer[0] = 0;
-    /* The original inclusive cache endpoints are byte offsets, not word offsets. */
     SyncDCache(buffer, (char *)buffer + 3);
-    SyncDCache(buffer + num_ints + 1, (char *)(buffer + num_ints + 1) + 3);
+    buffer += num_ints + 1;
+    SyncDCache(buffer, (char *)buffer + 3);
 }
 
 /* Linker remnants, not callable functions; preserve original words. */
@@ -456,7 +456,7 @@ void SND_SECTION(snd_SendCurrentBatch) snd_SendCurrentBatch(void)
         4096 - gCommandBuffeBytesAvail[gCommandFillBuffer], gReturnValuesPtr[gCommandFillBuffer],
         4 * gSndCommandBuffePtr[gCommandFillBuffer]->num_commands + 8, 0, 0);
     gCommandFillBuffer = gCommandFillBuffer != 1;
-    gSndCommandBuffePtr[gCommandFillBuffer]->num_commands = 0;
+    *(int *)gSndCommandBuffePtr[gCommandFillBuffer] = 0;
     gCommandBuffeBytesAvail[gCommandFillBuffer] = 4092;
 }
 
@@ -491,8 +491,9 @@ const unsigned int func_001591D8[] SND_SECTION(func_001591D8) = {
 
 void SND_SECTION(snd_CloseVAGStreaming) snd_CloseVAGStreaming(void)
 {
-    int busy = gLoadBusy;
+    int busy;
     if (gStreamingInited) {
+        busy = gLoadBusy;
         while (busy) busy = snd_FlushSoundCommands();
         snd_StreamSafeCdSync(0);
         snd_SendIOPCommandAndWait(0x35, 0, 0);
@@ -567,14 +568,15 @@ void SND_SECTION(snd_IsVAGStreamBuffered_CB) snd_IsVAGStreamBuffered_CB(unsigned
 
 int SND_SECTION(snd_StreamSafeCdRead) snd_StreamSafeCdRead(unsigned int lbn, unsigned int sectors, void *buf, SndCdRMode *mode)
 {
+
     unsigned int data[3];
     if (!gStreamingInited) return sceCdRead(lbn, sectors, buf, mode);
     if (snd_StreamSafeCdSync(1) == 1) return 0;
-    gStats.cd_busy = 1;
-    gStats.cd_error = 0;
+    ((volatile SndSystemStatus *)&gStats)->cd_busy = 1;
+    ((volatile SndSystemStatus *)&gStats)->cd_error = 0;
     FlushCache(0);
-    gSSRead = 1; gSSReadDone = 0;
     data[0] = lbn; data[1] = sectors; data[2] = (unsigned int)buf;
+    gSSRead = 1; gSSReadDone = 0;
     snd_SendIOPCommandNoWait(0x38, 12, (char *)data, 0, 0);
     return 1;
 }
@@ -596,16 +598,15 @@ int SND_SECTION(snd_StreamSafeCdSync) snd_StreamSafeCdSync(int mode)
 
 int SND_SECTION(snd_StreamSafeCdBreak) snd_StreamSafeCdBreak(void)
 {
-    if (gStreamingInited) {
-        snd_SendIOPCommandNoWait(0x37, 0, 0, 0, 0);
-        return 1;
-    } else return sceCdBreak();
+    if (!gStreamingInited) return sceCdBreak();
+    snd_SendIOPCommandNoWait(0x37, 0, 0, 0, 0);
+    return 1;
 }
 
 int SND_SECTION(snd_StreamSafeCdGetError) snd_StreamSafeCdGetError(void)
 {
-    if (gStreamingInited) return gStats.cd_error;
-    else return sceCdGetError();
+    if (!gStreamingInited) return sceCdGetError();
+    return ((volatile SndSystemStatus *)&gStats)->cd_error;
 }
 
 /* Linker remnants, not callable functions; preserve original words. */

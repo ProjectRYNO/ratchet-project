@@ -1,4 +1,4 @@
-.PHONY: dump config split iso FORCE elf ps2dev ee-gcc296 ee-gcc29
+.PHONY: dump config split iso FORCE elf ps2dev ee-gcc296 ee-gcc29 ee-gcc-sn136
 .DEFAULT_GOAL := elf
 
 SHELL := /bin/bash
@@ -53,6 +53,14 @@ EEGCC29_URL = https://github.com/decompme/compilers/releases/download/compilers/
 EEGCC29_SHA256 = ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b
 EEGCC29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/bin/ee-gcc
 EEAS29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/ee/bin/as
+EESN136_DIR ?= /opt/ee-gcc2.95.3-136
+EESN136_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.95.3-136.tar.gz
+EESN136_SHA256 = 3b6ae6897229ad005aaf1b0afaa1f3cb46e74b4c21a42e01130c07c0c598067f
+WIBO ?= /opt/wibo-1.2.0
+WIBO_URL = https://github.com/decompals/wibo/releases/download/1.2.0/wibo-i686
+WIBO_SHA256 = 2575d3b0a2f408b2c2b0850db56f1af5d005a138394a6774eba77b6708ecc304
+EESN136 = $(WIBO) $(EESN136_DIR)/bin/ee-gcc.exe
+EEAS_SN136 = $(WIBO) $(EESN136_DIR)/lib/gcc-lib/ee/2.95.3/as.exe
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
@@ -74,10 +82,11 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 ALLOW_NONMATCHING ?= 0
 COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -Wa,-no-pad-sections
 # Measured sound profile; see DOCS/sound/989SND_MATCHING.md.
-# Exceptions inhibit unwanted sibling jumps; SJLJ avoids frame-registration data.
+# SN v1.36 packs scalar register saves with -fopt-stack. The assembler's -g
+# preserves compiler NOPs and delay slots; this is required for exact matching.
 # The only division has a constant, nonzero divisor (741).
-SOUND_COMPILE_FLAGS = -G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions -mno-check-zero-division
-SOUND_AS_FLAGS = -EL -G8
+SOUND_COMPILE_FLAGS = -G8 -O2 -fopt-stack -mno-check-zero-division
+SOUND_AS_FLAGS = -EL -G8 -g
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
@@ -157,6 +166,19 @@ ee-gcc29: ee-gcc296
 		$(PYTHON) -c 'import tarfile; tarfile.open("/tmp/ee-gcc2.9-990721.tar.xz").extractall("$(EEGCC29_DIR)", filter="data")'; \
 	fi
 
+ee-gcc-sn136:
+	@if [ ! -f "$(EESN136_DIR)/bin/ee-gcc.exe" ]; then \
+		curl -fL -o /tmp/ee-gcc2.95.3-136.tar.gz $(EESN136_URL) && \
+		echo "$(EESN136_SHA256)  /tmp/ee-gcc2.95.3-136.tar.gz" | sha256sum -c - && \
+		$(MKDIR) -p $(EESN136_DIR) && \
+		$(PYTHON) -c 'import tarfile; tarfile.open("/tmp/ee-gcc2.95.3-136.tar.gz").extractall("$(EESN136_DIR)", filter="data")'; \
+	fi
+	@if [ ! -f "$(WIBO)" ]; then \
+		curl -fL -o /tmp/ryno-wibo-1.2.0 $(WIBO_URL) && \
+		echo "$(WIBO_SHA256)  /tmp/ryno-wibo-1.2.0" | sha256sum -c - && \
+		install -m 755 /tmp/ryno-wibo-1.2.0 $(WIBO); \
+	fi
+
 dump:
 ifndef iso
 	$(error ISO is not set. Usage: make dump iso='/isos/SCUS_974.65.Ratchet Deadlocked.iso')
@@ -201,10 +223,10 @@ $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
-$(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile | ee-gcc29
+$(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile | ee-gcc-sn136
 	@$(MKDIR) -p $(dir $@)
-	$(EEGCC29) -S $(SOUND_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29) $(SOUND_AS_FLAGS) $(@:.o=.s) -o $@
+	$(EESN136) -S $(SOUND_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS_SN136) $(SOUND_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 	@$(MKDIR) -p $(dir $@)

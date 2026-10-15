@@ -1,152 +1,91 @@
 # 989snd matching investigation — 2026-10-15
 
-## Integrated status
+## Verified integrated status
 
-The working changes on `7e84d27` integrate **42/59 exact functions (71.19%)**,
-up from 6/59 (10.17%). All 59 remain compiled C. The complete 7,236-byte module
-now has **3,021 differing bytes**, down from 4,404. All 18 retained instruction
-fragments match. Per-function evidence is in
-[989SND.json](../progress/989SND.json).
+Working changes on `0691b50`: **49/59 complete function slots match (83.05%)**.
+All 59 named EE client functions compile from C. All 18 retained non-function
+instruction fragments match. The complete 7,236-byte module still contains
+**2,542 differing bytes**. This is not 100% matching.
+Per-function measurements and source/header/ELF hashes are in
+[989SND.json](../progress/989SND.json) and [989SND.csv](../progress/989SND.csv).
 
-A serial split followed by a forced full build includes the current merged
-Medius work. Both sound suites pass **2,720 + 293 cases** across all 59 functions.
-The public-address/slot/runtime-layout audit passes. This does not establish
-gameplay or IOP-driver behavior, and the **17 remaining nonmatching functions
-keep the 100% goal open**.
+The sound object was force-recompiled and the complete game relinked from the
+existing serial-split/full-build snapshot. Both sound suites pass: **2,720 wrapper
+and 293 stateful cases**, including 64-bit callback data and reentrant completion.
+SDK remains 20/20 exact; iksemel remains 40/40 exact with all five jump tables.
+The loaded-byte/placement audit passes. Whole-game strict comparison remains
+nonmatching; every changed byte is inside registered replacement slots and all
+runtime headers match. Gameplay and IOP-driver behavior have not been tested.
 
-SDK still passes 20/20 exact functions; iksemel still passes 40/40 exact
-functions and all five jump tables. The whole-game strict comparison remains
-nonmatching (12,368 changed loaded bytes); those differences are all within
-registered replacement slots. Runtime headers and bytes outside the slots
-match. These results are separate from the sound-only percentage.
+## Reproducible compiler profile
 
-## Integrated compiler and source changes
-
-`Makefile` now pins SCE **2.9-ee-990721** and its bundled assembler specifically
-for this object. `make ee-gcc29` checks the compiler archive's SHA-256 before
-extraction and reuses the existing 32-bit stat shim. The source/header/Makefile
-are explicit sound-object dependencies.
+`Makefile` now uses **SN Systems GCC 2.95.3 v1.36**, its bundled GNU assembler
+`2.9-ee-991111b`, and the pinned **wibo 1.2.0 i686** runner on Linux. `make
+ee-gcc-sn136` downloads both tools with SHA-256 verification. No executable
+instructions are patched and no slots are widened. The entire original C
+translation unit is compiled together.
 
 ```text
-SOUND_COMPILE_FLAGS = -G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions -mno-check-zero-division
-SOUND_AS_FLAGS = -EL -G8
-archive SHA-256 = ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b
+SOUND_COMPILE_FLAGS = -G8 -O2 -fopt-stack -mno-check-zero-division
+SOUND_AS_FLAGS = -EL -G8 -g
+compiler archive SHA-256 = 3b6ae6897229ad005aaf1b0afaa1f3cb46e74b4c21a42e01130c07c0c598067f
+wibo SHA-256 = 2575d3b0a2f408b2c2b0850db56f1af5d005a138394a6774eba77b6708ecc304
 ```
 
-`-fexceptions` inhibits the unwanted sibling jumps. `-fsjlj-exceptions` retains
-that code generation without adding DWARF frame-registration data or startup
-constructors. No exception handler is introduced in the C source. The constant
-divisor 741 does not need a runtime zero check.
+[Compiler archive](https://github.com/decompme/compilers/releases/tag/compilers),
+[wibo runner](https://github.com/decompals/wibo/releases/tag/1.2.0).
+Run `make -B build/code/989snd/ee/989snd.o`, then `make elf`, then both
+`TESTS/test_989snd_wrappers.py` and `TESTS/test_989snd_state.py` with the original
+and rebuilt ELF paths. Also run `TESTS/check_main_elf.py` and the strict
+`../tools/compare_elf.py`; the latter still reports the matching backlog.
 
-Packet fields use explicit assignments. The previous compiler's two helper
-workarounds are removed: file-load completion is inside the flush function,
-and CD callback exchange is implemented directly at its public entry. The
-stream-safe CD branches follow retail order. The Doppler multiplication retains
-defined unsigned 32-bit wraparound before signed division.
+SN's `long long` is 128 bits, unlike Sony's 64-bit type. `SndUserData` therefore
+uses explicit GCC `mode(DI)` to preserve the retail 64-bit ABI and 16-byte return
+record. Early SN experiments without this correction were not comparable.
+`-fopt-stack` gives compact scalar saves. The assembler's `-g` preserves compiler
+NOPs and delay slots; it is needed for the exact Doppler DIV/MFLO return sequence.
 
-The compiler currently uses `DIV1`/`MFLO1` for Doppler, while retail uses the
-first unit. The differential interpreter now implements those two instructions
-with separate LO1/HI1 state; three focused tests cover signed results, isolation
-from LO, and rejection of unknown MMI opcodes. Unsupported instructions still
-fail. All 107 existing Doppler behavior cases pass, but its two differing bytes
-remain correctly classified as nonmatching.
+The streaming packet and external callback wrappers now match without instruction
+substitution. Source branch order retains the CD Break/GetError matches. Startup
+uses a register-based delay counter, as retail does, and fits its original slot.
+The return-buffer pointer advances after the first cache call; this reproduces
+retail register lifetimes. The batch reset accesses the first packet word directly,
+retaining the retail reload of the buffer index after that store.
 
-## References checked
+## Earlier evidence and remaining work
 
-* The local `deadlocked-proto-decomp/989snd/ee/989snd.c` begins with
-  `STATUS: NOT STARTED`. It contains partial recovered bodies, empty stubs,
-  duplicate declarations, and prototype globals; it is not a verified matching
-  build. Its explicit packet-field assignments are useful source evidence.
-* [OpenRAC's toolchain notes](https://github.com/OpenRAC/rac1-decomp/blob/main/docs/TOOLCHAIN.md)
-  identify SN Systems v1.14 for that game's 989snd and describe Sony 2.9 tail-call
-  behavior. These are leads for another revision, not proof for Deadlocked.
-* [OpenGOAL's project overview](https://github.com/open-goal/jak-project/blob/master/docs/project-overview.md)
-  describes its sound implementation. It is not a matching Deadlocked EE client.
-* Compiler candidates came from the
-  [decomp.me compiler archive](https://github.com/decompme/compilers/releases/tag/compilers).
-  No external source implementation was copied into production.
+Sony 2.9-990721 previously reached 44/59 after explicit packet stores, a byte-address
+cache endpoint, and the volatile shared-status read. Its original source forces
+16-byte save slots through `mips_reg_mode[0] = TImode`; the supported precision
+attribute excludes that entry. The preserved 990430 source behaves the same,
+and published 990721 patches do not change the compiler backend. Source releases:
+[original Sony compiler sources](https://github.com/GirianSeed/ee-gcc/releases).
 
-## Measured compiler evidence
+Disabling Sony's second scheduling pass matched Doppler alone but reduced the
+whole-module result to four matches. Additional Sony 2.96 optimization profiles
+were also worse. Those flags were not integrated. SN's alternative Ps2EeAs
+assembler regressed the integrated profile and was not selected.
 
-The tests relocate actual compiled sections to retail addresses and resolve
-external symbols from the already verified linked game. No relocation bits or
-instructions are masked. Short sections receive zero padding for comparison;
-overlong sections cannot match. This is a diagnostic link, **not a usable ELF**.
+The local prototype is partial and is not a byte-matching reference. Related
+[OpenRAC source](https://github.com/OpenRAC/rac1-decomp/blob/main/src/core/989snd.c)
+and [toolchain notes](https://github.com/OpenRAC/rac1-decomp/blob/main/docs/TOOLCHAIN.md)
+provided clues, but Deadlocked's retail instructions remain authoritative.
 
-| Candidate | Result / interpretation |
-| --- | --- |
-| Existing ps2dev 3.2.3 sound flags | Reproduced 6/59 with the new probe; no overruns. |
-| SCE 2.96, 3.2-030926, 3.2-040921 | No broad improvement across tested optimization/scheduling settings. |
-| SCE 2.9-990721, 991111, 991111a, 991111-01 | Much closer wrapper scheduling. Initial exact-section comparisons found 19 matches before source changes and padding accounting. |
-| Initial SCE 2.9-990721 packet-assignment probe | 35/59 candidate slot matches with three overflows; superseded by the integrated profile above. |
-| SCE 2.9-990721, recovered branches, exceptions + SJLJ | **42/59 integrated matches**, no slot overruns; all sound cases pass. |
-| SN Systems 2.95.3 v1.14, `-O2 -G8` | Only two matches in the experimental source; `sq` register saves differ from this retail library's `sd` saves. Adding `-mgp64` did not change that result. |
+Remaining functions (complete-slot differing bytes):
 
-Several original one-argument wrappers place the return-address save between
-argument setup instructions. Sony 2.9 reproduces that order; the newer compilers
-tested do not. Replacing aggregate packet initializers with explicit field
-stores also reproduces the retail `snd_SetMasterVolume` body under Sony 2.9.
-This is strong evidence for further 2.9-family work, not a definitive compiler
-identification for the entire object.
+| Function | Differing bytes |
+| --- | ---: |
+| `snd_StartSoundSystemEx` | 428 |
+| `snd_FlushSoundCommands` | 236 |
+| `snd_BankLoadByLoc_CB` | 186 |
+| `snd_BankLoadFromEE` | 239 |
+| `snd_SendIOPCommandAndWait` | 433 |
+| `snd_SendIOPCommandNoWait` | 705 |
+| `snd_InitVAGStreamingEx` | 67 |
+| `snd_CloseVAGStreaming` | 43 |
+| `snd_StreamSafeCdRead` | 85 |
+| `snd_StreamSafeCdSync` | 120 |
 
-## Reproduce the initial probe (historical)
-
-Run in an isolated Linux build environment with a verified linked game available.
-The original compiler binaries need the same 32-bit stat shim used for 2.96.
-Replace paths as appropriate; the example uses the investigation container.
-
-```sh
-python3 /ProjectRYNO/tools/probe_989snd.py \
-  --game /ProjectRYNO/dl \
-  --original /ProjectRYNO/assets/dl/boot.elf \
-  --symbols-from /tmp/sdk-integration/dl/build/boot_elf.elf \
-  --cc /probe/sony2.9-990721/bin/ee-gcc \
-  --assembler /probe/sony2.9-990721/ee/bin/as \
-  --shim /opt/ee-gcc2.96/ee296_statshim.so \
-  --cflags '-O1 -G8 -fno-builtin -fno-common -fschedule-insns -fschedule-insns2' \
-  --packet-assignments --output /probe/sound-reproducible
-```
-
-The tool writes generated probe source, commands, object, diagnostic ELF and
-`results.json`, including hashes and per-function sizes, overruns and byte
-differences. It never edits game source, Makefile, manifest, or the game ELF.
-The old production-profile cross-check reproduced the starting 6/59 result:
-
-```text
-cc: /opt/ps2dev/ee/bin/ee-gcc
-assembler: /opt/ps2dev/ee/bin/ee-as
-cflags: -G8 -O2 -ffast-math -fno-exceptions -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
-asflags: -EL -G8 -no-pad-sections
-packet-assignments: off
-```
-
-## Resolved integration blockers and remaining work
-
-The historical 35-match profile overflowed:
-
-| Section | Generated / available bytes | Overrun |
-| --- | --- | --- |
-| `snd_StartSoundSystemEx`, including existing helper bodies | 628 / 568 | 60 |
-| `snd_BankLoadByLoc_CB` | 388 / 344 | 44 |
-| `snd_GetDopplerPitchMod` | 36 / 28 | 8 |
-
-Without exceptions enabled, Sony 2.9 emits sibling jumps in wrappers where retail uses
-`jal` and a return epilogue. Merely passing `-fno-optimize-sibling-calls` did
-not remove them. The integrated exception/SJLJ settings resolve those jumps.
-
-The direct callback now fits and matches its 48-byte slot after restoring retail
-branch order. Removing the helper workarounds and selecting the new compiler
-settings resolves every integrated overrun. No slots were widened and no
-instructions were patched or substituted.
-
-Remaining work is concentrated in startup, return-buffer preparation, RPC/bank
-transport, stream-safe CD state, and three near-matching wrappers/arithmetic
-functions. Several stateful functions save registers 16 bytes apart under this
-compiler where retail packs saves 8 bytes apart. Neighboring Sony 2.9 releases,
-including preserved Windows/DTLS builds, did not resolve that discrepancy;
-Sony 2.96 has compact saves but the tested profiles do not match the wrapper
-scheduling. This compiler choice is measured progress, not proof of the exact
-original compiler for every function.
-
-Continue from the 17 `exact: false` records in the JSON inventory. Preserve
-callback ordering, 64-bit user data, reentrancy and the existing strict checks.
+Continue with short-loop padding, aliasing/reloads, shared status access and
+source register lifetimes under the corrected SN ABI. Keep all slot and behavior
+checks; do not classify a fitting or behavior-tested function as byte-exact.
