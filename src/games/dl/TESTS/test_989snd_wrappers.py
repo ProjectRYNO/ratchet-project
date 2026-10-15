@@ -75,6 +75,7 @@ class WrapperMachine:
         pc, pending = entry, None
         preserved = {i: self.reg[i] for i in list(range(16,24)) + [28,29,30]}
         lo = hi = 0
+        lo1 = hi1 = 0
         for _ in range(self.max_steps):
             if pc == RETURN:
                 assert all(self.reg[i] == value for i,value in preserved.items()), 'callee-saved register changed'
@@ -141,6 +142,14 @@ class WrapperMachine:
                 elif fn == 0x3E: r[rd] = r[rt] >> (sh+32)
                 elif fn == 0x3F: r[rd] = (signed(r[rt],64) >> (sh+32)) & MASK
                 else: raise AssertionError('unsupported SPECIAL %#x at %#x' % (word,pc))
+            elif op == 0x1C:  # R5900's second integer multiply/divide unit.
+                if fn == 0x12: r[rd] = lo1  # MFLO1
+                elif fn == 0x1A:  # DIV1, signed 32-bit operands.
+                    a, b = signed(r[rs],32), signed(r[rt],32)
+                    assert b, 'division by zero'
+                    q = abs(a)//abs(b) * (-1 if (a<0) != (b<0) else 1)
+                    lo1, hi1 = signed(q,32)&MASK, signed(a-q*b,32)&MASK
+                else: raise AssertionError('unsupported MMI %#x at %#x' % (word,pc))
             elif op in (2,3):
                 target = ((pc+4)&0xF0000000) | ((word&0x3FFFFFF)<<2)
                 if op == 3: r[31] = pc + 8

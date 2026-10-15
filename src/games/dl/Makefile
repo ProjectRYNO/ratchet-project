@@ -1,4 +1,4 @@
-.PHONY: dump config split iso FORCE elf ps2dev ee-gcc296
+.PHONY: dump config split iso FORCE elf ps2dev ee-gcc296 ee-gcc29
 .DEFAULT_GOAL := elf
 
 SHELL := /bin/bash
@@ -48,6 +48,11 @@ EEGCC296_URL = https://github.com/decompme/compilers/releases/download/compilers
 EEGCC296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/bin/ee-gcc
 EEGXX296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/bin/ee-g++
 EEAS296 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC296_DIR)/ee/bin/as
+EEGCC29_DIR ?= /opt/ee-gcc2.9-990721
+EEGCC29_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-990721.tar.xz
+EEGCC29_SHA256 = ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b
+EEGCC29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/bin/ee-gcc
+EEAS29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/ee/bin/as
 
 # Collect sources
 SRC_C   = $(shell $(FIND) code -type f -name '*.c')
@@ -68,9 +73,11 @@ OBJS = $(SRC_S:code/%.s=$(OBJ_DIR)/%.o) \
 
 ALLOW_NONMATCHING ?= 0
 COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/include -Wa,-no-pad-sections
-# Keep the recovered EE sound functions inside their original address slots.
+# Measured sound profile; see DOCS/sound/989SND_MATCHING.md.
+# Exceptions inhibit unwanted sibling jumps; SJLJ avoids frame-registration data.
 # The only division has a constant, nonzero divisor (741).
-$(OBJ_DIR)/989snd/ee/989snd.o: COMMON_COMPILE_FLAGS += -Os -fno-schedule-insns -fno-reorder-blocks -mno-check-zero-division
+SOUND_COMPILE_FLAGS = -G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions -mno-check-zero-division
+SOUND_AS_FLAGS = -EL -G8
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
@@ -141,6 +148,15 @@ ee-gcc296: ps2dev
 		echo "[Project RYNO] ee-gcc 2.96 installed."; \
 	fi
 
+ee-gcc29: ee-gcc296
+	@if [ ! -f "$(EEGCC29_DIR)/bin/ee-gcc" ]; then \
+		echo "[Project RYNO] Downloading SCE ee-gcc 2.9-990721..."; \
+		curl -fL -o /tmp/ee-gcc2.9-990721.tar.xz $(EEGCC29_URL) && \
+		echo "$(EEGCC29_SHA256)  /tmp/ee-gcc2.9-990721.tar.xz" | sha256sum -c - && \
+		$(MKDIR) -p $(EEGCC29_DIR) && \
+		$(PYTHON) -c 'import tarfile; tarfile.open("/tmp/ee-gcc2.9-990721.tar.xz").extractall("$(EEGCC29_DIR)", filter="data")'; \
+	fi
+
 dump:
 ifndef iso
 	$(error ISO is not set. Usage: make dump iso='/isos/SCUS_974.65.Ratchet Deadlocked.iso')
@@ -184,6 +200,11 @@ $(OBJ_DIR)/%.o: code/%.s
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
+
+$(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile | ee-gcc29
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29) -S $(SOUND_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29) $(SOUND_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 	@$(MKDIR) -p $(dir $@)

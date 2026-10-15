@@ -42,14 +42,6 @@ void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int fla
     snd_SendIOPCommandAndWait(0, 8, (char *)data);
 }
 
-/* Use spare room in the initialization slot for this completion helper. */
-static void SND_SECTION(snd_StartSoundSystemEx) __attribute__((noinline)) snd_FinishFileLoad(void)
-{
-    if (gLoadCB) gLoadCB(gSyncBuffer[1], gLoadUserData);
-    gLoadCB = 0;
-    gLoadingFromFS = 0;
-}
-
 int SND_SECTION(snd_FlushSoundCommands) snd_FlushSoundCommands(void)
 {
     int which, x;
@@ -57,7 +49,9 @@ int SND_SECTION(snd_FlushSoundCommands) snd_FlushSoundCommands(void)
     SndUserData user_data;
     if (gCommBusy && snd_GotReturns()) {
         if (gLoadingFromFS) {
-            snd_FinishFileLoad();
+            if (gLoadCB) gLoadCB(gSyncBuffer[1], gLoadUserData);
+            gLoadCB = 0;
+            gLoadingFromFS = 0;
         } else {
             which = gCommandFillBuffer != 1;
             for (x = 0; x < gSndCommandBuffePtr[which]->num_commands; ++x) {
@@ -102,7 +96,7 @@ int SND_SECTION(snd_GotReturns) snd_GotReturns(void)
 {
     if (!gCommBusy) return 1;
     if (sceSifCheckStatRpc(&gSLClientData)) return 0;
-    InvalidDCache(gCommBusy, gCommBusy + gAwaitingInts + 2);
+    InvalidDCache(gCommBusy, gAwaitingInts + gCommBusy + 2);
     if (gCommBusy[0] == ~0U && gCommBusy[gAwaitingInts + 1] == ~0U) {
         gCommBusy = 0;
         return 1;
@@ -189,19 +183,26 @@ void SND_SECTION(snd_ResolveBankXREFS) snd_ResolveBankXREFS(void)
 
 void SND_SECTION(snd_UnloadBank) snd_UnloadBank(unsigned int bank)
 {
-    unsigned int data[1] = {bank};
+    unsigned int data[1];
+    data[0] = bank;
+
     snd_SendIOPCommandNoWait(0x06, 4, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_UnloadBank_CB) snd_UnloadBank_CB(unsigned int bank, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[1] = {bank};
+    unsigned int data[1];
+    data[0] = bank;
+
     snd_SendIOPCommandNoWait(0x06, 4, (char *)data, cb, user_data);
 }
 
 void SND_SECTION(snd_SetMasterVolume) snd_SetMasterVolume(int group, int volume)
 {
-    unsigned int data[2] = {group, volume};
+    unsigned int data[2];
+    data[0] = group;
+    data[1] = volume;
+
     snd_SendIOPCommandNoWait(0x09, 8, (char *)data, 0, 0);
 }
 
@@ -220,7 +221,9 @@ void SND_SECTION(snd_SetMasterVolumeDucker) snd_SetMasterVolumeDucker(int which,
 
 void SND_SECTION(snd_SetPlaybackMode) snd_SetPlaybackMode(int mode)
 {
-    unsigned int data[1] = {mode};
+    unsigned int data[1];
+    data[0] = mode;
+
     snd_SendIOPCommandNoWait(0x0B, 4, (char *)data, 0, 0);
 }
 
@@ -231,13 +234,19 @@ const unsigned int func_001586D8[] SND_SECTION(func_001586D8) = {
 
 void SND_SECTION(snd_SetGroupVoiceRange) snd_SetGroupVoiceRange(int group, int min, int max)
 {
-    unsigned int data[3] = {group, min, max};
+    unsigned int data[3];
+    data[0] = group;
+    data[1] = min;
+    data[2] = max;
+
     snd_SendIOPCommandNoWait(0x4E, 12, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_SetReverbMode) snd_SetReverbMode(int mode)
 {
-    unsigned int data[1] = {mode};
+    unsigned int data[1];
+    data[0] = mode;
+
     snd_SendIOPCommandNoWait(0x64, 4, (char *)data, 0, 0);
 }
 
@@ -248,7 +257,14 @@ const unsigned int func_00158760[] SND_SECTION(func_00158760) = {
 
 void SND_SECTION(snd_PlaySoundVolPanPMPB_CB) snd_PlaySoundVolPanPMPB_CB(unsigned int bank, int sound, int vol, int pan, int pitch_mod, int bend, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[6] = {bank, sound, vol, pan, pitch_mod, bend};
+    unsigned int data[6];
+    data[0] = bank;
+    data[1] = sound;
+    data[2] = vol;
+    data[3] = pan;
+    data[4] = pitch_mod;
+    data[5] = bend;
+
     snd_SendIOPCommandNoWait(0x11, 24, (char *)data, cb, user_data);
 }
 
@@ -259,7 +275,9 @@ const unsigned int func_001587C8[] SND_SECTION(func_001587C8) = {
 
 void SND_SECTION(snd_StopSound) snd_StopSound(unsigned int handle)
 {
-    unsigned int data[1] = {handle};
+    unsigned int data[1];
+    data[0] = handle;
+
     snd_SendIOPCommandNoWait(0x15, 4, (char *)data, 0, 0);
 }
 
@@ -275,31 +293,41 @@ void SND_SECTION(snd_StopAllSounds) snd_StopAllSounds(void)
 
 void SND_SECTION(snd_PauseAllSoundsInGroup) snd_PauseAllSoundsInGroup(unsigned int groups)
 {
-    unsigned int data[1] = {groups};
+    unsigned int data[1];
+    data[0] = groups;
+
     snd_SendIOPCommandNoWait(0x16, 4, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_ContinueAllSoundsInGroup) snd_ContinueAllSoundsInGroup(unsigned int groups)
 {
-    unsigned int data[1] = {groups};
+    unsigned int data[1];
+    data[0] = groups;
+
     snd_SendIOPCommandNoWait(0x17, 4, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_StopAllSoundsInGroup) snd_StopAllSoundsInGroup(unsigned int groups)
 {
-    unsigned int data[1] = {groups};
+    unsigned int data[1];
+    data[0] = groups;
+
     snd_SendIOPCommandNoWait(0x61, 4, (char *)data, 0, 0);
 }
 
 unsigned int SND_SECTION(snd_SoundIsStillPlaying) snd_SoundIsStillPlaying(unsigned int handle)
 {
-    unsigned int data[1] = {handle};
+    unsigned int data[1];
+    data[0] = handle;
+
     return snd_SendIOPCommandAndWait(0x19, 4, (char *)data);
 }
 
 void SND_SECTION(snd_SoundIsStillPlaying_CB) snd_SoundIsStillPlaying_CB(unsigned int handle, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[1] = {handle};
+    unsigned int data[1];
+    data[0] = handle;
+
     snd_SendIOPCommandNoWait(0x19, 4, (char *)data, cb, user_data);
 }
 
@@ -315,7 +343,14 @@ void SND_SECTION(snd_SetSoundParams_A) snd_SetSoundParams_A(unsigned int handle,
 
 void SND_SECTION(snd_SetSoundParams_CB) snd_SetSoundParams_CB(unsigned int handle, unsigned int mask, int vol, int pan, int pitch_mod, int bend, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[6] = {handle, mask, vol, pan, pitch_mod, bend};
+    unsigned int data[6];
+    data[0] = handle;
+    data[1] = mask;
+    data[2] = vol;
+    data[3] = pan;
+    data[4] = pitch_mod;
+    data[5] = bend;
+
     snd_SendIOPCommandNoWait(0x21, 24, (char *)data, cb, user_data);
 }
 
@@ -472,7 +507,16 @@ const unsigned int func_00159250[] SND_SECTION(func_00159250) = {
 
 void SND_SECTION(snd_PlayVAGStreamByLocEx_CB) snd_PlayVAGStreamByLocEx_CB(int loc1, int loc2, int offset1, int offset2, int vol, int pan, int vol_group, unsigned int queue, int sub_group, unsigned int flags, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[8] = {loc1, loc2, ((unsigned int)vol << 16) | ((unsigned int)offset1 & 0xFFFF), ((unsigned int)pan << 16) | ((unsigned int)offset2 & 0xFFFF), vol_group, queue, sub_group, flags};
+    unsigned int data[8];
+    data[0] = loc1;
+    data[1] = loc2;
+    data[2] = ((unsigned int)vol << 16) | ((unsigned int)offset1 & 0xFFFF);
+    data[3] = ((unsigned int)pan << 16) | ((unsigned int)offset2 & 0xFFFF);
+    data[4] = vol_group;
+    data[5] = queue;
+    data[6] = sub_group;
+    data[7] = flags;
+
     snd_SendIOPCommandNoWait(0x2C, 32, (char *)data, cb, user_data);
 }
 
@@ -483,31 +527,41 @@ const unsigned int func_001592C8[] SND_SECTION(func_001592C8) = {
 
 void SND_SECTION(snd_PauseVAGStream) snd_PauseVAGStream(unsigned int stream)
 {
-    unsigned int data[1] = {stream};
+    unsigned int data[1];
+    data[0] = stream;
+
     snd_SendIOPCommandNoWait(0x2D, 4, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_ContinueVAGStream) snd_ContinueVAGStream(unsigned int stream)
 {
-    unsigned int data[1] = {stream};
+    unsigned int data[1];
+    data[0] = stream;
+
     snd_SendIOPCommandNoWait(0x2E, 4, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_GetVAGStreamQueueCount_CB) snd_GetVAGStreamQueueCount_CB(unsigned int stream, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[1] = {stream};
+    unsigned int data[1];
+    data[0] = stream;
+
     snd_SendIOPCommandNoWait(0x30, 4, (char *)data, cb, user_data);
 }
 
 void SND_SECTION(snd_GetVAGStreamTimeRemaining_CB) snd_GetVAGStreamTimeRemaining_CB(unsigned int stream, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[1] = {stream};
+    unsigned int data[1];
+    data[0] = stream;
+
     snd_SendIOPCommandNoWait(0x32, 4, (char *)data, cb, user_data);
 }
 
 void SND_SECTION(snd_IsVAGStreamBuffered_CB) snd_IsVAGStreamBuffered_CB(unsigned int stream, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[1] = {stream};
+    unsigned int data[1];
+    data[0] = stream;
+
     snd_SendIOPCommandNoWait(0x4F, 4, (char *)data, cb, user_data);
 }
 
@@ -542,15 +596,16 @@ int SND_SECTION(snd_StreamSafeCdSync) snd_StreamSafeCdSync(int mode)
 
 int SND_SECTION(snd_StreamSafeCdBreak) snd_StreamSafeCdBreak(void)
 {
-    if (!gStreamingInited) return sceCdBreak();
-    snd_SendIOPCommandNoWait(0x37, 0, 0, 0, 0);
-    return 1;
+    if (gStreamingInited) {
+        snd_SendIOPCommandNoWait(0x37, 0, 0, 0, 0);
+        return 1;
+    } else return sceCdBreak();
 }
 
 int SND_SECTION(snd_StreamSafeCdGetError) snd_StreamSafeCdGetError(void)
 {
-    if (!gStreamingInited) return sceCdGetError();
-    return gStats.cd_error;
+    if (gStreamingInited) return gStats.cd_error;
+    else return sceCdGetError();
 }
 
 /* Linker remnants, not callable functions; preserve original words. */
@@ -558,23 +613,14 @@ const unsigned int func_001595A8[] SND_SECTION(func_001595A8) = {
     0x27BD0010U, 0x00000000U, 0x27BD0010U, 0x00000000U
 };
 
-/* GCC's shared epilogue exceeds the original entry slot by one instruction.
- * Keep the public entry fixed and place its C implementation in initialization
- * padding, alongside the file-load completion helper. */
-static SndCdCallback SND_SECTION(snd_StartSoundSystemEx) __attribute__((noinline)) snd_ChangeCdCallback(SndCdCallback callback)
-{
-    SndCdCallback previous;
-    if (!gStreamingInited) previous = sceCdCallback(callback);
-    else {
-        previous = gCdCallback;
-        gCdCallback = callback;
-    }
-    return previous;
-}
-
 SndCdCallback SND_SECTION(snd_StreamSafeCdCallback) snd_StreamSafeCdCallback(SndCdCallback callback)
 {
-    return snd_ChangeCdCallback(callback);
+    SndCdCallback previous;
+    if (gStreamingInited) {
+        previous = gCdCallback;
+        gCdCallback = callback;
+    } else previous = sceCdCallback(callback);
+    return previous;
 }
 
 /* Linker remnants, not callable functions; preserve original words. */
@@ -584,19 +630,33 @@ const unsigned int func_001595E8[] SND_SECTION(func_001595E8) = {
 
 void SND_SECTION(snd_SetReverbEx) snd_SetReverbEx(int core, int type, int depth, int delay, int feedback)
 {
-    unsigned int data[5] = {core, type, depth, delay, feedback};
+    unsigned int data[5];
+    data[0] = core;
+    data[1] = type;
+    data[2] = depth;
+    data[3] = delay;
+    data[4] = feedback;
+
     snd_SendIOPCommandNoWait(0x50, 20, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_PreAllocReverbWorkArea) snd_PreAllocReverbWorkArea(int core, int type)
 {
-    unsigned int data[2] = {core, type};
+    unsigned int data[2];
+    data[0] = core;
+    data[1] = type;
+
     snd_SendIOPCommandNoWait(0x51, 8, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_AutoReverb) snd_AutoReverb(int core, int depth, int delta_time, int channel_flags)
 {
-    unsigned int data[4] = {core, depth, delta_time, channel_flags};
+    unsigned int data[4];
+    data[0] = core;
+    data[1] = depth;
+    data[2] = delta_time;
+    data[3] = channel_flags;
+
     snd_SendIOPCommandNoWait(0x10, 16, (char *)data, 0, 0);
 }
 
@@ -617,7 +677,14 @@ const unsigned int func_00159700[] SND_SECTION(func_00159700) = {
 
 int SND_SECTION(snd_InitMovieSoundEx) snd_InitMovieSoundEx(int sizeOfIOPBuffer, int sizeOfSPUBuffer, int volumeLevel, int panCenter, int volumeGroup, int type)
 {
-    unsigned int data[6] = {sizeOfIOPBuffer, sizeOfSPUBuffer, volumeLevel, panCenter, volumeGroup, type};
+    unsigned int data[6];
+    data[0] = sizeOfIOPBuffer;
+    data[1] = sizeOfSPUBuffer;
+    data[2] = volumeLevel;
+    data[3] = panCenter;
+    data[4] = volumeGroup;
+    data[5] = type;
+
     return snd_SendIOPCommandAndWait(0x3B, 24, (char *)data);
 }
 
@@ -638,7 +705,13 @@ void SND_SECTION(snd_CloseMovieSound) snd_CloseMovieSound(void)
 
 void SND_SECTION(snd_StartMovieSoundEx) snd_StartMovieSoundEx(int iopBuffer, int iopBufferSize, int iopPausePosition, unsigned int sr, int ch)
 {
-    unsigned int data[5] = {iopBuffer, iopBufferSize, iopPausePosition, sr, ch};
+    unsigned int data[5];
+    data[0] = iopBuffer;
+    data[1] = iopBufferSize;
+    data[2] = iopPausePosition;
+    data[3] = sr;
+    data[4] = ch;
+
     snd_SendIOPCommandAndWait(0x3E, 20, (char *)data);
 }
 
@@ -649,7 +722,10 @@ int SND_SECTION(snd_GetTransStatus) snd_GetTransStatus(void)
 
 void SND_SECTION(snd_UpdateMovieADPCM) snd_UpdateMovieADPCM(int data_size, unsigned int offset)
 {
-    unsigned int data[2] = {data_size, offset};
+    unsigned int data[2];
+    data[0] = data_size;
+    data[1] = offset;
+
     snd_SendIOPCommandAndWait(0x5A, 8, (char *)data);
 }
 
@@ -660,26 +736,55 @@ unsigned int SND_SECTION(snd_GetMovieNAX) snd_GetMovieNAX(void)
 
 int SND_SECTION(snd_DoExternCall) snd_DoExternCall(unsigned int proc_id, int func_index, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
-    unsigned int data[7] = {proc_id, func_index, arg1, arg2, arg3, arg4, arg5};
+    unsigned int data[7];
+    data[0] = proc_id;
+    data[1] = func_index;
+    data[2] = arg1;
+    data[3] = arg2;
+    data[4] = arg3;
+    data[5] = arg4;
+    data[6] = arg5;
+
     return snd_SendIOPCommandAndWait(0x4C, 28, (char *)data);
 }
 
 void SND_SECTION(snd_DoExternCall_A) snd_DoExternCall_A(unsigned int proc_id, int func_index, int arg1, int arg2, int arg3, int arg4, int arg5)
 {
-    unsigned int data[7] = {proc_id, func_index, arg1, arg2, arg3, arg4, arg5};
+    unsigned int data[7];
+    data[0] = proc_id;
+    data[1] = func_index;
+    data[2] = arg1;
+    data[3] = arg2;
+    data[4] = arg3;
+    data[5] = arg4;
+    data[6] = arg5;
+
     snd_SendIOPCommandNoWait(0x4C, 28, (char *)data, 0, 0);
 }
 
 void SND_SECTION(snd_DoExternCall_CB) snd_DoExternCall_CB(unsigned int proc_id, int func_index, int arg1, int arg2, int arg3, int arg4, int arg5, SndCompleteProc cb, SndUserData user_data)
 {
-    unsigned int data[7] = {proc_id, func_index, arg1, arg2, arg3, arg4, arg5};
+    unsigned int data[7];
+    data[0] = proc_id;
+    data[1] = func_index;
+    data[2] = arg1;
+    data[3] = arg2;
+    data[4] = arg3;
+    data[5] = arg4;
+    data[6] = arg5;
+
     snd_SendIOPCommandNoWait(0x4C, 28, (char *)data, cb, user_data);
 }
 
 int SND_SECTION(snd_DoExternCallWithData) snd_DoExternCallWithData(unsigned int proc_id, int func_index, int data_size, void *data_ptr)
 {
     // The transport copies this 12-byte header and then follows the EE pointer.
-    unsigned int data[4] = {proc_id, func_index, data_size, (unsigned int)data_ptr};
+    unsigned int data[4];
+    data[0] = proc_id;
+    data[1] = func_index;
+    data[2] = data_size;
+    data[3] = (unsigned int)data_ptr;
+
     return snd_SendIOPCommandAndWait(0x68, data_size + 12, (char *)data);
 }
 
@@ -691,5 +796,6 @@ const unsigned int func_00159980[] SND_SECTION(func_00159980) = {
 int SND_SECTION(snd_GetDopplerPitchMod) snd_GetDopplerPitchMod(int approaching_mph)
 {
     /* EE MULT retains the low signed 32 bits before signed division. */
-    return (int)((unsigned int)approaching_mph * 1524U) / 741;
+    approaching_mph = (int)((unsigned int)approaching_mph * 1524U);
+    return approaching_mph / 741;
 }

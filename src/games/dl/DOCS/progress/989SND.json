@@ -1,0 +1,490 @@
+{
+  "base_commit": "7e84d27",
+  "compiled_functions": 59,
+  "exact_functions": 42,
+  "module_bytes": 7236,
+  "differing_bytes": 3021,
+  "exact_remnants": 18,
+  "functions": [
+    {
+      "name": "snd_StartSoundSystemEx",
+      "address": "0x157d60",
+      "size": 532,
+      "slot_size": 568,
+      "differing_bytes": 468,
+      "exact": false
+    },
+    {
+      "name": "snd_FlushSoundCommands",
+      "address": "0x157f98",
+      "size": 496,
+      "slot_size": 496,
+      "differing_bytes": 398,
+      "exact": false
+    },
+    {
+      "name": "snd_GotReturns",
+      "address": "0x158198",
+      "size": 164,
+      "slot_size": 168,
+      "differing_bytes": 1,
+      "exact": false
+    },
+    {
+      "name": "snd_PrepareReturnBuffer",
+      "address": "0x158240",
+      "size": 88,
+      "slot_size": 96,
+      "differing_bytes": 67,
+      "exact": false
+    },
+    {
+      "name": "snd_BankLoadByLoc_CB",
+      "address": "0x1582a8",
+      "size": 328,
+      "slot_size": 344,
+      "differing_bytes": 205,
+      "exact": false
+    },
+    {
+      "name": "snd_BankLoadFromEE",
+      "address": "0x158400",
+      "size": 324,
+      "slot_size": 336,
+      "differing_bytes": 243,
+      "exact": false
+    },
+    {
+      "name": "snd_ResolveBankXREFS",
+      "address": "0x158568",
+      "size": 44,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_UnloadBank",
+      "address": "0x158598",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_UnloadBank_CB",
+      "address": "0x1585c8",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetMasterVolume",
+      "address": "0x1585f8",
+      "size": 52,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetMasterVolumeDucker",
+      "address": "0x158630",
+      "size": 116,
+      "slot_size": 120,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetPlaybackMode",
+      "address": "0x1586a8",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetGroupVoiceRange",
+      "address": "0x1586f0",
+      "size": 60,
+      "slot_size": 64,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetReverbMode",
+      "address": "0x158730",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_PlaySoundVolPanPMPB_CB",
+      "address": "0x158780",
+      "size": 72,
+      "slot_size": 72,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StopSound",
+      "address": "0x1587e0",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StopAllSounds",
+      "address": "0x158838",
+      "size": 44,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_PauseAllSoundsInGroup",
+      "address": "0x158868",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_ContinueAllSoundsInGroup",
+      "address": "0x158898",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StopAllSoundsInGroup",
+      "address": "0x1588c8",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SoundIsStillPlaying",
+      "address": "0x1588f8",
+      "size": 40,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SoundIsStillPlaying_CB",
+      "address": "0x158920",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetSoundParams_A",
+      "address": "0x158988",
+      "size": 32,
+      "slot_size": 32,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetSoundParams_CB",
+      "address": "0x1589a8",
+      "size": 72,
+      "slot_size": 72,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SendIOPCommandAndWait",
+      "address": "0x158a30",
+      "size": 504,
+      "slot_size": 560,
+      "differing_bytes": 416,
+      "exact": false
+    },
+    {
+      "name": "snd_SendIOPCommandNoWait",
+      "address": "0x158c60",
+      "size": 820,
+      "slot_size": 864,
+      "differing_bytes": 716,
+      "exact": false
+    },
+    {
+      "name": "snd_PostMessage",
+      "address": "0x158fc0",
+      "size": 56,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SendCurrentBatch",
+      "address": "0x158ff8",
+      "size": 284,
+      "slot_size": 296,
+      "differing_bytes": 66,
+      "exact": false
+    },
+    {
+      "name": "snd_StartCaching",
+      "address": "0x159120",
+      "size": 8,
+      "slot_size": 8,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SendCache",
+      "address": "0x159128",
+      "size": 8,
+      "slot_size": 8,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_InitVAGStreamingEx",
+      "address": "0x159130",
+      "size": 160,
+      "slot_size": 168,
+      "differing_bytes": 83,
+      "exact": false
+    },
+    {
+      "name": "snd_CloseVAGStreaming",
+      "address": "0x1591f0",
+      "size": 88,
+      "slot_size": 96,
+      "differing_bytes": 50,
+      "exact": false
+    },
+    {
+      "name": "snd_PlayVAGStreamByLocEx_CB",
+      "address": "0x159258",
+      "size": 112,
+      "slot_size": 112,
+      "differing_bytes": 8,
+      "exact": false
+    },
+    {
+      "name": "snd_PauseVAGStream",
+      "address": "0x1592d8",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_ContinueVAGStream",
+      "address": "0x159308",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_GetVAGStreamQueueCount_CB",
+      "address": "0x159338",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_GetVAGStreamTimeRemaining_CB",
+      "address": "0x159368",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_IsVAGStreamBuffered_CB",
+      "address": "0x159398",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StreamSafeCdRead",
+      "address": "0x1593c8",
+      "size": 184,
+      "slot_size": 192,
+      "differing_bytes": 105,
+      "exact": false
+    },
+    {
+      "name": "snd_StreamSafeCdSync",
+      "address": "0x159488",
+      "size": 144,
+      "slot_size": 160,
+      "differing_bytes": 120,
+      "exact": false
+    },
+    {
+      "name": "snd_StreamSafeCdBreak",
+      "address": "0x159528",
+      "size": 68,
+      "slot_size": 72,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StreamSafeCdGetError",
+      "address": "0x159570",
+      "size": 48,
+      "slot_size": 56,
+      "differing_bytes": 29,
+      "exact": false
+    },
+    {
+      "name": "snd_StreamSafeCdCallback",
+      "address": "0x1595b8",
+      "size": 48,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SetReverbEx",
+      "address": "0x1595f8",
+      "size": 64,
+      "slot_size": 64,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_PreAllocReverbWorkArea",
+      "address": "0x159638",
+      "size": 52,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_AutoReverb",
+      "address": "0x159670",
+      "size": 60,
+      "slot_size": 64,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_SRAMGetFreeMem",
+      "address": "0x1596d8",
+      "size": 36,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_InitMovieSoundEx",
+      "address": "0x159718",
+      "size": 60,
+      "slot_size": 64,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_ResetMovieSound",
+      "address": "0x159758",
+      "size": 36,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_CloseMovieSound",
+      "address": "0x159790",
+      "size": 36,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_StartMovieSoundEx",
+      "address": "0x1597b8",
+      "size": 56,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_GetTransStatus",
+      "address": "0x1597f0",
+      "size": 36,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_UpdateMovieADPCM",
+      "address": "0x159818",
+      "size": 44,
+      "slot_size": 48,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_GetMovieNAX",
+      "address": "0x159848",
+      "size": 36,
+      "slot_size": 40,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_DoExternCall",
+      "address": "0x159870",
+      "size": 64,
+      "slot_size": 64,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_DoExternCall_A",
+      "address": "0x1598b0",
+      "size": 72,
+      "slot_size": 72,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_DoExternCall_CB",
+      "address": "0x1598f8",
+      "size": 76,
+      "slot_size": 80,
+      "differing_bytes": 44,
+      "exact": false
+    },
+    {
+      "name": "snd_DoExternCallWithData",
+      "address": "0x159948",
+      "size": 52,
+      "slot_size": 56,
+      "differing_bytes": 0,
+      "exact": true
+    },
+    {
+      "name": "snd_GetDopplerPitchMod",
+      "address": "0x159988",
+      "size": 28,
+      "slot_size": 28,
+      "differing_bytes": 2,
+      "exact": false
+    }
+  ],
+  "working_tree_changes": true,
+  "verified_date": "2026-10-15",
+  "exact_percent": 71.19,
+  "compiler": "SCE 2.9-ee-990721",
+  "compiler_flags": "-G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions -mno-check-zero-division",
+  "source_sha256": "3981c6b685a9940240f56cacfcc489e45e6e850cef660afd4897e490d3dcb6a4",
+  "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
+  "rebuilt_sha256": "4f9578772dd18ef003e00e726d9bca098fea539915cfcc8f5e8f99c13dcdb46f"
+}

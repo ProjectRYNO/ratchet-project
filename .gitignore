@@ -90,3 +90,4 @@ __pycache__/
 !src/games/dl/TESTS/sdk_expected.json
 
 !src/games/dl/TESTS/test_rodata_sections.py
+!src/games/dl/TESTS/test_989snd_interpreter.py

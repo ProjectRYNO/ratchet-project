@@ -1,5 +1,9 @@
 # 989snd EE decompilation
 
+Latest byte-match investigation: [989SND_MATCHING.md](989SND_MATCHING.md).
+The integrated result is **42/59 exact (71.19%)**, with all 59 functions
+compiled from C. Seventeen functions remain nonmatching.
+
 > Current acceptance policy: [the shared game rules](../../../../../.agents/guides/GAME_WORKFLOW.md)
 > require exact executable matching and preserved behavior. The nonmatching C
 > validation described below is historical/diagnostic evidence, not a 1:1 pass.
@@ -36,15 +40,15 @@ and the boot tests pass; migration reports are in `build/global-symbols`.
 
 Every public entry retains its original address, from `0x00157D60` through
 `0x00159988`. The manifest and linker reject missing compiled functions and slot
-overruns. Two small C helpers occupy spare space inside the initialization slot:
-file-load completion and CD callback replacement. They do not move public
-entries or consume remnant bytes.
+overruns. The former initialization-slot helper workarounds have been removed:
+file-load completion is back inside `snd_FlushSoundCommands`, and the public
+CD callback entry directly implements the callback exchange.
 
-The existing object-specific Makefile flag line now uses `-Os`,
-`-fno-schedule-insns`, `-fno-reorder-blocks`, and `-mno-check-zero-division`.
-These avoid code growth from this old EE compiler. The last flag removes a
-redundant check for the constant divisor 741. Other objects retain their flags.
-The split tool and main build rules did not need changes for this pass.
+The sound-specific Makefile rule now uses SCE `2.9-ee-990721` and its assembler,
+with `-G8 -O2 -fno-builtin -fno-common -fexceptions -fsjlj-exceptions
+-mno-check-zero-division`. Exceptions inhibit unwanted tail calls; SJLJ avoids
+unneeded frame-registration data. The final option removes a redundant check
+for the constant divisor 741. Other objects retain their compiler profiles.
 The RPC binding retry delay is a volatile C countdown; its instruction timing
 is not identical to the original nop-based delay.
 
