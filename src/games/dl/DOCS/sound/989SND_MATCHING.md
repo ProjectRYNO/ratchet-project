@@ -1,11 +1,11 @@
-# 989snd matching investigation — 2026-10-15
+# 989snd matching investigation — 2026-10-16
 
 ## Verified integrated status
 
-Working changes on `0691b50`: **49/59 complete function slots match (83.05%)**.
+Working changes on `1cf0a64`: **51/59 complete function slots match (86.44%)**.
 All 59 named EE client functions compile from C. All 18 retained non-function
 instruction fragments match. The complete 7,236-byte module still contains
-**2,542 differing bytes**. This is not 100% matching.
+**2,337 differing bytes**. This is not 100% matching.
 Per-function measurements and source/header/ELF hashes are in
 [989SND.json](../progress/989SND.json) and [989SND.csv](../progress/989SND.csv).
 
@@ -16,6 +16,14 @@ SDK remains 20/20 exact; iksemel remains 40/40 exact with all five jump tables.
 The loaded-byte/placement audit passes. Whole-game strict comparison remains
 nonmatching; every changed byte is inside registered replacement slots and all
 runtime headers match. Gameplay and IOP-driver behavior have not been tested.
+
+The October 16 continuation verified the previously unrecorded CD-read match and
+made `snd_StreamSafeCdSync` exact. Its completion test compares explicitly with
+one, its waiting loop tests before entering, and both shared-status reads use a
+volatile structure pointer. This reproduces retail's reuse of the mode register
+for the status address, removing the extra saved register. All 160 slot bytes
+match. The final whole-game comparison reports 11,684 changed loaded bytes,
+all inside registered replacement slots.
 
 ## Reproducible compiler profile
 
@@ -83,9 +91,14 @@ Remaining functions (complete-slot differing bytes):
 | `snd_SendIOPCommandNoWait` | 705 |
 | `snd_InitVAGStreamingEx` | 67 |
 | `snd_CloseVAGStreaming` | 43 |
-| `snd_StreamSafeCdRead` | 85 |
-| `snd_StreamSafeCdSync` | 120 |
 
 Continue with short-loop padding, aliasing/reloads, shared status access and
 source register lifetimes under the corrected SN ABI. Keep all slot and behavior
 checks; do not classify a fitting or behavior-tested function as byte-exact.
+
+Additional October 16 probes did not improve the count: alternate streaming-close
+loop forms, explicit R5900 assembler mode, SN assembler optimization/extensions,
+and GP/address-splitting flags. The prototype declares a four-word bank-return
+array, but substituting that declaration did not match retail bank-loading code;
+it was not integrated. The bank routines still differ in register allocation and
+the choice of GP-relative versus absolute address construction.

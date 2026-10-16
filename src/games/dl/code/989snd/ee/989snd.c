@@ -585,14 +585,14 @@ int SND_SECTION(snd_StreamSafeCdSync) snd_StreamSafeCdSync(int mode)
 {
     if (!gStreamingInited) return sceCdSync(mode);
     FlushCache(0);
-    gSSReadDone = gStats.cd_busy == 0;
-    if (gSSReadDone) return 0;
+    gSSReadDone = ((volatile SndSystemStatus *)&gStats)->cd_busy == 0;
+    if (gSSReadDone == 1) return 0;
     if (mode == 1) return 1;
-    do {
+    while (!gSSReadDone) {
         snd_FlushSoundCommands();
         FlushCache(0);
-        gSSReadDone = gStats.cd_busy == 0;
-    } while (!gSSReadDone);
+        gSSReadDone = ((volatile SndSystemStatus *)&gStats)->cd_busy == 0;
+    }
     return 0;
 }
 

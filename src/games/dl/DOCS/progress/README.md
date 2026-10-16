@@ -150,8 +150,8 @@ byte-exact functions (100.00%)**, with five exact jump tables. Scoped measuremen
 are in [IKSEMEL.json](IKSEMEL.json) and [IKSEMEL.csv](IKSEMEL.csv); see
 [verification details](../libraries/IKSEMEL.md).
 
-The 2026-10-15 989snd compiler/source integration reaches **49/59 byte-exact
-functions (83.05%)**, up from 6/59. All 59 are compiled C; the remaining 10
+The 2026-10-16 989snd compiler/source integration reaches **51/59 byte-exact
+functions (86.44%)**, up from 6/59. All 59 are compiled C; the remaining 8
 are nonmatching. Scoped measurements are in [989SND.json](989SND.json) and
 [989SND.csv](989SND.csv). The forced sound rebuild, slot/layout audit
 and all 3,013 sound behavior cases pass; SDK and iksemel remain byte-exact.

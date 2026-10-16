@@ -1,9 +1,9 @@
 {
-  "base_commit": "0691b50",
+  "base_commit": "1cf0a64",
   "compiled_functions": 59,
-  "exact_functions": 49,
+  "exact_functions": 51,
   "module_bytes": 7236,
-  "differing_bytes": 2542,
+  "differing_bytes": 2337,
   "exact_remnants": 18,
   "functions": [
     {
@@ -313,18 +313,18 @@
     {
       "name": "snd_StreamSafeCdRead",
       "address": "0x1593c8",
-      "size": 184,
+      "size": 188,
       "slot_size": 192,
-      "differing_bytes": 85,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_StreamSafeCdSync",
       "address": "0x159488",
-      "size": 144,
+      "size": 156,
       "slot_size": 160,
-      "differing_bytes": 120,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_StreamSafeCdBreak",
@@ -480,15 +480,15 @@
     }
   ],
   "working_tree_changes": true,
-  "verified_date": "2026-10-15",
-  "exact_percent": 83.05,
+  "verified_date": "2026-10-16",
+  "exact_percent": 86.44,
   "compiler": "SN Systems GCC 2.95.3 v1.36",
   "compiler_flags": "-G8 -O2 -fopt-stack -mno-check-zero-division",
   "assembler": "SN-bundled GNU assembler 2.9-ee-991111b",
   "assembler_flags": "-EL -G8 -g",
   "compiler_runner": "wibo 1.2.0 i686",
-  "source_sha256": "e40a8983b60cdc3b942a24499d8840349c0d2af07519081ef9c47cf933c0784f",
+  "source_sha256": "1cf9d9340352c1cd499031acfb473a0bda0b58cee82546d9a812cd435d6783a4",
   "header_sha256": "4b341af11c24657327d74e10cbe47c0a18d28c68cee0d82084f0fca5f2a371d5",
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "b90da6d50f146a51b682ed1b1b02cf4dc1d26d5f83f1961dc8bb0b09a1b699c5"
+  "rebuilt_sha256": "7a7ff18c318aa5e1690cfea0624d58eacd4febf8bc553f005b716d8cc1e4b273"
 }
