@@ -1578,3 +1578,6 @@ sdkInetAuthFailed,0x001947D0,core.data,,,,,,,accepted,SDK retail parser instruct
 sdkInetPhase,0x001947E0,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
 sdkInetDisconnect,0x001947E8,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
 sdkInetTimeout,0x001947F8,core.data,,,,,,,accepted,SDK retail parser instruction operands; exact linked i18n_inet comparison; TESTS/sdk_expected.json
+gLoadReturnWord,0x0021D9C0,core.bss,alias,,u_int gLoadReturnValue[4];,X:/usr/local/989snd/ee/989snd.c,45,,alias,Scalar view of gLoadReturnValue[0]; retail GP load at 0x158514 and stores at 0x15844C; no new allocation.
+gLoadReturnStatus,0x0021D9C0,core.bss,alias,,u_int gLoadReturnValue[4];,X:/usr/local/989snd/ee/989snd.c,45,,alias,Independent status view of gLoadReturnValue[0]; retail GP load at 0x1584DC precedes the separate result load at 0x158514. Descriptive alias; not a recovered prototype name.
+gLoadReturnDone,0x0021DCF8,core.lit,alias,,SndCommandReturnDef gLoadReturnDef;,X:/usr/local/989snd/ee/989snd.c,30,,alias,Scalar callback view of gLoadReturnDef.done at offset 0; retail GP accesses; record u_data remains at +8. No new allocation.

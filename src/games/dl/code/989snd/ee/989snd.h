@@ -86,7 +86,11 @@ extern SndWord gActualReturnValues1[264];
 extern SndWord gActualReturnValues2[264];
 extern SndSystemStatus gStats;
 extern SndRpcClient gSLClientLoaderData;
-extern SndWord gLoadReturnValue;
+extern SndWord gLoadReturnValue[4];
+/* Scalar views: the first return word/status, and gLoadReturnDef.done. */
+extern SndWord gLoadReturnWord;
+extern SndWord gLoadReturnStatus;
+extern SndCompleteProc gLoadReturnDone;
 extern int gLoadParams[8];
 
 extern const char sndBindError[];

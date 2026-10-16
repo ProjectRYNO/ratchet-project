@@ -24,9 +24,9 @@ void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int fla
         for (delay = 10000; delay; --delay) {}
     } while (!gSLClientData.server);
     gLoadBusy = 0;
-    gLoadReturnDef.done = 0;
+    gLoadReturnDone = 0;
     gLoadReturnDef.u_data = 0;
-    gLoadReturnValue = 0;
+    gLoadReturnWord = 0;
     do {
         if (sceSifBindRpc(&gSLClientLoaderData, 0x123457, 0) < 0) {
             printf(sndBindError, sndSourceFile, 0xCA);
@@ -61,17 +61,19 @@ int SND_SECTION(snd_FlushSoundCommands) snd_FlushSoundCommands(void)
         }
     }
     if (gLoadBusy) {
-        InvalidDCache(&gLoadReturnValue, &gLoadReturnValue + 1);
-        if (gLoadReturnValue != ~0U) {
-            done = gLoadReturnDef.done;
-            user_data = gLoadReturnDef.u_data;
-            if (done) {
-                /* Retail clears this record BEFORE the callback. */
-                gLoadReturnDef.done = 0;
+        SndWord result;
+        SndCompleteProc load_done;
+        InvalidDCache(gLoadReturnValue, gLoadReturnValue + 1);
+        result = gLoadReturnValue[0];
+        if (result != ~0U) {
+            load_done = gLoadReturnDone;
+            if (load_done) {
+                user_data = gLoadReturnDef.u_data;
+                gLoadReturnDone = 0;
                 gLoadReturnDef.u_data = 0;
-                done(gLoadReturnValue, user_data);
-            }
-            gLoadReturnValue = 0;
+                load_done(result, user_data);
+                gLoadReturnValue[0] = 0;
+            } else gLoadReturnWord = 0;
             gLoadBusy = 0;
         }
     }
@@ -80,7 +82,7 @@ int SND_SECTION(snd_FlushSoundCommands) snd_FlushSoundCommands(void)
     if (gSSRead) {
         snd_StreamSafeCdSync(1);
         if (gSSReadDone) {
-            gSSRead = gSSReadDone = 0;
+            gSSReadDone = gSSRead = 0;
             if (gCdCallback) gCdCallback(1);
         }
     }
@@ -132,11 +134,11 @@ void SND_SECTION(snd_BankLoadByLoc_CB) snd_BankLoadByLoc_CB(int loc, int offset,
         if (!gPrefs_Silent) printf(sndCdBusy);
         return;
     }
-    gLoadReturnValue = ~0U;
-    SyncDCache(&gLoadReturnValue, &gLoadReturnValue + 1);
+    gLoadReturnWord = ~0U;
+    SyncDCache(gLoadReturnValue, gLoadReturnValue + 1);
     gLoadParams[0] = loc;
     gLoadParams[1] = offset;
-    gLoadReturnDef.done = cb;
+    gLoadReturnDone = cb;
     gLoadReturnDef.u_data = user_data;
     while (sceSifCheckStatRpc(&gSLClientLoaderData)) {
         if (!gPrefs_Silent) printf(sndCollision);
@@ -144,7 +146,7 @@ void SND_SECTION(snd_BankLoadByLoc_CB) snd_BankLoadByLoc_CB(int loc, int offset,
         FlushCache(0);
     }
     gLoadBusy = 1;
-    sceSifCallRpc(&gSLClientLoaderData, 3, 1, gLoadParams, 8, &gLoadReturnValue, 4, 0, 0);
+    sceSifCallRpc(&gSLClientLoaderData, 3, 1, gLoadParams, 8, gLoadReturnValue, 4, 0, 0);
 }
 
 unsigned int SND_SECTION(snd_BankLoadFromEE) snd_BankLoadFromEE(void *ee_loc)
@@ -154,21 +156,29 @@ unsigned int SND_SECTION(snd_BankLoadFromEE) snd_BankLoadFromEE(void *ee_loc)
         if (!gPrefs_Silent) printf(sndEeBusy);
         return 0;
     }
-    gLoadReturnValue = ~0U;
-    SyncDCache(&gLoadReturnValue, &gLoadReturnValue + 1);
+    gLoadReturnWord = ~0U;
+    SyncDCache(gLoadReturnValue, gLoadReturnValue + 1);
     gLoadParams[0] = (int)ee_loc;
     while (sceSifCheckStatRpc(&gSLClientLoaderData)) {
         if (!gPrefs_Silent) printf(sndCollision);
         snd_FlushSoundCommands();
         FlushCache(0);
     }
-    if (sceSifCallRpc(&gSLClientLoaderData, 0x57, 1, gLoadParams, 4, &gLoadReturnValue, 4, 0, 0) < 0) {
+    if (sceSifCallRpc(&gSLClientLoaderData, 0x57, 1, gLoadParams, 4, gLoadReturnValue, 4, 0, 0) < 0) {
         if (!gPrefs_Silent) printf(sndEeLoadError);
         gLocalLoadError = 0x106;
         return 0;
     }
-    while (gLoadReturnValue == ~0U) FlushCache(0);
-    return gLoadReturnValue;
+    {
+        SndWord result;
+        /* Retail tests the status, then independently reads the completed value. */
+        if (gLoadReturnStatus != ~0U) return gLoadReturnWord;
+        do {
+            FlushCache(0);
+            result = ((volatile SndWord *)gLoadReturnValue)[0];
+        } while (result == ~0U);
+        return result;
+    }
 }
 
 /* Linker remnants, not callable functions; preserve original words. */
@@ -363,15 +373,15 @@ unsigned int SND_SECTION(snd_SendIOPCommandAndWait) snd_SendIOPCommandAndWait(in
 {
     int i;
     unsigned int result;
-    if (command == 0x68) {
+    if (command != 0x68) {
+        for (i = 0; i < data_size; ++i) gSyncSendBuffer[i] = data[i];
+    } else {
         if ((unsigned int)((int *)data)[2] + 12 > 512) {
             printf(sndExternalTooLarge);
             for (;;) {}
         }
         for (i = 0; i < 12; ++i) gSyncSendBuffer[i] = data[i];
         memcpy(gSyncSendBuffer + 12, ((void **)data)[3], ((int *)data)[2]);
-    } else {
-        for (i = 0; i < data_size; ++i) gSyncSendBuffer[i] = data[i];
     }
     while (gCommBusy) {
         snd_FlushSoundCommands();
@@ -383,7 +393,12 @@ unsigned int SND_SECTION(snd_SendIOPCommandAndWait) snd_SendIOPCommandAndWait(in
         snd_FlushSoundCommands();
         FlushCache(0);
     }
-    sceSifCallRpc(&gSLClientData, command, 1, data_size ? gSyncSendBuffer : 0, data_size, gSyncBuffer, 12, 0, 0);
+    if (data_size) {
+        sceSifCallRpc(&gSLClientData, command, 1, gSyncSendBuffer, data_size, gSyncBuffer, 12, 0, 0);
+    }
+    else {
+        sceSifCallRpc(&gSLClientData, command, 1, 0, 0, gSyncBuffer, 12, 0, 0);
+    }
     while (!snd_GotReturns()) {}
     result = gSyncBuffer[1];
     if (gSndCommandBuffePtr[gCommandFillBuffer]->num_commands && !gCaching) snd_SendCurrentBatch();

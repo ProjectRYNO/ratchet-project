@@ -10,7 +10,7 @@ changing a mechanism; this is not a ban on justified improvements.
 | D01 | Keep function sections and original slot bounds. Public addresses and raw pointers constrain placement. | `decompiled_functions.yaml`, `split_dl.py`; a single section per source file can shift entries. Never enlarge a slot into its neighbor. |
 | D02 | Run splitting before compilation, serially. | Split post-processing normalizes alignment and regenerates the linker layout. Compiling midway previously shifted addresses. |
 | D03 | Force compilation after header/INCLUDE_ASM edits. | The Makefile lacks complete dependency tracking; stale objects previously kept old D_ references after symbol renames. |
-| D04 | Build 989snd with SN GCC 2.95.3 v1.36 and its bundled GNU assembler through pinned wibo; preserve remnant words and slot guards. | Updated 2026-10-15: `-G8 -O2 -fopt-stack -mno-check-zero-division`, assembler `-EL -G8 -g`. Use explicit 64-bit `mode(DI)` callback data: SN's `long long` is 128 bits. This supersedes the Sony 2.9 profile. See `989SND_MATCHING.md` and its verified inventory; do not apply sound flags globally or call remaining differences matching. |
+| D04 | Build 989snd with SN GCC 2.95.3 v1.36 and its bundled GNU assembler through pinned wibo; preserve remnant words and slot guards. | Updated 2026-10-16: `-G16 -O2 -fopt-stack -mno-check-zero-division`, assembler `-EL -G8 -g`. Use explicit 64-bit `mode(DI)` callback data: SN's `long long` is 128 bits. This supersedes the Sony 2.9 profile. See `989SND_MATCHING.md` and its verified inventory; do not apply sound flags globally or call remaining differences matching. |
 | D05 | Pack ROM from configured load ranges, not raw RAM-address objcopy output. | Deadlocked network code lives far away in memory; the split ROM is packed. See ELF reconstruction history. |
 | D06 | Bind names to existing storage with extern/symbol mappings. | Allocating another C global is not a rename. Prototype layouts/addresses need retail validation. |
 | D07 | Matching and development usability are separate results. | Nonmatching development builds may compile/run; exact matching remains the goal. The verifier returns nonmatching separately and offers a strict gate. A genuinely matching C build must not be rejected merely for having zero changed bytes. |
@@ -56,3 +56,18 @@ See [989snd notes](../../src/games/dl/DOCS/sound/989SND_REUSE.md) for sound-spec
 behavior and [type evidence](../../src/games/dl/DOCS/types/RECOVERED_TYPES.md) for
 layout limits. Record new decisions with the concrete reason and evidence rather
 than making a failed experiment into a universal rule.
+
+
+### 2026-10-16: 989snd exceeds the 90% exact-function milestone
+
+Fresh serial split and forced build verify 54/59 (91.53%) exact complete slots,
+up from 51/59. Flush, bank-load callback, and EE bank load now match. The
+prototype's four-word return buffer plus explicitly mapped scalar views of its
+first word/status and the completion-record callback reproduce retail's mixed
+GP/absolute accesses and independent reads; no new storage or instruction
+patching is involved. Keep the SN v1.36 compiler `-G16` / assembler `-G8` profile.
+The state suite asserts all shared-storage alias addresses. Sound behavior
+3,013/3,013, ABI, globals, SDK, iksemel, and slot/runtime audits pass. Module
+backlog is 1,291 bytes across five functions; whole-game strict comparison still
+fails with 10,638 changed loaded bytes inside registered slots. Gameplay untested.
+See `src/games/dl/DOCS/sound/989SND_MATCHING.md` and the 989SND progress JSON/CSV.

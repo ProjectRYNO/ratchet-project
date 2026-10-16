@@ -1,26 +1,26 @@
 {
-  "base_commit": "1cf0a64",
+  "base_commit": "deea1ee",
   "compiled_functions": 59,
-  "exact_functions": 51,
+  "exact_functions": 54,
   "module_bytes": 7236,
-  "differing_bytes": 2337,
+  "differing_bytes": 1291,
   "exact_remnants": 18,
   "functions": [
     {
       "name": "snd_StartSoundSystemEx",
       "address": "0x157d60",
-      "size": 564,
+      "size": 560,
       "slot_size": 568,
-      "differing_bytes": 428,
+      "differing_bytes": 364,
       "exact": false
     },
     {
       "name": "snd_FlushSoundCommands",
       "address": "0x157f98",
-      "size": 472,
+      "size": 496,
       "slot_size": 496,
-      "differing_bytes": 236,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_GotReturns",
@@ -41,18 +41,18 @@
     {
       "name": "snd_BankLoadByLoc_CB",
       "address": "0x1582a8",
-      "size": 328,
+      "size": 340,
       "slot_size": 344,
-      "differing_bytes": 186,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_BankLoadFromEE",
       "address": "0x158400",
-      "size": 324,
+      "size": 336,
       "slot_size": 336,
-      "differing_bytes": 239,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_ResolveBankXREFS",
@@ -201,9 +201,9 @@
     {
       "name": "snd_SendIOPCommandAndWait",
       "address": "0x158a30",
-      "size": 520,
+      "size": 552,
       "slot_size": 560,
-      "differing_bytes": 433,
+      "differing_bytes": 112,
       "exact": false
     },
     {
@@ -481,14 +481,14 @@
   ],
   "working_tree_changes": true,
   "verified_date": "2026-10-16",
-  "exact_percent": 86.44,
+  "exact_percent": 91.53,
   "compiler": "SN Systems GCC 2.95.3 v1.36",
-  "compiler_flags": "-G8 -O2 -fopt-stack -mno-check-zero-division",
+  "compiler_flags": "-G16 -O2 -fopt-stack -mno-check-zero-division",
   "assembler": "SN-bundled GNU assembler 2.9-ee-991111b",
   "assembler_flags": "-EL -G8 -g",
   "compiler_runner": "wibo 1.2.0 i686",
-  "source_sha256": "1cf9d9340352c1cd499031acfb473a0bda0b58cee82546d9a812cd435d6783a4",
-  "header_sha256": "4b341af11c24657327d74e10cbe47c0a18d28c68cee0d82084f0fca5f2a371d5",
+  "source_sha256": "e02f388f5d6af4a14274f01810d68f73698e806064836f6297bad9ddf3f7b699",
+  "header_sha256": "9bac5aa68b46dd284c9f896e85279ef4a665f641a01c942ef90632afd6df262b",
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "7a7ff18c318aa5e1690cfea0624d58eacd4febf8bc553f005b716d8cc1e4b273"
+  "rebuilt_sha256": "7c0c33ac1a225df0af904adee0a2970bd61520947b9a8a67f5cd7c0e7bbf560e"
 }

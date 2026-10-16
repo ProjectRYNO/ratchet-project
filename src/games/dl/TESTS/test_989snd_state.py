@@ -282,6 +282,11 @@ def main():
     linked=symbols(args.rebuilt)
     for name,address in GLOBALS.items():
         assert linked[name][0] == address, 'global moved: '+name
+    for alias,owner in (('gLoadReturnWord','gLoadReturnValue'),
+                        ('gLoadReturnStatus','gLoadReturnValue'),
+                        ('gLoadReturnDone','gLoadReturnDef')):
+        assert GLOBALS[alias] == GLOBALS[owner], 'shared sound storage split: '+alias
+        assert linked[alias][0] == linked[owner][0], 'linked sound alias moved: '+alias
     functions=yaml.safe_load((ROOT/'config/decompiled_functions.yaml').read_text())['functions']
     functions={n:a for n,a in functions.items() if n.startswith('snd_')}
     old,new=read_elf(args.original)[1],read_elf(args.rebuilt)[1]

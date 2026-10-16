@@ -85,7 +85,7 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # SN v1.36 packs scalar register saves with -fopt-stack. The assembler's -g
 # preserves compiler NOPs and delay slots; this is required for exact matching.
 # The only division has a constant, nonzero divisor (741).
-SOUND_COMPILE_FLAGS = -G8 -O2 -fopt-stack -mno-check-zero-division
+SOUND_COMPILE_FLAGS = -G16 -O2 -fopt-stack -mno-check-zero-division
 SOUND_AS_FLAGS = -EL -G8 -g
 ifeq ($(ALLOW_NONMATCHING),1)
 	COMMON_COMPILE_FLAGS += -DALLOW_NONMATCHING
