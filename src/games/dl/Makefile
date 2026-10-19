@@ -105,7 +105,10 @@ ifeq ($(ALLOW_NONMATCHING),1)
 	SVO3_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
 # Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
-SVO3_AS_FLAGS = -EL -G0 -Icode/include
+# -g stops Sony as from filling delay slots itself; retail SVO3 was assembled that way (DECISIONS K07).
+SVO3_AS_FLAGS = -EL -G0 -g -Icode/include
+# iksemel matches without -g; keep its flags separate.
+IKSEMEL_AS_FLAGS = -EL -G0 -Icode/include
 # iksemel ships with SVO3 and uses the same compiler. Retail schedules lui/lw pairs apart
 # (iks_stack_new), which -mno-split-addresses prevents (see DOCS/libraries/IKSEMEL.md).
 IKSEMEL_COMPILE_FLAGS = $(filter-out -mno-split-addresses,$(SVO3_COMPILE_FLAGS))
@@ -266,7 +269,7 @@ $(OBJ_DIR)/iksemel/%.o: code/iksemel/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC296) -S $(IKSEMEL_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
-	$(EEAS296) $(SVO3_AS_FLAGS) $(@:.o=.s) -o $@
+	$(EEAS296) $(IKSEMEL_AS_FLAGS) $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)

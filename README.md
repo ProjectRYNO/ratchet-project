@@ -12,7 +12,7 @@ This project is to eventually become silmiliar in style of the [openGOAL/jak Pro
 
 ## Documentation
 
-Browse [technical documentation](docs/README.md) or [AI instructions and skills](.agents/README.md).
+Browse [technical documentation](docs/README.md), [Deadlocked boot ELF progress](src/games/dl/README.md#boot-elf-decompilation-progress), or [AI instructions and skills](.agents/README.md).
 
 ## Working with an AI assistant
 
@@ -62,7 +62,7 @@ make split
 ```
 
 5. Start decomping the code!
-Deadlocked rebuilds from split assembly, three decompiled C++ boot functions, and 59 decompiled C sound functions. See [ELF rebuild notes](src/games/dl/DOCS/build/ELF_REBUILD.md) and [989snd progress](src/games/dl/DOCS/sound/989SND_REUSE.md) for the verified workflow and validation limits.
+Deadlocked rebuilds from split assembly and compiled C/C++ replacements across game and library modules. See the [section-by-section progress table](src/games/dl/README.md#boot-elf-decompilation-progress) for current implementation and matching counts. See [ELF rebuild notes](src/games/dl/DOCS/build/ELF_REBUILD.md) and [989snd progress](src/games/dl/DOCS/sound/989SND_REUSE.md) for the verified workflow and validation limits.
 
 Follow the [decompilation source conventions](src/games/dl/DOCS/types/STYLE.md) for header guards, struct layouts, and source-file grouping.
 

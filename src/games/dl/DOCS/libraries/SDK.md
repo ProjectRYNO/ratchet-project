@@ -1,5 +1,19 @@
 # Deadlocked SDK compiler profile
 
+The **100% completion figure covers `code/sdk/`**: `libezcnf.c`, `libezctl.c`,
+`i18n.c`, and `i18n_inet.c` (20 real functions). It does not cover every Sony SDK
+library linked into the boot ELF. Additional SDK code, including CD/DVD and graphics
+functions, remains assembly in `code/game/lib_after_libm.cpp`; the library aggregates
+also contain C runtime and other code. See the [boot ELF table](../../README.md#boot-elf-decompilation-progress)
+for these separate scopes. The two retained SDK instruction fragments are not
+unfinished independent functions.
+
+Rechecked on 2026-10-19 against the isolated libm-complete ELF
+(`2e1283399004eacffe115cc09128eaa2757ff5f658b49a7171cd972d46d25189`):
+`check_sdk.py` passes all 20 compiled functions (4,276 bytes) and all four complete
+module ranges, including padding and retained fragments. This is an exact-byte
+check, not a gameplay test.
+
 ## Final parser integration (2026-10-14)
 
 **20/20 real SDK functions (100.00%) now compile to exact retail bytes.**
