@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import sys
 import yaml
+from elftools.elf.elffile import ELFFile
 from check_main_elf import symbols
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
 from compare_elf import read_elf
@@ -57,18 +58,17 @@ def main():
                 continue
             address, length = slot['start'], slot['end'] - slot['start']
             assert loaded_bytes(original, address, length) == loaded_bytes(rebuilt, address, length), 'constant pool differs: ' + slot['object']
-            from elftools.elf.elffile import ELFFile
             with (args.object_root / (slot['object'] + '.o')).open('rb') as stream:
                 section = ELFFile(stream).get_section_by_name(slot['section'])
                 assert section is not None and section['sh_size'] == length, 'invalid compiled constant pool: ' + slot['object']
                 assert section.data() == loaded_bytes(original, address, length), 'object constants differ: ' + slot['object']
             constant_bytes += length
     report = dict(compiled_functions=count, exact_compiled_functions=count, total_functions=37,
-                  exact_percent=round(100*count/37,2), compiled_bytes=compiled_bytes,
+                  exact_percent=round(100*count/37,2), compiled_bytes=compiled_bytes, assembly_functions=37-count,
                   module_bytes=end-start, differing_bytes=0, constant_bytes=constant_bytes, functions=rows)
     if args.report:
         args.report.write_text(json.dumps(report,indent=2)+'\n')
-    print('PASS: libm %d/37 functions compiled and byte-exact; %d compiled bytes; entire %d-byte module unchanged (remaining functions use assembly)' % (count, compiled_bytes, end-start))
+    print('PASS: libm %d/37 functions compiled and byte-exact; %d compiled bytes; entire %d-byte module unchanged; %d assembly functions remaining' % (count, compiled_bytes, end-start, 37-count))
 
 
 if __name__ == '__main__':

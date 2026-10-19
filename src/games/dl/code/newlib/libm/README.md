@@ -1,19 +1,19 @@
 # Deadlocked newlib/libm
 
-Working source baseline: **newlib 1.9.0**, with `common/s_rint.c` taken verbatim
-from **1.8.1**. Both come from the [official release archive](https://sourceware.org/ftp/newlib/).
-The exact original SDK snapshot is not uniquely established.
+**37/37 functions (100%) compile from C and match retail byte-for-byte.**
+All original `common/` and `math/` source-file splits are preserved. No math
+function uses an assembly fallback.
 
-`upstream/` preserves the 37 relevant C sources and fdlibm header with original
-copyright notices and `COPYING.NEWLIB`. It is excluded from standalone compilation.
-The `math/` and `common/` wrappers retain the original source grouping and select
-upstream C with original-address placement or explicit assembly for unfinished work.
+Sources are verbatim newlib **1.9.0**, except `math/ef_asin.c` from **1.8.2** and
+`common/s_rint.c` from **1.8.1**, obtained from the
+[official archive](https://sourceware.org/ftp/newlib/). Copyrights and
+`COPYING.NEWLIB` remain. `upstream/` is excluded from standalone compilation;
+the wrappers add only original-address placement declarations.
 
-**31/37 functions compile and match exactly (83.78%)**, using Sony GCC
-**2.9-ee-991111-01**. Six IEEE float kernels remain assembly: asin, exp, log,
-log10, pow, and sqrt. Their upstream C remains available as research candidates.
-The full linked library, its compiled constant pools, and original padding match retail.
+The Makefile pins **`ee-gcc2.9-991111-01.tar.xz`**. The similarly named
+`ee-gcc2.9-991111a.tar.xz` reports the same version but does not reproduce the
+remaining float divisions. No inline assembly or instruction rewriting is used.
 
-See [evidence, compiler settings, and verification](../../../DOCS/libraries/NEWLIB_LIBM.md)
-and [progress](../../../DOCS/progress/LIBM.json). Do not build upstream copies
-independently or enable candidates without linked-byte verification.
+See [source/compiler evidence and verification](../../../DOCS/libraries/NEWLIB_LIBM.md)
+and [progress](../../../DOCS/progress/LIBM.json). Library code, compiled constants,
+and original padding match; the exact original SDK source release is not uniquely identified.

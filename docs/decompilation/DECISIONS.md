@@ -155,3 +155,21 @@ pass. Strict whole-game differences remain 3,917 bytes outside libm, unchanged f
 the baseline. The same documented snapshot-only unrelated build accommodations
 remain necessary; no gameplay testing was performed. See NEWLIB_LIBM.md and
 LIBM_FOLLOWUP_PROBES.json for reproducible evidence and the remaining six targets.
+
+## 2026-10-19: Complete libm at 37/37 exact C functions
+
+Pin `ee-gcc2.9-991111-01.tar.xz` (SHA-256
+`ed684fd98f89d36b0121caab311052089103e3b36241fcef4338cc9ea41c75b8`).
+It reports the same version as the preceding `991111a` archive but emits the
+retail floating-division workaround naturally. Five remaining float kernels
+match unchanged 1.9.0 source; verbatim 1.8.2 `ef_asin.c` completes the last one.
+Keep the already established 1.8.1 `s_rint.c`. No inline assembly, instruction
+substitution, or padding adapter was needed. Related UYA compiler research supplied
+the lead; Deadlocked's unmasked linked-byte checks establish the result.
+
+All 37 functions are C and exact (100%): 21,180 instruction bytes, 2,046 compiled
+constant bytes and all 23 four-byte alignment gaps. All original source splits
+and public addresses remain. Full isolated ELF verification and slot/header audit
+pass; strict whole-game comparison retains the same 3,917 differences outside
+libm. The documented unrelated snapshot accommodations remain; gameplay untested.
+See LIBM_FINAL_PROBES.json and NEWLIB_LIBM.md for provenance and reproduction.

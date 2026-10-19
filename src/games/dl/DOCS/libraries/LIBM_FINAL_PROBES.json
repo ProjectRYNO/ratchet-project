@@ -1,0 +1,2253 @@
+{
+  "compiler_archive": "ee-gcc2.9-991111-01.tar.xz",
+  "archive_sha256": "ed684fd98f89d36b0121caab311052089103e3b36241fcef4338cc9ea41c75b8",
+  "flags": "-G0 -O2 -fno-builtin",
+  "source_releases": {
+    "default": "1.9.0",
+    "math/ef_asin.c": "1.8.2",
+    "common/s_rint.c": "1.8.1"
+  },
+  "research_lead": "https://github.com/OpenRAC/rac3-uya-decomp/blob/ac0eb2a87cc1706e1d15025f8a17838d17f9175c/docs/full_match_roadmap.md",
+  "note": "Different 991111 compiler archives report the same version. This exact pinned archive emits the retail division workaround without source edits, inline assembly, or instruction rewriting. Diagnostic normalized comparisons are not an exact gate; linked and integrated comparisons are unmasked.",
+  "linked_probes": [
+    {
+      "name": "__ieee754_fmod",
+      "source": "math/e_fmod.c",
+      "checks": {
+        ".text": {
+          "address": "0x131a90",
+          "size": 1008,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x1937b8",
+          "size": 24,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpmul": 1248912,
+        "dpdiv": 1249592
+      }
+    },
+    {
+      "name": "__ieee754_pow",
+      "source": "math/e_pow.c",
+      "checks": {
+        ".text": {
+          "address": "0x131e80",
+          "size": 3368,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x1937d0",
+          "size": 464,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpadd": 1248720,
+        "dpsub": 1248808,
+        "dpdiv": 1249592,
+        "__ieee754_sqrt": 1256360,
+        "fabs": 1266432,
+        "dpmul": 1248912,
+        "litodp": 1250312,
+        "dpcmp": 1250232,
+        "scalbn": 1267128
+      }
+    },
+    {
+      "name": "__ieee754_sqrt",
+      "source": "math/e_sqrt.c",
+      "checks": {
+        ".text": {
+          "address": "0x132ba8",
+          "size": 772,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpmul": 1248912,
+        "dpadd": 1248720,
+        "dpsub": 1248808,
+        "dpdiv": 1249592,
+        "dpcmp": 1250232
+      }
+    },
+    {
+      "name": "__ieee754_expf",
+      "source": "math/ef_exp.c",
+      "checks": {
+        ".text": {
+          "address": "0x133250",
+          "size": 692,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x1939a0",
+          "size": 76,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "__ieee754_logf",
+      "source": "math/ef_log.c",
+      "checks": {
+        ".text": {
+          "address": "0x133508",
+          "size": 804,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x1939ec",
+          "size": 48,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "__ieee754_log10f",
+      "source": "math/ef_log10.c",
+      "checks": {
+        ".text": {
+          "address": "0x133830",
+          "size": 304,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193a1c",
+          "size": 24,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_logf": 1258760
+      }
+    },
+    {
+      "name": "__ieee754_powf",
+      "source": "math/ef_pow.c",
+      "checks": {
+        ".text": {
+          "address": "0x133960",
+          "size": 2188,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193a38",
+          "size": 136,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_sqrtf": 1263056,
+        "fabsf": 1268064,
+        "scalbnf": 1268408
+      }
+    },
+    {
+      "name": "__ieee754_rem_pio2f",
+      "source": "math/ef_rem_pio2.c",
+      "checks": {
+        ".text": {
+          "address": "0x1341f0",
+          "size": 992,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193ac0",
+          "size": 960,
+          "different": 0
+        }
+      },
+      "external": {
+        "fabsf": 1268064,
+        "__kernel_rem_pio2f": 1263712
+      }
+    },
+    {
+      "name": "__ieee754_sqrtf",
+      "source": "math/ef_sqrt.c",
+      "checks": {
+        ".text": {
+          "address": "0x1345d0",
+          "size": 312,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "__kernel_cosf",
+      "source": "math/kf_cos.c",
+      "checks": {
+        ".text": {
+          "address": "0x134708",
+          "size": 344,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "__kernel_rem_pio2f",
+      "source": "math/kf_rem_pio2.c",
+      "checks": {
+        ".text": {
+          "address": "0x134860",
+          "size": 2380,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193e80",
+          "size": 76,
+          "different": 0
+        }
+      },
+      "external": {
+        "scalbnf": 1268408,
+        "floorf": 1268136
+      }
+    },
+    {
+      "name": "__kernel_sinf",
+      "source": "math/kf_sin.c",
+      "checks": {
+        ".text": {
+          "address": "0x1351b0",
+          "size": 260,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "copysign",
+      "source": "common/s_copysign.c",
+      "checks": {
+        ".text": {
+          "address": "0x1352b8",
+          "size": 68,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "fabs",
+      "source": "math/s_fabs.c",
+      "checks": {
+        ".text": {
+          "address": "0x135300",
+          "size": 52,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "finite",
+      "source": "common/s_finite.c",
+      "checks": {
+        ".text": {
+          "address": "0x135338",
+          "size": 32,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "isnan",
+      "source": "math/s_isnan.c",
+      "checks": {
+        ".text": {
+          "address": "0x135358",
+          "size": 56,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "matherr",
+      "source": "common/s_matherr.c",
+      "checks": {
+        ".text": {
+          "address": "0x135390",
+          "size": 36,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpcmp": 1250232
+      }
+    },
+    {
+      "name": "scalbn",
+      "source": "common/s_scalbn.c",
+      "checks": {
+        ".text": {
+          "address": "0x1355b8",
+          "size": 436,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193ef0",
+          "size": 48,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpmul": 1248912,
+        "dpadd": 1248720,
+        "copysign": 1266360
+      }
+    },
+    {
+      "name": "ceilf",
+      "source": "math/sf_ceil.c",
+      "checks": {
+        ".text": {
+          "address": "0x135770",
+          "size": 212,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "copysignf",
+      "source": "common/sf_copysign.c",
+      "checks": {
+        ".text": {
+          "address": "0x135848",
+          "size": 48,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "cosf",
+      "source": "math/sf_cos.c",
+      "checks": {
+        ".text": {
+          "address": "0x135878",
+          "size": 232,
+          "different": 0
+        }
+      },
+      "external": {
+        "__kernel_cosf": 1263368,
+        "__ieee754_rem_pio2f": 1262064,
+        "__kernel_sinf": 1266096
+      }
+    },
+    {
+      "name": "fabsf",
+      "source": "math/sf_fabs.c",
+      "checks": {
+        ".text": {
+          "address": "0x135960",
+          "size": 28,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "finitef",
+      "source": "common/sf_finite.c",
+      "checks": {
+        ".text": {
+          "address": "0x135980",
+          "size": 36,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "floorf",
+      "source": "math/sf_floor.c",
+      "checks": {
+        ".text": {
+          "address": "0x1359a8",
+          "size": 228,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "isnanf",
+      "source": "math/sf_isnan.c",
+      "checks": {
+        ".text": {
+          "address": "0x135a90",
+          "size": 36,
+          "different": 0
+        }
+      },
+      "external": {}
+    },
+    {
+      "name": "scalbnf",
+      "source": "common/sf_scalbn.c",
+      "checks": {
+        ".text": {
+          "address": "0x135ab8",
+          "size": 352,
+          "different": 0
+        }
+      },
+      "external": {
+        "copysignf": 1267784
+      }
+    },
+    {
+      "name": "fmod",
+      "source": "math/w_fmod.c",
+      "checks": {
+        ".text": {
+          "address": "0x135c18",
+          "size": 284,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f20",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_fmod": 1251984,
+        "__fdlib_version": 1654488,
+        "isnan": 1266520,
+        "dpcmp": 1250232,
+        "matherr": 1266576,
+        "__errno": 1155488
+      }
+    },
+    {
+      "name": "pow",
+      "source": "math/w_pow.c",
+      "checks": {
+        ".text": {
+          "address": "0x135d38",
+          "size": 1072,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f30",
+          "size": 32,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_pow": 1252992,
+        "__fdlib_version": 1654488,
+        "isnan": 1266520,
+        "dpcmp": 1250232,
+        "matherr": 1266576,
+        "__errno": 1155488,
+        "finite": 1266488,
+        "dpsub": 1248808,
+        "__infinity": 1654480,
+        "dpmul": 1248912,
+        "rint": 1266616
+      }
+    },
+    {
+      "name": "sqrt",
+      "source": "math/w_sqrt.c",
+      "checks": {
+        ".text": {
+          "address": "0x136168",
+          "size": 268,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f50",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_sqrt": 1256360,
+        "__fdlib_version": 1654488,
+        "isnan": 1266520,
+        "dpcmp": 1250232,
+        "matherr": 1266576,
+        "__errno": 1155488
+      }
+    },
+    {
+      "name": "asinf",
+      "source": "math/wf_asin.c",
+      "checks": {
+        ".text": {
+          "address": "0x136278",
+          "size": 252,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f60",
+          "size": 6,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_asinf": 1257136,
+        "__fdlib_version": 1654488,
+        "isnanf": 1268368,
+        "fabsf": 1268064,
+        "fptodp": 1251608,
+        "matherr": 1266576,
+        "__errno": 1155488,
+        "dptofp": 1250856
+      }
+    },
+    {
+      "name": "expf",
+      "source": "math/wf_exp.c",
+      "checks": {
+        ".text": {
+          "address": "0x136378",
+          "size": 372,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f68",
+          "size": 24,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_expf": 1258064,
+        "__fdlib_version": 1654488,
+        "finitef": 1268096,
+        "fptodp": 1251608,
+        "__infinity": 1654480,
+        "matherr": 1266576,
+        "__errno": 1155488,
+        "dptofp": 1250856
+      }
+    },
+    {
+      "name": "logf",
+      "source": "math/wf_log.c",
+      "checks": {
+        ".text": {
+          "address": "0x1364f0",
+          "size": 328,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f80",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_logf": 1258760,
+        "__fdlib_version": 1654488,
+        "isnanf": 1268368,
+        "fptodp": 1251608,
+        "dpsub": 1248808,
+        "__infinity": 1654480,
+        "__errno": 1155488,
+        "matherr": 1266576,
+        "dptofp": 1250856
+      }
+    },
+    {
+      "name": "log10f",
+      "source": "math/wf_log10.c",
+      "checks": {
+        ".text": {
+          "address": "0x136638",
+          "size": 332,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193f90",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_log10f": 1259568,
+        "__fdlib_version": 1654488,
+        "isnanf": 1268368,
+        "fptodp": 1251608,
+        "dpsub": 1248808,
+        "__infinity": 1654480,
+        "__errno": 1155488,
+        "matherr": 1266576,
+        "dptofp": 1250856
+      }
+    },
+    {
+      "name": "powf",
+      "source": "math/wf_pow.c",
+      "checks": {
+        ".text": {
+          "address": "0x136788",
+          "size": 1288,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193fa0",
+          "size": 32,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_powf": 1259872,
+        "__fdlib_version": 1654488,
+        "isnanf": 1268368,
+        "fptodp": 1251608,
+        "matherr": 1266576,
+        "__errno": 1155488,
+        "finitef": 1268096,
+        "dpsub": 1248808,
+        "__infinity": 1654480,
+        "dpmul": 1248912,
+        "dptofp": 1250856,
+        "dpcmp": 1250232,
+        "rint": 1266616
+      }
+    },
+    {
+      "name": "sqrtf",
+      "source": "math/wf_sqrt.c",
+      "checks": {
+        ".text": {
+          "address": "0x136c90",
+          "size": 276,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193fc0",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "__ieee754_sqrtf": 1263056,
+        "__fdlib_version": 1654488,
+        "isnanf": 1268368,
+        "fptodp": 1251608,
+        "matherr": 1266576,
+        "__errno": 1155488,
+        "dptofp": 1250856
+      }
+    },
+    {
+      "name": "rint",
+      "source": "math/s_rint.c",
+      "checks": {
+        ".text": {
+          "address": "0x1353b8",
+          "size": 508,
+          "different": 0
+        },
+        ".rodata": {
+          "address": "0x193ee0",
+          "size": 16,
+          "different": 0
+        }
+      },
+      "external": {
+        "dpadd": 1248720,
+        "dpsub": 1248808
+      }
+    },
+    {
+      "name": "__ieee754_asinf",
+      "source": "math/ef_asin.c",
+      "checks": {
+        ".text": {
+          "address": "0x132eb0",
+          "size": 924,
+          "different": 0
+        }
+      },
+      "external": {
+        "fabsf": 1268064,
+        "__ieee754_sqrtf": 1263056
+      }
+    }
+  ],
+  "integrated": {
+    "compiled_functions": 37,
+    "exact_compiled_functions": 37,
+    "total_functions": 37,
+    "exact_percent": 100.0,
+    "compiled_bytes": 21180,
+    "assembly_functions": 0,
+    "module_bytes": 21272,
+    "differing_bytes": 0,
+    "constant_bytes": 2046,
+    "functions": [
+      {
+        "name": "__ieee754_fmod",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_pow",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_sqrt",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_asinf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_expf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_logf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_log10f",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_powf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_rem_pio2f",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__ieee754_sqrtf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__kernel_cosf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__kernel_rem_pio2f",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "__kernel_sinf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "copysign",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "fabs",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "finite",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "isnan",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "matherr",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "rint",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "scalbn",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "ceilf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "copysignf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "cosf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "fabsf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "finitef",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "floorf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "isnanf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "scalbnf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "fmod",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "pow",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "sqrt",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "asinf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "expf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "logf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "log10f",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "powf",
+        "compiled": true,
+        "differing_bytes": 0
+      },
+      {
+        "name": "sqrtf",
+        "compiled": true,
+        "differing_bytes": 0
+      }
+    ]
+  },
+  "rebuilt_sha256": "2e1283399004eacffe115cc09128eaa2757ff5f658b49a7171cd972d46d25189",
+  "whole_game_differing_bytes": 3917,
+  "libm-sony01": [
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/e_fmod.c",
+      "function": "__ieee754_fmod",
+      "address": 1251984,
+      "size": 1008,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/e_pow.c",
+      "function": "__ieee754_pow",
+      "address": 1252992,
+      "size": 3368,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/e_sqrt.c",
+      "function": "__ieee754_sqrt",
+      "address": 1256360,
+      "size": 772,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 567
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 692,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 804,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 304,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2188,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_rem_pio2.c",
+      "function": "__ieee754_rem_pio2f",
+      "address": 1262064,
+      "size": 992,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 312,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/kf_cos.c",
+      "function": "__kernel_cosf",
+      "address": 1263368,
+      "size": 344,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/kf_rem_pio2.c",
+      "function": "__kernel_rem_pio2f",
+      "address": 1263712,
+      "size": 2380,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/kf_sin.c",
+      "function": "__kernel_sinf",
+      "address": 1266096,
+      "size": 260,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "address": 1266360,
+      "size": 68,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "address": 1266432,
+      "size": 52,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "address": 1266488,
+      "size": 32,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "address": 1266520,
+      "size": 56,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "address": 1266576,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 524,
+      "normalized_differences": 273
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/sf_ceil.c",
+      "function": "ceilf",
+      "address": 1267568,
+      "size": 212,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "address": 1267784,
+      "size": 48,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/sf_cos.c",
+      "function": "cosf",
+      "address": 1267832,
+      "size": 232,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "address": 1268064,
+      "size": 28,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "address": 1268096,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/sf_floor.c",
+      "function": "floorf",
+      "address": 1268136,
+      "size": 228,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "address": 1268368,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 352,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/w_fmod.c",
+      "function": "fmod",
+      "address": 1268760,
+      "size": 284,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/w_pow.c",
+      "function": "pow",
+      "address": 1269048,
+      "size": 1072,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/w_sqrt.c",
+      "function": "sqrt",
+      "address": 1270120,
+      "size": 268,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_asin.c",
+      "function": "asinf",
+      "address": 1270392,
+      "size": 252,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_exp.c",
+      "function": "expf",
+      "address": 1270648,
+      "size": 372,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_log.c",
+      "function": "logf",
+      "address": 1271024,
+      "size": 328,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_log10.c",
+      "function": "log10f",
+      "address": 1271352,
+      "size": 332,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_pow.c",
+      "function": "powf",
+      "address": 1271688,
+      "size": 1288,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony01",
+      "file": "math/wf_sqrt.c",
+      "function": "sqrtf",
+      "address": 1272976,
+      "size": 276,
+      "normalized_differences": 0
+    }
+  ],
+  "libm-sony01-versions": [
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 692,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 804,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 304,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2188,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 312,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.7.1",
+      "compiler": "sony01",
+      "file": "math/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 508,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 692,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 804,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 304,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2188,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 312,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.0",
+      "compiler": "sony01",
+      "file": "math/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 508,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 692,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 804,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 304,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2188,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 312,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.1",
+      "compiler": "sony01",
+      "file": "math/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 508,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 692,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 804,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 304,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2188,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 312,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony01",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 524,
+      "normalized_differences": 273
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 572
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 660,
+      "normalized_differences": 547
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 651
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 288,
+      "normalized_differences": 231
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2180,
+      "normalized_differences": 577
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 320,
+      "normalized_differences": 259
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony01",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 524,
+      "normalized_differences": 273
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 924,
+      "normalized_differences": 572
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 660,
+      "normalized_differences": 547
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 651
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 288,
+      "normalized_differences": 231
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2180,
+      "normalized_differences": 578
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 320,
+      "normalized_differences": 259
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony01",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 524,
+      "normalized_differences": 273
+    }
+  ],
+  "libm-assembler-matrix": [
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-g",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29a-O0",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 627
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 664,
+      "normalized_differences": 441
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 598
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2116,
+      "normalized_differences": 1591
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 627
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 668,
+      "normalized_differences": 445
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 598
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2116,
+      "normalized_differences": 1591
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-g",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 627
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 664,
+      "normalized_differences": 441
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 598
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2116,
+      "normalized_differences": 1591
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296-O0",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-g",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 618
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 676,
+      "normalized_differences": 116
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 788,
+      "normalized_differences": 610
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2124,
+      "normalized_differences": 1587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136-O0",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 184
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 708,
+      "normalized_differences": 584
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 312,
+      "normalized_differences": 133
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2224,
+      "normalized_differences": 1851
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 215
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 712,
+      "normalized_differences": 587
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 312,
+      "normalized_differences": 133
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2224,
+      "normalized_differences": 1851
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-g",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 215
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 708,
+      "normalized_differences": 584
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 312,
+      "normalized_differences": 133
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2224,
+      "normalized_differences": 1851
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "ps2dev-O0",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 304,
+      "normalized_differences": 215
+    }
+  ]
+}

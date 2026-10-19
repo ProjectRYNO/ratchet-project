@@ -1,6 +1,12 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  __ieee754_expf: 0x00133250
+  __ieee754_logf: 0x00133508
+  __ieee754_log10f: 0x00133830
+  __ieee754_powf: 0x00133960
+  __ieee754_sqrtf: 0x001345D0
+  __ieee754_asinf: 0x00132EB0
   __ieee754_fmod: 0x00131A90
   __ieee754_pow: 0x00131E80
   __ieee754_sqrt: 0x00132BA8
@@ -1193,6 +1199,36 @@ functions:
   ezNetCtlRecreateIfstat: 0x01E9AE48
 
 objects:
+  newlib/libm/math/ef_exp:
+    text_start: 0x00133250
+    text_end: 0x00133504
+    slots:
+      - { object: newlib/libm/math/ef_exp, section: .libm___ieee754_expf, start: 0x00133250, end: 0x00133504 }
+  newlib/libm/math/ef_log:
+    text_start: 0x00133508
+    text_end: 0x0013382C
+    slots:
+      - { object: newlib/libm/math/ef_log, section: .libm___ieee754_logf, start: 0x00133508, end: 0x0013382C }
+  newlib/libm/math/ef_log10:
+    text_start: 0x00133830
+    text_end: 0x00133960
+    slots:
+      - { object: newlib/libm/math/ef_log10, section: .libm___ieee754_log10f, start: 0x00133830, end: 0x00133960 }
+  newlib/libm/math/ef_pow:
+    text_start: 0x00133960
+    text_end: 0x001341EC
+    slots:
+      - { object: newlib/libm/math/ef_pow, section: .libm___ieee754_powf, start: 0x00133960, end: 0x001341EC }
+  newlib/libm/math/ef_sqrt:
+    text_start: 0x001345D0
+    text_end: 0x00134708
+    slots:
+      - { object: newlib/libm/math/ef_sqrt, section: .libm___ieee754_sqrtf, start: 0x001345D0, end: 0x00134708 }
+  newlib/libm/math/ef_asin:
+    text_start: 0x00132EB0
+    text_end: 0x0013324C
+    slots:
+      - { object: newlib/libm/math/ef_asin, section: .libm___ieee754_asinf, start: 0x00132EB0, end: 0x0013324C }
   newlib/libm/math/e_fmod:
     text_start: 0x00131A90
     text_end: 0x00131E80
@@ -2937,6 +2973,10 @@ objects:
 rodata:
   asm/build/core.data/091E80.rodata:
     slots:
+      - {object: newlib/libm/math/ef_exp, function: __ieee754_expf, section: .libmdata_ef_exp, start: 0x001939A0, end: 0x001939EC}
+      - {object: newlib/libm/math/ef_log, function: __ieee754_logf, section: .libmdata_ef_log, start: 0x001939EC, end: 0x00193A1C}
+      - {object: newlib/libm/math/ef_log10, function: __ieee754_log10f, section: .libmdata_ef_log10, start: 0x00193A1C, end: 0x00193A34}
+      - {object: newlib/libm/math/ef_pow, function: __ieee754_powf, section: .libmdata_ef_pow, start: 0x00193A38, end: 0x00193AC0}
       - {object: newlib/libm/math/e_fmod, function: __ieee754_fmod, section: .libmdata_e_fmod, start: 0x001937B8, end: 0x001937D0}
       - {object: newlib/libm/math/e_pow, function: __ieee754_pow, section: .libmdata_e_pow, start: 0x001937D0, end: 0x001939A0}
       - {object: newlib/libm/math/ef_rem_pio2, function: __ieee754_rem_pio2f, section: .libmdata_ef_rem_pio2, start: 0x00193AC0, end: 0x00193E80}

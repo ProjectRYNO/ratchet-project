@@ -1,6 +1,6 @@
 {
   "source_release": "1.9.0",
-  "source_family": "newlib 1.9.0 baseline with verbatim 1.8.1 rint; unique SDK snapshot not established",
+  "source_family": "newlib 1.9.0 baseline with verbatim 1.8.2 ef_asin and 1.8.1 s_rint; unique original SDK release not established",
   "module_start": "0x131a90",
   "module_end": "0x136da8",
   "total_functions": 37,
@@ -47,11 +47,11 @@
       "end": "0x133250",
       "source": "code/newlib/libm/math/ef_asin.c",
       "upstream": "math/ef_asin.c",
-      "upstream_sha256": "7a2f54c30c9b5dae942cd308fcda25c5e3b3a36ef3ac9a537d048eceb4014d9e",
-      "compiled": false,
-      "source_sha256": "0e01670945e938d7cd3dcb3018fea18b02c4090aacd99c5be46ee235e6c66c0b",
-      "status": "assembly; upstream candidate imported",
-      "source_release": "1.9.0"
+      "upstream_sha256": "3c11e39a6c6fc19326b8e632a093249465f6b01140c6f00c96ade0f9ce379afb",
+      "compiled": true,
+      "source_sha256": "1e72930fbf0cc0686fb28ceebe8e0c376a2832fb5714dad063ce353549bd9062",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.8.2"
     },
     {
       "name": "__ieee754_expf",
@@ -60,9 +60,9 @@
       "source": "code/newlib/libm/math/ef_exp.c",
       "upstream": "math/ef_exp.c",
       "upstream_sha256": "2211d8a02bea565dc316c0ca4b8f8d93da2fe999801458dc8695ebbc28638c5c",
-      "compiled": false,
-      "source_sha256": "b3f3fba5060562897925dadbfffc5c51419683f4d6e1fa8d68a5b6bbe3004fac",
-      "status": "assembly; upstream candidate imported",
+      "compiled": true,
+      "source_sha256": "a3021f20c97d87fe73a0ad5ebfb84fc54c8231686a586446debdeba675f3de78",
+      "status": "compiled C; exact linked bytes",
       "source_release": "1.9.0"
     },
     {
@@ -72,9 +72,9 @@
       "source": "code/newlib/libm/math/ef_log.c",
       "upstream": "math/ef_log.c",
       "upstream_sha256": "f3306eb420763f76cb39a9a24a91fd6e230ec5c1260c481302d139f06eff8d06",
-      "compiled": false,
-      "source_sha256": "ec0cefd23824f751d4bf6b4be0a8cdd0cc03805ec92f45763d2fb35b24497597",
-      "status": "assembly; upstream candidate imported",
+      "compiled": true,
+      "source_sha256": "42c95b762e953db077cc7f35ba630438477f8c2e50f9894b302ff30eeb35282b",
+      "status": "compiled C; exact linked bytes",
       "source_release": "1.9.0"
     },
     {
@@ -84,9 +84,9 @@
       "source": "code/newlib/libm/math/ef_log10.c",
       "upstream": "math/ef_log10.c",
       "upstream_sha256": "9b3ee40fe972ac6beb788f47b0b8667af48b35907ede074e9664469720cbe664",
-      "compiled": false,
-      "source_sha256": "a8c8922fee1f1d9c6e479f18fecbc2271efee7204645669b4f3ca5aa26a8df56",
-      "status": "assembly; upstream candidate imported",
+      "compiled": true,
+      "source_sha256": "25a0d88edc08af4e6417112bae64cabbba19bd5817e67c031d19bfddce0dbe80",
+      "status": "compiled C; exact linked bytes",
       "source_release": "1.9.0"
     },
     {
@@ -96,9 +96,9 @@
       "source": "code/newlib/libm/math/ef_pow.c",
       "upstream": "math/ef_pow.c",
       "upstream_sha256": "1aefe49460615372cb2fe67cf7de72ed75f50c682d400a141d8b4714d8bc53af",
-      "compiled": false,
-      "source_sha256": "cd12a8713c0efb19aacf8510cf81e65809b849c1f5c24d8d55b28d033bdbe543",
-      "status": "assembly; upstream candidate imported",
+      "compiled": true,
+      "source_sha256": "12390ba109b3c946db82e109222cf8054a67c468928461770fc5421ad8e3da13",
+      "status": "compiled C; exact linked bytes",
       "source_release": "1.9.0"
     },
     {
@@ -120,9 +120,9 @@
       "source": "code/newlib/libm/math/ef_sqrt.c",
       "upstream": "math/ef_sqrt.c",
       "upstream_sha256": "55dce6ae436e7b2570200f70692e9dfd5add01a8f8504e50eca08aa4713aec67",
-      "compiled": false,
-      "source_sha256": "86201b6a5e8a3bf0b517045c38b42c671b300f67e80e2bbf910c4079824ea2e7",
-      "status": "assembly; upstream candidate imported",
+      "compiled": true,
+      "source_sha256": "18f6e32a244841070759aec623f1e7c7ef6b7a795f8d22cfcf699baabaf87684",
+      "status": "compiled C; exact linked bytes",
       "source_release": "1.9.0"
     },
     {
@@ -450,14 +450,14 @@
       "source_release": "1.9.0"
     }
   ],
-  "compiled_functions": 31,
-  "exact_compiled_functions": 31,
-  "exact_percent": 83.78,
-  "compiled_bytes": 15956,
+  "compiled_functions": 37,
+  "exact_compiled_functions": 37,
+  "exact_percent": 100.0,
+  "compiled_bytes": 21180,
   "module_bytes": 21272,
   "differing_bytes": 0,
   "verified_date": "2026-10-19",
-  "base_commit": "08040d11c21941f65f149c37e2ee0aadefca9cf1",
+  "base_commit": "9df68ec",
   "working_tree_changes": true,
   "compiler": "Sony GCC 2.9-ee-991111-01",
   "compiler_flags": "-G0 -O2 -fno-builtin",
@@ -471,7 +471,9 @@
     "Temporary D_168BAC = 0x00168BAC linker alias for an existing medius reference."
   ],
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "015dd4595d0b8aaa72463c06d8b8d56651e0291b7ab9838fad01f25597468fed",
-  "constant_bytes": 1762,
-  "compiler_archive_sha256": "f07d1f38afa847197fb816237dbce64e79b2d37b738cb93fa4df3ac7aa1d16f3"
+  "rebuilt_sha256": "2e1283399004eacffe115cc09128eaa2757ff5f658b49a7171cd972d46d25189",
+  "constant_bytes": 2046,
+  "compiler_archive_sha256": "ed684fd98f89d36b0121caab311052089103e3b36241fcef4338cc9ea41c75b8",
+  "assembly_functions": 0,
+  "compiler_archive": "ee-gcc2.9-991111-01.tar.xz"
 }

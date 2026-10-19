@@ -91,7 +91,8 @@ without relocation masks.
 Remaining explicit assembly is reported separately from compiled C progress.
 `tools/verify.py` includes this check and `test_drop_unused_rodata.py`.
 
-The libm profile is Sony GCC 2.9-ee-991111-01 `-G0 -O2 -fno-builtin`, assembler `-EL -G0`; it does
+The libm profile uses the pinned `ee-gcc2.9-991111-01.tar.xz` archive
+(not the similarly versioned `991111a` archive): Sony GCC 2.9-ee-991111-01 `-G0 -O2 -fno-builtin`, assembler `-EL -G0`; it does
 not share sound's loop adapter. Referenced constants receive exact original-address
 data slots; only unused duplicate sections are removed. That helper is fail-closed:
 relocations, exported symbols, writable or executable flags prevent removal.

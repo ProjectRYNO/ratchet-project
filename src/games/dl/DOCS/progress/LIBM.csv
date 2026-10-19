@@ -2,13 +2,13 @@ name,address,end,source,status
 __ieee754_fmod,0x131a90,0x131e80,code/newlib/libm/math/e_fmod.c,compiled C; exact linked bytes
 __ieee754_pow,0x131e80,0x132ba8,code/newlib/libm/math/e_pow.c,compiled C; exact linked bytes
 __ieee754_sqrt,0x132ba8,0x132eb0,code/newlib/libm/math/e_sqrt.c,compiled C; exact linked bytes
-__ieee754_asinf,0x132eb0,0x133250,code/newlib/libm/math/ef_asin.c,assembly; upstream candidate imported
-__ieee754_expf,0x133250,0x133508,code/newlib/libm/math/ef_exp.c,assembly; upstream candidate imported
-__ieee754_logf,0x133508,0x133830,code/newlib/libm/math/ef_log.c,assembly; upstream candidate imported
-__ieee754_log10f,0x133830,0x133960,code/newlib/libm/math/ef_log10.c,assembly; upstream candidate imported
-__ieee754_powf,0x133960,0x1341f0,code/newlib/libm/math/ef_pow.c,assembly; upstream candidate imported
+__ieee754_asinf,0x132eb0,0x133250,code/newlib/libm/math/ef_asin.c,compiled C; exact linked bytes
+__ieee754_expf,0x133250,0x133508,code/newlib/libm/math/ef_exp.c,compiled C; exact linked bytes
+__ieee754_logf,0x133508,0x133830,code/newlib/libm/math/ef_log.c,compiled C; exact linked bytes
+__ieee754_log10f,0x133830,0x133960,code/newlib/libm/math/ef_log10.c,compiled C; exact linked bytes
+__ieee754_powf,0x133960,0x1341f0,code/newlib/libm/math/ef_pow.c,compiled C; exact linked bytes
 __ieee754_rem_pio2f,0x1341f0,0x1345d0,code/newlib/libm/math/ef_rem_pio2.c,compiled C; exact linked bytes
-__ieee754_sqrtf,0x1345d0,0x134708,code/newlib/libm/math/ef_sqrt.c,assembly; upstream candidate imported
+__ieee754_sqrtf,0x1345d0,0x134708,code/newlib/libm/math/ef_sqrt.c,compiled C; exact linked bytes
 __kernel_cosf,0x134708,0x134860,code/newlib/libm/math/kf_cos.c,compiled C; exact linked bytes
 __kernel_rem_pio2f,0x134860,0x1351b0,code/newlib/libm/math/kf_rem_pio2.c,compiled C; exact linked bytes
 __kernel_sinf,0x1351b0,0x1352b8,code/newlib/libm/math/kf_sin.c,compiled C; exact linked bytes
