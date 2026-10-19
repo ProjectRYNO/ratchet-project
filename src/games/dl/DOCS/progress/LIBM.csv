@@ -1,38 +1,38 @@
 name,address,end,source,status
-__ieee754_fmod,0x131a90,0x131e80,code/newlib/libm/math/e_fmod.c,assembly; upstream candidate imported
-__ieee754_pow,0x131e80,0x132ba8,code/newlib/libm/math/e_pow.c,assembly; upstream candidate imported
-__ieee754_sqrt,0x132ba8,0x132eb0,code/newlib/libm/math/e_sqrt.c,assembly; upstream candidate imported
+__ieee754_fmod,0x131a90,0x131e80,code/newlib/libm/math/e_fmod.c,compiled C; exact linked bytes
+__ieee754_pow,0x131e80,0x132ba8,code/newlib/libm/math/e_pow.c,compiled C; exact linked bytes
+__ieee754_sqrt,0x132ba8,0x132eb0,code/newlib/libm/math/e_sqrt.c,compiled C; exact linked bytes
 __ieee754_asinf,0x132eb0,0x133250,code/newlib/libm/math/ef_asin.c,assembly; upstream candidate imported
 __ieee754_expf,0x133250,0x133508,code/newlib/libm/math/ef_exp.c,assembly; upstream candidate imported
 __ieee754_logf,0x133508,0x133830,code/newlib/libm/math/ef_log.c,assembly; upstream candidate imported
 __ieee754_log10f,0x133830,0x133960,code/newlib/libm/math/ef_log10.c,assembly; upstream candidate imported
 __ieee754_powf,0x133960,0x1341f0,code/newlib/libm/math/ef_pow.c,assembly; upstream candidate imported
-__ieee754_rem_pio2f,0x1341f0,0x1345d0,code/newlib/libm/math/ef_rem_pio2.c,assembly; upstream candidate imported
+__ieee754_rem_pio2f,0x1341f0,0x1345d0,code/newlib/libm/math/ef_rem_pio2.c,compiled C; exact linked bytes
 __ieee754_sqrtf,0x1345d0,0x134708,code/newlib/libm/math/ef_sqrt.c,assembly; upstream candidate imported
-__kernel_cosf,0x134708,0x134860,code/newlib/libm/math/kf_cos.c,compiled-exact
-__kernel_rem_pio2f,0x134860,0x1351b0,code/newlib/libm/math/kf_rem_pio2.c,assembly; upstream candidate imported
-__kernel_sinf,0x1351b0,0x1352b8,code/newlib/libm/math/kf_sin.c,assembly; upstream candidate imported
-copysign,0x1352b8,0x135300,code/newlib/libm/common/s_copysign.c,compiled-exact
-fabs,0x135300,0x135338,code/newlib/libm/math/s_fabs.c,compiled-exact
-finite,0x135338,0x135358,code/newlib/libm/common/s_finite.c,compiled-exact
-isnan,0x135358,0x135390,code/newlib/libm/math/s_isnan.c,compiled-exact
-matherr,0x135390,0x1353b8,code/newlib/libm/common/s_matherr.c,compiled-exact
-rint,0x1353b8,0x1355b8,code/newlib/libm/common/s_rint.c,assembly; upstream candidate imported
-scalbn,0x1355b8,0x135770,code/newlib/libm/common/s_scalbn.c,assembly; upstream candidate imported
-ceilf,0x135770,0x135848,code/newlib/libm/math/sf_ceil.c,compiled-exact
-copysignf,0x135848,0x135878,code/newlib/libm/common/sf_copysign.c,compiled-exact
-cosf,0x135878,0x135960,code/newlib/libm/math/sf_cos.c,compiled-exact
-fabsf,0x135960,0x135980,code/newlib/libm/math/sf_fabs.c,compiled-exact
-finitef,0x135980,0x1359a8,code/newlib/libm/common/sf_finite.c,compiled-exact
-floorf,0x1359a8,0x135a90,code/newlib/libm/math/sf_floor.c,compiled-exact
-isnanf,0x135a90,0x135ab8,code/newlib/libm/math/sf_isnan.c,compiled-exact
-scalbnf,0x135ab8,0x135c18,code/newlib/libm/common/sf_scalbn.c,compiled-exact
-fmod,0x135c18,0x135d38,code/newlib/libm/math/w_fmod.c,assembly; upstream candidate imported
-pow,0x135d38,0x136168,code/newlib/libm/math/w_pow.c,assembly; upstream candidate imported
-sqrt,0x136168,0x136278,code/newlib/libm/math/w_sqrt.c,assembly; upstream candidate imported
-asinf,0x136278,0x136378,code/newlib/libm/math/wf_asin.c,assembly; upstream candidate imported
-expf,0x136378,0x1364f0,code/newlib/libm/math/wf_exp.c,assembly; upstream candidate imported
-logf,0x1364f0,0x136638,code/newlib/libm/math/wf_log.c,assembly; upstream candidate imported
-log10f,0x136638,0x136788,code/newlib/libm/math/wf_log10.c,assembly; upstream candidate imported
-powf,0x136788,0x136c90,code/newlib/libm/math/wf_pow.c,assembly; upstream candidate imported
-sqrtf,0x136c90,0x136da8,code/newlib/libm/math/wf_sqrt.c,assembly; upstream candidate imported
+__kernel_cosf,0x134708,0x134860,code/newlib/libm/math/kf_cos.c,compiled C; exact linked bytes
+__kernel_rem_pio2f,0x134860,0x1351b0,code/newlib/libm/math/kf_rem_pio2.c,compiled C; exact linked bytes
+__kernel_sinf,0x1351b0,0x1352b8,code/newlib/libm/math/kf_sin.c,compiled C; exact linked bytes
+copysign,0x1352b8,0x135300,code/newlib/libm/common/s_copysign.c,compiled C; exact linked bytes
+fabs,0x135300,0x135338,code/newlib/libm/math/s_fabs.c,compiled C; exact linked bytes
+finite,0x135338,0x135358,code/newlib/libm/common/s_finite.c,compiled C; exact linked bytes
+isnan,0x135358,0x135390,code/newlib/libm/math/s_isnan.c,compiled C; exact linked bytes
+matherr,0x135390,0x1353b8,code/newlib/libm/common/s_matherr.c,compiled C; exact linked bytes
+rint,0x1353b8,0x1355b8,code/newlib/libm/common/s_rint.c,compiled C; exact linked bytes
+scalbn,0x1355b8,0x135770,code/newlib/libm/common/s_scalbn.c,compiled C; exact linked bytes
+ceilf,0x135770,0x135848,code/newlib/libm/math/sf_ceil.c,compiled C; exact linked bytes
+copysignf,0x135848,0x135878,code/newlib/libm/common/sf_copysign.c,compiled C; exact linked bytes
+cosf,0x135878,0x135960,code/newlib/libm/math/sf_cos.c,compiled C; exact linked bytes
+fabsf,0x135960,0x135980,code/newlib/libm/math/sf_fabs.c,compiled C; exact linked bytes
+finitef,0x135980,0x1359a8,code/newlib/libm/common/sf_finite.c,compiled C; exact linked bytes
+floorf,0x1359a8,0x135a90,code/newlib/libm/math/sf_floor.c,compiled C; exact linked bytes
+isnanf,0x135a90,0x135ab8,code/newlib/libm/math/sf_isnan.c,compiled C; exact linked bytes
+scalbnf,0x135ab8,0x135c18,code/newlib/libm/common/sf_scalbn.c,compiled C; exact linked bytes
+fmod,0x135c18,0x135d38,code/newlib/libm/math/w_fmod.c,compiled C; exact linked bytes
+pow,0x135d38,0x136168,code/newlib/libm/math/w_pow.c,compiled C; exact linked bytes
+sqrt,0x136168,0x136278,code/newlib/libm/math/w_sqrt.c,compiled C; exact linked bytes
+asinf,0x136278,0x136378,code/newlib/libm/math/wf_asin.c,compiled C; exact linked bytes
+expf,0x136378,0x1364f0,code/newlib/libm/math/wf_exp.c,compiled C; exact linked bytes
+logf,0x1364f0,0x136638,code/newlib/libm/math/wf_log.c,compiled C; exact linked bytes
+log10f,0x136638,0x136788,code/newlib/libm/math/wf_log10.c,compiled C; exact linked bytes
+powf,0x136788,0x136c90,code/newlib/libm/math/wf_pow.c,compiled C; exact linked bytes
+sqrtf,0x136c90,0x136da8,code/newlib/libm/math/wf_sqrt.c,compiled C; exact linked bytes

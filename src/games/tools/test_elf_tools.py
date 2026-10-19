@@ -6,7 +6,7 @@ from pathlib import Path
 
 from compare_elf import runtime_layout
 from elf_to_rom import extract
-from split_dl import is_generated_wrapper, normalize_assembly
+from split_dl import carve_rodata, is_generated_wrapper, normalize_assembly
 
 
 def fixture(offset=0x100, physical=0x100080):
@@ -44,6 +44,24 @@ class ElfToolsTests(unittest.TestCase):
         self.assertTrue(is_generated_wrapper('#include "common.h"\nINCLUDE_ASM("some/path", fn);\nvoid empty(void) {}'))
         self.assertFalse(is_generated_wrapper('#include "common.h"\nvoid fn(void) { counter++; }'))
         self.assertFalse(is_generated_wrapper('static int counter;\nvoid empty(void) {}'))
+
+    def test_constant_pool_preserves_partial_word_padding(self):
+        source = ('dlabel name\n'
+                  '    /* 93EE0 00193F60 6173696E */ .word 0x6E697361\n'
+                  '    /* 93EE4 00193F64 6600CDCD */ .word 0xCDCD0066\n'
+                  'enddlabel name\n'
+                  '    /* 93EE8 00193F68 8071B142 */ .word 0x42B17180\n')
+        result = carve_rodata(source, [{'start': 0x193F60, 'end': 0x193F66}])
+        self.assertIn('.section .rodata.slot_00193F60, "a"\ndlabel name', result)
+        self.assertIn('/* 93EE4 00193F64 6600 */ .byte 0x66, 0x00', result)
+        self.assertIn('.section .rodata.after_00193F66, "a"\n    /* 93EE6 00193F66 CDCD */ .byte 0xCD, 0xCD', result)
+        self.assertNotIn('enddlabel name', result)
+
+    def test_partial_word_slot_rejects_relocation(self):
+        source = ('/* 93EE4 00193F64 00000000 */ .word external\n'
+                  '/* 93EE8 00193F68 00000000 */ .word 0x00000000\n')
+        with self.assertRaisesRegex(SystemExit, 'inside a data line'):
+            carve_rodata(source, [{'start': 0x193F64, 'end': 0x193F66}])
 
     def test_cross_object_branch_and_function_alignment(self):
         source = '.align 3\n/* 3DF628 004DF6A8 31001105 */ bgezal $8, _ssp_load_tex\n'

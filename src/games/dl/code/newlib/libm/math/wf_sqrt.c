@@ -1,7 +1,3 @@
-/* Upstream candidate: ../upstream/math/wf_sqrt.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/wf_sqrt", sqrtf);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/wf_sqrt", func_00136DA4);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+float sqrtf(float) __attribute__((section(".libm_sqrtf")));
+#include "../upstream/math/wf_sqrt.c"

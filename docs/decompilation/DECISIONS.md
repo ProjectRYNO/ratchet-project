@@ -133,3 +133,25 @@ Whole-game strict differences remain 3,917 bytes outside libm. Verification uses
 an isolated snapshot with the previously documented unrelated SVO3/header and
 medius alias accommodations. Gameplay untested. The standard verifier now includes
 `check_libm.py`; progress is scoped to LIBM.json/CSV to preserve concurrent SVO3 work.
+
+## 2026-10-19: Expand libm to 31 exact C functions
+
+Sony GCC 2.9-ee-991111-01 with `-G0 -O2 -fno-builtin` reproduces 30 of the 37
+newlib 1.9.0 functions. Verbatim newlib 1.8.1 `rint` adds the 31st; 1.8.2 and
+later introduce a volatile temporary and do not match. Pin this compiler archive
+in the Makefile, preserve the older source attribution, and leave six unmatched
+IEEE float kernels as explicit assembly. This does not establish one unique SDK release.
+
+Reuse exact read-only-data placement for compiled numerical constants and strings.
+The splitter now preserves partial-word padding after a six-byte string by splitting
+only a literal word, never a relocation. Regression tests cover that boundary and
+relocation rejection. No slot was widened. Unreferenced duplicate pools still use
+the guarded removal helper. The library checker now verifies compiled pools too.
+
+Full isolated ELF verification: 31/37 (83.78%), 15,956 compiled instruction bytes,
+1,762 compiled constant bytes, and the entire 21,272-byte library match. Original
+source splits survive splitting. Runtime-header/slot audit and placement safeguards
+pass. Strict whole-game differences remain 3,917 bytes outside libm, unchanged from
+the baseline. The same documented snapshot-only unrelated build accommodations
+remain necessary; no gameplay testing was performed. See NEWLIB_LIBM.md and
+LIBM_FOLLOWUP_PROBES.json for reproducible evidence and the remaining six targets.

@@ -1,7 +1,3 @@
-/* Upstream candidate: ../upstream/math/kf_sin.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/kf_sin", __kernel_sinf);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/kf_sin", func_001352B4);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+float __kernel_sinf(float, float, int) __attribute__((section(".libm___kernel_sinf")));
+#include "../upstream/math/kf_sin.c"

@@ -86,12 +86,14 @@ A sound pass does not imply the whole-game strict ELF comparison or gameplay pas
 
 Run `TESTS/check_libm.py ORIGINAL REBUILT build/code` after the serial split/build
 pipeline. It checks real compiled definitions, original entry addresses and slot
-bounds, and every byte of the entire math-library block, without relocation masks.
+bounds, every byte of the entire math-library block, and compiled constant pools,
+without relocation masks.
 Remaining explicit assembly is reported separately from compiled C progress.
 `tools/verify.py` includes this check and `test_drop_unused_rodata.py`.
 
-The libm profile is SN v1.36 `-G0 -O2 -fno-builtin`, assembler `-EL -G0`; it does
-not share sound's loop adapter. The constant-section helper is fail-closed:
+The libm profile is Sony GCC 2.9-ee-991111-01 `-G0 -O2 -fno-builtin`, assembler `-EL -G0`; it does
+not share sound's loop adapter. Referenced constants receive exact original-address
+data slots; only unused duplicate sections are removed. That helper is fail-closed:
 relocations, exported symbols, writable or executable flags prevent removal.
 See the [source/version investigation](../../src/games/dl/DOCS/libraries/NEWLIB_LIBM.md)
 for source provenance and the isolated-build limitations.

@@ -1,7 +1,3 @@
-/* Upstream candidate: ../upstream/common/s_rint.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/common/s_rint", rint);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/common/s_rint", func_001355B4);
-
+/* Newlib 1.8.1 source; original function placement for Deadlocked. */
+double rint(double) __attribute__((section(".libm_rint")));
+#include "../upstream/common/s_rint.c"

@@ -1,7 +1,3 @@
-/* Upstream candidate: ../upstream/math/wf_asin.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/wf_asin", asinf);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/wf_asin", func_00136374);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+float asinf(float) __attribute__((section(".libm_asinf")));
+#include "../upstream/math/wf_asin.c"

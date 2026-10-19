@@ -1,5 +1,3 @@
-/* Upstream candidate: ../upstream/math/wf_pow.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/wf_pow", powf);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+float powf(float, float) __attribute__((section(".libm_powf")));
+#include "../upstream/math/wf_pow.c"

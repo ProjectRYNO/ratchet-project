@@ -160,10 +160,11 @@ The isolated build required unrelated snapshot-only SVO3/header and medius alias
 accommodations. See [verification details and build limitations](../sound/989SND_MATCHING.md),
 [989SND.json](989SND.json), and [989SND.csv](989SND.csv).
 
-The 2026-10-19 newlib/libm recovery adds **14/37 byte-exact compiled functions
-(37.84%)**, using the 1.9.0 source baseline and SN GCC 2.95.3 v1.36. All 37 relevant
-upstream sources are imported; 23 implementations still use explicit assembly.
-All 21,272 module bytes match, including those retained routines and padding.
-The original release is not uniquely established (older 1.8.2/1.9.0 family).
+The 2026-10-19 newlib/libm recovery now has **31/37 byte-exact compiled functions
+(83.78%)**, using Sony GCC 2.9-ee-991111-01 and newlib 1.9.0 with the older 1.8.1
+`rint`. Six IEEE float kernels still use explicit assembly. All 21,272 module
+bytes match, including those retained routines and padding; 15,956 instruction
+bytes and 1,762 constant-pool bytes come from compiled sources. All original
+source-file splits are preserved. The original SDK snapshot is not uniquely identified.
 See [source/compiler evidence](../libraries/NEWLIB_LIBM.md), [LIBM.json](LIBM.json),
-and [LIBM.csv](LIBM.csv). Prior sound, SDK and iksemel exact matches are preserved.
+and [LIBM.csv](LIBM.csv). Existing differences outside libm remain unchanged.

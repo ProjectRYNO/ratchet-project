@@ -53,6 +53,11 @@ EEGCC29_URL = https://github.com/decompme/compilers/releases/download/compilers/
 EEGCC29_SHA256 = ad2ea68afff2be25d21a1d51a75e8a0eea8f259018e6580622355cd01b95676b
 EEGCC29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/bin/ee-gcc
 EEAS29 = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29_DIR)/ee/bin/as
+EEGCC29A_DIR ?= /opt/ee-gcc2.9-991111a
+EEGCC29A_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.9-991111a.tar.xz
+EEGCC29A_SHA256 = f07d1f38afa847197fb816237dbce64e79b2d37b738cb93fa4df3ac7aa1d16f3
+EEGCC29A = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29A_DIR)/bin/ee-gcc
+EEAS29A = LD_PRELOAD=$(EEGCC296_DIR)/ee296_statshim.so $(EEGCC29A_DIR)/ee/bin/as
 EESN136_DIR ?= /opt/ee-gcc2.95.3-136
 EESN136_URL = https://github.com/decompme/compilers/releases/download/compilers/ee-gcc2.95.3-136.tar.gz
 EESN136_SHA256 = 3b6ae6897229ad005aaf1b0afaa1f3cb46e74b4c21a42e01130c07c0c598067f
@@ -167,6 +172,14 @@ ee-gcc29: ee-gcc296
 		$(PYTHON) -c 'import tarfile; tarfile.open("/tmp/ee-gcc2.9-990721.tar.xz").extractall("$(EEGCC29_DIR)", filter="data")'; \
 	fi
 
+ee-gcc29a: ee-gcc296
+	@if [ ! -f "$(EEGCC29A_DIR)/bin/ee-gcc" ]; then \
+		curl -fL -o /tmp/ee-gcc2.9-991111a.tar.xz $(EEGCC29A_URL) && \
+		echo "$(EEGCC29A_SHA256)  /tmp/ee-gcc2.9-991111a.tar.xz" | sha256sum -c - && \
+		$(MKDIR) -p $(EEGCC29A_DIR) && \
+		$(PYTHON) -c 'import tarfile; tarfile.open("/tmp/ee-gcc2.9-991111a.tar.xz").extractall("$(EEGCC29A_DIR)", filter="data")'; \
+	fi
+
 ee-gcc-sn136:
 	@if [ ! -f "$(EESN136_DIR)/bin/ee-gcc.exe" ]; then \
 		curl -fL -o /tmp/ee-gcc2.95.3-136.tar.gz $(EESN136_URL) && \
@@ -226,13 +239,15 @@ $(OBJ_DIR)/%.o: code/%.c
 
 # Historical fdlibm profile. Keep distinct from sound's assembler adaptation.
 LIBM_COMPILE_FLAGS = -G0 -O2 -fno-builtin
-LIBM_HEADERS = -include sys/types.h -Icode/newlib/libm/upstream/common -isystem $(PS2DEV_DIR)/ee/ee/include -isystem $(PS2DEV_DIR)/ee/lib/gcc-lib/ee/3.2.3/include
-LIBM_MATCHED_OBJS = $(OBJ_DIR)/newlib/libm/common/sf_scalbn.o $(OBJ_DIR)/newlib/libm/math/kf_cos.o $(OBJ_DIR)/newlib/libm/common/s_copysign.o $(OBJ_DIR)/newlib/libm/math/s_fabs.o $(OBJ_DIR)/newlib/libm/common/s_finite.o $(OBJ_DIR)/newlib/libm/math/s_isnan.o $(OBJ_DIR)/newlib/libm/common/s_matherr.o $(OBJ_DIR)/newlib/libm/math/sf_ceil.o $(OBJ_DIR)/newlib/libm/common/sf_copysign.o $(OBJ_DIR)/newlib/libm/math/sf_cos.o $(OBJ_DIR)/newlib/libm/math/sf_fabs.o $(OBJ_DIR)/newlib/libm/common/sf_finite.o $(OBJ_DIR)/newlib/libm/math/sf_floor.o $(OBJ_DIR)/newlib/libm/math/sf_isnan.o
-$(LIBM_MATCHED_OBJS): $(OBJ_DIR)/newlib/libm/%.o: code/newlib/libm/%.c code/newlib/libm/upstream/%.c code/newlib/libm/upstream/common/fdlibm.h $(TOOLS)/drop_unused_rodata.py Makefile | ee-gcc-sn136
+LIBM_HEADERS = -include $(PS2DEV_DIR)/ee/ee/include/sys/types.h -Icode/newlib/libm/upstream/common -isystem $(PS2DEV_DIR)/ee/ee/include -isystem $(PS2DEV_DIR)/ee/lib/gcc-lib/ee/3.2.3/include
+LIBM_MATCHED_OBJS = $(OBJ_DIR)/newlib/libm/math/e_fmod.o $(OBJ_DIR)/newlib/libm/math/e_pow.o $(OBJ_DIR)/newlib/libm/math/e_sqrt.o $(OBJ_DIR)/newlib/libm/math/ef_rem_pio2.o $(OBJ_DIR)/newlib/libm/math/kf_cos.o $(OBJ_DIR)/newlib/libm/math/kf_rem_pio2.o $(OBJ_DIR)/newlib/libm/math/kf_sin.o $(OBJ_DIR)/newlib/libm/common/s_copysign.o $(OBJ_DIR)/newlib/libm/math/s_fabs.o $(OBJ_DIR)/newlib/libm/common/s_finite.o $(OBJ_DIR)/newlib/libm/math/s_isnan.o $(OBJ_DIR)/newlib/libm/common/s_matherr.o $(OBJ_DIR)/newlib/libm/common/s_scalbn.o $(OBJ_DIR)/newlib/libm/math/sf_ceil.o $(OBJ_DIR)/newlib/libm/common/sf_copysign.o $(OBJ_DIR)/newlib/libm/math/sf_cos.o $(OBJ_DIR)/newlib/libm/math/sf_fabs.o $(OBJ_DIR)/newlib/libm/common/sf_finite.o $(OBJ_DIR)/newlib/libm/math/sf_floor.o $(OBJ_DIR)/newlib/libm/math/sf_isnan.o $(OBJ_DIR)/newlib/libm/common/sf_scalbn.o $(OBJ_DIR)/newlib/libm/math/w_fmod.o $(OBJ_DIR)/newlib/libm/math/w_pow.o $(OBJ_DIR)/newlib/libm/math/w_sqrt.o $(OBJ_DIR)/newlib/libm/math/wf_asin.o $(OBJ_DIR)/newlib/libm/math/wf_exp.o $(OBJ_DIR)/newlib/libm/math/wf_log.o $(OBJ_DIR)/newlib/libm/math/wf_log10.o $(OBJ_DIR)/newlib/libm/math/wf_pow.o $(OBJ_DIR)/newlib/libm/math/wf_sqrt.o $(OBJ_DIR)/newlib/libm/common/s_rint.o
+LIBM_DATA_OBJS = $(OBJ_DIR)/newlib/libm/math/e_fmod.o $(OBJ_DIR)/newlib/libm/math/e_pow.o $(OBJ_DIR)/newlib/libm/math/ef_rem_pio2.o $(OBJ_DIR)/newlib/libm/math/kf_rem_pio2.o $(OBJ_DIR)/newlib/libm/common/s_scalbn.o $(OBJ_DIR)/newlib/libm/math/w_fmod.o $(OBJ_DIR)/newlib/libm/math/w_pow.o $(OBJ_DIR)/newlib/libm/math/w_sqrt.o $(OBJ_DIR)/newlib/libm/math/wf_asin.o $(OBJ_DIR)/newlib/libm/math/wf_exp.o $(OBJ_DIR)/newlib/libm/math/wf_log.o $(OBJ_DIR)/newlib/libm/math/wf_log10.o $(OBJ_DIR)/newlib/libm/math/wf_pow.o $(OBJ_DIR)/newlib/libm/math/wf_sqrt.o $(OBJ_DIR)/newlib/libm/common/s_rint.o
+$(LIBM_MATCHED_OBJS): $(OBJ_DIR)/newlib/libm/%.o: code/newlib/libm/%.c code/newlib/libm/upstream/%.c code/newlib/libm/upstream/common/fdlibm.h $(TOOLS)/drop_unused_rodata.py Makefile | ee-gcc29a
 	@$(MKDIR) -p $(dir $@)
-	$(EESN136) -S $(LIBM_COMPILE_FLAGS) $(LIBM_HEADERS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS_SN136) -EL -G0 $(@:.o=.s) -o $@
-	$(PYTHON) $(TOOLS)/drop_unused_rodata.py $@ --objcopy $(CROSS)-objcopy
+	$(EEGCC29A) -S $(LIBM_COMPILE_FLAGS) $(LIBM_HEADERS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29A) -EL -G0 $(@:.o=.s) -o $@
+	$(CROSS)-strip -x -N dummy-symbol-name $@
+	$(if $(filter $@,$(LIBM_DATA_OBJS)),$(CROSS)-objcopy --rename-section .rodata=.libmdata_$(notdir $*) $@,$(PYTHON) $(TOOLS)/drop_unused_rodata.py $@ --objcopy $(CROSS)-objcopy)
 
 $(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile $(TOOLS)/sound_loop_compat.py | ee-gcc-sn136
 	@$(MKDIR) -p $(dir $@)

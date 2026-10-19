@@ -7,7 +7,7 @@ GAMES=Path(__file__).resolve().parents[1]
 parser=argparse.ArgumentParser(description="Diagnostic libm compiler fingerprint comparison. Relocation-masked differences are NOT an exact-match result; use check_libm.py on a linked ELF.")
 parser.add_argument('--newlib',type=Path,required=True,help='extracted release newlib directory containing libc/ and libm/')
 parser.add_argument('--output',type=Path,required=True)
-parser.add_argument('--compiler',choices=['sony29','sn136'],default='sn136')
+parser.add_argument('--compiler',choices=['sony29','sony991111a','sn136'],default='sn136')
 parser.add_argument('--functions',nargs='*')
 parser.add_argument('--original',type=Path,default=GAMES/'assets/dl/boot.elf')
 args=parser.parse_args()
@@ -19,8 +19,8 @@ names=list(syms);mapfiles=[Path(r['upstream']).stem for r in inventory]
 with args.original.open('rb') as f:
  e=ELFFile(f);segments=[(s['p_vaddr'],s.data()) for s in e.iter_segments() if s['p_type']=='PT_LOAD']
 def retail(a,n):return next(d[a-b:a-b+n] for b,d in segments if b<=a and a+n<=b+len(d))
-ccs={'sony29':['/opt/ee-gcc2.9-990721/bin/ee-gcc'],'sn136':['/opt/wibo-1.2.0','/opt/ee-gcc2.95.3-136/bin/ee-gcc.exe']}
-assemblers={'sony29':['/opt/ee-gcc2.9-990721/ee/bin/as'],'sn136':['/opt/wibo-1.2.0','/opt/ee-gcc2.95.3-136/lib/gcc-lib/ee/2.95.3/as.exe']}
+ccs={'sony991111a':['/opt/ee-gcc2.9-991111a/bin/ee-gcc'],'sony29':['/opt/ee-gcc2.9-990721/bin/ee-gcc'],'sn136':['/opt/wibo-1.2.0','/opt/ee-gcc2.95.3-136/bin/ee-gcc.exe']}
+assemblers={'sony991111a':['/opt/ee-gcc2.9-991111a/ee/bin/as'],'sony29':['/opt/ee-gcc2.9-990721/ee/bin/as'],'sn136':['/opt/wibo-1.2.0','/opt/ee-gcc2.95.3-136/lib/gcc-lib/ee/2.95.3/as.exe']}
 env=dict(os.environ,LD_PRELOAD='/opt/ee-gcc2.96/ee296_statshim.so');results=[]
 for v in [args.newlib.parent.name]:
  src=args.newlib;inc=['-I'+str(src/'libm/common'),'-I'+str(src/'libc/include'),'-isystem','/opt/ps2dev/ee/lib/gcc-lib/ee/3.2.3/include','-isystem','/opt/ps2dev/ee/ee/include']

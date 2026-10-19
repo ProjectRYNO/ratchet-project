@@ -1,6 +1,23 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  __ieee754_fmod: 0x00131A90
+  __ieee754_pow: 0x00131E80
+  __ieee754_sqrt: 0x00132BA8
+  __ieee754_rem_pio2f: 0x001341F0
+  __kernel_rem_pio2f: 0x00134860
+  __kernel_sinf: 0x001351B0
+  scalbn: 0x001355B8
+  fmod: 0x00135C18
+  pow: 0x00135D38
+  sqrt: 0x00136168
+  asinf: 0x00136278
+  expf: 0x00136378
+  logf: 0x001364F0
+  log10f: 0x00136638
+  powf: 0x00136788
+  sqrtf: 0x00136C90
+  rint: 0x001353B8
   scalbnf: 0x00135AB8
   __kernel_cosf: 0x00134708
   copysign: 0x001352B8
@@ -1176,6 +1193,91 @@ functions:
   ezNetCtlRecreateIfstat: 0x01E9AE48
 
 objects:
+  newlib/libm/math/e_fmod:
+    text_start: 0x00131A90
+    text_end: 0x00131E80
+    slots:
+      - { object: newlib/libm/math/e_fmod, section: .libm___ieee754_fmod, start: 0x00131A90, end: 0x00131E80 }
+  newlib/libm/math/e_pow:
+    text_start: 0x00131E80
+    text_end: 0x00132BA8
+    slots:
+      - { object: newlib/libm/math/e_pow, section: .libm___ieee754_pow, start: 0x00131E80, end: 0x00132BA8 }
+  newlib/libm/math/e_sqrt:
+    text_start: 0x00132BA8
+    text_end: 0x00132EAC
+    slots:
+      - { object: newlib/libm/math/e_sqrt, section: .libm___ieee754_sqrt, start: 0x00132BA8, end: 0x00132EAC }
+  newlib/libm/math/ef_rem_pio2:
+    text_start: 0x001341F0
+    text_end: 0x001345D0
+    slots:
+      - { object: newlib/libm/math/ef_rem_pio2, section: .libm___ieee754_rem_pio2f, start: 0x001341F0, end: 0x001345D0 }
+  newlib/libm/math/kf_rem_pio2:
+    text_start: 0x00134860
+    text_end: 0x001351AC
+    slots:
+      - { object: newlib/libm/math/kf_rem_pio2, section: .libm___kernel_rem_pio2f, start: 0x00134860, end: 0x001351AC }
+  newlib/libm/math/kf_sin:
+    text_start: 0x001351B0
+    text_end: 0x001352B4
+    slots:
+      - { object: newlib/libm/math/kf_sin, section: .libm___kernel_sinf, start: 0x001351B0, end: 0x001352B4 }
+  newlib/libm/common/s_scalbn:
+    text_start: 0x001355B8
+    text_end: 0x0013576C
+    slots:
+      - { object: newlib/libm/common/s_scalbn, section: .libm_scalbn, start: 0x001355B8, end: 0x0013576C }
+  newlib/libm/math/w_fmod:
+    text_start: 0x00135C18
+    text_end: 0x00135D34
+    slots:
+      - { object: newlib/libm/math/w_fmod, section: .libm_fmod, start: 0x00135C18, end: 0x00135D34 }
+  newlib/libm/math/w_pow:
+    text_start: 0x00135D38
+    text_end: 0x00136168
+    slots:
+      - { object: newlib/libm/math/w_pow, section: .libm_pow, start: 0x00135D38, end: 0x00136168 }
+  newlib/libm/math/w_sqrt:
+    text_start: 0x00136168
+    text_end: 0x00136274
+    slots:
+      - { object: newlib/libm/math/w_sqrt, section: .libm_sqrt, start: 0x00136168, end: 0x00136274 }
+  newlib/libm/math/wf_asin:
+    text_start: 0x00136278
+    text_end: 0x00136374
+    slots:
+      - { object: newlib/libm/math/wf_asin, section: .libm_asinf, start: 0x00136278, end: 0x00136374 }
+  newlib/libm/math/wf_exp:
+    text_start: 0x00136378
+    text_end: 0x001364EC
+    slots:
+      - { object: newlib/libm/math/wf_exp, section: .libm_expf, start: 0x00136378, end: 0x001364EC }
+  newlib/libm/math/wf_log:
+    text_start: 0x001364F0
+    text_end: 0x00136638
+    slots:
+      - { object: newlib/libm/math/wf_log, section: .libm_logf, start: 0x001364F0, end: 0x00136638 }
+  newlib/libm/math/wf_log10:
+    text_start: 0x00136638
+    text_end: 0x00136784
+    slots:
+      - { object: newlib/libm/math/wf_log10, section: .libm_log10f, start: 0x00136638, end: 0x00136784 }
+  newlib/libm/math/wf_pow:
+    text_start: 0x00136788
+    text_end: 0x00136C90
+    slots:
+      - { object: newlib/libm/math/wf_pow, section: .libm_powf, start: 0x00136788, end: 0x00136C90 }
+  newlib/libm/math/wf_sqrt:
+    text_start: 0x00136C90
+    text_end: 0x00136DA4
+    slots:
+      - { object: newlib/libm/math/wf_sqrt, section: .libm_sqrtf, start: 0x00136C90, end: 0x00136DA4 }
+  newlib/libm/common/s_rint:
+    text_start: 0x001353B8
+    text_end: 0x001355B4
+    slots:
+      - { object: newlib/libm/common/s_rint, section: .libm_rint, start: 0x001353B8, end: 0x001355B4 }
   newlib/libm/common/sf_scalbn:
     text_start: 0x00135AB8
     text_end: 0x00135C18
@@ -2830,11 +2932,26 @@ objects:
       - {object: sdk/i18n_inet, section: .sdk_i18n_inet_ezNetCtlRecreateIfstat, start: 0x01E9AE48, end: 0x01E9B0F0}
 
 # Switch jump tables of compiled functions. Retail keeps them in the main read-only data;
-# each slot is exactly the retail table extent (code-address entries only). A compiled
-# function's tables are placed there and may only change bytes inside its slot.
+# each slot is exactly the retail table or constant-pool extent. Compiled read-only
+# data is placed there and checked byte-for-byte by the owning library verifier.
 rodata:
   asm/build/core.data/091E80.rodata:
     slots:
+      - {object: newlib/libm/math/e_fmod, function: __ieee754_fmod, section: .libmdata_e_fmod, start: 0x001937B8, end: 0x001937D0}
+      - {object: newlib/libm/math/e_pow, function: __ieee754_pow, section: .libmdata_e_pow, start: 0x001937D0, end: 0x001939A0}
+      - {object: newlib/libm/math/ef_rem_pio2, function: __ieee754_rem_pio2f, section: .libmdata_ef_rem_pio2, start: 0x00193AC0, end: 0x00193E80}
+      - {object: newlib/libm/math/kf_rem_pio2, function: __kernel_rem_pio2f, section: .libmdata_kf_rem_pio2, start: 0x00193E80, end: 0x00193ECC}
+      - {object: newlib/libm/common/s_scalbn, function: scalbn, section: .libmdata_s_scalbn, start: 0x00193EF0, end: 0x00193F20}
+      - {object: newlib/libm/math/w_fmod, function: fmod, section: .libmdata_w_fmod, start: 0x00193F20, end: 0x00193F30}
+      - {object: newlib/libm/math/w_pow, function: pow, section: .libmdata_w_pow, start: 0x00193F30, end: 0x00193F50}
+      - {object: newlib/libm/math/w_sqrt, function: sqrt, section: .libmdata_w_sqrt, start: 0x00193F50, end: 0x00193F60}
+      - {object: newlib/libm/math/wf_asin, function: asinf, section: .libmdata_wf_asin, start: 0x00193F60, end: 0x00193F66}
+      - {object: newlib/libm/math/wf_exp, function: expf, section: .libmdata_wf_exp, start: 0x00193F68, end: 0x00193F80}
+      - {object: newlib/libm/math/wf_log, function: logf, section: .libmdata_wf_log, start: 0x00193F80, end: 0x00193F90}
+      - {object: newlib/libm/math/wf_log10, function: log10f, section: .libmdata_wf_log10, start: 0x00193F90, end: 0x00193FA0}
+      - {object: newlib/libm/math/wf_pow, function: powf, section: .libmdata_wf_pow, start: 0x00193FA0, end: 0x00193FC0}
+      - {object: newlib/libm/math/wf_sqrt, function: sqrtf, section: .libmdata_wf_sqrt, start: 0x00193FC0, end: 0x00193FD0}
+      - {object: newlib/libm/common/s_rint, function: rint, section: .libmdata_s_rint, start: 0x00193EE0, end: 0x00193EF0}
       - {object: iksemel/src/iks, function: escape_size, section: .iks_escape_size.rodata, start: 0x0019AE40, end: 0x0019AEB4}
       - {object: iksemel/src/iks, function: escape, section: .iks_escape.rodata, start: 0x0019AEE0, end: 0x0019AF54}
       - {object: iksemel/src/sax, function: sax_core, section: .iks_sax_core.rodata, start: 0x0019AFA0, end: 0x0019B010}

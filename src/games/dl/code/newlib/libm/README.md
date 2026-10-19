@@ -1,19 +1,19 @@
-﻿# Deadlocked newlib/libm
+# Deadlocked newlib/libm
 
-Working baseline: **newlib 1.9.0**, from the [official release archive](https://sourceware.org/ftp/newlib/newlib-1.9.0.tar.gz).
-The exact original release is not uniquely established; matching evidence points
-to the older 1.8.2/1.9.0 source family.
+Working source baseline: **newlib 1.9.0**, with `common/s_rint.c` taken verbatim
+from **1.8.1**. Both come from the [official release archive](https://sourceware.org/ftp/newlib/).
+The exact original SDK snapshot is not uniquely established.
 
-`upstream/` preserves the 37 relevant C sources and fdlibm header verbatim.
-Copyright notices and `COPYING.NEWLIB` are retained. It is excluded from standalone
-compilation. The corresponding `math/` and `common/` wrappers select either the
-upstream implementation with an original-address section, or explicit retail
-assembly when matching remains unfinished.
+`upstream/` preserves the 37 relevant C sources and fdlibm header with original
+copyright notices and `COPYING.NEWLIB`. It is excluded from standalone compilation.
+The `math/` and `common/` wrappers retain the original source grouping and select
+upstream C with original-address placement or explicit assembly for unfinished work.
 
-**14/37 functions are compiled and byte-exact (37.84%).** The other 23 upstream
-sources are candidates only. The full linked library still matches retail because
-those unfinished functions retain assembly.
+**31/37 functions compile and match exactly (83.78%)**, using Sony GCC
+**2.9-ee-991111-01**. Six IEEE float kernels remain assembly: asin, exp, log,
+log10, pow, and sqrt. Their upstream C remains available as research candidates.
+The full linked library, its compiled constant pools, and original padding match retail.
 
 See [evidence, compiler settings, and verification](../../../DOCS/libraries/NEWLIB_LIBM.md)
 and [progress](../../../DOCS/progress/LIBM.json). Do not build upstream copies
-independently or enable all candidates without linked-byte verification.
+independently or enable candidates without linked-byte verification.

@@ -65,7 +65,7 @@ def main():
         if unexpected:
             raise SystemExit(f"FAIL: {len(unexpected)} unexpected differences; first at 0x{unexpected[0]:08X}")
         count += len(changed)
-    print(f"PASS: {count} changed bytes, all within registered compiled function slots and their jump-table slots; every other loaded byte and runtime header matches")
+    print(f"PASS: {count} changed bytes, all within registered compiled function slots and their read-only data slots; every other loaded byte and runtime header matches")
 
 
 if __name__ == "__main__":

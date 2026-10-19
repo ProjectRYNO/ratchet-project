@@ -56,7 +56,26 @@ def carve_rodata(text, slots):
     section = ".rodata"
     label_section = {}
     out = []
-    lines = text.splitlines(keepends=True)
+    # A string pool can end within a literal word (e.g. "asinf\0" followed
+    # by two retail padding bytes). Split only literal words, never relocations,
+    # so the padding remains in the original object outside the compiled slot.
+    boundaries = {address for address, _ in bounds}
+    lines = []
+    for line in text.splitlines(keepends=True):
+        match = re.fullmatch(r"(\s*)/\* ([0-9A-F]+) ([0-9A-F]{8}) ([0-9A-F]{8}) \*/ \.word (0x[0-9A-Fa-f]+)\s*", line)
+        if match:
+            indent, rom, address, raw, value = match.groups()
+            rom, address = int(rom, 16), int(address, 16)
+            cuts = sorted(b - address for b in boundaries if address < b < address + 4)
+            if cuts:
+                data = int(value, 16).to_bytes(4, 'little')
+                if data.hex().upper() != raw:
+                    raise SystemExit("literal rodata word differs from split annotation")
+                for a, b in zip([0] + cuts, cuts + [4]):
+                    values = ', '.join(f'0x{x:02X}' for x in data[a:b])
+                    lines.append(f'{indent}/* {rom+a:X} {address+a:08X} {data[a:b].hex().upper()} */ .byte {values}\n')
+                continue
+        lines.append(line)
     # Labels belong with the data that follows them, so a boundary switches sections before
     # the `nonmatching`/`dlabel` lines that introduce the first data line at that address.
     following = [None] * len(lines)

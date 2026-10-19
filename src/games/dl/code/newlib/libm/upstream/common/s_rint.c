@@ -44,8 +44,7 @@ TWO52[2]={
 {
 	__int32_t i0,j0,sx;
 	__uint32_t i,i1;
-	double t;
-	volatile double w;
+	double w,t;
 	EXTRACT_WORDS(i0,i1,x);
 	sx = (i0>>31)&1;
 	j0 = ((i0>>20)&0x7ff)-0x3ff;
@@ -85,6 +84,3 @@ TWO52[2]={
 }
 
 #endif /* _DOUBLE_IS_32BITS */
-
-
-

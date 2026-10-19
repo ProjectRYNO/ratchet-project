@@ -50,9 +50,22 @@ def main():
         rows.append(dict(name=name, compiled=row['compiled'], differing_bytes=differences))
     start, end = int(inventory['module_start'],16), int(inventory['module_end'],16)
     assert loaded_bytes(original,start,end-start) == loaded_bytes(rebuilt,start,end-start), 'module differs'
+    constant_bytes = 0
+    for bounds in manifest.get('rodata', {}).values():
+        for slot in bounds['slots']:
+            if not slot['object'].startswith('newlib/libm/'):
+                continue
+            address, length = slot['start'], slot['end'] - slot['start']
+            assert loaded_bytes(original, address, length) == loaded_bytes(rebuilt, address, length), 'constant pool differs: ' + slot['object']
+            from elftools.elf.elffile import ELFFile
+            with (args.object_root / (slot['object'] + '.o')).open('rb') as stream:
+                section = ELFFile(stream).get_section_by_name(slot['section'])
+                assert section is not None and section['sh_size'] == length, 'invalid compiled constant pool: ' + slot['object']
+                assert section.data() == loaded_bytes(original, address, length), 'object constants differ: ' + slot['object']
+            constant_bytes += length
     report = dict(compiled_functions=count, exact_compiled_functions=count, total_functions=37,
                   exact_percent=round(100*count/37,2), compiled_bytes=compiled_bytes,
-                  module_bytes=end-start, differing_bytes=0, functions=rows)
+                  module_bytes=end-start, differing_bytes=0, constant_bytes=constant_bytes, functions=rows)
     if args.report:
         args.report.write_text(json.dumps(report,indent=2)+'\n')
     print('PASS: libm %d/37 functions compiled and byte-exact; %d compiled bytes; entire %d-byte module unchanged (remaining functions use assembly)' % (count, compiled_bytes, end-start))

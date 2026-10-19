@@ -1,6 +1,6 @@
 {
   "source_release": "1.9.0",
-  "source_family": "1.8.2/1.9.0; unique original release not established",
+  "source_family": "newlib 1.9.0 baseline with verbatim 1.8.1 rint; unique SDK snapshot not established",
   "module_start": "0x131a90",
   "module_end": "0x136da8",
   "total_functions": 37,
@@ -12,9 +12,10 @@
       "source": "code/newlib/libm/math/e_fmod.c",
       "upstream": "math/e_fmod.c",
       "upstream_sha256": "a2a86b8b4988672fae5a38306be2846b3724820b82eee6728a89bbdc65a296e4",
-      "compiled": false,
-      "source_sha256": "bfaf17e38730f6fd3e2db49369b123dff4cd691ac022cffaa17b21c4deabaf1e",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "1075c4f270167dc70ac7cc7770a84d36033f05452948a025bcdf5ab3fc6dc82e",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_pow",
@@ -23,9 +24,10 @@
       "source": "code/newlib/libm/math/e_pow.c",
       "upstream": "math/e_pow.c",
       "upstream_sha256": "6b748503091b6001f5a342ff83ff33ef7d619dd93a6f1ec28a85624dd18bffe2",
-      "compiled": false,
-      "source_sha256": "cae0fc0e8ff9c2d6009f2643739658f322262f779f0612bbe2ad8594c39cef88",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "5c3f76f211ba125e2012a784a2181d41a9f04562fc152ac37d064428a747709b",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_sqrt",
@@ -34,9 +36,10 @@
       "source": "code/newlib/libm/math/e_sqrt.c",
       "upstream": "math/e_sqrt.c",
       "upstream_sha256": "6d1c65be1de7b080310a7d3bce08f7f66da3acadbaa8053d518b43024adc5d7c",
-      "compiled": false,
-      "source_sha256": "789946caf4ee5010db7139c7f09a621352261d4646583dc74bbdf297a60b1a16",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "9eb6db80aca36c28bfd7641f80b724845b8a4f94bc38c17dfbf075b636d92b20",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_asinf",
@@ -47,7 +50,8 @@
       "upstream_sha256": "7a2f54c30c9b5dae942cd308fcda25c5e3b3a36ef3ac9a537d048eceb4014d9e",
       "compiled": false,
       "source_sha256": "0e01670945e938d7cd3dcb3018fea18b02c4090aacd99c5be46ee235e6c66c0b",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_expf",
@@ -58,7 +62,8 @@
       "upstream_sha256": "2211d8a02bea565dc316c0ca4b8f8d93da2fe999801458dc8695ebbc28638c5c",
       "compiled": false,
       "source_sha256": "b3f3fba5060562897925dadbfffc5c51419683f4d6e1fa8d68a5b6bbe3004fac",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_logf",
@@ -69,7 +74,8 @@
       "upstream_sha256": "f3306eb420763f76cb39a9a24a91fd6e230ec5c1260c481302d139f06eff8d06",
       "compiled": false,
       "source_sha256": "ec0cefd23824f751d4bf6b4be0a8cdd0cc03805ec92f45763d2fb35b24497597",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_log10f",
@@ -80,7 +86,8 @@
       "upstream_sha256": "9b3ee40fe972ac6beb788f47b0b8667af48b35907ede074e9664469720cbe664",
       "compiled": false,
       "source_sha256": "a8c8922fee1f1d9c6e479f18fecbc2271efee7204645669b4f3ca5aa26a8df56",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_powf",
@@ -91,7 +98,8 @@
       "upstream_sha256": "1aefe49460615372cb2fe67cf7de72ed75f50c682d400a141d8b4714d8bc53af",
       "compiled": false,
       "source_sha256": "cd12a8713c0efb19aacf8510cf81e65809b849c1f5c24d8d55b28d033bdbe543",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_rem_pio2f",
@@ -100,9 +108,10 @@
       "source": "code/newlib/libm/math/ef_rem_pio2.c",
       "upstream": "math/ef_rem_pio2.c",
       "upstream_sha256": "b3df5cac0996268aef347ac8b2e99d20ab92749f25f8de3fcb8a9575b34a800b",
-      "compiled": false,
-      "source_sha256": "06eb1393bc590df234846ab9e63a5e6814c591592ec6a1d808072d4149a53afc",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "8d45119c89f4e1e23c3af3975df1e29b2c124e828bddfda6b1713d3c4fede288",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__ieee754_sqrtf",
@@ -113,7 +122,8 @@
       "upstream_sha256": "55dce6ae436e7b2570200f70692e9dfd5add01a8f8504e50eca08aa4713aec67",
       "compiled": false,
       "source_sha256": "86201b6a5e8a3bf0b517045c38b42c671b300f67e80e2bbf910c4079824ea2e7",
-      "status": "assembly; upstream candidate imported"
+      "status": "assembly; upstream candidate imported",
+      "source_release": "1.9.0"
     },
     {
       "name": "__kernel_cosf",
@@ -124,7 +134,8 @@
       "upstream_sha256": "0be4b097e803ee5594c69d027719b7a01aeb2d047fd8414ff570739637d7a1fe",
       "compiled": true,
       "source_sha256": "b4fb154a008da6d166c4859a7d98afcf30828c4ee616a0fd88fe5e1f751f204b",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__kernel_rem_pio2f",
@@ -133,9 +144,10 @@
       "source": "code/newlib/libm/math/kf_rem_pio2.c",
       "upstream": "math/kf_rem_pio2.c",
       "upstream_sha256": "ca0521c7d2a745c332832eb8747780b3c87908896ebc4f0c26cf2ef572f8cf53",
-      "compiled": false,
-      "source_sha256": "633f7945767ecd6e9f7214e45f4b3815bda11dc45eef06f4eaeb1176232b5f7d",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "a92dced89d95cebe54755f9610d0669852f54b649a0e020b172bc8867ee36d18",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "__kernel_sinf",
@@ -144,9 +156,10 @@
       "source": "code/newlib/libm/math/kf_sin.c",
       "upstream": "math/kf_sin.c",
       "upstream_sha256": "95c33e554946eaa08255355e5241db4299c816a84d57a5f87fae59eb58445f95",
-      "compiled": false,
-      "source_sha256": "6abc7c83f656bd8fe78aa413b9d55586f011a3bd778b8392815f0e2728d342b0",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "c56ac9ba6af931433ad728f0b29d348e29d0204154b5e9f0425af12b105dd594",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "copysign",
@@ -157,7 +170,8 @@
       "upstream_sha256": "dd7e69e31c64d9dc0a7c69d7e9f20019b133291b38f15724c72284d6285bf8d2",
       "compiled": true,
       "source_sha256": "480ee98dd532056dfca7fe3808b07696329ee731022ade3222c6831887a3dac0",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "fabs",
@@ -168,7 +182,8 @@
       "upstream_sha256": "9123aaa7d0c3b538db9f37d2cde1156d56013d1394f6a798fa5a6c5363e31b3a",
       "compiled": true,
       "source_sha256": "dad24a0db866798220dbb264cf7bc331e557e06291c8d0a5d7c1b0e2e0669938",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "finite",
@@ -179,7 +194,8 @@
       "upstream_sha256": "c7a1f1632ae473fd78eeaf9811307825cf264af1197135edc361814be155cfa7",
       "compiled": true,
       "source_sha256": "8a3e1c5a177a5aab571e4e40ea6bc874b07ae95544a3ba04294ca834d644a84c",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "isnan",
@@ -190,7 +206,8 @@
       "upstream_sha256": "2e0359c2f4855d1a1910c934356396cea927aaca54048f9209fb7f56dea7bf01",
       "compiled": true,
       "source_sha256": "2d76170c3e24ff8108fb06afe60867b1167a179c7c9542ec6ab521fd809396a7",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "matherr",
@@ -201,7 +218,8 @@
       "upstream_sha256": "2418d753aee84b3b3698ccee872a82d7459793af9c707d9fbadc95d68365ab25",
       "compiled": true,
       "source_sha256": "f8f0e36d25e8eff214b588d97b32563bce536ca9448cfadf5fa1a271a21d5bc8",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "rint",
@@ -209,10 +227,11 @@
       "end": "0x1355b8",
       "source": "code/newlib/libm/common/s_rint.c",
       "upstream": "common/s_rint.c",
-      "upstream_sha256": "0f5c752eecbd0ed165336fb8bc5f9c0d2286499e9ae175d86b1429c758b72d3c",
-      "compiled": false,
-      "source_sha256": "e772595885c481236b5abe06eeb53c46e2f20041afddb7758a53eb638bf22589",
-      "status": "assembly; upstream candidate imported"
+      "upstream_sha256": "847035d77df2fc24130f29bc784a202053a48c4066eadf02495f3dc154a63ebd",
+      "compiled": true,
+      "source_sha256": "1187b2559f98d0c20aea0020eda693483f35ce265a854208c69b332fef8f7250",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.8.1"
     },
     {
       "name": "scalbn",
@@ -221,9 +240,10 @@
       "source": "code/newlib/libm/common/s_scalbn.c",
       "upstream": "common/s_scalbn.c",
       "upstream_sha256": "f0d70a69f5b08e5ea1cfa64981f46d0251097b91384623a3211a59eaa952fa83",
-      "compiled": false,
-      "source_sha256": "8ed2225865a29990c392028d18b2a315721f4a9c427d4c739968c53bdf9c8b73",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "871e424274e941fd9a55969e2c984adf35d934fd0c047a407a8dc52a37c6f8bf",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "ceilf",
@@ -234,7 +254,8 @@
       "upstream_sha256": "8e06ac6b313050e92765470153d1caa2ddb65d6173710c2b2f89b8093dc51f44",
       "compiled": true,
       "source_sha256": "693ae99c035749feb022a05b886fc25fd859207e871f00339a64d2a3e59c80df",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "copysignf",
@@ -245,7 +266,8 @@
       "upstream_sha256": "29f9fac19328beb4eebe6f2cd41bd8b6a30b8fca589210cdd49e1a853cdbcc35",
       "compiled": true,
       "source_sha256": "62be21bfd18df5d11d7d29217cb64010f78a562379b5aa6277ac18e0e157803e",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "cosf",
@@ -256,7 +278,8 @@
       "upstream_sha256": "f8f2fed57fdf4fb434ec0f74af85a8c4b8d648ecd3d53a6b2733f8429b72759a",
       "compiled": true,
       "source_sha256": "eaf46cb5f3022613c9513437ef6b3c027c4610db9f7982d43a3bd74c0307cb2f",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "fabsf",
@@ -267,7 +290,8 @@
       "upstream_sha256": "7714898070107896198789fbf8a64aae3092d5f0e03af50facb23eb5951b6dff",
       "compiled": true,
       "source_sha256": "61264a15ff6616da8bce34bc08534036fd9ae81a7924c074f87bad6e5569714a",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "finitef",
@@ -278,7 +302,8 @@
       "upstream_sha256": "27ae495b9f65f3ed5e04522eb36feaec9718742e8baa366b490b7306e0d8b421",
       "compiled": true,
       "source_sha256": "17b41d19b8c4a0cb714f41c02f9960afeb16f9e6d4863d6281ecd781f28440cb",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "floorf",
@@ -289,7 +314,8 @@
       "upstream_sha256": "d6f369587250b29810d7ee3dad05fbe07d3a072e4f96ad31c96e91584984f50d",
       "compiled": true,
       "source_sha256": "d005ab615c4ca59990431dac2acee7b71a171158e55e4eebccc8cbe7185898b8",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "isnanf",
@@ -300,7 +326,8 @@
       "upstream_sha256": "2e315a0421ae7acca9b9ea1854af87a821b47ac5ae86bab27eeb365fcd11eb8a",
       "compiled": true,
       "source_sha256": "6f8c84c548c08f468604b4f5e21be4fcaf183cbd1594496310267d6a2add5116",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "scalbnf",
@@ -311,7 +338,8 @@
       "upstream_sha256": "315db7cdde604361301006ec08cb08c4670de2e021e9b516d9c583268795aa02",
       "compiled": true,
       "source_sha256": "0273a44f4857b4a674c4213df60f269e0dadf880b120c3358b08164a467c9959",
-      "status": "compiled-exact"
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "fmod",
@@ -320,9 +348,10 @@
       "source": "code/newlib/libm/math/w_fmod.c",
       "upstream": "math/w_fmod.c",
       "upstream_sha256": "ca0d686b08278b0f4a872be7c19723f8c4d52482aa25f7d649154c48a627e1c4",
-      "compiled": false,
-      "source_sha256": "83ba353fbb239d33d42baf53a9ad6250b14af5feaf04a4068af63890aae5e135",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "7ae7df18e59bd1918bc1e0baba32269d41f7d405f29cf93a6512057906964176",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "pow",
@@ -331,9 +360,10 @@
       "source": "code/newlib/libm/math/w_pow.c",
       "upstream": "math/w_pow.c",
       "upstream_sha256": "d186c6d4edb2910c795721509f969bf63665184585aee0a011f52da14f92e089",
-      "compiled": false,
-      "source_sha256": "5ce962ad5c0557dedcbc3bff1da2b4f1853e7bce00cd90f23cb326426eeb7ddb",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "4b3bef8855336dc581786018539e82a24743dadee66d6b3ed0a6c8536ec066a6",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "sqrt",
@@ -342,9 +372,10 @@
       "source": "code/newlib/libm/math/w_sqrt.c",
       "upstream": "math/w_sqrt.c",
       "upstream_sha256": "4e00659d3ed5a74c9d86e2656f5fd8b943d823bc43fc10d0b6228659b372d6be",
-      "compiled": false,
-      "source_sha256": "cb9157e1e716c77e99cb1e463456316b341b297323e1d5e456aeca6f6ce470cd",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "e959e304a2a490ac1f2d91ac6da1ff8d61893faea008c4c85f2636e96921a023",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "asinf",
@@ -353,9 +384,10 @@
       "source": "code/newlib/libm/math/wf_asin.c",
       "upstream": "math/wf_asin.c",
       "upstream_sha256": "0ee1ec058c42c8d76da51b26548f708cee04cd7ddf4956c5e9606acc49039199",
-      "compiled": false,
-      "source_sha256": "7529c659df3478c8996fbf61de9766af0e973eeafe6726333e396aaa90243a0d",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "dd37d63be6a695574dafc502d78dbacbb5b6eabf35c44eb4b412d1708d4dd434",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "expf",
@@ -364,9 +396,10 @@
       "source": "code/newlib/libm/math/wf_exp.c",
       "upstream": "math/wf_exp.c",
       "upstream_sha256": "1ed853fd6ee0db9407ef772ee73b4ad2cba44452c13ad1189195f8604bd7ba6b",
-      "compiled": false,
-      "source_sha256": "7a696597826287ab86952fd420fa08e4a3628e4777f319eefc9cd1a74b752a38",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "85be1b20e9db992862c77a46446b1a0d34c62bcd4a8f47b56b10279b6a83b9d5",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "logf",
@@ -375,9 +408,10 @@
       "source": "code/newlib/libm/math/wf_log.c",
       "upstream": "math/wf_log.c",
       "upstream_sha256": "ae24ba1fc21b2740270660ce801641bb51c9d07e3b667129edefea5b0f7e6161",
-      "compiled": false,
-      "source_sha256": "9ff9e6bfd6c4a171150b512311e95fda7cdfa03720d1df440ea495eb4a5aabee",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "1503e617d30ac8a79b092ff5a7715065f05340603a06fbe49deffe18802bc197",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "log10f",
@@ -386,9 +420,10 @@
       "source": "code/newlib/libm/math/wf_log10.c",
       "upstream": "math/wf_log10.c",
       "upstream_sha256": "e17174371347f3d0a87a52d80c8073cf89ff708bf9debeecef4d01c18f6b6bc5",
-      "compiled": false,
-      "source_sha256": "2404876a08eedd140806c4bc7f09da6cea87626822bfdbfa00459f5715522582",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "2fa126be6cedb2b1a1abe22c0d081c5c530d4cc287cad44a1bab5b6aa20c7a79",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "powf",
@@ -397,9 +432,10 @@
       "source": "code/newlib/libm/math/wf_pow.c",
       "upstream": "math/wf_pow.c",
       "upstream_sha256": "c7c080e5687008f1bd04272657e9a40f0150af8dd09dbd04da59a4218195e7dd",
-      "compiled": false,
-      "source_sha256": "1128bb49c6aabf235ecc88f0b8aa200dd620fbca199571d3383ea205efd9ef8d",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "bad71f543c978aad3382151544bc54ce489e37d4ceaad823dfd79edff8af8f5e",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     },
     {
       "name": "sqrtf",
@@ -408,25 +444,26 @@
       "source": "code/newlib/libm/math/wf_sqrt.c",
       "upstream": "math/wf_sqrt.c",
       "upstream_sha256": "c5ccf3506622f8080b22bbb2f29e2071640ecc9db96ca62b0731db4fd4a7bf3a",
-      "compiled": false,
-      "source_sha256": "110f1070c47660fcadb3e324d6368f4049163539c8b77d5259e179576ce74448",
-      "status": "assembly; upstream candidate imported"
+      "compiled": true,
+      "source_sha256": "9c6bbb94b71f9628874f57887b54851d436f58b8c5b68d88de6f6f5cd6238b6c",
+      "status": "compiled C; exact linked bytes",
+      "source_release": "1.9.0"
     }
   ],
-  "compiled_functions": 14,
-  "exact_compiled_functions": 14,
-  "exact_percent": 37.84,
-  "compiled_bytes": 1760,
+  "compiled_functions": 31,
+  "exact_compiled_functions": 31,
+  "exact_percent": 83.78,
+  "compiled_bytes": 15956,
   "module_bytes": 21272,
   "differing_bytes": 0,
   "verified_date": "2026-10-19",
-  "base_commit": "93a04d0",
+  "base_commit": "08040d11c21941f65f149c37e2ee0aadefca9cf1",
   "working_tree_changes": true,
-  "compiler": "SN Systems GCC 2.95.3 v1.36",
+  "compiler": "Sony GCC 2.9-ee-991111-01",
   "compiler_flags": "-G0 -O2 -fno-builtin",
-  "assembler": "SN-bundled GNU assembler 2.9-ee-991111b",
+  "assembler": "Sony-bundled GNU assembler 2.9-ee-991111",
   "assembler_flags": "-EL -G0",
-  "compiler_runner": "wibo 1.2.0 i686",
+  "compiler_runner": "native Linux i386 with ee296_statshim.so",
   "whole_game_differing_bytes": 3917,
   "verification_snapshot": "/tmp/libm-integration/dl",
   "snapshot_limitations": [
@@ -434,5 +471,7 @@
     "Temporary D_168BAC = 0x00168BAC linker alias for an existing medius reference."
   ],
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "a6fd47bf5344ce1ef92a7a147fb221173486dac44251ca2c91abede1cc4e0c36"
+  "rebuilt_sha256": "015dd4595d0b8aaa72463c06d8b8d56651e0291b7ab9838fad01f25597468fed",
+  "constant_bytes": 1762,
+  "compiler_archive_sha256": "f07d1f38afa847197fb816237dbce64e79b2d37b738cb93fa4df3ac7aa1d16f3"
 }

@@ -1,5 +1,3 @@
-/* Upstream candidate: ../upstream/math/ef_rem_pio2.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/ef_rem_pio2", __ieee754_rem_pio2f);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+int __ieee754_rem_pio2f(float, float *) __attribute__((section(".libm___ieee754_rem_pio2f")));
+#include "../upstream/math/ef_rem_pio2.c"

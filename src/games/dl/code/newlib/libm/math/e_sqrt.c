@@ -1,7 +1,3 @@
-/* Upstream candidate: ../upstream/math/e_sqrt.c. Retail assembly retained until exact. */
-#include "common.h"
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/e_sqrt", __ieee754_sqrt);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/newlib/libm/math/e_sqrt", func_00132EAC);
-
+/* Newlib 1.9.0 source; original function placement for Deadlocked. */
+double __ieee754_sqrt(double) __attribute__((section(".libm___ieee754_sqrt")));
+#include "../upstream/math/e_sqrt.c"
