@@ -13,3 +13,4 @@ pygfxd==1.0.5
 packaging==25.0
 colorama==0.4.6
 tqdm==4.67.1
+pyelftools==0.33

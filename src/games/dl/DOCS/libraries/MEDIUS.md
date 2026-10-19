@@ -1,5 +1,71 @@
 # Deadlocked Medius library
 
+## rt_util batch 4 (2026-10-19)
+
+**46 Medius functions now compile to exact retail bytes** (37 after batch 3). The branch
+was fast-forwarded onto `origin/master` 437dd3a (989snd, newlib/libm and SVO3 progress)
+before this batch. This batch adds two modules, both byte-identical to retail including
+retained assembly:
+
+- `rt_circ_buf.c`: 7 of its 16 real functions (0x01EA6C60..0x01EA7408).
+- `rt_ip.c`: both functions (0x01EA9140..0x01EA926C). `rt_ip_string2ip` parses a
+  dotted quad into `(ip >> 8) + (octet << 24)` per octet, ignoring non-digits; the
+  first octet ends up in the low byte. `rt_ip_ip2string` reverses it. An octet of 100
+  or more always prints its tens digit, which retail shares with the 10..99 path. In C
+  that is a `goto` into the tens branch. Octet times ten is written
+  `octet <<= 1; octet += octet << 2; octet += c - '0';` to match retail's add order.
+
+Medius inventory: 46 of 1,462 INCLUDE_ASM entries replaced (3.15%).
+
+| Compiled (exact) | Retained assembly |
+| --- | --- |
+| create, destroy, clear, normalize, get_used, get_used_nowrap, get_avail | free, use, store, copy, normalize_with_buf, get_avail_nowrap, get_start_used_ptr, get_start_avail_ptr, is_wrapped; `func_01EA73F8` (fragment) |
+
+`rt_circ_buf.h` has the prototype `RT_CIRC_BUF {nStartPos, nEndPos, nSize, nUsed, pBuf,
+pScratchBuf}` (0x18; in RECOVERED_TYPES.json), RT_CIRC_BUF_ERROR (200) and
+RT_CIRC_BUF_NO_SCRATCH_BUF (201). `rt_circ_buf_copy` takes a third `size` argument:
+`normalize_with_buf` passes `used` in a2.
+
+Source-shape findings:
+
+- **Zero-store rotation.** When a run of fields is set to 0, 2.96 emits the last store
+  first. Retail `clear` stores nUsed, nStartPos, nEndPos, so the source order is
+  `nStartPos, nEndPos, nUsed`. `destroy` and `create` follow the same rule.
+- `get_used_nowrap` tests `if (buffer->nUsed)` positively. `normalize` returns
+  RT_CIRC_BUF_NO_SCRATCH_BUF when forced without a scratch buffer, otherwise it
+  tail-calls `normalize_with_buf`.
+
+Open shapes: seven of the nine retained functions share one unsolved compiler pattern.
+Retail compares a getter's out-value in `v0` and keeps `if (result) return result;
+return 0;` unfolded. Retail evidence, every tried shape, untried ideas and the best
+candidates (`store` is down to 2 words) are in
+[MEDIUS_OPEN_PATTERN.md](MEDIUS_OPEN_PATTERN.md).
+
+Build note: `origin/master` added `tools/drop_unused_rodata.py` (newlib/libm), which
+imports pyelftools without a pin in `src/games/requirements.txt`, so a fresh image
+failed `make elf`. This batch adds `pyelftools==0.33` (the version verified). Rebuild
+the image (`docker compose build projectryno`) to pick it up.
+
+Next: `rt_mtrandgen.c` is Shawn Cokus's Mersenne Twister (`seedMT` with 69069,
+`reloadMT`, `randomMT`), modified by SCE. It uses an index at state+0x9C4 instead of
+`left`/`next`, and a custom tempering that rotates by 7/25 and XORs three extra words
+(0x00168B78..0x00168B80). Its statics (state at 0x001681B0) need names first, as for
+rt_timebase. `func_01EA9BC0` is another 4-byte fragment.
+
+Validation: serial split, forced build, `verify.py dl --split` exit 0. Every suite
+passes, including upstream's libm and sound exact checks. `check_medius.py` reports
+all 46 functions exact and all nine modules byte-identical. The placement audit
+reports 2,172 changed bytes project-wide, all in registered slots. Snapshot: 7,462
+assembly, 1,139 compiled, 1,109 matching and 30 nonmatching slots.
+
+```sh
+O=build/code/medius/rt_util
+python3 TESTS/check_medius.py ../assets/dl/boot.elf build/boot_elf.elf $O/rt_memory.o \
+  $O/rt_constraint.o $O/rt_string.o $O/rt_mutex.o $O/rt_pack.o $O/rt_msg_util.o \
+  $O/rt_timebase.o $O/rt_circ_buf.o $O/rt_ip.o
+```
+
+
 ## rt_util batch 3 (2026-10-14)
 
 **37 Medius functions now compile to exact retail bytes** (30 after batch 2). This

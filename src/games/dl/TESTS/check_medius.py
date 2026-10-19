@@ -63,6 +63,15 @@ def main():
         'rt_timebase_get_percentiledelay': (0x01EABDA0, 0xD4),
         'rt_timebase_is_query_ready': (0x01EABE78, 0x64),
         'rt_timebase_start': (0x01EABEE0, 0x54),
+        'rt_circ_buf_create': (0x01EA6C60, 0x9C),
+        'rt_circ_buf_destroy': (0x01EA6D00, 0x50),
+        'rt_circ_buf_clear': (0x01EA6D50, 0x20),
+        'rt_circ_buf_normalize': (0x01EA70B0, 0x44),
+        'rt_circ_buf_get_used': (0x01EA71C8, 0x24),
+        'rt_circ_buf_get_used_nowrap': (0x01EA71F0, 0x54),
+        'rt_circ_buf_get_avail': (0x01EA7248, 0x30),
+        'rt_ip_string2ip': (0x01EA9140, 0x80),
+        'rt_ip_ip2string': (0x01EA91C0, 0xAC),
     } if args.objects else {})
     for name, (address, size) in functions.items():
         for table in (linked, compiled):
@@ -81,12 +90,14 @@ def main():
     for name, start, end in (('rt_constraint', 0x01EA8DF0, 0x01EA8EC8), ('rt_string', 0x01EAB1B8, 0x01EAB210),
                              ('rt_mutex', 0x01EA9D98, 0x01EA9F7C), ('rt_pack', 0x01EAA0D0, 0x01EAA4BC),
                              ('rt_msg_util', 0x01EA97E0, 0x01EA9984),
-                             ('rt_timebase', 0x01EABC10, 0x01EABF38)):
+                             ('rt_timebase', 0x01EABC10, 0x01EABF38),
+                             ('rt_circ_buf', 0x01EA6C60, 0x01EA7408),
+                             ('rt_ip', 0x01EA9140, 0x01EA926C)):
         if args.objects and loaded_bytes(original, start, end - start) != loaded_bytes(rebuilt, start, end - start):
             raise SystemExit('FAIL: %s module differs' % name)
     if args.objects:
         check_globals(linked)
-        print('PASS: rt_constraint, rt_string, rt_mutex, rt_pack, rt_msg_util and rt_timebase modules match retail, including retained assembly')
+        print('PASS: rt_constraint, rt_string, rt_mutex, rt_pack, rt_msg_util, rt_timebase, rt_circ_buf and rt_ip modules match retail, including retained assembly')
 
 
 def check_globals(linked):

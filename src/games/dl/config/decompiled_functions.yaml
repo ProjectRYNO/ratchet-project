@@ -75,6 +75,15 @@ functions:
   rt_timebase_get_percentiledelay: 0x01EABDA0
   rt_timebase_is_query_ready: 0x01EABE78
   rt_timebase_start: 0x01EABEE0
+  rt_circ_buf_create: 0x01EA6C60
+  rt_circ_buf_destroy: 0x01EA6D00
+  rt_circ_buf_clear: 0x01EA6D50
+  rt_circ_buf_normalize: 0x01EA70B0
+  rt_circ_buf_get_used: 0x01EA71C8
+  rt_circ_buf_get_used_nowrap: 0x01EA71F0
+  rt_circ_buf_get_avail: 0x01EA7248
+  rt_ip_string2ip: 0x01EA9140
+  rt_ip_ip2string: 0x01EA91C0
   DefaultInit___dupe3: 0x01EF3780
   FreeContexts: 0x01EF3CF0
   GetDimensions: 0x01EF3C2C
@@ -2857,6 +2866,33 @@ objects:
     slots:
       - {object: svo3/TextEditableTag, section: .svo_TextEditableTag_DefaultHandleInput, start: 0x01F03D08, end: 0x01F03E04}
 
+  medius/rt_util/rt_ip:
+    text_start: 0x01EA9140
+    text_end: 0x01EA926C
+    slots:
+      - {object: medius/rt_util/rt_ip, section: .medius_ip_rt_ip_string2ip, start: 0x01EA9140, end: 0x01EA91C0}
+      - {object: medius/rt_util/rt_ip, section: .medius_ip_rt_ip_ip2string, start: 0x01EA91C0, end: 0x01EA926C}
+  medius/rt_util/rt_circ_buf:
+    text_start: 0x01EA6C60
+    text_end: 0x01EA7408
+    slots:
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_create, start: 0x01EA6C60, end: 0x01EA6D00}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_destroy, start: 0x01EA6D00, end: 0x01EA6D50}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_clear, start: 0x01EA6D50, end: 0x01EA6D70}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_free, start: 0x01EA6D70, end: 0x01EA6E18}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_use, start: 0x01EA6E18, end: 0x01EA6EC0}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_store, start: 0x01EA6EC0, end: 0x01EA6FD0}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_copy, start: 0x01EA6FD0, end: 0x01EA70B0}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_normalize, start: 0x01EA70B0, end: 0x01EA70F8}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_normalize_with_buf, start: 0x01EA70F8, end: 0x01EA71C8}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_used, start: 0x01EA71C8, end: 0x01EA71F0}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_used_nowrap, start: 0x01EA71F0, end: 0x01EA7248}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_avail, start: 0x01EA7248, end: 0x01EA7278}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_avail_nowrap, start: 0x01EA7278, end: 0x01EA72C8}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_start_used_ptr, start: 0x01EA72C8, end: 0x01EA7338}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_get_start_avail_ptr, start: 0x01EA7338, end: 0x01EA73A8}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_rt_circ_buf_is_wrapped, start: 0x01EA73A8, end: 0x01EA73F8}
+      - {object: medius/rt_util/rt_circ_buf, section: .medius_circ_func_01EA73F8, start: 0x01EA73F8, end: 0x01EA7408}
   medius/rt_util/rt_timebase:
     text_start: 0x01EABC10
     text_end: 0x01EABF38
