@@ -1,0 +1,45 @@
+# Identified boot SDK progress
+
+**36/387 identified functions (9.30%) are decompiled and byte-matching.**
+This is a broader named-function inventory, not an exhaustive SDK census.
+The current `code/sdk/` folder is 36/36 exact; the rest of this inventory remains
+assembly in game library aggregates. Unknown routines are not silently counted
+as complete. The denominator can grow as ownership is recovered.
+
+| Component | Identified functions | Decompiled and matching |
+|---|---:|---:|
+| CD/DVD | 14 | 0 / 14 (0.00%) |
+| DMA | 8 | 8 / 8 (100.00%) |
+| IPU | 4 | 0 / 4 (0.00%) |
+| MPEG | 11 | 0 / 11 (0.00%) |
+| SIF | 50 | 0 / 50 (0.00%) |
+| VU0 | 4 | 0 / 4 (0.00%) |
+| configuration | 16 | 0 / 16 (0.00%) |
+| file I/O | 18 | 0 / 18 (0.00%) |
+| graphics | 15 | 0 / 15 (0.00%) |
+| kernel/runtime | 180 | 0 / 180 (0.00%) |
+| memory card | 17 | 0 / 17 (0.00%) |
+| multitap | 8 | 8 / 8 (100.00%) |
+| networking/localization | 20 | 20 / 20 (100.00%) |
+| pad | 22 | 0 / 22 (0.00%) |
+
+The machine-readable inventory is [SDK_BOOT.csv](../progress/SDK_BOOT.csv), with
+addresses, current source ownership and selection evidence. It starts with the
+named families in SDK_FINGERPRINTS.json, adds the verified C module helpers and
+named INCLUDE_ASM entries in these identified ranges:
+
+- Kernel, SIF and file I/O: `0x001267A0..0x0012EE30` (before compiler constructors).
+- Memory card: `0x00139EC8..0x0013AE70`.
+- Pad: `0x0013B1D0..0x0013C478`.
+- Configuration: `0x00155510..0x00155AE0`.
+- Additional SIF RPC: `0x00155AE0..0x00156390` (before SVO3 interface code).
+- Named `sceMpeg*` APIs in the boot aggregate.
+
+Unclassified `func_*` entries and unnamed MPEG/graphics helpers are excluded.
+Kernel functions originally written in assembly remain counted as assembly;
+this report measures recovered C/C++, not merely whether retained bytes match.
+Newlib, compiler runtime, third-party libraries and overlays are excluded.
+
+Matching claims come from the integrated check_sdk.py run, not from names or
+retained assembly. This inventory does not change source ownership or split any
+additional functions. See [multitap verification](SDK_MTAP.md).

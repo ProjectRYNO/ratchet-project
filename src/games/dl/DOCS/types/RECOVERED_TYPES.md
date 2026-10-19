@@ -247,3 +247,5 @@ The shared layout registry also includes their top-level fields.
 The final SDK parser adds `SdkPPPStatus` in `code/sdk/i18n_inet.h`: 0x0c bytes,
 with text/phase/error at offsets 0/4/8, verified by retail instructions and the
 SCE 2.96 layout checker. All four SDK type layouts pass.
+
+Boot DMA follow-up: `DmaEnv` in `code/sdk/dma/libdma.h` is a 20-byte retail-instruction-confirmed layout, recorded in RECOVERED_TYPES.json. All offsets and the ring-base pointer at +12 reproduce exact EE compiler output. See [DMA verification](../libraries/SDK_DMA.md).

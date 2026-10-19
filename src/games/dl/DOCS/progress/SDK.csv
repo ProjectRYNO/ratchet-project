@@ -21,3 +21,24 @@ cbFormatPPPStatus,code/sdk/i18n.c,0x01E9ACF8,compiled,0x01E9AD78,0x7C,matching,0
 cbFormatLineSpeed,code/sdk/i18n.c,0x01E9AD78,compiled,0x01E9AE30,0xB8,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
 cbFormatPhoneNumber,code/sdk/i18n.c,0x01E9AE30,compiled,0x01E9AE48,0x18,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
 ezNetCtlRecreateIfstat,code/sdk/i18n_inet.c,0x01E9AE48,compiled,0x01E9B0F0,0x29C,matching,0,check_sdk.py; check_sdk_layouts.py; check_main_elf.py (2026-10-14 passed),No gameplay run yet.,
+WaitDma,code/sdk/dma/libdma.c,0x001399E0,compiled,0x00139A50,0x70,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+func_00139A50,code/sdk/dma/libdma.c,0x00139A50,assembly,0x00139A58,,retained_assembly,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,Instruction fragment; excluded from real-function count.
+CheckAddress,code/sdk/dma/libdma.c,0x00139A58,compiled,0x00139A80,0x28,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+memclr,code/sdk/dma/libdma.c,0x00139A80,compiled,0x00139AB8,0x34,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+sceDmaGetChan,code/sdk/dma/libdma.c,0x00139AB8,compiled,0x00139AE0,0x28,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+sceDmaReset,code/sdk/dma/libdma.c,0x00139AE0,compiled,0x00139BC0,0xDC,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+sceDmaPutEnv,code/sdk/dma/libdma.c,0x00139BC0,compiled,0x00139D98,0x1D8,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+func_00139D98,code/sdk/dma/libdma.c,0x00139D98,assembly,0x00139DA0,,retained_assembly,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,Instruction fragment; excluded from real-function count.
+sceDmaSend,code/sdk/dma/libdma.c,0x00139DA0,compiled,0x00139E08,0x68,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+func_00139E08,code/sdk/dma/libdma.c,0x00139E08,assembly,0x00139E28,,retained_assembly,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,Instruction fragment; excluded from real-function count.
+sceDmaPause,code/sdk/dma/libdma.c,0x00139E28,compiled,0x00139EC0,0x98,matching,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,See libraries/SDK_DMA.md.
+func_00139EC0,code/sdk/dma/libdma.c,0x00139EC0,assembly,0x00139EC8,,retained_assembly,0,check_sdk.py; check_main_elf.py; sdk_dma_test.c (2026-10-19),No gameplay run yet.,Instruction fragment; excluded from real-function count.
+DPRINT,code/sdk/mtap/libmtap.c,0x0013AE70,compiled,0x0013AE98,0x28,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapSetWorkAddr,code/sdk/mtap/libmtap.c,0x0013AE98,compiled,0x0013AEF8,0x5C,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapInit,code/sdk/mtap/libmtap.c,0x0013AEF8,compiled,0x0013AFF8,0x100,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapEnd,code/sdk/mtap/libmtap.c,0x0013AFF8,compiled,0x0013B018,0x1C,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapPortOpen,code/sdk/mtap/libmtap.c,0x0013B018,compiled,0x0013B088,0x6C,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapPortClose,code/sdk/mtap/libmtap.c,0x0013B088,compiled,0x0013B0F8,0x6C,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapGetConnection,code/sdk/mtap/libmtap.c,0x0013B0F8,compiled,0x0013B168,0x6C,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+sceMtapGetModVersion,code/sdk/mtap/libmtap.c,0x0013B168,compiled,0x0013B1CC,0x64,matching,0,check_sdk.py; check_main_elf.py; sdk_mtap_test.c (2026-10-19),No hardware/gameplay run.,See libraries/SDK_MTAP.md.
+func_0013B1CC,code/sdk/mtap/libmtap.c,0x0013B1CC,assembly,0x0013B1D0,,retained_assembly,0,whole module exact,,Padding word excluded from real functions.

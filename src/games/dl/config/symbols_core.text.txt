@@ -3339,3 +3339,26 @@ rtTimebaseStarted = 0x00168BAC;
 rtTimebaseQueryInterval = 0x00168BB0;
 rtTimebaseDelays = 0x001B2420;
 rtTimebaseQueryTimer = 0x001B25B8;
+
+// Boot libdma storage (original data, not new allocations).
+sdkDmaChannels = 0x00167BC0; // size:0x28
+sdkDmaTimeout = 0x00194E30; // size:0x15
+
+// Boot DMA reset flags, selector tables and saved environment.
+sdkDmaResetChannels = 0x00194E48; // size:0x28
+sdkDmaSts = 0x00194E70; // size:0xA
+sdkDmaStd = 0x00194E80; // size:0xA
+sdkDmaMfd = 0x00194E90; // size:0xA
+sdkDmaEnvironment = 0x001AD858; // size:0x14
+
+// Boot multitap RPC storage and diagnostics, original allocations.
+sdkMtapClient = 0x001AEE80;
+sdkMtapBuffer = 0x001AEEC0;
+sdkMtapWork = 0x001AEF40;
+sdkMtapBindError = 0x00194F50;
+sdkMtapVersionError = 0x00194F68;
+sdkMtapVersionFormat = 0x00194F90;
+sdkMtapOpenError = 0x00194FC0;
+sdkMtapCloseError = 0x00194FE0;
+sdkMtapConnectionError = 0x00195000;
+sdkMtapModuleError = 0x00195050;

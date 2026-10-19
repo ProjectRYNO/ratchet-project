@@ -11602,5 +11602,67 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "DmaEnv",
+    "size": "0x14",
+    "line": null,
+    "owners": [
+      "sdk/dma/libdma.c"
+    ],
+    "header": "code/sdk/dma/libdma.h",
+    "evidence": "retail-instructions: sceDmaPutEnv 0x00139BC0; pointer aliasing and all offsets verified by exact EE GCC 2.9 output; descriptive field names",
+    "fields": [
+      {
+        "name": "sts",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "std",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "mfd",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "release",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "priority",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "enable",
+        "offset": 6,
+        "bitfield": false
+      },
+      {
+        "name": "skip",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "transfer",
+        "offset": 10,
+        "bitfield": false
+      },
+      {
+        "name": "ringBase",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "ringSize",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
   }
 ]

@@ -10,7 +10,7 @@ No split entries, function ownership or source files were moved.
 | Source group | Active C/C++ split entries | Current scope/status |
 | --- | ---: | --- |
 | `989snd/ee` | 1 | 59/59 functions compiled and exact |
-| `sdk` | 4 | 20/20 real functions compiled and exact; networking/localization only |
+| `sdk` | 6 | 36/36 real functions compiled and exact; networking/localization, DMA and multitap |
 | `newlib/libm` | 37 | 37/37 functions compiled and exact |
 | `iksemel/src` | 5 | 40/40 functions compiled and exact |
 | `svo3` | 97 | 934/934 functions compiled; 899 exact in the latest module report |
@@ -80,6 +80,14 @@ before assigning them to a vendor library.
   `lvl.*vtbl` sections are data groupings. `junk/` denotes retained padding or
   remnants. Their names are not evidence of additional undecompiled libraries.
 
+## SDK version and layout follow-up
+
+The [SDK survey](SDK_LAYOUT.md) now records actual boot-ELF version stamps,
+public PS2SDK revision comparisons, and MC/pad/multitap protocol differences.
+The [SDK directory map](../../code/sdk/README.md) makes the proposed destinations
+visible from `code/sdk/`. An additional `PsIIlibmrpc 3000` stamp at `0x0016FC30`
+identifies another RPC library lead; no new split or decompilation is claimed.
+
 ## Suggested next work
 
 The clearest additional source-based targets are `newlib/libc` and `libgcc`,
@@ -91,3 +99,7 @@ leads; no compiler match or exact module boundary has been established here.
 Before moving any block: confirm retail function/data boundaries and original
 source ownership, preserve entry addresses and padding, update durable YAML and
 manifest inputs, then split serially and compare the rebuilt loaded bytes.
+
+DMA implementation follow-up: the boot range `0x001399E0..0x00139EC8` now belongs to `sdk/dma/libdma.c`; all eight real functions are exact C. The following aggregate is `game/lib_after_dma.cpp`. See [DMA verification](SDK_DMA.md).
+
+Broader boot SDK tracking: **36/387 identified functions (9.30%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).

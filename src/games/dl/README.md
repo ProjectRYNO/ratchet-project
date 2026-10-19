@@ -14,21 +14,21 @@ functions verified against retail. Retained assembly does not count as decompile
 | --- | ---: | ---: | ---: |
 | [Boot and startup](code/game/boot.cpp) | 15 | 3 / 15 (20.00%) | 0 / 15 (0.00%) |
 | [Game and engine](code/game) — excluding boot and library aggregates | 4,718 | 0 / 4,718 (0.00%) | 0 / 4,718 (0.00%) |
-| Other runtime and SDK code — [lib.cpp](code/game/lib.cpp), [lib_after_libm.cpp](code/game/lib_after_libm.cpp) | 1,314 | 0 / 1,314 (0.00%) | 0 / 1,314 (0.00%) |
+| Other runtime and SDK code — [lib.cpp](code/game/lib.cpp), [lib_after_libm.cpp](code/game/lib_after_libm.cpp), [lib_after_dma.cpp](code/game/lib_after_dma.cpp), [lib_after_mtap.cpp](code/game/lib_after_mtap.cpp) | 1,293 | 0 / 1,293 (0.00%) | 0 / 1,293 (0.00%) |
 | [989snd audio client](DOCS/sound/989SND_MATCHING.md) | 59 | 59 / 59 (100.00%) | 59 / 59 (100.00%) |
-| [SDK networking/localization](DOCS/libraries/SDK.md) (`code/sdk/`) | 20 | 20 / 20 (100.00%) | 20 / 20 (100.00%) |
-| [Medius networking](DOCS/libraries/MEDIUS.md) | 1,462 | 37 / 1,462 (2.53%) | 37 / 1,462 (2.53%) |
-| [SVO3](DOCS/libraries/SVO3.md) | 934 | 934 / 934 (100.00%) | 899 / 934 (96.25%) |
+| [SDK networking/localization, DMA and multitap](DOCS/libraries/SDK.md) (`code/sdk/`) | 36 | 36 / 36 (100.00%) | 36 / 36 (100.00%) |
+| [Medius networking](DOCS/libraries/MEDIUS.md) | 1,462 | 46 / 1,462 (3.15%) | 46 / 1,462 (3.15%) |
+| [SVO3](DOCS/libraries/SVO3.md) | 934 | 934 / 934 (100.00%) | 907 / 934 (97.11%) |
 | [iksemel XML](DOCS/libraries/IKSEMEL.md) | 40 | 40 / 40 (100.00%) | 40 / 40 (100.00%) |
 | [newlib/libm mathematics](DOCS/libraries/NEWLIB_LIBM.md) | 37 | 37 / 37 (100.00%) | 37 / 37 (100.00%) |
-| **Boot ELF tracked total** | **8,599** | **1,130 / 8,599 (13.14%)** | **1,092 / 8,599 (12.70%)** |
+| **Boot ELF tracked total** | **8,594** | **1,155 / 8,594 (13.44%)** | **1,125 / 8,594 (13.09%)** |
 
 **Level overlays are outside this table and have not been started.** Boot ELF
 completion does not represent completion of the entire game.
 
 The game/runtime rows still contain unidentified assembly entries, some of which
 may prove to be padding or fragments. These are source-inventory estimates, not
-an exhaustive, fully classified retail function census. The two known SDK
+an exhaustive, fully classified retail function census. The seven known SDK
 instruction fragments are excluded; the SDK row covers `code/sdk/` only, not all
 Sony library code elsewhere in the executable. Explicit textbin padding and data
 are not functions and do not contribute to these percentages.
@@ -36,6 +36,8 @@ are not functions and do not contribute to these percentages.
 See the [library-folder survey](DOCS/libraries/BOOT_LIBRARY_INVENTORY.md) for
 additional runtime, Sony SDK, Nellymoser and Logitech code still bundled in the
 aggregate library files, plus unclassified configuration blocks.
+
+The broader [identified boot SDK inventory](DOCS/libraries/SDK_BOOT_INVENTORY.md) is **36/387 (9.30%)** decompiled and byte-matching. It includes named SDK routines still in the game aggregates, so it overlaps the table above and must not be added to its total. Unidentified helpers remain outside this inventory.
 
 ### Evidence and updates
 
@@ -45,7 +47,7 @@ Implementation counts come from current `INCLUDE_ASM` entries plus
 latest module reports: [989snd](DOCS/progress/989SND.json),
 [SDK](DOCS/progress/SDK.json), [iksemel](DOCS/progress/IKSEMEL.json),
 [libm](DOCS/progress/LIBM.json), and the linked Medius/SVO3 notes. The SVO3 figure
-is its 2026-10-18 report; 35 compiled functions remain nonmatching. All three
+is its committed 2026-10-19 report; 27 compiled functions remain nonmatching. All three
 compiled boot functions also remain nonmatching.
 
 These reports describe different verification snapshots, including ongoing local

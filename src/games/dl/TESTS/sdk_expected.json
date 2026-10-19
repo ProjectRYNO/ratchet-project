@@ -99,6 +99,86 @@
       "address": 32091720,
       "size": 668,
       "module": "i18n_inet"
+    },
+    "WaitDma": {
+      "address": 1284576,
+      "size": 112,
+      "module": "dma/libdma"
+    },
+    "CheckAddress": {
+      "address": 1284696,
+      "size": 40,
+      "module": "dma/libdma"
+    },
+    "memclr": {
+      "address": 1284736,
+      "size": 52,
+      "module": "dma/libdma"
+    },
+    "sceDmaGetChan": {
+      "address": 1284792,
+      "size": 40,
+      "module": "dma/libdma"
+    },
+    "sceDmaSend": {
+      "address": 1285536,
+      "size": 104,
+      "module": "dma/libdma"
+    },
+    "sceDmaReset": {
+      "address": 1284832,
+      "size": 220,
+      "module": "dma/libdma"
+    },
+    "sceDmaPutEnv": {
+      "address": 1285056,
+      "size": 472,
+      "module": "dma/libdma"
+    },
+    "sceDmaPause": {
+      "address": 1285672,
+      "size": 152,
+      "module": "dma/libdma"
+    },
+    "DPRINT": {
+      "address": 1289840,
+      "size": 40,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapSetWorkAddr": {
+      "address": 1289880,
+      "size": 92,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapInit": {
+      "address": 1289976,
+      "size": 256,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapEnd": {
+      "address": 1290232,
+      "size": 28,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapPortOpen": {
+      "address": 1290264,
+      "size": 108,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapPortClose": {
+      "address": 1290376,
+      "size": 108,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapGetConnection": {
+      "address": 1290488,
+      "size": 108,
+      "module": "mtap/libmtap"
+    },
+    "sceMtapGetModVersion": {
+      "address": 1290600,
+      "size": 100,
+      "module": "mtap/libmtap"
     }
   },
   "bindings": {
@@ -196,6 +276,14 @@
     "i18n_inet": [
       32091720,
       32092400
+    ],
+    "dma/libdma": [
+      1284576,
+      1285832
+    ],
+    "mtap/libmtap": [
+      1289840,
+      1290704
     ]
   }
 }

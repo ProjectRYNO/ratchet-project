@@ -1,0 +1,759 @@
+{
+  "survey_date": "2026-10-19",
+  "retail_elf_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
+  "version_stamps": [
+    {
+      "address": "0x164678",
+      "file_offset": "0x665f8",
+      "stamp": "PsIIlibkernl3000"
+    },
+    {
+      "address": "0x165fc0",
+      "file_offset": "0x67f40",
+      "stamp": "PsIIlibcdvd 3000"
+    },
+    {
+      "address": "0x167b80",
+      "file_offset": "0x69b00",
+      "stamp": "PsIIlibgraph3000"
+    },
+    {
+      "address": "0x167bb0",
+      "file_offset": "0x69b30",
+      "stamp": "PsIIlibdma  3000"
+    },
+    {
+      "address": "0x167be8",
+      "file_offset": "0x69b68",
+      "stamp": "PsIIlibmc   3020"
+    },
+    {
+      "address": "0x167c08",
+      "file_offset": "0x69b88",
+      "stamp": "PsIIlibpad  3020"
+    },
+    {
+      "address": "0x167c60",
+      "file_offset": "0x69be0",
+      "stamp": "PsIIlibvu0  3000"
+    },
+    {
+      "address": "0x167e60",
+      "file_offset": "0x69de0",
+      "stamp": "PsIIlibipu  3000"
+    },
+    {
+      "address": "0x16fc08",
+      "file_offset": "0x71b88",
+      "stamp": "PsIIlibscf  3000"
+    },
+    {
+      "address": "0x16fc30",
+      "file_offset": "0x71bb0",
+      "stamp": "PsIIlibmrpc 3000"
+    }
+  ],
+  "public_reference_repository": "https://github.com/ps2dev/ps2sdk",
+  "public_revisions": {
+    "2004": "d27397d3d88a9a0c960b091cdda28e3a573cf7eb",
+    "2005": "2886bea52303c1ccfdf56767fd61c0fe0af8d038",
+    "2006": "fbdea39a7d700e743ea950427beefaa0af43edc3",
+    "current": "329e2bb43287e16af16c4dde1c614e2662c24468"
+  },
+  "named_function_inventory": {
+    "sceMc": [
+      {
+        "name": "sceMcInit",
+        "address": "0x139ec8"
+      },
+      {
+        "name": "sceMcEnd",
+        "address": "0x13a0f0"
+      },
+      {
+        "name": "sceMcOpen",
+        "address": "0x13a160"
+      },
+      {
+        "name": "sceMcMkdir",
+        "address": "0x13a288"
+      },
+      {
+        "name": "sceMcClose",
+        "address": "0x13a2c0"
+      },
+      {
+        "name": "sceMcSeek",
+        "address": "0x13a380"
+      },
+      {
+        "name": "sceMcRead",
+        "address": "0x13a510"
+      },
+      {
+        "name": "sceMcWrite",
+        "address": "0x13a628"
+      },
+      {
+        "name": "sceMcSync",
+        "address": "0x13a7a0"
+      },
+      {
+        "name": "sceMcGetInfo",
+        "address": "0x13a8c0"
+      },
+      {
+        "name": "sceMcGetDir",
+        "address": "0x13aa40"
+      },
+      {
+        "name": "sceMcFormat",
+        "address": "0x13ab98"
+      },
+      {
+        "name": "sceMcDelete",
+        "address": "0x13ac68"
+      },
+      {
+        "name": "sceMcUnformat",
+        "address": "0x13ad98"
+      }
+    ],
+    "scePad": [
+      {
+        "name": "scePadInit",
+        "address": "0x13b1d0"
+      },
+      {
+        "name": "scePadInit2",
+        "address": "0x13b368"
+      },
+      {
+        "name": "scePadEnd",
+        "address": "0x13b460"
+      },
+      {
+        "name": "scePadPortOpen",
+        "address": "0x13b628"
+      },
+      {
+        "name": "scePadPortClose",
+        "address": "0x13b810"
+      },
+      {
+        "name": "scePadGetDmaStr",
+        "address": "0x13b8c8"
+      },
+      {
+        "name": "scePadRead",
+        "address": "0x13ba20"
+      },
+      {
+        "name": "scePadGetState",
+        "address": "0x13ba98"
+      },
+      {
+        "name": "scePadSetReqState",
+        "address": "0x13bb18"
+      },
+      {
+        "name": "scePadGetReqState",
+        "address": "0x13bbd0"
+      },
+      {
+        "name": "scePadInfoAct",
+        "address": "0x13bc30"
+      },
+      {
+        "name": "scePadInfoMode",
+        "address": "0x13bd50"
+      },
+      {
+        "name": "scePadSetMainMode",
+        "address": "0x13be88"
+      },
+      {
+        "name": "scePadSetActDirect",
+        "address": "0x13bf40"
+      },
+      {
+        "name": "scePadSetActAlign",
+        "address": "0x13c008"
+      },
+      {
+        "name": "scePadSetButtonInfo",
+        "address": "0x13c0e0"
+      },
+      {
+        "name": "scePadInfoPressMode",
+        "address": "0x13c190"
+      },
+      {
+        "name": "scePadEnterPressMode",
+        "address": "0x13c210"
+      },
+      {
+        "name": "scePadGetModVersion",
+        "address": "0x13c280"
+      },
+      {
+        "name": "scePadSetDmaCallback",
+        "address": "0x13c2e8"
+      }
+    ],
+    "sceMtap": [
+      {
+        "name": "sceMtapSetWorkAddr",
+        "address": "0x13ae98"
+      },
+      {
+        "name": "sceMtapInit",
+        "address": "0x13aef8"
+      },
+      {
+        "name": "sceMtapEnd",
+        "address": "0x13aff8"
+      },
+      {
+        "name": "sceMtapPortOpen",
+        "address": "0x13b018"
+      },
+      {
+        "name": "sceMtapPortClose",
+        "address": "0x13b088"
+      },
+      {
+        "name": "sceMtapGetConnection",
+        "address": "0x13b0f8"
+      },
+      {
+        "name": "sceMtapGetModVersion",
+        "address": "0x13b168"
+      }
+    ],
+    "sceDma": [
+      {
+        "name": "sceDmaGetChan",
+        "address": "0x139ab8"
+      },
+      {
+        "name": "sceDmaReset",
+        "address": "0x139ae0"
+      },
+      {
+        "name": "sceDmaPutEnv",
+        "address": "0x139bc0"
+      },
+      {
+        "name": "sceDmaSend",
+        "address": "0x139da0"
+      },
+      {
+        "name": "sceDmaPause",
+        "address": "0x139e28"
+      }
+    ],
+    "sceGs": [
+      {
+        "name": "sceGsResetPath",
+        "address": "0x131968"
+      },
+      {
+        "name": "sceGsSyncPath",
+        "address": "0x131a08"
+      },
+      {
+        "name": "sceGsResetGraph",
+        "address": "0x138350"
+      },
+      {
+        "name": "sceGsGetGParam",
+        "address": "0x1384e0"
+      },
+      {
+        "name": "sceGsSetDefDispEnv",
+        "address": "0x1385a0"
+      },
+      {
+        "name": "sceGsPutDispEnv",
+        "address": "0x138918"
+      },
+      {
+        "name": "sceGszbufaddr",
+        "address": "0x1389d8"
+      },
+      {
+        "name": "sceGsSetDefDrawEnv",
+        "address": "0x138aa0"
+      },
+      {
+        "name": "sceGsPutDrawEnv",
+        "address": "0x138c88"
+      },
+      {
+        "name": "sceGsSyncV",
+        "address": "0x138d70"
+      },
+      {
+        "name": "sceGsSetDefLoadImage",
+        "address": "0x138e08"
+      },
+      {
+        "name": "sceGsSetDefStoreImage",
+        "address": "0x138ff0"
+      },
+      {
+        "name": "sceGsExecLoadImage",
+        "address": "0x139130"
+      },
+      {
+        "name": "sceGsExecStoreImage",
+        "address": "0x1392b0"
+      },
+      {
+        "name": "sceGsSyncVCallback",
+        "address": "0x139940"
+      }
+    ],
+    "sceVu0": [
+      {
+        "name": "sceVu0UnitMatrix",
+        "address": "0x13c478"
+      },
+      {
+        "name": "sceVu0RotMatrixZ",
+        "address": "0x13c518"
+      },
+      {
+        "name": "sceVu0RotMatrixX",
+        "address": "0x13c5c0"
+      },
+      {
+        "name": "sceVu0RotMatrixY",
+        "address": "0x13c668"
+      }
+    ],
+    "sceIpu": [
+      {
+        "name": "sceIpuStopDMA",
+        "address": "0x1467c0"
+      },
+      {
+        "name": "sceIpuRestartDMA",
+        "address": "0x1468a8"
+      },
+      {
+        "name": "sceIpuSync",
+        "address": "0x1469f8"
+      },
+      {
+        "name": "sceIpuInit",
+        "address": "0x146ad8"
+      }
+    ],
+    "sceScf": [
+      {
+        "name": "sceScfGetLanguage",
+        "address": "0x1555c0"
+      },
+      {
+        "name": "sceScfGetAspect",
+        "address": "0x155628"
+      },
+      {
+        "name": "sceScfGetTimeZone",
+        "address": "0x155670"
+      },
+      {
+        "name": "sceScfGetSummerTime",
+        "address": "0x1556c8"
+      },
+      {
+        "name": "sceScfGetLocalTimefromRTC",
+        "address": "0x155a98"
+      }
+    ],
+    "sceCd": [
+      {
+        "name": "sceCdCallback",
+        "address": "0x136da8"
+      },
+      {
+        "name": "sceCdPOffCallback",
+        "address": "0x1370f8"
+      },
+      {
+        "name": "sceCdNcmdDiskReady",
+        "address": "0x1373b0"
+      },
+      {
+        "name": "sceCdSync",
+        "address": "0x137448"
+      },
+      {
+        "name": "sceCdSyncS",
+        "address": "0x1374e8"
+      },
+      {
+        "name": "sceCdInit",
+        "address": "0x1376b0"
+      },
+      {
+        "name": "sceCdDiskReady_old",
+        "address": "0x137998"
+      },
+      {
+        "name": "sceCdDiskReady",
+        "address": "0x137bb0"
+      },
+      {
+        "name": "sceCdRead",
+        "address": "0x137dd0"
+      },
+      {
+        "name": "sceCdGetError",
+        "address": "0x137fb0"
+      },
+      {
+        "name": "sceCdBreak",
+        "address": "0x138048"
+      },
+      {
+        "name": "sceCdPowerOff",
+        "address": "0x138100"
+      },
+      {
+        "name": "sceCdMmode",
+        "address": "0x1381b8"
+      },
+      {
+        "name": "sceCdReadClock",
+        "address": "0x138290"
+      }
+    ],
+    "sceSif": [
+      {
+        "name": "sceSifStopDma",
+        "address": "0x126e70"
+      },
+      {
+        "name": "sceSifDmaStat",
+        "address": "0x126f40"
+      },
+      {
+        "name": "sceSifSetDma",
+        "address": "0x126f60"
+      },
+      {
+        "name": "sceSifSetDChain",
+        "address": "0x126f80"
+      },
+      {
+        "name": "sceSifSetReg",
+        "address": "0x126fa0"
+      },
+      {
+        "name": "sceSifGetReg",
+        "address": "0x126fb0"
+      },
+      {
+        "name": "sceSifGetSreg",
+        "address": "0x129620"
+      },
+      {
+        "name": "sceSifSetSreg",
+        "address": "0x129638"
+      },
+      {
+        "name": "sceSifInitCmd",
+        "address": "0x129660"
+      },
+      {
+        "name": "sceSifExitCmd",
+        "address": "0x1298e0"
+      },
+      {
+        "name": "sceSifAddCmdHandler",
+        "address": "0x129918"
+      },
+      {
+        "name": "sceSifRemoveCmdHandler",
+        "address": "0x129990"
+      },
+      {
+        "name": "sceSifSendCmd",
+        "address": "0x129b18"
+      },
+      {
+        "name": "sceSifWriteBackDCache",
+        "address": "0x129ce0"
+      },
+      {
+        "name": "sceSifInitRpc",
+        "address": "0x129d90"
+      },
+      {
+        "name": "sceSifExitRpc",
+        "address": "0x129f30"
+      },
+      {
+        "name": "sceSifGetOtherData",
+        "address": "0x12a270"
+      },
+      {
+        "name": "sceSifBindRpc",
+        "address": "0x12a538"
+      },
+      {
+        "name": "sceSifCallRpc",
+        "address": "0x12a718"
+      },
+      {
+        "name": "sceSifCheckStatRpc",
+        "address": "0x12a918"
+      },
+      {
+        "name": "sceSifInitIopHeap",
+        "address": "0x12c1b8"
+      },
+      {
+        "name": "sceSifAllocIopHeap",
+        "address": "0x12c240"
+      },
+      {
+        "name": "sceSifAllocSysMemory",
+        "address": "0x12c2b0"
+      },
+      {
+        "name": "sceSifFreeSysMemory",
+        "address": "0x12c330"
+      },
+      {
+        "name": "sceSifFreeIopHeap",
+        "address": "0x12c3a8"
+      },
+      {
+        "name": "sceSifQueryMaxFreeMemSize",
+        "address": "0x12c3c8"
+      },
+      {
+        "name": "sceSifQueryTotalFreeMemSize",
+        "address": "0x12c438"
+      },
+      {
+        "name": "sceSifLoadFileReset",
+        "address": "0x12c648"
+      },
+      {
+        "name": "sceSifStopModule",
+        "address": "0x12c888"
+      },
+      {
+        "name": "sceSifUnloadModule",
+        "address": "0x12ca90"
+      },
+      {
+        "name": "sceSifSearchModuleByName",
+        "address": "0x12cb20"
+      },
+      {
+        "name": "sceSifLoadModuleBuffer",
+        "address": "0x12cbc0"
+      },
+      {
+        "name": "sceSifLoadStartModuleBuffer",
+        "address": "0x12cbe0"
+      },
+      {
+        "name": "sceSifResetIop",
+        "address": "0x12cc30"
+      },
+      {
+        "name": "sceSifIsAliveIop",
+        "address": "0x12cd88"
+      },
+      {
+        "name": "sceSifSyncIop",
+        "address": "0x12cdb0"
+      },
+      {
+        "name": "sceSifRebootIop",
+        "address": "0x12ce00"
+      },
+      {
+        "name": "sceSifInitRebootNotify",
+        "address": "0x12ec40"
+      },
+      {
+        "name": "sceSifAddRebootNotifyHandler",
+        "address": "0x12ec70"
+      },
+      {
+        "name": "sceSifRemoveRebootNotifyHandler",
+        "address": "0x12ed28"
+      },
+      {
+        "name": "sceSifExecNotifyHandler",
+        "address": "0x12ed80"
+      },
+      {
+        "name": "sceSifMInitRpc",
+        "address": "0x155ae0"
+      },
+      {
+        "name": "sceSifMExitRpc",
+        "address": "0x155bf0"
+      },
+      {
+        "name": "sceSifMBindRpcParam",
+        "address": "0x155e10"
+      },
+      {
+        "name": "sceSifMUnBindRpc",
+        "address": "0x155fe0"
+      },
+      {
+        "name": "sceSifMCallRpc",
+        "address": "0x156120"
+      }
+    ]
+  },
+  "reference_files": [
+    {
+      "revision": "2004",
+      "path": "LICENSE",
+      "sha256": "98d99f70df161ff2c456c0b930bf692303936d7d7d15c8fc0fc95f365f208b81"
+    },
+    {
+      "revision": "2004",
+      "path": "README",
+      "sha256": "a3244b7a9cd8647ca6a683f0581f5b1af7205f253f5894be5bef49f565c94c76"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/memorycard/src/libmc.c",
+      "sha256": "4b69ceb9e0154683225821927af206c91dfa8306c0be2608d465b442ad59ad5b"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/multitap/src/libmtap.c",
+      "sha256": "f8a4f2f6fa1f6222add2bb21210294718e922c123de6ae0b32ab70e9f68bc928"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/pad/Makefile",
+      "sha256": "3c93de3302bcc836f2328ab60ea796139118d315439055e04fcf2cb24bd414a8"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/pad/src/libpad.c",
+      "sha256": "0f3241684b2613600c4d62bf0b55f77f5de8d4359b25addbf85e90c4d659467f"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/padx/Makefile",
+      "sha256": "5312647ebf0bd44b0412d32fa4b5cbe736a54990a06ff64568899233db8cbe30"
+    },
+    {
+      "revision": "2004",
+      "path": "ee/rpc/padx/src/libpadx.c",
+      "sha256": "f8f1633513b4f7709c2a6418437c1ccfdf286b353972a3f11a5562355db16b9c"
+    },
+    {
+      "revision": "2005",
+      "path": "LICENSE",
+      "sha256": "98d99f70df161ff2c456c0b930bf692303936d7d7d15c8fc0fc95f365f208b81"
+    },
+    {
+      "revision": "2005",
+      "path": "README",
+      "sha256": "a3244b7a9cd8647ca6a683f0581f5b1af7205f253f5894be5bef49f565c94c76"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/memorycard/src/libmc.c",
+      "sha256": "7f264aae88d5387ebd49f442825c9de7c7d5979da5f8e300e404ce65c83570b0"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/multitap/src/libmtap.c",
+      "sha256": "f8a4f2f6fa1f6222add2bb21210294718e922c123de6ae0b32ab70e9f68bc928"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/pad/Makefile",
+      "sha256": "46828caad5785cfadc58cd2071a2d29635ce83fd351800b50475fd0a68ca9537"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/pad/src/libpad.c",
+      "sha256": "0f3241684b2613600c4d62bf0b55f77f5de8d4359b25addbf85e90c4d659467f"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/padx/Makefile",
+      "sha256": "fb79d06eebc615d2a013acf0a490e5de7e739c49fe9bae039b8893bc82a3d16f"
+    },
+    {
+      "revision": "2005",
+      "path": "ee/rpc/padx/src/libpadx.c",
+      "sha256": "f8f1633513b4f7709c2a6418437c1ccfdf286b353972a3f11a5562355db16b9c"
+    },
+    {
+      "revision": "2006",
+      "path": "LICENSE",
+      "sha256": "98d99f70df161ff2c456c0b930bf692303936d7d7d15c8fc0fc95f365f208b81"
+    },
+    {
+      "revision": "2006",
+      "path": "README",
+      "sha256": "a3244b7a9cd8647ca6a683f0581f5b1af7205f253f5894be5bef49f565c94c76"
+    },
+    {
+      "revision": "2006",
+      "path": "ee/rpc/memorycard/src/libmc.c",
+      "sha256": "7f264aae88d5387ebd49f442825c9de7c7d5979da5f8e300e404ce65c83570b0"
+    },
+    {
+      "revision": "2006",
+      "path": "ee/rpc/multitap/src/libmtap.c",
+      "sha256": "f8a4f2f6fa1f6222add2bb21210294718e922c123de6ae0b32ab70e9f68bc928"
+    },
+    {
+      "revision": "2006",
+      "path": "ee/rpc/pad/src/libpad.c",
+      "sha256": "ed4de8dff542d7d6bf28e7fb78d940850f6cd883a83c848a1bf7b08504f53d5c"
+    },
+    {
+      "revision": "2006",
+      "path": "ee/rpc/padx/src/libpadx.c",
+      "sha256": "95b4d53fadfe5c44575749e39c163f1defb711821acad55735065602f56f610b"
+    },
+    {
+      "revision": "current",
+      "path": "LICENSE",
+      "sha256": "1ecee940922a6886baccddd9133d17f1ce677d32c5a954fac8e48224f2766fe8"
+    },
+    {
+      "revision": "current",
+      "path": "README.md",
+      "sha256": "04b988f3f1d64e519b1fdf3598928b2255507751540b6e7958320d7287c83f1e"
+    },
+    {
+      "revision": "current",
+      "path": "ee/rpc/memorycard/src/libmc.c",
+      "sha256": "24b8be8bda4db19ccf37de4f17c53a199696513a0fd9f7430ed4f7820a5f06a2"
+    },
+    {
+      "revision": "current",
+      "path": "ee/rpc/multitap/src/libmtap.c",
+      "sha256": "ad152e65a4550d04721142ec6c9d8f4d67c010381308ba255f69bae98315d277"
+    },
+    {
+      "revision": "current",
+      "path": "ee/rpc/pad/src/libpad.c",
+      "sha256": "d042d6b1a4ec63aba8b34b5c13337b80665c08b3b64b7b3621120505cf7c7289"
+    }
+  ],
+  "scope": "Fingerprint/layout/source comparison only; no candidate library compiled or integrated."
+}

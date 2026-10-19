@@ -1,0 +1,65 @@
+{
+  "scope": "Identified named SDK functions in retail boot ELF, including verified SDK C helpers; incomplete inventory, not all SDK code",
+  "tracked_functions": 387,
+  "compiled_matching_functions": 36,
+  "compiled_matching_percent": 9.3,
+  "groups": {
+    "CD/DVD": {
+      "tracked": 14,
+      "compiled_matching": 0
+    },
+    "DMA": {
+      "tracked": 8,
+      "compiled_matching": 8
+    },
+    "IPU": {
+      "tracked": 4,
+      "compiled_matching": 0
+    },
+    "MPEG": {
+      "tracked": 11,
+      "compiled_matching": 0
+    },
+    "SIF": {
+      "tracked": 50,
+      "compiled_matching": 0
+    },
+    "VU0": {
+      "tracked": 4,
+      "compiled_matching": 0
+    },
+    "configuration": {
+      "tracked": 16,
+      "compiled_matching": 0
+    },
+    "file I/O": {
+      "tracked": 18,
+      "compiled_matching": 0
+    },
+    "graphics": {
+      "tracked": 15,
+      "compiled_matching": 0
+    },
+    "kernel/runtime": {
+      "tracked": 180,
+      "compiled_matching": 0
+    },
+    "memory card": {
+      "tracked": 17,
+      "compiled_matching": 0
+    },
+    "multitap": {
+      "tracked": 8,
+      "compiled_matching": 8
+    },
+    "networking/localization": {
+      "tracked": 20,
+      "compiled_matching": 20
+    },
+    "pad": {
+      "tracked": 22,
+      "compiled_matching": 0
+    }
+  },
+  "excluded": "Unnamed/unclassified entries, instruction fragments, overlays, libc/libm/libgcc, Medius/SVO3 and other third-party libraries"
+}

@@ -1,6 +1,22 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  DPRINT: 0x0013AE70
+  sceMtapSetWorkAddr: 0x0013AE98
+  sceMtapInit: 0x0013AEF8
+  sceMtapEnd: 0x0013AFF8
+  sceMtapPortOpen: 0x0013B018
+  sceMtapPortClose: 0x0013B088
+  sceMtapGetConnection: 0x0013B0F8
+  sceMtapGetModVersion: 0x0013B168
+  sceDmaReset: 0x00139AE0
+  sceDmaPutEnv: 0x00139BC0
+  sceDmaPause: 0x00139E28
+  WaitDma: 0x001399E0
+  CheckAddress: 0x00139A58
+  memclr: 0x00139A80
+  sceDmaGetChan: 0x00139AB8
+  sceDmaSend: 0x00139DA0
   __ieee754_expf: 0x00133250
   __ieee754_logf: 0x00133508
   __ieee754_log10f: 0x00133830
@@ -1208,6 +1224,35 @@ functions:
   ezNetCtlRecreateIfstat: 0x01E9AE48
 
 objects:
+  sdk/mtap/libmtap:
+    text_start: 0x0013AE70
+    text_end: 0x0013B1D0
+    slots:
+      - {object: sdk/mtap/libmtap, section: .mtap_DPRINT, start: 0x0013AE70, end: 0x0013AE98}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapSetWorkAddr, start: 0x0013AE98, end: 0x0013AEF8}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapInit, start: 0x0013AEF8, end: 0x0013AFF8}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapEnd, start: 0x0013AFF8, end: 0x0013B018}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapPortOpen, start: 0x0013B018, end: 0x0013B088}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapPortClose, start: 0x0013B088, end: 0x0013B0F8}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapGetConnection, start: 0x0013B0F8, end: 0x0013B168}
+      - {object: sdk/mtap/libmtap, section: .mtap_sceMtapGetModVersion, start: 0x0013B168, end: 0x0013B1CC}
+      - {object: sdk/mtap/libmtap, section: .mtap_func_0013B1CC, start: 0x0013B1CC, end: 0x0013B1D0}
+  sdk/dma/libdma:
+    text_start: 0x001399E0
+    text_end: 0x00139EC8
+    slots:
+      - {object: sdk/dma/libdma, section: .dma_WaitDma, start: 0x001399E0, end: 0x00139A50}
+      - {object: sdk/dma/libdma, section: .dma_func_00139A50, start: 0x00139A50, end: 0x00139A58}
+      - {object: sdk/dma/libdma, section: .dma_CheckAddress, start: 0x00139A58, end: 0x00139A80}
+      - {object: sdk/dma/libdma, section: .dma_memclr, start: 0x00139A80, end: 0x00139AB8}
+      - {object: sdk/dma/libdma, section: .dma_sceDmaGetChan, start: 0x00139AB8, end: 0x00139AE0}
+      - {object: sdk/dma/libdma, section: .dma_sceDmaReset, start: 0x00139AE0, end: 0x00139BC0}
+      - {object: sdk/dma/libdma, section: .dma_sceDmaPutEnv, start: 0x00139BC0, end: 0x00139D98}
+      - {object: sdk/dma/libdma, section: .dma_func_00139D98, start: 0x00139D98, end: 0x00139DA0}
+      - {object: sdk/dma/libdma, section: .dma_sceDmaSend, start: 0x00139DA0, end: 0x00139E08}
+      - {object: sdk/dma/libdma, section: .dma_func_00139E08, start: 0x00139E08, end: 0x00139E28}
+      - {object: sdk/dma/libdma, section: .dma_sceDmaPause, start: 0x00139E28, end: 0x00139EC0}
+      - {object: sdk/dma/libdma, section: .dma_func_00139EC0, start: 0x00139EC0, end: 0x00139EC8}
   newlib/libm/math/ef_exp:
     text_start: 0x00133250
     text_end: 0x00133504

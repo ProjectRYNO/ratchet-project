@@ -131,6 +131,19 @@ $(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
 	$(EEGCC296) -S $(MEDIUS_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
+# Boot libdma matches the same historical 991111-01 toolchain used by libm.
+SDK_DMA_COMPILE_FLAGS = -G0 -O2 -fno-builtin
+$(OBJ_DIR)/sdk/dma/libdma.o: code/sdk/dma/libdma.c code/sdk/dma/libdma.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+# Retail boot multitap uses the same 991111-01 profile as DMA.
+$(OBJ_DIR)/sdk/mtap/libmtap.o: code/sdk/mtap/libmtap.c code/sdk/mtap/libmtap.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
 # SDK networking/localization probes match SCE 2.96 with default alignment.
 # Keep this independent of Medius's minimal alignment and SVO3's size flags.
 SDK_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections

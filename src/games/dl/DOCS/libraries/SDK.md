@@ -1,18 +1,15 @@
-# Deadlocked SDK compiler profile
+# Deadlocked SDK compiler profiles
 
-The **100% completion figure covers `code/sdk/`**: `libezcnf.c`, `libezctl.c`,
-`i18n.c`, and `i18n_inet.c` (20 real functions). It does not cover every Sony SDK
-library linked into the boot ELF. Additional SDK code, including CD/DVD and graphics
-functions, remains assembly in `code/game/lib_after_libm.cpp`; the library aggregates
-also contain C runtime and other code. See the [boot ELF table](../../README.md#boot-elf-decompilation-progress)
-for these separate scopes. The two retained SDK instruction fragments are not
-unfinished independent functions.
+Current boot-only scope: **36/36 real functions (100.00%)** compiled and byte-matching in `code/sdk/`, covering networking/localization, DMA and multitap. Seven retained instruction fragments are excluded. Other SDK code remains in the game library aggregates.
 
-Rechecked on 2026-10-19 against the isolated libm-complete ELF
-(`2e1283399004eacffe115cc09128eaa2757ff5f658b49a7171cd972d46d25189`):
-`check_sdk.py` passes all 20 compiled functions (4,276 bytes) and all four complete
-module ranges, including padding and retained fragments. This is an exact-byte
-check, not a gameplay test.
+The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all six complete module ranges (6,456 bytes). DMA contributes eight exact C functions; no real DMA routines remain assembly. See [DMA implementation and validation](SDK_DMA.md). DMA uses EE GCC 2.9 (991111-01); networking/localization retains SCE EE GCC 2.96. The historical 20/20 results below cover networking/localization only.
+
+## Broader runtime inventory
+
+The [SDK folder map](../../code/sdk/README.md) lists the additional boot runtime
+components still in the game library aggregates. The [version/source survey](SDK_LAYOUT.md)
+records retail `3000` / `3020` fingerprints and comparisons with pinned public
+PS2SDK revisions. These additional libraries are not included in the 20/20 result.
 
 ## Final parser integration (2026-10-14)
 
@@ -216,3 +213,7 @@ Sony 3.2-ee-040921 archive. Compiler names starting with `sony` receive the
 Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
+
+Broader boot SDK tracking: **36/387 identified functions (9.30%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+
+Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

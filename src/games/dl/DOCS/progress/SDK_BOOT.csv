@@ -1,0 +1,388 @@
+name,address,group,source,status,basis
+SetGsCrt,0x001267A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_Exit,0x001267C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_LoadExecPS2,0x001267E0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AddIntcHandler,0x00126880,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AddIntcHandler2,0x00126890,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+RemoveIntcHandler,0x001268A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AddDmacHandler,0x001268B0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AddDmacHandler2,0x001268C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+RemoveDmacHandler,0x001268D0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_EnableIntc,0x001268E0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_DisableIntc,0x001268F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_EnableDmac,0x00126900,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_DisableDmac,0x00126910,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+CreateThread,0x001269A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DeleteThread,0x001269B0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_StartThread,0x001269C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+TerminateThread,0x001269F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ChangeThreadPriority,0x00126A30,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+RotateThreadReadyQueue,0x00126A50,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetThreadId,0x00126A90,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ReferThreadStatus,0x00126AA0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SleepThread,0x00126AC0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+WakeupThread,0x00126AD0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_iWakeupThread,0x00126AE0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SuspendThread,0x00126B10,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ResumeThread,0x00126B30,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+EndOfHeap,0x00126B80,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+CreateSema,0x00126BA0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DeleteSema,0x00126BB0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SignalSema,0x00126BC0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iSignalSema,0x00126BD0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+WaitSema,0x00126BE0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+PollSema,0x00126BF0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ReferSemaStatus,0x00126C10,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetOsdConfigParam,0x00126C40,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetOsdConfigParam,0x00126C50,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+FlushCache,0x00126E20,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifStopDma,0x00126E70,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+GetOsdConfigParam2,0x00126EB0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GsGetIMR,0x00126EC0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GsPutIMR,0x00126EE0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetVSyncFlag,0x00126F10,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifDmaStat,0x00126F40,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifSetDma,0x00126F60,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+isceSifSetDma,0x00126F70,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifSetDChain,0x00126F80,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+isceSifSetDChain,0x00126F90,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifSetReg,0x00126FA0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifGetReg,0x00126FB0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+Deci2Call,0x00126FD0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetMemorySize,0x00127000,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_InitTLB,0x00127010,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceResetttyinit,0x00127020,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+VSync,0x00127030,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+VSync2,0x001270C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+write,0x00127168,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+read,0x001271E8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+open,0x00127260,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+close,0x00127288,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+lseek,0x00127290,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sbrk,0x00127298,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+fstat,0x00127348,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+getpid,0x00127360,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+stat,0x00127368,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceSDC,0x00127390,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SyncDCache,0x00127438,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceIDC,0x001274C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InvalidDCache,0x00127568,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+QueryIntrContext,0x001275F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DisableIntc,0x00127600,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+EnableIntc,0x00127668,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DisableDmac,0x001276D0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+EnableDmac,0x00127738,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+topThread,0x001277A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitThread,0x00127878,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iWakeupThread,0x00127968,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DelayThread,0x00127A08,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+StartThread,0x00127AD0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_DelayThreadHandler,0x00127C48,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDeci2Open,0x00127C70,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDeci2ReqSend,0x00127CC0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDeci2Poll,0x00127CF0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDeci2ExRecv,0x00127D20,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDeci2ExSend,0x00127D58,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kputs,0x00127DA0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+QueueInit,0x00127DC8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+QueuePeekWriteDone,0x00127DF0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+QueuePeekReadDone,0x00127E30,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceTtyHandler,0x00127E70,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceTtyWrite,0x00128008,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceTtyRead,0x00128180,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceTtyInit,0x00128250,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kputchar,0x00128310,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+deci2Putchar,0x00128348,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+serialPutchar,0x001283F8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ftoi,0x00128430,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+printfloat,0x001284C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceSnprintf,0x00128698,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+snprintf_char,0x001293B0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+printf_char,0x00129408,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kprintf_char,0x00129430,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceSnprintf_pf,0x00129458,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSnprintf,0x001294A8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+scePrintf,0x001294F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kprintf,0x00129570,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_set_sreg,0x001295F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_change_addr,0x00129610,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifGetSreg,0x00129620,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifSetSreg,0x00129638,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifInitCmd,0x00129660,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifExitCmd,0x001298E0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifAddCmdHandler,0x00129918,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifRemoveCmdHandler,0x00129990,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceSifSendCmd,0x001299E0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifSendCmd,0x00129B18,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+isceSifSendCmd,0x00129B58,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceSifCmdIntrHdlr,0x00129B98,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifWriteBackDCache,0x00129CE0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifInitRpc,0x00129D90,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifExitRpc,0x00129F30,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceRpcGetPacket,0x00129F58,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceRpcFreePacket,0x0012A000,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceRpcGetFPacket,0x0012A020,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceRpcGetFPacket2,0x0012A050,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_request_end,0x0012A090,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_alarm_rdata,0x0012A160,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_request_rdata,0x0012A1A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifGetOtherData,0x0012A270,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_search_svdata,0x0012A3D8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_alarm_bind,0x0012A428,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_request_bind,0x0012A468,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifBindRpc,0x0012A538,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_request_call,0x0012A688,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifCallRpc,0x0012A718,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifCheckStatRpc,0x0012A918,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceFsIobSemaMK,0x0012A970,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+new_iob,0x0012A9E8,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceFsSifCallRpc,0x0012AA70,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+get_iob,0x0012AB60,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceFs_Rcv_Intr,0x0012ABD0,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceFsSemInit,0x0012AF88,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceFsWaitS,0x0012AFE0,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceFsSigSema,0x0012B010,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceFs_Poff_Intr,0x0012B020,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceFsInit,0x0012B068,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_fs_version,0x0012B270,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceFsReset,0x0012B300,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceOpen,0x0012B338,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceClose,0x0012B5C8,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceLseek,0x0012B740,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceRead,0x0012B980,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceWrite,0x0012BBF0,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceDevctl,0x0012BF10,file I/O,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifInitIopHeap,0x0012C1B8,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifAllocIopHeap,0x0012C240,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifAllocSysMemory,0x0012C2B0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifFreeSysMemory,0x0012C330,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifFreeIopHeap,0x0012C3A8,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifQueryMaxFreeMemSize,0x0012C3C8,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifQueryTotalFreeMemSize,0x0012C438,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_lf_bind,0x0012C4B8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_lf_version,0x0012C5B8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifLoadFileReset,0x0012C648,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceSifLoadModuleBuffer,0x0012C680,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifStopModule,0x0012C888,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifUnloadModule,0x0012CA90,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifSearchModuleByName,0x0012CB20,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifLoadModuleBuffer,0x0012CBC0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifLoadStartModuleBuffer,0x0012CBE0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifResetIop,0x0012CC30,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifIsAliveIop,0x0012CD88,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifSyncIop,0x0012CDB0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifRebootIop,0x0012CE00,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+Copy,0x0012CF18,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kCopy,0x0012CF28,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetEntryAddress,0x0012CF60,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+setup,0x0012CF70,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitTLBFunctions,0x0012CF80,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_SetTLBEntry,0x0012D048,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitTLB,0x0012D058,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitTLB32MB,0x0012D098,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_kExitTLBHandler,0x0012D300,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DIntr,0x0012D420,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+EIntr,0x0012D470,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+supplement_crt0,0x0012D488,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kCopy___dupe2,0x0012D4F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kFindAddress,0x0012D528,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+FindAddress,0x0012D568,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitSystemCallTableAddress,0x0012D580,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+setup___dupe2,0x0012D680,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_InitSys,0x0012D690,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+setup___dupe3,0x0012D6E8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+Copy___dupe2,0x0012D6F8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kCopy___dupe3,0x0012D708,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetEntryAddress___dupe2,0x0012D740,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+PatchIsNeeded,0x0012D750,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitExecPS2,0x0012D7B8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+Copy___dupe3,0x0012D868,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kCopy___dupe4,0x0012D878,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+setup___dupe4,0x0012D8A8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetArg,0x0012D8B8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+TerminateLibrary,0x0012D9D0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+LoadExecPS2,0x0012D9D8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+Exit,0x0012DA20,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+setup___dupe5,0x0012DA50,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+Copy___dupe4,0x0012DA60,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+kCopy___dupe5,0x0012DA70,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetEntryAddress___dupe3,0x0012DAA8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitAlarm,0x0012DAB8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetT2,0x0012DB90,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetT2_COUNT,0x0012DC00,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetT2_MODE,0x0012DC10,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetT2_COMP,0x0012DC20,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InitTimer,0x0012DC30,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+StartTimerSystemTime,0x0012DD90,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetNextComp,0x0012DE28,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+InsertAlarm,0x0012DFB8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+UnlinkAlarm,0x0012E040,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+cbTimerHandler,0x0012E078,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iGetTimerSystemTime,0x0012E320,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetTimerSystemTime,0x0012E370,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iAllocTimerCounter,0x0012E3F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AllocTimerCounter,0x0012E460,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iFreeTimerCounter,0x0012E4A8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+FreeTimerCounter,0x0012E548,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iStartTimerCounter,0x0012E5A0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+StartTimerCounter,0x0012E650,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iSetTimerHandler,0x0012E6D0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetTimerHandler,0x0012E7C8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+TimerUSec2BusClock,0x0012E848,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_InitAlarm,0x0012E8C8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AlarmHandler,0x0012E918,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetTimerAlarm,0x0012E978,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+iSetTimerAlarm,0x0012EAA8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+ReleaseTimerAlarm,0x0012EB98,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifInitRebootNotify,0x0012EC40,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifAddRebootNotifyHandler,0x0012EC70,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifRemoveRebootNotifyHandler,0x0012ED28,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifExecNotifyHandler,0x0012ED80,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsResetPath,0x00131968,graphics,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSyncPath,0x00131A08,graphics,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdCallback,0x00136DA8,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdPOffCallback,0x001370F8,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdNcmdDiskReady,0x001373B0,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdSync,0x00137448,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdSyncS,0x001374E8,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdInit,0x001376B0,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdDiskReady_old,0x00137998,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdDiskReady,0x00137BB0,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdRead,0x00137DD0,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdGetError,0x00137FB0,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdBreak,0x00138048,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdPowerOff,0x00138100,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdMmode,0x001381B8,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdReadClock,0x00138290,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsResetGraph,0x00138350,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsGetGParam,0x001384E0,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSetDefDispEnv,0x001385A0,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsPutDispEnv,0x00138918,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGszbufaddr,0x001389D8,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSetDefDrawEnv,0x00138AA0,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsPutDrawEnv,0x00138C88,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSyncV,0x00138D70,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSetDefLoadImage,0x00138E08,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSetDefStoreImage,0x00138FF0,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsExecLoadImage,0x00139130,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsExecStoreImage,0x001392B0,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsSyncVCallback,0x00139940,graphics,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+WaitDma,0x001399E0,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+CheckAddress,0x00139A58,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+memclr,0x00139A80,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceDmaGetChan,0x00139AB8,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceDmaReset,0x00139AE0,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceDmaPutEnv,0x00139BC0,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceDmaSend,0x00139DA0,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceDmaPause,0x00139E28,DMA,code/sdk/dma/libdma.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMcInit,0x00139EC8,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcEnd,0x0013A0F0,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+mceSifRpcEndFunc,0x0013A148,memory card,code/game/lib_after_dma.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMcOpen,0x0013A160,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcMkdir,0x0013A288,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcClose,0x0013A2C0,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcSeek,0x0013A380,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+mceIntrReadFixAlign,0x0013A460,memory card,code/game/lib_after_dma.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMcRead,0x0013A510,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcWrite,0x0013A628,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcSync,0x0013A7A0,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+mceGetInfoApdx,0x0013A868,memory card,code/game/lib_after_dma.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMcGetInfo,0x0013A8C0,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcGetDir,0x0013AA40,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcFormat,0x0013AB98,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcDelete,0x0013AC68,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMcUnformat,0x0013AD98,memory card,code/game/lib_after_dma.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+DPRINT,0x0013AE70,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapSetWorkAddr,0x0013AE98,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapInit,0x0013AEF8,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapEnd,0x0013AFF8,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapPortOpen,0x0013B018,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapPortClose,0x0013B088,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapGetConnection,0x0013B0F8,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+sceMtapGetModVersion,0x0013B168,multitap,code/sdk/mtap/libmtap.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+scePadInit,0x0013B1D0,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_pad_intr_hdr,0x0013B320,pad,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+scePadInit2,0x0013B368,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadEnd,0x0013B460,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_send_to_iop,0x0013B510,pad,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+scePadPortOpen,0x0013B628,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadPortClose,0x0013B810,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadGetDmaStr,0x0013B8C8,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadRead,0x0013BA20,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadGetState,0x0013BA98,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetReqState,0x0013BB18,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadGetReqState,0x0013BBD0,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadInfoAct,0x0013BC30,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadInfoMode,0x0013BD50,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetMainMode,0x0013BE88,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetActDirect,0x0013BF40,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetActAlign,0x0013C008,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetButtonInfo,0x0013C0E0,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadInfoPressMode,0x0013C190,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadEnterPressMode,0x0013C210,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadGetModVersion,0x0013C280,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+scePadSetDmaCallback,0x0013C2E8,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceVu0UnitMatrix,0x0013C478,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceVu0RotMatrixZ,0x0013C518,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceVu0RotMatrixX,0x0013C5C0,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceVu0RotMatrixY,0x0013C668,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceMpegCreate,0x001415E8,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegInit,0x00142090,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegDelete,0x00142140,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegGetPicture,0x00142150,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegReset,0x001421A0,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegIsEnd,0x00142220,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegIsRefBuffEmpty,0x00142230,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegAddCallback,0x00142248,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegClearRefBuff,0x001423C8,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegDemuxPssRing,0x00145FB0,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceMpegAddStrCallback,0x00146390,MPEG,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceIpuStopDMA,0x001467C0,IPU,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceIpuRestartDMA,0x001468A8,IPU,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceIpuSync,0x001469F8,IPU,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceIpuInit,0x00146AD8,IPU,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+GetRomName,0x00155510,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+IsT10K,0x00155580,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceScfGetLanguage,0x001555C0,configuration,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceScfGetAspect,0x00155628,configuration,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceScfGetTimeZone,0x00155670,configuration,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceScfGetSummerTime,0x001556C8,configuration,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+tobcd,0x00155730,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+frombcd,0x00155760,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+convertfrombcd,0x00155780,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+converttobcd,0x001557E8,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+adddate,0x00155850,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+subdate,0x00155908,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+addhour,0x001559B0,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+subhour,0x001559E0,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+AdjustTime,0x00155A08,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceScfGetLocalTimefromRTC,0x00155A98,configuration,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifMInitRpc,0x00155AE0,SIF,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_iopnotify,0x00155BC8,SIF,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifMExitRpc,0x00155BF0,SIF,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceRpcGetPacket___dupe2,0x00155C20,SIF,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceRpcFreePacket___dupe2,0x00155CC8,SIF,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_request_end___dupe2,0x00155CE8,SIF,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+sceSifMBindRpcParam,0x00155E10,SIF,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifMUnBindRpc,0x00155FE0,SIF,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceSifMCallRpc,0x00156120,SIF,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+ezNetCnfInit,0x01E9A000,networking/localization,code/sdk/libezcnf.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCnfExit,0x01E9A0F0,networking/localization,code/sdk/libezcnf.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCnfGetCombinationList,0x01E9A178,networking/localization,code/sdk/libezcnf.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCnfGetCombination,0x01E9A2B0,networking/localization,code/sdk/libezcnf.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCnfGetProperties,0x01E9A360,networking/localization,code/sdk/libezcnf.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlInit,0x01E9A4A0,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlExit,0x01E9A590,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlSetProperties,0x01E9A618,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlUpInterface,0x01E9A738,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlDownInterface,0x01E9A7C8,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlGetStatus,0x01E9A858,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlWaitEventTO,0x01E9A9A8,networking/localization,code/sdk/libezctl.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlSwapMessageTables,0x01E9AA78,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+getMsgEntry,0x01E9AAC8,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlLocalizeMessage,0x01E9AB50,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+cbFormatAuthMessage,0x01E9ACB0,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+cbFormatPPPStatus,0x01E9ACF8,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+cbFormatLineSpeed,0x01E9AD78,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+cbFormatPhoneNumber,0x01E9AE30,networking/localization,code/sdk/i18n.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
+ezNetCtlRecreateIfstat,0x01E9AE48,networking/localization,code/sdk/i18n_inet.c,compiled_matching,compiled SDK module; check_sdk.py exact-byte verification
