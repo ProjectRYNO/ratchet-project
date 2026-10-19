@@ -284,40 +284,47 @@ extern "C" SECTION(GetLineNumberAtOffset) int GetLineNumberAtOffset(TextAreaTagS
 
 extern "C" SECTION(GetNextWord) int GetNextWord(TextAreaTagState *tag, char *text, int *start, int *end, int *offset)
 {
-    *start = offset ? *offset : tag->m_curParseOffset;
-    if (!offset) offset = &tag->m_curParseOffset;
-    *end = *start;
     int result = 1;
+    int *position;
+    if (offset) {
+        *start = *offset;
+        position = offset;
+    } else {
+        *start = tag->m_curParseOffset;
+        position = &tag->m_curParseOffset;
+    }
+    *end = *start;
     goto loop;
 trim:
-    *offset = TrimLongWord(tag, text, *start, *offset, tag->m_maxLineLength);
     result = 3;
-    *end = *offset;
-    return result;
+    *position = TrimLongWord(tag, text, *start, *position, tag->m_maxLineLength);
+    goto finish;
 loop:
     {
-        int current = *offset;
-        char c = text[current];
+        int current = *position;
+        char *cursor = text + current;
+        char c = *cursor;
         if (!c || current == tag->m_maxTextSize - 1) {
             if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
-            result = *offset != *start;
+            result = *position != *start;
             goto done;
         }
         if (c == ' ' && current != *start) {
             if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
             goto done;
         }
-        if (c == '\n' || c == '\r') {
+        if (*cursor == '\n' || *cursor == '\r') {
             if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
             result = 2;
             goto done;
         }
-        *offset = current + 1;
+        *position = current + 1;
         goto loop;
     }
 done:
-    tag->m_textLines[tag->m_curParseLine].lineEndIndex = *offset;
-    *end = *offset;
+    tag->m_textLines[tag->m_curParseLine].lineEndIndex = *position;
+finish:
+    *end = *position;
     return result;
 }
 

@@ -501,11 +501,32 @@ extern "C" SECTION(ClosePopup) int ClosePopup(CPage *page)
     return 1;
 }
 
-struct DownloadBinaryMember { char data[0x264]; void *vtable; DownloadBinaryMember() __asm__("DownloadBinary"); }; struct CPageShell { DownloadBinaryMember pre[11]; int preCount; char preUsed[32]; DownloadBinaryMember post[11]; int postCount; char postUsed[32]; DownloadBinaryMember in[2]; int inCount; char inUsed[32]; char rest[0x637C - 0x3A2C]; CPageShell(char *firstPage, int popup, int listenPort) __asm__("CPage"); }; SECTION(CPage) CPageShell::CPageShell(char *firstPage, int popup, int listenPort)
+struct DownloadBinaryMember { char data[0x264]; void *vtable; DownloadBinaryMember() __asm__("DownloadBinary"); }; struct CPageShell { char pre[11 * 0x268]; int preCount; char preUsed[32]; char post[11 * 0x268]; int postCount; char postUsed[32]; char in[2 * 0x268]; int inCount; char inUsed[32]; char rest[0x637C - 0x3A2C]; CPageShell(char *firstPage, int popup, int listenPort) __asm__("CPage"); }; SECTION(CPage) CPageShell::CPageShell(char *firstPage, int popup, int listenPort)
 {
     CPage *page = (CPage *)this;
+    char *element = (char *)page->preTransition;
+    int n = 10;
+    do {
+        DownloadBinary((DownloadBinaryState *)element);
+        element += sizeof(DownloadBinaryMember);
+    } while (--n != -1);
+    char *postArray = (char *)page->postTransition;
+    char *element2 = postArray;
+    n = 10;
+    do {
+        DownloadBinary((DownloadBinaryState *)element2);
+        element2 += sizeof(DownloadBinaryMember);
+    } while (--n != -1);
+    char *inArray = (char *)page->inTransition;
+    char *element3 = inArray;
+    n = 1;
+    do {
+        DownloadBinary((DownloadBinaryState *)element3);
+        element3 += sizeof(DownloadBinaryMember);
+    } while (--n != -1);
     PageHistory(&page->m_history);
-    SVChronograph(&page->m_pageRefreshTimer, 0);
+    SVChronographState *timer = &page->m_pageRefreshTimer;
+    SVChronograph(timer, 0);
     PageRequestListener(&page->m_requestListener, GetMemoryContext(), 0xA000);
     page->m_pRequestProvider = 0;
     page->m_bIsPopup = popup;
@@ -513,52 +534,116 @@ struct DownloadBinaryMember { char data[0x264]; void *vtable; DownloadBinaryMemb
     page->m_state = 0;
     setPageState(page, 0);
     page->m_bIsActive = 0;
-    page->m_pFrontDisplayBuffer = &page->m_displayBuffers[1];
     page->m_pBackDisplayBuffer = &page->m_displayBuffers[0];
+    page->m_pFrontDisplayBuffer = &page->m_displayBuffers[1];
     memset(page->m_displayBuffers[0].tagList, 0, 0x400);
     memset(page->m_pFrontDisplayBuffer->tagList, 0, 0x400);
+    SVDisplayBufferState *back = page->m_pBackDisplayBuffer;
     SVDisplayBufferState *front = page->m_pFrontDisplayBuffer;
-    page->m_pBackDisplayBuffer->xml = 0;
+    back->xml = 0;
     page->m_defTextEntryTag = 0;
     front->xml = 0;
     page->m_defTextScrollTag = 0;
-    iksparser_struct *parser = iks_dom_new(&page->m_pBackDisplayBuffer->xml);
-    page->m_pBackDisplayBuffer->parser = parser;
-    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xCD);
-    parser = iks_dom_new(&page->m_pFrontDisplayBuffer->xml);
-    page->m_pFrontDisplayBuffer->parser = parser;
-    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xD1);
-    parser = iks_dom_new(&page->m_XML);
-    page->m_parser = parser;
-    if (!parser) __SVO_Assert_Handler(svoPageSource, 0xD5);
+    if (!(page->m_pBackDisplayBuffer->parser = iks_dom_new(&page->m_pBackDisplayBuffer->xml))) __SVO_Assert_Handler(svoPageSource, 0xCD);
+    if (!(page->m_pFrontDisplayBuffer->parser = iks_dom_new(&page->m_pFrontDisplayBuffer->xml))) __SVO_Assert_Handler(svoPageSource, 0xD1);
+    if (!(page->m_parser = iks_dom_new(&page->m_XML))) __SVO_Assert_Handler(svoPageSource, 0xD5);
+    // Retail patch: each clearing loop's `i++` was overwritten with a branch to the loop's
+    // closing delay slot, so the element memsets never run (they would wipe the vtables just
+    // set by the DownloadBinary constructors). The asm statements reproduce those branches.
+    for (int i = 0; i < 11;) {
+        register int fill __asm__("$5") = 0;
+        int offset = i * (int)sizeof(DownloadBinaryMember);
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
+        memset((char *)page->preTransition + offset, fill, sizeof(DownloadBinaryMember));
+    }
+    __asm__ __volatile__("1:");
     page->preTransitionCount = 0;
     memset(page->preTransitionUsed, 0, 32);
-    page->postTransitionCount = 0;
-    memset(page->postTransitionUsed, 0, 32);
-    page->inTransitionCount = 0;
-    memset(page->inTransitionUsed, 0, 32);
+    for (int i = 0; i < 11;) {
+        register int fill __asm__("$5") = 0;
+        int offset = i * (int)sizeof(DownloadBinaryMember);
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
+        memset(postArray + offset, fill, sizeof(DownloadBinaryMember));
+    }
+    __asm__ __volatile__("1:");
+    *(int *)(postArray + 11 * 0x268) = 0;
+    memset(postArray + 11 * 0x268 + 4, 0, 32);
+    for (int i = 0; i < 2;) {
+        register int fill __asm__("$5") = 0;
+        int offset = i * (int)sizeof(DownloadBinaryMember);
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
+        memset(inArray + offset, fill, sizeof(DownloadBinaryMember));
+    }
+    __asm__ __volatile__("1:");
+    *(int *)(inArray + 2 * 0x268) = 0;
+    memset(inArray + 2 * 0x268 + 4, 0, 32);
     if (!firstPage || doRequest(page, firstPage, 0, 0, 1, svoPageGetCommand)) {
-        Reset___dupe5(&page->m_pageRefreshTimer);
+        Reset___dupe5(timer);
         page->m_pageRefreshSeconds = 0;
     }
 }
 
 extern "C" SECTION(DestroyInTransitionArray) void DestroyInTransitionArray(CPage *page)
 {
-    // Retail branches over the element-clearing loop.
-    page->inTransitionCount = 0;
+    // Retail patch: the first instruction of this clearing loop was overwritten with a branch
+    // to the loop's closing delay slot, so the memset never runs (it would wipe the elements'
+    // vtables). The asm reproduces that branch; `fill` is deliberately never set, as in retail.
+    InTransitArray *array = (InTransitArray *)page->inTransition;
+    char *elements = (char *)array->data;
+    for (int i = 0; i < 2; i++) {
+        int stride = sizeof(DownloadBinaryObj);
+        register int fill __asm__("$5");
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "=r"(fill));
+        memset(elements + i * stride, fill, sizeof(DownloadBinaryObj));
+    }
+    __asm__ __volatile__("1:");
+    array->count = 0;
 }
 
 extern "C" SECTION(DestroyPostTransitionArray) void DestroyPostTransitionArray(CPage *page)
 {
-    // Retail branches over the element-clearing loop.
-    page->postTransitionCount = 0;
+    // Retail patch: the first instruction of this clearing loop was overwritten with a branch
+    // to the loop's closing delay slot, so the memset never runs (it would wipe the elements'
+    // vtables). The asm reproduces that branch; `fill` is deliberately never set, as in retail.
+    PostTransitArray *array = (PostTransitArray *)page->postTransition;
+    char *elements = (char *)array->data;
+    for (int i = 0; i < 11; i++) {
+        int stride = sizeof(DownloadBinaryObj);
+        register int fill __asm__("$5");
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "=r"(fill));
+        memset(elements + i * stride, fill, sizeof(DownloadBinaryObj));
+    }
+    __asm__ __volatile__("1:");
+    array->count = 0;
 }
 
 extern "C" SECTION(DestroyPreTransitionArray) void DestroyPreTransitionArray(CPage *page)
 {
-    // Retail branches over the element-clearing loop.
-    page->preTransitionCount = 0;
+    // Retail patch: the first instruction of this clearing loop was overwritten with a branch
+    // to the loop's closing delay slot, so the memset never runs (it would wipe the elements'
+    // vtables). The asm reproduces that branch; `fill` is deliberately never set, as in retail.
+    PostTransitArray *array = (PostTransitArray *)page->preTransition;
+    char *elements = (char *)array->data;
+    for (int i = 0; i < 11; i++) {
+        int stride = sizeof(DownloadBinaryObj);
+        register int fill __asm__("$5");
+        __asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" : "=r"(fill));
+        memset(elements + i * stride, fill, sizeof(DownloadBinaryObj));
+    }
+    __asm__ __volatile__("1:");
+    array->count = 0;
 }
 
 extern "C" SECTION(doAfterParseTags) void doAfterParseTags(CPage *page)

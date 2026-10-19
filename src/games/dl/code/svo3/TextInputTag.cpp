@@ -110,16 +110,10 @@ extern "C" SECTION(defaultInit) void defaultInit(TextInputTagState *tag)
     svstrncpy(tag->base.m_tagTypeName, svoTextInputTagName, 64);
     resetTextInput(tag);
     tag->m_numKeyboards = 0;
-    tag->m_opacity = 1.0f;
-    tag->m_fontSize = 14;
-    tag->m_textColor = 0xFFFFFFFF;
-    tag->m_highlightFillColor = 0xFF000000;
-    tag->m_highlightTextColor = 0xFFFFFF00;
-    tag->m_maxWrap = tag->base.m_width - 10.0f;
-    tag->base.m_bSelectable = 1;
     tag->m_bRequiredForSubmit = 0;
     tag->m_upRightOffset = 0;
     tag->m_upLeftOffset = 0;
+    tag->m_fontSize = 14;
     tag->m_maxLengthUTF8Chars = 0;
     tag->m_node = -1;
     tag->m_obj = -1;
@@ -129,10 +123,16 @@ extern "C" SECTION(defaultInit) void defaultInit(TextInputTagState *tag)
     tag->m_drawCursor = 1;
     tag->base.m_fillColor = 0xFF000000;
     tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->m_textColor = 0xFFFFFFFF;
+    tag->m_highlightFillColor = 0xFF000000;
     tag->m_highlightLineColor = 0xFFFFFF00;
+    tag->m_highlightTextColor = 0xFFFFFF00;
+    tag->m_maxWrap = tag->base.m_width - 10.0f;
     tag->base.m_isDefTextEntry = 0;
     tag->m_bEditable = 1;
+    tag->base.m_bSelectable = 1;
     tag->m_bSubmitAsEncryped = 0;
+    tag->m_opacity = 1.0f;
 }
 
 extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawContextBase *draw, int visible)
@@ -144,6 +144,7 @@ extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawCon
     float y = tag->m_y;
     float height = tag->m_height;
     unsigned int color = tag->m_bSelected ? self->m_highlightTextColor : self->m_textColor;
+    CDrawContextVtablePrefix *drawVtable = draw->vtable;
     float top;
     float bottom;
     float thickness;
@@ -157,7 +158,7 @@ extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawCon
         height -= 4.0f;
         top = y - height * 0.5f;
         bottom = top + height;
-        thickness = draw->vtable->GetStringWidth(draw, self->m_fontSize, svoTextInputCursorGlyph, 1) * 0.75f;
+        thickness = drawVtable->GetStringWidth(draw, self->m_fontSize, svoTextInputCursorGlyph, 1) * 0.75f;
     }
     // Retail passes x again as the depth coordinate.
     draw->vtable->DrawLine(draw, tag->m_tagid, x, top, x, bottom, tag->m_x, thickness, color, 0);

@@ -85,8 +85,9 @@ extern "C" SECTION(addHandle) int addHandle(GenericListBoxTagState *tag, svo_lis
     if (vtable->getIndexOfHandle(tag, handle) != -1)
         __SVO_Assert_Handler(svoGenericListBoxTagSource, 0x1AB);
     tag->m_handles[tag->m_numItems] = handle;
-    ++tag->m_numItems;
-    return 1;
+    unsigned count = tag->m_numItems;
+    tag->m_numItems = count + 1;
+    return (unsigned)tag->m_numItems - count;
 }
 
 extern "C" SECTION(changeSelectedItem___dupe2) void changeSelectedItem___dupe2(GenericListBoxTagState *tag, int direction)

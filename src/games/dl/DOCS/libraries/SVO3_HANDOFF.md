@@ -1,6 +1,6 @@
 # SVO3 current handoff, 2026-10-19
 
-**934 functions: 907 byte-exact in the linked ELF, 27 compiled C functions that fit their slots
+**934 functions: 911 byte-exact in the linked ELF, 23 compiled C functions that fit their slots
 but are not exact; all read-only data slots (SVO3, iksemel, libm: 34) match.** iksemel 40/40 exact.
 
 Changes this push (Makefile and DECISIONS D11 are committed; source and tool changes below are not):
@@ -24,15 +24,17 @@ live build only links because of a stale `build/undefined_syms_auto.txt`.
 81 fit-not-exact functions, mostly register numbering, branch-likely/delay-slot choice and store
 order. Notable blockers:
 
-- CPage `Destroy{Pre,Post,In}TransitionArray` and the CPage constructor (2026-10-18): retail looks
-  **binary-patched**, not compiled. The likely source is an inline element "destructor" that
-  memsets each 0x268-byte element in a loop. That source reproduces `DestroyPreTransitionArray`
-  except one instruction: retail has `b out` where the compiler emits `move $5,$0` (memset's fill
-  argument), so `$5` is never set and the loop body is unreachable. The constructor's three clear
-  loops have their `i++` replaced by `b`, which no compiler emits (the loop could never end).
-  Probable reason: the memset would wipe the freshly built `DownloadBinary` vtables. The current
-  source omits the loops (behaviourally equal to retail). **User decision needed:** leave these four
-  as documented non-exact, or match them by a non-source mechanism.
+- CPage `Destroy{Pre,Post,In}TransitionArray` and the CPage constructor: retail was binary-patched
+  (one instruction per clearing loop overwritten with a branch to the loop's closing delay slot).
+  Per the user's decision (DECISIONS D12) the branch is written as
+  `__asm__ __volatile__(".set noreorder
+	b 1f-4
+	.set reorder" ...)` with an asm `1:` label
+  after the loop; `b .+N` trips the EE assembler's short-loop check, `b 1f-4` does not. The three
+  Destroy functions are exact. The constructor (22 lines) builds its DownloadBinary arrays with
+  explicit count-down loops (a separate walker and counter per loop) on raw storage so the post/in array bases and the refresh-timer pointer
+  stay in saved registers as in retail; what remains is the clearing loops' instruction order (retail emits
+  the size `li $6` before the address `addu`, and stores the count before memset's fill).
 - CPage `download` (one instruction): retail tests `preTransitionCount == 0` with a
   branch-likely; `> 0` gives the branch-likely but `blez`, every `== 0`/`!= 0` spelling tried gives
   a plain `beqz`. Its jump table already matches.
