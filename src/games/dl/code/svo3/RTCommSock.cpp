@@ -206,13 +206,16 @@ extern "C" SECTION(dnsLookupBlocking) SVAddr *dnsLookupBlocking(RTCommSockState 
     if (socket->base.m_errNo) return 0;
     if (svisdigit((signed char)*hostname)) {
         if (rt_comm_linkaddress_toint(&address, hostname)) __SVO_Assert_Handler(svoRTCommSockSource, 0x74);
+        *success = 1;
     } else if (!CacheRetrieve(Get___dupe2(), hostname, &address)) {
         int result = rt_comm_get_host_by_name(hostname, &address);
         rt_comm_linkaddress_tostr(text, address);
         if (result) return 0;
         CacheStore(Get___dupe2(), hostname, &address);
+        *success = 1;
+    } else {
+        *success = 1;
     }
-    *success = 1;
     socket->address = *(unsigned long *)&address;
     return (SVAddr *)&socket->addressVtable;
 }

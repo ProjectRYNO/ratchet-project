@@ -353,8 +353,8 @@ extern "C" SECTION(downloadBody) int downloadBody(HttpState *http)
             int received = 0;
             if (!buffer.size) finished = 1;
             else {
-                SVSockState *socket = http->m_sock;
-                if (!((const SVSockVtablePrefix *)socket->vtable)->Recv(socket, buffer.data, buffer.size, &received, &finished)) SetErrorCode(0x15);
+                // Both arms are identical; retail keeps the m_contentLength load after they merge.
+                if (!(http->m_contentLength ? ((const SVSockVtablePrefix *)http->m_sock->vtable)->Recv(http->m_sock, buffer.data, buffer.size, &received, &finished) : ((const SVSockVtablePrefix *)http->m_sock->vtable)->Recv(http->m_sock, buffer.data, buffer.size, &received, &finished))) SetErrorCode(0x15);
                 else if (received) OnBodyChunkReceived(http, buffer.context, buffer.data, received);
             }
         }

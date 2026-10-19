@@ -162,11 +162,12 @@ extern "C" SECTION(ParseCreateGameParamsXML) int ParseCreateGameParamsXML(Create
     return 1;
 }
 
+static inline int CreateGameHasNode(iks *node) { return node != 0; }
 extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleState *module, iks *xml, SVTag **tags, CAllContextData *contexts, CTagModuleActions *actions)
 {
     if (!strcmp(iks_name(xml), svoCreateGameName)) {
         iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
-        if (status) {
+        if (CreateGameHasNode(status)) {
             int result = GetCreateGameSubmitResponse(module, status);
             iks *id = getChildIksStruct(xml, svoCreateGameIDName);
             if (id) module->m_SVOGameID = atoi(iks_cdata(iks_child(id)));

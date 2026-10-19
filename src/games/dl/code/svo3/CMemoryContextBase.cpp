@@ -22,16 +22,21 @@ void SVO_MEMORY_SECTION(_CMemoryContextBase) _CMemoryContextBase(
     if (flags & 1) { __builtin_delete(context); return; }
 }
 
-void SVO_MEMORY_SECTION(CMemoryContextBase) CMemoryContextBase(CMemoryContextBaseState *context)
+struct CMemoryContextBaseCtor {
+    char data[sizeof(CMemoryContextBaseState)];
+    CMemoryContextBaseCtor() __asm__("CMemoryContextBase");
+};
+SVO_MEMORY_SECTION(CMemoryContextBase) CMemoryContextBaseCtor::CMemoryContextBaseCtor()
 {
-    context->vtable = &svoMemoryContextVtable;
+    CMemoryContextBaseState *context = (CMemoryContextBaseState *)this;
     context->pageBeginHighWaterMark = 0;
+    context->m_TotalBytes = 0;
     context->m_MaxAllocated = 0;
     context->m_AllocCounter = 0;
     context->m_FreeCounter = 0;
     context->buCnt = 0;
-    context->m_TotalBytes = 0;
-    InitMemChunks(context);
+    context->vtable = &svoMemoryContextVtable;
+    do { InitMemChunks(context); } while (0);
 }
 
 SVO_MEMORY_SECTION(svAllocSafe) void *svAllocSafe(CMemoryContextBaseState *context,

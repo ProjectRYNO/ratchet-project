@@ -587,7 +587,7 @@ extern "C" SECTION(GetPageName) char *GetPageName(SVBrowserPrefix *browser)
     SVTag **tags;
     if (popup->m_bIsActive) tags = popup->m_pFrontDisplayBuffer->tagList;
     else tags = main->m_pFrontDisplayBuffer->tagList;
-    for (int i = 0; i < 256 && tags[i]; ++i) {
+    if (tags[0]) for (int i = 0; i < 256 && tags[i]; ++i) {
         char *name = GetTagTypeName(tags[i]);
         if (!name) __SVO_Assert_Handler(svoBrowserSource, 0x71C);
         if (strncmp(name, svoBrowserPageIDTagName, 9) == 0)

@@ -25,6 +25,13 @@ def rewrite(text):
             current = match[1]
         elif re.match(r'\s*\.(?:text|data|bss)\b', line):
             current = None
+        elif (match := re.match(r'\s*lw\s+(\$\d+),(\$L\d+)\((\$\d+)\)\s*$', line)) and current:
+            # Sony as 2.10-ee sometimes encodes the first instruction of this macro as `lw`
+            # instead of `lui` (it depends on the preceding instruction), which loads from a
+            # garbage address at runtime. Write out the expansion the macro is meant to produce.
+            dest, table, index = match.groups()
+            line = (f'\t.set\tnoat\n\tlui\t$1,%hi({table})\n\taddu\t$1,$1,{index}\n'
+                    f'\tlw\t{dest},%lo({table})($1)\n\t.set\tat\n')
         elif re.match(r'\s*\.rdata\s*$', line) and current:
             index = table_counts.get(current, 0)
             table_counts[current] = index + 1

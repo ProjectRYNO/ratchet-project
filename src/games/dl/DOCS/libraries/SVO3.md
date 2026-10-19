@@ -1,11 +1,11 @@
 # SVO3 library
 
-## Current scope (2026-10-14)
+## Current scope (2026-10-19)
 
-934 functions across 97 files: **853 byte-exact in the linked ELF and 81 compiled C functions that
+934 functions across 97 files: **907 byte-exact in the linked ELF and 27 compiled C functions that
 fit their original slots but are not exact.** No SVO3 assembly remains. SVO3 builds with SCE ee-gcc
-2.96 and Sony `as -g` (DECISIONS.md K07). Ten functions dispatch through switch jump tables placed in
-registered read-only data slots at their retail addresses (DECISIONS.md D09); all ten tables match.
+2.96 and Sony `as -g` (DECISIONS.md K07). Ten SVO3 functions dispatch through switch jump tables placed in
+registered read-only data slots at their retail addresses (DECISIONS.md D09); all tables match (D09; table loads written out per D11).
 The former `func_01F27658` was a label inside zero padding and is now a junk segment (D10). See
 [SVO3_HANDOFF.md](SVO3_HANDOFF.md) and [SVO3_REMAINING.csv](SVO3_REMAINING.csv). Strict whole-ELF
 matching is unfinished; behaviour suites were deferred.

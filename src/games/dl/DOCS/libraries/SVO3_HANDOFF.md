@@ -1,19 +1,38 @@
-# SVO3 current handoff, 2026-10-14 (byte-matching push)
+# SVO3 current handoff, 2026-10-19
 
-**934 functions: 853 byte-exact in the linked ELF, 81 compiled C functions that fit their slots
-but are not exact. No SVO3 assembly remains.** Up from 603 exact at the start of this push.
-Uncommitted. ALLOW_NONMATCHING=0, original slots unchanged.
+**934 functions: 907 byte-exact in the linked ELF, 27 compiled C functions that fit their slots
+but are not exact; all read-only data slots (SVO3, iksemel, libm: 34) match.** iksemel 40/40 exact.
+
+Changes this push (Makefile and DECISIONS D11 are committed; source and tool changes below are not):
+- Makefile: the iksemel merge (6067a0a) had dropped `-g` from `SVO3_AS_FLAGS`, costing 16 exact
+  functions. Restored; iksemel now has its own `IKSEMEL_AS_FLAGS` (no `-g`, as it was matched).
+- `tools/svo3_rodata_sections.py`: jump-table loads written out explicitly (DECISIONS D11; Sony
+  `as` mis-encoded UTF8 `CountCharacters`' table load as `lw`, a runtime bug).
+- CPage `download` and CMemoryContextBase made exact; CHttp `downloadBody` 24 -> 2 lines.
+
+Validation (2026-10-18, isolated container copy with the committed versions of other people's
+in-progress files): split + elf PASS; check_main_elf PASS (5,302 changed bytes, all in registered
+slots); check_global_map PASS (807); check_type_layouts PASS (1,992 / 226 types); compare_elf
+NONMATCH (35 SVO3 functions). Behaviour suites, ISO, emulator: not run.
+
+Clean-build note (not SVO3): a fresh split leaves medius `rt_timebase_update_globaltime`
+(INCLUDE_ASM) referencing `D_168BAC`, which the symbol config now names `rtTimebaseStarted`; the
+live build only links because of a stale `build/undefined_syms_auto.txt`.
 
 ## What is left ([SVO3_REMAINING.csv](SVO3_REMAINING.csv))
 
 81 fit-not-exact functions, mostly register numbering, branch-likely/delay-slot choice and store
 order. Notable blockers:
 
-- CPage `Destroy{Pre,Post,In}TransitionArray` and the CPage constructor: retail keeps a dead
-  clearing loop (`b` out of the loop at its head, body never executed) that 2.96 deletes in
-  every source form tried, including inlined member functions.
-- GridTag constructor: retail hoists ~25 field addresses into saved registers/stack before
-  the first check; no C shape found.
+- CPage `Destroy{Pre,Post,In}TransitionArray` and the CPage constructor (2026-10-18): retail looks
+  **binary-patched**, not compiled. The likely source is an inline element "destructor" that
+  memsets each 0x268-byte element in a loop. That source reproduces `DestroyPreTransitionArray`
+  except one instruction: retail has `b out` where the compiler emits `move $5,$0` (memset's fill
+  argument), so `$5` is never set and the loop body is unreachable. The constructor's three clear
+  loops have their `i++` replaced by `b`, which no compiler emits (the loop could never end).
+  Probable reason: the memset would wipe the freshly built `DownloadBinary` vtables. The current
+  source omits the loops (behaviourally equal to retail). **User decision needed:** leave these four
+  as documented non-exact, or match them by a non-source mechanism.
 - CPage `download` (one instruction): retail tests `preTransitionCount == 0` with a
   branch-likely; `> 0` gives the branch-likely but `blez`, every `== 0`/`!= 0` spelling tried gives
   a plain `beqz`. Its jump table already matches.
@@ -53,6 +72,29 @@ with no regressions. It only changes the `.mdebug` section, which the linker scr
 (`/DISCARD/ : { *(*) }`); loaded bytes and audits are unaffected.
 
 ## 2.96 source-shape patterns established (in addition to the earlier list)
+
+- **C++ reference locals** (`int &p_x = tag->m_x;` declared just before use, calls passing
+  `&p_x`) reproduce retail's precomputed field addresses held in saved registers and stack slots;
+  their declaration order sets the register/stack split. This solved the GridTag constructor
+  (previously the biggest blocker). GridTag `DefaultInit___dupe18` matched by moving stores across
+  its `Start___dupe3` call, so the DefaultInit store-order class is not hopeless.
+
+- **Allocation priority by duplication:** writing the same assignment in each predecessor branch
+  (`*success = 1;` per success path, an extra `continuations = 0; break;` arm) raises that
+  variable's reference count at register allocation; post-allocation cross-jumping merges the
+  copies again, so only the register choice changes (RTCommSock `dnsLookupBlocking`, UTF8
+  `UTF8_CountCharacters`).
+- **Variable reuse:** reusing one variable for two jobs (CPage `resolveRelativePath`: `slash` reused
+  for the final tail pointer) plus a count-up loop that 2.96 reverses (`for (i = 0; i < n; i++)`
+  gives retail's `blez` guard, counter copy and `bnez`) fixed a whole-function register swap.
+- **Redundant entry test:** `if (tags[0]) for (i = 0; i < 256 && tags[i]; ++i)` places the
+  index initialisation after the branch, as retail does (SVBrowser `GetPageName`).
+- **Inline condition helpers** (`static inline int F(T *p) { return p->x != 0; }`) change
+  branch-likely choices where a condition feeds a combined test (SVDownloadManager
+  `UpdateFileDownload`, CPage `download`); they did not help single tests.
+- **Still unsolved classes:** retail-ordered constant stores in DefaultInit functions (looks like
+  a first scheduling pass that didn't reorder; `-fno-schedule-insns` globally is far worse:
+  353 exact), independent argument-move order, and epilogue-adjacent branch-likely choices.
 
 - **Real C++ constructors** for constructor-named functions, with raw storage when the state type
   can't be a member: `struct XCtor { char data[sizeof(XState)]; XCtor(args) __asm__("X"); };`

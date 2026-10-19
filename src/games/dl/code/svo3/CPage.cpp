@@ -595,6 +595,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     char newPath[272];
     char oldPath[272];
     char fullPath[272];
+    char *histPath;
     if (!path) __SVO_Assert_Handler(svoPageSource, 0x327);
     svstrncpy(oldPath, path, 257);
     if (pathIsStatic(page, path)) {
@@ -606,6 +607,7 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     if (pathIsFullyQualified(page, path)) {
         SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(path, &split);
+        histPath = path;
     } else if (*path != '/') {
         memset(fullPath, 0, 257);
         svstrncpy(fullPath, top(&page->m_history), 257);
@@ -615,17 +617,19 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
         }
         SVPathCtor split(page->m_scheme, page->m_serverName, &page->m_port, newPath, 257);
         parseFullyQualifiedPath(fullPath, &split);
-        path = fullPath;
+        histPath = fullPath;
     } else {
         memset(newPath, 0, 257);
-        char *base = top(&page->m_history);
-        if (!base) base = (unsigned int)page != (unsigned int)-0x3A56 ? page->m_serverName : 0;
+        char *src = top(&page->m_history);
+        char *base;
+        if (src) base = src;
+        else base = page->m_serverName ? page->m_serverName : 0;
         strncpy(newPath, base, 257);
         char *replace = strstr(newPath, svoPageDownloadHostSeparator);
         replace = strstr(replace + 2, svoPageDownloadPathSeparator);
         if (!replace) __SVO_Assert_Handler(svoPageSource, 0x372);
         strncpy(replace, oldPath, strlen(oldPath) + 1);
-        path = newPath;
+        histPath = newPath;
         if (strlen(newPath) >= 257) __SVO_Assert_Handler(svoPageSource, 0x375);
     }
     if (page->m_state) __SVO_Assert_Handler(svoPageSource, 0x37E);
@@ -642,10 +646,10 @@ extern "C" SECTION(doRequest) int doRequest(CPage *page, char *path, CQueryParam
     IURISchemeProviderState *provider = doRequest___dupe3(Get(), (URIRequestPrefix *)&request, (IRequestListener *)&page->m_requestListener, page);
     page->m_pRequestProvider = provider;
     if (!provider) return 0;
-    if (storeHistory) push(&page->m_history, path);
+    if (storeHistory) push(&page->m_history, histPath);
     page->m_pfSVMLPreTagCreateScanCB = (DownloadCallback)scanForDownloadablesCB;
-    page->m_pfXMLScanCB = (DownloadCallback)scanXMLCB;
     page->m_pfSVMLTagCreateCB = (DownloadCallback)parseTagsCB;
+    page->m_pfXMLScanCB = (DownloadCallback)scanXMLCB;
     page->m_pfBinaryDownloadCB = 0;
     page->m_pCURIContent = 0;
     page->m_iCURIContentLength = 0;
@@ -883,10 +887,15 @@ extern "C" SECTION(frameUpdate) void frameUpdate(CPage *page)
 
 extern "C" SECTION(FreeBackDisplayBuffer) void FreeBackDisplayBuffer(CPage *page)
 {
-    for (int i = 0; i < 256 && page->m_pBackDisplayBuffer->tagList[i]; ++i) {
+    SVTag **list = page->m_pBackDisplayBuffer->tagList;
+    int i = 0;
+    while (i < 256 && list[i]) {
         SVTag *tag = page->m_pBackDisplayBuffer->tagList[i];
         tag->vtable->destroy(tag, 3);
-        page->m_pBackDisplayBuffer->tagList[i] = 0;
+        list = page->m_pBackDisplayBuffer->tagList;
+        SVTag **slot = &list[i];
+        ++i;
+        *slot = 0;
     }
     if (page->m_pBackDisplayBuffer->xml) {
         iks_delete(page->m_pBackDisplayBuffer->xml);
@@ -902,10 +911,15 @@ extern "C" SECTION(FreeDisplayBuffers) void FreeDisplayBuffers(CPage *page) { Fr
 
 extern "C" SECTION(FreeFrontDisplayBuffer) void FreeFrontDisplayBuffer(CPage *page)
 {
-    for (int i = 0; i < 256 && page->m_pFrontDisplayBuffer->tagList[i]; ++i) {
+    SVTag **list = page->m_pFrontDisplayBuffer->tagList;
+    int i = 0;
+    while (i < 256 && list[i]) {
         SVTag *tag = page->m_pFrontDisplayBuffer->tagList[i];
         tag->vtable->destroy(tag, 3);
-        page->m_pFrontDisplayBuffer->tagList[i] = 0;
+        list = page->m_pFrontDisplayBuffer->tagList;
+        SVTag **slot = &list[i];
+        ++i;
+        *slot = 0;
     }
     if (page->m_pFrontDisplayBuffer->xml) {
         iks_delete(page->m_pFrontDisplayBuffer->xml);
@@ -1251,8 +1265,7 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
     parseFullyQualifiedPath(GetPath(&record), &split);
     int type = 1;
     if (!strstr(GetPath(&record), svoPageSvmlExtension)) {
-        if (strstr(GetPath(&record), svoPageJspExtension)) type = 2;
-        else if (strstr(svoPageDemoXmlName, GetPath(&record))) type = 2;
+        if (strstr(GetPath(&record), svoPageJspExtension) || strstr(svoPageDemoXmlName, GetPath(&record))) type = 2;
         else {
             type = 4;
             if (!strstr(GetPath(&record), svoPageAmxExtension)) type = strstr(GetPath(&record), svoPageTm2Extension) ? 5 : 0;
@@ -1262,8 +1275,8 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
         char *user;
         char *password;
         int account;
-        char *ip;
         char number[16];
+        char *ip;
         GetLoginInfo(GetInstance(), &user, &password, &account, &ip);
         sprintf(number, svoPageAccountFormat, account);
         Set(&params, GetUserNameParameter(&record), user, 0);
@@ -1283,10 +1296,12 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
     page->m_pRequestProvider = provider;
     if (provider) {
         DownloadCallback callback = GetDownloadCallback(&record);
-        page->m_pfXMLScanCB = callback;
         page->m_pfBinaryDownloadCB = callback;
+        page->m_pfXMLScanCB = callback;
         if (!DestroyOnRequestSend(&record)) {
-            DownloadBinaryState copy;
+            DownloadBinaryState copyObj;
+            DownloadBinaryState &copy = copyObj;
+            InTransitArray *inArr = (InTransitArray *)page->inTransition;
             copy.vtable = svoDownloadBinaryVtable;
             CopyBytes(copy.szPath, record.szPath, 0x100);
             copy.bRequested = record.bRequested;
@@ -1301,8 +1316,8 @@ extern "C" SECTION(requestBinary) int requestBinary(CPage *page, int queue)
             CopyBytes(copy.m_szActionStringParameter, record.m_szActionStringParameter, 0xFF);
             CopyBytes(copy.m_szUserNameParameter, record.m_szUserNameParameter, 0x1F);
             CopyBytes(copy.m_szAccountIDParameter, record.m_szAccountIDParameter, 0x1F);
-            InTransitPush((InTransitArray *)page->inTransition, (DownloadBinaryObj *)&copy);
-            _DownloadBinary(&copy, 2);
+            InTransitPush(inArr, (DownloadBinaryObj *)&copyObj);
+            _DownloadBinary(&copyObj, 2);
         }
     }
     _DownloadBinary(&record, 2);
@@ -1326,14 +1341,15 @@ extern "C" SECTION(resolveRelativePath) int resolveRelativePath(CPage *page, cha
         else if (!strncmp(svoPageCurrentPath, path, 2)) path += 2;
         else break;
     }
-    for (int i = parents; i > 0; i--) {
-        char *slash = strrchr(current, '/');
+    char *slash;
+    for (int i = 0; i < parents; i++) {
+        slash = strrchr(current, '/');
         if (!slash) __SVO_Assert_Handler(svoPageSource, 0x2AB);
         *slash = '-';
     }
-    char *tail = strrchr(current, '/');
-    tail++;
-    svstrncpy(tail, path, 0x101 - (tail - current));
+    slash = strrchr(current, '/');
+    slash++;
+    svstrncpy(slash, path, 0x101 - (slash - current));
     return 1;
 }
 

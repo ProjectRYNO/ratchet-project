@@ -152,23 +152,23 @@ extern "C" SECTION(CheckForLongWord) int CheckForLongWord(TextAreaTagState *tag,
 extern "C" SECTION(DefaultInit___dupe12) void DefaultInit___dupe12(TextAreaTagState *tag)
 {
     svstrncpy(tag->base.m_tagTypeName, svoTextAreaTagName, 64);
+    tag->m_maxTextSize = 0x3000;
     tag->m_maxTextLines = 300;
-    tag->m_highlightFillColor = 0xFF000000;
-    tag->m_highlightTextColor = 0xFFFFFF00;
-    tag->m_isEditable = 1;
-    tag->m_fontSize = 14;
-    tag->m_obj = -1;
-    tag->m_lineSpacing = 15.0f;
-    tag->m_maxNumViewableLines = 2;
     tag->m_blinkCursor = 1;
     tag->m_drawCursor = 1;
     tag->base.m_fillColor = 0xFF000000;
     tag->base.m_lineColor = 0xFFFFFFFF;
+    tag->m_highlightFillColor = 0xFF000000;
     tag->m_textColor = 0xFFFFFFFF;
     tag->m_highlightLineColor = 0xFFFFFF00;
+    tag->m_highlightTextColor = 0xFFFFFF00;
+    tag->m_isEditable = 1;
+    tag->m_fontSize = 14;
     tag->m_node = -1;
     tag->m_scrollBarWidth = 15.0f;
-    tag->m_maxTextSize = 0x3000;
+    tag->m_obj = -1;
+    tag->m_lineSpacing = 15.0f;
+    tag->m_maxNumViewableLines = 2;
     tag->m_text = 0;
     tag->m_link = 0;
     tag->m_scrollBarNode = 0;
@@ -469,8 +469,10 @@ extern "C" SECTION(ParseText) int ParseText(TextAreaTagState *tag, char *text, i
             ++lines;
         } else if ((unsigned int)result - 2 < 2) {
             if (ProcessNewLine(tag, *offset)) {
-                if (result != 3) ++*offset;
-                if (text[*offset]) ++lines;
+                if (result != 3) {
+                    ++*offset;
+                    if (text[*offset]) ++lines;
+                } else if (text[*offset]) ++lines;
             } else {
                 tag->m_textEndOffset = *offset;
                 return lines;

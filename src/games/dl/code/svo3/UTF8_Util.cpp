@@ -156,6 +156,8 @@ int UTF8_SECTION(UTF8_CountCharacters) UTF8_CountCharacters(char *text, unsigned
         case kTypeInvalid:
         default:
             __SVO_Assert_Handler(svoUTF8Source, 0x103);
+            continuations = 0;
+            break;
         case kTypeStartSingleByte:
         case kTypeContinuationByte:
             continuations = 0;
