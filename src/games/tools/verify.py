@@ -115,6 +115,8 @@ def main():
         run('elf-layout-and-slots', [py, tests/'check_main_elf.py', original, rebuilt, game/'build/code/game/boot.o'])
         run('global-addresses', [py, tests/'check_global_map.py', rebuilt])
         run('type-layouts', [py, tests/'check_type_layouts.py'])
+        run('libm-exact', [py, tests/'check_libm.py', original, rebuilt, game/'build/code'])
+        run('unused-data-guard', [py, GAMES/'tools/test_drop_unused_rodata.py'])
         run('sound-exact', [py, tests/'check_989snd.py', original, rebuilt, game/'build/code/989snd/ee/989snd.o'])
         run('sound-loop-profile', [py, GAMES/'tools/test_sound_loop_compat.py'])
         run('sound-wrappers', [py, tests/'test_989snd_wrappers.py', original, rebuilt])

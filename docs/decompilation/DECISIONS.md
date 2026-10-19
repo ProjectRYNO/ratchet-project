@@ -110,3 +110,26 @@ symbol alias. Those unrelated live files were not changed. Whole-game strict
 comparison remains NONMATCH: 3,917 loaded bytes within registered slots, all
 outside sound; runtime headers and other loaded bytes match. Gameplay untested.
 See `src/games/dl/DOCS/sound/989SND_MATCHING.md` for reproducible evidence and limits.
+
+## 2026-10-19: Recover the older newlib math sources
+
+Imported the 37 math sources present in boot.elf from official newlib 1.9.0,
+retaining attribution/license and excluding upstream copies from source discovery.
+The evidence favors the older 1.8.2/1.9.0 family; it does not uniquely identify a
+release. SN GCC 2.95.3 v1.36 with `-G0 -O2 -fno-builtin` and assembler `-EL -G0`
+produces 14 exact C functions (37.84%), including the float cosine kernel and
+scalbnf. Remaining functions keep explicit assembly. Source/compiler evidence,
+archive hashes and follow-up targets are in `DOCS/libraries/NEWLIB_LIBM.md`.
+
+Preserve the original CDCDCDCD alignment bytes as textbin fragments. Compiler
+constants already materialized in instructions may leave duplicate unused
+.rodata; the new helper refuses to remove it if any relocation, exported symbol,
+or writable/executable flag makes removal unsafe. Five assembler fixtures test
+that guard. No original executable instructions are copied into compiled functions.
+
+All 21,272 libm bytes match; 1,760 are verified compiled function bytes. The
+slot/header audit passes and existing 989snd/SDK/iksemel matches remain exact.
+Whole-game strict differences remain 3,917 bytes outside libm. Verification uses
+an isolated snapshot with the previously documented unrelated SVO3/header and
+medius alias accommodations. Gameplay untested. The standard verifier now includes
+`check_libm.py`; progress is scoped to LIBM.json/CSV to preserve concurrent SVO3 work.

@@ -1,0 +1,184 @@
+[
+  {
+    "version": "1.7.1",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.7.1.tar.gz",
+    "sha256": "84ea1a00fbacffbe52a53a332fbe68ede08a92797f02206bc213bba07e2fa761",
+    "same_as_1_9_0": 22,
+    "different": [
+      "__ieee754_asinf",
+      "__ieee754_logf",
+      "__ieee754_sqrtf",
+      "rint",
+      "scalbn",
+      "scalbnf",
+      "fmod",
+      "pow",
+      "sqrt",
+      "asinf",
+      "expf",
+      "logf",
+      "log10f",
+      "powf",
+      "sqrtf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.8.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.8.0.tar.gz",
+    "sha256": "a550172165949af7e29d70eb08d4ab6866bc414490ebcf0687357360fb446d07",
+    "same_as_1_9_0": 23,
+    "different": [
+      "__ieee754_asinf",
+      "__ieee754_logf",
+      "rint",
+      "scalbn",
+      "scalbnf",
+      "fmod",
+      "pow",
+      "sqrt",
+      "asinf",
+      "expf",
+      "logf",
+      "log10f",
+      "powf",
+      "sqrtf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.8.1",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.8.1.tar.gz",
+    "sha256": "bdf73c1b691d952798af33dfa3c7ec90854d89bc6afa100e6c547ee26d7a3c42",
+    "same_as_1_9_0": 23,
+    "different": [
+      "__ieee754_asinf",
+      "__ieee754_logf",
+      "rint",
+      "scalbn",
+      "scalbnf",
+      "fmod",
+      "pow",
+      "sqrt",
+      "asinf",
+      "expf",
+      "logf",
+      "log10f",
+      "powf",
+      "sqrtf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.8.2",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.8.2.tar.gz",
+    "sha256": "e52667ed78595dd1919f4a303f8b658b1d57b926e085e8021851b279143cf3ef",
+    "same_as_1_9_0": 33,
+    "different": [
+      "__ieee754_asinf",
+      "__ieee754_logf",
+      "scalbn",
+      "scalbnf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.9.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.9.0.tar.gz",
+    "sha256": "8f7b9407b13b424876b3ecdc31acf593068b48332297a40ae9665d8cfc4ac4e7",
+    "same_as_1_9_0": 37,
+    "different": [],
+    "missing": []
+  },
+  {
+    "version": "1.10.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.10.0.tar.gz",
+    "sha256": "69b62ad4c746a9acaf4f898772549f6da49f228f83a95efce7e88ae1d88c5a84",
+    "same_as_1_9_0": 24,
+    "different": [
+      "__ieee754_asinf",
+      "__ieee754_expf",
+      "__ieee754_logf",
+      "__ieee754_log10f",
+      "__ieee754_powf",
+      "__ieee754_rem_pio2f",
+      "__ieee754_sqrtf",
+      "ceilf",
+      "cosf",
+      "finitef",
+      "floorf",
+      "isnanf",
+      "scalbnf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.11.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.11.0.tar.gz",
+    "sha256": "6ff74f1f273dbcf9f8e3eb79cac8ca5e7c98c14a27ac468eede50f1f45a7c4a1",
+    "same_as_1_9_0": 23,
+    "different": [
+      "__ieee754_pow",
+      "__ieee754_asinf",
+      "__ieee754_expf",
+      "__ieee754_logf",
+      "__ieee754_log10f",
+      "__ieee754_powf",
+      "__ieee754_rem_pio2f",
+      "__ieee754_sqrtf",
+      "ceilf",
+      "cosf",
+      "finitef",
+      "floorf",
+      "isnanf",
+      "scalbnf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.12.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.12.0.tar.gz",
+    "sha256": "93ed7c1df0f04656b119745671b08b43befdc0a420b5752ea99ff0057f0238ea",
+    "same_as_1_9_0": 23,
+    "different": [
+      "__ieee754_pow",
+      "__ieee754_asinf",
+      "__ieee754_expf",
+      "__ieee754_logf",
+      "__ieee754_log10f",
+      "__ieee754_powf",
+      "__ieee754_rem_pio2f",
+      "__ieee754_sqrtf",
+      "ceilf",
+      "cosf",
+      "finitef",
+      "floorf",
+      "isnanf",
+      "scalbnf"
+    ],
+    "missing": []
+  },
+  {
+    "version": "1.13.0",
+    "url": "https://sourceware.org/ftp/newlib/newlib-1.13.0.tar.gz",
+    "sha256": "c8562ef73ced13940829faa5f6a8ce4fd1d44e45388b3043ce58baedf03830d9",
+    "same_as_1_9_0": 23,
+    "different": [
+      "__ieee754_pow",
+      "__ieee754_asinf",
+      "__ieee754_expf",
+      "__ieee754_logf",
+      "__ieee754_log10f",
+      "__ieee754_powf",
+      "__ieee754_rem_pio2f",
+      "__ieee754_sqrtf",
+      "ceilf",
+      "cosf",
+      "finitef",
+      "floorf",
+      "isnanf",
+      "scalbnf"
+    ],
+    "missing": []
+  }
+]

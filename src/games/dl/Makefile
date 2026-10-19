@@ -63,7 +63,7 @@ EESN136 = $(WIBO) $(EESN136_DIR)/bin/ee-gcc.exe
 EEAS_SN136 = $(WIBO) $(EESN136_DIR)/lib/gcc-lib/ee/2.95.3/as.exe
 
 # Collect sources
-SRC_C   = $(shell $(FIND) code -type f -name '*.c')
+SRC_C   = $(filter-out code/newlib/libm/upstream/%,$(shell $(FIND) code -type f -name '*.c'))
 SRC_S = $(shell $(FIND) code -type f -name '*.s' | grep -v "asm/matchings\|asm/nonmatchings\|asm/build/core.bss.data.s\|asm/build/bss.data.s\|asm/build/cod/001A5180.bss.s\|asm/build/bss/00221080.bss.s")
 SRC_CPP = $(shell $(FIND) code -type f -name '*.cpp')
 SRC_BIN = $(shell [ -d assets ] && $(FIND) assets -type f -name '*.bin' || true)
@@ -223,6 +223,16 @@ $(OBJ_DIR)/%.o: code/%.s
 $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
+
+# Historical fdlibm profile. Keep distinct from sound's assembler adaptation.
+LIBM_COMPILE_FLAGS = -G0 -O2 -fno-builtin
+LIBM_HEADERS = -include sys/types.h -Icode/newlib/libm/upstream/common -isystem $(PS2DEV_DIR)/ee/ee/include -isystem $(PS2DEV_DIR)/ee/lib/gcc-lib/ee/3.2.3/include
+LIBM_MATCHED_OBJS = $(OBJ_DIR)/newlib/libm/common/sf_scalbn.o $(OBJ_DIR)/newlib/libm/math/kf_cos.o $(OBJ_DIR)/newlib/libm/common/s_copysign.o $(OBJ_DIR)/newlib/libm/math/s_fabs.o $(OBJ_DIR)/newlib/libm/common/s_finite.o $(OBJ_DIR)/newlib/libm/math/s_isnan.o $(OBJ_DIR)/newlib/libm/common/s_matherr.o $(OBJ_DIR)/newlib/libm/math/sf_ceil.o $(OBJ_DIR)/newlib/libm/common/sf_copysign.o $(OBJ_DIR)/newlib/libm/math/sf_cos.o $(OBJ_DIR)/newlib/libm/math/sf_fabs.o $(OBJ_DIR)/newlib/libm/common/sf_finite.o $(OBJ_DIR)/newlib/libm/math/sf_floor.o $(OBJ_DIR)/newlib/libm/math/sf_isnan.o
+$(LIBM_MATCHED_OBJS): $(OBJ_DIR)/newlib/libm/%.o: code/newlib/libm/%.c code/newlib/libm/upstream/%.c code/newlib/libm/upstream/common/fdlibm.h $(TOOLS)/drop_unused_rodata.py Makefile | ee-gcc-sn136
+	@$(MKDIR) -p $(dir $@)
+	$(EESN136) -S $(LIBM_COMPILE_FLAGS) $(LIBM_HEADERS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS_SN136) -EL -G0 $(@:.o=.s) -o $@
+	$(PYTHON) $(TOOLS)/drop_unused_rodata.py $@ --objcopy $(CROSS)-objcopy
 
 $(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile $(TOOLS)/sound_loop_compat.py | ee-gcc-sn136
 	@$(MKDIR) -p $(dir $@)

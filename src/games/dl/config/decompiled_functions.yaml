@@ -1,6 +1,20 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  scalbnf: 0x00135AB8
+  __kernel_cosf: 0x00134708
+  copysign: 0x001352B8
+  fabs: 0x00135300
+  finite: 0x00135338
+  isnan: 0x00135358
+  matherr: 0x00135390
+  ceilf: 0x00135770
+  copysignf: 0x00135848
+  cosf: 0x00135878
+  fabsf: 0x00135960
+  finitef: 0x00135980
+  floorf: 0x001359A8
+  isnanf: 0x00135A90
   rt_memory_free: 0x01EA95C0
   rt_memory_register_callbacks: 0x01EA9768
   rt_memory_get_aligned_address: 0x01EA9790
@@ -1162,6 +1176,76 @@ functions:
   ezNetCtlRecreateIfstat: 0x01E9AE48
 
 objects:
+  newlib/libm/common/sf_scalbn:
+    text_start: 0x00135AB8
+    text_end: 0x00135C18
+    slots:
+      - { object: newlib/libm/common/sf_scalbn, section: .libm_scalbnf, start: 0x00135AB8, end: 0x00135C18 }
+  newlib/libm/math/kf_cos:
+    text_start: 0x00134708
+    text_end: 0x00134860
+    slots:
+      - { object: newlib/libm/math/kf_cos, section: .libm___kernel_cosf, start: 0x00134708, end: 0x00134860 }
+  newlib/libm/common/s_copysign:
+    text_start: 0x001352B8
+    text_end: 0x001352FC
+    slots:
+      - { object: newlib/libm/common/s_copysign, section: .libm_copysign, start: 0x001352B8, end: 0x001352FC }
+  newlib/libm/math/s_fabs:
+    text_start: 0x00135300
+    text_end: 0x00135334
+    slots:
+      - { object: newlib/libm/math/s_fabs, section: .libm_fabs, start: 0x00135300, end: 0x00135334 }
+  newlib/libm/common/s_finite:
+    text_start: 0x00135338
+    text_end: 0x00135358
+    slots:
+      - { object: newlib/libm/common/s_finite, section: .libm_finite, start: 0x00135338, end: 0x00135358 }
+  newlib/libm/math/s_isnan:
+    text_start: 0x00135358
+    text_end: 0x00135390
+    slots:
+      - { object: newlib/libm/math/s_isnan, section: .libm_isnan, start: 0x00135358, end: 0x00135390 }
+  newlib/libm/common/s_matherr:
+    text_start: 0x00135390
+    text_end: 0x001353B4
+    slots:
+      - { object: newlib/libm/common/s_matherr, section: .libm_matherr, start: 0x00135390, end: 0x001353B4 }
+  newlib/libm/math/sf_ceil:
+    text_start: 0x00135770
+    text_end: 0x00135844
+    slots:
+      - { object: newlib/libm/math/sf_ceil, section: .libm_ceilf, start: 0x00135770, end: 0x00135844 }
+  newlib/libm/common/sf_copysign:
+    text_start: 0x00135848
+    text_end: 0x00135878
+    slots:
+      - { object: newlib/libm/common/sf_copysign, section: .libm_copysignf, start: 0x00135848, end: 0x00135878 }
+  newlib/libm/math/sf_cos:
+    text_start: 0x00135878
+    text_end: 0x00135960
+    slots:
+      - { object: newlib/libm/math/sf_cos, section: .libm_cosf, start: 0x00135878, end: 0x00135960 }
+  newlib/libm/math/sf_fabs:
+    text_start: 0x00135960
+    text_end: 0x0013597C
+    slots:
+      - { object: newlib/libm/math/sf_fabs, section: .libm_fabsf, start: 0x00135960, end: 0x0013597C }
+  newlib/libm/common/sf_finite:
+    text_start: 0x00135980
+    text_end: 0x001359A4
+    slots:
+      - { object: newlib/libm/common/sf_finite, section: .libm_finitef, start: 0x00135980, end: 0x001359A4 }
+  newlib/libm/math/sf_floor:
+    text_start: 0x001359A8
+    text_end: 0x00135A8C
+    slots:
+      - { object: newlib/libm/math/sf_floor, section: .libm_floorf, start: 0x001359A8, end: 0x00135A8C }
+  newlib/libm/math/sf_isnan:
+    text_start: 0x00135A90
+    text_end: 0x00135AB4
+    slots:
+      - { object: newlib/libm/math/sf_isnan, section: .libm_isnanf, start: 0x00135A90, end: 0x00135AB4 }
   game/boot:
     text_start: 0x00157738
     text_end: 0x00157D60

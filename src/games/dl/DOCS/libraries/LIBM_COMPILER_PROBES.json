@@ -1,0 +1,4121 @@
+{
+  "libm-scan": [
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 36
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 38
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 37
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 35
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 50
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 33
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 60,
+      "diff": 48
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 37
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 38
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 31
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 51
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 42
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 32,
+      "diff": 25
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 26
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 12
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 25
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 39
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 18
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 40,
+      "diff": 34
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 34
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 45
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 23
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 36,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 22
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 15
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 37
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 36
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 36
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 38
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 37
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 43
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 35
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 50
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 33
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 60,
+      "diff": 48
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 37
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 38
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 31
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 51
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 42
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 24
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 12
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 25
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 39
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 18
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 40,
+      "diff": 34
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 34
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 45
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 23
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 26
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 29
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 15
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.10.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 37
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 36
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 36
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 38
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 37
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 43
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 35
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 50
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 33
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 60,
+      "diff": 48
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 37
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 38
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 31
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 51
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 42
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 24
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 12
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 25
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 39
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 18
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 40,
+      "diff": 34
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 34
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 45
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 23
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 26
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 29
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 15
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.11.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 37
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 36
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 36
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 38
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 37
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 43
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 35
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 50
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 33
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 60,
+      "diff": 48
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 37
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 38
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 31
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 51
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 42
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 24
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 12
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 25
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 39
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 18
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 40,
+      "diff": 34
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 34
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 45
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 23
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 26
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 29
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 15
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 37
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 36
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 44,
+      "diff": 36
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 52,
+      "diff": 38
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony29",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 37
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 43
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 35
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 50
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 33
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 60,
+      "diff": 48
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 37
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 40,
+      "diff": 38
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 40,
+      "diff": 31
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 60,
+      "diff": 51
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 42
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sony296",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 24
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 33
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 39
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 12
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 25
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 39
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 18
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 36,
+      "diff": 23
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 18
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 44,
+      "diff": 29
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 40,
+      "diff": 34
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 34
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 45
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "gcc323",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 44,
+      "diff": 23
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 26
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 32,
+      "diff": 8
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 52,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 68,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O2",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 3
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "size": 28,
+      "diff": 0
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "size": 40,
+      "diff": 29
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "size": 28,
+      "diff": 17
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "size": 48,
+      "diff": 15
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "size": 48,
+      "diff": 32
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "size": 32,
+      "diff": 9
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "size": 56,
+      "diff": 29
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "size": 64,
+      "diff": 48
+    },
+    {
+      "version": "1.13.0",
+      "compiler": "sn136",
+      "opt": "-O1",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "size": 36,
+      "diff": 11
+    }
+  ],
+  "libm-full": [
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/e_fmod.c",
+      "function": "__ieee754_fmod",
+      "address": 1251984,
+      "size": 936,
+      "normalized_differences": 732
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/e_pow.c",
+      "function": "__ieee754_pow",
+      "address": 1252992,
+      "size": 3384,
+      "normalized_differences": 1681
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/e_sqrt.c",
+      "function": "__ieee754_sqrt",
+      "address": 1256360,
+      "size": 748,
+      "normalized_differences": 468
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 736,
+      "normalized_differences": 607
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 312,
+      "normalized_differences": 133
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2216,
+      "normalized_differences": 1853
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_rem_pio2.c",
+      "function": "__ieee754_rem_pio2f",
+      "address": 1262064,
+      "size": 1032,
+      "normalized_differences": 905
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 288,
+      "normalized_differences": 211
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/kf_cos.c",
+      "function": "__kernel_cosf",
+      "address": 1263368,
+      "size": 404,
+      "normalized_differences": 340
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/kf_rem_pio2.c",
+      "function": "__kernel_rem_pio2f",
+      "address": 1263712,
+      "size": 2216,
+      "normalized_differences": 1881
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/kf_sin.c",
+      "function": "__kernel_sinf",
+      "address": 1266096,
+      "size": 324,
+      "normalized_differences": 274
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "address": 1266360,
+      "size": 68,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "address": 1266432,
+      "size": 52,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "address": 1266488,
+      "size": 32,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "address": 1266520,
+      "size": 56,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "address": 1266576,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 524,
+      "normalized_differences": 273
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/sf_ceil.c",
+      "function": "ceilf",
+      "address": 1267568,
+      "size": 236,
+      "normalized_differences": 206
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "address": 1267784,
+      "size": 52,
+      "normalized_differences": 36
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/sf_cos.c",
+      "function": "cosf",
+      "address": 1267832,
+      "size": 232,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "address": 1268064,
+      "size": 28,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "address": 1268096,
+      "size": 40,
+      "normalized_differences": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/sf_floor.c",
+      "function": "floorf",
+      "address": 1268136,
+      "size": 252,
+      "normalized_differences": 213
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "address": 1268368,
+      "size": 40,
+      "normalized_differences": 32
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 360,
+      "normalized_differences": 246
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/w_fmod.c",
+      "function": "fmod",
+      "address": 1268760,
+      "size": 292,
+      "normalized_differences": 55
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/w_pow.c",
+      "function": "pow",
+      "address": 1269048,
+      "size": 1072,
+      "normalized_differences": 13
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/w_sqrt.c",
+      "function": "sqrt",
+      "address": 1270120,
+      "size": 276,
+      "normalized_differences": 48
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_asin.c",
+      "function": "asinf",
+      "address": 1270392,
+      "size": 256,
+      "normalized_differences": 128
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_exp.c",
+      "function": "expf",
+      "address": 1270648,
+      "size": 384,
+      "normalized_differences": 270
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_log.c",
+      "function": "logf",
+      "address": 1271024,
+      "size": 340,
+      "normalized_differences": 232
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_log10.c",
+      "function": "log10f",
+      "address": 1271352,
+      "size": 344,
+      "normalized_differences": 237
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_pow.c",
+      "function": "powf",
+      "address": 1271688,
+      "size": 1308,
+      "normalized_differences": 842
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/wf_sqrt.c",
+      "function": "sqrtf",
+      "address": 1272976,
+      "size": 284,
+      "normalized_differences": 190
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/e_fmod.c",
+      "function": "__ieee754_fmod",
+      "address": 1251984,
+      "size": 1108,
+      "normalized_differences": 977
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/e_pow.c",
+      "function": "__ieee754_pow",
+      "address": 1252992,
+      "size": 3416,
+      "normalized_differences": 2008
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/e_sqrt.c",
+      "function": "__ieee754_sqrt",
+      "address": 1256360,
+      "size": 804,
+      "normalized_differences": 578
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 884,
+      "normalized_differences": 645
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_exp.c",
+      "function": "__ieee754_expf",
+      "address": 1258064,
+      "size": 672,
+      "normalized_differences": 109
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 780,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_log10.c",
+      "function": "__ieee754_log10f",
+      "address": 1259568,
+      "size": 296,
+      "normalized_differences": 180
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_pow.c",
+      "function": "__ieee754_powf",
+      "address": 1259872,
+      "size": 2132,
+      "normalized_differences": 1599
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_rem_pio2.c",
+      "function": "__ieee754_rem_pio2f",
+      "address": 1262064,
+      "size": 972,
+      "normalized_differences": 187
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_sqrt.c",
+      "function": "__ieee754_sqrtf",
+      "address": 1263056,
+      "size": 292,
+      "normalized_differences": 179
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/kf_cos.c",
+      "function": "__kernel_cosf",
+      "address": 1263368,
+      "size": 344,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/kf_rem_pio2.c",
+      "function": "__kernel_rem_pio2f",
+      "address": 1263712,
+      "size": 2176,
+      "normalized_differences": 1881
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/kf_sin.c",
+      "function": "__kernel_sinf",
+      "address": 1266096,
+      "size": 260,
+      "normalized_differences": 73
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_copysign.c",
+      "function": "copysign",
+      "address": 1266360,
+      "size": 68,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/s_fabs.c",
+      "function": "fabs",
+      "address": 1266432,
+      "size": 52,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_finite.c",
+      "function": "finite",
+      "address": 1266488,
+      "size": 32,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/s_isnan.c",
+      "function": "isnan",
+      "address": 1266520,
+      "size": 56,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_matherr.c",
+      "function": "matherr",
+      "address": 1266576,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_rint.c",
+      "function": "rint",
+      "address": 1266616,
+      "size": 556,
+      "normalized_differences": 317
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 115
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/sf_ceil.c",
+      "function": "ceilf",
+      "address": 1267568,
+      "size": 212,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/sf_copysign.c",
+      "function": "copysignf",
+      "address": 1267784,
+      "size": 48,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/sf_cos.c",
+      "function": "cosf",
+      "address": 1267832,
+      "size": 232,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/sf_fabs.c",
+      "function": "fabsf",
+      "address": 1268064,
+      "size": 28,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/sf_finite.c",
+      "function": "finitef",
+      "address": 1268096,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/sf_floor.c",
+      "function": "floorf",
+      "address": 1268136,
+      "size": 228,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/sf_isnan.c",
+      "function": "isnanf",
+      "address": 1268368,
+      "size": 36,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/w_fmod.c",
+      "function": "fmod",
+      "address": 1268760,
+      "size": 292,
+      "normalized_differences": 69
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/w_pow.c",
+      "function": "pow",
+      "address": 1269048,
+      "size": 1072,
+      "normalized_differences": 47
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/w_sqrt.c",
+      "function": "sqrt",
+      "address": 1270120,
+      "size": 276,
+      "normalized_differences": 67
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_asin.c",
+      "function": "asinf",
+      "address": 1270392,
+      "size": 252,
+      "normalized_differences": 8
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_exp.c",
+      "function": "expf",
+      "address": 1270648,
+      "size": 376,
+      "normalized_differences": 267
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_log.c",
+      "function": "logf",
+      "address": 1271024,
+      "size": 332,
+      "normalized_differences": 224
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_log10.c",
+      "function": "log10f",
+      "address": 1271352,
+      "size": 336,
+      "normalized_differences": 232
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_pow.c",
+      "function": "powf",
+      "address": 1271688,
+      "size": 1292,
+      "normalized_differences": 901
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/wf_sqrt.c",
+      "function": "sqrtf",
+      "address": 1272976,
+      "size": 280,
+      "normalized_differences": 198
+    }
+  ],
+  "libm-version-probes": [
+    {
+      "version": "1.8.2",
+      "compiler": "sony29",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 637
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony29",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony29",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sony29",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 360,
+      "normalized_differences": 246
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sn136",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 876,
+      "normalized_differences": 648
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sn136",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 780,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sn136",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 115
+    },
+    {
+      "version": "1.8.2",
+      "compiler": "sn136",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 352,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 840,
+      "normalized_differences": 707
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sony29",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 360,
+      "normalized_differences": 246
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 884,
+      "normalized_differences": 645
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 780,
+      "normalized_differences": 602
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 115
+    },
+    {
+      "version": "1.9.0",
+      "compiler": "sn136",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 352,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 900,
+      "normalized_differences": 607
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 816,
+      "normalized_differences": 665
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 0
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sony29",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 368,
+      "normalized_differences": 325
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "file": "math/ef_asin.c",
+      "function": "__ieee754_asinf",
+      "address": 1257136,
+      "size": 884,
+      "normalized_differences": 650
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "file": "math/ef_log.c",
+      "function": "__ieee754_logf",
+      "address": 1258760,
+      "size": 764,
+      "normalized_differences": 661
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "file": "common/s_scalbn.c",
+      "function": "scalbn",
+      "address": 1267128,
+      "size": 436,
+      "normalized_differences": 115
+    },
+    {
+      "version": "1.12.0",
+      "compiler": "sn136",
+      "file": "common/sf_scalbn.c",
+      "function": "scalbnf",
+      "address": 1268408,
+      "size": 360,
+      "normalized_differences": 312
+    }
+  ]
+}
