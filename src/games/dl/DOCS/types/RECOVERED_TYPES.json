@@ -11561,5 +11561,46 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "RT_CIRC_BUF",
+    "size": "0x18",
+    "owners": [
+      "medius/rt_util/rt_circ_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_circ_buf.h",
+    "evidence": "prototype dltypes.txt layout; retail rt_circ_buf_create memsets 0x18 and the accessors read every field",
+    "fields": [
+      {
+        "name": "nStartPos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nEndPos",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "nSize",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "nUsed",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pBuf",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pScratchBuf",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
   }
 ]

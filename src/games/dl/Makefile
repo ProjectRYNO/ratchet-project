@@ -118,7 +118,8 @@ IKSEMEL_COMPILE_FLAGS = $(filter-out -mno-split-addresses,$(SVO3_COMPILE_FLAGS))
 # Enable additional objects here as their C replacements are verified.
 MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util/rt_constraint.o \
 	$(OBJ_DIR)/medius/rt_util/rt_string.o $(OBJ_DIR)/medius/rt_util/rt_mutex.o \
-	$(OBJ_DIR)/medius/rt_util/rt_pack.o $(OBJ_DIR)/medius/rt_util/rt_msg_util.o $(OBJ_DIR)/medius/rt_util/rt_timebase.o
+	$(OBJ_DIR)/medius/rt_util/rt_pack.o $(OBJ_DIR)/medius/rt_util/rt_msg_util.o $(OBJ_DIR)/medius/rt_util/rt_timebase.o \
+	$(OBJ_DIR)/medius/rt_util/rt_circ_buf.o $(OBJ_DIR)/medius/rt_util/rt_ip.o
 MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections
 MEDIUS_AS_FLAGS = -EL -G0 -g -Icode/include
 ifeq ($(ALLOW_NONMATCHING),1)
