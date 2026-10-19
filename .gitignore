@@ -11,6 +11,7 @@ build/
 # Keep the reproducible Deadlocked decompilation checks, not scratch reports.
 !src/games/dl/TESTS/
 src/games/dl/TESTS/*
+!src/games/dl/TESTS/check_989snd.py
 !src/games/dl/TESTS/check_main_elf.py
 !src/games/dl/TESTS/check_global_map.py
 !src/games/dl/TESTS/check_main_link_guards.py

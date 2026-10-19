@@ -84,6 +84,7 @@ COMMON_COMPILE_FLAGS = -G8 -O2 -ffast-math -fno-exceptions -Wa,-EL -Wa,-Icode/in
 # Measured sound profile; see DOCS/sound/989SND_MATCHING.md.
 # SN v1.36 packs scalar register saves with -fopt-stack. The assembler's -g
 # preserves compiler NOPs and delay slots; this is required for exact matching.
+# The assembly adapter reproduces legacy six-word loops from compiler output.
 # The only division has a constant, nonzero divisor (741).
 SOUND_COMPILE_FLAGS = -G16 -O2 -fopt-stack -mno-check-zero-division
 SOUND_AS_FLAGS = -EL -G8 -g
@@ -223,10 +224,11 @@ $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
-$(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile | ee-gcc-sn136
+$(OBJ_DIR)/989snd/ee/989snd.o: code/989snd/ee/989snd.c code/989snd/ee/989snd.h Makefile $(TOOLS)/sound_loop_compat.py | ee-gcc-sn136
 	@$(MKDIR) -p $(dir $@)
 	$(EESN136) -S $(SOUND_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS_SN136) $(SOUND_AS_FLAGS) $(@:.o=.s) -o $@
+	$(PYTHON) $(TOOLS)/sound_loop_compat.py $(@:.o=.s) $(@:.o=.compat.s)
+	$(EEAS_SN136) $(SOUND_AS_FLAGS) $(@:.o=.compat.s) -o $@
 
 $(OBJ_DIR)/svo3/%.o: code/svo3/%.cpp
 	@$(MKDIR) -p $(dir $@)

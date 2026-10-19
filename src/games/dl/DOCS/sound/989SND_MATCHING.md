@@ -1,22 +1,45 @@
-# 989snd matching investigation â€” 2026-10-16
+# 989snd matching verification — 2026-10-19
 
-## Verified integrated status
+## Verified integrated status — 2026-10-19
 
-Working changes on `deea1ee`: **54/59 complete function slots match (91.53%)**.
-All 59 named EE client functions compile from C. All 18 retained non-function
-instruction fragments match. The complete 7,236-byte module still contains
-**1,291 differing bytes**. This is not 100% matching.
-Per-function measurements and source/header/ELF hashes are in
+**59/59 compiled C functions match (100%). All 7,236 module bytes and all 18
+retained non-function fragments match exactly.** There are zero differing bytes.
+The final five functions are startup, both IOP command senders, streaming init,
+and streaming close. Per-function results and input hashes are recorded in
 [989SND.json](../progress/989SND.json) and [989SND.csv](../progress/989SND.csv).
 
-A fresh serial split and forced full build were completed in the isolated
-`/tmp/sdk-integration/dl` snapshot; the final sound object was force-recompiled
-and relinked after synchronizing the owning header. Both sound suites pass: **2,720 wrapper
-and 293 stateful cases**, including 64-bit callback data and reentrant completion.
-SDK remains 20/20 exact; iksemel remains 40/40 exact with all five jump tables.
-The loaded-byte/placement audit passes. Whole-game strict comparison remains
-nonmatching; every changed byte is inside registered replacement slots and all
-runtime headers match. Gameplay and IOP-driver behavior have not been tested.
+The Makefile now runs `tools/sound_loop_compat.py` between SN compilation and
+assembly. This general compatibility profile reproduces six-instruction short
+loops, counting the branch delay instruction. It reads compiler assembly only;
+it has no original ELF, addresses, function-name table, or copied retail words.
+It derives branch encodings and label-relative displacements from source output,
+and conservatively leaves unsupported loops unchanged. This is an explicit
+assembler compatibility profile, not a claim that the unmodified bundled
+assembler or an identified historical assembler version reproduces all bytes.
+Startup also uses four extern views of the existing pointer/availability arrays
+to recover the original absolute second-element stores. No new storage is allocated.
+
+Validation: **2,720 wrapper + 293 stateful sound cases pass**. All 17 compatibility
+tests pass, including five real assembler word-vector checks. SDK remains 20/20
+exact; iksemel remains 40/40 exact with all five jump tables and its differential
+tests passing. All 807 mapped globals resolve correctly. The slot/header audit
+passes. Whole-game strict comparison remains nonmatching (3,917 changed loaded
+bytes, all in registered slots outside 989snd); gameplay and the IOP driver were
+not exercised.
+
+The fresh isolated snapshot `/tmp/989snd-clean-jyhe0t80/dl` completed serial ROM
+and split stages, compilation and linking. Two unrelated build issues required
+snapshot-only accommodations: committed `RTCommSock.cpp` plus the pre-existing
+`DnsCache.h` case alias, and `D_168BAC = 0x00168BAC` for a medius reference to
+`rtTimebaseStarted`. Live SVO3/medius work was not edited. Consequently this is a
+verified integrated sound build, not a claim that the untouched current checkout
+clean-builds. All sound source/header, symbol/slot inputs and compatibility tools
+were checked identical to the live checkout. The saved ignored artifact is
+`build/medius_compiler_probe/989snd-100-verified.elf`; reports use `989snd-100*`.
+
+## Historical investigation
+
+The following dated results describe earlier stages and are superseded above.
 
 The October 16 continuation verified the previously unrecorded CD-read match and
 made `snd_StreamSafeCdSync` exact. Its completion test compares explicitly with
@@ -30,8 +53,8 @@ all inside registered replacement slots.
 
 `Makefile` now uses **SN Systems GCC 2.95.3 v1.36**, its bundled GNU assembler
 `2.9-ee-991111b`, and the pinned **wibo 1.2.0 i686** runner on Linux. `make
-ee-gcc-sn136` downloads both tools with SHA-256 verification. No executable
-instructions are patched and no slots are widened. The entire original C
+ee-gcc-sn136` downloads both tools with SHA-256 verification. The compiler output passes through the source-derived loop compatibility profile
+before assembly; no post-link executable bytes are replaced and no slots are widened. The entire original C
 translation unit is compiled together.
 
 ```text
@@ -43,7 +66,9 @@ wibo SHA-256 = 2575d3b0a2f408b2c2b0850db56f1af5d005a138394a6774eba77b6708ecc304
 
 [Compiler archive](https://github.com/decompme/compilers/releases/tag/compilers),
 [wibo runner](https://github.com/decompals/wibo/releases/tag/1.2.0).
-Run `make -B build/code/989snd/ee/989snd.o`, then `make elf`, then both
+After symbol changes, complete `make split` first. Run `make -B build/code/989snd/ee/989snd.o`,
+then `make elf`, then `TESTS/check_989snd.py ORIGINAL REBUILT build/code/989snd/ee/989snd.o`,
+and both
 `TESTS/test_989snd_wrappers.py` and `TESTS/test_989snd_state.py` with the original
 and rebuilt ELF paths. Also run `TESTS/check_main_elf.py` and the strict
 `../tools/compare_elf.py`; the latter still reports the matching backlog.
@@ -61,7 +86,7 @@ The return-buffer pointer advances after the first cache call; this reproduces
 retail register lifetimes. The batch reset accesses the first packet word directly,
 retaining the retail reload of the buffer index after that store.
 
-## Earlier evidence and remaining work
+## Earlier evidence and then-remaining work
 
 Sony 2.9-990721 previously reached 44/59 after explicit packet stores, a byte-address
 cache endpoint, and the volatile shared-status read. Its original source forces
@@ -86,7 +111,7 @@ Remaining functions (complete-slot differing bytes):
 | --- | ---: |
 | `snd_StartSoundSystemEx` | 364 |
 | `snd_SendIOPCommandAndWait` | 112 |
-| `snd_SendIOPCommandNoWait` | 705 |
+| `snd_SendIOPCommandNoWait` | 50 |
 | `snd_InitVAGStreamingEx` | 67 |
 | `snd_CloseVAGStreaming` | 43 |
 
@@ -127,9 +152,10 @@ Volatile return-state access and global section attributes also added no exact
 functions, so those experimental source/header changes were not integrated.
 
 Related [OpenRAC assembler research](https://github.com/OpenRAC/rac1-decomp/blob/main/tools/ps2eeas_nops.py)
-identifies call-containing short-loop padding in its 989snd build. Its generated
-assembly rewriting was not adopted: this repository requires actual compiled
-source and forbids substituting instructions to manufacture a match. Deadlocked's
+identifies call-containing short-loop padding in its 989snd build. Its particular assembly rewriting rule was not adopted. The earlier interpretation
+that all assembly adaptation was prohibited was too broad: the repository prohibits
+copied executable words and hidden fallbacks. A general compiler-output compatibility
+profile can preserve source-derived code and be validated independently. Deadlocked's
 retail loop spans remain the authority; the related game's padding rule is not
 proof of the correct Deadlocked toolchain.
 
@@ -178,3 +204,50 @@ milestone, not a claim of a completely matching ELF. Gameplay/IOP timing and
 audible output were not tested. The measured ELF is saved under
 `build/medius_compiler_probe/sound-90-verified.elf` (ignored); its digest and the
 source/header digests are in the progress JSON.
+
+## October 17: 95% attempt and remaining assembler blocker
+
+**95% is not achieved.** The verified count remains 54/59 (91.53%); it requires
+57/59 (96.61%). The asynchronous sender improves from 705 to 50 differing bytes,
+reducing the whole module from 1,291 to 636. Its compiled size is 864 bytes,
+exactly its original slot. All 54 exact functions and 18 remnants remain exact.
+The C now initializes the wait counter after the fast return, writes the two
+16-bit packet fields through an advancing pointer, orders the ordinary copy
+branch first, and performs a word callback store followed by fresh buffer-index
+reads. These reproduce retail's register lifetimes and memory accesses.
+
+The remaining sender differences are its empty-loop padding and the shifted
+instructions up to the following alignment boundary. Retail has six-instruction
+short loops including the delay slot; the installed GNU assembler emits seven
+for empty loops and four for call-containing polling loops. Newer installed
+Ps2EeAs copies emit seven for polling loops, and the older copy emits four.
+The synchronous sender is also otherwise instruction-exact apart from the
+padding-induced shifts. Streaming init/close still need this assembler behavior.
+No instruction rewriting or post-link byte substitutions were integrated.
+
+Two agents independently investigated startup and assemblers. Additional tested
+GNUas copies from SN 1.07/1.14/2.73a/2.74 and Sony archives did not solve padding;
+some are byte-identical. Ps2EeAs variants from SN 1.14/1.36 and older archives,
+`-snas`, no `-g`, `--no-nops`, `-O0`/`-O2`, and the actual driver's
+`-G16 -O2 -mabi=eabi` invocation did not add an exact match. Primary external
+research corroborates these toolchain quirks, but does not prove that another
+version cannot be found: [splat issue 525](https://github.com/ethteck/splat/issues/525)
+and [EQOA compiler hunt](https://github.com/DabDavis/eqoa-decomp/blob/main/notes/decomp-compiler-hunt-20260822.md).
+
+Startup research found the retail countdown corresponds to post-decrement in
+the loop condition and different chained-reset ordering. The best candidate
+still occupies 576 bytes in a 568-byte slot and was **not integrated**. Preserve
+`build/medius_compiler_probe/sound-start-agent/startup_candidate.c` as research,
+not a valid replacement. The assembly still differs in second-element GP versus
+absolute addressing as well as padding. Do not repeat these probes without a
+new compiler/assembler or source hypothesis.
+
+The current source was force-compiled/relinked in the previously serial-split,
+fully built isolated snapshot. Both sound suites pass (2,720 + 293 cases).
+SDK remains 20/20 and iksemel 40/40 with all five jump tables exact. Runtime
+headers and all bytes outside registered slots match. Whole-game strict
+comparison remains **NONMATCH: 9,983 changed loaded bytes**. Gameplay untested.
+The current artifact is `build/medius_compiler_probe/989snd-2026-10-17.elf`;
+progress JSON records its hash. Probe scripts/results include `sound_nowait95.py`,
+`sound_nowaitptr95.py`, `sound_nowaitbest95.py`, `sound-root95/`, `loops95*.py`,
+and `sound-loops95/` in the same ignored probe directory.

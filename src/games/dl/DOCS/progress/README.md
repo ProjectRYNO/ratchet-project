@@ -150,13 +150,12 @@ byte-exact functions (100.00%)**, with five exact jump tables. Scoped measuremen
 are in [IKSEMEL.json](IKSEMEL.json) and [IKSEMEL.csv](IKSEMEL.csv); see
 [verification details](../libraries/IKSEMEL.md).
 
-The 2026-10-16 989snd integration reaches **54/59 byte-exact functions (91.53%)**.
-All 59 are compiled C; five remain nonmatching. This exceeds the requested 90%
-function-count milestone. The latest three exact matches are flush, bank-load
-callback, and EE bank load. The module has 1,291 differing bytes, down from
-2,337 at `deea1ee`. Scoped measurements are in [989SND.json](989SND.json) and
-[989SND.csv](989SND.csv). A serial split/forced full build, slot/layout and global
-address audits, and all 3,013 sound behavior cases pass; SDK and iksemel remain
-byte-exact. Whole-game strict matching still fails (10,638 changed loaded bytes
-inside registered slots); gameplay was not tested.
-See [compiler evidence and remaining work](../sound/989SND_MATCHING.md).
+The 2026-10-19 989snd verification reaches **59/59 byte-exact compiled C functions
+(100%)**, with zero differences across the entire 7,236-byte module and all 18
+retained fragments. The Makefile includes a source-derived legacy short-loop
+assembler compatibility profile. All 3,013 sound behavior cases and 17 profile
+tests pass; SDK and iksemel remain exact. Whole-game strict comparison still
+fails outside sound (3,917 bytes inside registered slots); gameplay was not tested.
+The isolated build required unrelated snapshot-only SVO3/header and medius alias
+accommodations. See [verification details and build limitations](../sound/989SND_MATCHING.md),
+[989SND.json](989SND.json), and [989SND.csv](989SND.csv).

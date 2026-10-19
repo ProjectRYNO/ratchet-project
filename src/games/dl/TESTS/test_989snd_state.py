@@ -16,7 +16,8 @@ from test_989snd_wrappers import (WrapperMachine, STATEFUL, STACK, MASK, signed,
 
 ROOT = Path(__file__).resolve().parents[1]
 HEADER = (ROOT/'code/989snd/ee/989snd.h').read_text()
-GLOBAL_NAMES = re.findall(r'extern[^;]*?\b(g\w+)(?:\[\d+\])?\s*;',HEADER)
+GLOBAL_HEADER = re.sub(r'__attribute__\(\(section\("[^"]+"\)\)\)', '', HEADER)
+GLOBAL_NAMES = re.findall(r'extern[^;]*?\b(g\w+)(?:\[\d*\])?\s*;', GLOBAL_HEADER)
 SYMBOLS = {name:int(address,16) for name,address in re.findall(
     r'^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)\s*;',
     (ROOT/'config/symbols_core.text.txt').read_text(),re.M)}
@@ -284,7 +285,11 @@ def main():
         assert linked[name][0] == address, 'global moved: '+name
     for alias,owner in (('gLoadReturnWord','gLoadReturnValue'),
                         ('gLoadReturnStatus','gLoadReturnValue'),
-                        ('gLoadReturnDone','gLoadReturnDef')):
+                        ('gLoadReturnDone','gLoadReturnDef'),
+                        ('gSndCommandBuffePtrView','gSndCommandBuffePtr'),
+                        ('gCommandBuffeBytesAvailView','gCommandBuffeBytesAvail'),
+                        ('gSndCommandReturnDefPtrView','gSndCommandReturnDefPtr'),
+                        ('gReturnValuesPtrView','gReturnValuesPtr')):
         assert GLOBALS[alias] == GLOBALS[owner], 'shared sound storage split: '+alias
         assert linked[alias][0] == linked[owner][0], 'linked sound alias moved: '+alias
     functions=yaml.safe_load((ROOT/'config/decompiled_functions.yaml').read_text())['functions']

@@ -132,4 +132,14 @@ void snd_SendCurrentBatch(void);
 int snd_StreamSafeCdSync(int);
 void snd_SetSoundParams_CB(unsigned int, unsigned int, int, int, int, int, SndCompleteProc, SndUserData);
 
+/* Startup views of the same two-entry arrays. The small-data compiler hint
+ * keeps symbolic accesses; unspecified extent preserves absolute +4 stores. */
+extern SndCommandBuffer *gSndCommandBuffePtrView[] __attribute__((section(".sdata")));
+
+extern SndWord *gReturnValuesPtrView[] __attribute__((section(".sdata")));
+
+extern SndCommandReturnDef *gSndCommandReturnDefPtrView[] __attribute__((section(".sdata")));
+
+extern int gCommandBuffeBytesAvailView[] __attribute__((section(".sdata")));
+
 #endif

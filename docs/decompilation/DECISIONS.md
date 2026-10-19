@@ -71,3 +71,42 @@ The state suite asserts all shared-storage alias addresses. Sound behavior
 backlog is 1,291 bytes across five functions; whole-game strict comparison still
 fails with 10,638 changed loaded bytes inside registered slots. Gameplay untested.
 See `src/games/dl/DOCS/sound/989SND_MATCHING.md` and the 989SND progress JSON/CSV.
+
+
+### 2026-10-17: 989snd sender recovery; 95% remains unfinished
+
+Keep SN v1.36 and its current flags. The asynchronous sender now reproduces
+retail packet-store/copy order and callback-index reloads, reducing 705 to 50
+complete-slot differing bytes. All 54/59 exact functions remain; module backlog
+is 636 bytes. Both sound suites (3013 cases), SDK, iksemel, slot/header audits
+pass; strict whole-game result is 9983 differing loaded bytes inside registered
+slots. Additional native assembler versions/options did not reproduce retail's
+six-instruction short loops. No generated instruction rewriting was integrated.
+The best startup countdown candidate overruns its slot and stays research-only.
+See DOCS/sound/989SND_MATCHING.md for artifacts and rejected toolchain probes.
+
+## 2026-10-19: 989snd reaches 100% with a source-derived assembler profile
+
+All 59 C functions, 18 retained fragments, and 7,236 module bytes are exact.
+SN GCC 2.95.3 v1.36 still uses `-G16 -O2 -fopt-stack -mno-check-zero-division`;
+its GNU assembler uses `-EL -G8 -g`. The Makefile now inserts
+`tools/sound_loop_compat.py` to reproduce the observed legacy six-instruction
+short-loop profile, including the delay instruction. It consumes only compiler
+assembly; branch encoding derives from operands and labels, without retail
+ELF input, function-name exceptions or post-link copying. Four startup extern
+views preserve the original second-element address forms without new storage.
+The prior blanket rejection of assembly adaptation was an overly broad reading
+of the rules against copied executable bytes and hidden assembly fallbacks.
+This profile is explicit and independently tested; the exact historical
+assembler version remains unidentified.
+
+All 3,013 sound behavior cases, 17 compatibility tests (including five actual
+assembler vectors), SDK 20/20 and iksemel 40/40 plus five tables pass. Strict sound
+verification now runs through `tools/verify.py`; `TESTS/check_989snd.py` checks
+compiled definitions, entry addresses, slot bounds and every module byte.
+The isolated snapshot build needed the committed SVO3 RTCommSock source and
+existing case-sensitive DnsCache header alias, plus a temporary medius D_168BAC
+symbol alias. Those unrelated live files were not changed. Whole-game strict
+comparison remains NONMATCH: 3,917 loaded bytes within registered slots, all
+outside sound; runtime headers and other loaded bytes match. Gameplay untested.
+See `src/games/dl/DOCS/sound/989SND_MATCHING.md` for reproducible evidence and limits.

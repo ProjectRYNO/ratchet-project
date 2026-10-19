@@ -9,11 +9,11 @@ void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int fla
     int data[2];
     int delay;
     gSndCommandBuffePtr[0] = &gSndCommandBuffer1;
-    gSndCommandBuffePtr[1] = &gSndCommandBuffer2;
+    gSndCommandBuffePtrView[1] = &gSndCommandBuffer2;
     gReturnValuesPtr[0] = gActualReturnValues1;
-    gReturnValuesPtr[1] = gActualReturnValues2;
+    gReturnValuesPtrView[1] = gActualReturnValues2;
     gSndCommandReturnDefPtr[0] = gSndCommandReturnDef1;
-    gSndCommandReturnDefPtr[1] = gSndCommandReturnDef2;
+    gSndCommandReturnDefPtrView[1] = gSndCommandReturnDef2;
     if (flags & 2) gPrefs_Silent = 1; else gPrefs_Silent = 0;
     sceSifInitRpc(0);
     do {
@@ -21,22 +21,22 @@ void SND_SECTION(snd_StartSoundSystemEx) snd_StartSoundSystemEx(unsigned int fla
             printf(sndBindError, sndSourceFile, 0xB5);
             for (;;) {}
         }
-        for (delay = 10000; delay; --delay) {}
+        for (delay = 10000; delay--; ) {}
     } while (!gSLClientData.server);
     gLoadBusy = 0;
     gLoadReturnDone = 0;
     gLoadReturnDef.u_data = 0;
-    gLoadReturnWord = 0;
+    gLoadReturnValue[0] = 0;
     do {
         if (sceSifBindRpc(&gSLClientLoaderData, 0x123457, 0) < 0) {
             printf(sndBindError, sndSourceFile, 0xCA);
             for (;;) {}
         }
-        for (delay = 10000; delay; --delay) {}
+        for (delay = 10000; delay--; ) {}
     } while (!gSLClientLoaderData.server);
-    gCommandBuffeBytesAvail[0] = gCommandBuffeBytesAvail[1] = 4092;
-    gSndCommandBuffer1.num_commands = gSndCommandBuffer2.num_commands = 0;
     gStats.cd_busy = gStats.cd_error = 0;
+    gSndCommandBuffer2.num_commands = gSndCommandBuffer1.num_commands = 0;
+    gCommandBuffeBytesAvailView[1] = gCommandBuffeBytesAvail[0] = 4092;
     data[0] = (int)&gStats;
     data[1] = flags;
     snd_SendIOPCommandAndWait(0, 8, (char *)data);
@@ -407,10 +407,9 @@ unsigned int SND_SECTION(snd_SendIOPCommandAndWait) snd_SendIOPCommandAndWait(in
 
 void SND_SECTION(snd_SendIOPCommandNoWait) snd_SendIOPCommandNoWait(int command, int data_size, char *data, SndCompleteProc done, SndUserData user_data)
 {
-    int msg_size, waited = 0, was_caching = 0, i;
+    int msg_size, waited, was_caching = 0, i;
     SndCommandEntry *entry;
     char *payload;
-    int index;
     if (!gCaching && !gCommBusy && !data_size && !done) {
         snd_PrepareReturnBuffer(gSyncBuffer, 1);
         while (sceSifCheckStatRpc(&gSLClientData)) {
@@ -421,6 +420,7 @@ void SND_SECTION(snd_SendIOPCommandNoWait) snd_SendIOPCommandNoWait(int command,
         sceSifCallRpc(&gSLClientData, command, 1, 0, 0, gSyncBuffer, 12, 0, 0);
         return;
     }
+    waited = 0;
     msg_size = data_size + 4;
     if (msg_size & 3) msg_size += 4 - msg_size % 4;
     if (msg_size > 512) {
@@ -438,19 +438,21 @@ void SND_SECTION(snd_SendIOPCommandNoWait) snd_SendIOPCommandNoWait(int command,
     if (waited && !gPrefs_Silent) printf(sndContinuing, waited);
     if (was_caching) gCaching = 1;
     entry = (SndCommandEntry *)((char *)gSndCommandBuffePtr[gCommandFillBuffer] + 4096 - gCommandBuffeBytesAvail[gCommandFillBuffer]);
-    entry->command = command;
-    entry->size = data_size;
-    payload = (char *)(entry + 1);
-    if (command == 0x68) {
+    payload = (char *)entry;
+    *(unsigned short *)payload = command;
+    payload += 2;
+    *(unsigned short *)payload = data_size;
+    payload += 2;
+    if (command != 0x68) {
+        for (i = 0; i < data_size; ++i) payload[i] = data[i];
+    } else {
         for (i = 0; i < 12; ++i) payload[i] = data[i];
         memcpy(payload + 12, ((void **)data)[3], ((int *)data)[2]);
-    } else {
-        for (i = 0; i < data_size; ++i) payload[i] = data[i];
     }
     gCommandBuffeBytesAvail[gCommandFillBuffer] -= msg_size;
-    index = gSndCommandBuffePtr[gCommandFillBuffer]->num_commands;
-    gSndCommandReturnDefPtr[gCommandFillBuffer][index].done = done;
-    gSndCommandReturnDefPtr[gCommandFillBuffer][index].u_data = user_data;
+    /* The word store preserves retail's reload of the shared buffer index. */
+    *(SndWord *)&gSndCommandReturnDefPtr[gCommandFillBuffer][gSndCommandBuffePtr[gCommandFillBuffer]->num_commands].done = (SndWord)done;
+    gSndCommandReturnDefPtr[gCommandFillBuffer][gSndCommandBuffePtr[gCommandFillBuffer]->num_commands].u_data = user_data;
     snd_PostMessage();
 }
 

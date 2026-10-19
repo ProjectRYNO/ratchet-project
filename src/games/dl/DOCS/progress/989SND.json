@@ -1,18 +1,18 @@
 {
-  "base_commit": "deea1ee",
+  "base_commit": "02674f8",
   "compiled_functions": 59,
-  "exact_functions": 54,
+  "exact_functions": 59,
   "module_bytes": 7236,
-  "differing_bytes": 1291,
+  "differing_bytes": 0,
   "exact_remnants": 18,
   "functions": [
     {
       "name": "snd_StartSoundSystemEx",
       "address": "0x157d60",
-      "size": 560,
+      "size": 568,
       "slot_size": 568,
-      "differing_bytes": 364,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_FlushSoundCommands",
@@ -201,18 +201,18 @@
     {
       "name": "snd_SendIOPCommandAndWait",
       "address": "0x158a30",
-      "size": 552,
+      "size": 560,
       "slot_size": 560,
-      "differing_bytes": 112,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_SendIOPCommandNoWait",
       "address": "0x158c60",
-      "size": 844,
+      "size": 864,
       "slot_size": 864,
-      "differing_bytes": 705,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_PostMessage",
@@ -249,18 +249,18 @@
     {
       "name": "snd_InitVAGStreamingEx",
       "address": "0x159130",
-      "size": 160,
+      "size": 168,
       "slot_size": 168,
-      "differing_bytes": 67,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_CloseVAGStreaming",
       "address": "0x1591f0",
-      "size": 88,
+      "size": 96,
       "slot_size": 96,
-      "differing_bytes": 43,
-      "exact": false
+      "differing_bytes": 0,
+      "exact": true
     },
     {
       "name": "snd_PlayVAGStreamByLocEx_CB",
@@ -480,15 +480,23 @@
     }
   ],
   "working_tree_changes": true,
-  "verified_date": "2026-10-16",
-  "exact_percent": 91.53,
+  "verified_date": "2026-10-19",
+  "exact_percent": 100.0,
   "compiler": "SN Systems GCC 2.95.3 v1.36",
   "compiler_flags": "-G16 -O2 -fopt-stack -mno-check-zero-division",
   "assembler": "SN-bundled GNU assembler 2.9-ee-991111b",
   "assembler_flags": "-EL -G8 -g",
   "compiler_runner": "wibo 1.2.0 i686",
-  "source_sha256": "e02f388f5d6af4a14274f01810d68f73698e806064836f6297bad9ddf3f7b699",
-  "header_sha256": "9bac5aa68b46dd284c9f896e85279ef4a665f641a01c942ef90632afd6df262b",
+  "source_sha256": "a79ce7332149c09d5669132d1dda3bd44c3b15023b2b39ad60d947f9736b8917",
+  "header_sha256": "2e9364d95718110b8862b968e23c4df30ad2ba8d9ceec7349fc1e5b018be25bf",
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "7c0c33ac1a225df0af904adee0a2970bd61520947b9a8a67f5cd7c0e7bbf560e"
+  "rebuilt_sha256": "d126013844951eb3ae88a15c41738b52d9012b512caf68127724d31bae2786ae",
+  "assembler_compatibility": "tools/sound_loop_compat.py: legacy six-instruction loop profile, including delay slot",
+  "verification_snapshot": "/tmp/989snd-clean-jyhe0t80/dl",
+  "snapshot_limitations": [
+    "Committed RTCommSock.cpp and existing DnsCache.h case alias used for unrelated SVO3 build failure.",
+    "Temporary D_168BAC = 0x00168BAC linker alias supplied for existing medius reference."
+  ],
+  "whole_game_differing_bytes": 3917,
+  "compatibility_tool_sha256": "c77f44897f9207bf44e27380a52677d2b4fc81e22444daee250ef618a046c27b"
 }

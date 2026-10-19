@@ -58,3 +58,26 @@ python3 /ProjectRYNO/tools/test_verify.py
 These fixture tests exercise exit classification, malformed/truncated ELF handling,
 layout failure, build failure without stale-artifact checks, and stage ordering.
 They mock subprocesses; the game-specific suites execute the real artifacts.
+
+### Deadlocked 989snd exact verification
+
+The sound Makefile rule compiles C with SN GCC 2.95.3 v1.36, normalizes compiler
+assembly through `tools/sound_loop_compat.py`, then assembles with the pinned
+SN GNU assembler. Keep this explicit legacy six-instruction short-loop profile
+when reproducing the sound byte match; the unmodified assembler is insufficient.
+The adapter reads no retail ELF and contains no per-function/address patches.
+After symbol changes, finish `make split` before rebuilding the sound object.
+
+From the Deadlocked directory:
+
+```sh
+python3 TESTS/check_989snd.py ../assets/dl/boot.elf build/boot_elf.elf build/code/989snd/ee/989snd.o
+python3 ../tools/test_sound_loop_compat.py --assemble
+```
+
+The first command requires all 59 compiled functions and every byte of the
+7,236-byte module (including 18 retained fragments) to match. The second runs
+17 profile tests, including actual assembler fixtures; omit `--assemble` on
+hosts without the pinned toolchain. The standard verifier includes the strict
+sound check, host profile tests and both existing sound differential suites.
+A sound pass does not imply the whole-game strict ELF comparison or gameplay passes.
