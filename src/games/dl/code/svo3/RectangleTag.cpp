@@ -70,13 +70,13 @@ TAG_SECTION(Draw___dupe10) void Draw___dupe10(RectangleTagState *tag)
         draw->vtable->DrawRectangle(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
                                     tag->base.m_width, tag->base.m_height,
                                     tag->base.m_lineColor, tag->base.m_fillColor,
-                                    tag->m_lineThickness, tag->m_cornerRadius, tag->m_zVal,
-                                    tag->m_gradientColor, tag->base.m_tagClass);
+                                    tag->m_lineThickness, tag->m_cornerRadius, tag->m_gradientColor,
+                                    tag->m_zVal, tag->base.m_tagClass);
     else
         draw->vtable->DrawRectangle(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
                                     tag->base.m_width, tag->base.m_height,
                                     tag->base.m_lineColor, tag->base.m_fillColor,
-                                    tag->m_lineThickness, tag->m_cornerRadius, tag->m_zVal,
-                                    0, tag->base.m_tagClass);
+                                    tag->m_lineThickness, tag->m_cornerRadius, 0,
+                                    tag->m_zVal, tag->base.m_tagClass);
 }
 }

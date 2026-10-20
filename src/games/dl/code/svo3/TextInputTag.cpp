@@ -141,9 +141,9 @@ extern "C" SECTION(drawCursor) void drawCursor(TextInputTagState *self, CDrawCon
     SVTag *tag = &self->base;
     float x = tag->m_x + ((const TextInputTagVtablePrefix *)tag->vtable)->getSubstringPixelWidth(self, self->m_curLeftOffset, self->m_curEditOffset);
     int node = self->m_node;
+    unsigned int color = tag->m_bSelected ? self->m_highlightTextColor : self->m_textColor;
     float y = tag->m_y;
     float height = tag->m_height;
-    unsigned int color = tag->m_bSelected ? self->m_highlightTextColor : self->m_textColor;
     CDrawContextVtablePrefix *drawVtable = draw->vtable;
     float top;
     float bottom;

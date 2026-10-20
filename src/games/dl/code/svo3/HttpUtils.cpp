@@ -118,22 +118,30 @@ int HTTP_SECTION(isURLDigit) isURLDigit(char c)
 
 void HTTP_SECTION(parseFullyQualifiedPath) parseFullyQualifiedPath(char *source, SVPath *path)
 {
+    char *server;
+    int schemeLength;
+    char *colon;
+    char *slash;
+    int serverLength;
+    unsigned int port;
+    char *portStart;
+    int portLength;
     char portText[6];
     if (!strstr(source, svoHttpDoubleSlash)) __SVO_Assert_Handler(svoHttpUtilsSource, 0x100);
-    char *server = strstr(source, svoHttpDoubleSlash) + 2;
-    int schemeLength = strstr(source, svoHttpColon) - source;
+    server = strstr(source, svoHttpDoubleSlash) + 2;
+    schemeLength = strstr(source, svoHttpColon) - source;
     if (schemeLength > 14) __SVO_Assert_Handler(svoHttpUtilsSource, 0x105);
     memcpy(path->m_scheme, source, 15);
     path->m_scheme[schemeLength] = 0;
-    char *colon = strstr(server, svoHttpColon);
-    char *slash = strstr(server, svoHttpSlash);
-    int serverLength = colon ? colon - server : slash - server;
-    int portLength = slash - colon;
+    colon = strstr(server, svoHttpColon);
+    slash = strstr(server, svoHttpSlash);
+    serverLength = colon ? colon - server : slash - server;
+    portLength = slash - colon;
     strncpy(path->m_server, server, serverLength);
-    char *portStart = server + serverLength + 1;
     path->m_server[serverLength] = 0;
-    unsigned int port = 80;
+    port = 80;
     if (colon) {
+        portStart = server + serverLength + 1;
         if (portLength > 6) __SVO_Assert_Handler(svoHttpUtilsSource, 0x11E);
         memset(portText, 0, sizeof(portText));
         // The retail length includes the slash after the port digits.

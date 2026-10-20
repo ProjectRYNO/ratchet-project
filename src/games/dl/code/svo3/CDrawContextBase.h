@@ -20,17 +20,17 @@ typedef struct { // 0x9C (vtable prefix)
     /* 0x28 */ void (*DrawCheckbox)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, unsigned int, int, int, char *, int, int, int, char *);
     /* 0x2C */ void (*DrawTicker)(CDrawContextBase *, unsigned int, float, float, float, float, int, char *, int, unsigned int, int, char *);
     /* 0x30 */ void (*DrawGridBorder)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, char *);
-    /* 0x34 */ void (*DrawGridHeader)(CDrawContextBase *, unsigned int, float, float, float, float, float, float, float, unsigned int, unsigned int, char *, int);
+    /* 0x34 */ void (*DrawGridHeader)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, char *, int, int, float, float);
     /* 0x38 */ void (*DrawGridRow)(CDrawContextBase *, unsigned int, float, float, float, float, float, int, int, char *);
     /* 0x3C */ void (*DrawGridCell)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, unsigned int, int, char *, int, int, int, char *);
-    /* 0x40 */ void (*DrawGridScrollbars)(CDrawContextBase *, unsigned int, char *, float, float, float, float, float, float, float, float, float, float, float, float, float);
+    /* 0x40 */ void (*DrawGridScrollbars)(CDrawContextBase *, unsigned int, float, float, float, float, float, float, float, float, float, float, float, float, float, char *);
     /* 0x44 */ void (*DrawRectangle)(CDrawContextBase *draw, unsigned int id,
                                        float x, float y, float width, float height,
                                        unsigned int lineColor, unsigned int fillColor,
-                                       int lineThickness, int cornerRadius, float z,
-                                       unsigned int *gradient, char *tagClass);
+                                       int lineThickness, int cornerRadius, unsigned int *gradient,
+                                       float z, char *tagClass);
     /* 0x48 */ void (*DrawTextArea)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, unsigned int, int, float, float, float, char *, int, int);
-    /* 0x4C */ void (*DrawListBox)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, float, float, int, char *);
+    /* 0x4C */ void (*DrawListBox)(CDrawContextBase *, unsigned int, float, float, float, float, float, unsigned int, unsigned int, int, float, float, char *);
     /* 0x50 */ void *unknown50;
     /* 0x54 */ void (*StoreDownloadedImage)(CDrawContextBase *, int, char *, unsigned short, unsigned short);
     /* 0x58 */ void (*DrawPopupBackground)(CDrawContextBase *draw, float x, float y,

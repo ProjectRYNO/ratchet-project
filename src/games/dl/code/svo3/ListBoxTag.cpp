@@ -231,7 +231,7 @@ extern "C" SECTION(Draw___dupe25) void Draw___dupe25(ListBoxTagState *tag)
     int active = tag->base.vtable->IsSelected(&tag->base);
     draw->vtable->DrawListBox(draw, tag->base.m_tagid, tag->base.m_x, tag->base.m_y,
         tag->base.m_z, tag->base.m_width, tag->base.m_height, tag->base.m_lineColor,
-        tag->base.m_fillColor, tag->m_scrollBarPercentage, fraction, active, tag->base.m_tagClass);
+        tag->base.m_fillColor, active, tag->m_scrollBarPercentage, fraction, tag->base.m_tagClass);
     float y = tag->base.m_y;
     for (int i = tag->m_topVisibleIndex; i < tag->m_topVisibleIndex + count; ++i) {
         strlen(tag->m_items[i]->displayStr);

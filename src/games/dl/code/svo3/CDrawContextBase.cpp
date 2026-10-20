@@ -77,18 +77,18 @@ extern "C" SECTION(DrawDownloadThrobber) void DrawDownloadThrobber(CDrawContextB
     else if (svoDrawThrobberCount > mid && svoDrawThrobberCount < hi) strcat(text, svoDrawTwoDots);
     else if (svoDrawThrobberCount > hi && svoDrawThrobberCount < top) strcat(text, svoDrawThreeDots);
     else if (svoDrawThrobberCount > top) svoDrawThrobberCount = 0;
-    draw->vtable->DrawRectangle(draw, id, x, y, width, height, 0xFF000000, 0xFF0000FF, 2, 0, 1000000.0f, 0, svoDrawThrobberClass);
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, 0xFF000000, 0xFF0000FF, 2, 0, 0, 1000000.0f, svoDrawThrobberClass);
     draw->vtable->SVDrawText(draw, id, x + 5.0f, y + 5.0f, 0xFFBBBBBB, text, 14, 12, 0, svoDrawThrobberClass);
 }
 
 extern "C" SECTION(DrawGenericListboxFrame) void DrawGenericListboxFrame(CDrawContextBase *draw, unsigned int id, float x, float y, float width, float height, unsigned int lineColor, unsigned int fillColor, int maxVisibleItems, float scrollBarPercentage, char *tagClass)
 {
-    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 0, 100000.0f, 0);
 }
 
 extern "C" SECTION(DrawGridBorder) void DrawGridBorder(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, char *tagClass)
 {
-    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, z, 0, tagClass);
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 0, z, tagClass);
 }
 
 extern "C" SECTION(DrawGridCell) void DrawGridCell(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, unsigned int textColor, int selected, char *text, int textLen, int fontSize, int alignment, char *tagClass)
@@ -99,37 +99,37 @@ extern "C" SECTION(DrawGridCell) void DrawGridCell(CDrawContextBase *draw, unsig
 extern "C" SECTION(DrawGridHeader) void DrawGridHeader(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, char *tagClass, int selected, int selectedCol, float selectedX, float selectedWidth)
 {
     float h = height - 1.0f;
-    draw->vtable->DrawRectangle(draw, id, x, y, width, h, lineColor, fillColor, 1, 0, 100000.0f, 0, 0);
-    if (selected) draw->vtable->DrawRectangle(draw, id, selectedX, y, selectedWidth, h, fillColor, lineColor, 1, 0, z + 1.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, x, y, width, h, lineColor, fillColor, 1, 0, 0, 100000.0f, 0);
+    if (selected) draw->vtable->DrawRectangle(draw, id, selectedX, y, selectedWidth, h, fillColor, lineColor, 1, 0, 0, z + 1.0f, 0);
 }
 
 extern "C" SECTION(DrawGridScrollbars) void DrawGridScrollbars(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, float vw, float vh, float vp, float vs, float hw, float hh, float hp, float hs, char *tagClass)
 {
     float right = x + width + 1.0f;
     if (vp >= 0.0f) {
-        draw->vtable->DrawRectangle(draw, id, right, y, vw, vh, 0xFF0000FF, 0xFFFFFFFF, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, right, y, vw, vh, 0xFF0000FF, 0xFFFFFFFF, 1, 0, 0, 100000.0f, 0);
         unsigned int up = 0xFF7F7F7F;
         unsigned int down = 0xFF7F7F7F;
         if (vs < 1.0f) {
             if (vp > 0.0f) up = 0xFFFF0000;
             if (vp + vs < 0.98999995f) down = 0xFFFF0000;
         }
-        draw->vtable->DrawRectangle(draw, id, right, y, vw, vw, 0xFFFFFFFF, up, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, right, y, vw, vw, 0xFFFFFFFF, up, 1, 0, 0, 100000.0f, 0);
         float by = y + vh - vw;
-        draw->vtable->DrawRectangle(draw, id, right, by, vw, vw, 0xFFFFFFFF, down, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, right, by, vw, vw, 0xFFFFFFFF, down, 1, 0, 0, 100000.0f, 0);
     }
     float bottom = y + height + 1.0f;
     if (hp >= 0.0f) {
-        draw->vtable->DrawRectangle(draw, id, x, bottom, hw, hh, 0xFF0000FF, 0xFFFFFFFF, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, x, bottom, hw, hh, 0xFF0000FF, 0xFFFFFFFF, 1, 0, 0, 100000.0f, 0);
         unsigned int left = 0xFF7F7F7F;
         unsigned int rightColor = 0xFF7F7F7F;
         if (hs < 1.0f) {
             if (hp > 0.0f) left = 0xFFFF0000;
             if (hp + hs < 0.98999995f) rightColor = 0xFFFF0000;
         }
-        draw->vtable->DrawRectangle(draw, id, x, bottom, hh, hh, 0xFFFFFFFF, left, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, x, bottom, hh, hh, 0xFFFFFFFF, left, 1, 0, 0, 100000.0f, 0);
         float bx = x + hw - hh;
-        draw->vtable->DrawRectangle(draw, id, bx, bottom, hh, hh, 0xFFFFFFFF, rightColor, 1, 0, 100000.0f, 0, 0);
+        draw->vtable->DrawRectangle(draw, id, bx, bottom, hh, hh, 0xFFFFFFFF, rightColor, 1, 0, 0, 100000.0f, 0);
     }
 }
 
@@ -140,7 +140,7 @@ extern "C" SECTION(DrawImage) void DrawImage(CDrawContextBase *draw, unsigned in
     float fw = (float)w;
     float fh = (float)h;
     float depth = 100000.0f;
-    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, depth, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, 0, depth, 0);
     draw->vtable->DrawLine(draw, id, fx, fy, fx + fw, fy + fh, depth, 2.0f, 0xFFFFFF00, svoDrawImageLineClass);
     char text[24];
     memcpy(text, svoDrawImageText, 24);
@@ -157,22 +157,22 @@ extern "C" SECTION(DrawListBox) void DrawListBox(CDrawContextBase *draw, unsigne
     float sb_width = 15.0f;
     unsigned int up_box_color;
     unsigned int down_box_color;
-    draw->vtable->DrawRectangle(draw, 0, x, y, width, height, lineColor, fillColor, 2, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, 0, x, y, width, height, lineColor, fillColor, 2, 0, 0, 100000.0f, 0);
     draw->vtable->DrawLine(draw, 0, x, y, x + width, y + height, 10000.0f, 2.0f, lineColor, tagClass);
-    draw->vtable->DrawRectangle(draw, 0, x + width, y, sb_width, height, lineColor, fillColor, 2, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, 0, x + width, y, sb_width, height, lineColor, fillColor, 2, 0, 0, 100000.0f, 0);
     up_box_color = 0xFF7F7F7F;
     down_box_color = 0xFF7F7F7F;
     if (sizePercent < 1.0f) {
         if (percent > 0.0f) up_box_color = 0xFFFF0000;
         if (percent + sizePercent < 0.98999995f) down_box_color = 0xFFFF0000;
     }
-    draw->vtable->DrawRectangle(draw, id, x + width, y, sb_width, sb_width, 0xFFFFFFFF, up_box_color, 1, 0, 100000.0f, 0, 0);
-    draw->vtable->DrawRectangle(draw, id, x + width, y + height - sb_width, sb_width, sb_width, 0xFFFFFFFF, down_box_color, 1, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, x + width, y, sb_width, sb_width, 0xFFFFFFFF, up_box_color, 1, 0, 0, 100000.0f, 0);
+    draw->vtable->DrawRectangle(draw, id, x + width, y + height - sb_width, sb_width, sb_width, 0xFFFFFFFF, down_box_color, 1, 0, 0, 100000.0f, 0);
 }
 
 extern "C" SECTION(DrawPopupBackground) void DrawPopupBackground(CDrawContextBase *draw, float x, float y, float width, float height, unsigned int lineColor, unsigned int fillColor, char *tagClass)
 {
-    draw->vtable->DrawRectangle(draw, 0, x, y, width, height, lineColor, fillColor, 1, 0, 200000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, 0, x, y, width, height, lineColor, fillColor, 1, 0, 0, 200000.0f, 0);
 }
 
 extern "C" SECTION(DrawSelect) void DrawSelect(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int textColor, unsigned int lineColor, unsigned int fillColor, int selected, char *text, int textLen, int fontSize, int alignment, char *tagClass)
@@ -186,7 +186,7 @@ extern "C" SECTION(DrawStaticImage) void DrawStaticImage(CDrawContextBase *draw,
     float fy = (float)y;
     float fw = (float)w;
     float fh = (float)h;
-    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, fx, fy, fw, fh, 0xFFFFFF00, 0xFF000000, 1, 0, 0, 100000.0f, 0);
     draw->vtable->DrawLine(draw, id, fx, fy, fx + fw, fy + fh, 100000.0f, 2.0f, 0xFFFFFF00, svoDrawImageLineClass);
     char text[64];
     memset(text, 0, sizeof(text));
@@ -196,7 +196,7 @@ extern "C" SECTION(DrawStaticImage) void DrawStaticImage(CDrawContextBase *draw,
 
 extern "C" SECTION(DrawTextArea) void DrawTextArea(CDrawContextBase *draw, unsigned int id, float x, float y, float z, float width, float height, unsigned int lineColor, unsigned int fillColor, unsigned int textColor, int selected, float scrollbarWidth, float scrollbarHeight, float scrollBarPercentage, char *tagClass, int canScrollUp, int canScrollDown)
 {
-    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 100000.0f, 0, 0);
+    draw->vtable->DrawRectangle(draw, id, x, y, width, height, lineColor, fillColor, 1, 0, 0, 100000.0f, 0);
 }
 
 extern "C" SECTION(drawTicker) void drawTicker(CDrawContextBase *draw, unsigned int id, float x, float y, float width, float height, int fontSize, char *text, int textLen, unsigned int textColor, int type, char *tagClass)

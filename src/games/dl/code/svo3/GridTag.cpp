@@ -462,9 +462,9 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     if (tag->m_headerSelected) visiblySelected = tag->m_bIsClickedIn != 0;
     draw->vtable->DrawGridHeader(draw, tag->m_header_tagID, header_x, header_y,
                                  tag->base.m_z, tag->base.m_width, tag->m_headerHeight,
-                                 tag->m_columns[tag->m_currCellColNum].col_x + (float)tag->m_borderWidth,
-                                 tag->m_columns[tag->m_currCellColNum].width,
-                                 tag->m_headerLineColor, tag->m_headerFillColor, tag->m_headerClass, visiblySelected);
+                                 tag->m_headerLineColor, tag->m_headerFillColor, tag->m_headerClass, visiblySelected,
+                                 tag->m_currCellColNum, tag->m_columns[tag->m_currCellColNum].col_x + (float)tag->m_borderWidth,
+                                 tag->m_columns[tag->m_currCellColNum].width);
     for (c = 0; c < tag->m_numVisColumns; c++) {
         col_num = tag->m_columnIndexes[c];
         if (tag->m_columns[col_num].colName) {
@@ -591,10 +591,10 @@ extern "C" SECTION(Draw___dupe23) void Draw___dupe23(GridTagState *tag)
     if (!tag->m_scrollbar_class) tag->m_scrollbar_class = tag->base.m_tagClass;
     if (tag->m_myRecordRow)
         _grid_height += tag->m_spaceBetweenLastRowAndMyRecord + tag->m_myRecordRow->row.height;
-    draw->vtable->DrawGridScrollbars(draw, tag->base.m_tagid, tag->m_scrollbar_class,
+    draw->vtable->DrawGridScrollbars(draw, tag->base.m_tagid,
                                      tag->base.m_x, tag->base.m_y, tag->base.m_z, _grid_width, _grid_height,
                                      tag->m_vert_sb_width, _grid_height, v_sb_percentage, v_sb_size_percentage,
-                                     _grid_width, tag->m_horz_sb_height, h_sb_percentage, h_sb_size_percentage);
+                                     _grid_width, tag->m_horz_sb_height, h_sb_percentage, h_sb_size_percentage, tag->m_scrollbar_class);
 }
 
 extern "C" SECTION(InitGridCells) int InitGridCells(GridTagState *tag)

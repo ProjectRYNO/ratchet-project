@@ -1,6 +1,6 @@
 # SVO3 current handoff, 2026-10-19
 
-**934 functions: 911 byte-exact in the linked ELF, 23 compiled C functions that fit their slots
+**934 functions: 916 byte-exact in the linked ELF, 18 compiled C functions that fit their slots
 but are not exact; all read-only data slots (SVO3, iksemel, libm: 34) match.** iksemel 40/40 exact.
 
 Changes this push (Makefile and DECISIONS D11 are committed; source and tool changes below are not):
@@ -74,6 +74,15 @@ with no regressions. It only changes the `.mdebug` section, which the linker scr
 (`/DISCARD/ : { *(*) }`); loaded bytes and audits are unaffected.
 
 ## 2.96 source-shape patterns established (in addition to the earlier list)
+
+- **Callee prototypes must match the real implementation.** On the EE EABI, integer and float
+  arguments use separate register banks, so a prototype's parameter order between the two kinds
+  does not change registers but does change the order the argument moves are emitted. Three
+  `CDrawContextBase` vtable prototypes had drifted from their implementations (2026-10-19):
+  `DrawRectangle` (gradient pointer precedes `z`), `DrawGridScrollbars` (`tagClass` last),
+  `DrawListBox` (`selected` before the two floats). Fixing them made `DrawGridScrollbars`,
+  SVDownloadManager `draw___dupe2` and GridTag `Draw___dupe23` exact. `DrawGridHeader` was missing
+  a parameter entirely (below). Check prototypes before chasing argument-order residuals.
 
 - **C++ reference locals** (`int &p_x = tag->m_x;` declared just before use, calls passing
   `&p_x`) reproduce retail's precomputed field addresses held in saved registers and stack slots;
@@ -167,6 +176,10 @@ with no regressions. It only changes the `.mdebug` section, which the linker scr
 
 ## Behaviour corrections made while matching (review)
 
+- `CDrawContextBase.h` `DrawGridHeader` prototype had 13 parameters; the implementation takes 14
+  (`..., tagClass, selected, selectedCol, selectedX, selectedWidth`). GridTag `Draw___dupe23` never
+  passed `selectedCol`, so the callee read whatever was in `$10`. It now passes
+  `tag->m_currCellColNum`, as retail does.
 - SVBrowser `rt_comm_linkaddress_tostr` declaration: the earlier long→int conversion had made
   the 8-byte `RTLinkAddress` argument 32-bit (only half the address was passed). It now takes
   `RTLinkAddress` by value, as retail does; `RTCommInit` uses the prototype's 16-byte buffer.

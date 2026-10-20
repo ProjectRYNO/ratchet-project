@@ -249,7 +249,7 @@ extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manag
             back->vtable->SetVisible(back, 0);
             outlineColor = back->m_lineColor;
             fillColor = back->m_fillColor;
-            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)w, (float)h, outlineColor, outlineColor, 1, 0, 100000.0f, 0, svoDownloadOutlineRectClass);
+            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)w, (float)h, outlineColor, outlineColor, 1, 0, 0, 100000.0f, svoDownloadOutlineRectClass);
             if (pct) {
                 tagID = pct->vtable->GetTagID(pct);
                 x = (int)pct->m_x;
@@ -261,7 +261,7 @@ extern "C" SECTION(draw___dupe2) void draw___dupe2(SVDownloadManagerState *manag
                 fillColor = pct->m_fillColor;
             }
             progW = (int)((float)w * percentComplete);
-            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)progW, (float)h, outlineColor, fillColor, 1, 0, 100000.0f, 0, svoDownloadFillRectClass);
+            draw->vtable->DrawRectangle(draw, tagID, (float)x, (float)y, (float)progW, (float)h, outlineColor, fillColor, 1, 0, 0, 100000.0f, svoDownloadFillRectClass);
         }
         memset(dstr, 0, 128);
         if (text) {
