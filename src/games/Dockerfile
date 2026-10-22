@@ -21,4 +21,8 @@ ENV PATH="/opt/ratchet-ps2:${PATH}"
 WORKDIR /ProjectRYNO
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
+COPY dl/Makefile /ProjectRYNO/dl/Makefile
+COPY tools/ee296_statshim.c /ProjectRYNO/tools/ee296_statshim.c
+RUN make -C /ProjectRYNO/dl ps2dev ee-gcc296 ee-gcc29 ee-gcc29-01 ee-gcc-sn136 \
+    && rm -rf /ProjectRYNO/dl /ProjectRYNO/tools /tmp/*
 CMD ["/bin/bash"]

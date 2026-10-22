@@ -18,70 +18,70 @@
 
 #define RT_INVALID_PARAM 2
 
-int MEDIUS_MUTEX_SECTION(rt_mutex_create) rt_mutex_create(RT_MUTEX *mutex)
+int MEDIUS_MUTEX_SECTION(rt_mutex_create) rt_mutex_create(RT_MUTEX_DATA *mutex)
 {
     int result;
 
     if (!mutex) return RT_INVALID_PARAM;
-    mutex->created = 0;
-    mutex->lockCount = 0;
-    mutex->ownerThread = 0;
+    mutex->bInitialized = 0;
+    mutex->nLockCount = 0;
+    mutex->ThreadID = 0;
     result = rt_mutex_platform_create(mutex);
     if (result) return result;
-    mutex->created = 1;
+    mutex->bInitialized = 1;
     return result;
 }
 
-int MEDIUS_MUTEX_SECTION(rt_mutex_destroy) rt_mutex_destroy(RT_MUTEX *mutex)
+int MEDIUS_MUTEX_SECTION(rt_mutex_destroy) rt_mutex_destroy(RT_MUTEX_DATA *mutex)
 {
     int result;
 
     if (!mutex) return RT_INVALID_PARAM;
-    if (mutex->created != 1) return RT_INVALID_PARAM;
+    if (mutex->bInitialized != 1) return RT_INVALID_PARAM;
     result = rt_mutex_platform_destroy(mutex);
-    if (!result) mutex->created = 0;
+    if (!result) mutex->bInitialized = 0;
     return result;
 }
 
-int MEDIUS_MUTEX_SECTION(rt_mutex_lock) rt_mutex_lock(RT_MUTEX *mutex, int *count)
+int MEDIUS_MUTEX_SECTION(rt_mutex_lock) rt_mutex_lock(RT_MUTEX_DATA *mutex, int *count)
 {
     int result;
     int thread;
 
     if (!mutex) return RT_INVALID_PARAM;
-    if (mutex->created != 1) return RT_INVALID_PARAM;
+    if (mutex->bInitialized != 1) return RT_INVALID_PARAM;
     result = rt_mutex_platform_get_thread_id(&thread);
     if (result) return result;
-    if (mutex->lockCount && thread == mutex->ownerThread) {
-        mutex->lockCount++;
+    if (mutex->nLockCount && thread == mutex->ThreadID) {
+        mutex->nLockCount++;
     } else {
         result = rt_mutex_platform_lock(mutex);
         if (result) return result;
-        result = rt_mutex_platform_get_thread_id(&mutex->ownerThread);
+        result = rt_mutex_platform_get_thread_id(&mutex->ThreadID);
         if (result) return result;
-        mutex->lockCount++;
+        mutex->nLockCount++;
     }
-    if (count) *count = mutex->lockCount;
+    if (count) *count = mutex->nLockCount;
     return 0;
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_mutex", func_01EA9ED0);
 
-int MEDIUS_MUTEX_SECTION(rt_mutex_unlock) rt_mutex_unlock(RT_MUTEX *mutex, int *count)
+int MEDIUS_MUTEX_SECTION(rt_mutex_unlock) rt_mutex_unlock(RT_MUTEX_DATA *mutex, int *count)
 {
     int result;
     int thread;
 
     if (!mutex) return RT_INVALID_PARAM;
-    if (mutex->created != 1) return RT_INVALID_PARAM;
+    if (mutex->bInitialized != 1) return RT_INVALID_PARAM;
     result = rt_mutex_platform_get_thread_id(&thread);
     if (result) return result;
-    if (thread != mutex->ownerThread) return RT_MUTEX_NOT_OWNED;
-    if (!mutex->lockCount) return RT_MUTEX_NOT_LOCKED;
-    mutex->lockCount--;
-    if (count) *count = mutex->lockCount;
-    if (!mutex->lockCount) {
-        mutex->ownerThread = 0;
+    if (thread != mutex->ThreadID) return RT_MUTEX_NOT_OWNED;
+    if (!mutex->nLockCount) return RT_MUTEX_NOT_LOCKED;
+    mutex->nLockCount--;
+    if (count) *count = mutex->nLockCount;
+    if (!mutex->nLockCount) {
+        mutex->ThreadID = 0;
         result = rt_mutex_platform_unlock(mutex);
         if (result) return result;
     }

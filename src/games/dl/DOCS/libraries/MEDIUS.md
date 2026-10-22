@@ -1,5 +1,203 @@
 # Deadlocked Medius library
 
+## Pinned for later
+
+These real functions are set aside and stay as retained assembly (`INCLUDE_ASM`), so
+every module is still byte-identical to retail. Numbers are differing words against
+retail for the best candidate so far. Pick them up from here; the shapes already tried
+are in the linked notes. One-instruction padding fragments (`func_XXXXXXXX`) are not
+real functions and are not listed.
+
+| Module | Function | Best | Blocker / notes |
+| --- | --- | --- | --- |
+| rt_circ_buf | free, use, store, copy, normalize_with_buf, get_avail_nowrap, get_start_used_ptr, get_start_avail_ptr, is_wrapped | 2 to 28 | v0-compare pattern ([MEDIUS_OPEN_PATTERN.md](MEDIUS_OPEN_PATTERN.md)); try the positive-test shape that solved `rt_token_start` |
+| rt_pack | rt_pack_cstring | 13 | register allocation in the rollback tail (batch 3) |
+| rt_timebase | rt_timebase_update_globaltime | 1 | retail copies `roundTrip` (`move v1,a0`) (batch 4) |
+| rt_list_buf | pool_alloc, pool_free | ~58, 13 | scan-loop peeling; `mflo` scheduled before the branch (batch 5) |
+| rt_time | delay | 12 | v0-compare pattern |
+| rt_time | timestamp_to_msecs, timestamp_to_usecs | 26, 13 | result kept in `v0` across the arithmetic (batch 6) |
+| rt_time | calc_diff | 47 | first draft only, not worked on |
+| ps2/rt_time_platform | get_date_time | 1 | `bnez` vs `bnezl` delay slot (batch 7) |
+| ps2/rt_time_platform | update_base | 31 | empty delay slot after the unsigned-to-float conversion (batch 7) |
+| ps2/rt_time_platform | timer_getcount | - | COP0 `mfc0 Count`; inline asm, keep as assembly unless asm-in-C is wanted |
+| rt_token | create_table, release_ownership, grant_ownership, update_ownership | 8, 22, 31, 51 | v0-compare pattern; positive-test shape helps only partly |
+| rt_token | list_check/grant/release/update_ownership, build_token_list_msg | - | not attempted |
+| ps2/rt_mtrandgen_platform | ScrambleSeed, setNewSeed_platform | - | not attempted: COP0 Count/Random inline asm, RCNT hardware counters |
+
+PS2 declarations: Medius objects compile with the open-source PS2SDK headers
+(`PS2SDK_FLAGS` in the Makefile: `-D_EE`, `/opt/ps2dev/ps2sdk/{ee,common}/include`, plus the
+ps2dev gcc include directory for `stddef.h`/`stdarg.h`, which the 2.96 package lacks).
+Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
+`GetThreadId`; `libcdvd-common.h`: `sceCdCLOCK`). Sony SDK calls that PS2SDK lacks
+(`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
+Add new ones there rather than in individual files.
+
+## rt_util batch 7 (2026-10-22)
+
+**94 Medius functions now compile to exact retail bytes** (69 after batch 6). Four new
+modules are byte-identical to retail including retained assembly. All shapes started
+from Ghidra's debug-info decompile.
+
+Medius inventory: 94 of 1,462 INCLUDE_ASM entries replaced (6.43%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `rt_mtrandgen.c` | seedMT, seedMTUsingArray, reloadMT, randomMT, setNewSeed | fragment `func_01EA9BC0` |
+| `ps2/rt_mutex_platform.c` | create, destroy, lock, unlock, get_thread_id | fragment `func_01EAA058` |
+| `ps2/rt_time_platform.c` | get_time_stamp, update_date_time, get_gmtime, fast_elapsed_msecs, init | get_date_time, timer_getcount (COP0 `mfc0 Count`), update_base; fragment `func_01EABA68` |
+| `rt_token.c` | start, shutdown, is_valid, free_owner, check_ownership, expand_table, destroy_table, add_ownership, remove_ownership, build_token_msg | grant/release/update_ownership, the four `list_*` functions, create_table, build_token_list_msg; fragments `func_01EABFE0`, `func_01EACE98` |
+
+Not attempted: `ps2/rt_mtrandgen_platform.c` (`ScrambleSeed` reads COP0 Count/Random
+with inline asm; `setNewSeed_platform` reads the RCNT hardware counters).
+
+Types and globals:
+
+- `rt_mtrandgen` is Shawn Cokus's `cokus.c` Mersenne Twister with an index instead of a
+  pointer and a Medius output mixer. `RT_MT {state[625], left}` sits at `gMT`
+  (0x001681B0, debug-info label). The mixer words are `rtMtMixA` (0x00168B78) and
+  `rtMtMixB` (0x00168B7C), plus `mediusMtLastOutput` (0x00168B80, named `y` in the debug
+  information; renamed so a one-letter global cannot clash in the whole-game link).
+- `rt_mutex.h` now uses the debug-info `RT_MUTEX_DATA {bInitialized, nLockCount,
+  ThreadID, PlatformVal, pPlatformData}` (0x14), replacing the batch 2 `RT_MUTEX`
+  guess. `rt_mutex.c` still matches. RT_MUTEX_ERROR is 900. The kernel calls
+  come from PS2SDK's `kernel.h` (`ee_sema_t` has the same layout as Sony's `SemaParam`);
+  see "PS2 declarations" under "Pinned for later".
+- `rt_time.h` gains the debug-info `RT_TIME_DATE` (0x24) and `RT_TIME_PLATFORM_BASE
+  {Secs, Ticks, USecs, LastCount}`, a COP0 Count time base at 294,912,000 ticks per
+  second. New globals: `rtTimePlatformInitialized` (0x00168BA1), `rtTimePlatformBase`
+  (0x001B23E8), `rtTimePlatformDate` (0x001B23F8) and `rtTimeCdromDevice`
+  (0x001965C8, `"cdrom0:"`). The string stays in retail rodata and the C code
+  references it by symbol.
+- `rt_token.h` has the debug-info `RT_TOKEN_SYSTEM_INFO {num_tokens, max_tokens,
+  p_token_info_array}` and `RT_TOKEN_DATA {ownerID, state}`, plus RT_TOKEN_* results
+  (56001..56007).
+- All new globals are in MEDIUS_GLOBALS.csv and checked by `check_medius.py`.
+
+Source-shape findings:
+
+- **Prototypes matter for register choice.** `rt_token_build_token_msg` was 1 word off
+  until `rt_msg_set_u2byte` was declared `int` (its real return type) instead of `void`.
+- The store-order rotation rule held again: `SemaParam.maxCount` before `initCount`,
+  `RT_TIME_DATE` copy-out with `MSecsWhenAquired` last, `destroy_table` clearing
+  `p_token_info_array, max_tokens, num_tokens`, and the `rtMtMixB`/`rtMtMixA` updates.
+- `rt_token_remove_ownership` indexes `pTokenSystem->p_token_info_array[tokenID]` in
+  place for every access. A local `RT_TOKEN_DATA *` (via `&array[tokenID]`,
+  `array + tokenID`, a `char *` offset, an `int` index or a copied base pointer)
+  swaps the `addu` operands; only hand-written `(tokenID << 2) + base` arithmetic also
+  matches.
+- `rt_token_is_valid` is `if (tokenID >= 0xFFFF) return 0; return 1;` (`sltiu`, not `xori`).
+- `rt_token_create_table` rounds with `tokenCount / 16 * 16 + 16` (srl/sll).
+
+Open shapes:
+
+- `rt_time_platform_get_date_time`: 1 word. Retail fills the first-time check's delay
+  slot with a plain `bnez`, and we get `bnezl`. Tried `== 0`, a result variable,
+  `!= 0` and braces.
+- `rt_time_platform_update_base` (31 words): the unsigned-to-float conversion leaves
+  retail's `b` delay slot empty, and ours fills it with `cvt.s.w`. Tried a float
+  temporary, implicit and explicit casts, and the constant as `1e6 / ticks`.
+- `create_table` (5), `release_ownership` (22), `grant_ownership` (31) and
+  `update_ownership` (51) are the rt_circ_buf v0-compare pattern (MEDIUS_OPEN_PATTERN.md).
+  `rt_token_start` matched with a positive test and the failure return last; the same
+  shape does not finish the others. Declaring the result as an `RT_RESULT` enum does not
+  change it.
+
+## rt_util batch 6 (2026-10-20)
+
+**69 Medius functions now compile to exact retail bytes** (58 after batch 5).
+`rt_time.c` (0x01EAB210..0x01EAB6A8) is byte-identical to retail including retained
+assembly, with 11 of its 15 real functions compiled. Shapes were taken from Ghidra's
+debug-info decompile (see batch 5).
+
+Medius inventory: 69 of 1,462 INCLUDE_ASM entries replaced (4.72%).
+
+| Compiled (exact) | Retained assembly |
+| --- | --- |
+| get_local, get_msecs, start, get_time_stamp, elapsed, elapsed_msecs, elapsed_usecs, initialize, get_base_diff, elapsed_timestamp, get_gmtime | delay, calc_diff, timestamp_to_msecs, timestamp_to_usecs; fragments `func_01EAB2B8`, `func_01EAB418`, `func_01EAB670` |
+
+New globals (in MEDIUS_GLOBALS.csv, checked by `check_medius.py`): `rtTimeInitialized`
+(0x00168BA0, byte) and `rtTimeBaseStamp` (0x001B23E0, RT_TIME_STAMP). `rt_time.h` now
+declares the module and RT_TIME_ERROR (1600) / RT_TIME_OVERFLOW (1601).
+
+Source-shape findings:
+
+- `elapsed_msecs`, `elapsed_usecs`, `get_base_diff` and `elapsed_timestamp` use one
+  `result` preset to RT_INVALID_PARAM with nested `if`s (`if (result == 0) result = ...`).
+  `get_msecs` uses early returns instead. `get_base_diff` tests
+  `if (rtTimeInitialized || (result = rt_time_initialize()) == 0)`.
+- `initialize` returns RT_TIME_ERROR early when already initialised.
+
+Open shapes:
+
+- `delay` (12 words) is the rt_circ_buf v0-compare pattern (MEDIUS_OPEN_PATTERN.md):
+  retail keeps the result in `v0`, loads `elapsed` into `v0` for the compare, and
+  returns a separate `0` on normal exit.
+- `timestamp_to_msecs` (26) and `timestamp_to_usecs` (13) keep the result in `v0`
+  across the arithmetic; `msecs` divides `USecs` unsigned (Ghidra's `(int)` cast is
+  wrong). `calc_diff` (47) has not been worked on yet.
+
+## rt_util batch 5 (2026-10-20)
+
+**58 Medius functions now compile to exact retail bytes** (46 after batch 4). The branch
+was rebased onto `origin/master` d1808b7 (SDK DMA/multitap, SVO3 98.1%) before this batch.
+`rt_list_buf.c` (0x01EB5FB0..0x01EB6914) is byte-identical to retail including retained
+assembly, with 12 of its 14 functions compiled.
+
+Medius inventory: 58 of 1,462 INCLUDE_ASM entries replaced (3.97%).
+
+| Compiled (exact) | Retained assembly |
+| --- | --- |
+| create_pool, destroy_pool, get_pool_used, create, destroy, clear, insert, set_new_head, remove, append_data, get_tail, resize_buffer | pool_alloc, pool_free |
+
+**The retail ELF carries debug information for Medius.** Ghidra's program
+`Retail_scus_974.65.elf.moose` has the original source path
+(`/public/work/210/rt_util/rt_list_buf.c`), struct and field names, parameter names and
+return types (`RT_RESULT`, and `void` for `destroy`/`clear`). Use it for every Medius
+module. The bridge's dynamic tools may not reach the client; the GUI's HTTP API answers
+directly, for example
+`curl "http://127.0.0.1:8089/force_decompile?program=Retail_scus_974.65.elf.moose&function=0x01eb6788"`
+and `/get_struct_layout?program=...&struct_name=RT_LIST_BUF`.
+
+`rt_list_buf.h` uses those names (all in RECOVERED_TYPES.json):
+`RT_LIST_BUF_POOL {nBufRefCnt, nBufSize, nBlkSize, nBlks, pBuf, pTbl}` (0x18),
+`RT_LIST_BUF {nBufSize, nBufUsed, pBuf (the pool), pHead}` (0x10),
+`RT_LIST_NODE {nDataSize, next}` (8-byte header, payload follows) and the scatter
+descriptor `RT_DATA_VECTOR {aData[8] RT_DATA_INFO {pData, nSize}, nTotalSize, nLength}`
+(0x48). RT_LIST_BUF_ERROR (300) is "node not in list" and RT_LIST_BUF_FULL (301) is "no
+room or no pool blocks". The pool is a block allocator: `pTbl` holds one byte per block
+after the block data, and the first block of a run stores `0x80 | runLength`.
+
+Source-shape findings:
+
+- **Allocation pointer reused as cursor.** `insert` keeps the `pool_alloc` result in
+  one `unsigned char *` and copies it to the node pointer before advancing it past the
+  header (`move s3,s2`). Using a typed node pointer from the start loses that move.
+- `create_pool` writes the block count straight into `pBufPool->nBlks` and adjusts it
+  in place (`pBufPool->nBlks -= (pBufPool->nBlks - nPoolSize % nBlockSize) / nBlockSize`). With
+  locals, the store moves into the branch delay slot.
+- `get_tail` keeps one result variable, preset to NULL, behind a combined guard.
+- Retail product order is `count * nBlkSize` and `nBlks * nBlkSize`.
+- **Duplicated tails are cross-jumped.** `remove` and `append_data` repeat the
+  `pool_free`/update/`return 0` tail in the head branch and inside the search loop; 2.96
+  merges them into one call. Writing a single shared tail (break or goto) loads the pool
+  argument after the stores and costs 9 words. `append_data` also compares
+  `*ppListNode == pPrev->next` in that operand order.
+- The four `nop`s inside the `get_tail` and `remove` loops are R5900 short-loop padding
+  from Sony `as`, not source.
+
+Open shapes:
+
+- `pool_free` (13 words): retail schedules `mflo` (quotient) before the remainder
+  `bnez` and leaves the delay slot empty. Every tried shape puts `mflo` in the delay
+  slot: early return, nested `if`, separate remainder variable, signed/char types,
+  integer pointer casts.
+- `pool_alloc` (about 60 words): retail peels the first scan iteration behind a
+  `blez nBlks` guard and hoists `pTbl`. `0x80 | i` and `found * nBlkSize` are
+  settled; `for`, `while`, `continue` and ternary scan loops all keep the jump-to-body
+  form.
+  Ghidra shows a byte-sized mark counter, and the scan index reused as the run end;
+  neither closes the gap.
+
 ## rt_util batch 4 (2026-10-19)
 
 **46 Medius functions now compile to exact retail bytes** (37 after batch 3). The branch

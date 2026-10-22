@@ -11485,32 +11485,38 @@
     ]
   },
   {
-    "name": "RT_MUTEX",
-    "size": "0x10",
+    "name": "RT_MUTEX_DATA",
+    "size": "0x14",
     "owners": [
-      "medius/rt_util/rt_mutex.c"
+      "medius/rt_util/rt_mutex.c",
+      "medius/rt_util/ps2/rt_mutex_platform.c"
     ],
     "header": "code/medius/rt_util/rt_mutex.h",
-    "evidence": "retail-instructions only (no prototype type): rt_mutex_* use 0x0 (byte), 0x4, 0x8; rt_mutex_platform_* use 0xC; size is the highest observed offset, not a verified sizeof",
+    "evidence": "names and layout from the retail ELF debug information; rt_mutex_platform_create clears pPlatformData at 0x10",
     "fields": [
       {
-        "name": "created",
+        "name": "bInitialized",
         "offset": 0,
         "bitfield": false
       },
       {
-        "name": "lockCount",
+        "name": "nLockCount",
         "offset": 4,
         "bitfield": false
       },
       {
-        "name": "ownerThread",
+        "name": "ThreadID",
         "offset": 8,
         "bitfield": false
       },
       {
-        "name": "semaphore",
+        "name": "PlatformVal",
         "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pPlatformData",
+        "offset": 16,
         "bitfield": false
       }
     ]
@@ -11599,6 +11605,301 @@
       {
         "name": "pScratchBuf",
         "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_LIST_BUF_POOL",
+    "size": "0x18",
+    "owners": [
+      "medius/rt_util/rt_list_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_list_buf.h",
+    "evidence": "names and layout from the retail ELF debug information; rt_list_buf_create_pool memsets 0x18 and places the block table after the blocks",
+    "fields": [
+      {
+        "name": "nBufRefCnt",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nBufSize",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "nBlkSize",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "nBlks",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pBuf",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pTbl",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_LIST_NODE",
+    "size": "0x8",
+    "owners": [
+      "medius/rt_util/rt_list_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_list_buf.h",
+    "evidence": "names and layout from the retail ELF debug information; payload follows the header; rt_list_buf_get_tail walks next",
+    "fields": [
+      {
+        "name": "nDataSize",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "next",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_LIST_BUF",
+    "size": "0x10",
+    "owners": [
+      "medius/rt_util/rt_list_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_list_buf.h",
+    "evidence": "names and layout from the retail ELF debug information; rt_list_buf_create memsets 0x10; pBuf is the pool",
+    "fields": [
+      {
+        "name": "nBufSize",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nBufUsed",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pBuf",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "pHead",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_DATA_INFO",
+    "size": "0x8",
+    "owners": [
+      "medius/rt_util/rt_list_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_list_buf.h",
+    "evidence": "names and layout from the retail ELF debug information; scatter entry copied by rt_list_buf_insert",
+    "fields": [
+      {
+        "name": "pData",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nSize",
+        "offset": 4,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_DATA_VECTOR",
+    "size": "0x48",
+    "owners": [
+      "medius/rt_util/rt_list_buf.c"
+    ],
+    "header": "code/medius/rt_util/rt_list_buf.h",
+    "evidence": "names and layout from the retail ELF debug information; rt_list_buf_insert reads nTotalSize at +0x40 and nLength at +0x44",
+    "fields": [
+      {
+        "name": "aData",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nTotalSize",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "nLength",
+        "offset": 68,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_MT",
+    "size": "0x9C8",
+    "owners": [
+      "medius/rt_util/rt_mtrandgen.c"
+    ],
+    "header": "code/medius/rt_util/rt_mtrandgen.h",
+    "evidence": "retail seedMT/reloadMT/randomMT address 625 state words and the index at 0x9C4 from one base (gMT); the debug information names only the gMT label",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "left",
+        "offset": 2500,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TIME_DATE",
+    "size": "0x24",
+    "owners": [
+      "medius/rt_util/ps2/rt_time_platform.c"
+    ],
+    "header": "code/medius/rt_util/rt_time.h",
+    "evidence": "names and layout from the retail ELF debug information; filled from the CD RTC by rt_time_platform_update_date_time",
+    "fields": [
+      {
+        "name": "MSec",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "Sec",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "Min",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "Hour",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "Day",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "Month",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "Year",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "WeekDay",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "MSecsWhenAquired",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TIME_PLATFORM_BASE",
+    "size": "0x10",
+    "owners": [
+      "medius/rt_util/ps2/rt_time_platform.c"
+    ],
+    "header": "code/medius/rt_util/rt_time.h",
+    "evidence": "retail rt_time_platform_init/update_base address all four words from one base (0x001B23E8); field names are ours (the debug information has no type for it)",
+    "fields": [
+      {
+        "name": "Secs",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "Ticks",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "USecs",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "LastCount",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TOKEN_DATA",
+    "size": "0x4",
+    "owners": [
+      "medius/rt_util/rt_token.c"
+    ],
+    "header": "code/medius/rt_util/rt_token.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "ownerID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 2,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RT_TOKEN_SYSTEM_INFO",
+    "size": "0xC",
+    "owners": [
+      "medius/rt_util/rt_token.c"
+    ],
+    "header": "code/medius/rt_util/rt_token.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "num_tokens",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "max_tokens",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "p_token_info_array",
+        "offset": 8,
         "bitfield": false
       }
     ]

@@ -100,6 +100,54 @@ functions:
   rt_circ_buf_get_avail: 0x01EA7248
   rt_ip_string2ip: 0x01EA9140
   rt_ip_ip2string: 0x01EA91C0
+  rt_list_buf_create_pool: 0x01EB5FB0
+  rt_list_buf_destroy_pool: 0x01EB60B8
+  rt_list_buf_get_pool_used: 0x01EB6100
+  rt_list_buf_create: 0x01EB6168
+  rt_list_buf_destroy: 0x01EB61E0
+  rt_list_buf_clear: 0x01EB6250
+  rt_list_buf_insert: 0x01EB62B8
+  rt_list_buf_set_new_head: 0x01EB6408
+  rt_list_buf_remove: 0x01EB6428
+  rt_list_buf_append_data: 0x01EB6510
+  rt_list_buf_get_tail: 0x01EB66E8
+  rt_list_buf_resize_buffer: 0x01EB6748
+  rt_time_get_local: 0x01EAB210
+  rt_time_get_msecs: 0x01EAB228
+  rt_time_start: 0x01EAB270
+  rt_time_get_time_stamp: 0x01EAB288
+  rt_time_elapsed: 0x01EAB2A0
+  rt_time_elapsed_msecs: 0x01EAB2C0
+  rt_time_elapsed_usecs: 0x01EAB310
+  rt_time_initialize: 0x01EAB3C0
+  rt_time_get_base_diff: 0x01EAB5B8
+  rt_time_elapsed_timestamp: 0x01EAB610
+  rt_time_get_gmtime: 0x01EAB690
+  seedMT: 0x01EA9988
+  seedMTUsingArray: 0x01EA99D8
+  reloadMT: 0x01EA9A48
+  randomMT: 0x01EA9BC8
+  setNewSeed: 0x01EA9C80
+  rt_mutex_platform_create: 0x01EA9F90
+  rt_mutex_platform_destroy: 0x01EA9FE8
+  rt_mutex_platform_lock: 0x01EAA020
+  rt_mutex_platform_unlock: 0x01EAA060
+  rt_mutex_platform_get_thread_id: 0x01EAA098
+  rt_time_platform_get_time_stamp: 0x01EAB6A8
+  rt_time_platform_update_date_time: 0x01EAB700
+  rt_time_platform_get_gmtime: 0x01EAB860
+  rt_time_platform_fast_elapsed_msecs: 0x01EABA70
+  rt_time_platform_init: 0x01EABA88
+  rt_token_start: 0x01EABF38
+  rt_token_shutdown: 0x01EABF90
+  rt_token_is_valid: 0x01EABFD0
+  rt_token_free_owner: 0x01EABFF8
+  rt_token_check_ownership: 0x01EAC0A0
+  rt_token_expand_table: 0x01EACA50
+  rt_token_destroy_table: 0x01EACB10
+  rt_token_add_ownership: 0x01EACB58
+  rt_token_remove_ownership: 0x01EACB98
+  rt_token_build_token_msg: 0x01EACBF0
   DefaultInit___dupe3: 0x01EF3780
   FreeContexts: 0x01EF3CF0
   GetDimensions: 0x01EF3C2C
@@ -3008,6 +3056,104 @@ objects:
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_callbacks, start: 0x01EA9768, end: 0x01EA9780}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_register_another_callback, start: 0x01EA9780, end: 0x01EA9790}
       - {object: medius/rt_util/rt_memory, section: .medius_memory_rt_memory_get_aligned_address, start: 0x01EA9790, end: 0x01EA97D8}
+  medius/rt_util/rt_list_buf:
+    text_start: 0x01EB5FB0
+    text_end: 0x01EB6914
+    slots:
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_create_pool, start: 0x01EB5FB0, end: 0x01EB60B8}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_destroy_pool, start: 0x01EB60B8, end: 0x01EB6100}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_get_pool_used, start: 0x01EB6100, end: 0x01EB6168}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_create, start: 0x01EB6168, end: 0x01EB61E0}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_destroy, start: 0x01EB61E0, end: 0x01EB6250}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_clear, start: 0x01EB6250, end: 0x01EB62B8}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_insert, start: 0x01EB62B8, end: 0x01EB6408}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_set_new_head, start: 0x01EB6408, end: 0x01EB6428}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_remove, start: 0x01EB6428, end: 0x01EB6510}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_append_data, start: 0x01EB6510, end: 0x01EB66E8}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_get_tail, start: 0x01EB66E8, end: 0x01EB6748}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_rt_list_buf_resize_buffer, start: 0x01EB6748, end: 0x01EB6788}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_pool_alloc, start: 0x01EB6788, end: 0x01EB6890}
+      - {object: medius/rt_util/rt_list_buf, section: .medius_list_buf_pool_free, start: 0x01EB6890, end: 0x01EB6914}
+  medius/rt_util/rt_time:
+    text_start: 0x01EAB210
+    text_end: 0x01EAB6A8
+    slots:
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_get_local, start: 0x01EAB210, end: 0x01EAB228}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_get_msecs, start: 0x01EAB228, end: 0x01EAB270}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_start, start: 0x01EAB270, end: 0x01EAB288}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_get_time_stamp, start: 0x01EAB288, end: 0x01EAB2A0}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_elapsed, start: 0x01EAB2A0, end: 0x01EAB2B8}
+      - {object: medius/rt_util/rt_time, section: .medius_time_func_01EAB2B8, start: 0x01EAB2B8, end: 0x01EAB2C0}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_elapsed_msecs, start: 0x01EAB2C0, end: 0x01EAB310}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_elapsed_usecs, start: 0x01EAB310, end: 0x01EAB360}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_delay, start: 0x01EAB360, end: 0x01EAB3C0}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_initialize, start: 0x01EAB3C0, end: 0x01EAB418}
+      - {object: medius/rt_util/rt_time, section: .medius_time_func_01EAB418, start: 0x01EAB418, end: 0x01EAB420}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_calc_diff, start: 0x01EAB420, end: 0x01EAB500}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_timestamp_to_msecs, start: 0x01EAB500, end: 0x01EAB570}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_timestamp_to_usecs, start: 0x01EAB570, end: 0x01EAB5B8}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_get_base_diff, start: 0x01EAB5B8, end: 0x01EAB610}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_elapsed_timestamp, start: 0x01EAB610, end: 0x01EAB670}
+      - {object: medius/rt_util/rt_time, section: .medius_time_func_01EAB670, start: 0x01EAB670, end: 0x01EAB690}
+      - {object: medius/rt_util/rt_time, section: .medius_time_rt_time_get_gmtime, start: 0x01EAB690, end: 0x01EAB6A8}
+  medius/rt_util/rt_mtrandgen:
+    text_start: 0x01EA9988
+    text_end: 0x01EA9C98
+    slots:
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_seedMT, start: 0x01EA9988, end: 0x01EA99D8}
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_seedMTUsingArray, start: 0x01EA99D8, end: 0x01EA9A48}
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_reloadMT, start: 0x01EA9A48, end: 0x01EA9BC0}
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_func_01EA9BC0, start: 0x01EA9BC0, end: 0x01EA9BC8}
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_randomMT, start: 0x01EA9BC8, end: 0x01EA9C80}
+      - {object: medius/rt_util/rt_mtrandgen, section: .medius_mtrand_setNewSeed, start: 0x01EA9C80, end: 0x01EA9C98}
+  medius/rt_util/ps2/rt_mutex_platform:
+    text_start: 0x01EA9F90
+    text_end: 0x01EAA0D0
+    slots:
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_rt_mutex_platform_create, start: 0x01EA9F90, end: 0x01EA9FE8}
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_rt_mutex_platform_destroy, start: 0x01EA9FE8, end: 0x01EAA020}
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_rt_mutex_platform_lock, start: 0x01EAA020, end: 0x01EAA058}
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_func_01EAA058, start: 0x01EAA058, end: 0x01EAA060}
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_rt_mutex_platform_unlock, start: 0x01EAA060, end: 0x01EAA098}
+      - {object: medius/rt_util/ps2/rt_mutex_platform, section: .medius_mutexp_rt_mutex_platform_get_thread_id, start: 0x01EAA098, end: 0x01EAA0D0}
+  medius/rt_util/ps2/rt_time_platform:
+    text_start: 0x01EAB6A8
+    text_end: 0x01EABC10
+    slots:
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_get_time_stamp, start: 0x01EAB6A8, end: 0x01EAB700}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_update_date_time, start: 0x01EAB700, end: 0x01EAB860}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_get_gmtime, start: 0x01EAB860, end: 0x01EAB878}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_get_date_time, start: 0x01EAB878, end: 0x01EABA68}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_func_01EABA68, start: 0x01EABA68, end: 0x01EABA70}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_fast_elapsed_msecs, start: 0x01EABA70, end: 0x01EABA88}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_init, start: 0x01EABA88, end: 0x01EABAE8}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_timer_getcount, start: 0x01EABAE8, end: 0x01EABAF8}
+      - {object: medius/rt_util/ps2/rt_time_platform, section: .medius_timep_rt_time_platform_update_base, start: 0x01EABAF8, end: 0x01EABC10}
+  medius/rt_util/rt_token:
+    text_start: 0x01EABF38
+    text_end: 0x01EACEA0
+    slots:
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_start, start: 0x01EABF38, end: 0x01EABF90}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_shutdown, start: 0x01EABF90, end: 0x01EABFD0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_is_valid, start: 0x01EABFD0, end: 0x01EABFE0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_func_01EABFE0, start: 0x01EABFE0, end: 0x01EABFF8}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_free_owner, start: 0x01EABFF8, end: 0x01EAC0A0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_check_ownership, start: 0x01EAC0A0, end: 0x01EAC128}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_grant_ownership, start: 0x01EAC128, end: 0x01EAC210}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_release_ownership, start: 0x01EAC210, end: 0x01EAC2A8}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_update_ownership, start: 0x01EAC2A8, end: 0x01EAC3C0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_list_check_ownership, start: 0x01EAC3C0, end: 0x01EAC500}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_list_grant_ownership, start: 0x01EAC500, end: 0x01EAC688}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_list_release_ownership, start: 0x01EAC688, end: 0x01EAC7D0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_list_update_ownership, start: 0x01EAC7D0, end: 0x01EAC9A8}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_create_table, start: 0x01EAC9A8, end: 0x01EACA50}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_expand_table, start: 0x01EACA50, end: 0x01EACB10}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_destroy_table, start: 0x01EACB10, end: 0x01EACB58}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_add_ownership, start: 0x01EACB58, end: 0x01EACB98}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_remove_ownership, start: 0x01EACB98, end: 0x01EACBF0}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_build_token_msg, start: 0x01EACBF0, end: 0x01EACCF8}
+      - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_build_token_list_msg, start: 0x01EACCF8, end: 0x01EACE98}
+      - {object: medius/rt_util/rt_token, section: .medius_token_func_01EACE98, start: 0x01EACE98, end: 0x01EACEA0}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0

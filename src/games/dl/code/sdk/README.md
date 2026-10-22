@@ -25,6 +25,8 @@ Counts are named symbol entries from `symbols_core.text.txt`; unnamed/internal r
 
 Do not populate this tree by copying the whole public SDK: EE/IOP boundaries, link-selected functions, data ownership and implementation versions differ. IOP drivers are separate modules and are not automatically part of the EE boot executable. Newlib libc/libm, libgcc, Nellymoser and Logitech should retain separate ownership.
 
+Declarations for C code that calls the SDK: Medius objects compile with the open-source PS2SDK headers from the image (`PS2SDK_FLAGS` in the Makefile), so `kernel.h`, `libcdvd-common.h` and similar supply prototypes and structs. Retail Sony calls that PS2SDK does not declare (currently `sceDevctl` and `sceScfGetLocalTimefromRTC`) live in [sce_missing.h](sce_missing.h), with their retail-derived signatures and first user. These headers only declare; they are not reimplementations and do not change what is linked.
+
 Provenance constraint for this work: use the user-supplied retail executable and appropriately licensed public references; do not obtain or import official Sony SDK sources. PS2SDK is a separate homebrew project, not an open-source release of the Sony SDK.
 
 See [version evidence and comparison results](../../DOCS/libraries/SDK_LAYOUT.md) before implementing or moving any block. The strongest starting reference for pad is historical `padx`; MC uses the extended RPC family. Neither is a byte-matching drop-in. Preserve original addresses, behavior and padding, and verify each new split before claiming progress.

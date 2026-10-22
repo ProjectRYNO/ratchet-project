@@ -119,8 +119,17 @@ IKSEMEL_COMPILE_FLAGS = $(filter-out -mno-split-addresses,$(SVO3_COMPILE_FLAGS))
 MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util/rt_constraint.o \
 	$(OBJ_DIR)/medius/rt_util/rt_string.o $(OBJ_DIR)/medius/rt_util/rt_mutex.o \
 	$(OBJ_DIR)/medius/rt_util/rt_pack.o $(OBJ_DIR)/medius/rt_util/rt_msg_util.o $(OBJ_DIR)/medius/rt_util/rt_timebase.o \
-	$(OBJ_DIR)/medius/rt_util/rt_circ_buf.o $(OBJ_DIR)/medius/rt_util/rt_ip.o
-MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections
+	$(OBJ_DIR)/medius/rt_util/rt_circ_buf.o $(OBJ_DIR)/medius/rt_util/rt_ip.o \
+	$(OBJ_DIR)/medius/rt_util/rt_list_buf.o $(OBJ_DIR)/medius/rt_util/rt_time.o \
+	$(OBJ_DIR)/medius/rt_util/rt_mtrandgen.o $(OBJ_DIR)/medius/rt_util/ps2/rt_mutex_platform.o \
+	$(OBJ_DIR)/medius/rt_util/ps2/rt_time_platform.o $(OBJ_DIR)/medius/rt_util/rt_token.o
+# Open-source PS2SDK headers (from the ps2dev toolchain) supply EE kernel and libcdvd
+# declarations; Sony-only calls PS2SDK lacks are declared in code/sdk/sce_missing.h.
+# The ee-gcc 2.96 package ships no compiler headers, so stddef.h/stdarg.h (pulled in by
+# kernel.h) come from the ps2dev gcc's own include directory.
+PS2SDK_FLAGS = -D_EE -isystem $(PS2DEV_DIR)/ps2sdk/ee/include -isystem $(PS2DEV_DIR)/ps2sdk/common/include \
+	$(addprefix -isystem ,$(wildcard $(PS2DEV_DIR)/ee/lib/gcc-lib/ee/*/include))
+MEDIUS_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections $(PS2SDK_FLAGS)
 MEDIUS_AS_FLAGS = -EL -G0 -g -Icode/include
 ifeq ($(ALLOW_NONMATCHING),1)
     MEDIUS_COMPILE_FLAGS += -DALLOW_NONMATCHING
