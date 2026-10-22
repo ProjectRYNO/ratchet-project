@@ -3,3 +3,5 @@
 !Dockerfile
 !requirements.txt
 !.dockerignore
+!dl/Makefile
+!tools/ee296_statshim.c

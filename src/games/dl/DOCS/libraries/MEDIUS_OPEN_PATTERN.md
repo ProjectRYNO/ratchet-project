@@ -71,6 +71,26 @@ read through a helper or macro. The prototype `dltypes.txt` has `RT_RESULT` with
 - Pointer getters: `if (!used) return ...` (8 words), `if (used) {...}` (14),
   `result = RT_CIRC_BUF_ERROR` / `result = 0` single exit (16), and `&buffer->pBuf[pos]`.
 - `if (!size) return 0` vs `if (size == 0) return 0` (no effect).
+- **Partial solve (2026-10-22): positive test, work inside the `if`, failure return
+  last.** `rt_token_start` matches as
+  `if (!*p) { if (alloc(p, 12)) return MEM_ALLOC; memset(...); return 0; } return ALREADY_INIT;`.
+  Retail loads `*p` into `v0` and returns ALREADY_INIT through a `bnezl` delay slot.
+  The same shape does not finish the others:
+  `rt_token_create_table` goes from 10 to 8 words. `rt_token_release_ownership` (nested or `&&`-joined) reaches the right
+  size but is still 22 words off: retail re-loads the preset result (`li v0, 0xdac2`) in
+  every check's delay slot. `rt_token_grant_ownership` is worse (38). Also tried on
+  `rt_token_start`: a local copy of `*p` (2 words), a `goto done` shared exit (19), a
+  preset result reused for the allocation (20) and a `void **` parameter (2). Next idea for the
+  rt_circ_buf functions: the same positive shape around the getter call.
+- `RT_RESULT` enum as the result type (2026-10-22, on `rt_token_create_table`): no
+  change. The same pattern also blocks `rt_token_start`, `create_table`,
+  `grant/release/update_ownership` and `rt_time_delay`.
+- Before blaming the pattern, check callee prototypes: a wrong `void`/`int` return type
+  changes register allocation (`rt_token_build_token_msg`, MEDIUS.md batch 7).
+- Ghidra's debug-info decompile of `free` (2026-10-20): one `result` preset to
+  RT_INVALID_PARAM, `nUsed` preset to 0, nested `if`s and a single `return result`
+  (29 words, worse). The debug info names the parameters `pCircBuf` and `nBytes` and
+  the return type `RT_RESULT`; see MEDIUS.md batch 5 for the HTTP query.
 
 Untried ideas for the next session:
 

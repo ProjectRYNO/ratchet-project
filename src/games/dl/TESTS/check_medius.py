@@ -72,6 +72,54 @@ def main():
         'rt_circ_buf_get_avail': (0x01EA7248, 0x30),
         'rt_ip_string2ip': (0x01EA9140, 0x80),
         'rt_ip_ip2string': (0x01EA91C0, 0xAC),
+        'rt_list_buf_create_pool': (0x01EB5FB0, 0x104),
+        'rt_list_buf_destroy_pool': (0x01EB60B8, 0x48),
+        'rt_list_buf_get_pool_used': (0x01EB6100, 0x64),
+        'rt_list_buf_create': (0x01EB6168, 0x74),
+        'rt_list_buf_destroy': (0x01EB61E0, 0x70),
+        'rt_list_buf_clear': (0x01EB6250, 0x68),
+        'rt_list_buf_insert': (0x01EB62B8, 0x150),
+        'rt_list_buf_set_new_head': (0x01EB6408, 0x1C),
+        'rt_list_buf_remove': (0x01EB6428, 0xE4),
+        'rt_list_buf_append_data': (0x01EB6510, 0x1D8),
+        'rt_list_buf_get_tail': (0x01EB66E8, 0x5C),
+        'rt_list_buf_resize_buffer': (0x01EB6748, 0x40),
+        'rt_time_get_local': (0x01EAB210, 0x14),
+        'rt_time_get_msecs': (0x01EAB228, 0x48),
+        'rt_time_start': (0x01EAB270, 0x14),
+        'rt_time_get_time_stamp': (0x01EAB288, 0x14),
+        'rt_time_elapsed': (0x01EAB2A0, 0x14),
+        'rt_time_elapsed_msecs': (0x01EAB2C0, 0x4C),
+        'rt_time_elapsed_usecs': (0x01EAB310, 0x4C),
+        'rt_time_initialize': (0x01EAB3C0, 0x58),
+        'rt_time_get_base_diff': (0x01EAB5B8, 0x58),
+        'rt_time_elapsed_timestamp': (0x01EAB610, 0x5C),
+        'rt_time_get_gmtime': (0x01EAB690, 0x14),
+        'seedMT': (0x01EA9988, 0x4C),
+        'seedMTUsingArray': (0x01EA99D8, 0x70),
+        'reloadMT': (0x01EA9A48, 0x178),
+        'randomMT': (0x01EA9BC8, 0xB4),
+        'setNewSeed': (0x01EA9C80, 0x14),
+        'rt_mutex_platform_create': (0x01EA9F90, 0x58),
+        'rt_mutex_platform_destroy': (0x01EA9FE8, 0x34),
+        'rt_mutex_platform_lock': (0x01EAA020, 0x34),
+        'rt_mutex_platform_unlock': (0x01EAA060, 0x34),
+        'rt_mutex_platform_get_thread_id': (0x01EAA098, 0x38),
+        'rt_time_platform_get_time_stamp': (0x01EAB6A8, 0x58),
+        'rt_time_platform_update_date_time': (0x01EAB700, 0x15C),
+        'rt_time_platform_get_gmtime': (0x01EAB860, 0x14),
+        'rt_time_platform_fast_elapsed_msecs': (0x01EABA70, 0x14),
+        'rt_time_platform_init': (0x01EABA88, 0x5C),
+        'rt_token_start': (0x01EABF38, 0x54),
+        'rt_token_shutdown': (0x01EABF90, 0x40),
+        'rt_token_is_valid': (0x01EABFD0, 0x10),
+        'rt_token_free_owner': (0x01EABFF8, 0xA4),
+        'rt_token_check_ownership': (0x01EAC0A0, 0x84),
+        'rt_token_expand_table': (0x01EACA50, 0xBC),
+        'rt_token_destroy_table': (0x01EACB10, 0x44),
+        'rt_token_add_ownership': (0x01EACB58, 0x3C),
+        'rt_token_remove_ownership': (0x01EACB98, 0x54),
+        'rt_token_build_token_msg': (0x01EACBF0, 0x104),
     } if args.objects else {})
     for name, (address, size) in functions.items():
         for table in (linked, compiled):
@@ -92,12 +140,18 @@ def main():
                              ('rt_msg_util', 0x01EA97E0, 0x01EA9984),
                              ('rt_timebase', 0x01EABC10, 0x01EABF38),
                              ('rt_circ_buf', 0x01EA6C60, 0x01EA7408),
-                             ('rt_ip', 0x01EA9140, 0x01EA926C)):
+                             ('rt_ip', 0x01EA9140, 0x01EA926C),
+                             ('rt_list_buf', 0x01EB5FB0, 0x01EB6914),
+                             ('rt_time', 0x01EAB210, 0x01EAB6A8),
+                             ('rt_mtrandgen', 0x01EA9988, 0x01EA9C98),
+                             ('ps2/rt_mutex_platform', 0x01EA9F90, 0x01EAA0D0),
+                             ('ps2/rt_time_platform', 0x01EAB6A8, 0x01EABC10),
+                             ('rt_token', 0x01EABF38, 0x01EACEA0)):
         if args.objects and loaded_bytes(original, start, end - start) != loaded_bytes(rebuilt, start, end - start):
             raise SystemExit('FAIL: %s module differs' % name)
     if args.objects:
         check_globals(linked)
-        print('PASS: rt_constraint, rt_string, rt_mutex, rt_pack, rt_msg_util, rt_timebase, rt_circ_buf and rt_ip modules match retail, including retained assembly')
+        print('PASS: rt_constraint, rt_string, rt_mutex, rt_pack, rt_msg_util, rt_timebase, rt_circ_buf, rt_ip, rt_list_buf, rt_time, rt_mtrandgen and ps2/rt_mutex_platform modules match retail, including retained assembly')
 
 
 def check_globals(linked):

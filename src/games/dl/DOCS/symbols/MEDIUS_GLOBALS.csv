@@ -5,3 +5,13 @@ rtTimebaseStarted,0x00168BAC,code/medius/rt_util/rt_timebase.c,"core.data word, 
 rtTimebaseQueryInterval,0x00168BB0,code/medius/rt_util/rt_timebase.c,"core.data word, 3000 in retail; rt_timebase_is_query_ready compares elapsed milliseconds against it",rt_timebase
 rtTimebaseDelays,0x001B2420,code/medius/rt_util/rt_timebase.c,"core.bss 0x198 bytes; 100 delay words, count at 0x190, index at 0x194 (restart/start memset 0x198, update and percentile index it)",rt_timebase
 rtTimebaseQueryTimer,0x001B25B8,code/medius/rt_util/rt_timebase.c,"core.bss 8 bytes directly after rtTimebaseDelays; rt_time_start/rt_time_platform_fast_elapsed_msecs timer, cleared by restart",rt_timebase
+rtTimeInitialized,0x00168BA0,code/medius/rt_util/rt_time.c,"core.data byte, 0 in retail; rt_time_initialize sets it to 1 after capturing rtTimeBaseStamp, rt_time_get_base_diff tests it",rt_time
+rtTimeBaseStamp,0x001B23E0,code/medius/rt_util/rt_time.c,"core.bss RT_TIME_STAMP; rt_time_initialize captures it, rt_time_get_base_diff measures elapsed time from it",rt_time
+gMT,0x001681B0,code/medius/rt_util/rt_mtrandgen.c,"core.data RT_MT (0x9C8): 625 state words, index at 0x9C4; seedMT/reloadMT/randomMT address both from this base",rt_mtrandgen
+rtMtMixA,0x00168B78,code/medius/rt_util/rt_mtrandgen.c,"core.data word after gMT; randomMT output mixer, rotated right by 7 and xored with the state word",rt_mtrandgen
+rtMtMixB,0x00168B7C,code/medius/rt_util/rt_mtrandgen.c,"core.data word; randomMT output mixer, xored with the state word rotated left by 7",rt_mtrandgen
+mediusMtLastOutput,0x00168B80,code/medius/rt_util/rt_mtrandgen.c,"core.data word (debug-info name y); last randomMT result, fed back into the next call",rt_mtrandgen
+rtTimePlatformInitialized,0x00168BA1,code/medius/rt_util/ps2/rt_time_platform.c,"core.data byte after rtTimeInitialized; set by rt_time_platform_init, tested by update_base",rt_time_platform
+rtTimePlatformBase,0x001B23E8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_PLATFORM_BASE {Secs, Ticks, USecs, LastCount}; COP0 Count time base kept by update_base",rt_time_platform
+rtTimePlatformDate,0x001B23F8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_DATE; decoded from the CD RTC by update_date_time, read by get_date_time",rt_time_platform
+rtTimeCdromDevice,0x001965C8,code/medius/rt_util/ps2/rt_time_platform.c,"core.data string ""cdrom0:"" passed to sceDevctl by update_date_time",rt_time_platform

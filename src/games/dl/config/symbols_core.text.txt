@@ -1607,6 +1607,7 @@ gCryptInterfacePtr = 0x001681A0;
 gpfMallocCallback = 0x001681A4;
 gpfReallocCallback = 0x001681A8;
 gpfFreeCallback = 0x001681AC;
+gMT = 0x001681B0;
 GlobalInitFlag = 0x00169CD0;
 ghMyConnection = 0x00169CD4;
 GlobalLobbyFilterFlag = 0x00169CD8;
@@ -3333,10 +3334,19 @@ sdkInetDisconnect = 0x001947E8;
 sdkInetTimeout = 0x001947F8;
 
 // Medius rt_timebase statics (no prototype dlglobals entry; names describe retail use).
+rtMtMixA = 0x00168B78;
+rtMtMixB = 0x00168B7C;
+mediusMtLastOutput = 0x00168B80;
+rtTimeInitialized = 0x00168BA0;
+rtTimePlatformInitialized = 0x00168BA1;
 rtTimebaseLastLocalTime = 0x00168BA4;
 rtTimebaseGlobalTime = 0x00168BA8;
 rtTimebaseStarted = 0x00168BAC;
 rtTimebaseQueryInterval = 0x00168BB0;
+rtTimeBaseStamp = 0x001B23E0;
+rtTimePlatformBase = 0x001B23E8;
+rtTimePlatformDate = 0x001B23F8;
+rtTimeCdromDevice = 0x001965C8;
 rtTimebaseDelays = 0x001B2420;
 rtTimebaseQueryTimer = 0x001B25B8;
 
