@@ -1,14 +1,24 @@
-# SVO3 current handoff, 2026-10-25
+# SVO3 current handoff, 2026-10-26
 
-**934 functions: 931 byte-exact in the linked ELF, 3 compiled C functions that fit their slots
-but are not exact; all read-only data slots (SVO3, iksemel, libm: 34) match.** iksemel 40/40 exact.
+**934 functions: all 934 byte-exact in the linked ELF; all read-only data slots (SVO3, iksemel,
+libm: 34) match.** iksemel 40/40 exact.
 
-## 2026-10-25 session (uncommitted)
+## 2026-10-26 session (uncommitted)
 
-Validation (isolated container copy): split + elf PASS; check_main_elf PASS (951 changed bytes,
-all in registered slots); check_global_map PASS (807); check_type_layouts PASS (2,010 / 228 types);
-compare_elf NONMATCH (3 SVO3 functions). DOCS/progress regenerated with `tools/function_progress.py`.
+Validation (isolated container copy, includes the medius PR): split + elf PASS; check_main_elf
+PASS (726 changed bytes, all in registered slots); check_global_map PASS (807); check_type_layouts
+PASS (2,058 / 238 types); compare_elf NONMATCH (no SVO3 function; remaining differences are outside SVO3). DOCS/progress regenerated.
 Behaviour suites, ISO, emulator: not run.
+
+- CPage constructor: exact. The unpatched loop (`for (...; i++) memset(...)`) compiles to retail
+  except the patched instruction, so each asm now sits where the `i++` was (end of the loop body)
+  and is not volatile, so it schedules exactly like the increment did.
+- GetNextWord: exact. Retail is natural duplicated code, not one shared trim block: two TrimLongWord
+  copies placed between the `if (offset)` arms (cross-jumped into one block with a stub), the
+  first check written `if (!Check(...)) { ...; goto finish; } goto endTrim;` (so `cleanup_cfg`
+  moves the goto block next to the copy instead of moving the copy into the loop), the line-end
+  store duplicated per exit, and the first and newline tests read `text[current]` while the space
+  test reads `*cursor`. One permuter fake match (`lineAt` copy of `current`; D13).
 
 Made exact since 918: FreeBack/FrontDisplayBuffer, LeaveCurrentPage, callGenericDownloadCallback,
 SVMLparseCB (CPage); parseHttpHeaderLine; ScanTags___dupe7; addHandle; HandleInput___dupe40 (retail
@@ -35,17 +45,10 @@ source in `extern "C"` and compiles with ee-g++, so frame layout and alias rules
 C++ build), `compile_asm.sh` (also expands `ASMB(i, off, fill);` into the CPage branch asm, since
 pycparser cannot parse GNU asm).
 
-Remaining (3):
-- downloadBody (2 lines): exact with `-fno-gcse` (diagnostic only; file-wide `-fno-gcse` breaks six
-  other CHttp functions). The `-Os` code-hoisting pass moves `&received` (`addiu $7`) above the
-  `m_sock` load; retail's source must not expose it as hoistable. Ternary, if/else, local copies,
-  const-qualified reads, types and pseudo renumbering all leave it unchanged.
-- CPage constructor (9 lines): the loop `offset` is tied to `$4` by local-alloc; retail has it in
-  `$2` with `li $6` before `addu $4`. Sharing one `offset` variable across the loops makes it a global
-  pseudo (`$2`) but then the 616 constant also takes `$2` (18 lines). Not GCSE-related.
-- GetNextWord (63 lines; goto form). Retail places the shared TrimLongWord block between the
-  `if (offset)` arms and reloads `*cursor` for the newline test; `-fno-gcse` reproduces the reload
-  but the rest still differs (77 lines), so GCSE is only part of it.
+- downloadBody: exact by building it alone with `-fno-gcse` (DECISIONS D14,
+  `code/svo3/CHttp_downloadBody.cpp`). Retail shows none of GCSE's `-Os` code hoisting of the
+  identical `Recv` arms (`m_sock`, `buffer.data`, `&received`), while the rest of CHttp needs GCSE.
+  Source forms tried before this are listed in the git history of this file.
 
 Changes this push (Makefile and DECISIONS D11 are committed; source and tool changes below are not):
 - Makefile: the iksemel merge (6067a0a) had dropped `-g` from `SVO3_AS_FLAGS`, costing 16 exact

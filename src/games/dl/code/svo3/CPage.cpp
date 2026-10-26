@@ -492,38 +492,33 @@ struct DownloadBinaryMember { char data[0x264]; void *vtable; DownloadBinaryMemb
     if (!(page->m_parser = iks_dom_new(&page->m_XML))) __SVO_Assert_Handler(svoPageSource, 0xD5);
     // Retail patch: each clearing loop's `i++` was overwritten with a branch to the loop's
     // closing delay slot, so the element memsets never run (they would wipe the vtables just
-    // set by the DownloadBinary constructors). The asm statements reproduce those branches; the
-    // target is relative (`2f+20` is the bnez delay slot) so no label asm splits the schedule.
+    // set by the DownloadBinary constructors). Each asm stands in for the `i++` it replaced: it is
+    // not volatile, so it schedules exactly like the increment did, and its target is relative
+    // (`2f+20` is the bnez delay slot).
     for (int i = 0; i < 11;) {
-        register int fill __asm__("$5") = 0;
-        int offset = i * (int)sizeof(DownloadBinaryMember);
-        __asm__ __volatile__(".set noreorder
+        memset((char *)page->preTransition + i * (int)sizeof(DownloadBinaryMember), 0, sizeof(DownloadBinaryMember));
+        __asm__(".set noreorder
 	b 2f+20
 2:
-	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
-        memset((char *)page->preTransition + offset, fill, sizeof(DownloadBinaryMember));
+	.set reorder" : "+r"(i));
     }
     page->preTransitionCount = 0;
     memset(page->preTransitionUsed, 0, 32);
     for (int i = 0; i < 11;) {
-        register int fill __asm__("$5") = 0;
-        int offset = i * (int)sizeof(DownloadBinaryMember);
-        __asm__ __volatile__(".set noreorder
+        memset(postArray + i * (int)sizeof(DownloadBinaryMember), 0, sizeof(DownloadBinaryMember));
+        __asm__(".set noreorder
 	b 2f+20
 2:
-	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
-        memset(postArray + offset, fill, sizeof(DownloadBinaryMember));
+	.set reorder" : "+r"(i));
     }
     *(int *)(postArray + 11 * 0x268) = 0;
     memset(postArray + 11 * 0x268 + 4, 0, 32);
     for (int i = 0; i < 2;) {
-        register int fill __asm__("$5") = 0;
-        int offset = i * (int)sizeof(DownloadBinaryMember);
-        __asm__ __volatile__(".set noreorder
+        memset(inArray + i * (int)sizeof(DownloadBinaryMember), 0, sizeof(DownloadBinaryMember));
+        __asm__(".set noreorder
 	b 2f+20
 2:
-	.set reorder" : "+r"(i) : "r"(offset), "r"(fill));
-        memset(inArray + offset, fill, sizeof(DownloadBinaryMember));
+	.set reorder" : "+r"(i));
     }
     *(int *)(inArray + 2 * 0x268) = 0;
     memset(inArray + 2 * 0x268 + 4, 0, 32);

@@ -2321,7 +2321,7 @@ objects:
       - {object: svo3/CHttp, section: .svo_CHttp_md5requestLogin, start: 0x01EEA774, end: 0x01EEA8E8}
       - {object: svo3/CHttp, section: .svo_CHttp_download___dupe2, start: 0x01EEA8E8, end: 0x01EEA974}
       - {object: svo3/CHttp, section: .svo_CHttp_IsBusy, start: 0x01EEA974, end: 0x01EEA9A8}
-      - {object: svo3/CHttp, section: .svo_CHttp_downloadBody, start: 0x01EEA9A8, end: 0x01EEAAA4}
+      - {object: svo3/CHttp_downloadBody, section: .svo_CHttp_downloadBody, start: 0x01EEA9A8, end: 0x01EEAAA4}
       - {object: svo3/CHttp, section: .svo_CHttp_OnBodyChunkReceived, start: 0x01EEAAA4, end: 0x01EEAB08}
       - {object: svo3/CHttp, section: .svo_CHttp_downloadHeaders, start: 0x01EEAB08, end: 0x01EEACC8}
       - {object: svo3/CHttp, section: .svo_CHttp_parseHeaderBuf, start: 0x01EEACC8, end: 0x01EEAD48}

@@ -104,6 +104,9 @@ SVO3_COMPILE_FLAGS = -G0 -Os -fno-exceptions -mno-split-addresses -falign-functi
 ifeq ($(ALLOW_NONMATCHING),1)
 	SVO3_COMPILE_FLAGS += -DALLOW_NONMATCHING
 endif
+# CHttp downloadBody: retail shows none of the -Os GCSE code hoisting of its identical Recv arms,
+# while the rest of CHttp needs GCSE, so it is built alone without it (DECISIONS D14).
+$(OBJ_DIR)/svo3/CHttp_downloadBody.o: SVO3_COMPILE_FLAGS += -fno-gcse
 # Sony's bundled assembler (2.10-ee) omits the MIPS III hazard nops that ps2dev ee-as inserts.
 # -g stops Sony as from filling delay slots itself; retail SVO3 was assembled that way (DECISIONS K07).
 SVO3_AS_FLAGS = -EL -G0 -g -Icode/include

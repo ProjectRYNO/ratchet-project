@@ -1,4 +1,1 @@
 source,name,address,size,slot,differing_bytes,status
-code/svo3/CHttp.cpp,downloadBody,0x01EEA9A8,0xFC,0xFC,4,"compiled C, fits slot, not byte-exact"
-code/svo3/CPage.cpp,CPage,0x01EE5CF0,0x2C8,0x2C8,27,"compiled C, fits slot, not byte-exact"
-code/svo3/TextAreaTag.cpp,GetNextWord,0x01EFA794,0x198,0x198,194,"compiled C, fits slot, not byte-exact"

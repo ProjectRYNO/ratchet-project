@@ -597,45 +597,55 @@ extern "C" SECTION(ParseText) int ParseText(TextAreaTagState *tag, char *text, i
 }
 extern "C" SECTION(GetNextWord) int GetNextWord(TextAreaTagState *tag, char *text, int *start, int *end, int *offset)
 {
+    int lineAt;
     int result = 1;
     int *position;
     if (offset) {
         *start = *offset;
         position = offset;
-    } else {
-        *start = tag->m_curParseOffset;
-        position = &tag->m_curParseOffset;
+        goto common;
     }
+    if (0) {
+endTrim:
+        result = 3;
+        *position = TrimLongWord(tag, text, *start, *position, tag->m_maxLineLength);
+        goto finish;
+wordTrim:
+        result = 3;
+        *position = TrimLongWord(tag, text, *start, *position, tag->m_maxLineLength);
+        goto finish;
+    }
+    *start = tag->m_curParseOffset;
+    position = &tag->m_curParseOffset;
+common:
     *end = *start;
-    goto loop;
-trim:
-    result = 3;
-    *position = TrimLongWord(tag, text, *start, *position, tag->m_maxLineLength);
-    goto finish;
 loop:
     {
         int current = *position;
         char *cursor = text + current;
-        char c = *cursor;
-        if (!c || current == tag->m_maxTextSize - 1) {
-            if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
-            result = *position != *start;
-            goto done;
+        if (!text[current] || current == tag->m_maxTextSize - 1) {
+            if (!CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) {
+                result = *position != *start;
+                tag->m_textLines[tag->m_curParseLine].lineEndIndex = *position;
+                goto finish;
+            }
+            goto endTrim;
         }
-        if (c == ' ' && current != *start) {
-            if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
-            goto done;
+        if (*cursor == ' ' && current != *start) {
+            if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto wordTrim;
+            tag->m_textLines[tag->m_curParseLine].lineEndIndex = *position;
+            goto finish;
         }
-        if (*cursor == '\n' || *cursor == '\r') {
-            if (CheckForLongWord(tag, text, *start, current, tag->m_maxLineLength)) goto trim;
+        lineAt = current; // fake match: permuter (register allocation)
+        if (text[current] == '\n' || text[current] == '\r') {
+            if (CheckForLongWord(tag, text, *start, lineAt, tag->m_maxLineLength)) goto wordTrim;
             result = 2;
-            goto done;
+            tag->m_textLines[tag->m_curParseLine].lineEndIndex = *position;
+            goto finish;
         }
-        *position = current + 1;
+        *position = lineAt + 1;
         goto loop;
     }
-done:
-    tag->m_textLines[tag->m_curParseLine].lineEndIndex = *position;
 finish:
     *end = *position;
     return result;
