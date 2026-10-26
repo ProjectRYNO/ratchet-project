@@ -10,12 +10,17 @@ typedef struct { // 0x14
     /* 0x0C */ unsigned int tagID;
     /* 0x10 */ SVTag *tag;
 } SVTagInfo;
+typedef enum {
+    SV_DOWNLOAD_COMPLETE = 0,
+    SV_DOWNLOAD_PARTIAL = 1,
+    SV_DOWNLOAD_FAILED = 2
+} SVPartialFileDownloadInfo;
 struct CFileDownloadInfo { // 0x1C
     /* 0x00 */ char *name;
     /* 0x04 */ char *fileID;
     /* 0x08 */ void *pData;
     /* 0x0C */ int dataLen;
-    /* 0x10 */ int partialDownloadInfo;
+    /* 0x10 */ SVPartialFileDownloadInfo partialDownloadInfo;
     /* 0x14 */ int entireDataLen;
     /* 0x18 */ int curTotalDataLen;
 };

@@ -8,7 +8,7 @@ void DownloadBinaryDelete(void *memory) __asm__("operator.delete___dupe10");
 
 SECTION(DownloadBinary) void DownloadBinary(DownloadBinaryState *record)
 {
-    record->eMethod = 0;
+    record->eMethod = methodType_NORMAL;
     record->vtable = svoDownloadBinaryVtable;
     record->bDestroyWhenRequestSent = 0;
 }
@@ -81,7 +81,7 @@ SECTION(SetAccountIDParameter) void SetAccountIDParameter(DownloadBinaryState *r
 
 SECTION(SetFormMethodType) void SetFormMethodType(DownloadBinaryState *record, int value)
 {
-    record->eMethod = value;
+    record->eMethod = (FormMethodType)value;
 }
 
 SECTION(SetID___dupe2) void SetID___dupe2(DownloadBinaryState *record, int value)

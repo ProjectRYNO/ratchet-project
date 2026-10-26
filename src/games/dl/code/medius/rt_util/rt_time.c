@@ -15,8 +15,6 @@
 
 #define RT_INVALID_PARAM 2
 
-void rt_time_platform_init(void);
-
 int MEDIUS_TIME_SECTION(rt_time_get_local) rt_time_get_local(RT_TIME_VAL *pMSecs)
 {
     return rt_time_get_msecs(pMSecs);

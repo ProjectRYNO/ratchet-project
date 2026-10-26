@@ -77,6 +77,34 @@ extern "C" SECTION(FreeResources___dupe55) void FreeResources___dupe55(CreateGam
     }
 }
 
+// fake match: ScanTags is defined before GetCreateGameSubmitResponse; the definition order changes 2.96's branch-likely choice here (scheduling).
+static inline int CreateGameHasNode(iks *node) { return node != 0; }
+extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleState *module, iks *xml, SVTag **tags, CAllContextData *contexts, CTagModuleActions *actions)
+{
+    if (!strcmp(iks_name(xml), svoCreateGameName)) {
+        iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
+        if (CreateGameHasNode(status)) {
+            int result = GetCreateGameSubmitResponse(module, status);
+            iks *id = getChildIksStruct(xml, svoCreateGameIDName);
+            if (id) module->m_SVOGameID = atoi(iks_cdata(iks_child(id)));
+            contexts->systemContext->vtable->HandleCreateGameResponse(contexts->systemContext, result);
+        } else {
+            if (ParseCreateGameParamsXML(module, xml)) return;
+            __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x7B);
+        }
+    } else if (!strcmp(iks_name(xml), svoGamePlayerName)) {
+        int result = 1;
+        iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
+        if (status) {
+            iks *id = getChildIksStruct(status, svoCreateGameStatusIDName);
+            if (id) result = atoi(iks_cdata(iks_child(id))) != 0x4FC6;
+        }
+        contexts->systemContext->vtable->HandleJoinGameResponse(contexts->systemContext, result);
+    } else {
+        __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xA1);
+    }
+}
+
 extern "C" SECTION(GetCreateGameSubmitResponse) int GetCreateGameSubmitResponse(CreateGameTagModuleState *module, iks *xml)
 {
     int result = 1;
@@ -162,29 +190,3 @@ extern "C" SECTION(ParseCreateGameParamsXML) int ParseCreateGameParamsXML(Create
     return 1;
 }
 
-static inline int CreateGameHasNode(iks *node) { return node != 0; }
-extern "C" SECTION(ScanTags___dupe7) void ScanTags___dupe7(CreateGameTagModuleState *module, iks *xml, SVTag **tags, CAllContextData *contexts, CTagModuleActions *actions)
-{
-    if (!strcmp(iks_name(xml), svoCreateGameName)) {
-        iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
-        if (CreateGameHasNode(status)) {
-            int result = GetCreateGameSubmitResponse(module, status);
-            iks *id = getChildIksStruct(xml, svoCreateGameIDName);
-            if (id) module->m_SVOGameID = atoi(iks_cdata(iks_child(id)));
-            contexts->systemContext->vtable->HandleCreateGameResponse(contexts->systemContext, result);
-        } else {
-            if (ParseCreateGameParamsXML(module, xml)) return;
-            __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0x7B);
-        }
-    } else if (!strcmp(iks_name(xml), svoGamePlayerName)) {
-        int result = 1;
-        iks *status = getChildIksStruct(xml, svoCreateGameStatusName);
-        if (status) {
-            iks *id = getChildIksStruct(status, svoCreateGameStatusIDName);
-            if (id) result = atoi(iks_cdata(iks_child(id))) != 0x4FC6;
-        }
-        contexts->systemContext->vtable->HandleJoinGameResponse(contexts->systemContext, result);
-    } else {
-        __SVO_Assert_Handler(svoCreateGameTagModuleSource, 0xA1);
-    }
-}

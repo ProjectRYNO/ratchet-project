@@ -1,7 +1,51 @@
-# SVO3 current handoff, 2026-10-19
+# SVO3 current handoff, 2026-10-25
 
-**934 functions: 916 byte-exact in the linked ELF, 18 compiled C functions that fit their slots
+**934 functions: 931 byte-exact in the linked ELF, 3 compiled C functions that fit their slots
 but are not exact; all read-only data slots (SVO3, iksemel, libm: 34) match.** iksemel 40/40 exact.
+
+## 2026-10-25 session (uncommitted)
+
+Validation (isolated container copy): split + elf PASS; check_main_elf PASS (951 changed bytes,
+all in registered slots); check_global_map PASS (807); check_type_layouts PASS (2,010 / 228 types);
+compare_elf NONMATCH (3 SVO3 functions). DOCS/progress regenerated with `tools/function_progress.py`.
+Behaviour suites, ISO, emulator: not run.
+
+Made exact since 918: FreeBack/FrontDisplayBuffer, LeaveCurrentPage, callGenericDownloadCallback,
+SVMLparseCB (CPage); parseHttpHeaderLine; ScanTags___dupe7; addHandle; HandleInput___dupe40 (retail
+file order); ParseText; DefaultInit___dupe9; requestBinary; decodeEntityChar.
+- requestBinary: the InTransitPush struct copy is written in place (`inArr->data[k] =
+  *(DownloadBinaryObj *)&copyObj;`) so the block move's end address folds to `sp+0xe70` as in
+  retail (the inline helper's parameter pseudo kept the copy pointer live into `$10`), and
+  `CopyBytes` takes `(dst, n, src)`: inline parameters are set up in declaration order.
+- decodeEntityChar: `svoHttpEntityMap` is `const` (retail read-only data). The read-only load no
+  longer conflicts with the `*position` store, so the store fills the branch delay slot.
+- Files must keep retail address order: g++ 2.96's branch-likely and argument choices depend on
+  which callees are defined earlier. The reorders exposed missing `extern "C"` / prototypes in
+  TextAreaTag.cpp (fixed: `scroll___dupe2` and `GetMaxLength*` had silently become C++-mangled).
+- ParseText: retail is `if (result != 3) ++*offset; if (text[*offset]) ++lines;` plus one permuter
+  fake match (`else if (tag)` duplicate of the early return; D13).
+- DefaultInit___dupe9: pure statement order, found with `climb.py` after moving
+  `m_displayLength` before `m_text` and `m_textColor` after `m_enableGroupSelection`.
+- CPage constructor 22 -> 9 lines: the clearing-loop branches now use `b 2f+20` / `2:` (a label
+  right after the branch) instead of a trailing `asm("1:")`; the volatile label asm was a
+  scheduling barrier that reordered the following memset's argument setup.
+
+Permuter helpers (container `/tmp/pa`): `compile.sh` (C front end), `compile_cpp.sh` (wraps the C
+source in `extern "C"` and compiles with ee-g++, so frame layout and alias rules match the real
+C++ build), `compile_asm.sh` (also expands `ASMB(i, off, fill);` into the CPage branch asm, since
+pycparser cannot parse GNU asm).
+
+Remaining (3):
+- downloadBody (2 lines): exact with `-fno-gcse` (diagnostic only; file-wide `-fno-gcse` breaks six
+  other CHttp functions). The `-Os` code-hoisting pass moves `&received` (`addiu $7`) above the
+  `m_sock` load; retail's source must not expose it as hoistable. Ternary, if/else, local copies,
+  const-qualified reads, types and pseudo renumbering all leave it unchanged.
+- CPage constructor (9 lines): the loop `offset` is tied to `$4` by local-alloc; retail has it in
+  `$2` with `li $6` before `addu $4`. Sharing one `offset` variable across the loops makes it a global
+  pseudo (`$2`) but then the 616 constant also takes `$2` (18 lines). Not GCSE-related.
+- GetNextWord (63 lines; goto form). Retail places the shared TrimLongWord block between the
+  `if (offset)` arms and reloads `*cursor` for the newline test; `-fno-gcse` reproduces the reload
+  but the rest still differs (77 lines), so GCSE is only part of it.
 
 Changes this push (Makefile and DECISIONS D11 are committed; source and tool changes below are not):
 - Makefile: the iksemel merge (6067a0a) had dropped `-g` from `SVO3_AS_FLAGS`, costing 16 exact
@@ -74,6 +118,15 @@ with no regressions. It only changes the `.mdebug` section, which the linker scr
 (`/DISCARD/ : { *(*) }`); loaded bytes and audits are unaffected.
 
 ## 2.96 source-shape patterns established (in addition to the earlier list)
+
+- **Enum-typed fields matter.** The prototype dump (`D:/PS2/ISOs/deadlocked-proto-decomp/dltypes.txt`)
+  types several fields as enums that we had as `int`; g++ 2.96 gives enums their own alias set,
+  which changes scheduling. `CFileDownloadInfo.partialDownloadInfo` as `SVPartialFileDownloadInfo`
+  made SVDownloadManager `NotifySystemContextOfFailure` exact; DownloadBinary `eMethod`/`eMethodType`
+  as `FormMethodType` cut CPage `requestBinary` from 77 to 67 lines. Other `int`-vs-enum fields are
+  listed by `build/svo-library-work/b/h3_audit_types.py`.
+- **decomp-permuter** works with our toolchain (DECISIONS D13 allows its fake matches); see
+  `build/svo-library-work/PERMUTER.md`. It found ListBoxTag `addItem` in ~14k iterations.
 
 - **Callee prototypes must match the real implementation.** On the EE EABI, integer and float
   arguments use separate register banks, so a prototype's parameter order between the two kinds

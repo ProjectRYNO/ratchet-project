@@ -9,7 +9,7 @@ extern char svoHttpEscapeFormat[];
 extern char svoHttpDoubleSlash[];
 extern char svoHttpColon[];
 extern char svoHttpSlash[];
-extern HTTPEntity svoHttpEntityMap[];
+extern const HTTPEntity svoHttpEntityMap[];
 extern char *svoHttpInvalidChars;
 void __SVO_Assert_Handler(const char *file, int line);
 }

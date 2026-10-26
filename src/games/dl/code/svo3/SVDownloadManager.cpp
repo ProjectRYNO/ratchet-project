@@ -343,7 +343,7 @@ extern "C" SECTION(NotifySystemContextOfChunk) void NotifySystemContextOfChunk(S
     info.fileID = manager->m_fileID;
     info.pData = buffer->pData;
     info.dataLen = buffer->bytesReceived;
-    info.partialDownloadInfo = manager->m_fileBytesReceived < manager->m_fileContentLength;
+    info.partialDownloadInfo = (SVPartialFileDownloadInfo)(manager->m_fileBytesReceived < manager->m_fileContentLength);
     info.curTotalDataLen = buffer->startPos + buffer->bytesReceived;
     info.entireDataLen = manager->m_fileContentLength;
     CSystemContextBase *system = GetSystemContext();
@@ -360,7 +360,7 @@ extern "C" SECTION(NotifySystemContextOfFailure) void NotifySystemContextOfFailu
     info.pData = 0;
     info.dataLen = 0;
     info.curTotalDataLen = manager->m_fileBytesReceived;
-    info.partialDownloadInfo = 2;
+    info.partialDownloadInfo = SV_DOWNLOAD_FAILED;
     info.entireDataLen = manager->m_fileContentLength;
     CSystemContextBase *system = GetSystemContext();
     system->vtable->FileDownloadCallback(system, &info);

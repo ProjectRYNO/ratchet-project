@@ -775,8 +775,11 @@ extern "C" SECTION(parseHttpHeaderLine) int parseHttpHeaderLine(HttpState *http,
                 do { ++p; } while (*p != '=');
                 ++*cursor;
                 if (p - *cursor > 31) __SVO_Assert_Handler(svoHttpSource, 0x3C8);
-                memcpy(key, *cursor, p - *cursor);
-                *cursor = ++p;
+                // fake match: permuter (scheduling)
+                do {
+                    memcpy(key, *cursor, p - *cursor);
+                    *cursor = ++p;
+                } while (0);
                 if (*p == '&') value[0] = 0;
                 else {
                     do { ++p; } while (*p != '&' && *p != '\r');

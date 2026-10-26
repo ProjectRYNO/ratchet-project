@@ -99,6 +99,8 @@ extern "C" SECTION(addItem) int addItem(ListBoxTagState *tag, char *itemName)
         sizeof(ListBoxItem), 0, 0x258, svoListBoxTagSource);
         int index = tag->m_numItems;
         item->displayStr = itemName;
+        index++; // fake match: permuter (register allocation)
+        index--;
         tag->m_numItems = index + 1;
         tag->m_items[index] = item;
         return 1;
