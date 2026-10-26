@@ -1,8 +1,8 @@
 {
   "scope": "Identified named SDK functions in retail boot ELF, including verified SDK C helpers; incomplete inventory, not all SDK code",
   "tracked_functions": 387,
-  "compiled_matching_functions": 122,
-  "compiled_matching_percent": 31.52,
+  "compiled_matching_functions": 175,
+  "compiled_matching_percent": 45.22,
   "groups": {
     "CD/DVD": {
       "tracked": 14,
@@ -22,7 +22,7 @@
     },
     "SIF": {
       "tracked": 50,
-      "compiled_matching": 0
+      "compiled_matching": 23
     },
     "VU0": {
       "tracked": 4,
@@ -34,7 +34,7 @@
     },
     "file I/O": {
       "tracked": 18,
-      "compiled_matching": 0
+      "compiled_matching": 8
     },
     "graphics": {
       "tracked": 15,
@@ -42,11 +42,11 @@
     },
     "kernel/runtime": {
       "tracked": 180,
-      "compiled_matching": 0
+      "compiled_matching": 74
     },
     "memory card": {
       "tracked": 17,
-      "compiled_matching": 0
+      "compiled_matching": 17
     },
     "multitap": {
       "tracked": 8,
@@ -58,7 +58,7 @@
     },
     "pad": {
       "tracked": 22,
-      "compiled_matching": 0
+      "compiled_matching": 17
     }
   },
   "excluded": "Unnamed/unclassified entries, instruction fragments, overlays, libc/libm/libgcc, Medius/SVO3 and other third-party libraries"

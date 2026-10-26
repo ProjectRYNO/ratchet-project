@@ -43,6 +43,59 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  supplement_crt0: 0x0012D488
+  PatchIsNeeded: 0x0012D750
+  InitExecPS2: 0x0012D7B8
+  InitTLBFunctions: 0x0012CF80
+  InitAlarm: 0x0012DAB8
+  topThread: 0x001277A0
+  InitThread: 0x00127878
+  snprintf_char: 0x001293B0
+  kprintf: 0x00129570
+  scePrintf: 0x001294F0
+  sceSnprintf: 0x001294A8
+  _sceSnprintf_pf: 0x00129458
+  iAllocTimerCounter: 0x0012E3F0
+  iFreeTimerCounter: 0x0012E4A8
+  StartTimerSystemTime: 0x0012DD90
+  iStartTimerCounter: 0x0012E5A0
+  AlarmHandler: 0x0012E918
+  ReleaseTimerAlarm: 0x0012EB98
+  sceTtyWrite: 0x00128008
+  _change_addr: 0x00129610
+  sceResetttyinit: 0x00127020
+  _set_sreg: 0x001295F0
+  kprintf_char: 0x00129430
+  printf_char: 0x00129408
+  sceSifIsAliveIop: 0x0012CD88
+  _sceRpcGetFPacket: 0x0012A020
+  kCopy: 0x0012CF28
+  kCopy___dupe2: 0x0012D4F0
+  kCopy___dupe3: 0x0012D708
+  kCopy___dupe4: 0x0012D878
+  kCopy___dupe5: 0x0012DA70
+  sceSifExitCmd: 0x001298E0
+  InitTLB: 0x0012D058
+  kFindAddress: 0x0012D528
+  sceTtyInit: 0x00128250
+  _sceFsSigSema: 0x0012B010
+  TerminateLibrary: 0x0012D9D0
+  SetT2_COMP: 0x0012DC20
+  SetT2_COUNT: 0x0012DC00
+  SetT2_MODE: 0x0012DC10
+  Exit: 0x0012DA20
+  serialPutchar: 0x001283F8
+  LoadExecPS2: 0x0012D9D8
+  _InitSys: 0x0012D690
+  deci2Putchar: 0x00128348
+  SetNextComp: 0x0012DE28
+  sceSifGetOtherData: 0x0012A270
+  sceTtyRead: 0x00128180
+  sceSifBindRpc: 0x0012A538
+  _alarm_rdata: 0x0012A160
+  _search_svdata: 0x0012A3D8
+  _alarm_bind: 0x0012A428
+  _sceRpcGetPacket: 0x00129F58
   sceFsSifCallRpc: 0x0012AA70
   _lf_bind: 0x0012C4B8
   write: 0x00127168

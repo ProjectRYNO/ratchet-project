@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**122/387 identified boot SDK functions (31.52%) are now byte-exact** (see
+**175/387 identified boot SDK functions (45.22%) are now byte-exact** (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -15,7 +15,8 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
   (handwritten gp swap/`ei`), and near misses `scePadInit2` (one store), `scePadInfoPressMode`
   (branch vs `movz`), `scePadPortOpen`, `_send_to_iop`. Remainder is `game/lib_after_pad.cpp`.
 - `sdk/kernel/libkernel.c` (0x001267A0..0x0012EE30, carved from `game/lib.cpp`; the rest is
-  `game/lib_after_kernel.cpp`): 52 exact across SIF, IOP heap, load-file, file I/O, DECI2, TTY,
+  `game/lib_after_kernel.cpp`): 105 tracked functions exact (plus local helpers and `kCopy`
+  duplicates) across SIF, IOP heap, load-file, file I/O, DECI2, TTY, printf, TLB/exec setup,
   timers and alarms. Syscall stubs and functions using `di`/`ei`/`sync`/`cache`/COP0 or setting
   `$gp` stay retained assembly (they were assembly or inline asm originally).
 
@@ -27,12 +28,27 @@ pre-existing non-SDK replacements). No gameplay test.
 
 Lessons: snapshot structs (`padFrame_t`) rather than byte arrays fix sp-relative addressing;
 a local pointer to an RPC buffer keeps it in one callee-saved register; callee return types
-matter (`int DelayThread` freed `$2`); `if (x) a = 1; else a = 0;` gives `slti` where
-`a = x < 0` gives `srl`. Near misses for the permuter: `sceSifExitCmd`, `sceSifAddCmdHandler`,
-`_sceRpcGetFPacket`, `sceSifIsAliveIop`, `sceSifCheckStatRpc`, `sceSifInitIopHeap`,
-`sceSifAddRebootNotifyHandler`, `kputchar`, `serialPutchar`, `_fs_version`, `_lf_version`,
-`iAllocTimerCounter`, `iFreeTimerCounter`, `iStartTimerCounter`, `AlarmHandler`, `sceClose`.
-Test sources are in `build/svo-library-work/b/` (`pad_*.c`, `mc_*.c`, `k_*.c`); compare with
+matter (`int DelayThread` freed `$2`; `void sceDeci2Poll`, `void TerminateLibrary`); `if (x) a = 1;
+else a = 0;` gives `slti` where `a = x < 0` gives `srl`. This compiler emits sibling calls
+(`j callee` tail calls), so small wrappers such as `_sceFsSigSema`, `SetT2_*`, `Exit` are plain C,
+and a helper ending in a call cannot be inlined. A reload right after a store, or an unfilled
+delay slot before a load, means a volatile field (`ttyData_t` socket/wlen/rlen/busy, timer
+`seq`/`used`/`systemId`, counter `key`, alarm `counterId`). Load hoisting across a store means
+the two fields have non-aliasing types (`void *` header packet pointer in `sceSifGetOtherData`).
+`lui/ori 0xffff` for -1 means an `unsigned int` argument. Varargs use `va-mips.h` macros in
+`libkernel.h` (this compiler has no `stdarg.h`).
+
+Near misses (permuter or manual): `scePadInit2`, `scePadInfoPressMode`, `scePadPortOpen`,
+`_send_to_iop`, `sceSifAddCmdHandler`, `sceSifCheckStatRpc` (final test folds into `mode & 1`),
+`sceSifInitIopHeap`, `sceSifAddRebootNotifyHandler`, `kputchar` (return-copy placement),
+`_fs_version`, `_lf_version`, `sceClose`, `sceLseek`/`sceRead`/`sceWrite` (where `nowait` is
+assigned), `sceTtyHandler` (send-result register), `SetArg` (register allocation), `_request_call`/`_request_rdata`/`_request_bind`
+(field alias sets; a 729-way type sweep found none), `iGetTimerSystemTime`/`GetTimerSystemTime`
+(retail reads the count twice with `lwu`). `sceSifCallRpc` and `iSetTimerHandler` read `$gp`
+through what behaves as a scheduling barrier (source-order stores, `move` from `$28`), which
+points to inline asm in the original; they stay assembly unless inline asm is approved there.
+Store orders that resist reasoning can be swept with `build/svo-library-work/b/permbf.py`
+(it found `supplement_crt0`). Test sources are in `build/svo-library-work/b/` (`pad_*.c`, `mc_*.c`, `k_*.c`); compare with
 `build/svo-library-work/sdkcmp.py SRC PREFIX` inside the container.
 
 ## Broader runtime inventory
@@ -245,6 +261,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **36/387 identified functions (9.30%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **175/387 identified functions (45.22%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).
