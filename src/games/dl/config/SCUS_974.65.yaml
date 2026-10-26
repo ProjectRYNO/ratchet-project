@@ -92,6 +92,8 @@ segments:
     bss_size: 0x0
     subsegments:
       - [0x1A100, cpp, game/lib] # was .s/asm
+      - [0x26720, c, sdk/kernel/libkernel]
+      - [0x2EDB0, cpp, game/lib_after_kernel]
       - [0x31A10, c, newlib/libm/math/e_fmod]
       - [0x31E00, c, newlib/libm/math/e_pow]
       - [0x32B28, c, newlib/libm/math/e_sqrt]
@@ -154,9 +156,10 @@ segments:
       - [0x36D24, textbin, junk/core.text/libm_padding_00136DA4]
       - [0x36D28, cpp, game/lib_after_libm]
       - [0x39960, c, sdk/dma/libdma]
-      - [0x39E48, cpp, game/lib_after_dma]
+      - [0x39E48, c, sdk/mc/libmc]
       - [0x3ADF0, c, sdk/mtap/libmtap]
-      - [0x3B150, cpp, game/lib_after_mtap]
+      - [0x3B150, c, sdk/pad/libpad]
+      - [0x3C3F8, cpp, game/lib_after_pad]
       - [0x57460, textbin, junk/core.text/057460_057468]
       - [0x57468, asm, crt0]
       - [0x576b8, cpp, game/boot]

@@ -1,8 +1,8 @@
 {
   "scope": "Identified named SDK functions in retail boot ELF, including verified SDK C helpers; incomplete inventory, not all SDK code",
   "tracked_functions": 387,
-  "compiled_matching_functions": 36,
-  "compiled_matching_percent": 9.3,
+  "compiled_matching_functions": 122,
+  "compiled_matching_percent": 31.52,
   "groups": {
     "CD/DVD": {
       "tracked": 14,

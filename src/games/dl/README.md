@@ -14,7 +14,7 @@ functions verified against retail. Retained assembly does not count as decompile
 | --- | ---: | ---: | ---: |
 | [Boot and startup](code/game/boot.cpp) | 15 | 3 / 15 (20.00%) | 0 / 15 (0.00%) |
 | [Game and engine](code/game) — excluding boot and library aggregates | 4,718 | 0 / 4,718 (0.00%) | 0 / 4,718 (0.00%) |
-| Other runtime and SDK code — [lib.cpp](code/game/lib.cpp), [lib_after_libm.cpp](code/game/lib_after_libm.cpp), [lib_after_dma.cpp](code/game/lib_after_dma.cpp), [lib_after_mtap.cpp](code/game/lib_after_mtap.cpp) | 1,293 | 0 / 1,293 (0.00%) | 0 / 1,293 (0.00%) |
+| Other runtime and SDK code — [lib.cpp](code/game/lib.cpp), [lib_after_libm.cpp](code/game/lib_after_libm.cpp), [lib_after_kernel.cpp](code/game/lib_after_kernel.cpp), [lib_after_pad.cpp](code/game/lib_after_pad.cpp) | 1,293 | 0 / 1,293 (0.00%) | 0 / 1,293 (0.00%) |
 | [989snd audio client](DOCS/sound/989SND_MATCHING.md) | 59 | 59 / 59 (100.00%) | 59 / 59 (100.00%) |
 | [SDK networking/localization, DMA and multitap](DOCS/libraries/SDK.md) (`code/sdk/`) | 36 | 36 / 36 (100.00%) | 36 / 36 (100.00%) |
 | [Medius networking](DOCS/libraries/MEDIUS.md) | 1,462 | 46 / 1,462 (3.15%) | 46 / 1,462 (3.15%) |

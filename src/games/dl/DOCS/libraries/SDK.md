@@ -4,6 +4,37 @@ Current boot-only scope: **36/36 real functions (100.00%)** compiled and byte-ma
 
 The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all six complete module ranges (6,456 bytes). DMA contributes eight exact C functions; no real DMA routines remain assembly. See [DMA implementation and validation](SDK_DMA.md). DMA uses EE GCC 2.9 (991111-01); networking/localization retains SCE EE GCC 2.96. The historical 20/20 results below cover networking/localization only.
 
+## Pad, memory card and kernel splits (2026-10-26)
+
+**122/387 identified boot SDK functions (31.52%) are now byte-exact** (see
+[inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
+`-G0 -O2 -fno-builtin` like DMA/multitap:
+
+- `sdk/mc/libmc.c` (0x00139EC8..0x0013AE70, was `game/lib_after_dma.cpp`): 17/17 exact.
+- `sdk/pad/libpad.c` (0x0013B1D0..0x0013C478): 17 exact. Retained: `_pad_intr_hdr`
+  (handwritten gp swap/`ei`), and near misses `scePadInit2` (one store), `scePadInfoPressMode`
+  (branch vs `movz`), `scePadPortOpen`, `_send_to_iop`. Remainder is `game/lib_after_pad.cpp`.
+- `sdk/kernel/libkernel.c` (0x001267A0..0x0012EE30, carved from `game/lib.cpp`; the rest is
+  `game/lib_after_kernel.cpp`): 52 exact across SIF, IOP heap, load-file, file I/O, DECI2, TTY,
+  timers and alarms. Syscall stubs and functions using `di`/`ei`/`sync`/`cache`/COP0 or setting
+  `$gp` stay retained assembly (they were assembly or inline asm originally).
+
+Every entry in these ranges has its own `.lib_name` slot; padding words keep their own slots.
+New globals are named in `symbols_core.text.txt` (`sdkPad*`, `sdkMc*`, `sdkSif*`, `sdkFs*`,
+`sdkIopHeap*`, `sdkLoadFile*`, `sdkTimer`, ...). Verification: isolated split + build;
+`check_main_elf` PASS with no change outside registered slots (726 changed bytes, all in
+pre-existing non-SDK replacements). No gameplay test.
+
+Lessons: snapshot structs (`padFrame_t`) rather than byte arrays fix sp-relative addressing;
+a local pointer to an RPC buffer keeps it in one callee-saved register; callee return types
+matter (`int DelayThread` freed `$2`); `if (x) a = 1; else a = 0;` gives `slti` where
+`a = x < 0` gives `srl`. Near misses for the permuter: `sceSifExitCmd`, `sceSifAddCmdHandler`,
+`_sceRpcGetFPacket`, `sceSifIsAliveIop`, `sceSifCheckStatRpc`, `sceSifInitIopHeap`,
+`sceSifAddRebootNotifyHandler`, `kputchar`, `serialPutchar`, `_fs_version`, `_lf_version`,
+`iAllocTimerCounter`, `iFreeTimerCounter`, `iStartTimerCounter`, `AlarmHandler`, `sceClose`.
+Test sources are in `build/svo-library-work/b/` (`pad_*.c`, `mc_*.c`, `k_*.c`); compare with
+`build/svo-library-work/sdkcmp.py SRC PREFIX` inside the container.
+
 ## Broader runtime inventory
 
 The [SDK folder map](../../code/sdk/README.md) lists the additional boot runtime

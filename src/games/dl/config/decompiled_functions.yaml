@@ -9,6 +9,92 @@ functions:
   sceMtapPortClose: 0x0013B088
   sceMtapGetConnection: 0x0013B0F8
   sceMtapGetModVersion: 0x0013B168
+  scePadInit: 0x0013B1D0
+  scePadEnd: 0x0013B460
+  scePadPortClose: 0x0013B810
+  scePadGetDmaStr: 0x0013B8C8
+  scePadRead: 0x0013BA20
+  scePadGetState: 0x0013BA98
+  scePadSetReqState: 0x0013BB18
+  scePadGetReqState: 0x0013BBD0
+  scePadInfoAct: 0x0013BC30
+  scePadInfoMode: 0x0013BD50
+  scePadSetMainMode: 0x0013BE88
+  scePadSetActDirect: 0x0013BF40
+  scePadSetActAlign: 0x0013C008
+  scePadSetButtonInfo: 0x0013C0E0
+  scePadEnterPressMode: 0x0013C210
+  scePadGetModVersion: 0x0013C280
+  scePadSetDmaCallback: 0x0013C2E8
+  sceMcInit: 0x00139EC8
+  sceMcEnd: 0x0013A0F0
+  mceSifRpcEndFunc: 0x0013A148
+  sceMcOpen: 0x0013A160
+  sceMcMkdir: 0x0013A288
+  sceMcClose: 0x0013A2C0
+  sceMcSeek: 0x0013A380
+  mceIntrReadFixAlign: 0x0013A460
+  sceMcRead: 0x0013A510
+  sceMcWrite: 0x0013A628
+  sceMcSync: 0x0013A7A0
+  mceGetInfoApdx: 0x0013A868
+  sceMcGetInfo: 0x0013A8C0
+  sceMcGetDir: 0x0013AA40
+  sceMcFormat: 0x0013AB98
+  sceMcDelete: 0x0013AC68
+  sceMcUnformat: 0x0013AD98
+  sceFsSifCallRpc: 0x0012AA70
+  _lf_bind: 0x0012C4B8
+  write: 0x00127168
+  read: 0x001271E8
+  open: 0x00127260
+  fstat: 0x00127348
+  stat: 0x00127368
+  UnlinkAlarm: 0x0012E040
+  InsertAlarm: 0x0012DFB8
+  SetTimerHandler: 0x0012E7C8
+  TimerUSec2BusClock: 0x0012E848
+  _InitAlarm: 0x0012E8C8
+  sceSifGetSreg: 0x00129620
+  sceSifSetSreg: 0x00129638
+  sceSifExitRpc: 0x00129F30
+  sceSifSyncIop: 0x0012CDB0
+  sceFsReset: 0x0012B300
+  sceSifRemoveCmdHandler: 0x00129990
+  sceSifSendCmd: 0x00129B18
+  isceSifSendCmd: 0x00129B58
+  _sceRpcFreePacket: 0x0012A000
+  _sceRpcGetFPacket2: 0x0012A050
+  sceSifFreeIopHeap: 0x0012C3A8
+  sceSifLoadModuleBuffer: 0x0012CBC0
+  sceSifLoadStartModuleBuffer: 0x0012CBE0
+  kputs: 0x00127DA0
+  QueuePeekWriteDone: 0x00127DF0
+  QueuePeekReadDone: 0x00127E30
+  sceSifAllocIopHeap: 0x0012C240
+  sceSifFreeSysMemory: 0x0012C330
+  sceSifQueryMaxFreeMemSize: 0x0012C3C8
+  sceSifQueryTotalFreeMemSize: 0x0012C438
+  sceSifLoadFileReset: 0x0012C648
+  sceSifUnloadModule: 0x0012CA90
+  sceSifSearchModuleByName: 0x0012CB20
+  sceSifInitRebootNotify: 0x0012EC40
+  sceSifRemoveRebootNotifyHandler: 0x0012ED28
+  sceSifAllocSysMemory: 0x0012C2B0
+  sceDeci2Open: 0x00127C70
+  sceDeci2ReqSend: 0x00127CC0
+  sceDeci2Poll: 0x00127CF0
+  sceDeci2ExRecv: 0x00127D20
+  sceDeci2ExSend: 0x00127D58
+  _sceFsWaitS: 0x0012AFE0
+  _sceFsSemInit: 0x0012AF88
+  _sceFsIobSemaMK: 0x0012A970
+  new_iob: 0x0012A9E8
+  get_iob: 0x0012AB60
+  AllocTimerCounter: 0x0012E460
+  FreeTimerCounter: 0x0012E548
+  StartTimerCounter: 0x0012E650
+  QueueInit: 0x00127DC8
   sceDmaReset: 0x00139AE0
   sceDmaPutEnv: 0x00139BC0
   sceDmaPause: 0x00139E28
@@ -1285,6 +1371,419 @@ objects:
       - {object: sdk/mtap/libmtap, section: .mtap_sceMtapGetConnection, start: 0x0013B0F8, end: 0x0013B168}
       - {object: sdk/mtap/libmtap, section: .mtap_sceMtapGetModVersion, start: 0x0013B168, end: 0x0013B1CC}
       - {object: sdk/mtap/libmtap, section: .mtap_func_0013B1CC, start: 0x0013B1CC, end: 0x0013B1D0}
+  sdk/pad/libpad:
+    text_start: 0x0013B1D0
+    text_end: 0x0013C478
+    slots:
+      - {object: sdk/pad/libpad, section: .pad_scePadInit, start: 0x0013B1D0, end: 0x0013B320}
+      - {object: sdk/pad/libpad, section: .pad__pad_intr_hdr, start: 0x0013B320, end: 0x0013B368}
+      - {object: sdk/pad/libpad, section: .pad_scePadInit2, start: 0x0013B368, end: 0x0013B460}
+      - {object: sdk/pad/libpad, section: .pad_scePadEnd, start: 0x0013B460, end: 0x0013B510}
+      - {object: sdk/pad/libpad, section: .pad__send_to_iop, start: 0x0013B510, end: 0x0013B628}
+      - {object: sdk/pad/libpad, section: .pad_scePadPortOpen, start: 0x0013B628, end: 0x0013B810}
+      - {object: sdk/pad/libpad, section: .pad_scePadPortClose, start: 0x0013B810, end: 0x0013B8C8}
+      - {object: sdk/pad/libpad, section: .pad_scePadGetDmaStr, start: 0x0013B8C8, end: 0x0013BA20}
+      - {object: sdk/pad/libpad, section: .pad_scePadRead, start: 0x0013BA20, end: 0x0013BA98}
+      - {object: sdk/pad/libpad, section: .pad_scePadGetState, start: 0x0013BA98, end: 0x0013BB10}
+      - {object: sdk/pad/libpad, section: .pad_func_0013BB10, start: 0x0013BB10, end: 0x0013BB18}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetReqState, start: 0x0013BB18, end: 0x0013BBD0}
+      - {object: sdk/pad/libpad, section: .pad_scePadGetReqState, start: 0x0013BBD0, end: 0x0013BC28}
+      - {object: sdk/pad/libpad, section: .pad_func_0013BC28, start: 0x0013BC28, end: 0x0013BC30}
+      - {object: sdk/pad/libpad, section: .pad_scePadInfoAct, start: 0x0013BC30, end: 0x0013BD48}
+      - {object: sdk/pad/libpad, section: .pad_func_0013BD48, start: 0x0013BD48, end: 0x0013BD50}
+      - {object: sdk/pad/libpad, section: .pad_scePadInfoMode, start: 0x0013BD50, end: 0x0013BE88}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetMainMode, start: 0x0013BE88, end: 0x0013BF40}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetActDirect, start: 0x0013BF40, end: 0x0013C008}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetActAlign, start: 0x0013C008, end: 0x0013C0E0}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetButtonInfo, start: 0x0013C0E0, end: 0x0013C190}
+      - {object: sdk/pad/libpad, section: .pad_scePadInfoPressMode, start: 0x0013C190, end: 0x0013C210}
+      - {object: sdk/pad/libpad, section: .pad_scePadEnterPressMode, start: 0x0013C210, end: 0x0013C268}
+      - {object: sdk/pad/libpad, section: .pad_func_0013C268, start: 0x0013C268, end: 0x0013C280}
+      - {object: sdk/pad/libpad, section: .pad_scePadGetModVersion, start: 0x0013C280, end: 0x0013C2E8}
+      - {object: sdk/pad/libpad, section: .pad_scePadSetDmaCallback, start: 0x0013C2E8, end: 0x0013C410}
+      - {object: sdk/pad/libpad, section: .pad_func_0013C410, start: 0x0013C410, end: 0x0013C478}
+  sdk/kernel/libkernel:
+    text_start: 0x001267A0
+    text_end: 0x0012EE30
+    slots:
+      - {object: sdk/kernel/libkernel, section: .kernel_SetGsCrt, start: 0x001267A0, end: 0x001267B0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001267B0, start: 0x001267B0, end: 0x001267C0}
+      - {object: sdk/kernel/libkernel, section: .kernel__Exit, start: 0x001267C0, end: 0x001267D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001267D0, start: 0x001267D0, end: 0x001267E0}
+      - {object: sdk/kernel/libkernel, section: .kernel__LoadExecPS2, start: 0x001267E0, end: 0x001267F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001267F0, start: 0x001267F0, end: 0x00126800}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126800, start: 0x00126800, end: 0x00126810}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126810, start: 0x00126810, end: 0x00126820}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126820, start: 0x00126820, end: 0x00126830}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126830, start: 0x00126830, end: 0x00126840}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126840, start: 0x00126840, end: 0x00126850}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126850, start: 0x00126850, end: 0x00126860}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126860, start: 0x00126860, end: 0x00126870}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126870, start: 0x00126870, end: 0x00126880}
+      - {object: sdk/kernel/libkernel, section: .kernel_AddIntcHandler, start: 0x00126880, end: 0x00126890}
+      - {object: sdk/kernel/libkernel, section: .kernel_AddIntcHandler2, start: 0x00126890, end: 0x001268A0}
+      - {object: sdk/kernel/libkernel, section: .kernel_RemoveIntcHandler, start: 0x001268A0, end: 0x001268B0}
+      - {object: sdk/kernel/libkernel, section: .kernel_AddDmacHandler, start: 0x001268B0, end: 0x001268C0}
+      - {object: sdk/kernel/libkernel, section: .kernel_AddDmacHandler2, start: 0x001268C0, end: 0x001268D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_RemoveDmacHandler, start: 0x001268D0, end: 0x001268E0}
+      - {object: sdk/kernel/libkernel, section: .kernel__EnableIntc, start: 0x001268E0, end: 0x001268F0}
+      - {object: sdk/kernel/libkernel, section: .kernel__DisableIntc, start: 0x001268F0, end: 0x00126900}
+      - {object: sdk/kernel/libkernel, section: .kernel__EnableDmac, start: 0x00126900, end: 0x00126910}
+      - {object: sdk/kernel/libkernel, section: .kernel__DisableDmac, start: 0x00126910, end: 0x00126920}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126920, start: 0x00126920, end: 0x00126930}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126930, start: 0x00126930, end: 0x00126940}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126940, start: 0x00126940, end: 0x00126950}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126950, start: 0x00126950, end: 0x00126960}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126960, start: 0x00126960, end: 0x00126970}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126970, start: 0x00126970, end: 0x00126980}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126980, start: 0x00126980, end: 0x00126990}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126990, start: 0x00126990, end: 0x001269A0}
+      - {object: sdk/kernel/libkernel, section: .kernel_CreateThread, start: 0x001269A0, end: 0x001269B0}
+      - {object: sdk/kernel/libkernel, section: .kernel_DeleteThread, start: 0x001269B0, end: 0x001269C0}
+      - {object: sdk/kernel/libkernel, section: .kernel__StartThread, start: 0x001269C0, end: 0x001269D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001269D0, start: 0x001269D0, end: 0x001269E0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001269E0, start: 0x001269E0, end: 0x001269F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_TerminateThread, start: 0x001269F0, end: 0x00126A00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A00, start: 0x00126A00, end: 0x00126A10}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A10, start: 0x00126A10, end: 0x00126A20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A20, start: 0x00126A20, end: 0x00126A30}
+      - {object: sdk/kernel/libkernel, section: .kernel_ChangeThreadPriority, start: 0x00126A30, end: 0x00126A40}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A40, start: 0x00126A40, end: 0x00126A50}
+      - {object: sdk/kernel/libkernel, section: .kernel_RotateThreadReadyQueue, start: 0x00126A50, end: 0x00126A60}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A60, start: 0x00126A60, end: 0x00126A70}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A70, start: 0x00126A70, end: 0x00126A80}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126A80, start: 0x00126A80, end: 0x00126A90}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetThreadId, start: 0x00126A90, end: 0x00126AA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_ReferThreadStatus, start: 0x00126AA0, end: 0x00126AB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126AB0, start: 0x00126AB0, end: 0x00126AC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_SleepThread, start: 0x00126AC0, end: 0x00126AD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_WakeupThread, start: 0x00126AD0, end: 0x00126AE0}
+      - {object: sdk/kernel/libkernel, section: .kernel__iWakeupThread, start: 0x00126AE0, end: 0x00126AF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126AF0, start: 0x00126AF0, end: 0x00126B00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B00, start: 0x00126B00, end: 0x00126B10}
+      - {object: sdk/kernel/libkernel, section: .kernel_SuspendThread, start: 0x00126B10, end: 0x00126B20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B20, start: 0x00126B20, end: 0x00126B30}
+      - {object: sdk/kernel/libkernel, section: .kernel_ResumeThread, start: 0x00126B30, end: 0x00126B40}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B40, start: 0x00126B40, end: 0x00126B50}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B50, start: 0x00126B50, end: 0x00126B60}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B60, start: 0x00126B60, end: 0x00126B70}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B70, start: 0x00126B70, end: 0x00126B80}
+      - {object: sdk/kernel/libkernel, section: .kernel_EndOfHeap, start: 0x00126B80, end: 0x00126B90}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126B90, start: 0x00126B90, end: 0x00126BA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_CreateSema, start: 0x00126BA0, end: 0x00126BB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_DeleteSema, start: 0x00126BB0, end: 0x00126BC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_SignalSema, start: 0x00126BC0, end: 0x00126BD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_iSignalSema, start: 0x00126BD0, end: 0x00126BE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_WaitSema, start: 0x00126BE0, end: 0x00126BF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_PollSema, start: 0x00126BF0, end: 0x00126C00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C00, start: 0x00126C00, end: 0x00126C10}
+      - {object: sdk/kernel/libkernel, section: .kernel_ReferSemaStatus, start: 0x00126C10, end: 0x00126C20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C20, start: 0x00126C20, end: 0x00126C30}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C30, start: 0x00126C30, end: 0x00126C40}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetOsdConfigParam, start: 0x00126C40, end: 0x00126C50}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetOsdConfigParam, start: 0x00126C50, end: 0x00126C60}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C60, start: 0x00126C60, end: 0x00126C70}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C70, start: 0x00126C70, end: 0x00126C80}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C80, start: 0x00126C80, end: 0x00126C90}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126C90, start: 0x00126C90, end: 0x00126CA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CA0, start: 0x00126CA0, end: 0x00126CB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CB0, start: 0x00126CB0, end: 0x00126CC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CC0, start: 0x00126CC0, end: 0x00126CD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CD0, start: 0x00126CD0, end: 0x00126CE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CE0, start: 0x00126CE0, end: 0x00126CF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126CF0, start: 0x00126CF0, end: 0x00126D00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D00, start: 0x00126D00, end: 0x00126D10}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D10, start: 0x00126D10, end: 0x00126D20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D20, start: 0x00126D20, end: 0x00126D30}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D30, start: 0x00126D30, end: 0x00126D40}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D40, start: 0x00126D40, end: 0x00126D50}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D50, start: 0x00126D50, end: 0x00126D60}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D60, start: 0x00126D60, end: 0x00126D70}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D70, start: 0x00126D70, end: 0x00126D80}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D80, start: 0x00126D80, end: 0x00126D90}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126D90, start: 0x00126D90, end: 0x00126DA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DA0, start: 0x00126DA0, end: 0x00126DB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DB0, start: 0x00126DB0, end: 0x00126DC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DC0, start: 0x00126DC0, end: 0x00126DD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DD0, start: 0x00126DD0, end: 0x00126DE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DE0, start: 0x00126DE0, end: 0x00126DF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126DF0, start: 0x00126DF0, end: 0x00126E00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E00, start: 0x00126E00, end: 0x00126E10}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E10, start: 0x00126E10, end: 0x00126E20}
+      - {object: sdk/kernel/libkernel, section: .kernel_FlushCache, start: 0x00126E20, end: 0x00126E30}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E30, start: 0x00126E30, end: 0x00126E40}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E40, start: 0x00126E40, end: 0x00126E50}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E50, start: 0x00126E50, end: 0x00126E60}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E60, start: 0x00126E60, end: 0x00126E70}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifStopDma, start: 0x00126E70, end: 0x00126E80}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E80, start: 0x00126E80, end: 0x00126E90}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126E90, start: 0x00126E90, end: 0x00126EA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126EA0, start: 0x00126EA0, end: 0x00126EB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetOsdConfigParam2, start: 0x00126EB0, end: 0x00126EC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_GsGetIMR, start: 0x00126EC0, end: 0x00126ED0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126ED0, start: 0x00126ED0, end: 0x00126EE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_GsPutIMR, start: 0x00126EE0, end: 0x00126EF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126EF0, start: 0x00126EF0, end: 0x00126F00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126F00, start: 0x00126F00, end: 0x00126F10}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetVSyncFlag, start: 0x00126F10, end: 0x00126F20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126F20, start: 0x00126F20, end: 0x00126F30}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126F30, start: 0x00126F30, end: 0x00126F40}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifDmaStat, start: 0x00126F40, end: 0x00126F50}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126F50, start: 0x00126F50, end: 0x00126F60}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSetDma, start: 0x00126F60, end: 0x00126F70}
+      - {object: sdk/kernel/libkernel, section: .kernel_isceSifSetDma, start: 0x00126F70, end: 0x00126F80}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSetDChain, start: 0x00126F80, end: 0x00126F90}
+      - {object: sdk/kernel/libkernel, section: .kernel_isceSifSetDChain, start: 0x00126F90, end: 0x00126FA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSetReg, start: 0x00126FA0, end: 0x00126FB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifGetReg, start: 0x00126FB0, end: 0x00126FC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126FC0, start: 0x00126FC0, end: 0x00126FD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_Deci2Call, start: 0x00126FD0, end: 0x00126FE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126FE0, start: 0x00126FE0, end: 0x00126FF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00126FF0, start: 0x00126FF0, end: 0x00127000}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetMemorySize, start: 0x00127000, end: 0x00127010}
+      - {object: sdk/kernel/libkernel, section: .kernel__InitTLB, start: 0x00127010, end: 0x00127020}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceResetttyinit, start: 0x00127020, end: 0x00127030}
+      - {object: sdk/kernel/libkernel, section: .kernel_VSync, start: 0x00127030, end: 0x001270C0}
+      - {object: sdk/kernel/libkernel, section: .kernel_VSync2, start: 0x001270C0, end: 0x00127168}
+      - {object: sdk/kernel/libkernel, section: .kernel_write, start: 0x00127168, end: 0x001271E8}
+      - {object: sdk/kernel/libkernel, section: .kernel_read, start: 0x001271E8, end: 0x00127260}
+      - {object: sdk/kernel/libkernel, section: .kernel_open, start: 0x00127260, end: 0x00127288}
+      - {object: sdk/kernel/libkernel, section: .kernel_close, start: 0x00127288, end: 0x00127290}
+      - {object: sdk/kernel/libkernel, section: .kernel_lseek, start: 0x00127290, end: 0x00127298}
+      - {object: sdk/kernel/libkernel, section: .kernel_sbrk, start: 0x00127298, end: 0x00127348}
+      - {object: sdk/kernel/libkernel, section: .kernel_fstat, start: 0x00127348, end: 0x00127360}
+      - {object: sdk/kernel/libkernel, section: .kernel_getpid, start: 0x00127360, end: 0x00127368}
+      - {object: sdk/kernel/libkernel, section: .kernel_stat, start: 0x00127368, end: 0x00127390}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSDC, start: 0x00127390, end: 0x00127438}
+      - {object: sdk/kernel/libkernel, section: .kernel_SyncDCache, start: 0x00127438, end: 0x001274B8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001274B8, start: 0x001274B8, end: 0x001274C0}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceIDC, start: 0x001274C0, end: 0x00127568}
+      - {object: sdk/kernel/libkernel, section: .kernel_InvalidDCache, start: 0x00127568, end: 0x001275E8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_001275E8, start: 0x001275E8, end: 0x001275F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_QueryIntrContext, start: 0x001275F0, end: 0x00127600}
+      - {object: sdk/kernel/libkernel, section: .kernel_DisableIntc, start: 0x00127600, end: 0x00127668}
+      - {object: sdk/kernel/libkernel, section: .kernel_EnableIntc, start: 0x00127668, end: 0x001276D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_DisableDmac, start: 0x001276D0, end: 0x00127738}
+      - {object: sdk/kernel/libkernel, section: .kernel_EnableDmac, start: 0x00127738, end: 0x001277A0}
+      - {object: sdk/kernel/libkernel, section: .kernel_topThread, start: 0x001277A0, end: 0x00127878}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitThread, start: 0x00127878, end: 0x00127968}
+      - {object: sdk/kernel/libkernel, section: .kernel_iWakeupThread, start: 0x00127968, end: 0x00127A00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00127A00, start: 0x00127A00, end: 0x00127A08}
+      - {object: sdk/kernel/libkernel, section: .kernel_DelayThread, start: 0x00127A08, end: 0x00127AD0}
+      - {object: sdk/kernel/libkernel, section: .kernel_StartThread, start: 0x00127AD0, end: 0x00127C48}
+      - {object: sdk/kernel/libkernel, section: .kernel__DelayThreadHandler, start: 0x00127C48, end: 0x00127C70}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDeci2Open, start: 0x00127C70, end: 0x00127CB8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00127CB8, start: 0x00127CB8, end: 0x00127CC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDeci2ReqSend, start: 0x00127CC0, end: 0x00127CF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDeci2Poll, start: 0x00127CF0, end: 0x00127D18}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00127D18, start: 0x00127D18, end: 0x00127D20}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDeci2ExRecv, start: 0x00127D20, end: 0x00127D58}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDeci2ExSend, start: 0x00127D58, end: 0x00127D90}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00127D90, start: 0x00127D90, end: 0x00127DA0}
+      - {object: sdk/kernel/libkernel, section: .kernel_kputs, start: 0x00127DA0, end: 0x00127DC4}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00127DC4, start: 0x00127DC4, end: 0x00127DC8}
+      - {object: sdk/kernel/libkernel, section: .kernel_QueueInit, start: 0x00127DC8, end: 0x00127DF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_QueuePeekWriteDone, start: 0x00127DF0, end: 0x00127E30}
+      - {object: sdk/kernel/libkernel, section: .kernel_QueuePeekReadDone, start: 0x00127E30, end: 0x00127E70}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceTtyHandler, start: 0x00127E70, end: 0x00128008}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceTtyWrite, start: 0x00128008, end: 0x00128180}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceTtyRead, start: 0x00128180, end: 0x00128250}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceTtyInit, start: 0x00128250, end: 0x0012830C}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012830C, start: 0x0012830C, end: 0x00128310}
+      - {object: sdk/kernel/libkernel, section: .kernel_kputchar, start: 0x00128310, end: 0x00128348}
+      - {object: sdk/kernel/libkernel, section: .kernel_deci2Putchar, start: 0x00128348, end: 0x001283F8}
+      - {object: sdk/kernel/libkernel, section: .kernel_serialPutchar, start: 0x001283F8, end: 0x00128430}
+      - {object: sdk/kernel/libkernel, section: .kernel_ftoi, start: 0x00128430, end: 0x001284C0}
+      - {object: sdk/kernel/libkernel, section: .kernel_printfloat, start: 0x001284C0, end: 0x00128698}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSnprintf, start: 0x00128698, end: 0x001293B0}
+      - {object: sdk/kernel/libkernel, section: .kernel_snprintf_char, start: 0x001293B0, end: 0x00129408}
+      - {object: sdk/kernel/libkernel, section: .kernel_printf_char, start: 0x00129408, end: 0x00129430}
+      - {object: sdk/kernel/libkernel, section: .kernel_kprintf_char, start: 0x00129430, end: 0x00129458}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSnprintf_pf, start: 0x00129458, end: 0x001294A8}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSnprintf, start: 0x001294A8, end: 0x001294F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_scePrintf, start: 0x001294F0, end: 0x00129570}
+      - {object: sdk/kernel/libkernel, section: .kernel_kprintf, start: 0x00129570, end: 0x001295F0}
+      - {object: sdk/kernel/libkernel, section: .kernel__set_sreg, start: 0x001295F0, end: 0x00129610}
+      - {object: sdk/kernel/libkernel, section: .kernel__change_addr, start: 0x00129610, end: 0x00129620}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifGetSreg, start: 0x00129620, end: 0x00129638}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSetSreg, start: 0x00129638, end: 0x00129658}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00129658, start: 0x00129658, end: 0x00129660}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifInitCmd, start: 0x00129660, end: 0x001298E0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifExitCmd, start: 0x001298E0, end: 0x00129918}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifAddCmdHandler, start: 0x00129918, end: 0x00129990}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifRemoveCmdHandler, start: 0x00129990, end: 0x001299E0}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSifSendCmd, start: 0x001299E0, end: 0x00129B18}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSendCmd, start: 0x00129B18, end: 0x00129B58}
+      - {object: sdk/kernel/libkernel, section: .kernel_isceSifSendCmd, start: 0x00129B58, end: 0x00129B98}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSifCmdIntrHdlr, start: 0x00129B98, end: 0x00129CE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifWriteBackDCache, start: 0x00129CE0, end: 0x00129D8C}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_00129D8C, start: 0x00129D8C, end: 0x00129D90}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifInitRpc, start: 0x00129D90, end: 0x00129F30}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifExitRpc, start: 0x00129F30, end: 0x00129F58}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceRpcGetPacket, start: 0x00129F58, end: 0x0012A000}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceRpcFreePacket, start: 0x0012A000, end: 0x0012A020}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceRpcGetFPacket, start: 0x0012A020, end: 0x0012A050}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceRpcGetFPacket2, start: 0x0012A050, end: 0x0012A090}
+      - {object: sdk/kernel/libkernel, section: .kernel__request_end, start: 0x0012A090, end: 0x0012A160}
+      - {object: sdk/kernel/libkernel, section: .kernel__alarm_rdata, start: 0x0012A160, end: 0x0012A1A0}
+      - {object: sdk/kernel/libkernel, section: .kernel__request_rdata, start: 0x0012A1A0, end: 0x0012A270}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifGetOtherData, start: 0x0012A270, end: 0x0012A3D8}
+      - {object: sdk/kernel/libkernel, section: .kernel__search_svdata, start: 0x0012A3D8, end: 0x0012A428}
+      - {object: sdk/kernel/libkernel, section: .kernel__alarm_bind, start: 0x0012A428, end: 0x0012A468}
+      - {object: sdk/kernel/libkernel, section: .kernel__request_bind, start: 0x0012A468, end: 0x0012A538}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifBindRpc, start: 0x0012A538, end: 0x0012A688}
+      - {object: sdk/kernel/libkernel, section: .kernel__request_call, start: 0x0012A688, end: 0x0012A718}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifCallRpc, start: 0x0012A718, end: 0x0012A918}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifCheckStatRpc, start: 0x0012A918, end: 0x0012A958}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012A958, start: 0x0012A958, end: 0x0012A970}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFsIobSemaMK, start: 0x0012A970, end: 0x0012A9E0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012A9E0, start: 0x0012A9E0, end: 0x0012A9E8}
+      - {object: sdk/kernel/libkernel, section: .kernel_new_iob, start: 0x0012A9E8, end: 0x0012AA70}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceFsSifCallRpc, start: 0x0012AA70, end: 0x0012AB60}
+      - {object: sdk/kernel/libkernel, section: .kernel_get_iob, start: 0x0012AB60, end: 0x0012ABD0}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFs_Rcv_Intr, start: 0x0012ABD0, end: 0x0012AF88}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFsSemInit, start: 0x0012AF88, end: 0x0012AFE0}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFsWaitS, start: 0x0012AFE0, end: 0x0012B010}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFsSigSema, start: 0x0012B010, end: 0x0012B020}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceFs_Poff_Intr, start: 0x0012B020, end: 0x0012B068}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceFsInit, start: 0x0012B068, end: 0x0012B270}
+      - {object: sdk/kernel/libkernel, section: .kernel__fs_version, start: 0x0012B270, end: 0x0012B300}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceFsReset, start: 0x0012B300, end: 0x0012B338}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceOpen, start: 0x0012B338, end: 0x0012B5C8}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceClose, start: 0x0012B5C8, end: 0x0012B740}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceLseek, start: 0x0012B740, end: 0x0012B980}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceRead, start: 0x0012B980, end: 0x0012BBF0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceWrite, start: 0x0012BBF0, end: 0x0012BEB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012BEB0, start: 0x0012BEB0, end: 0x0012BF10}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceDevctl, start: 0x0012BF10, end: 0x0012C1B8}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifInitIopHeap, start: 0x0012C1B8, end: 0x0012C240}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifAllocIopHeap, start: 0x0012C240, end: 0x0012C2B0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifAllocSysMemory, start: 0x0012C2B0, end: 0x0012C330}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifFreeSysMemory, start: 0x0012C330, end: 0x0012C3A8}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifFreeIopHeap, start: 0x0012C3A8, end: 0x0012C3C8}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifQueryMaxFreeMemSize, start: 0x0012C3C8, end: 0x0012C438}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifQueryTotalFreeMemSize, start: 0x0012C438, end: 0x0012C4A8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012C4A8, start: 0x0012C4A8, end: 0x0012C4B8}
+      - {object: sdk/kernel/libkernel, section: .kernel__lf_bind, start: 0x0012C4B8, end: 0x0012C5B8}
+      - {object: sdk/kernel/libkernel, section: .kernel__lf_version, start: 0x0012C5B8, end: 0x0012C648}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifLoadFileReset, start: 0x0012C648, end: 0x0012C680}
+      - {object: sdk/kernel/libkernel, section: .kernel__sceSifLoadModuleBuffer, start: 0x0012C680, end: 0x0012C888}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifStopModule, start: 0x0012C888, end: 0x0012CA90}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifUnloadModule, start: 0x0012CA90, end: 0x0012CB20}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSearchModuleByName, start: 0x0012CB20, end: 0x0012CBC0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifLoadModuleBuffer, start: 0x0012CBC0, end: 0x0012CBE0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifLoadStartModuleBuffer, start: 0x0012CBE0, end: 0x0012CC00}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012CC00, start: 0x0012CC00, end: 0x0012CC30}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifResetIop, start: 0x0012CC30, end: 0x0012CD88}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifIsAliveIop, start: 0x0012CD88, end: 0x0012CDB0}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifSyncIop, start: 0x0012CDB0, end: 0x0012CE00}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifRebootIop, start: 0x0012CE00, end: 0x0012CF10}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012CF10, start: 0x0012CF10, end: 0x0012CF18}
+      - {object: sdk/kernel/libkernel, section: .kernel_Copy, start: 0x0012CF18, end: 0x0012CF28}
+      - {object: sdk/kernel/libkernel, section: .kernel_kCopy, start: 0x0012CF28, end: 0x0012CF60}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetEntryAddress, start: 0x0012CF60, end: 0x0012CF70}
+      - {object: sdk/kernel/libkernel, section: .kernel_setup, start: 0x0012CF70, end: 0x0012CF80}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitTLBFunctions, start: 0x0012CF80, end: 0x0012D048}
+      - {object: sdk/kernel/libkernel, section: .kernel__SetTLBEntry, start: 0x0012D048, end: 0x0012D058}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitTLB, start: 0x0012D058, end: 0x0012D098}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitTLB32MB, start: 0x0012D098, end: 0x0012D28C}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012D28C, start: 0x0012D28C, end: 0x0012D300}
+      - {object: sdk/kernel/libkernel, section: .kernel__kExitTLBHandler, start: 0x0012D300, end: 0x0012D420}
+      - {object: sdk/kernel/libkernel, section: .kernel_DIntr, start: 0x0012D420, end: 0x0012D470}
+      - {object: sdk/kernel/libkernel, section: .kernel_EIntr, start: 0x0012D470, end: 0x0012D488}
+      - {object: sdk/kernel/libkernel, section: .kernel_supplement_crt0, start: 0x0012D488, end: 0x0012D4E8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012D4E8, start: 0x0012D4E8, end: 0x0012D4F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_kCopy___dupe2, start: 0x0012D4F0, end: 0x0012D528}
+      - {object: sdk/kernel/libkernel, section: .kernel_kFindAddress, start: 0x0012D528, end: 0x0012D568}
+      - {object: sdk/kernel/libkernel, section: .kernel_FindAddress, start: 0x0012D568, end: 0x0012D578}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012D578, start: 0x0012D578, end: 0x0012D580}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitSystemCallTableAddress, start: 0x0012D580, end: 0x0012D680}
+      - {object: sdk/kernel/libkernel, section: .kernel_setup___dupe2, start: 0x0012D680, end: 0x0012D690}
+      - {object: sdk/kernel/libkernel, section: .kernel__InitSys, start: 0x0012D690, end: 0x0012D6E4}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012D6E4, start: 0x0012D6E4, end: 0x0012D6E8}
+      - {object: sdk/kernel/libkernel, section: .kernel_setup___dupe3, start: 0x0012D6E8, end: 0x0012D6F8}
+      - {object: sdk/kernel/libkernel, section: .kernel_Copy___dupe2, start: 0x0012D6F8, end: 0x0012D708}
+      - {object: sdk/kernel/libkernel, section: .kernel_kCopy___dupe3, start: 0x0012D708, end: 0x0012D740}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetEntryAddress___dupe2, start: 0x0012D740, end: 0x0012D750}
+      - {object: sdk/kernel/libkernel, section: .kernel_PatchIsNeeded, start: 0x0012D750, end: 0x0012D7B8}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitExecPS2, start: 0x0012D7B8, end: 0x0012D864}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012D864, start: 0x0012D864, end: 0x0012D868}
+      - {object: sdk/kernel/libkernel, section: .kernel_Copy___dupe3, start: 0x0012D868, end: 0x0012D878}
+      - {object: sdk/kernel/libkernel, section: .kernel_kCopy___dupe4, start: 0x0012D878, end: 0x0012D8A8}
+      - {object: sdk/kernel/libkernel, section: .kernel_setup___dupe4, start: 0x0012D8A8, end: 0x0012D8B8}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetArg, start: 0x0012D8B8, end: 0x0012D9D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_TerminateLibrary, start: 0x0012D9D0, end: 0x0012D9D8}
+      - {object: sdk/kernel/libkernel, section: .kernel_LoadExecPS2, start: 0x0012D9D8, end: 0x0012DA20}
+      - {object: sdk/kernel/libkernel, section: .kernel_Exit, start: 0x0012DA20, end: 0x0012DA48}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012DA48, start: 0x0012DA48, end: 0x0012DA50}
+      - {object: sdk/kernel/libkernel, section: .kernel_setup___dupe5, start: 0x0012DA50, end: 0x0012DA60}
+      - {object: sdk/kernel/libkernel, section: .kernel_Copy___dupe4, start: 0x0012DA60, end: 0x0012DA70}
+      - {object: sdk/kernel/libkernel, section: .kernel_kCopy___dupe5, start: 0x0012DA70, end: 0x0012DAA8}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetEntryAddress___dupe3, start: 0x0012DAA8, end: 0x0012DAB8}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitAlarm, start: 0x0012DAB8, end: 0x0012DB8C}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012DB8C, start: 0x0012DB8C, end: 0x0012DB90}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetT2, start: 0x0012DB90, end: 0x0012DC00}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetT2_COUNT, start: 0x0012DC00, end: 0x0012DC10}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetT2_MODE, start: 0x0012DC10, end: 0x0012DC20}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetT2_COMP, start: 0x0012DC20, end: 0x0012DC30}
+      - {object: sdk/kernel/libkernel, section: .kernel_InitTimer, start: 0x0012DC30, end: 0x0012DD88}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012DD88, start: 0x0012DD88, end: 0x0012DD90}
+      - {object: sdk/kernel/libkernel, section: .kernel_StartTimerSystemTime, start: 0x0012DD90, end: 0x0012DE20}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012DE20, start: 0x0012DE20, end: 0x0012DE28}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetNextComp, start: 0x0012DE28, end: 0x0012DFB8}
+      - {object: sdk/kernel/libkernel, section: .kernel_InsertAlarm, start: 0x0012DFB8, end: 0x0012E040}
+      - {object: sdk/kernel/libkernel, section: .kernel_UnlinkAlarm, start: 0x0012E040, end: 0x0012E078}
+      - {object: sdk/kernel/libkernel, section: .kernel_cbTimerHandler, start: 0x0012E078, end: 0x0012E320}
+      - {object: sdk/kernel/libkernel, section: .kernel_iGetTimerSystemTime, start: 0x0012E320, end: 0x0012E370}
+      - {object: sdk/kernel/libkernel, section: .kernel_GetTimerSystemTime, start: 0x0012E370, end: 0x0012E3F0}
+      - {object: sdk/kernel/libkernel, section: .kernel_iAllocTimerCounter, start: 0x0012E3F0, end: 0x0012E460}
+      - {object: sdk/kernel/libkernel, section: .kernel_AllocTimerCounter, start: 0x0012E460, end: 0x0012E4A8}
+      - {object: sdk/kernel/libkernel, section: .kernel_iFreeTimerCounter, start: 0x0012E4A8, end: 0x0012E548}
+      - {object: sdk/kernel/libkernel, section: .kernel_FreeTimerCounter, start: 0x0012E548, end: 0x0012E598}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012E598, start: 0x0012E598, end: 0x0012E5A0}
+      - {object: sdk/kernel/libkernel, section: .kernel_iStartTimerCounter, start: 0x0012E5A0, end: 0x0012E650}
+      - {object: sdk/kernel/libkernel, section: .kernel_StartTimerCounter, start: 0x0012E650, end: 0x0012E6A0}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012E6A0, start: 0x0012E6A0, end: 0x0012E6D0}
+      - {object: sdk/kernel/libkernel, section: .kernel_iSetTimerHandler, start: 0x0012E6D0, end: 0x0012E7C8}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetTimerHandler, start: 0x0012E7C8, end: 0x0012E848}
+      - {object: sdk/kernel/libkernel, section: .kernel_TimerUSec2BusClock, start: 0x0012E848, end: 0x0012E8B8}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012E8B8, start: 0x0012E8B8, end: 0x0012E8C8}
+      - {object: sdk/kernel/libkernel, section: .kernel__InitAlarm, start: 0x0012E8C8, end: 0x0012E918}
+      - {object: sdk/kernel/libkernel, section: .kernel_AlarmHandler, start: 0x0012E918, end: 0x0012E978}
+      - {object: sdk/kernel/libkernel, section: .kernel_SetTimerAlarm, start: 0x0012E978, end: 0x0012EAA8}
+      - {object: sdk/kernel/libkernel, section: .kernel_iSetTimerAlarm, start: 0x0012EAA8, end: 0x0012EB98}
+      - {object: sdk/kernel/libkernel, section: .kernel_ReleaseTimerAlarm, start: 0x0012EB98, end: 0x0012EC40}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifInitRebootNotify, start: 0x0012EC40, end: 0x0012EC68}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012EC68, start: 0x0012EC68, end: 0x0012EC70}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifAddRebootNotifyHandler, start: 0x0012EC70, end: 0x0012ED28}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifRemoveRebootNotifyHandler, start: 0x0012ED28, end: 0x0012ED80}
+      - {object: sdk/kernel/libkernel, section: .kernel_sceSifExecNotifyHandler, start: 0x0012ED80, end: 0x0012EE28}
+      - {object: sdk/kernel/libkernel, section: .kernel_func_0012EE28, start: 0x0012EE28, end: 0x0012EE30}
+  sdk/mc/libmc:
+    text_start: 0x00139EC8
+    text_end: 0x0013AE70
+    slots:
+      - {object: sdk/mc/libmc, section: .mc_sceMcInit, start: 0x00139EC8, end: 0x0013A0F0}
+      - {object: sdk/mc/libmc, section: .mc_sceMcEnd, start: 0x0013A0F0, end: 0x0013A148}
+      - {object: sdk/mc/libmc, section: .mc_mceSifRpcEndFunc, start: 0x0013A148, end: 0x0013A158}
+      - {object: sdk/mc/libmc, section: .mc_func_0013A158, start: 0x0013A158, end: 0x0013A160}
+      - {object: sdk/mc/libmc, section: .mc_sceMcOpen, start: 0x0013A160, end: 0x0013A288}
+      - {object: sdk/mc/libmc, section: .mc_sceMcMkdir, start: 0x0013A288, end: 0x0013A2C0}
+      - {object: sdk/mc/libmc, section: .mc_sceMcClose, start: 0x0013A2C0, end: 0x0013A380}
+      - {object: sdk/mc/libmc, section: .mc_sceMcSeek, start: 0x0013A380, end: 0x0013A460}
+      - {object: sdk/mc/libmc, section: .mc_mceIntrReadFixAlign, start: 0x0013A460, end: 0x0013A510}
+      - {object: sdk/mc/libmc, section: .mc_sceMcRead, start: 0x0013A510, end: 0x0013A628}
+      - {object: sdk/mc/libmc, section: .mc_sceMcWrite, start: 0x0013A628, end: 0x0013A7A0}
+      - {object: sdk/mc/libmc, section: .mc_sceMcSync, start: 0x0013A7A0, end: 0x0013A868}
+      - {object: sdk/mc/libmc, section: .mc_mceGetInfoApdx, start: 0x0013A868, end: 0x0013A8C0}
+      - {object: sdk/mc/libmc, section: .mc_sceMcGetInfo, start: 0x0013A8C0, end: 0x0013AA40}
+      - {object: sdk/mc/libmc, section: .mc_sceMcGetDir, start: 0x0013AA40, end: 0x0013AB90}
+      - {object: sdk/mc/libmc, section: .mc_func_0013AB90, start: 0x0013AB90, end: 0x0013AB98}
+      - {object: sdk/mc/libmc, section: .mc_sceMcFormat, start: 0x0013AB98, end: 0x0013AC68}
+      - {object: sdk/mc/libmc, section: .mc_sceMcDelete, start: 0x0013AC68, end: 0x0013AD88}
+      - {object: sdk/mc/libmc, section: .mc_func_0013AD88, start: 0x0013AD88, end: 0x0013AD98}
+      - {object: sdk/mc/libmc, section: .mc_sceMcUnformat, start: 0x0013AD98, end: 0x0013AE68}
+      - {object: sdk/mc/libmc, section: .mc_func_0013AE68, start: 0x0013AE68, end: 0x0013AE70}
   sdk/dma/libdma:
     text_start: 0x001399E0
     text_end: 0x00139EC8

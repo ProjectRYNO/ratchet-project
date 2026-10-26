@@ -156,6 +156,21 @@ $(OBJ_DIR)/sdk/mtap/libmtap.o: code/sdk/mtap/libmtap.c code/sdk/mtap/libmtap.h M
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
+$(OBJ_DIR)/sdk/pad/libpad.o: code/sdk/pad/libpad.c code/sdk/pad/libpad.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/sdk/mc/libmc.o: code/sdk/mc/libmc.c code/sdk/mc/libmc.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/sdk/kernel/libkernel.o: code/sdk/kernel/libkernel.c code/sdk/kernel/libkernel.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
 # SDK networking/localization probes match SCE 2.96 with default alignment.
 # Keep this independent of Medius's minimal alignment and SVO3's size flags.
 SDK_COMPILE_FLAGS = -G0 -O2 -fno-builtin -fno-common -ffunction-sections

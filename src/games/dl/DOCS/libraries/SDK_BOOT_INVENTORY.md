@@ -1,9 +1,10 @@
 # Identified boot SDK progress
 
-**36/387 identified functions (9.30%) are decompiled and byte-matching.**
+**122/387 identified functions (31.52%) are decompiled and byte-matching** (2026-10-26).
 This is a broader named-function inventory, not an exhaustive SDK census.
-The current `code/sdk/` folder is 36/36 exact; the rest of this inventory remains
-assembly in game library aggregates. Unknown routines are not silently counted
+`code/sdk/` now also holds the pad, memory-card and kernel splits (`pad/libpad.c`,
+`mc/libmc.c`, `kernel/libkernel.c`); every entry in those ranges has its own slot, and
+functions not yet recovered (including handwritten kernel stubs) stay as retained assembly. Unknown routines are not silently counted
 as complete. The denominator can grow as ownership is recovered.
 
 | Component | Identified functions | Decompiled and matching |
@@ -12,16 +13,16 @@ as complete. The denominator can grow as ownership is recovered.
 | DMA | 8 | 8 / 8 (100.00%) |
 | IPU | 4 | 0 / 4 (0.00%) |
 | MPEG | 11 | 0 / 11 (0.00%) |
-| SIF | 50 | 0 / 50 (0.00%) |
+| SIF | 50 | 19 / 50 (38.00%) |
 | VU0 | 4 | 0 / 4 (0.00%) |
 | configuration | 16 | 0 / 16 (0.00%) |
-| file I/O | 18 | 0 / 18 (0.00%) |
+| file I/O | 18 | 7 / 18 (38.89%) |
 | graphics | 15 | 0 / 15 (0.00%) |
-| kernel/runtime | 180 | 0 / 180 (0.00%) |
-| memory card | 17 | 0 / 17 (0.00%) |
+| kernel/runtime | 180 | 26 / 180 (14.44%) |
+| memory card | 17 | 17 / 17 (100.00%) |
 | multitap | 8 | 8 / 8 (100.00%) |
 | networking/localization | 20 | 20 / 20 (100.00%) |
-| pad | 22 | 0 / 22 (0.00%) |
+| pad | 22 | 17 / 22 (77.27%) |
 
 The machine-readable inventory is [SDK_BOOT.csv](../progress/SDK_BOOT.csv), with
 addresses, current source ownership and selection evidence. It starts with the
