@@ -63,6 +63,15 @@ MediusErrorCode MEDIUS_FILES_SECTION(MediusFileDelete) MediusFileDelete(MediusFi
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusFileServices", func_01EDB308);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusFileServices", MediusFileListFiles);
+MediusErrorCode MEDIUS_FILES_SECTION(MediusFileListFiles) MediusFileListFiles(MediusFileListRequest *MyFileListRequest, MediusFileTypeListCallback MyFileListCallback,void *pUserData)
+{
+    MyFileListRequest->MessageID[0x14] = 0;
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    gMediusFunctionPointers[107] = MyFileListCallback;
+    gUserArguments[107] = pUserData;
+    if (MediusSendMessage(1, 0xb2, 0xb0, MyFileListRequest) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusFileServices", MediusFileInitAttributes);

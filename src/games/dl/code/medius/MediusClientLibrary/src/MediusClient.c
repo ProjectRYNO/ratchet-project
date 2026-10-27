@@ -17,6 +17,9 @@ extern short GlobalLobbyFilterFlag;
 extern MediusFilterMaskInfo MyFilterMaskInfo;
 // 1 when accounts are handled through MediusBilling; MediusAccountDelete is then not available.
 extern int mediusBillingEnabled;
+// Copy of the last logout request, resent by MediusAccountLogoutInternal.
+extern MediusAccountLogoutRequest mediusBillingLogoutRequest;
+extern int printf(const char *, ...);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", FUN_01ed5528);
 
@@ -136,7 +139,14 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/sr
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusAccountLogout);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusAccountLogoutInternal);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusAccountLogoutInternal) MediusAccountLogoutInternal(MediusAccountLogoutRequest *req)
+{
+    printf("IDF... MediusAccountLogoutInternal\n");
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    if (MediusSendMessage(1, 0x15, 0x26, &mediusBillingLogoutRequest) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", func_01ED6908);
 

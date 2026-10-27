@@ -7,7 +7,9 @@ to place them per function. Inside `.section .svo_<Module>_<fn>`, a `.rdata` dir
 rewritten to `.section .svo_<Module>_<fn>.rodata`. Table contents, alignment and order are
 unchanged. Iksemel `.iks_<fn>` and Medius `.medius_<module>_<fn>` sections use the same
 convention; subsequent tables receive `.rodata.1`, `.rodata.2`, etc., so retail inter-table
-padding remains in its original data section. SVO3 routing is unchanged.
+padding remains in its original data section. SVO3 routing is unchanged. A Medius function's
+string literals, which gcc writes to `.rdata` just before the function's section, go to that
+function's `.rodata` section the same way.
 Unregistered sections are discarded by the linker script, so a table without a
 registered rodata slot fails the link instead of being placed silently.
 """
@@ -15,11 +17,32 @@ import re
 import sys
 
 
+def following_medius_section(lines, start):
+    """Medius function section that a top-level `.rdata` block (string literals) precedes."""
+    for line in lines[start + 1:]:
+        match = re.match(r'\s*\.section\s+([^,\s]+)', line)
+        if match:
+            return match[1] if match[1].startswith('.medius_') else None
+        if re.match(r'\s*\.(?:text|data|bss|rdata)\b', line):
+            return None
+    return None
+
+
 def rewrite(text):
     current = None
     out = []
     table_counts = {}
-    for line in text.splitlines(keepends=True):
+    lines = text.splitlines(keepends=True)
+    for number, line in enumerate(lines):
+        if current is None and re.match(r'\s*\.rdata\s*$', line):
+            # gcc writes a function's string literals before its section directive.
+            owner = following_medius_section(lines, number)
+            if owner:
+                index = table_counts.get(owner, 0)
+                table_counts[owner] = index + 1
+                suffix = f'.{index}' if index else ''
+                out.append(f'\t.section {owner}.rodata{suffix},"a",@progbits\n')
+                continue
         match = re.match(r'\s*\.section\s+(\.(?:svo|iks|medius)_[^,\s]+)', line)
         if match:
             current = match[1]

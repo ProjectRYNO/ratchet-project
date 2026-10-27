@@ -778,4 +778,18 @@ typedef struct { // 0x26
     /* 0x15 */ char SessionKey[17];
 } MediusAccountLogoutRequest;
 
+
+typedef struct { // 0xB0
+    /* 0x00 */ unsigned char FilenameBeginsWith[128];
+    /* 0x80 */ unsigned int FilesizeGreaterThan;
+    /* 0x84 */ unsigned int FilesizeLessThan;
+    /* 0x88 */ unsigned int OwnedByID;
+    /* 0x8C */ unsigned int NewerThanTimestamp;
+    /* 0x90 */ unsigned int StartingEntryNumber;
+    /* 0x94 */ unsigned int PageSize;
+    /* 0x98 */ char MessageID[21];
+} MediusFileListRequest;
+
+typedef void (*MediusFileTypeListCallback)(void);
+
 #endif

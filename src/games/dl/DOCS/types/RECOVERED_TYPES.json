@@ -15258,5 +15258,57 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "MediusFileListRequest",
+    "size": "0xB0",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusFileServices.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "FilenameBeginsWith",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilesizeGreaterThan",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "FilesizeLessThan",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "OwnedByID",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "NewerThanTimestamp",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "StartingEntryNumber",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 152,
+        "bitfield": false
+      }
+    ]
   }
 ]

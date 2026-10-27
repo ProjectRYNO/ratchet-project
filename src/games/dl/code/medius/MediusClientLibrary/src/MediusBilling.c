@@ -13,17 +13,57 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingClientVersion);
+typedef enum { MBILL_OK = 0, MBILL_GENERAL_ERROR = -1 } mbill_Result;
+typedef void (*MediusBillingLogoutCallback)(void);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingServerVersion);
+// Billing request state; 3 asks the billing update to log out.
+extern int mediusBillingState;
+// Server library version string, filled from the server's version reply.
+extern char mediusBillingServerVersion[];
+// Logout completion callback and its user argument.
+extern MediusBillingLogoutCallback mediusBillingLogoutCallback;
+extern void *mediusBillingLogoutEcho;
+// Non-zero once the billing library is loaded.
+extern int mediusBillingLoaded;
+extern char *strncpy(char *, const char *, unsigned int);
+extern int sprintf(char *, const char *, ...);
+
+mbill_Result MEDIUS_BILLING_SECTION(MediusBillingClientVersion) MediusBillingClientVersion(char *pVersion, int buffSize)
+{
+    char version[64];
+
+    sprintf(version, "Medius Billing Library Version %d.%d.%04d", 2, 8, 6);
+    strncpy(pVersion, version, buffSize);
+    pVersion[buffSize - 1] = 0;
+    return MBILL_OK;
+}
+
+mbill_Result MEDIUS_BILLING_SECTION(MediusBillingServerVersion) MediusBillingServerVersion(char *pVersion, int buffSize)
+{
+    strncpy(pVersion, mediusBillingServerVersion, buffSize);
+    pVersion[buffSize - 1] = 0;
+    return MBILL_OK;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", func_01ED4430);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingUpdate);
+int MEDIUS_BILLING_SECTION(MediusBillingUpdate) MediusBillingUpdate(void)
+{
+    int result = -1;
+
+    if (mediusBillingLoaded) result = 0;
+    return result;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", func_01ED4450);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingIsLoaded);
+mbill_Result MEDIUS_BILLING_SECTION(MediusBillingIsLoaded) MediusBillingIsLoaded(void)
+{
+    mbill_Result result = MBILL_GENERAL_ERROR;
+
+    if (mediusBillingLoaded) result = MBILL_OK;
+    return result;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", func_01ED4478);
 
@@ -31,7 +71,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/sr
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingLogInCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", MediusBillingAccountLogout);
+mbill_Result MEDIUS_BILLING_SECTION(MediusBillingAccountLogout) MediusBillingAccountLogout(MediusBillingLogoutCallback Callback, void *cbEcho)
+{
+    mediusBillingLogoutCallback = Callback;
+    mediusBillingLogoutEcho = cbEcho;
+    mediusBillingState = 3;
+    return MBILL_OK;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusBilling", func_01ED4788);
 

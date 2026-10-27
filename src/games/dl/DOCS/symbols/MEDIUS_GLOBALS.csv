@@ -37,3 +37,9 @@ rtParseMaxClasses,0x001B23C0,code/medius/rt_util/rt_parse.c,"core.bss word; MaxC
 rtParseMaxMessageSize,0x001B23C4,code/medius/rt_util/rt_parse.c,"core.bss word; MaxMessageSize passed to rt_parse_initialize",rt_parse
 rtParseFragments,0x001B23C8,code/medius/rt_util/rt_parse.c,"core.bss pointer; 256 fragment-reassembly slots of 0x34 bytes, buffer pointer at +0x30",rt_parse
 mediusBillingEnabled,0x00169D50,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; MediusAccountDelete returns MediusErrorFeatureNotEnabled and MediusAccountLogout takes the billing path when it is 1",MediusClient
+mediusBillingState,0x00169BBC,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; MediusBillingAccountLogout sets it to 3 to request a logout",MediusBilling
+mediusBillingServerVersion,0x00169C48,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data char array, no debug-info name; server library version string copied out by MediusBillingServerVersion",MediusBilling
+mediusBillingLogoutEcho,0x00169C88,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; user argument for the billing logout callback",MediusBilling
+mediusBillingLogoutCallback,0x00169C94,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; billing logout completion callback set by MediusBillingAccountLogout",MediusBilling
+mediusBillingLoaded,0x001B7648,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.bss word, no debug-info name; non-zero once the billing library is loaded (MediusBillingUpdate, MediusBillingIsLoaded)",MediusBilling
+mediusBillingLogoutRequest,0x001B78E0,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss MediusAccountLogoutRequest (0x26), no debug-info name; copy of the last logout request, resent by MediusAccountLogoutInternal",MediusClient
