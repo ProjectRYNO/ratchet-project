@@ -15,3 +15,24 @@ rtTimePlatformInitialized,0x00168BA1,code/medius/rt_util/ps2/rt_time_platform.c,
 rtTimePlatformBase,0x001B23E8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_PLATFORM_BASE {Secs, Ticks, USecs, LastCount}; COP0 Count time base kept by update_base",rt_time_platform
 rtTimePlatformDate,0x001B23F8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_DATE; decoded from the CD RTC by update_date_time, read by get_date_time",rt_time_platform
 rtTimeCdromDevice,0x001965C8,code/medius/rt_util/ps2/rt_time_platform.c,"core.data string ""cdrom0:"" passed to sceDevctl by update_date_time",rt_time_platform
+rtCryptMd5Padding,0x001694B8,code/medius/rt_crypt/src/md5.c,"core.data 64-byte RFC 1321 PADDING (0x80 then zeros); md5Final pads with it",md5
+rtCryptMd2Padding,0x00169430,code/medius/rt_crypt/src/md2.c,"core.data RFC 1319 PADDING pointer table indexed by pad length; md2Final",md2
+rtCryptMd2Sbox,0x00196820,code/medius/rt_crypt/src/md2.c,"core.data rodata RFC 1319 PI_SUBST (debug-info name gS); md2Transform",md2
+rtCryptShaInitState,0x001693D0,code/medius/rt_crypt/src/SHA1.c,"core.data SHA_CTX (0x60) with the SHA-1 initial digest; SHAInit copies it whole",SHA1
+rtCryptShaEndianProbe,0x00196760,code/medius/rt_crypt/src/SHA1.c,"core.data rodata string ""#S"" read as an unsigned short by endianTest",SHA1
+rtCryptMd4Padding,0x00169478,code/medius/rt_crypt/src/md4.c,"core.data 64-byte RFC 1320 PADDING (0x80 then zeros); md4Final pads with it",md4
+rtCryptVersionString,0x00196B38,code/medius/rt_crypt/src/rt_crypt.c,"core.data rodata string ""rt_crypt version: 2.10.2""; returned by KM_GetVersionStringPtr",rt_crypt
+rtCryptPrngSeeded,0x001694F8,code/medius/rt_crypt/src/rt_crypt.c,"core.data byte; InitializePRNG seeds the Mersenne Twister once and sets it",rt_crypt
+mediusACodecGSMInterfacePtr,0x00167F44,code/medius/dme_client/src/DmeInterfaceManager.c,"core.data pointer between gUDPInterfacePtr and gACodecLPCInterfacePtr; no debug-info name; CreateCodec uses it for 320-byte frames encoded to 33 bytes (GSM 06.10)",DmeInterfaceManager
+mediusMessageIdFormat,0x00199AF8,code/medius/MediusClientLibrary/src/stringmanager.c,"core.data rodata string ""%s.%d""; iCreateAndAllocateMessageID formats session key and counter",stringmanager
+rtParseInitialized,0x00168B84,code/medius/rt_util/rt_parse.c,"core.data byte; set by rt_parse_initialize, cleared by rt_parse_shutdown, tested by every rt_parse entry point",rt_parse
+rtParseFragmentId,0x00168B85,code/medius/rt_util/rt_parse.c,"core.data byte; zeroed after rt_parse_initialize registers the fragment handler",rt_parse
+rtParseMessageBuffer,0x00168B88,code/medius/rt_util/rt_parse.c,"core.data pointer; MaxMessageSize*3-byte buffer each message payload is copied into before its parser runs",rt_parse
+rtParseParsers,0x00168B8C,code/medius/rt_util/rt_parse.c,"core.data pointer; parser callbacks indexed [class * rtParseMaxTypes + type]",rt_parse
+gaTypeCount,0x00168B90,code/medius/rt_util/rt_parse.c,"core.data pointer (debug-info name); registered type count per message class",rt_parse
+rtParseMessageCounts,0x00168B94,code/medius/rt_util/rt_parse.c,"core.data pointer; per-type receive counters incremented by rt_parse_execute",rt_parse
+rtParsePreExecuteCallback,0x00168B98,code/medius/rt_util/rt_parse.c,"core.data pointer; optional callback rt_parse_execute runs before each parser",rt_parse
+rtParseMaxTypes,0x001B23BC,code/medius/rt_util/rt_parse.c,"core.bss word; MaxTypes passed to rt_parse_initialize",rt_parse
+rtParseMaxClasses,0x001B23C0,code/medius/rt_util/rt_parse.c,"core.bss word; MaxClasses passed to rt_parse_initialize",rt_parse
+rtParseMaxMessageSize,0x001B23C4,code/medius/rt_util/rt_parse.c,"core.bss word; MaxMessageSize passed to rt_parse_initialize",rt_parse
+rtParseFragments,0x001B23C8,code/medius/rt_util/rt_parse.c,"core.bss pointer; 256 fragment-reassembly slots of 0x34 bytes, buffer pointer at +0x30",rt_parse

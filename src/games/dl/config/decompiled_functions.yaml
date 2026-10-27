@@ -348,6 +348,126 @@ functions:
   rt_token_add_ownership: 0x01EACB58
   rt_token_remove_ownership: 0x01EACB98
   rt_token_build_token_msg: 0x01EACBF0
+  KM_MD5: 0x01EB1B30
+  KM_Salted_MD5: 0x01EB1B90
+  md5Init: 0x01EB1C20
+  md5Update: 0x01EB1C60
+  md5Final: 0x01EB1DC0
+  RC4Init: 0x01EAE190
+  RC4Code: 0x01EAE230
+  KM_MD2: 0x01EB0D18
+  md2Init: 0x01EB0D78
+  md2Update: 0x01EB0D98
+  md2Final: 0x01EB0E58
+  md2Transform: 0x01EB0EE8
+  SHAInit: 0x01EAE980
+  SHAUpdate: 0x01EAEA48
+  SHAFinal: 0x01EAEBE0
+  endianTest: 0x01EAECF0
+  KM_MD4: 0x01EB1040
+  md4Init: 0x01EB10A0
+  md4Update: 0x01EB10E0
+  md4Final: 0x01EB11C8
+  md4Transform: 0x01EB1278
+  Encode: 0x01EB1A80
+  Decode: 0x01EB1AD0
+  KM_Initialize: 0x01EA8EC8
+  IsNullRSAKey: 0x01EA8F98
+  KM_GetLocalPublicKey: 0x01EA8FD8
+  GetKeyMaster: 0x01EA90F0
+  NetUseCrypt: 0x01EB2CB0
+  IsNullRCKey: 0x01EB2EE0
+  NewKeyChain: 0x01EB2F20
+  DeleteKeyChain: 0x01EB2F70
+  AppendKeyChain: 0x01EB2FF0
+  GetKeyChain: 0x01EB3028
+  RemoveKeyChain: 0x01EB3060
+  KM_GetVersionStringPtr: 0x01EB30B8
+  KM_SHA1: 0x01EB30C8
+  KM_Salted_SHA1: 0x01EB3138
+  KM_SetLocalClientID: 0x01EB32C8
+  KM_SetPublicKey: 0x01EB32F8
+  KM_SetLocalKeyPair: 0x01EB3470
+  KM_SetGameSessionKey: 0x01EB3558
+  KM_AddSymmetricKey: 0x01EB36A0
+  KM_CompareSymmetricKey: 0x01EB3838
+  KM_GetPublicKey: 0x01EB33E0
+  KM_DeleteKeys: 0x01EB3C70
+  KM_Destroy: 0x01EB3CE0
+  KM_RSAAdjust: 0x01EB4990
+  lintSetSmallValue: 0x01EACEA0
+  IsEven: 0x01EACEE0
+  IsZero: 0x01EACEF0
+  lintSetBit: 0x01EACF38
+  MOD: 0x01EACFC0
+  RSAEncryptBlock: 0x01EAE578
+  RSADecryptBlock: 0x01EAE638
+  RSAEncrypt: 0x01EAE710
+  RSADecrypt: 0x01EAE798
+  ClearInterfacePointers: 0x01E9FF08
+  iCreateAndAllocateMessageID: 0x01EDEB28
+  GetOID: 0x01EE1550
+  NetIRegisterMessage: 0x01EA6258
+  NetIRegParseMessage: 0x01EA6280
+  NetIRegisterApplicationMessage: 0x01EA62A8
+  destroy: 0x01EDA770
+  rt_parse_shutdown: 0x01EAA610
+  rt_parse_update: 0x01EAAE98
+  NetBitMaskIsSet: 0x01E9FF68
+  NetBitMaskSet: 0x01E9FFD8
+  MediusDListUpdatePack: 0x01EDA408
+  MediusDListRequestPack: 0x01EDA5C0
+  CreateSequence: 0x01ED3A50
+  DestroySequence: 0x01ED3AE0
+  CreateVSequence: 0x01ED3EA8
+  DestroyVSequence: 0x01ED3F20
+  MediusUpdateClanStats: 0x01ED5320
+  MediusGetServerTime: 0x01ED5CB8
+  MediusDnasSignature: 0x01ED6418
+  MediusAccountRegistration: 0x01ED6910
+  MediusAccountUpdateStats: 0x01ED6998
+  MediusAnonymousLogin: 0x01ED6AA8
+  MediusCreateGame: 0x01ED6B28
+  MediusTextFilter: 0x01ED6BB0
+  MediusCreateChannel: 0x01ED6C30
+  MediusJoinChannel: 0x01ED6DB0
+  MediusGetGamePlayers: 0x01ED6E48
+  MediusGetPlayerInfo: 0x01ED6EC8
+  MediusGetGameInfo: 0x01ED6F48
+  MediusGetChannelInfo: 0x01ED6FC8
+  MediusFindPlayer: 0x01ED7048
+  MediusSendGenericChatMessage: 0x01ED70C8
+  MediusSendBinaryMessage: 0x01ED7130
+  MediusAddToBuddyList: 0x01ED7198
+  MediusRemoveFromBuddyList: 0x01ED7218
+  MediusGetIgnoreList: 0x01ED72A0
+  MediusAddToIgnoreList: 0x01ED7320
+  MediusRemoveFromIgnoreList: 0x01ED73A0
+  MediusSendPlayerReport: 0x01ED7530
+  MediusSendWorldReport: 0x01ED7590
+  MediusSendEndGameReport: 0x01ED75F0
+  MediusGetAnnouncements: 0x01ED7658
+  MediusGetAllAnnouncements: 0x01ED76D8
+  MediusSetGameListFilter: 0x01ED7758
+  MediusClearGameListFilter: 0x01ED77D0
+  MediusGetGameListFilter: 0x01ED7848
+  MediusGetMyIP: 0x01ED7948
+  MediusAccountGetID: 0x01ED79D8
+  MediusGetLocations: 0x01ED7A58
+  MediusGenericChatSetFilter: 0x01ED7AF0
+  MediusSetLocalizationParams: 0x01ED7CA8
+  MediusGetBuddyList_ExtraInfo: 0x01ED7E20
+  MediusGetTotalRankings: 0x01ED7E98
+  MediusGetLobbyPlayerNames_ExtraInfo: 0x01ED7F10
+  MediusGetGames_ExtraInfo: 0x01ED7F88
+  MediusGetChannels_ExtraInfo: 0x01ED8000
+  MediusUpdateLadderStatsWide: 0x01ED8178
+  MediusGetLadderStatsWide: 0x01ED81F8
+  MediusToken: 0x01ED83D8
+  MediusSetAutoChatHistory: 0x01ED8450
+  InitSequence: 0x01ED3B08
+  InitializePRNG: 0x01EB3ED0
+  KM_CreateRandomRCKey: 0x01EB3F10
   DefaultInit___dupe3: 0x01EF3780
   FreeContexts: 0x01EF3CF0
   GetDimensions: 0x01EF3C2C
@@ -3972,6 +4092,320 @@ objects:
       - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_build_token_msg, start: 0x01EACBF0, end: 0x01EACCF8}
       - {object: medius/rt_util/rt_token, section: .medius_token_rt_token_build_token_list_msg, start: 0x01EACCF8, end: 0x01EACE98}
       - {object: medius/rt_util/rt_token, section: .medius_token_func_01EACE98, start: 0x01EACE98, end: 0x01EACEA0}
+  medius/rt_crypt/src/md5:
+    text_start: 0x01EB1B30
+    text_end: 0x01EB1E88
+    slots:
+      - {object: medius/rt_crypt/src/md5, section: .medius_md5_KM_MD5, start: 0x01EB1B30, end: 0x01EB1B90}
+      - {object: medius/rt_crypt/src/md5, section: .medius_md5_KM_Salted_MD5, start: 0x01EB1B90, end: 0x01EB1C20}
+      - {object: medius/rt_crypt/src/md5, section: .medius_md5_md5Init, start: 0x01EB1C20, end: 0x01EB1C60}
+      - {object: medius/rt_crypt/src/md5, section: .medius_md5_md5Update, start: 0x01EB1C60, end: 0x01EB1DC0}
+      - {object: medius/rt_crypt/src/md5, section: .medius_md5_md5Final, start: 0x01EB1DC0, end: 0x01EB1E88}
+  medius/rt_crypt/src/RC4:
+    text_start: 0x01EAE190
+    text_end: 0x01EAE2BC
+    slots:
+      - {object: medius/rt_crypt/src/RC4, section: .medius_rc4_RC4Init, start: 0x01EAE190, end: 0x01EAE230}
+      - {object: medius/rt_crypt/src/RC4, section: .medius_rc4_RC4Code, start: 0x01EAE230, end: 0x01EAE2BC}
+  medius/rt_crypt/src/md2:
+    text_start: 0x01EB0D18
+    text_end: 0x01EB1040
+    slots:
+      - {object: medius/rt_crypt/src/md2, section: .medius_md2_KM_MD2, start: 0x01EB0D18, end: 0x01EB0D78}
+      - {object: medius/rt_crypt/src/md2, section: .medius_md2_md2Init, start: 0x01EB0D78, end: 0x01EB0D98}
+      - {object: medius/rt_crypt/src/md2, section: .medius_md2_md2Update, start: 0x01EB0D98, end: 0x01EB0E58}
+      - {object: medius/rt_crypt/src/md2, section: .medius_md2_md2Final, start: 0x01EB0E58, end: 0x01EB0EE8}
+      - {object: medius/rt_crypt/src/md2, section: .medius_md2_md2Transform, start: 0x01EB0EE8, end: 0x01EB1040}
+  medius/rt_crypt/src/SHA1:
+    text_start: 0x01EAE980
+    text_end: 0x01EAED18
+    slots:
+      - {object: medius/rt_crypt/src/SHA1, section: .medius_sha1_SHAInit, start: 0x01EAE980, end: 0x01EAEA48}
+      - {object: medius/rt_crypt/src/SHA1, section: .medius_sha1_SHAUpdate, start: 0x01EAEA48, end: 0x01EAEBE0}
+      - {object: medius/rt_crypt/src/SHA1, section: .medius_sha1_SHAFinal, start: 0x01EAEBE0, end: 0x01EAECF0}
+      - {object: medius/rt_crypt/src/SHA1, section: .medius_sha1_endianTest, start: 0x01EAECF0, end: 0x01EAED18}
+  medius/rt_crypt/src/md4:
+    text_start: 0x01EB1040
+    text_end: 0x01EB1B30
+    slots:
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_KM_MD4, start: 0x01EB1040, end: 0x01EB10A0}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_md4Init, start: 0x01EB10A0, end: 0x01EB10E0}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_md4Update, start: 0x01EB10E0, end: 0x01EB11C8}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_md4Final, start: 0x01EB11C8, end: 0x01EB1278}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_md4Transform, start: 0x01EB1278, end: 0x01EB1A80}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_Encode, start: 0x01EB1A80, end: 0x01EB1AD0}
+      - {object: medius/rt_crypt/src/md4, section: .medius_md4_Decode, start: 0x01EB1AD0, end: 0x01EB1B30}
+  medius/rt_crypt/src/rt_crypt_public:
+    text_start: 0x01EA8EC8
+    text_end: 0x01EA913C
+    slots:
+      - {object: medius/rt_crypt/src/rt_crypt_public, section: .medius_cryptpub_KM_Initialize, start: 0x01EA8EC8, end: 0x01EA8F98}
+      - {object: medius/rt_crypt/src/rt_crypt_public, section: .medius_cryptpub_IsNullRSAKey, start: 0x01EA8F98, end: 0x01EA8FD8}
+      - {object: medius/rt_crypt/src/rt_crypt_public, section: .medius_cryptpub_KM_GetLocalPublicKey, start: 0x01EA8FD8, end: 0x01EA90F0}
+      - {object: medius/rt_crypt/src/rt_crypt_public, section: .medius_cryptpub_GetKeyMaster, start: 0x01EA90F0, end: 0x01EA913C}
+  medius/rt_crypt/src/rt_crypt:
+    text_start: 0x01EB2CB0
+    text_end: 0x01EB4B40
+    slots:
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_NetUseCrypt, start: 0x01EB2CB0, end: 0x01EB2CD0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_rt_crypt_resolve_interface, start: 0x01EB2CD0, end: 0x01EB2EE0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_IsNullRCKey, start: 0x01EB2EE0, end: 0x01EB2F20}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_NewKeyChain, start: 0x01EB2F20, end: 0x01EB2F70}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_DeleteKeyChain, start: 0x01EB2F70, end: 0x01EB2FF0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_AppendKeyChain, start: 0x01EB2FF0, end: 0x01EB3028}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_GetKeyChain, start: 0x01EB3028, end: 0x01EB3060}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_RemoveKeyChain, start: 0x01EB3060, end: 0x01EB30B0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_func_01EB30B0, start: 0x01EB30B0, end: 0x01EB30B8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_GetVersionStringPtr, start: 0x01EB30B8, end: 0x01EB30C8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_SHA1, start: 0x01EB30C8, end: 0x01EB3138}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Salted_SHA1, start: 0x01EB3138, end: 0x01EB31D8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Create, start: 0x01EB31D8, end: 0x01EB32C8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_SetLocalClientID, start: 0x01EB32C8, end: 0x01EB32F8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_SetPublicKey, start: 0x01EB32F8, end: 0x01EB33E0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_GetPublicKey, start: 0x01EB33E0, end: 0x01EB3470}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_SetLocalKeyPair, start: 0x01EB3470, end: 0x01EB3558}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_SetGameSessionKey, start: 0x01EB3558, end: 0x01EB3628}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_GetGameSessionKey, start: 0x01EB3628, end: 0x01EB36A0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_AddSymmetricKey, start: 0x01EB36A0, end: 0x01EB37A8}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_GetSymmetricKey, start: 0x01EB37A8, end: 0x01EB3838}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_CompareSymmetricKey, start: 0x01EB3838, end: 0x01EB38E0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_DeleteSymmetricKey, start: 0x01EB38E0, end: 0x01EB3970}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_CopyKeys, start: 0x01EB3970, end: 0x01EB3A88}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_DigiSign, start: 0x01EB3A88, end: 0x01EB3B78}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_DigiVerify, start: 0x01EB3B78, end: 0x01EB3C70}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_DeleteKeys, start: 0x01EB3C70, end: 0x01EB3CE0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Destroy, start: 0x01EB3CE0, end: 0x01EB3E08}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Cleanup, start: 0x01EB3E08, end: 0x01EB3ED0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_InitializePRNG, start: 0x01EB3ED0, end: 0x01EB3F10}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_CreateRandomRCKey, start: 0x01EB3F10, end: 0x01EB3F68}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Encrypt, start: 0x01EB3F68, end: 0x01EB42C0}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Encrypt2, start: 0x01EB42C0, end: 0x01EB4518}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Decrypt, start: 0x01EB4518, end: 0x01EB4778}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_Decrypt2, start: 0x01EB4778, end: 0x01EB4990}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_KM_RSAAdjust, start: 0x01EB4990, end: 0x01EB4A28}
+      - {object: medius/rt_crypt/src/rt_crypt, section: .medius_crypt_GetSoftwareKeyPair, start: 0x01EB4A28, end: 0x01EB4B40}
+  medius/rt_crypt/src/LargeInt:
+    text_start: 0x01EACEA0
+    text_end: 0x01EAD5D4
+    slots:
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_lintSetSmallValue, start: 0x01EACEA0, end: 0x01EACEE0}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_IsEven, start: 0x01EACEE0, end: 0x01EACEF0}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_IsZero, start: 0x01EACEF0, end: 0x01EACF30}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_func_01EACF30, start: 0x01EACF30, end: 0x01EACF38}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_lintSetBit, start: 0x01EACF38, end: 0x01EACF60}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_lintIncrement, start: 0x01EACF60, end: 0x01EACFB0}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_func_01EACFB0, start: 0x01EACFB0, end: 0x01EACFC0}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_MOD, start: 0x01EACFC0, end: 0x01EAD018}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_func_01EAD018, start: 0x01EAD018, end: 0x01EAD020}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_QRMOD, start: 0x01EAD020, end: 0x01EAD158}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_EMOD, start: 0x01EAD158, end: 0x01EAD358}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_func_01EAD358, start: 0x01EAD358, end: 0x01EAD368}
+      - {object: medius/rt_crypt/src/LargeInt, section: .medius_lint_EMODM, start: 0x01EAD368, end: 0x01EAD5D4}
+  medius/rt_crypt/src/RSA:
+    text_start: 0x01EAE578
+    text_end: 0x01EAE82C
+    slots:
+      - {object: medius/rt_crypt/src/RSA, section: .medius_rsa_RSAEncryptBlock, start: 0x01EAE578, end: 0x01EAE638}
+      - {object: medius/rt_crypt/src/RSA, section: .medius_rsa_RSADecryptBlock, start: 0x01EAE638, end: 0x01EAE710}
+      - {object: medius/rt_crypt/src/RSA, section: .medius_rsa_RSAEncrypt, start: 0x01EAE710, end: 0x01EAE798}
+      - {object: medius/rt_crypt/src/RSA, section: .medius_rsa_RSADecrypt, start: 0x01EAE798, end: 0x01EAE82C}
+  medius/dme_client/src/DmeInterfaceManager:
+    text_start: 0x01E9FF08
+    text_end: 0x01E9FF64
+    slots:
+      - {object: medius/dme_client/src/DmeInterfaceManager, section: .medius_dmeif_ClearInterfacePointers, start: 0x01E9FF08, end: 0x01E9FF64}
+  medius/MediusClientLibrary/src/stringmanager:
+    text_start: 0x01EDEB28
+    text_end: 0x01EDEB58
+    slots:
+      - {object: medius/MediusClientLibrary/src/stringmanager, section: .medius_strmgr_iCreateAndAllocateMessageID, start: 0x01EDEB28, end: 0x01EDEB58}
+  medius/rt_cert/src/OID:
+    text_start: 0x01EE1550
+    text_end: 0x01EE15D8
+    slots:
+      - {object: medius/rt_cert/src/OID, section: .medius_oid_GetOID, start: 0x01EE1550, end: 0x01EE15D0}
+      - {object: medius/rt_cert/src/OID, section: .medius_oid_func_01EE15D0, start: 0x01EE15D0, end: 0x01EE15D8}
+  medius/dme_client/src/DmeRegister:
+    text_start: 0x01EA6258
+    text_end: 0x01EA62C8
+    slots:
+      - {object: medius/dme_client/src/DmeRegister, section: .medius_dmereg_NetIRegisterMessage, start: 0x01EA6258, end: 0x01EA6280}
+      - {object: medius/dme_client/src/DmeRegister, section: .medius_dmereg_NetIRegParseMessage, start: 0x01EA6280, end: 0x01EA62A8}
+      - {object: medius/dme_client/src/DmeRegister, section: .medius_dmereg_NetIRegisterApplicationMessage, start: 0x01EA62A8, end: 0x01EA62C8}
+  medius/MediusDList/src/MediusDMetaType:
+    text_start: 0x01EDA668
+    text_end: 0x01EDA870
+    slots:
+      - {object: medius/MediusDList/src/MediusDMetaType, section: .medius_dmeta_create, start: 0x01EDA668, end: 0x01EDA770}
+      - {object: medius/MediusDList/src/MediusDMetaType, section: .medius_dmeta_destroy, start: 0x01EDA770, end: 0x01EDA798}
+      - {object: medius/MediusDList/src/MediusDMetaType, section: .medius_dmeta_getThisField, start: 0x01EDA798, end: 0x01EDA870}
+  medius/rt_util/rt_parse:
+    text_start: 0x01EAA4C0
+    text_end: 0x01EAB1B8
+    slots:
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_initialize, start: 0x01EAA4C0, end: 0x01EAA610}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_shutdown, start: 0x01EAA610, end: 0x01EAA708}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_register, start: 0x01EAA708, end: 0x01EAA7B8}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_reg_parser, start: 0x01EAA7B8, end: 0x01EAA898}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_execute, start: 0x01EAA898, end: 0x01EAAA90}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_get_callback, start: 0x01EAAA90, end: 0x01EAAB18}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_fragment_message, start: 0x01EAAB18, end: 0x01EAADE8}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_timeout_frag_msg, start: 0x01EAADE8, end: 0x01EAAE98}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_update, start: 0x01EAAE98, end: 0x01EAAEB8}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_find_frag_msg, start: 0x01EAAEB8, end: 0x01EAB0B8}
+      - {object: medius/rt_util/rt_parse, section: .medius_parse_rt_parse_fragment_handler, start: 0x01EAB0B8, end: 0x01EAB1B8}
+  medius/dme_client/src/DmeList:
+    text_start: 0x01E9FF68
+    text_end: 0x01EA01EC
+    slots:
+      - {object: medius/dme_client/src/DmeList, section: .medius_dmelist_NetBitMaskIsSet, start: 0x01E9FF68, end: 0x01E9FFD8}
+      - {object: medius/dme_client/src/DmeList, section: .medius_dmelist_NetBitMaskSet, start: 0x01E9FFD8, end: 0x01EA0048}
+      - {object: medius/dme_client/src/DmeList, section: .medius_dmelist_NetGenerateClientList, start: 0x01EA0048, end: 0x01EA0110}
+      - {object: medius/dme_client/src/DmeList, section: .medius_dmelist_NetGenerateJoinedClientList, start: 0x01EA0110, end: 0x01EA01EC}
+  medius/MediusDList/src/MediusDList_shared:
+    text_start: 0x01EDA408
+    text_end: 0x01EDA664
+    slots:
+      - {object: medius/MediusDList/src/MediusDList_shared, section: .medius_dlshared_MediusDListUpdatePack, start: 0x01EDA408, end: 0x01EDA4F8}
+      - {object: medius/MediusDList/src/MediusDList_shared, section: .medius_dlshared_MediusDListSubscribePack, start: 0x01EDA4F8, end: 0x01EDA5C0}
+      - {object: medius/MediusDList/src/MediusDList_shared, section: .medius_dlshared_MediusDListRequestPack, start: 0x01EDA5C0, end: 0x01EDA664}
+  medius/StreamMedia/src/sequence:
+    text_start: 0x01ED3A50
+    text_end: 0x01ED3EA4
+    slots:
+      - {object: medius/StreamMedia/src/sequence, section: .medius_sequence_CreateSequence, start: 0x01ED3A50, end: 0x01ED3AE0}
+      - {object: medius/StreamMedia/src/sequence, section: .medius_sequence_DestroySequence, start: 0x01ED3AE0, end: 0x01ED3B08}
+      - {object: medius/StreamMedia/src/sequence, section: .medius_sequence_InitSequence, start: 0x01ED3B08, end: 0x01ED3B60}
+      - {object: medius/StreamMedia/src/sequence, section: .medius_sequence_AddSequence, start: 0x01ED3B60, end: 0x01ED3D48}
+      - {object: medius/StreamMedia/src/sequence, section: .medius_sequence_GetSequenceData, start: 0x01ED3D48, end: 0x01ED3EA4}
+  medius/StreamMedia/src/vsequence:
+    text_start: 0x01ED3EA8
+    text_end: 0x01ED4378
+    slots:
+      - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_CreateVSequence, start: 0x01ED3EA8, end: 0x01ED3F20}
+      - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_DestroyVSequence, start: 0x01ED3F20, end: 0x01ED3F48}
+      - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_AddVSequence, start: 0x01ED3F48, end: 0x01ED4038}
+      - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_GetVDataBytes, start: 0x01ED4038, end: 0x01ED41E0}
+      - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_GetVSequenceData, start: 0x01ED41E0, end: 0x01ED4378}
+  medius/MediusClientLibrary/src/MediusClans:
+    text_start: 0x01ED5320
+    text_end: 0x01ED5524
+    slots:
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusUpdateClanStats, start: 0x01ED5320, end: 0x01ED53A0}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A0, start: 0x01ED53A0, end: 0x01ED5428}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED5428, start: 0x01ED5428, end: 0x01ED54A8}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED54A8, start: 0x01ED54A8, end: 0x01ED5524}
+  medius/MediusClientLibrary/src/MediusClient:
+    text_start: 0x01ED5528
+    text_end: 0x01ED84C4
+    slots:
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_FUN_01ed5528, start: 0x01ED5528, end: 0x01ED5538}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_FUN_01ed5538, start: 0x01ED5538, end: 0x01ED5548}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetNatServiceAddress, start: 0x01ED5548, end: 0x01ED5570}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetNatServiceAddress, start: 0x01ED5570, end: 0x01ED5590}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetProcessingState, start: 0x01ED5590, end: 0x01ED55A0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetProcessingState, start: 0x01ED55A0, end: 0x01ED55B0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetClientAddrList, start: 0x01ED55B0, end: 0x01ED5638}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetClientAddrList, start: 0x01ED5638, end: 0x01ED5658}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusResolveAddrCallback, start: 0x01ED5658, end: 0x01ED56B8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetQueuedRequest, start: 0x01ED56B8, end: 0x01ED5710}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetQueuedRequestType, start: 0x01ED5710, end: 0x01ED5720}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetQueuedRequest, start: 0x01ED5720, end: 0x01ED5778}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusCheckRequestQueue, start: 0x01ED5778, end: 0x01ED5860}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_BillingLoginCallback, start: 0x01ED5860, end: 0x01ED5A28}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_BillingLogoutCallback, start: 0x01ED5A28, end: 0x01ED5A90}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusLocalConnectCallback, start: 0x01ED5A90, end: 0x01ED5B20}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetClientConnectCallback, start: 0x01ED5B20, end: 0x01ED5B38}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetClientConnectCallback, start: 0x01ED5B38, end: 0x01ED5B48}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetClientConnectCallbackArg, start: 0x01ED5B48, end: 0x01ED5B58}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusClearClientConnectCallback, start: 0x01ED5B58, end: 0x01ED5B70}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED5B70, start: 0x01ED5B70, end: 0x01ED5B90}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusInitializeBare, start: 0x01ED5B90, end: 0x01ED5CA8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED5CA8, start: 0x01ED5CA8, end: 0x01ED5CB8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetServerTime, start: 0x01ED5CB8, end: 0x01ED5D30}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetMySessionKey, start: 0x01ED5D30, end: 0x01ED5D68}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusCloseBare, start: 0x01ED5D68, end: 0x01ED5DD0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendMessage, start: 0x01ED5DD0, end: 0x01ED5E08}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusConnect, start: 0x01ED5E08, end: 0x01ED5F40}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetDefaultDisconnectParams, start: 0x01ED5F40, end: 0x01ED5F90}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusDisconnectCB, start: 0x01ED5F90, end: 0x01ED5FD8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MUISDisconnectCB, start: 0x01ED5FD8, end: 0x01ED5FE8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusDisconnect, start: 0x01ED5FE8, end: 0x01ED6098}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusUpdate, start: 0x01ED6098, end: 0x01ED6120}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusUpdateUniverseInformation, start: 0x01ED6120, end: 0x01ED6218}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusUpdateBare, start: 0x01ED6218, end: 0x01ED6258}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusUpdateClientState, start: 0x01ED6258, end: 0x01ED62B8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSessionBegin, start: 0x01ED62B8, end: 0x01ED6380}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSessionEnd, start: 0x01ED6380, end: 0x01ED6418}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusDnasSignature, start: 0x01ED6418, end: 0x01ED6478}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountLogin, start: 0x01ED6478, end: 0x01ED66B0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountLoginInternal, start: 0x01ED66B0, end: 0x01ED6718}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountLogout, start: 0x01ED6718, end: 0x01ED68A0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountLogoutInternal, start: 0x01ED68A0, end: 0x01ED6908}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED6908, start: 0x01ED6908, end: 0x01ED6910}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountRegistration, start: 0x01ED6910, end: 0x01ED6998}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountUpdateStats, start: 0x01ED6998, end: 0x01ED6A18}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED6A18, start: 0x01ED6A18, end: 0x01ED6A28}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountDelete, start: 0x01ED6A28, end: 0x01ED6AA8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAnonymousLogin, start: 0x01ED6AA8, end: 0x01ED6B28}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusCreateGame, start: 0x01ED6B28, end: 0x01ED6BB0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusTextFilter, start: 0x01ED6BB0, end: 0x01ED6C30}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusCreateChannel, start: 0x01ED6C30, end: 0x01ED6CB8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusJoinGame, start: 0x01ED6CB8, end: 0x01ED6DB0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusJoinChannel, start: 0x01ED6DB0, end: 0x01ED6E30}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED6E30, start: 0x01ED6E30, end: 0x01ED6E48}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetGamePlayers, start: 0x01ED6E48, end: 0x01ED6EC8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetPlayerInfo, start: 0x01ED6EC8, end: 0x01ED6F48}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetGameInfo, start: 0x01ED6F48, end: 0x01ED6FC8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetChannelInfo, start: 0x01ED6FC8, end: 0x01ED7048}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusFindPlayer, start: 0x01ED7048, end: 0x01ED70C8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendGenericChatMessage, start: 0x01ED70C8, end: 0x01ED7130}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendBinaryMessage, start: 0x01ED7130, end: 0x01ED7190}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7190, start: 0x01ED7190, end: 0x01ED7198}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAddToBuddyList, start: 0x01ED7198, end: 0x01ED7218}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusRemoveFromBuddyList, start: 0x01ED7218, end: 0x01ED7298}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7298, start: 0x01ED7298, end: 0x01ED72A0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetIgnoreList, start: 0x01ED72A0, end: 0x01ED7320}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAddToIgnoreList, start: 0x01ED7320, end: 0x01ED73A0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusRemoveFromIgnoreList, start: 0x01ED73A0, end: 0x01ED7420}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetPolicy, start: 0x01ED7420, end: 0x01ED7530}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendPlayerReport, start: 0x01ED7530, end: 0x01ED7590}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendWorldReport, start: 0x01ED7590, end: 0x01ED75F0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSendEndGameReport, start: 0x01ED75F0, end: 0x01ED7658}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetAnnouncements, start: 0x01ED7658, end: 0x01ED76D8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetAllAnnouncements, start: 0x01ED76D8, end: 0x01ED7758}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetGameListFilter, start: 0x01ED7758, end: 0x01ED77D0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusClearGameListFilter, start: 0x01ED77D0, end: 0x01ED7848}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetGameListFilter, start: 0x01ED7848, end: 0x01ED78C8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusCreateMessageID, start: 0x01ED78C8, end: 0x01ED7948}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetMyIP, start: 0x01ED7948, end: 0x01ED79C8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED79C8, start: 0x01ED79C8, end: 0x01ED79D8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusAccountGetID, start: 0x01ED79D8, end: 0x01ED7A58}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetLocations, start: 0x01ED7A58, end: 0x01ED7AD8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7AD8, start: 0x01ED7AD8, end: 0x01ED7AF0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGenericChatSetFilter, start: 0x01ED7AF0, end: 0x01ED7B70}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7B70, start: 0x01ED7B70, end: 0x01ED7B80}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetDefaultConnectInParams, start: 0x01ED7B80, end: 0x01ED7C88}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7C88, start: 0x01ED7C88, end: 0x01ED7CA8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetLocalizationParams, start: 0x01ED7CA8, end: 0x01ED7D28}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED7D28, start: 0x01ED7D28, end: 0x01ED7D30}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetUniverseInformation, start: 0x01ED7D30, end: 0x01ED7E20}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetBuddyList_ExtraInfo, start: 0x01ED7E20, end: 0x01ED7E98}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetTotalRankings, start: 0x01ED7E98, end: 0x01ED7F10}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetLobbyPlayerNames_ExtraInfo, start: 0x01ED7F10, end: 0x01ED7F88}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetGames_ExtraInfo, start: 0x01ED7F88, end: 0x01ED8000}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetChannels_ExtraInfo, start: 0x01ED8000, end: 0x01ED8078}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusLadderList_ExtraInfo, start: 0x01ED8078, end: 0x01ED80F8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusLadderPosition_ExtraInfo, start: 0x01ED80F8, end: 0x01ED8178}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusUpdateLadderStatsWide, start: 0x01ED8178, end: 0x01ED81F0}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED81F0, start: 0x01ED81F0, end: 0x01ED81F8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusGetLadderStatsWide, start: 0x01ED81F8, end: 0x01ED8270}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED8270, start: 0x01ED8270, end: 0x01ED8278}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetLobbyWorldFilter, start: 0x01ED8278, end: 0x01ED8330}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_func_01ED8330, start: 0x01ED8330, end: 0x01ED8338}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_vLocalSetLobbyWorldFilter, start: 0x01ED8338, end: 0x01ED83D8}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusToken, start: 0x01ED83D8, end: 0x01ED8450}
+      - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetAutoChatHistory, start: 0x01ED8450, end: 0x01ED84C4}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0

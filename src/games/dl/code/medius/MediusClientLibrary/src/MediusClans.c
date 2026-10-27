@@ -1,6 +1,32 @@
 #include "common.h"
+#include "MediusRequests.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClans", MediusUpdateClanStats);
+#define MEDIUS_CLANS_SECTION(name) __attribute__((section(".medius_clans_" #name)))
+
+// Retained assembly and compiled functions keep their original retail slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .medius_clans_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
+
+MediusErrorCode MEDIUS_CLANS_SECTION(MediusUpdateClanStats) MediusUpdateClanStats(MediusUpdateClanStatsRequest *MyUpdateClanStatsRequest,
+                                      MediusTypeUpdateClanStatsCallback MyUpdateClanStatsCallback,
+                                      void *pUserData)
+{
+    MyUpdateClanStatsRequest->MessageID[20] = 0;
+    MyUpdateClanStatsRequest->SessionKey[16] = 0;
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!ghMyConnection) return MediusErrorNotConnected;
+    gMediusFunctionPointers[96] = MyUpdateClanStatsCallback;
+    gUserArguments[96] = pUserData;
+    if (MediusSendMessage(1, 0x84, sizeof(MediusUpdateClanStatsRequest), MyUpdateClanStatsRequest) != 0)
+        return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClans", func_01ED53A0);
 
