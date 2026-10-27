@@ -144,25 +144,30 @@ $(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
 	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
 # Boot libdma matches the same historical 991111-01 toolchain used by libm.
+# All boot SDK objects are assembled with the 2.96 assembler: like retail it fills jal/jr delay
+# slots with stores and keeps 3-operand mult unexpanded; output is otherwise identical to 991111.
 SDK_DMA_COMPILE_FLAGS = -G0 -O2 -fno-builtin
 $(OBJ_DIR)/sdk/dma/libdma.o: code/sdk/dma/libdma.c code/sdk/dma/libdma.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
 # Retail boot multitap uses the same 991111-01 profile as DMA.
 $(OBJ_DIR)/sdk/mtap/libmtap.o: code/sdk/mtap/libmtap.c code/sdk/mtap/libmtap.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
-# libmpeg retained asm (3-operand mult) assembles to the retail size only with the 2.96 assembler.
+$(OBJ_DIR)/sdk/mrpc/libmrpc.o: code/sdk/mrpc/libmrpc.c code/sdk/mrpc/libmrpc.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
 $(OBJ_DIR)/sdk/mpeg/libmpeg.o: code/sdk/mpeg/libmpeg.c code/sdk/mpeg/libmpeg.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
-# libgraph retained asm (3-operand mult) assembles to the retail size only with the 2.96 assembler.
 $(OBJ_DIR)/sdk/graph/libgraph.o: code/sdk/graph/libgraph.c code/sdk/graph/libgraph.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
@@ -171,27 +176,29 @@ $(OBJ_DIR)/sdk/graph/libgraph.o: code/sdk/graph/libgraph.c code/sdk/graph/libgra
 $(OBJ_DIR)/sdk/cdvd/libcdvd.o: code/sdk/cdvd/libcdvd.c code/sdk/cdvd/libcdvd.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/sdk/scf/libscf.o: code/sdk/scf/libscf.c code/sdk/scf/libscf.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/sdk/pad/libpad.o: code/sdk/pad/libpad.c code/sdk/pad/libpad.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
 $(OBJ_DIR)/sdk/mc/libmc.o: code/sdk/mc/libmc.c code/sdk/mc/libmc.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
+# printfloat is the only libkernel code with literals; its .rodata fills a registered rodata slot.
 $(OBJ_DIR)/sdk/kernel/libkernel.o: code/sdk/kernel/libkernel.c code/sdk/kernel/libkernel.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
-	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+	$(CROSS)-objcopy --rename-section .rodata=.kerneldata_printfloat $@
 
 # SDK networking/localization probes match SCE 2.96 with default alignment.
 # Keep this independent of Medius's minimal alignment and SVO3's size flags.

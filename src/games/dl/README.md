@@ -37,7 +37,7 @@ See the [library-folder survey](DOCS/libraries/BOOT_LIBRARY_INVENTORY.md) for
 additional runtime, Sony SDK, Nellymoser and Logitech code still bundled in the
 aggregate library files, plus unclassified configuration blocks.
 
-The broader [identified boot SDK inventory](DOCS/libraries/SDK_BOOT_INVENTORY.md) is **227/387 (58.66%)** decompiled and byte-matching. It includes named SDK routines still in the game aggregates, so it overlaps the table above and must not be added to its total. Unidentified helpers remain outside this inventory.
+The broader [identified boot SDK inventory](DOCS/libraries/SDK_BOOT_INVENTORY.md) is **238/387 (61.50%)** decompiled and byte-matching. It includes named SDK routines still in the game aggregates, so it overlaps the table above and must not be added to its total. Unidentified helpers remain outside this inventory.
 
 ### Evidence and updates
 

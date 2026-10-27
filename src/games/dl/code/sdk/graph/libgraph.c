@@ -29,9 +29,43 @@ extern int DisableIntc(int);
 extern int EnableIntc(int);
 extern int RemoveIntcHandler(int, int);
 extern int AddIntcHandler(int, int (*)(int), int);
+extern unsigned int GsPutIMR(unsigned long);
+extern void SetGsCrt(short, short, short);
 graphGParam_t *sceGsGetGParam(void);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/graph/libgraph", sceGsResetGraph);
+void GRAPH_SECTION(sceGsResetGraph) sceGsResetGraph(short mode, short interlace, short omode, short ffmode)
+{
+	graphGParam_t *param;
+	switch (mode) {
+	case 0:
+		param = sceGsGetGParam();
+		*(volatile unsigned long *)0x12001000 = 0x200;
+		param->interlace = interlace;
+		param->omode = omode;
+		param->version = (*(volatile unsigned long *)0x12001000 >> 16) & 0xff;
+		GsPutIMR(0xff00);
+		param->ffmode = ffmode != 0;
+		if (param->vsyncCallback) {
+			DisableIntc(2);
+			RemoveIntcHandler(2, param->vsyncHandlerId);
+			param->vsyncCallback = 0;
+			param->vsyncHandlerId = 0;
+		}
+		SetGsCrt(interlace & 1, omode & 0xff, ffmode & 1);
+		break;
+	case 1:
+		*(volatile unsigned long *)0x12001000 = 0x100;
+		break;
+	case 5:
+		param = sceGsGetGParam();
+		param->ffmode = ffmode != 0;
+		param->interlace = interlace;
+		param->omode = omode;
+		param->version = (*(volatile unsigned long *)0x12001000 >> 16) & 0xff;
+		SetGsCrt(interlace & 1, omode & 0xff, ffmode & 1);
+		break;
+	}
+}
 
 graphGParam_t *GRAPH_SECTION(sceGsGetGParam) sceGsGetGParam(void)
 {

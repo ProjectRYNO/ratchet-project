@@ -127,7 +127,21 @@ void CD_SECTION(cmd_sem_init) cmd_sem_init(void)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", cdvd_exit);
+void CD_SECTION(cdvd_exit) cdvd_exit(void)
+{
+	int intr;
+	if (sdkCdCallbackThread) {
+		sdkCdBreakStat = -1;
+		SignalSema(CD_VOLATILE(sdkCdCallbackSema));
+	}
+	DeleteSema(CD_VOLATILE(sdkCdNcmdSema));
+	DeleteSema(CD_VOLATILE(sdkCdScmdSema));
+	DeleteSema(CD_VOLATILE(sdkCdReadSema));
+	DeleteSema(CD_VOLATILE(sdkCdCallbackSema));
+	intr = DIntr();
+	sceSifRemoveCmdHandler(0x80000012);
+	if (intr) EIntr();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdPOffCallback);
 

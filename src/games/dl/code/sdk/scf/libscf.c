@@ -78,7 +78,19 @@ int SCF_SECTION(sceScfGetAspect) sceScfGetAspect(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", func_00155668);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", sceScfGetTimeZone);
+int SCF_SECTION(sceScfGetTimeZone) sceScfGetTimeZone(void)
+{
+	scfOsdConfig_t config;
+	int timezone;
+	if (IsT10K()) {
+		timezone = sdkScfT10kTimeZone;
+	} else {
+		GetOsdConfigParam(&config);
+		timezone = config.timezoneOffset;
+		if (!config.version) timezone = 0x21c;
+	}
+	return timezone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", func_001556C0);
 

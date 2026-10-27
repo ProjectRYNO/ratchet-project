@@ -1,6 +1,6 @@
 # Deadlocked SDK source map
 
-Implemented here: `libezcnf.c`, `libezctl.c`, `i18n.c`, `i18n_inet.c`, `dma/libdma.c`, `mtap/libmtap.c`, `pad/libpad.c`, `mc/libmc.c`, `kernel/libkernel.c`, `scf/libscf.c`, `cdvd/libcdvd.c`, `graph/libgraph.c` and `mpeg/libmpeg.c` (the split objects are split by retail range and keep unrecovered entries as retained assembly). **227 SDK functions compile to exact retail bytes**: memory card 17/17, pad 17/22, kernel/SIF/file I/O 121 of the range, MPEG 6/11, IPU 3/4, configuration 11/16, CD/DVD 9/14, graphics 7/15. Networking/localization is 20/20; [DMA](../../DOCS/libraries/SDK_DMA.md) is 8/8.
+Implemented here: `libezcnf.c`, `libezctl.c`, `i18n.c`, `i18n_inet.c`, `dma/libdma.c`, `mtap/libmtap.c`, `pad/libpad.c`, `mc/libmc.c`, `kernel/libkernel.c`, `scf/libscf.c`, `cdvd/libcdvd.c`, `graph/libgraph.c`, `mpeg/libmpeg.c` and `mrpc/libmrpc.c` (the split objects are split by retail range and keep unrecovered entries as retained assembly). **238 tracked SDK functions (plus 35 untracked helpers) compile to exact retail bytes**: memory card 17/17, pad 17/22, kernel/SIF/file I/O 121 of the range, MPEG 6/11, IPU 3/4, configuration 11/16, CD/DVD 9/14, graphics 7/15. Networking/localization is 20/20; [DMA](../../DOCS/libraries/SDK_DMA.md) is 8/8.
 
 The boot ELF also contains the following runtime components, mostly retained under `code/game/lib.cpp`, `lib_after_libm.cpp`, and `lib_after_dma.cpp`. This table is a destination map for future verified splits, not a claim that these directories or decompiled implementations already exist. Folder names describe functionality, not recovered original archive-member names.
 
@@ -31,4 +31,4 @@ Provenance constraint for this work: use the user-supplied retail executable and
 
 See [version evidence and comparison results](../../DOCS/libraries/SDK_LAYOUT.md) before implementing or moving any block. The strongest starting reference for pad is historical `padx`; MC uses the extended RPC family. Neither is a byte-matching drop-in. Preserve original addresses, behavior and padding, and verify each new split before claiming progress.
 
-Broader boot SDK tracking: **227/387 identified functions (58.66%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](../../DOCS/libraries/SDK_BOOT_INVENTORY.md) and [multitap verification](../../DOCS/libraries/SDK_MTAP.md).
+Broader boot SDK tracking: **238/387 identified functions (61.50%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](../../DOCS/libraries/SDK_BOOT_INVENTORY.md) and [multitap verification](../../DOCS/libraries/SDK_MTAP.md).

@@ -89,7 +89,7 @@ extern char **sdkExecArgv;
 extern int InitTLB(void);
 extern void _Exit(int);
 extern void SetT2(volatile int *, int);
-extern void kputchar(int);
+extern int kputchar(int);
 extern char *SetArg(const char *, int, char **);
 extern void _LoadExecPS2(const char *, int, char **);
 extern void supplement_crt0(void);
@@ -202,6 +202,7 @@ extern unsigned int FindAddress(unsigned int, unsigned int, unsigned int);
 extern void setup___dupe4(int, void *);
 extern int Copy___dupe3(void *, void *, int);
 extern unsigned int strlen(const char *);
+extern int ftoi(unsigned long);
 char *_sceRpcGetFPacket(sifRpcData_t *rpc);
 void _sceFsSemInit(void);
 void _sceFsIobSemaMK(void);
@@ -816,7 +817,12 @@ int KERNEL_SECTION(sceTtyInit) sceTtyInit(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012830C);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", kputchar);
+int KERNEL_SECTION(kputchar) kputchar(int c)
+{
+	while (*(volatile unsigned int *)0x1000f130 & 0x8000) {}
+	*(volatile char *)0x1000f180 = c;
+	return c;
+}
 
 void KERNEL_SECTION(deci2Putchar) deci2Putchar(int c)
 {
@@ -846,9 +852,73 @@ void KERNEL_SECTION(serialPutchar) serialPutchar(int c)
 	kputchar(c);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", ftoi);
+int KERNEL_SECTION(ftoi) ftoi(unsigned long value)
+{
+  int new_var;
+  long exp = (value << 1) >> 53;
+  int new_var2;
+  exp -= 0x433;
+  new_var = 0x35;
+  if (exp < (-new_var))
+  {
+	return 0;
+  }
+  if (exp >= 0xd)
+  {
+	return 9999;
+  }
+  new_var2 = 12;
+  value = (value << new_var2) >> new_var2;
+  value = value | (((unsigned long) 1) << 52);
+  if (exp < 0)
+  {
+	exp = -exp;
+	value >>= (int) (exp - 2);
+	if ((value & 3) == 3)
+	{
+	  value = (value >> 2) + 1;
+	}
+	else
+	{
+	  value >>= 2;
+	}
+  }
+  else
+  {
+	value <<= (int) exp;
+  }
+  return (int) value;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", printfloat);
+int KERNEL_SECTION(printfloat) printfloat(kernelPrintfChar func, void *context, int *size, double value)
+{
+	int count = 0;
+	int exp = 0;
+	int frac;
+	if (!*size) return 0;
+	if (value < 0.0) {
+		value = 0.0 - value;
+		count = 1;
+		func(context, size, '-');
+		(*size)--;
+	}
+	if (value < 0.1) {
+		while (value < 0.1) {
+			value *= 10.0;
+			exp--;
+		}
+	} else if (value >= 1.0) {
+		while (value >= 1.0) {
+			value /= 10.0;
+			exp++;
+		}
+	}
+	frac = ftoi(value * 1000000.0);
+	count += _sceSnprintf_pf(func, context, size, "0.%d", frac);
+	if (exp >= 0) count += _sceSnprintf_pf(func, context, size, "e+%d", exp);
+	else count += _sceSnprintf_pf(func, context, size, "e%d", exp);
+	return count;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceSnprintf);
 

@@ -43,6 +43,43 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  _ErrMessage: 0x001464C0
+  _pictureSpatialScalableExtension: 0x00140F18
+  _sequenceScalableExtension: 0x00140D10
+  _sceMpegAlalcFree: 0x00142540
+  _sceMpegAlalcSetDynamic: 0x00142530
+  _sceMpegDefaultRestartDMA: 0x001425E8
+  _sceMpegDefaultStopDMA: 0x001425C0
+  _waitIpuIdle: 0x0013EFD8
+  _sceMpegError1: 0x00146690
+  _decodeOrSkip: 0x00142380
+  flushByteBoundary: 0x001412A8
+  _sceMpegError: 0x00146638
+  _sceMpegAlalcAlloc: 0x00142550
+  _flushBuf: 0x0013F010
+  flushBuf32: 0x001412A0
+  _sceMpegAlalcInit: 0x00142518
+  _sceMpegOutputFrame: 0x00143040
+  _sceMpegPeepBit: 0x0013EEB0
+  _sceMpegFlushBuf: 0x0013EF40
+  _sceMpegStopIpuDma: 0x001464D0
+  _sceMpegFlush: 0x00142F80
+  _clearEach: 0x00141820
+  _decPicture: 0x00142448
+  _waitIpuIdle___dupe2: 0x00141108
+  _flushBuf___dupe2: 0x00141140
+  kputchar: 0x00128310
+  sceMpegInit: 0x00142090
+  sceGsResetGraph: 0x00138350
+  sceScfGetTimeZone: 0x00155670
+  cdvd_exit: 0x00137058
+  ftoi: 0x00128430
+  _iopnotify: 0x00155BC8
+  sceSifMExitRpc: 0x00155BF0
+  _sceRpcGetPacket___dupe2: 0x00155C20
+  _sceRpcFreePacket___dupe2: 0x00155CC8
+  sceSifMBindRpcParam: 0x00155E10
+  printfloat: 0x001284C0
   setD3_CHCR: 0x001466D0
   setD4_CHCR: 0x00146748
   sceIpuStopDMA: 0x001467C0
@@ -2103,6 +2140,20 @@ objects:
       - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuSync, start: 0x001469F8, end: 0x00146A60}
       - {object: sdk/mpeg/libmpeg, section: .mpeg_setD4_CHCR___dupe2, start: 0x00146A60, end: 0x00146AD8}
       - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuInit, start: 0x00146AD8, end: 0x00146D10}
+  sdk/mrpc/libmrpc:
+    text_start: 0x00155AE0
+    text_end: 0x00156390
+    slots:
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_sceSifMInitRpc, start: 0x00155AE0, end: 0x00155BC8}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc__iopnotify, start: 0x00155BC8, end: 0x00155BF0}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_sceSifMExitRpc, start: 0x00155BF0, end: 0x00155C20}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc__sceRpcGetPacket___dupe2, start: 0x00155C20, end: 0x00155CC8}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc__sceRpcFreePacket___dupe2, start: 0x00155CC8, end: 0x00155CE8}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc__request_end___dupe2, start: 0x00155CE8, end: 0x00155E08}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_func_00155E08, start: 0x00155E08, end: 0x00155E10}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_sceSifMBindRpcParam, start: 0x00155E10, end: 0x00155FE0}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_sceSifMUnBindRpc, start: 0x00155FE0, end: 0x00156120}
+      - {object: sdk/mrpc/libmrpc, section: .mrpc_sceSifMCallRpc, start: 0x00156120, end: 0x00156390}
   sdk/dma/libdma:
     text_start: 0x001399E0
     text_end: 0x00139EC8
@@ -4018,6 +4069,7 @@ objects:
 rodata:
   asm/build/core.data/091E80.rodata:
     slots:
+      - {object: sdk/kernel/libkernel, function: printfloat, section: .kerneldata_printfloat, start: 0x00192E20, end: 0x00192E50}
       - {object: newlib/libm/math/ef_exp, function: __ieee754_expf, section: .libmdata_ef_exp, start: 0x001939A0, end: 0x001939EC}
       - {object: newlib/libm/math/ef_log, function: __ieee754_logf, section: .libmdata_ef_log, start: 0x001939EC, end: 0x00193A1C}
       - {object: newlib/libm/math/ef_log10, function: __ieee754_log10f, section: .libmdata_ef_log10, start: 0x00193A1C, end: 0x00193A34}

@@ -20,6 +20,33 @@ extern int DIntr(void);
 extern int EIntr(void);
 void setD3_CHCR(unsigned int value);
 void setD4_CHCR(unsigned int value);
+extern void sceIpuInit(void);
+extern const char sdkMpegErrFormat[];
+extern const char sdkMpegErrSpatialScalable[];
+extern const char sdkMpegErrSequenceScalable[];
+extern const char sdkMpegErrAlloc[];
+extern const char sdkMpegErrFlush[];
+extern const char sdkMpegErrBufMode[];
+extern const char sdkMpegErrPictureData[];
+extern const char sdkMpegErrPictureStructure[];
+extern void scePrintf(const char *, ...);
+extern int sceSnprintf(char *, int, const char *, ...);
+extern void sceIpuRestartDMA(mpegIpuDmaEnv_t *);
+extern void sceIpuStopDMA(mpegIpuDmaEnv_t *);
+extern int sceIpuSync(int, int);
+extern void _sceMpegWaitIpuIdle(mpegInternal_t *);
+extern long _sceMpegWaitIpuIdle64(mpegInternal_t *);
+extern int _decodeOrSkipField(mpeg_t *, void *, int);
+extern int _decodeOrSkipFrame(mpeg_t *, void *, int);
+extern int _sceMpegDispatchMpegCallback(mpeg_t *, void *);
+extern void _dispRefImage(mpegInternal_t *, mpegRefImage_t *, int);
+extern void _dispRefImageField(mpegInternal_t *, mpegRefImage_t *, mpegRefImage_t *, int);
+extern int _sceMpegPictureData0(mpegInternal_t *);
+void _sceMpegError(mpegInternal_t *sys, const char *message);
+void _waitIpuIdle(mpegInternal_t *sys);
+void _sceMpegFlushBuf(mpegInternal_t *sys, int bits);
+void _flushBuf___dupe2(mpegInternal_t *sys, int bits);
+void _waitIpuIdle___dupe2(mpegInternal_t *sys);
 /* EXTERNS */
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _dualPrimeVector);
@@ -50,13 +77,42 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegWa
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegNextBit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegPeepBit);
+unsigned int MPEG_SECTION(_sceMpegPeepBit) _sceMpegPeepBit(mpegInternal_t *sys, int bits)
+{
+	if (sys->bitsInvalid || sys->bitCount < bits) {
+		_waitIpuIdle(sys);
+		*(volatile unsigned int *)0x10002000 = 0x40000000;
+		sys->bitsInvalid = 0;
+		sys->ipuCmd = 0x40000000;
+		sys->bitBuffer = _sceMpegWaitIpuIdle64(sys);
+		sys->bitCount = 0x20;
+	}
+	return sys->bitBuffer >> (32 - bits);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegFlushBuf);
+void MPEG_SECTION(_sceMpegFlushBuf) _sceMpegFlushBuf(mpegInternal_t *sys, int bits)
+{
+	unsigned int cmd;
+	_waitIpuIdle(sys);
+	cmd = bits | 0x40000000;
+	*(volatile unsigned int *)0x10002000 = cmd;
+	cmd &= 0xf0000000;
+	sys->ipuCmd = cmd;
+	if (cmd == 0x20000000 || cmd == 0x30000000 || cmd == 0x40000000) sys->bitsInvalid = 0;
+	else sys->bitsInvalid = 1;
+	sys->bitBuffer = _sceMpegWaitIpuIdle64(sys);
+	sys->bitCount = 0x20;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _waitIpuIdle);
+void MPEG_SECTION(_waitIpuIdle) _waitIpuIdle(mpegInternal_t *sys)
+{
+	if ((*(volatile unsigned int *)0x10002010 & 0x80004000) == 0x80000000) _sceMpegWaitIpuIdle(sys);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _flushBuf);
+void MPEG_SECTION(_flushBuf) _flushBuf(mpegInternal_t *sys, int bits)
+{
+	_sceMpegFlushBuf(sys, bits);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _skipMB0);
 
@@ -114,27 +170,48 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sequenceE
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _quantMatrixExtension);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sequenceScalableExtension);
+void MPEG_SECTION(_sequenceScalableExtension) _sequenceScalableExtension(mpegInternal_t *sys)
+{
+	_sceMpegError(sys, sdkMpegErrSequenceScalable);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _unknown_extension);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _pictureCodingExtension);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _pictureSpatialScalableExtension);
+void MPEG_SECTION(_pictureSpatialScalableExtension) _pictureSpatialScalableExtension(mpegInternal_t *sys)
+{
+	_sceMpegError(sys, sdkMpegErrSpatialScalable);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _pictureTemporalScalableExtension);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _extensionAndUserData);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _waitIpuIdle___dupe2);
+void MPEG_SECTION(_waitIpuIdle___dupe2) _waitIpuIdle___dupe2(mpegInternal_t *sys)
+{
+	if ((*(volatile unsigned int *)0x10002010 & 0x80004000) == 0x80000000) _sceMpegWaitIpuIdle(sys);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _flushBuf___dupe2);
+void MPEG_SECTION(_flushBuf___dupe2) _flushBuf___dupe2(mpegInternal_t *sys, int bits)
+{
+	_sceMpegFlushBuf(sys, bits);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegNextHeader);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", flushBuf32);
+void MPEG_SECTION(flushBuf32) flushBuf32(mpegInternal_t *sys)
+{
+	_flushBuf___dupe2(sys, 0x20);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", flushByteBoundary);
+void MPEG_SECTION(flushByteBoundary) flushByteBoundary(mpegInternal_t *sys)
+{
+	int bits;
+	_waitIpuIdle___dupe2(sys);
+	bits = -(*(volatile unsigned int *)0x10002020 & 7) & 7;
+	if (bits) _flushBuf___dupe2(sys, bits);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sequenceDisplayExtension);
 
@@ -148,7 +225,24 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _clearOnce
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegCreate);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _clearEach);
+void MPEG_SECTION(_clearEach) _clearEach(mpegInternal_t *sys)
+{
+	int intr;
+	sys->bitsInvalid = 1;
+	sys->unk1C0 = 0;
+	intr = DIntr();
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 | 0x10000;
+	*(volatile unsigned int *)0x1000b000 = 0;
+	*(volatile unsigned int *)0x1000b400 = 0;
+	*(volatile unsigned int *)0x1000d400 = 0;
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 & ~0x10000;
+	if (intr) EIntr();
+	*(volatile unsigned int *)0x1000b020 = 0;
+	*(volatile unsigned int *)0x1000b420 = 0;
+	*(volatile unsigned int *)0x1000d420 = 0;
+	*(volatile unsigned int *)0x10002010 = 0x40000000;
+	sceIpuSync(0, 0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _getpic);
 
@@ -158,7 +252,19 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _decodeOrS
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _decodeOrSkipField);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegInit);
+int MPEG_SECTION(sceMpegInit) sceMpegInit(void)
+{
+	int intr = DIntr();
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 | 0x10000;
+	*(volatile unsigned int *)0x1000b000 &= ~0x100;
+	*(volatile unsigned int *)0x1000b400 &= ~0x100;
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 & ~0x10000;
+	if (intr) EIntr();
+	*(volatile unsigned int *)0x1000b020 = 0;
+	*(volatile unsigned int *)0x1000b420 = 0;
+	sceIpuInit();
+	return 1;
+}
 
 int MPEG_SECTION(sceMpegDelete) sceMpegDelete(mpeg_t *mp)
 {
@@ -219,7 +325,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDi
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDispatchMpegCbNodata);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _decodeOrSkip);
+int MPEG_SECTION(_decodeOrSkip) _decodeOrSkip(mpeg_t *mp, void *data, int count)
+{
+	int ret;
+	if (mp->sys->pictureStructure != 3) ret = _decodeOrSkipField(mp, data, count);
+	else ret = _decodeOrSkipFrame(mp, data, count);
+	return ret;
+}
 
 int MPEG_SECTION(sceMpegClearRefBuff) sceMpegClearRefBuff(mpeg_t *mp)
 {
@@ -235,21 +347,76 @@ int MPEG_SECTION(sceMpegClearRefBuff) sceMpegClearRefBuff(mpeg_t *mp)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", func_00142420);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _decPicture);
+int MPEG_SECTION(_decPicture) _decPicture(mpegInternal_t *sys)
+{
+	mpegRefImage_t *image;
+	int ret;
+	if (sys->pictureStructure == 3 && sys->unk130) {
+		_sceMpegError(sys, sdkMpegErrPictureData);
+		sys->unk130 = 0;
+	}
+	switch (sys->pictureStructure) {
+	case 3:
+		image = sys->refs[0].current;
+		break;
+	case 1:
+		image = sys->refs[1].current;
+		break;
+	case 2:
+		image = sys->refs[2].current;
+		break;
+	default:
+		image = sys->refs[0].current;
+		_sceMpegError(sys, sdkMpegErrPictureStructure);
+	}
+	ret = _sceMpegPictureData0(sys);
+	if (ret) image->status = 1;
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", func_00142514);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegAlalcInit);
+void MPEG_SECTION(_sceMpegAlalcInit) _sceMpegAlalcInit(mpegAlalc_t *a, unsigned int base, int size)
+{
+	a->base = base;
+	a->size = size;
+	a->ptr = base;
+	a->dynamic = base;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegAlalcSetDynamic);
+void MPEG_SECTION(_sceMpegAlalcSetDynamic) _sceMpegAlalcSetDynamic(mpegAlalc_t *a)
+{
+	a->dynamic = a->ptr;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegAlalcFree);
+void MPEG_SECTION(_sceMpegAlalcFree) _sceMpegAlalcFree(mpegAlalc_t *a)
+{
+	a->ptr = a->dynamic;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegAlalcAlloc);
+unsigned int MPEG_SECTION(_sceMpegAlalcAlloc) _sceMpegAlalcAlloc(mpegInternal_t *sys, mpegAlalc_t *a, unsigned int size, unsigned int align)
+{
+	unsigned int p = (a->ptr + align - 1) / align * align;
+	unsigned int end = p + size;
+	if (a->base + a->size >= end) {
+		a->ptr = end;
+		return p;
+	}
+	_sceMpegError(sys, sdkMpegErrAlloc);
+	return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDefaultStopDMA);
+int MPEG_SECTION(_sceMpegDefaultStopDMA) _sceMpegDefaultStopDMA(mpeg_t *mp)
+{
+	sceIpuStopDMA(&mp->sys->dmaEnv);
+	return 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDefaultRestartDMA);
+int MPEG_SECTION(_sceMpegDefaultRestartDMA) _sceMpegDefaultRestartDMA(mpeg_t *mp)
+{
+	sceIpuRestartDMA(&mp->sys->dmaEnv);
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", func_0014260C);
 
@@ -259,9 +426,49 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _dispRefIm
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _dispRefImageField);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegFlush);
+int MPEG_SECTION(_sceMpegFlush) _sceMpegFlush(mpeg_t *mp)
+{
+	mpegInternal_t *sys = mp->sys;
+	int ret = 0;
+	if (sys->refBuffCount && sys->unk08) {
+		int count = sys->unk128;
+		if (sys->unk130) {
+			_sceMpegError(sys, sdkMpegErrFlush);
+		} else if (sys->pictureStructure == 3) {
+			_dispRefImage(sys, sys->refs[0].bottom, count - 1);
+		} else {
+			_dispRefImageField(sys, sys->refs[1].bottom, sys->refs[2].bottom, count - 1);
+		}
+		ret = 1;
+		sys->unk130 = 0;
+		mp->frameCount = sys->unk128 - sys->unkC0;
+		sys->refBuffCount = 0;
+	}
+	return ret;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegOutputFrame);
+void MPEG_SECTION(_sceMpegOutputFrame) _sceMpegOutputFrame(mpegInternal_t *sys, int count, int output)
+{
+	if (output) {
+		if (sys->pictureStructure == 3) {
+			mpegRefImage_t *image;
+			if (sys->unk160 == 3) image = sys->refs[0].display;
+			else image = sys->refs[0].top;
+			_dispRefImage(sys, image, count - 1);
+		} else {
+			mpegRefImage_t *top, *bottom;
+			if (sys->unk160 == 3) {
+				top = sys->refs[1].display;
+				bottom = sys->refs[2].display;
+			} else {
+				top = sys->refs[1].top;
+				bottom = sys->refs[2].top;
+			}
+			_dispRefImageField(sys, top, bottom, count - 1);
+		}
+	}
+	if (sys->outputState == 1) sys->outputState = 2;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _doCSC2);
 
@@ -283,15 +490,44 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegDem
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegAddStrCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _ErrMessage);
+void MPEG_SECTION(_ErrMessage) _ErrMessage(const char *message)
+{
+	scePrintf(sdkMpegErrFormat, message);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegStopIpuDma);
+void MPEG_SECTION(_sceMpegStopIpuDma) _sceMpegStopIpuDma(void)
+{
+	int intr = DIntr();
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 | 0x10000;
+	*(volatile unsigned int *)0x1000b000 = 0;
+	*(volatile unsigned int *)0x1000b400 = 0;
+	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 & ~0x10000;
+	if (intr) EIntr();
+	*(volatile unsigned int *)0x1000b020 = 0;
+	*(volatile unsigned int *)0x1000b420 = 0;
+	*(volatile unsigned int *)0x10002010 = 0x40000000;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegErrorBdec);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegError);
+void MPEG_SECTION(_sceMpegError) _sceMpegError(mpegInternal_t *sys, const char *message)
+{
+	mpegCbError_t cb;
+	if (sys->mp && sys && sys->callbacks[0].func) {
+		cb.message = message;
+		cb.type = 0;
+		_sceMpegDispatchMpegCallback(sys->mp, &cb);
+		return;
+	}
+	_ErrMessage(message);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegError1);
+void MPEG_SECTION(_sceMpegError1) _sceMpegError1(mpegInternal_t *sys, const char *format, int value)
+{
+	char buffer[0x100];
+	sceSnprintf(buffer, 0x100, format, value);
+	_sceMpegError(sys, buffer);
+}
 
 void MPEG_SECTION(setD3_CHCR) setD3_CHCR(unsigned int value)
 {
@@ -349,7 +585,7 @@ void MPEG_SECTION(sceIpuRestartDMA) sceIpuRestartDMA(mpegIpuDmaEnv_t *env)
 	}
 }
 
-int MPEG_SECTION(sceIpuSync) sceIpuSync(int mode)
+int MPEG_SECTION(sceIpuSync) sceIpuSync(int mode, int timeout)
 {
 	int ret = 0;
 	switch (mode) {

@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**227/387 identified boot SDK functions (58.66%) are now byte-exact** (see
+**238/387 identified boot SDK functions (61.50%) are now byte-exact** (plus 35 untracked helpers) (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -46,6 +46,17 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
   `InitSystemCallTableAddress`, `sceTtyHandler`, `SetArg`. `printfloat` is exact in
   `build/svo-library-work/b/C_t7.c` but needs its literal block at 0x00192E20 (0x30 bytes) mapped
   as a rodata slot before it can be integrated.
+
+- **Assembler:** retail SDK code was assembled with the 2.96 assembler, not 991111's. It moves a
+  store into a `jal`/`jr` delay slot (the 991111 one never does) and keeps EE 3-operand `mult`.
+  Every SDK rule now uses `$(EEAS296)`. Reassembling all previously exact objects gave identical
+  sections, and it made `ftoi`, `kputchar`, `sceMpegInit` and `cdvd_exit` exact.
+- `sdk/mrpc/libmrpc.c` (0x00155AE0..0x00156390, former start of `lib_after_scf.cpp`, rest renamed
+  `game/lib_after_mrpc.cpp`): 5 exact; `_request_end___dupe2` writes `$gp`.
+- libmpeg: 25 more internals (allocator, bitstream helpers, error/DMA helpers, decode control)
+  with worker D's `mpegInternal_t` layout; `sceIpuSync` takes the SDK's unused timeout argument.
+- `printfloat` is integrated; libkernel's only `.rodata` (its literals) is renamed to
+  `.kerneldata_printfloat` and fills the registered rodata slot 0x00192E20..0x00192E50.
 
 Every entry in these ranges has its own `.lib_name` slot; padding words keep their own slots.
 New globals are named in `symbols_core.text.txt` (`sdkPad*`, `sdkMc*`, `sdkSif*`, `sdkFs*`,
@@ -288,6 +299,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **227/387 identified functions (58.66%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **238/387 identified functions (61.50%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).
