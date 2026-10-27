@@ -421,6 +421,46 @@ functions:
   DestroySequence: 0x01ED3AE0
   CreateVSequence: 0x01ED3EA8
   DestroyVSequence: 0x01ED3F20
+  MediusMessageDestCreate: 0x01EDB3E0
+  _packTransaction: 0x01EDB478
+  getObjectSize___dupe3: 0x01EDBB20
+  NetRegisterObjectStart: 0x01EC9238
+  NetSetDefaultNetUseObjectsInParams: 0x01EC9288
+  NetUseObjects: 0x01EC92E8
+  NetGetObject: 0x01EC94C0
+  NetSetMyClientObject: 0x01EC9530
+  NetReleaseObjectPrivateOwnership: 0x01EC9580
+  NetRegisterRemoteObjectCallback: 0x01EC9640
+  NetSendObjectFullUpdate: 0x01EC96C0
+  NetGetSessionMasterClientIndex: 0x01EC9730
+  construct: 0x01ED84C8
+  destruct: 0x01ED8500
+  getTopFieldId: 0x01ED8588
+  GetTopFieldDef_: 0x01ED85B0
+  getTopTypeId: 0x01ED8608
+  getNumArguments: 0x01ED8EC8
+  getObjectSize: 0x01ED8F50
+  rewindMask: 0x01ED8F58
+  MediusDArgList_print: 0x01ED9080
+  PrintTypeId: 0x01EDA950
+  CreateMask_: 0x01EDA958
+  CreateMaskFromMap_: 0x01EDA990
+  CmpMediusDFieldId_: 0x01EDA9D0
+  destroy___dupe2: 0x01EDAC88
+  getField: 0x01EDACD8
+  _findFieldIndex: 0x01EDAD58
+  findField: 0x01EDAE08
+  getThisField___dupe2: 0x01EDAF20
+  getFieldIndex: 0x01EDAFD0
+  getNumFields: 0x01EDAFF0
+  getObjectSize___dupe2: 0x01EDAFF8
+  getObjectDataSize: 0x01EDB000
+  getMask: 0x01EDB018
+  getMaskFromList: 0x01EDB030
+  getMetaType: 0x01EDB058
+  getMetaMask: 0x01EDB070
+  printType: 0x01EDB080
+  printMetaType: 0x01EDB088
   MediusGetServerTime: 0x01ED5CB8
   MediusUpdateClientState: 0x01ED6258
   MediusSessionEnd: 0x01ED6380
@@ -4511,6 +4551,87 @@ objects:
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_vLocalSetLobbyWorldFilter, start: 0x01ED8338, end: 0x01ED83D8}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusToken, start: 0x01ED83D8, end: 0x01ED8450}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetAutoChatHistory, start: 0x01ED8450, end: 0x01ED84C4}
+  medius/MediusDList/src/MediusDType:
+    text_start: 0x01EDA950
+    text_end: 0x01EDB090
+    slots:
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_PrintTypeId, start: 0x01EDA950, end: 0x01EDA958}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_CreateMask_, start: 0x01EDA958, end: 0x01EDA990}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_CreateMaskFromMap_, start: 0x01EDA990, end: 0x01EDA9D0}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_CmpMediusDFieldId_, start: 0x01EDA9D0, end: 0x01EDA9E0}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_createMask, start: 0x01EDA9E0, end: 0x01EDAAD0}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_create___dupe2, start: 0x01EDAAD0, end: 0x01EDAC88}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_destroy___dupe2, start: 0x01EDAC88, end: 0x01EDACD8}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getField, start: 0x01EDACD8, end: 0x01EDAD58}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype__findFieldIndex, start: 0x01EDAD58, end: 0x01EDAE08}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_findField, start: 0x01EDAE08, end: 0x01EDAF20}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getThisField___dupe2, start: 0x01EDAF20, end: 0x01EDAF98}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getFieldId___dupe2, start: 0x01EDAF98, end: 0x01EDAFD0}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getFieldIndex, start: 0x01EDAFD0, end: 0x01EDAFF0}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getNumFields, start: 0x01EDAFF0, end: 0x01EDAFF8}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getObjectSize___dupe2, start: 0x01EDAFF8, end: 0x01EDB000}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getObjectDataSize, start: 0x01EDB000, end: 0x01EDB018}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getMask, start: 0x01EDB018, end: 0x01EDB030}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getMaskFromList, start: 0x01EDB030, end: 0x01EDB058}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getMetaType, start: 0x01EDB058, end: 0x01EDB070}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_getMetaMask, start: 0x01EDB070, end: 0x01EDB080}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_printType, start: 0x01EDB080, end: 0x01EDB088}
+      - {object: medius/MediusDList/src/MediusDType, section: .medius_dtype_printMetaType, start: 0x01EDB088, end: 0x01EDB090}
+  medius/MediusDList/src/MediusDArgList:
+    text_start: 0x01ED84C8
+    text_end: 0x01ED9088
+    slots:
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_construct, start: 0x01ED84C8, end: 0x01ED8500}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_destruct, start: 0x01ED8500, end: 0x01ED8528}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_FindFirstFieldId_, start: 0x01ED8528, end: 0x01ED8588}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_getTopFieldId, start: 0x01ED8588, end: 0x01ED85B0}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_GetTopFieldDef_, start: 0x01ED85B0, end: 0x01ED8608}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_getTopTypeId, start: 0x01ED8608, end: 0x01ED8630}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_popField, start: 0x01ED8630, end: 0x01ED8790}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_popFieldData, start: 0x01ED8790, end: 0x01ED8950}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_pushField, start: 0x01ED8950, end: 0x01ED8AB0}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_pushRowData, start: 0x01ED8AB0, end: 0x01ED8BF0}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_FlushField_, start: 0x01ED8BF0, end: 0x01ED8D40}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_MediusDArgList_popRowData, start: 0x01ED8D40, end: 0x01ED8EC8}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_getNumArguments, start: 0x01ED8EC8, end: 0x01ED8F50}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_getObjectSize, start: 0x01ED8F50, end: 0x01ED8F58}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_rewindMask, start: 0x01ED8F58, end: 0x01ED8F78}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_flush, start: 0x01ED8F78, end: 0x01ED9080}
+      - {object: medius/MediusDList/src/MediusDArgList, section: .medius_dargs_MediusDArgList_print, start: 0x01ED9080, end: 0x01ED9088}
+  medius/dme_object/src/DmeObject:
+    text_start: 0x01EC9238
+    text_end: 0x01EC9790
+    slots:
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetRegisterObjectStart, start: 0x01EC9238, end: 0x01EC9288}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetSetDefaultNetUseObjectsInParams, start: 0x01EC9288, end: 0x01EC92E8}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetUseObjects, start: 0x01EC92E8, end: 0x01EC9340}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetObjectField, start: 0x01EC9340, end: 0x01EC93E0}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_func_01EC93E0, start: 0x01EC93E0, end: 0x01EC93E8}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetCreateObject, start: 0x01EC93E8, end: 0x01EC94B8}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_func_01EC94B8, start: 0x01EC94B8, end: 0x01EC94C0}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetGetObject, start: 0x01EC94C0, end: 0x01EC9530}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetSetMyClientObject, start: 0x01EC9530, end: 0x01EC9580}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetReleaseObjectPrivateOwnership, start: 0x01EC9580, end: 0x01EC95D0}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetRegisterStructure, start: 0x01EC95D0, end: 0x01EC9640}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetRegisterRemoteObjectCallback, start: 0x01EC9640, end: 0x01EC96C0}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetSendObjectFullUpdate, start: 0x01EC96C0, end: 0x01EC9730}
+      - {object: medius/dme_object/src/DmeObject, section: .medius_dobj_NetGetSessionMasterClientIndex, start: 0x01EC9730, end: 0x01EC9790}
+  medius/MediusMessage/src/MediusMessage:
+    text_start: 0x01EDB3E0
+    text_end: 0x01EDBB28
+    slots:
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_MediusMessageDestCreate, start: 0x01EDB3E0, end: 0x01EDB438}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg__getTransactionId, start: 0x01EDB438, end: 0x01EDB478}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg__packTransaction, start: 0x01EDB478, end: 0x01EDB5C0}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg__packMessage, start: 0x01EDB5C0, end: 0x01EDB658}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_constructIn, start: 0x01EDB658, end: 0x01EDB6F8}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_constructOut, start: 0x01EDB6F8, end: 0x01EDB798}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_send, start: 0x01EDB798, end: 0x01EDB8B8}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendResponse, start: 0x01EDB8B8, end: 0x01EDB908}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendRequest, start: 0x01EDB908, end: 0x01EDB980}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendResult, start: 0x01EDB980, end: 0x01EDBA40}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendException, start: 0x01EDBA40, end: 0x01EDBB20}
+      - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_getObjectSize___dupe3, start: 0x01EDBB20, end: 0x01EDBB28}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0
