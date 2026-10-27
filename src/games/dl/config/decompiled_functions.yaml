@@ -421,11 +421,13 @@ functions:
   DestroySequence: 0x01ED3AE0
   CreateVSequence: 0x01ED3EA8
   DestroyVSequence: 0x01ED3F20
-  MediusUpdateClanStats: 0x01ED5320
   MediusGetServerTime: 0x01ED5CB8
+  MediusUpdateClientState: 0x01ED6258
+  MediusSessionEnd: 0x01ED6380
   MediusDnasSignature: 0x01ED6418
   MediusAccountRegistration: 0x01ED6910
   MediusAccountUpdateStats: 0x01ED6998
+  MediusAccountDelete: 0x01ED6A28
   MediusAnonymousLogin: 0x01ED6AA8
   MediusCreateGame: 0x01ED6B28
   MediusTextFilter: 0x01ED6BB0
@@ -461,11 +463,45 @@ functions:
   MediusGetLobbyPlayerNames_ExtraInfo: 0x01ED7F10
   MediusGetGames_ExtraInfo: 0x01ED7F88
   MediusGetChannels_ExtraInfo: 0x01ED8000
+  MediusLadderList_ExtraInfo: 0x01ED8078
+  MediusLadderPosition_ExtraInfo: 0x01ED80F8
   MediusUpdateLadderStatsWide: 0x01ED8178
   MediusGetLadderStatsWide: 0x01ED81F8
+  MediusSetLobbyWorldFilter: 0x01ED8278
   MediusToken: 0x01ED83D8
   MediusSetAutoChatHistory: 0x01ED8450
+  BinaryAddressToNetAddress: 0x01E9EBD8
   NetAddressToBinaryAddress: 0x01E9EE28
+  MediusFileCreate: 0x01EDB090
+  MediusFileClose: 0x01EDB198
+  MediusFileDownload: 0x01EDB210
+  MediusFileDelete: 0x01EDB290
+  MediusUpdateClanStats: 0x01ED5320
+  MediusClanLadderList: 0x01ED53A8
+  MediusClanLadderPosition: 0x01ED5428
+  MediusGetClanMemberList_ExtraInfo: 0x01ED54A8
+  MediusCreateClan: 0x01ED4818
+  MediusDisbandClan: 0x01ED4898
+  MediusGetClanByName: 0x01ED4918
+  MediusGetClanByID: 0x01ED4998
+  MediusTransferClanLeadership: 0x01ED4A18
+  MediusRemovePlayerFromClan: 0x01ED4A98
+  MediusInvitePlayerToClan: 0x01ED4B18
+  MediusCheckMyClanInvitations: 0x01ED4B98
+  MediusGetClanInvitationsSent: 0x01ED4C18
+  MediusRespondToClanInvitation: 0x01ED4C98
+  MediusRevokeClanInvitation: 0x01ED4D18
+  MediusGetMyClanMessages: 0x01ED4D98
+  MediusSendClanMessage: 0x01ED4E18
+  MediusModifyClanMessage: 0x01ED4E98
+  MediusDeleteClanMessage: 0x01ED4F18
+  MediusRequestClanTeamChallenge: 0x01ED4F98
+  MediusRespondToClanTeamChallenge: 0x01ED5018
+  MediusRevokeClanTeamChallenge: 0x01ED5098
+  MediusGetClanTeamChallenges: 0x01ED5118
+  MediusGetMyClans: 0x01ED5198
+  MediusGetAllClanMessages: 0x01ED5220
+  MediusGetClanTeamChallengeHistory: 0x01ED52A0
   InitSequence: 0x01ED3B08
   InitializePRNG: 0x01EB3ED0
   KM_CreateRandomRCKey: 0x01EB3F10
@@ -4288,15 +4324,75 @@ objects:
       - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_AddVSequence, start: 0x01ED3F48, end: 0x01ED4038}
       - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_GetVDataBytes, start: 0x01ED4038, end: 0x01ED41E0}
       - {object: medius/StreamMedia/src/vsequence, section: .medius_vsequence_GetVSequenceData, start: 0x01ED41E0, end: 0x01ED4378}
+  medius/MediusClientLibrary/src/MediusBilling:
+    text_start: 0x01ED4380
+    text_end: 0x01ED531C
+    slots:
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingClientVersion, start: 0x01ED4380, end: 0x01ED43E8}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingServerVersion, start: 0x01ED43E8, end: 0x01ED4430}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_func_01ED4430, start: 0x01ED4430, end: 0x01ED4438}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingUpdate, start: 0x01ED4438, end: 0x01ED4450}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_func_01ED4450, start: 0x01ED4450, end: 0x01ED4460}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingIsLoaded, start: 0x01ED4460, end: 0x01ED4478}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_func_01ED4478, start: 0x01ED4478, end: 0x01ED4498}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingAccountLogin, start: 0x01ED4498, end: 0x01ED46A8}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingLogInCallback, start: 0x01ED46A8, end: 0x01ED4760}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusBillingAccountLogout, start: 0x01ED4760, end: 0x01ED4788}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_func_01ED4788, start: 0x01ED4788, end: 0x01ED4818}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusCreateClan, start: 0x01ED4818, end: 0x01ED4898}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusDisbandClan, start: 0x01ED4898, end: 0x01ED4918}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetClanByName, start: 0x01ED4918, end: 0x01ED4998}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetClanByID, start: 0x01ED4998, end: 0x01ED4A18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusTransferClanLeadership, start: 0x01ED4A18, end: 0x01ED4A98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRemovePlayerFromClan, start: 0x01ED4A98, end: 0x01ED4B18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusInvitePlayerToClan, start: 0x01ED4B18, end: 0x01ED4B98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusCheckMyClanInvitations, start: 0x01ED4B98, end: 0x01ED4C18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetClanInvitationsSent, start: 0x01ED4C18, end: 0x01ED4C98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRespondToClanInvitation, start: 0x01ED4C98, end: 0x01ED4D18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRevokeClanInvitation, start: 0x01ED4D18, end: 0x01ED4D98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetMyClanMessages, start: 0x01ED4D98, end: 0x01ED4E18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusSendClanMessage, start: 0x01ED4E18, end: 0x01ED4E98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusModifyClanMessage, start: 0x01ED4E98, end: 0x01ED4F18}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusDeleteClanMessage, start: 0x01ED4F18, end: 0x01ED4F98}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRequestClanTeamChallenge, start: 0x01ED4F98, end: 0x01ED5018}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRespondToClanTeamChallenge, start: 0x01ED5018, end: 0x01ED5098}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusRevokeClanTeamChallenge, start: 0x01ED5098, end: 0x01ED5118}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetClanTeamChallenges, start: 0x01ED5118, end: 0x01ED5198}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetMyClans, start: 0x01ED5198, end: 0x01ED5218}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_func_01ED5218, start: 0x01ED5218, end: 0x01ED5220}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetAllClanMessages, start: 0x01ED5220, end: 0x01ED52A0}
+      - {object: medius/MediusClientLibrary/src/MediusBilling, section: .medius_billing_MediusGetClanTeamChallengeHistory, start: 0x01ED52A0, end: 0x01ED531C}
   medius/MediusClientLibrary/src/MediusClans:
     text_start: 0x01ED5320
     text_end: 0x01ED5524
     slots:
       - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusUpdateClanStats, start: 0x01ED5320, end: 0x01ED53A0}
       - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A0, start: 0x01ED53A0, end: 0x01ED53A8}
-      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A8, start: 0x01ED53A8, end: 0x01ED5428}
-      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED5428, start: 0x01ED5428, end: 0x01ED54A8}
-      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED54A8, start: 0x01ED54A8, end: 0x01ED5524}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusClanLadderList, start: 0x01ED53A8, end: 0x01ED5428}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusClanLadderPosition, start: 0x01ED5428, end: 0x01ED54A8}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusGetClanMemberList_ExtraInfo, start: 0x01ED54A8, end: 0x01ED5524}
+  medius/MediusClientLibrary/src/MediusFileServices:
+    text_start: 0x01EDB090
+    text_end: 0x01EDB3AC
+    slots:
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileCreate, start: 0x01EDB090, end: 0x01EDB108}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileUpload, start: 0x01EDB108, end: 0x01EDB198}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileClose, start: 0x01EDB198, end: 0x01EDB210}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileDownload, start: 0x01EDB210, end: 0x01EDB288}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_func_01EDB288, start: 0x01EDB288, end: 0x01EDB290}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileDelete, start: 0x01EDB290, end: 0x01EDB308}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_func_01EDB308, start: 0x01EDB308, end: 0x01EDB310}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileListFiles, start: 0x01EDB310, end: 0x01EDB388}
+      - {object: medius/MediusClientLibrary/src/MediusFileServices, section: .medius_files_MediusFileInitAttributes, start: 0x01EDB388, end: 0x01EDB3AC}
+  medius/dme_client/src/DmeAddress:
+    text_start: 0x01E9EBD8
+    text_end: 0x01E9F050
+    slots:
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_BinaryAddressToNetAddress, start: 0x01E9EBD8, end: 0x01E9ED00}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_StringAddressToNetAddress, start: 0x01E9ED00, end: 0x01E9EE28}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress, start: 0x01E9EE28, end: 0x01E9EF18}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetIAddressToStringAddress, start: 0x01E9EF18, end: 0x01E9F038}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_func_01E9F038, start: 0x01E9F038, end: 0x01E9F050}
   medius/MediusClientLibrary/src/MediusClient:
     text_start: 0x01ED5528
     text_end: 0x01ED84C4
@@ -4408,15 +4504,6 @@ objects:
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_vLocalSetLobbyWorldFilter, start: 0x01ED8338, end: 0x01ED83D8}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusToken, start: 0x01ED83D8, end: 0x01ED8450}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetAutoChatHistory, start: 0x01ED8450, end: 0x01ED84C4}
-  medius/dme_client/src/DmeAddress:
-    text_start: 0x01E9EBD8
-    text_end: 0x01E9F050
-    slots:
-      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_BinaryAddressToNetAddress, start: 0x01E9EBD8, end: 0x01E9ED00}
-      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_StringAddressToNetAddress, start: 0x01E9ED00, end: 0x01E9EE28}
-      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress, start: 0x01E9EE28, end: 0x01E9EF18}
-      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetIAddressToStringAddress, start: 0x01E9EF18, end: 0x01E9F038}
-      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_func_01E9F038, start: 0x01E9F038, end: 0x01E9F050}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0
@@ -4497,4 +4584,5 @@ rodata:
       - {object: svo3/CInputContextBase, function: HasActionOccurred, section: .svo_input_HasActionOccurred.rodata, start: 0x0019C340, end: 0x0019C370}
       - {object: svo3/UTF8_Util, function: UTF8_GetNextCharIndexFromString, section: .svo_utf8_UTF8_GetNextCharIndexFromString.rodata, start: 0x0019D760, end: 0x0019D778}
       - {object: svo3/UTF8_Util, function: UTF8_CountCharacters, section: .svo_utf8_UTF8_CountCharacters.rodata, start: 0x0019D780, end: 0x0019D798}
+      - {object: medius/dme_client/src/DmeAddress, function: BinaryAddressToNetAddress, section: .medius_dmeaddr_BinaryAddressToNetAddress.rodata, start: 0x00195B70, end: 0x00195B94}
       - {object: medius/dme_client/src/DmeAddress, function: NetAddressToBinaryAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress.rodata, start: 0x00195BD0, end: 0x00195BF4}

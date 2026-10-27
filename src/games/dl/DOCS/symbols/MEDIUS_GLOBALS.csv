@@ -36,3 +36,4 @@ rtParseMaxTypes,0x001B23BC,code/medius/rt_util/rt_parse.c,"core.bss word; MaxTyp
 rtParseMaxClasses,0x001B23C0,code/medius/rt_util/rt_parse.c,"core.bss word; MaxClasses passed to rt_parse_initialize",rt_parse
 rtParseMaxMessageSize,0x001B23C4,code/medius/rt_util/rt_parse.c,"core.bss word; MaxMessageSize passed to rt_parse_initialize",rt_parse
 rtParseFragments,0x001B23C8,code/medius/rt_util/rt_parse.c,"core.bss pointer; 256 fragment-reassembly slots of 0x34 bytes, buffer pointer at +0x30",rt_parse
+mediusBillingEnabled,0x00169D50,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; MediusAccountDelete returns MediusErrorFeatureNotEnabled and MediusAccountLogout takes the billing path when it is 1",MediusClient

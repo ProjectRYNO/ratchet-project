@@ -9,6 +9,7 @@ typedef enum {
     MediusErrorSendingMessage = -5,
     MediusErrorNotInitialized = -15,
     MediusErrorNotConnected = -16,
+    MediusErrorFeatureNotEnabled = -20,
     MediusErrorInvalidParameter = -21,
 } MediusErrorCode;
 
@@ -407,5 +408,374 @@ typedef struct { // 0x12C
 } MediusUpdateClanStatsRequest;
 
 typedef void (*MediusTypeUpdateClanStatsCallback)(void);
+
+typedef struct { // 0xAC
+    /* 0x00 */ unsigned char Filename[128];
+    /* 0x80 */ unsigned char ServerChecksum[16];
+    /* 0x90 */ unsigned int FileID;
+    /* 0x94 */ unsigned int FileSize;
+    /* 0x98 */ unsigned int CreationTimeStamp;
+    /* 0x9C */ unsigned int OwnerID;
+    /* 0xA0 */ unsigned int GroupID;
+    /* 0xA4 */ unsigned short OwnerPermissionRWX;
+    /* 0xA6 */ unsigned short GroupPermissionRWX;
+    /* 0xA8 */ unsigned short GlobalPermissionRWX;
+    /* 0xAA */ unsigned short ServerOperationID;
+} MediusFile;
+
+typedef struct { // 0x114
+    /* 0x00 */ unsigned char Description[256];
+    /* 0x100 */ unsigned int LastChangedTimeStamp;
+    /* 0x104 */ unsigned int LastChangedByUserID;
+    /* 0x108 */ unsigned int NumberAccesses;
+    /* 0x10C */ unsigned int StreamableFlag;
+    /* 0x110 */ unsigned int StreamingDataRate;
+} MediusFileAttributes;
+
+typedef struct { // 0x1D8
+    /* 0x00 */ MediusFile MediusFileToCreate;
+    /* 0xAC */ MediusFileAttributes MediusFileCreateAttributes;
+    /* 0x1C0 */ char MessageID[21];
+} MediusFileCreateRequest;
+
+typedef void (*MediusFileTypeCreateCallback)(void);
+
+typedef struct { // 0xC4
+    /* 0x00 */ MediusFile MediusFileInfo;
+    /* 0xAC */ char MessageID[21];
+} MediusFileCloseRequest;
+
+typedef void (*MediusFileTypeCloseCallback)(void);
+
+typedef struct { // 0xC4
+    /* 0x00 */ MediusFile MediusFileInfo;
+    /* 0xAC */ char MessageID[21];
+} MediusFileDownloadRequest;
+
+typedef void (*MediusFileTypeDownloadCallback)(void);
+
+typedef struct { // 0xC4
+    /* 0x00 */ MediusFile MediusFileInfo;
+    /* 0xAC */ char MessageID[21];
+} MediusFileDeleteRequest;
+
+typedef void (*MediusFileTypeDeleteCallback)(void);
+
+typedef enum {
+    ClanChallengeRequest = 0,
+    ClanChallengeAccepted = 1,
+    ClanChallengeRevoked = 2,
+    ClanChallengeRefused = 3,
+    ClanChallengeConfirmed = 4,
+    ExtraMediusClanChallengeStatus = 0xFFFFFF,
+} MediusClanChallengeStatus;
+
+typedef enum {
+    ClanInvitationUndecided = 0,
+    ClanInvitationAccept = 1,
+    ClanInvitationDecline = 2,
+    ClanInvitationRevoked = 3,
+    ExtraMediusClanInvitationsResponseStatus = 0xFFFFFF,
+} MediusClanInvitationsResponseStatus;
+
+typedef struct { // 0x4C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ApplicationID;
+    /* 0x2C */ char ClanName[32];
+} MediusCreateClanRequest;
+
+typedef void (*MediusTypeCreateClanCallback)(void);
+
+typedef struct { // 0x2C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanID;
+} MediusDisbandClanRequest;
+
+typedef void (*MediusTypeDisbandClanCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int AccountID;
+    /* 0x2C */ int ClanID;
+} MediusGetClanByIDRequest;
+
+typedef void (*MediusTypeGetClanByIDCallback)(void);
+
+typedef struct { // 0x4C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ApplicationID;
+    /* 0x2C */ char ClanName[32];
+} MediusGetClanByNameRequest;
+
+typedef void (*MediusTypeGetClanByNameCallback)(void);
+
+typedef struct { // 0x4C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int NewLeaderAccountID;
+    /* 0x2C */ char NewLeaderAccountName[32];
+} MediusTransferClanLeadershipRequest;
+
+typedef void (*MediusTypeTransferClanLeadershipCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int PlayerAccountID;
+    /* 0x2C */ int ClanID;
+} MediusRemovePlayerFromClanRequest;
+
+typedef void (*MediusTypeRemovePlayerFromClanCallback)(void);
+
+typedef struct { // 0xF4
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int PlayerAccountID;
+    /* 0x2C */ char InviteMessage[200];
+} MediusInvitePlayerToClanRequest;
+
+typedef void (*MediusTypeInvitePlayerToClanCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int Start;
+    /* 0x2C */ int PageSize;
+} MediusCheckMyClanInvitationsRequest;
+
+typedef void (*MediusTypeCheckMyClanInvitationsCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int Start;
+    /* 0x2C */ int PageSize;
+} MediusGetClanInvitationsSentRequest;
+
+typedef void (*MediusTypeGetClanInvitationsSentCallback)(void);
+
+typedef struct { // 0xF8
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanInvitationID;
+    /* 0x2C */ MediusClanInvitationsResponseStatus Response;
+    /* 0x30 */ char Message[200];
+} MediusRespondToClanInvitationRequest;
+
+typedef void (*MediusTypeRespondToClanInvitationCallback)(void);
+
+typedef struct { // 0x2C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int PlayerAccountID;
+} MediusRevokeClanInvitationRequest;
+
+typedef void (*MediusTypeRevokeClanInvitationCallback)(void);
+
+typedef struct { // 0x34
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanID;
+    /* 0x2C */ int Start;
+    /* 0x30 */ int PageSize;
+} MediusGetMyClanMessagesRequest;
+
+typedef void (*MediusTypeGetMyClanMessagesCallback)(void);
+
+typedef struct { // 0xEE
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x26 */ char Message[200];
+} MediusSendClanMessageRequest;
+
+typedef void (*MediusTypeSendClanMessageCallback)(void);
+
+typedef struct { // 0xF4
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanMessageID;
+    /* 0x2C */ char NewMessage[200];
+} MediusModifyClanMessageRequest;
+
+typedef void (*MediusTypeModifyClanMessageCallback)(void);
+
+typedef struct { // 0x2C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanMessageID;
+} MediusDeleteClanMessageRequest;
+
+typedef void (*MediusTypeDeleteClanMessageCallback)(void);
+
+typedef struct { // 0xF4
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanID;
+    /* 0x2C */ char Message[200];
+} MediusRequestClanTeamChallengeRequest;
+
+typedef void (*MediusTypeRequestClanTeamChallengeCallback)(void);
+
+typedef struct { // 0xF8
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanChallengeID;
+    /* 0x2C */ MediusClanChallengeStatus ChallengeStatus;
+    /* 0x30 */ char Message[200];
+} MediusRespondToClanTeamChallengeRequest;
+
+typedef void (*MediusTypeRespondToClanTeamChallengeCallback)(void);
+
+typedef struct { // 0x2C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanChallengeID;
+} MediusRevokeClanTeamChallengeRequest;
+
+typedef void (*MediusTypeRevokeClanTeamChallengeCallback)(void);
+
+typedef struct { // 0x3C
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanID;
+    /* 0x2C */ int Start;
+    /* 0x30 */ int PageSize;
+    /* 0x34 */ MediusClanChallengeStatus Status;
+    /* 0x38 */ int ChallengedOnly;
+} MediusGetClanTeamChallengesRequest;
+
+typedef void (*MediusTypeGetClanTeamChallengesCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int Start;
+    /* 0x2C */ int PageSize;
+} MediusGetMyClansRequest;
+
+typedef void (*MediusTypeGetMyClansCallback)(void);
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int Start;
+    /* 0x2C */ int PageSize;
+} MediusGetAllClanMessagesRequest;
+
+typedef void (*MediusTypeGetAllClanMessagesCallback)(void);
+
+typedef struct { // 0x38
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x28 */ int ClanID;
+    /* 0x2C */ int ThisClanIsChallenger;
+    /* 0x30 */ int Start;
+    /* 0x34 */ int PageSize;
+} MediusGetClanTeamChallengeHistoryRequest;
+
+typedef void (*MediusTypeGetClanTeamChallengeHistoryCallback)(void);
+
+typedef enum {
+    MEDIUS_ASCENDING = 0,
+    MEDIUS_DESCENDING = 1,
+    ExtraMediusSortOrder = 0xFFFFFF,
+} MediusSortOrder;
+
+typedef struct { // 0x28
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ int ClanLadderStatIndex;
+    /* 0x1C */ MediusSortOrder SortOrder;
+    /* 0x20 */ unsigned int StartPosition;
+    /* 0x24 */ unsigned int PageSize;
+} MediusClanLadderListRequest;
+
+typedef void (*MediusTypeClanLadderListCallback)(void);
+
+typedef struct { // 0x24
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ int ClanID;
+    /* 0x1C */ int ClanLadderStatIndex;
+    /* 0x20 */ MediusSortOrder SortOrder;
+} MediusClanLadderPositionRequest;
+
+typedef void (*MediusTypeClanLadderPositionCallback)(void);
+
+typedef struct { // 0x24
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ int ClanID;
+    /* 0x1C */ int LadderStatIndex;
+    /* 0x20 */ MediusSortOrder SortOrder;
+} MediusGetClanMemberList_ExtraInfoRequest;
+
+typedef void (*MediusTypeGetClanMemberList_ExtraInfoCallback)(void);
+
+typedef struct { // 0x28
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ int LadderStatIndex;
+    /* 0x1C */ int SortOrder;
+    /* 0x20 */ unsigned int StartPosition;
+    /* 0x24 */ unsigned int PageSize;
+} MediusLadderList_ExtraInfoRequest;
+
+typedef void (*MediusTypeLadderList_ExtraInfoCallback)(void);
+
+typedef struct { // 0x24
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ int AccountID;
+    /* 0x1C */ int LadderStatIndex;
+    /* 0x20 */ int SortOrder;
+} MediusLadderPosition_ExtraInfoRequest;
+
+typedef void (*MediusTypeLadderPosition_ExtraInfoCallback)(void);
+
+typedef struct { // 0x26
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+} MediusSessionEndRequest;
+
+typedef void (*MediusTypeSessionEndCallback)(void);
+
+typedef struct { // 0x18
+    /* 0x00 */ char SessionKey[17];
+    /* 0x14 */ int UserAction;
+} MediusUpdateUserState;
+
+typedef struct { // 0x30
+    /* 0x00 */ char MessageID[21];
+    /* 0x18 */ unsigned int FilterMask1;
+    /* 0x1C */ unsigned int FilterMask2;
+    /* 0x20 */ unsigned int FilterMask3;
+    /* 0x24 */ unsigned int FilterMask4;
+    /* 0x28 */ int LobbyFilterType;
+    /* 0x2C */ int FilterMaskLevel;
+} MediusSetLobbyWorldFilterRequest;
+
+typedef void (*MediusTypeSetLobbyWorldFilterCallback)(void);
+
+typedef struct { // 0x18
+    /* 0x00 */ unsigned int FilterMask1;
+    /* 0x04 */ unsigned int FilterMask2;
+    /* 0x08 */ unsigned int FilterMask3;
+    /* 0x0C */ unsigned int FilterMask4;
+    /* 0x10 */ int FilterMaskLevel;
+    /* 0x14 */ int LobbyFilterType;
+} MediusFilterMaskInfo;
+
+typedef struct { // 0x46
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+    /* 0x26 */ char MasterPassword[32];
+} MediusAccountDeleteRequest;
+
+typedef void (*MediusTypeAccountDeleteCallback)(void);
+
+typedef struct { // 0x26
+    /* 0x00 */ char MessageID[21];
+    /* 0x15 */ char SessionKey[17];
+} MediusAccountLogoutRequest;
 
 #endif

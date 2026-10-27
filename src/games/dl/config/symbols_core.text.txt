@@ -1626,6 +1626,7 @@ G_MCL_UsagePolicyMessageID = 0x00169CF8;
 G_MCL_PrivacyPolicyMessageID = 0x00169D10;
 G_MCL_uiCurInfoType = 0x00169D28;
 LastDMENetError = 0x00169D30;
+mediusBillingEnabled = 0x00169D50;
 nSSLInstanceCount = 0x0016A930;
 gMallocFunc = 0x0016A934;
 gFreeFunc = 0x0016A938;

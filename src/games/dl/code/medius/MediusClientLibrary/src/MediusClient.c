@@ -13,6 +13,11 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
+extern short GlobalLobbyFilterFlag;
+extern MediusFilterMaskInfo MyFilterMaskInfo;
+// 1 when accounts are handled through MediusBilling; MediusAccountDelete is then not available.
+extern int mediusBillingEnabled;
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", FUN_01ed5528);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", FUN_01ed5538);
@@ -91,11 +96,29 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/sr
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusUpdateBare);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusUpdateClientState);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusUpdateClientState) MediusUpdateClientState(MediusUpdateUserState *req)
+{
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    req->SessionKey[0x10] = 0;
+    if (MediusSendMessage(1, 0x49, 0x18, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSessionBegin);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSessionEnd);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusSessionEnd) MediusSessionEnd(MediusSessionEndRequest *req, MediusTypeSessionEndCallback callback, void *pUserData)
+{
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    if (req == 0 || req->SessionKey[0] == 0) return MediusErrorInvalidParameter;
+        req->SessionKey[0x10] = 0;
+        req->MessageID[0x14] = 0;
+        gMediusFunctionPointers[2] = callback;
+        gUserArguments[2] = pUserData;
+    if (MediusSendMessage(1, 5, 0x26, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 MediusErrorCode MEDIUS_CLIENT_SECTION(MediusDnasSignature) MediusDnasSignature(MediusDnasSignaturePost *MyDnasSignaturePost)
 {
@@ -145,7 +168,16 @@ MediusErrorCode MEDIUS_CLIENT_SECTION(MediusAccountUpdateStats) MediusAccountUpd
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", func_01ED6A18);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusAccountDelete);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusAccountDelete) MediusAccountDelete(MediusAccountDeleteRequest *req, MediusTypeAccountDeleteCallback callback, void *pUserData)
+{
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    if (mediusBillingEnabled == 1) return MediusErrorFeatureNotEnabled;
+    gMediusFunctionPointers[11] = callback;
+    gUserArguments[11] = pUserData;
+    if (MediusSendMessage(1, 0x13, 0x46, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 MediusErrorCode MEDIUS_CLIENT_SECTION(MediusAnonymousLogin) MediusAnonymousLogin(MediusAnonymousLoginRequest *MyAnonymousLoginRequest, MediusTypeAnonymousLoginCallback MyAnonymousLoginCallback,void *pUserData)
 {
@@ -585,9 +617,33 @@ MediusErrorCode MEDIUS_CLIENT_SECTION(MediusGetChannels_ExtraInfo) MediusGetChan
     return MediusErrorNone;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusLadderList_ExtraInfo);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusLadderList_ExtraInfo) MediusLadderList_ExtraInfo(MediusLadderList_ExtraInfoRequest *req, MediusTypeLadderList_ExtraInfoCallback callback, void *pUserData)
+{
+    req->MessageID[0x14] = 0;
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    gMediusFunctionPointers[63] = callback;
+    gUserArguments[63] = pUserData;
+    if ((unsigned int)req->LadderStatIndex > 99) {
+        req->LadderStatIndex = 0;
+    }
+    if (MediusSendMessage(4, 15, 0x28, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusLadderPosition_ExtraInfo);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusLadderPosition_ExtraInfo) MediusLadderPosition_ExtraInfo(MediusLadderPosition_ExtraInfoRequest *req, MediusTypeLadderPosition_ExtraInfoCallback callback, void *pUserData)
+{
+    req->MessageID[0x14] = 0;
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    gMediusFunctionPointers[64] = callback;
+    gUserArguments[64] = pUserData;
+    if ((unsigned int)req->LadderStatIndex > 99) {
+        req->LadderStatIndex = 0;
+    }
+    if (MediusSendMessage(1, 0xF1, 0x24, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 MediusErrorCode MEDIUS_CLIENT_SECTION(MediusUpdateLadderStatsWide) MediusUpdateLadderStatsWide(MediusUpdateLadderStatsWideRequest *MyUpdateLadderStatsRequest, MediusTypeUpdateLadderStatsCallback MyUpdateLadderStatsCallback,void *pUserData)
 {
@@ -615,7 +671,28 @@ MediusErrorCode MEDIUS_CLIENT_SECTION(MediusGetLadderStatsWide) MediusGetLadderS
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", func_01ED8270);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetLobbyWorldFilter);
+MediusErrorCode MEDIUS_CLIENT_SECTION(MediusSetLobbyWorldFilter) MediusSetLobbyWorldFilter(MediusSetLobbyWorldFilterRequest *req, MediusTypeSetLobbyWorldFilterCallback callback, void *pUserData)
+{
+    int level;
+    int type;
+
+    req->MessageID[0x14] = 0;
+    if (GlobalInitFlag != 1) return MediusErrorNotInitialized;
+    if (!(ghMyConnection != 0)) return MediusErrorNotConnected;
+    GlobalLobbyFilterFlag = 0;
+    gMediusFunctionPointers[68] = callback;
+    level = req->FilterMaskLevel;
+    type = req->LobbyFilterType;
+    MyFilterMaskInfo.FilterMaskLevel = level;
+    MyFilterMaskInfo.LobbyFilterType = type;
+    gUserArguments[68] = pUserData;
+    MyFilterMaskInfo.FilterMask1 = req->FilterMask1;
+    MyFilterMaskInfo.FilterMask2 = req->FilterMask2;
+    MyFilterMaskInfo.FilterMask3 = req->FilterMask3;
+    MyFilterMaskInfo.FilterMask4 = req->FilterMask4;
+    if (MediusSendMessage(4, 0x12, 0x30, req) != 0) return MediusErrorSendingMessage;
+    return MediusErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", func_01ED8330);
 

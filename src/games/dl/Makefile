@@ -137,7 +137,7 @@ MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util
 	$(OBJ_DIR)/medius/MediusDList/src/MediusDList_shared.o \
 	$(OBJ_DIR)/medius/StreamMedia/src/sequence.o $(OBJ_DIR)/medius/StreamMedia/src/vsequence.o \
 	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClans.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClient.o \
-	$(OBJ_DIR)/medius/dme_client/src/DmeAddress.o
+	$(OBJ_DIR)/medius/dme_client/src/DmeAddress.o \n	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusBilling.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusFileServices.o
 # Retail rt_parse and DmeRegister never tail-call: a wrapper returning another call's
 # result keeps jal + jr. Every function in both matches with sibling calls disabled.
 MEDIUS_NO_SIBCALL_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_parse.o $(OBJ_DIR)/medius/dme_client/src/DmeRegister.o

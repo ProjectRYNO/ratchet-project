@@ -37,13 +37,13 @@ real functions and are not listed.
 | rt_parse | rt_parse_execute, fragment handling, timeout, find_frag_msg | - | not attempted |
 | DmeList | NetGenerateClientList, NetGenerateJoinedClientList | ~33 | loop and test order; first drafts only (batch 11) |
 | MediusDList_shared | MediusDListSubscribePack | 36 | `\|\|` chain and ternary tail both tried (batch 11) |
-| DmeAddress | BinaryAddressToNetAddress, StringAddressToNetAddress, NetIAddressToStringAddress | - | switch functions: register each jump table as a `rodata:` slot (see batch 11) |
-| DmeToken | (switch functions) | - | not attempted; jump tables go in `rodata:` slots |
+| DmeAddress | StringAddressToNetAddress, NetIAddressToStringAddress | 12, 32 | String: `pAddress` and `Type` swap s1/s2 (equal global-alloc priority; the lower pseudo wins). NetI: retail leaves `nop` in both `jal rt_comm_linkaddress_tostr` delay slots and keeps the error in v0 (batch 12; best tries in `build/medius-work/dad_best_partial.c`) |
+| DmeToken | HostProcessTokenMessage; TokenNotifyEvent, TokenHostEvent, TokenEvent | 74; - | first draft only (10 arguments, table 0x00196090); the others not attempted |
 | sequence, vsequence | AddSequence, GetSequenceData, AddVSequence, GetVDataBytes, GetVSequenceData | - | not attempted |
-| MediusClient | MediusSessionEnd, MediusAccountLogin, MediusAccountLogout, MediusJoinGame, MediusGetUniverseInformation, MediusLadderList_ExtraInfo, MediusLadderPosition_ExtraInfo, MediusSetLobbyWorldFilter, MediusUpdateClientState | 13 to 33 | request wrappers with extra work (copies, extra tests); the generated shape does not cover them (batch 11) |
-| MediusClient | MediusAccountDelete, MediusAccountLoginInternal, MediusAccountLogoutInternal, MediusSessionBegin | - | wrapper shape, but they use unnamed statics (`0x00169D50`, `0x001B7878`, `0x001B78E0`) or stack copies |
-| MediusClans, MediusBilling | func_01ED53A8, func_01ED5428, func_01ED54A8, the `func_` Billing wrappers | - | request wrappers without a Ghidra function; create them in Ghidra for names and types, then use `genwrap.py` |
-| Dme, rt_libnet, rt_time, MediusClient | func_01E9EAF8, func_01E9BFB0, func_01EAB670, func_01ED5B70, func_01ED5CA8, func_01ED6A18, func_01ED6E30, func_01ED79C8, func_01ED7AD8, func_01ED7C88 | - | start with a leftover `addiu sp,sp,N; nop` pair; check for a real function after it and add a split symbol as for MediusClans |
+| MediusClient | MediusGetUniverseInformation, MediusSessionBegin | 2, 3 | order of the global stores around the `jal`; SessionBegin builds a `MediusExtendedSessionBeginRequest` copy (version 2.10.7) and GCC sinks the stores below it (batch 12) |
+| MediusClient | MediusAccountLogin, MediusAccountLogout, MediusJoinGame, MediusAccountLoginInternal | - | not attempted: billing paths with `printf`, struct copies into 0x001B78E0, NetResolveAddr in JoinGame |
+| MediusClient | MediusAccountLogoutInternal | 0 in a probe | matches, but its `printf` string must be the retail `D_1984F8` in rodata; needs a named extern or a rodata slot for the literal. It resends `mediusBillingLogoutRequest` (0x001B78E0, copy of the last logout request) |
+| MediusFileServices | MediusFileUpload, MediusFileListFiles, MediusFileInitAttributes | 19, -, - | Upload does extra work; the generator fails on the other two |
 
 PS2 declarations: Medius objects compile with the open-source PS2SDK headers
 (`PS2SDK_FLAGS` in the Makefile: `-D_EE`, `/opt/ps2dev/ps2sdk/{ee,common}/include`, plus the
@@ -52,6 +52,73 @@ Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
 `GetThreadId`; `libcdvd-common.h`: `sceCdCLOCK`). Sony SDK calls that PS2SDK lacks
 (`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
 Add new ones there rather than in individual files.
+
+## Medius batch 12 (2026-10-27)
+
+**251 Medius functions now compile to exact retail bytes** (215 after batch 11).
+
+Medius inventory: 251 of 1,462 INCLUDE_ASM entries replaced (17.17%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `MediusClientLibrary/src/MediusBilling.c` | 22 clan request wrappers (MediusCreateClan … MediusGetClanTeamChallengeHistory) | the MediusBilling* functions, leftover fragments |
+| `MediusClientLibrary/src/MediusClans.c` (complete) | MediusUpdateClanStats, MediusClanLadderList, MediusClanLadderPosition, MediusGetClanMemberList_ExtraInfo | fragment `func_01ED53A0` |
+| `MediusClientLibrary/src/MediusFileServices.c` | MediusFileCreate, MediusFileClose, MediusFileDownload, MediusFileDelete | see "Pinned for later" |
+| `MediusClientLibrary/src/MediusClient.c` | +6: MediusLadderList_ExtraInfo, MediusLadderPosition_ExtraInfo, MediusSessionEnd, MediusUpdateClientState, MediusSetLobbyWorldFilter, MediusAccountDelete | see "Pinned for later" |
+| `dme_client/src/DmeAddress.c` | +1: BinaryAddressToNetAddress (jump table 0x00195B70) | StringAddressToNetAddress, NetIAddressToStringAddress |
+
+**Clan wrapper names are inferred.** The retail debug information has no function at
+0x01ED4818–0x01ED54A8, so the names are not from DWARF. Evidence for each:
+
+- the `MediusSendMessage` size equals the size of exactly one `Medius*Request` type in the
+  debug information;
+- the extra `sb $0` stores land on the last byte of that type's string fields;
+- a matching `MediusType<Name>Callback` typedef exists;
+- the message types follow the Medius request numbering, ending at MediusUpdateClanStats = 0x84.
+
+Pairs of the same size were separated by message type. The weakest calls are:
+
+- CheckMyClanInvitations, GetClanInvitationsSent, GetMyClans and GetAllClanMessages, which
+  are all 0x30 and were ordered by message type alone;
+- ClanLadderPosition and GetClanMemberList_ExtraInfo, which are both 0x24.
+
+Split fixes: `MediusCreateClan` starts at 0x01ED4818, not at 0x01ED47B0 as batch 11 had it.
+The 0x68 bytes before it are leftover pairs (see below). Its symbol replaces `func_01ED47B0`.
+
+**Leftover pairs between functions.** Splat starts a new `func_` right after each
+`jr ra` delay slot. Retail often has dead `<instruction>; nop` pairs there: stack restores
+(`addiu sp,sp,N`), single loads and stores, and `move`s. Alignment `nop`s follow. They look
+like stale copies of delay-slot instructions from the build. They are not
+copies of the neighbouring function's slots, and nothing branches to them. When a real
+function follows them in the same file, its start is wrong.
+
+`build/medius-work/misal4.py <area>` lists files that start with such pairs and still
+contain code afterwards:
+
+- Medius: 0 left of 59 leftover-first files. The 10 noted in batch 11 are pure leftovers.
+- game: 6 of 486, with likely real functions in `guber/Hero/func_00526518`,
+  `guber/Vehicle/func_0053E118` and `projectgui/menu/menucheats/func_004D0828`.
+- sdk: 3 of 33, all short `addiu sp`/return tails in `kernel/libkernel` (and their
+  `game/lib` duplicates).
+
+Globals: `mediusBillingEnabled` (0x00169D50). When it is 1, MediusAccountDelete returns
+MediusErrorFeatureNotEnabled (-20) and MediusAccountLogout takes the billing path.
+`MediusRequests.h` gained the clan, file-service and lobby-filter request types
+(`MediusFile`, `MediusFileAttributes`, `MediusFilterMaskInfo`).
+
+Source-shape findings:
+
+- **Clamped indexes.** The ladder wrappers end the stores with
+  `if (req->StatIndex >= 100) req->StatIndex = 0;` (`sltiu 0x64`).
+- **SessionEnd** tests `if (req == 0 || req->SessionKey[0] == 0)` before anything else.
+- **BinaryAddressToNetAddress** copies the link address into a local first
+  (`addr = *(RT_LINKADDRESS *)pAddress;`) and passes it by value to
+  `rt_comm_linkaddress_toext`.
+
+Tooling: `funclist.py` now takes the module end from the next split segment rather than
+the last function's size. This caused the 4-byte DmeAddress link error in batch 11.
+`unintegrate.py` and `stubs.py` remove an integrated module so it can be redone with more
+functions.
 
 ## Medius batch 11 (2026-10-27)
 
@@ -68,7 +135,7 @@ Medius inventory: 215 of 1,462 INCLUDE_ASM entries replaced (14.71%).
 | `StreamMedia/src/sequence.c` | CreateSequence, DestroySequence, InitSequence | AddSequence, GetSequenceData |
 | `StreamMedia/src/vsequence.c` | CreateVSequence, DestroyVSequence | AddVSequence, GetVDataBytes, GetVSequenceData |
 | `MediusClientLibrary/src/MediusClans.c` | MediusUpdateClanStats | func_01ED53A8, func_01ED5428, func_01ED54A8 |
-| `dme_client/src/DmeAddress.c` | NetAddressToBinaryAddress (switch, jump table at 0x00195BD0) | the other three switch functions |
+| `dme_client/src/DmeAddress.c` | NetAddressToBinaryAddress (switch, jump table at 0x00195BD0) | the other three switch functions (one more in batch 12) |
 | `MediusClientLibrary/src/MediusClient.c` | 43 request wrappers: MediusGetServerTime, MediusDnasSignature, MediusAccountRegistration, MediusAccountUpdateStats, MediusAnonymousLogin, MediusCreateGame, MediusTextFilter, MediusCreateChannel, MediusJoinChannel, MediusGetGamePlayers, MediusGetPlayerInfo, MediusGetGameInfo, MediusGetChannelInfo, MediusFindPlayer, MediusSendGenericChatMessage, MediusSendBinaryMessage, MediusAddToBuddyList, MediusRemoveFromBuddyList, MediusGetIgnoreList, MediusAddToIgnoreList, MediusRemoveFromIgnoreList, MediusSendPlayerReport, MediusSendWorldReport, MediusSendEndGameReport, MediusGetAnnouncements, MediusGetAllAnnouncements, MediusSetGameListFilter, MediusClearGameListFilter, MediusGetGameListFilter, MediusGetMyIP, MediusAccountGetID, MediusGetLocations, MediusGenericChatSetFilter, MediusSetLocalizationParams, MediusGetBuddyList_ExtraInfo, MediusGetTotalRankings, MediusGetLobbyPlayerNames_ExtraInfo, MediusGetGames_ExtraInfo, MediusGetChannels_ExtraInfo, MediusUpdateLadderStatsWide, MediusGetLadderStatsWide, MediusToken, MediusSetAutoChatHistory | the rest of the module |
 
 Types: `MediusRequests.h` holds the request layouts from the debug information. Callback
