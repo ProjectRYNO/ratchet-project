@@ -46,3 +46,15 @@ mediusBillingLogoutRequest,0x001B78E0,code/medius/MediusClientLibrary/src/Medius
 mediusPostDebugInfoFlag,0x00169CF4,code/medius/MediusClientLibrary/src/callback.c,"core.data word, no debug-info name; cleared when the server answers PostDebugInfo with status -950",callback
 mediusUniverseSvoURL,0x0016A080,code/medius/MediusClientLibrary/src/callback.c,"core.data 0x95 bytes, no debug-info name; MessageID (21 bytes) then the SVO URL string unpacked by MediusUniqueCallbackUniverseSvoURLHandler",callback
 mediusFileUploadDataSize,0x0021D998,code/medius/MediusClientLibrary/src/callback.c,"core.bss word, no debug-info name; size of the file being uploaded, the word after G_MFS_pClientUploadData",callback
+MediusDType_I,0x001994D0,code/medius/MediusDList/src/MediusDList.c,"core.data MediusDTypeInterface (0x18); named like MediusMessage_I, the debug information has the type but no symbol",MediusDList
+mediusHeartbeatInterval,0x00167F54,code/medius/dme_client/src/DmeLocal.c,"core.data word, no debug-info name; heartbeat interval in milliseconds set by NetSetHeartbeatInterval",DmeLocal
+mediusNatServiceAddr,0x001AFD28,code/medius/dme_client/src/DmeLocal.c,"core.bss NetAddress (0x18), no debug-info name; local NAT service address",DmeLocal
+mediusConnInfoTable,0x001AF918,code/medius/dme_client/src/DmeLocal.c,"core.bss NetTypeConnectionInfo *[4], no debug-info name; connection info by connection ID",DmeLocal
+mediusClientPingInfo,0x001AF928,code/medius/dme_client/src/DmeLocal.c,"core.bss void *[256], no debug-info name; per-client ping info pointers",DmeLocal
+mediusNetUpdateErrors,0x001AFD80,code/medius/dme_client/src/DmeLocal.c,"core.bss 0x28 bytes, no debug-info name; accumulated NetUpdate connection errors",DmeLocal
+mediusParseResult,0x001B1E28,code/medius/dme_client/src/DmeLocal.c,"core.bss int[], no debug-info name; last parse result per DME connection",DmeLocal
+mediusCommMetrics,0x001B2148,code/medius/rt_comm/src/rt_comm.c,"core.bss RT_COMM_METRICS (0x38), no debug-info name; copied out by rt_comm_get_metrics after rt_comm_metric_update",rt_comm
+mediusDListInterestIds,0x001B7908,code/medius/MediusDList/src/MediusDList.c,"core.bss int[2], no debug-info name; interest id per list id",MediusDList
+mediusDListMetaTypes,0x001B7910,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDMetaType *[2], no debug-info name; per-list player list meta types filled by MediusDListInit",MediusDList
+mediusDListPlayerInterestCallback,0x001B7918,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDInterestCallback (0x14), no debug-info name; player interest callback record",MediusDList
+mediusDListSubscriptions,0x001B7930,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDListSubscription[32] (0x30 each), no debug-info name; subscription table",MediusDList

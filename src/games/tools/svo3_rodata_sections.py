@@ -7,9 +7,9 @@ to place them per function. Inside `.section .svo_<Module>_<fn>`, a `.rdata` dir
 rewritten to `.section .svo_<Module>_<fn>.rodata`. Table contents, alignment and order are
 unchanged. Iksemel `.iks_<fn>` and Medius `.medius_<module>_<fn>` sections use the same
 convention; subsequent tables receive `.rodata.1`, `.rodata.2`, etc., so retail inter-table
-padding remains in its original data section. SVO3 routing is unchanged. A Medius function's
-string literals, which gcc writes to `.rdata` just before the function's section, go to that
-function's `.rodata` section the same way.
+padding remains in its original data section. SVO3 routing is unchanged. A top-level `.rdata`
+block of string literals (gcc does not always write it next to its user) goes to the
+`.rodata` section of the one Medius function that references its labels.
 Unregistered sections are discarded by the linker script, so a table without a
 registered rodata slot fails the link instead of being placed silently.
 """
@@ -17,15 +17,32 @@ import re
 import sys
 
 
-def following_medius_section(lines, start):
-    """Medius function section that a top-level `.rdata` block (string literals) precedes."""
+def literal_owner(lines, start):
+    """Medius function section that uses the labels defined in an `.rdata` block."""
+    labels = []
     for line in lines[start + 1:]:
+        if re.match(r'\s*\.(?:section|text|data|bss|rdata)\b', line):
+            break
+        match = re.match(r'(\$L\w+):', line)
+        if match:
+            labels.append(match[1])
+    if not labels:
+        return None
+    pattern = re.compile(r'(?<![\w$])(?:%s)(?!\w)' % '|'.join(re.escape(l) for l in labels))
+    owners = set()
+    section = None
+    for line in lines:
         match = re.match(r'\s*\.section\s+([^,\s]+)', line)
         if match:
-            return match[1] if match[1].startswith('.medius_') else None
-        if re.match(r'\s*\.(?:text|data|bss|rdata)\b', line):
-            return None
-    return None
+            section = match[1]
+        elif re.match(r'\s*\.(?:text|data|bss|rdata)\b', line):
+            section = None
+        elif section and section.startswith('.medius_') and not section.endswith('.rodata') \
+                and pattern.search(line):
+            owners.add(section)
+    if len(owners) != 1:
+        return None
+    return owners.pop()
 
 
 def rewrite(text):
@@ -34,9 +51,9 @@ def rewrite(text):
     table_counts = {}
     lines = text.splitlines(keepends=True)
     for number, line in enumerate(lines):
-        if current is None and re.match(r'\s*\.rdata\s*$', line):
-            # gcc writes a function's string literals before its section directive.
-            owner = following_medius_section(lines, number)
+        if (current is None or current.startswith('.medius_')) and re.match(r'\s*\.rdata\s*$', line):
+            # gcc does not always write string literals next to their user; follow the labels.
+            owner = literal_owner(lines, number)
             if owner:
                 index = table_counts.get(owner, 0)
                 table_counts[owner] = index + 1

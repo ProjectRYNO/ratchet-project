@@ -421,6 +421,74 @@ functions:
   DestroySequence: 0x01ED3AE0
   CreateVSequence: 0x01ED3EA8
   DestroyVSequence: 0x01ED3F20
+  rt_comm_set_default_options: 0x01EA75C8
+  rt_comm_get_local_ip: 0x01EA7D48
+  rt_comm_get_broadcast_ip: 0x01EA7D70
+  rt_comm_get_host_by_name: 0x01EA7D98
+  rt_comm_display_state: 0x01EA7DC8
+  rt_comm_get_metrics: 0x01EA7DF0
+  rt_comm_get_new_channel_id: 0x01EA88C8
+  rt_comm_release_channel_id: 0x01EA8908
+  rt_comm_linkaddress_setnull: 0x01EA8B78
+  rt_comm_linkaddress_isnull: 0x01EA8BA0
+  rt_comm_linkaddress_tostr: 0x01EA8C08
+  rt_comm_linkaddress_toext: 0x01EA8C38
+  rt_comm_linkaddress_toint: 0x01EA8C68
+  rt_comm_get_dns_servers: 0x01EA8DC8
+  GetNextInstanceId_: 0x01ED92C8
+  SuscriptionIsValid_: 0x01ED9310
+  MediusDListCleanUpSubscriptions: 0x01ED9358
+  RegisterCallbacks_: 0x01ED93E8
+  MediusDListInit: 0x01ED9420
+  MediusDListCleanUp: 0x01ED94A8
+  MediusGetInterestId: 0x01ED94C8
+  NextSubscriptionId_: 0x01ED97B8
+  unsubscribe: 0x01ED9960
+  refresh: 0x01ED99C8
+  setLevel: 0x01ED9A30
+  setInterestCB: 0x01ED9AC8
+  associateInterestCB: 0x01ED9B40
+  ErrorEvent_: 0x01ED9B90
+  Fault_: 0x01ED9BE8
+  ActionValid_: 0x01ED9C08
+  ActionValidI_: 0x01ED9C60
+  FreeSubscription_: 0x01EDA098
+  ServiceTransaction_: 0x01EDA0B8
+  CallbackDListResponseHandler_: 0x01EDA3C0
+  NetSetHeartbeatInterval: 0x01EA01F0
+  NetUseDme: 0x01EA0200
+  GetSoftwareID: 0x01EA0208
+  RtMsgToDmeConnectionIndex: 0x01EA0490
+  NetIGetMyClientIndex: 0x01EA0610
+  NetSetPeerToPeerHostChangeCallback: 0x01EA0640
+  NetResetTime: 0x01EA0658
+  DMEmalloc: 0x01EA0668
+  DmeFree: 0x01EA06A8
+  NetIRegisterMemoryCallbacks: 0x01EA06D8
+  NetIGetMyIpAddress: 0x01EA0728
+  NetIGetCurrentUDPSourceBinaryIP: 0x01EA0BA0
+  NetIGetLocalTime: 0x01EA0BD0
+  NetIGetTime: 0x01EA0BF0
+  ParseMessageList: 0x01EA1368
+  NetISetNATServiceAddr: 0x01EA3778
+  NetISetDefaultResolveAddrParams: 0x01EA37B0
+  NetIGetNetUpdateErrors: 0x01EA3F28
+  NetCleanupClientPingInfoArray: 0x01EA4520
+  NetGetConnInfo: 0x01EA4570
+  NetCreateConnInfoBare: 0x01EA4668
+  NetSetConnInfo: 0x01EA4680
+  NetDestroyConnInfoBare: 0x01EA4750
+  NetGetClientInfo: 0x01EA47E8
+  NetDestroyClientInfo: 0x01EA48A8
+  NetSetServerIpAddress: 0x01EA4940
+  NetClientIndexToClientIndexPacket: 0x01EA4EE0
+  NetGetNatService: 0x01EA4EE8
+  p2p_system_change_cb: 0x01EA5160
+  NetGetMyWorldID: 0x01EA55E8
+  udp_data_cb: 0x01EA56D0
+  MsgClientSystemMessageCallback: 0x01EA5760
+  NetMutexLock: 0x01EA57B8
+  NetMutexUnlock: 0x01EA57F8
   MediusUniqueCallbackErrorMessageHandler: 0x01EDBB28
   MediusUniqueCallbackSessionBeginResponseHandler: 0x01EDBB60
   MediusUniqueCallbackSessionEndResponseHandler: 0x01EDBBC0
@@ -4911,6 +4979,194 @@ objects:
       - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetAutoChatHistoryResponseHandler, start: 0x01EDDE98, end: 0x01EDDED0}
       - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAccountUpdateStats_OpenAccessResponseHandler, start: 0x01EDDED0, end: 0x01EDDF08}
       - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddPlayerToClan_ByClanOfficerResponseHandler, start: 0x01EDDF08, end: 0x01EDDF3C}
+  medius/dme_client/src/DmeLocal:
+    text_start: 0x01EA01F0
+    text_end: 0x01EA5840
+    slots:
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetHeartbeatInterval, start: 0x01EA01F0, end: 0x01EA0200}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetUseDme, start: 0x01EA0200, end: 0x01EA0208}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_GetSoftwareID, start: 0x01EA0208, end: 0x01EA0218}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetMyIntIP, start: 0x01EA0218, end: 0x01EA02C8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetMyExtIP, start: 0x01EA02C8, end: 0x01EA0368}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_SendMyClientStatus, start: 0x01EA0368, end: 0x01EA0490}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_RtMsgToDmeConnectionIndex, start: 0x01EA0490, end: 0x01EA04A0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetAverageDelayToClient, start: 0x01EA04A0, end: 0x01EA0558}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISetSendAggregationInterval, start: 0x01EA0558, end: 0x01EA0610}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetMyClientIndex, start: 0x01EA0610, end: 0x01EA0638}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA0638, start: 0x01EA0638, end: 0x01EA0640}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetPeerToPeerHostChangeCallback, start: 0x01EA0640, end: 0x01EA0658}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetResetTime, start: 0x01EA0658, end: 0x01EA0668}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_DMEmalloc, start: 0x01EA0668, end: 0x01EA06A8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_DmeFree, start: 0x01EA06A8, end: 0x01EA06D8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIRegisterMemoryCallbacks, start: 0x01EA06D8, end: 0x01EA0728}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetMyIpAddress, start: 0x01EA0728, end: 0x01EA0770}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetMyNetAddress, start: 0x01EA0770, end: 0x01EA0828}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_RemoteClientConnects, start: 0x01EA0828, end: 0x01EA0B68}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_RemoteClientDisconnects, start: 0x01EA0B68, end: 0x01EA0BA0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetCurrentUDPSourceBinaryIP, start: 0x01EA0BA0, end: 0x01EA0BD0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetLocalTime, start: 0x01EA0BD0, end: 0x01EA0BF0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetTime, start: 0x01EA0BF0, end: 0x01EA0C48}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetConnectStatus, start: 0x01EA0C48, end: 0x01EA0CB0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetValidClientCount, start: 0x01EA0CB0, end: 0x01EA0D08}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA0D08, start: 0x01EA0D08, end: 0x01EA0D10}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISendTo, start: 0x01EA0D10, end: 0x01EA0E50}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetBitMaskToSendMask, start: 0x01EA0E50, end: 0x01EA0EB8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSendMessageByUDP, start: 0x01EA0EB8, end: 0x01EA1028}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSendMessageByTCP, start: 0x01EA1028, end: 0x01EA11F8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetFragSendCB, start: 0x01EA11F8, end: 0x01EA1270}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISendMessage, start: 0x01EA1270, end: 0x01EA1368}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_ParseMessageList, start: 0x01EA1368, end: 0x01EA13B8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_RemoteClientDisconnectEvent, start: 0x01EA13B8, end: 0x01EA1730}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_RemoteClientEvent, start: 0x01EA1730, end: 0x01EA1858}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIInitialize, start: 0x01EA1858, end: 0x01EA1D30}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIEnableUDP, start: 0x01EA1D30, end: 0x01EA1E48}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCreateP2PInfo, start: 0x01EA1E48, end: 0x01EA2018}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_IncomingMessageFunc, start: 0x01EA2018, end: 0x01EA20C0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_MapMsgClientFailureReason, start: 0x01EA20C0, end: 0x01EA21A0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_MyClientConnectsPeerToPeer, start: 0x01EA21A0, end: 0x01EA23A8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_MsgClientConnectCallback, start: 0x01EA23A8, end: 0x01EA26E8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_MsgClientDisconnectCallback, start: 0x01EA26E8, end: 0x01EA2750}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetDefaultConnectParams, start: 0x01EA2750, end: 0x01EA2828}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIConnect, start: 0x01EA2828, end: 0x01EA2958}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetConnect_ClientServerTCP, start: 0x01EA2958, end: 0x01EA2E98}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetConnect_PeerToPeerUDP, start: 0x01EA2E98, end: 0x01EA3348}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetDefaultHostPeerToPeerParams, start: 0x01EA3348, end: 0x01EA33C0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIHostPeerToPeer, start: 0x01EA33C0, end: 0x01EA3778}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISetNATServiceAddr, start: 0x01EA3778, end: 0x01EA37B0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISetDefaultResolveAddrParams, start: 0x01EA37B0, end: 0x01EA37F0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIResolveAddr, start: 0x01EA37F0, end: 0x01EA3968}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetIncomingClient, start: 0x01EA3968, end: 0x01EA3B10}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetISetMyClientReceiveBroadcast, start: 0x01EA3B10, end: 0x01EA3B88}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA3B88, start: 0x01EA3B88, end: 0x01EA3B98}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetUpdateAll, start: 0x01EA3B98, end: 0x01EA3E00}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA3E00, start: 0x01EA3E00, end: 0x01EA3E08}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIUpdate, start: 0x01EA3E08, end: 0x01EA3F28}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIGetNetUpdateErrors, start: 0x01EA3F28, end: 0x01EA3F58}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIDisconnect, start: 0x01EA3F58, end: 0x01EA4150}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIClose, start: 0x01EA4150, end: 0x01EA42D8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetMapRtError, start: 0x01EA42D8, end: 0x01EA44C8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetClientPingInfo, start: 0x01EA44C8, end: 0x01EA4520}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCleanupClientPingInfoArray, start: 0x01EA4520, end: 0x01EA4570}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetConnInfo, start: 0x01EA4570, end: 0x01EA45A0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCleanupConnInfo, start: 0x01EA45A0, end: 0x01EA4668}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCreateConnInfoBare, start: 0x01EA4668, end: 0x01EA4680}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetConnInfo, start: 0x01EA4680, end: 0x01EA46B0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCreateConnInfo, start: 0x01EA46B0, end: 0x01EA4750}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetDestroyConnInfoBare, start: 0x01EA4750, end: 0x01EA4770}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetDestroyConnInfo, start: 0x01EA4770, end: 0x01EA47E8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetClientInfo, start: 0x01EA47E8, end: 0x01EA4810}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCreateClientInfo, start: 0x01EA4810, end: 0x01EA48A8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetDestroyClientInfo, start: 0x01EA48A8, end: 0x01EA48D8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetServerIpAddress, start: 0x01EA48D8, end: 0x01EA4940}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetSetServerIpAddress, start: 0x01EA4940, end: 0x01EA4970}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetCheckForPingTimeouts, start: 0x01EA4970, end: 0x01EA4A38}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetIsPeerToPeerHost, start: 0x01EA4A38, end: 0x01EA4B88}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA4B88, start: 0x01EA4B88, end: 0x01EA4B90}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetProcessEchoRequests, start: 0x01EA4B90, end: 0x01EA4D10}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetDisablePingIPs, start: 0x01EA4D10, end: 0x01EA4E10}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetProcessP2PDisconnect, start: 0x01EA4E10, end: 0x01EA4EE0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetClientIndexToClientIndexPacket, start: 0x01EA4EE0, end: 0x01EA4EE8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetNatService, start: 0x01EA4EE8, end: 0x01EA4F08}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetConvertTransportFlags, start: 0x01EA4F08, end: 0x01EA4F68}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_connect_cb, start: 0x01EA4F68, end: 0x01EA50C0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_disconnect_cb, start: 0x01EA50C0, end: 0x01EA5160}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_system_change_cb, start: 0x01EA5160, end: 0x01EA51A0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_host_change_cb, start: 0x01EA51A0, end: 0x01EA5278}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_udp_resolve_cb, start: 0x01EA5278, end: 0x01EA5370}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_peer_update_cb, start: 0x01EA5370, end: 0x01EA54F0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_incoming_data_cb, start: 0x01EA54F0, end: 0x01EA55E8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetGetMyWorldID, start: 0x01EA55E8, end: 0x01EA5618}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_udp_unconnected_data_cb, start: 0x01EA5618, end: 0x01EA5688}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_udp_event_cb, start: 0x01EA5688, end: 0x01EA56D0}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_udp_data_cb, start: 0x01EA56D0, end: 0x01EA5700}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_p2p_broadcast_update_cb, start: 0x01EA5700, end: 0x01EA5760}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_MsgClientSystemMessageCallback, start: 0x01EA5760, end: 0x01EA57B8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetMutexLock, start: 0x01EA57B8, end: 0x01EA57F8}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_NetMutexUnlock, start: 0x01EA57F8, end: 0x01EA5820}
+      - {object: medius/dme_client/src/DmeLocal, section: .medius_dmelocal_func_01EA5820, start: 0x01EA5820, end: 0x01EA5840}
+  medius/MediusDList/src/MediusDList:
+    text_start: 0x01ED92C8
+    text_end: 0x01EDA408
+    slots:
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_GetNextInstanceId_, start: 0x01ED92C8, end: 0x01ED9310}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_SuscriptionIsValid_, start: 0x01ED9310, end: 0x01ED9358}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_MediusDListCleanUpSubscriptions, start: 0x01ED9358, end: 0x01ED93E8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_RegisterCallbacks_, start: 0x01ED93E8, end: 0x01ED9420}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_MediusDListInit, start: 0x01ED9420, end: 0x01ED94A8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_MediusDListCleanUp, start: 0x01ED94A8, end: 0x01ED94C8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_MediusGetInterestId, start: 0x01ED94C8, end: 0x01ED94F0}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_SendSubscription_, start: 0x01ED94F0, end: 0x01ED9638}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_subscribe, start: 0x01ED9638, end: 0x01ED97B8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_NextSubscriptionId_, start: 0x01ED97B8, end: 0x01ED9820}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_SendDRequest_, start: 0x01ED9820, end: 0x01ED9960}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_unsubscribe, start: 0x01ED9960, end: 0x01ED99C8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_refresh, start: 0x01ED99C8, end: 0x01ED9A30}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_setLevel, start: 0x01ED9A30, end: 0x01ED9AC8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_setInterestCB, start: 0x01ED9AC8, end: 0x01ED9B40}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_associateInterestCB, start: 0x01ED9B40, end: 0x01ED9B90}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_ErrorEvent_, start: 0x01ED9B90, end: 0x01ED9BE0}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_print___dupe2, start: 0x01ED9BE0, end: 0x01ED9BE8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_Fault_, start: 0x01ED9BE8, end: 0x01ED9C08}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_ActionValid_, start: 0x01ED9C08, end: 0x01ED9C60}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_ActionValidI_, start: 0x01ED9C60, end: 0x01ED9CA0}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_UpdateDList_, start: 0x01ED9CA0, end: 0x01EDA098}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_FreeSubscription_, start: 0x01EDA098, end: 0x01EDA0B8}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_ServiceTransaction_, start: 0x01EDA0B8, end: 0x01EDA110}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_ParseMsg_, start: 0x01EDA110, end: 0x01EDA3C0}
+      - {object: medius/MediusDList/src/MediusDList, section: .medius_dlist_CallbackDListResponseHandler_, start: 0x01EDA3C0, end: 0x01EDA408}
+  medius/rt_comm/src/rt_comm:
+    text_start: 0x01EA7408
+    text_end: 0x01EA8DF0
+    slots:
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_startup, start: 0x01EA7408, end: 0x01EA74A0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_shutdown, start: 0x01EA74A0, end: 0x01EA7538}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_update, start: 0x01EA7538, end: 0x01EA75C8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_set_default_options, start: 0x01EA75C8, end: 0x01EA75F8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_create, start: 0x01EA75F8, end: 0x01EA76E8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_destroy, start: 0x01EA76E8, end: 0x01EA7740}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_send, start: 0x01EA7740, end: 0x01EA7830}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_send_to, start: 0x01EA7830, end: 0x01EA7918}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_func_01EA7918, start: 0x01EA7918, end: 0x01EA7920}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_vsend_to, start: 0x01EA7920, end: 0x01EA79F8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_send_echo, start: 0x01EA79F8, end: 0x01EA7AC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_receive, start: 0x01EA7AC8, end: 0x01EA7BC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_receive_from, start: 0x01EA7BC8, end: 0x01EA7C98}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_receive_echo, start: 0x01EA7C98, end: 0x01EA7D48}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_local_ip, start: 0x01EA7D48, end: 0x01EA7D70}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_broadcast_ip, start: 0x01EA7D70, end: 0x01EA7D98}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_host_by_name, start: 0x01EA7D98, end: 0x01EA7DC0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_func_01EA7DC0, start: 0x01EA7DC0, end: 0x01EA7DC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_display_state, start: 0x01EA7DC8, end: 0x01EA7DF0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_metrics, start: 0x01EA7DF0, end: 0x01EA7E28}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_interface_data, start: 0x01EA7E28, end: 0x01EA7E78}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_local_port, start: 0x01EA7E78, end: 0x01EA7EC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_is_connected, start: 0x01EA7EC8, end: 0x01EA7F50}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_host_by_name_nb, start: 0x01EA7F50, end: 0x01EA80F8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_generate_lookup_query, start: 0x01EA80F8, end: 0x01EA8270}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_resend_lookup_query, start: 0x01EA8270, end: 0x01EA8350}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_check_for_query_response, start: 0x01EA8350, end: 0x01EA8518}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_process_response_header, start: 0x01EA8518, end: 0x01EA8688}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_skip_query_section, start: 0x01EA8688, end: 0x01EA8720}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_process_rr, start: 0x01EA8720, end: 0x01EA88A0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_isdigit, start: 0x01EA88A0, end: 0x01EA88C8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_new_channel_id, start: 0x01EA88C8, end: 0x01EA8908}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_release_channel_id, start: 0x01EA8908, end: 0x01EA8928}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_is_valid_channel, start: 0x01EA8928, end: 0x01EA8968}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_metric_init, start: 0x01EA8968, end: 0x01EA89E0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_metric_add_data, start: 0x01EA89E0, end: 0x01EA8A50}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_metric_update, start: 0x01EA8A50, end: 0x01EA8AC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_metric_update_single, start: 0x01EA8AC8, end: 0x01EA8B78}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_setnull, start: 0x01EA8B78, end: 0x01EA8BA0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_isnull, start: 0x01EA8BA0, end: 0x01EA8BD0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_isequal, start: 0x01EA8BD0, end: 0x01EA8C08}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_tostr, start: 0x01EA8C08, end: 0x01EA8C38}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_toext, start: 0x01EA8C38, end: 0x01EA8C68}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_linkaddress_toint, start: 0x01EA8C68, end: 0x01EA8C90}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_func_01EA8C90, start: 0x01EA8C90, end: 0x01EA8CA0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_echo_send, start: 0x01EA8CA0, end: 0x01EA8CF0}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_echo_update, start: 0x01EA8CF0, end: 0x01EA8D80}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_echo_shutdown, start: 0x01EA8D80, end: 0x01EA8DC8}
+      - {object: medius/rt_comm/src/rt_comm, section: .medius_comm_rt_comm_get_dns_servers, start: 0x01EA8DC8, end: 0x01EA8DF0}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0
@@ -4993,5 +5249,6 @@ rodata:
       - {object: svo3/UTF8_Util, function: UTF8_CountCharacters, section: .svo_utf8_UTF8_CountCharacters.rodata, start: 0x0019D780, end: 0x0019D798}
       - {object: medius/MediusClientLibrary/src/MediusBilling, function: MediusBillingClientVersion, section: .medius_billing_MediusBillingClientVersion.rodata, start: 0x00197DF8, end: 0x00197E22}
       - {object: medius/MediusClientLibrary/src/MediusClient, function: MediusAccountLogoutInternal, section: .medius_client_MediusAccountLogoutInternal.rodata, start: 0x001984F8, end: 0x0019851C}
+      - {object: medius/dme_client/src/DmeLocal, function: DMEmalloc, section: .medius_dmelocal_DMEmalloc.rodata, start: 0x00195DF0, end: 0x00195E0C}
       - {object: medius/dme_client/src/DmeAddress, function: BinaryAddressToNetAddress, section: .medius_dmeaddr_BinaryAddressToNetAddress.rodata, start: 0x00195B70, end: 0x00195B94}
       - {object: medius/dme_client/src/DmeAddress, function: NetAddressToBinaryAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress.rodata, start: 0x00195BD0, end: 0x00195BF4}

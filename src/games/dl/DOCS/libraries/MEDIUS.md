@@ -35,11 +35,11 @@ real functions and are not listed.
 | MediusDMetaType | create, getThisField | - | not attempted |
 | rt_parse | rt_parse_initialize, register, reg_parser, get_callback | 32 to 58 | v0-compare pattern (batch 11) |
 | rt_parse | rt_parse_execute, fragment handling, timeout, find_frag_msg | - | not attempted |
-| DmeList | NetGenerateClientList, NetGenerateJoinedClientList | ~33 | loop and test order; first drafts only (batch 11) |
+| DmeList | NetGenerateClientList, NetGenerateJoinedClientList | 12, ~33 | single exit (`result = NetErrorInvalidArg; if (h && list) { ... result = NetErrorNone; }`) leaves only a s0/s1 swap between the handle and the strength-reduced loop pointer (`build/medius-work/cl5.c`); an explicit pointer walk is worse (batch 13) |
 | MediusDList_shared | MediusDListSubscribePack | 36 | `\|\|` chain and ternary tail both tried (batch 11) |
 | DmeAddress | StringAddressToNetAddress, NetIAddressToStringAddress | 12, 32 | String: `pAddress` and `Type` swap s1/s2 (equal global-alloc priority; the lower pseudo wins). NetI: retail leaves `nop` in both `jal rt_comm_linkaddress_tostr` delay slots and keeps the error in v0 (batch 12; best tries in `build/medius-work/dad_best_partial.c`) |
 | DmeToken | HostProcessTokenMessage; TokenNotifyEvent, TokenHostEvent, TokenEvent | 25; - | HostProcessTokenMessage: Ghidra's shared-tail shape (`build/medius-work/tk_hptm_best.c`) is the right size, only registers differ; `tk_h9.c` (74) has retail's global registers but case 1 is not cross-jumped. The others not attempted (batch 13) |
-| sequence, vsequence | AddSequence; GetSequenceData; AddVSequence, GetVDataBytes, GetVSequenceData | 1; 69; - | AddSequence: only `addu a0,s0,a0` vs `addu a0,a0,s0` for the memcpy destination (`build/medius-work/aseq2.c`); index the block array directly, no block pointer. GetSequenceData is a first draft (batch 13) |
+| sequence, vsequence | AddSequence; GetSequenceData; AddVSequence; GetVDataBytes, GetVSequenceData | 1; 69; 37; - | AddSequence: only `addu a0,s0,a0` vs `addu a0,a0,s0` for the memcpy destination (`build/medius-work/aseq2.c`); index the block array directly, no block pointer. AddVSequence does use a block pointer (`avseq2.c`): register choice and one unfilled delay slot remain. GetSequenceData is a first draft (batch 13) |
 | MediusClient | MediusGetUniverseInformation, MediusSessionBegin | 2, 3 | GetUniverseInformation: retail stores UA[56] before FP[56] (FP in the `jal` delay slot); 240 more orderings and pointer temps tried. SessionBegin: the request byte store may alias the globals, so `sb` first lets GCC hoist the struct-copy loads (42+ words) (batch 13; `mc2_uv_a.c`, `mc2_sb1.c`) |
 | MediusClient | MediusAccountLogin, MediusAccountLogout, MediusJoinGame, MediusAccountLoginInternal | - | not attempted: billing paths with `printf`, struct copies into 0x001B78E0, NetResolveAddr in JoinGame |
 | MediusDType | getFieldId___dupe2; createMask, create___dupe2 | 12; - | retail keeps the 0xFFFF default in v0 and loads straight into it; createMask is varargs with qsort (batch 13) |
@@ -56,6 +56,53 @@ Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
 `GetThreadId`; `libcdvd-common.h`: `sceCdCLOCK`). Sony SDK calls that PS2SDK lacks
 (`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
 Add new ones there rather than in individual files.
+
+## Medius batch 14 (2026-10-27)
+
+**503 Medius functions now compile to exact retail bytes** (435 after batch 13).
+
+Medius inventory: 503 of 1,462 INCLUDE_ASM entries replaced (34.40%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `dme_client/src/DmeLocal.c` | 34 small functions (getters/setters, mutex and memory wrappers, NetUseDme, udp_data_cb, ParseMessageList, …) | the larger functions |
+| `MediusDList/src/MediusDList.c` | 20 (init/cleanup, subscriptions, action checks, callbacks, refresh/unsubscribe, setLevel) | SendDRequest_, SendSubscription_, subscribe, ParseMsg_, UpdateDList_ |
+| `rt_comm/src/rt_comm.c` | 14 (channel ids, link-address helpers, platform-interface wrappers, metrics) | the rest |
+
+**String literals follow their user.** gcc does not always write a literal next to the
+function that uses it. DMEmalloc's `"rt_memory_allocate failed 
+"` (0x00195DF0) came out
+inside NetResetTime's section. `svo3_rodata_sections.py` now gives each Medius `.rdata`
+block of `$LC` literals to the one function that references its labels.
+
+Globals (see MEDIUS_GLOBALS.csv):
+
+- DmeLocal: `mediusHeartbeatInterval`, `mediusNatServiceAddr`, `mediusConnInfoTable`,
+  `mediusClientPingInfo`, `mediusNetUpdateErrors` and `mediusParseResult`.
+- rt_comm: `mediusCommMetrics`.
+- MediusDList: `mediusDListInterestIds`, `mediusDListMetaTypes`,
+  `mediusDListPlayerInterestCallback` and `mediusDListSubscriptions`, which sit after the
+  logout request copy at 0x001B78E0.
+- `MediusDType_I` (0x001994D0) is named like `MediusMessage_I`. The debug information has
+  its type but no symbol.
+
+Source-shape findings:
+
+- `ActionValid_` and `ActionValidI_` match only as a `switch` that jumps to a shared
+  `fail:` label.
+- `ServiceTransaction_` writes `pendingRequestId = 0` in both branches.
+- `DMEmalloc` takes `unsigned int` and passes it to the `unsigned long` size parameter.
+  That gives retail's `dsll32`/`dsrl32` zero-extension.
+- rt_comm passes `RT_LINKADDRESS` by value.
+- Retail DmeLocal mixes tail calls (DmeFree, NetMutexLock, …) with one `jal` + `jr`
+  (RemoteClientDisconnects), so one per-file flag cannot match both kinds.
+
+Pinned:
+
+- DmeLocal: RemoteClientDisconnects (sibling call), udp_event_cb (`Event` is copied to v1),
+  NetGetClientPingInfo (slot address computed before the range check).
+- rt_comm: rt_comm_linkaddress_isequal (unfilled `jalr` delay slot), rt_isdigit,
+  rt_comm_is_valid_channel.
 
 ## Medius batch 13 (2026-10-27)
 
