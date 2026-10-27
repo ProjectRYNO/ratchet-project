@@ -421,6 +421,143 @@ functions:
   DestroySequence: 0x01ED3AE0
   CreateVSequence: 0x01ED3EA8
   DestroyVSequence: 0x01ED3F20
+  MediusUniqueCallbackErrorMessageHandler: 0x01EDBB28
+  MediusUniqueCallbackSessionBeginResponseHandler: 0x01EDBB60
+  MediusUniqueCallbackSessionEndResponseHandler: 0x01EDBBC0
+  MediusUniqueCallbackDnasSignaturePostHandler: 0x01EDBC08
+  MediusUniqueCallbackAccountLoginResponseHandler: 0x01EDBC10
+  FUN_01edbc68: 0x01EDBC68
+  FUN_01edbca0: 0x01EDBCA0
+  MediusUniqueCallbackAccountGetProfileResponseHandler: 0x01EDBCD8
+  FUN_01edbd10: 0x01EDBD10
+  FUN_01edbd48: 0x01EDBD48
+  FUN_01edbd80: 0x01EDBD80
+  MediusUniqueCallbackAnonymousLoginResponseHandler: 0x01EDBDB8
+  FUN_01edbdf0: 0x01EDBDF0
+  FUN_01edbe28: 0x01EDBE28
+  MediusUniqueCallbackJoinGameResponseHandler: 0x01EDBE60
+  MediusUniqueCallbackJoinChannelResponseHandler: 0x01EDBE98
+  MediusUniqueCallbackJoinChannelFwdResponseHandler: 0x01EDBED0
+  MediusUniqueCallbackGameListResponseHandler: 0x01EDBED8
+  MediusUniqueCallbackChannelListResponseHandler: 0x01EDBF10
+  MediusUniqueCallbackLobbyWorldPlayerListResponseHandler: 0x01EDBF48
+  MediusUniqueCallbackGameWorldPlayerListResponseHandler: 0x01EDBF80
+  MediusUniqueCallbackPlayerInfoResponseHandler: 0x01EDBFB8
+  MediusUniqueCallbackGameInfoResponseHandler: 0x01EDBFF0
+  MediusUniqueCallbackChannelInfoResponseHandler: 0x01EDC028
+  MediusUniqueCallbackFindWorldByNameResponseHandler: 0x01EDC060
+  MediusUniqueCallbackFindPlayerResponseHandler: 0x01EDC098
+  MediusUniqueCallbackGenericChatMessageHandler: 0x01EDC0D0
+  MediusUniqueCallbackGenericChatFwdMessageHandler: 0x01EDC0D8
+  MediusUniqueCallbackBinaryMessageHandler: 0x01EDC110
+  MediusUniqueCallbackBinaryFwdMessageHandler: 0x01EDC118
+  MediusUniqueCallbackGetBuddyListResponseHandler: 0x01EDC150
+  MediusUniqueCallbackAddToBuddyListResponseHandler: 0x01EDC188
+  MediusUniqueCallbackRemoveFromBuddyListResponseHandler: 0x01EDC1C0
+  MediusUniqueCallbackAddToBuddyListConfirmationResponseHandler: 0x01EDC1F8
+  MediusUniqueCallbackAddToBuddyListFwdConfirmationRequestHandler: 0x01EDC230
+  MediusUniqueCallbackAddToBuddyListFwdConfirmationResponseHandler: 0x01EDC268
+  MediusUniqueCallbackGetIgnoreListResponseHandler: 0x01EDC270
+  MediusUniqueCallbackAddToIgnoreListResponseHandler: 0x01EDC2A8
+  MediusUniqueCallbackRemoveFromIgnoreListResponseHandler: 0x01EDC2E0
+  MediusUniqueCallbackGetPolicyResponseHandler: 0x01EDC318
+  MediusUniqueCallbackUpdateUserStateHandler: 0x01EDC3E0
+  MediusUniqueCallbackGetAnnouncementsResponseHandler: 0x01EDC3E8
+  MediusUniqueCallbackSetGameListFilterResponseHandler0: 0x01EDC420
+  MediusUniqueCallbackSetGameListFilterResponseHandler: 0x01EDC428
+  MediusUniqueCallbackClearGameListFilterResponseHandler: 0x01EDC460
+  MediusUniqueCallbackGetGameListFilterResponseHandler0: 0x01EDC498
+  MediusUniqueCallbackGetGameListFilterResponseHandler: 0x01EDC4A0
+  FUN_01edc4d8: 0x01EDC4D8
+  MediusUniqueCallbackAccountUpdateStatsResponseHandler: 0x01EDC510
+  MediusUniqueCallbackGetClanByIDResponseHandler: 0x01EDC548
+  FUN_01edc580: 0x01EDC580
+  FUN_01edc5b8: 0x01EDC5B8
+  FUN_01edc5f0: 0x01EDC5F0
+  FUN_01edc628: 0x01EDC628
+  FUN_01edc660: 0x01EDC660
+  MediusUniqueCallbackCheckMyClanInvitationsResponseHandler: 0x01EDC698
+  MediusUniqueCallbackGetClanInvitationsSentResponseHandler: 0x01EDC6D0
+  FUN_01edc708: 0x01EDC708
+  FUN_01edc740: 0x01EDC740
+  FUN_01edc778: 0x01EDC778
+  MediusUniqueCallbackGetMyClanMessagesResponseHandler: 0x01EDC7B0
+  FUN_01edc7e8: 0x01EDC7E8
+  FUN_01edc820: 0x01EDC820
+  FUN_01edc858: 0x01EDC858
+  FUN_01edc890: 0x01EDC890
+  FUN_01edc8c8: 0x01EDC8C8
+  MediusUniqueCallbackGetMyClansResponseHandler: 0x01EDC900
+  MediusUniqueCallbackGetClanTeamChallengesResponseHandler: 0x01EDC938
+  FUN_01edc970: 0x01EDC970
+  MediusUniqueCallbackGetAllClanMessagesResponseHandler: 0x01EDC9A8
+  FUN_01edc9e0: 0x01EDC9E0
+  FUN_01edca18: 0x01EDCA18
+  MediusUniqueCallbackGetMyIPResponseHandler: 0x01EDCA50
+  MediusUniqueCallbackVersionServerResponseHandler: 0x01EDCA88
+  FUN_01edcac0: 0x01EDCAC0
+  FUN_01edcaf8: 0x01EDCAF8
+  FUN_01edcb30: 0x01EDCB30
+  FUN_01edcb68: 0x01EDCB68
+  FUN_01edcba0: 0x01EDCBA0
+  FUN_01edcbd8: 0x01EDCBD8
+  FUN_01edcc10: 0x01EDCC10
+  FUN_01edcc48: 0x01EDCC48
+  MediusUniqueCallbackGenericChatSetFilterResponseHandler: 0x01EDCC80
+  MediusUniqueCallbackTextFilterResponseHandler: 0x01EDCCB8
+  MediusUniqueCallbackReassignGameMediusWorldIDHandler: 0x01EDCCF0
+  FUN_01edcd28: 0x01EDCD28
+  FUN_01edcd60: 0x01EDCD60
+  FUN_01edcd98: 0x01EDCD98
+  FUN_01edcdd0: 0x01EDCDD0
+  FUN_01edce08: 0x01EDCE08
+  FUN_01edce40: 0x01EDCE40
+  FUN_01edce78: 0x01EDCE78
+  FUN_01edceb0: 0x01EDCEB0
+  FUN_01edcee8: 0x01EDCEE8
+  FUN_01edcf20: 0x01EDCF20
+  FUN_01edcf58: 0x01EDCF58
+  FUN_01edcf90: 0x01EDCF90
+  MediusUniqueCallbackGameList_ExtraInfoResponseHandler: 0x01EDCFC8
+  MediusUniqueCallbackChannelList_ExtraInfoResponseHandler: 0x01EDD000
+  MediusUniqueCallbackLadderList_ExtraInfoResponseHandler: 0x01EDD038
+  FUN_01edd070: 0x01EDD070
+  FUN_01edd0a8: 0x01EDD0A8
+  FUN_01edd0e0: 0x01EDD0E0
+  FUN_01edd118: 0x01EDD118
+  FUN_01edd150: 0x01EDD150
+  MediusUniqueCallbackFileUploadFromClientResponseHandler: 0x01EDD188
+  MediusUniqueCallbackFileUploadResponseHandler: 0x01EDD190
+  MediusUniqueCallbackFileCloseResponseHandler: 0x01EDD268
+  MediusUniqueCallbackFileDownloadResponseHandler: 0x01EDD2A0
+  MediusUniqueCallbackFileDownloadStreamResponseHandler: 0x01EDD2D8
+  MediusUniqueCallbackFileDeleteResponseHandler: 0x01EDD310
+  MediusUniqueCallbackFileListFilesResponseHandler: 0x01EDD348
+  MediusUniqueCallbackFileUpdateAttributesResponseHandler: 0x01EDD380
+  MediusUniqueCallbackFileGetAttributesResponseHandler: 0x01EDD3B8
+  MediusUniqueCallbackFileUpdateMetaDataResponseHandler: 0x01EDD3F0
+  MediusUniqueCallbackFileGetMetaDataResponseHandler: 0x01EDD428
+  MediusUniqueCallbackFileSearchByMetaDataResponseHandler: 0x01EDD460
+  MediusUniqueCallbackFileCancelOperationResponseHandler: 0x01EDD498
+  MediusUniqueCallbackUniverseNewsHandler: 0x01EDD4D0
+  MediusUniqueCallbackUniverseStatusListHandler: 0x01EDD528
+  MediusUniqueCallbackUniverseStatusList_ExtraInfoHandler: 0x01EDD530
+  MediusUniqueCallbackUniverseSvoURLHandler: 0x01EDD538
+  MediusUtilGetServerVersionResponseHandler: 0x01EDDBA8
+  MediusUniqueCallbackGetTotalChannelsResponseHandler: 0x01EDDBE0
+  MediusUniqueCallbackGetLobbyPlayerNamesResponseHandler: 0x01EDDC18
+  MediusUniqueCallbackGetTotalUsersResponseHandler: 0x01EDDC50
+  MediusUniqueCallbackSetLocalizationParamsResponseHandler: 0x01EDDC88
+  MediusUtilEventMsgHandler: 0x01EDDCC0
+  MediusUniqueCallbackGetBuddyInvitationsResponseHandler: 0x01EDDCF8
+  MediusUniqueCallbackSetLobbyWorldFilterResponseHandler: 0x01EDDD30
+  MediusUniqueCallbackPostDebugInfoResponseHandler: 0x01EDDDA8
+  MediusUniqueCallbackUpdateClanLadderStatsWide_DeltaResponseHandler: 0x01EDDDF0
+  MediusUniqueCallbackTokenResponseHandler: 0x01EDDE28
+  MediusUniqueCallbackGetServerTimeResponseHandler: 0x01EDDE60
+  MediusUniqueCallbackSetAutoChatHistoryResponseHandler: 0x01EDDE98
+  MediusUniqueCallbackAccountUpdateStats_OpenAccessResponseHandler: 0x01EDDED0
+  MediusUniqueCallbackAddPlayerToClan_ByClanOfficerResponseHandler: 0x01EDDF08
   MediusMessageDestCreate: 0x01EDB3E0
   _packTransaction: 0x01EDB478
   getObjectSize___dupe3: 0x01EDBB20
@@ -4632,6 +4769,148 @@ objects:
       - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendResult, start: 0x01EDB980, end: 0x01EDBA40}
       - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_sendException, start: 0x01EDBA40, end: 0x01EDBB20}
       - {object: medius/MediusMessage/src/MediusMessage, section: .medius_mmsg_getObjectSize___dupe3, start: 0x01EDBB20, end: 0x01EDBB28}
+  medius/MediusClientLibrary/src/callback:
+    text_start: 0x01EDBB28
+    text_end: 0x01EDDF3C
+    slots:
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackErrorMessageHandler, start: 0x01EDBB28, end: 0x01EDBB60}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSessionBeginResponseHandler, start: 0x01EDBB60, end: 0x01EDBBC0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSessionEndResponseHandler, start: 0x01EDBBC0, end: 0x01EDBC08}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackDnasSignaturePostHandler, start: 0x01EDBC08, end: 0x01EDBC10}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAccountLoginResponseHandler, start: 0x01EDBC10, end: 0x01EDBC68}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbc68, start: 0x01EDBC68, end: 0x01EDBCA0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbca0, start: 0x01EDBCA0, end: 0x01EDBCD8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAccountGetProfileResponseHandler, start: 0x01EDBCD8, end: 0x01EDBD10}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbd10, start: 0x01EDBD10, end: 0x01EDBD48}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbd48, start: 0x01EDBD48, end: 0x01EDBD80}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbd80, start: 0x01EDBD80, end: 0x01EDBDB8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAnonymousLoginResponseHandler, start: 0x01EDBDB8, end: 0x01EDBDF0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbdf0, start: 0x01EDBDF0, end: 0x01EDBE28}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edbe28, start: 0x01EDBE28, end: 0x01EDBE60}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackJoinGameResponseHandler, start: 0x01EDBE60, end: 0x01EDBE98}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackJoinChannelResponseHandler, start: 0x01EDBE98, end: 0x01EDBED0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackJoinChannelFwdResponseHandler, start: 0x01EDBED0, end: 0x01EDBED8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGameListResponseHandler, start: 0x01EDBED8, end: 0x01EDBF10}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackChannelListResponseHandler, start: 0x01EDBF10, end: 0x01EDBF48}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackLobbyWorldPlayerListResponseHandler, start: 0x01EDBF48, end: 0x01EDBF80}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGameWorldPlayerListResponseHandler, start: 0x01EDBF80, end: 0x01EDBFB8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackPlayerInfoResponseHandler, start: 0x01EDBFB8, end: 0x01EDBFF0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGameInfoResponseHandler, start: 0x01EDBFF0, end: 0x01EDC028}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackChannelInfoResponseHandler, start: 0x01EDC028, end: 0x01EDC060}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFindWorldByNameResponseHandler, start: 0x01EDC060, end: 0x01EDC098}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFindPlayerResponseHandler, start: 0x01EDC098, end: 0x01EDC0D0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGenericChatMessageHandler, start: 0x01EDC0D0, end: 0x01EDC0D8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGenericChatFwdMessageHandler, start: 0x01EDC0D8, end: 0x01EDC110}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackBinaryMessageHandler, start: 0x01EDC110, end: 0x01EDC118}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackBinaryFwdMessageHandler, start: 0x01EDC118, end: 0x01EDC150}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetBuddyListResponseHandler, start: 0x01EDC150, end: 0x01EDC188}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddToBuddyListResponseHandler, start: 0x01EDC188, end: 0x01EDC1C0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackRemoveFromBuddyListResponseHandler, start: 0x01EDC1C0, end: 0x01EDC1F8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddToBuddyListConfirmationResponseHandler, start: 0x01EDC1F8, end: 0x01EDC230}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddToBuddyListFwdConfirmationRequestHandler, start: 0x01EDC230, end: 0x01EDC268}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddToBuddyListFwdConfirmationResponseHandler, start: 0x01EDC268, end: 0x01EDC270}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetIgnoreListResponseHandler, start: 0x01EDC270, end: 0x01EDC2A8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddToIgnoreListResponseHandler, start: 0x01EDC2A8, end: 0x01EDC2E0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackRemoveFromIgnoreListResponseHandler, start: 0x01EDC2E0, end: 0x01EDC318}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetPolicyResponseHandler, start: 0x01EDC318, end: 0x01EDC3E0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUpdateUserStateHandler, start: 0x01EDC3E0, end: 0x01EDC3E8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetAnnouncementsResponseHandler, start: 0x01EDC3E8, end: 0x01EDC420}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetGameListFilterResponseHandler0, start: 0x01EDC420, end: 0x01EDC428}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetGameListFilterResponseHandler, start: 0x01EDC428, end: 0x01EDC460}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackClearGameListFilterResponseHandler, start: 0x01EDC460, end: 0x01EDC498}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetGameListFilterResponseHandler0, start: 0x01EDC498, end: 0x01EDC4A0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetGameListFilterResponseHandler, start: 0x01EDC4A0, end: 0x01EDC4D8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc4d8, start: 0x01EDC4D8, end: 0x01EDC510}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAccountUpdateStatsResponseHandler, start: 0x01EDC510, end: 0x01EDC548}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetClanByIDResponseHandler, start: 0x01EDC548, end: 0x01EDC580}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc580, start: 0x01EDC580, end: 0x01EDC5B8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc5b8, start: 0x01EDC5B8, end: 0x01EDC5F0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc5f0, start: 0x01EDC5F0, end: 0x01EDC628}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc628, start: 0x01EDC628, end: 0x01EDC660}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc660, start: 0x01EDC660, end: 0x01EDC698}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackCheckMyClanInvitationsResponseHandler, start: 0x01EDC698, end: 0x01EDC6D0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetClanInvitationsSentResponseHandler, start: 0x01EDC6D0, end: 0x01EDC708}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc708, start: 0x01EDC708, end: 0x01EDC740}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc740, start: 0x01EDC740, end: 0x01EDC778}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc778, start: 0x01EDC778, end: 0x01EDC7B0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetMyClanMessagesResponseHandler, start: 0x01EDC7B0, end: 0x01EDC7E8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc7e8, start: 0x01EDC7E8, end: 0x01EDC820}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc820, start: 0x01EDC820, end: 0x01EDC858}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc858, start: 0x01EDC858, end: 0x01EDC890}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc890, start: 0x01EDC890, end: 0x01EDC8C8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc8c8, start: 0x01EDC8C8, end: 0x01EDC900}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetMyClansResponseHandler, start: 0x01EDC900, end: 0x01EDC938}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetClanTeamChallengesResponseHandler, start: 0x01EDC938, end: 0x01EDC970}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc970, start: 0x01EDC970, end: 0x01EDC9A8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetAllClanMessagesResponseHandler, start: 0x01EDC9A8, end: 0x01EDC9E0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edc9e0, start: 0x01EDC9E0, end: 0x01EDCA18}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edca18, start: 0x01EDCA18, end: 0x01EDCA50}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetMyIPResponseHandler, start: 0x01EDCA50, end: 0x01EDCA88}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackVersionServerResponseHandler, start: 0x01EDCA88, end: 0x01EDCAC0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcac0, start: 0x01EDCAC0, end: 0x01EDCAF8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcaf8, start: 0x01EDCAF8, end: 0x01EDCB30}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcb30, start: 0x01EDCB30, end: 0x01EDCB68}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcb68, start: 0x01EDCB68, end: 0x01EDCBA0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcba0, start: 0x01EDCBA0, end: 0x01EDCBD8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcbd8, start: 0x01EDCBD8, end: 0x01EDCC10}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcc10, start: 0x01EDCC10, end: 0x01EDCC48}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcc48, start: 0x01EDCC48, end: 0x01EDCC80}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGenericChatSetFilterResponseHandler, start: 0x01EDCC80, end: 0x01EDCCB8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackTextFilterResponseHandler, start: 0x01EDCCB8, end: 0x01EDCCF0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackReassignGameMediusWorldIDHandler, start: 0x01EDCCF0, end: 0x01EDCD28}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcd28, start: 0x01EDCD28, end: 0x01EDCD60}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcd60, start: 0x01EDCD60, end: 0x01EDCD98}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcd98, start: 0x01EDCD98, end: 0x01EDCDD0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcdd0, start: 0x01EDCDD0, end: 0x01EDCE08}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edce08, start: 0x01EDCE08, end: 0x01EDCE40}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edce40, start: 0x01EDCE40, end: 0x01EDCE78}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edce78, start: 0x01EDCE78, end: 0x01EDCEB0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edceb0, start: 0x01EDCEB0, end: 0x01EDCEE8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcee8, start: 0x01EDCEE8, end: 0x01EDCF20}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcf20, start: 0x01EDCF20, end: 0x01EDCF58}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcf58, start: 0x01EDCF58, end: 0x01EDCF90}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edcf90, start: 0x01EDCF90, end: 0x01EDCFC8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGameList_ExtraInfoResponseHandler, start: 0x01EDCFC8, end: 0x01EDD000}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackChannelList_ExtraInfoResponseHandler, start: 0x01EDD000, end: 0x01EDD038}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackLadderList_ExtraInfoResponseHandler, start: 0x01EDD038, end: 0x01EDD070}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edd070, start: 0x01EDD070, end: 0x01EDD0A8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edd0a8, start: 0x01EDD0A8, end: 0x01EDD0E0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edd0e0, start: 0x01EDD0E0, end: 0x01EDD118}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edd118, start: 0x01EDD118, end: 0x01EDD150}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_FUN_01edd150, start: 0x01EDD150, end: 0x01EDD188}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileUploadFromClientResponseHandler, start: 0x01EDD188, end: 0x01EDD190}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileUploadResponseHandler, start: 0x01EDD190, end: 0x01EDD268}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileCloseResponseHandler, start: 0x01EDD268, end: 0x01EDD2A0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileDownloadResponseHandler, start: 0x01EDD2A0, end: 0x01EDD2D8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileDownloadStreamResponseHandler, start: 0x01EDD2D8, end: 0x01EDD310}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileDeleteResponseHandler, start: 0x01EDD310, end: 0x01EDD348}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileListFilesResponseHandler, start: 0x01EDD348, end: 0x01EDD380}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileUpdateAttributesResponseHandler, start: 0x01EDD380, end: 0x01EDD3B8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileGetAttributesResponseHandler, start: 0x01EDD3B8, end: 0x01EDD3F0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileUpdateMetaDataResponseHandler, start: 0x01EDD3F0, end: 0x01EDD428}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileGetMetaDataResponseHandler, start: 0x01EDD428, end: 0x01EDD460}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileSearchByMetaDataResponseHandler, start: 0x01EDD460, end: 0x01EDD498}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackFileCancelOperationResponseHandler, start: 0x01EDD498, end: 0x01EDD4D0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUniverseNewsHandler, start: 0x01EDD4D0, end: 0x01EDD528}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUniverseStatusListHandler, start: 0x01EDD528, end: 0x01EDD530}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUniverseStatusList_ExtraInfoHandler, start: 0x01EDD530, end: 0x01EDD538}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUniverseSvoURLHandler, start: 0x01EDD538, end: 0x01EDD5C8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUniverseVariableInfoHandler, start: 0x01EDD5C8, end: 0x01EDDBA8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUtilGetServerVersionResponseHandler, start: 0x01EDDBA8, end: 0x01EDDBE0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetTotalChannelsResponseHandler, start: 0x01EDDBE0, end: 0x01EDDC18}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetLobbyPlayerNamesResponseHandler, start: 0x01EDDC18, end: 0x01EDDC50}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetTotalUsersResponseHandler, start: 0x01EDDC50, end: 0x01EDDC88}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetLocalizationParamsResponseHandler, start: 0x01EDDC88, end: 0x01EDDCC0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUtilEventMsgHandler, start: 0x01EDDCC0, end: 0x01EDDCF8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetBuddyInvitationsResponseHandler, start: 0x01EDDCF8, end: 0x01EDDD30}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetLobbyWorldFilterResponseHandler, start: 0x01EDDD30, end: 0x01EDDDA8}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackPostDebugInfoResponseHandler, start: 0x01EDDDA8, end: 0x01EDDDF0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackUpdateClanLadderStatsWide_DeltaResponseHandler, start: 0x01EDDDF0, end: 0x01EDDE28}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackTokenResponseHandler, start: 0x01EDDE28, end: 0x01EDDE60}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackGetServerTimeResponseHandler, start: 0x01EDDE60, end: 0x01EDDE98}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackSetAutoChatHistoryResponseHandler, start: 0x01EDDE98, end: 0x01EDDED0}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAccountUpdateStats_OpenAccessResponseHandler, start: 0x01EDDED0, end: 0x01EDDF08}
+      - {object: medius/MediusClientLibrary/src/callback, section: .medius_callback_MediusUniqueCallbackAddPlayerToClan_ByClanOfficerResponseHandler, start: 0x01EDDF08, end: 0x01EDDF3C}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0

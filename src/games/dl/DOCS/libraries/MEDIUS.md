@@ -38,12 +38,16 @@ real functions and are not listed.
 | DmeList | NetGenerateClientList, NetGenerateJoinedClientList | ~33 | loop and test order; first drafts only (batch 11) |
 | MediusDList_shared | MediusDListSubscribePack | 36 | `\|\|` chain and ternary tail both tried (batch 11) |
 | DmeAddress | StringAddressToNetAddress, NetIAddressToStringAddress | 12, 32 | String: `pAddress` and `Type` swap s1/s2 (equal global-alloc priority; the lower pseudo wins). NetI: retail leaves `nop` in both `jal rt_comm_linkaddress_tostr` delay slots and keeps the error in v0 (batch 12; best tries in `build/medius-work/dad_best_partial.c`) |
-| DmeToken | HostProcessTokenMessage; TokenNotifyEvent, TokenHostEvent, TokenEvent | 74; - | first draft only (10 arguments, table 0x00196090); the others not attempted |
-| sequence, vsequence | AddSequence, GetSequenceData, AddVSequence, GetVDataBytes, GetVSequenceData | - | not attempted |
-| MediusClient | MediusGetUniverseInformation, MediusSessionBegin | 2, 3 | order of the global stores around the `jal`; SessionBegin builds a `MediusExtendedSessionBeginRequest` copy (version 2.10.7) and GCC sinks the stores below it (batch 12) |
+| DmeToken | HostProcessTokenMessage; TokenNotifyEvent, TokenHostEvent, TokenEvent | 25; - | HostProcessTokenMessage: Ghidra's shared-tail shape (`build/medius-work/tk_hptm_best.c`) is the right size, only registers differ; `tk_h9.c` (74) has retail's global registers but case 1 is not cross-jumped. The others not attempted (batch 13) |
+| sequence, vsequence | AddSequence; GetSequenceData; AddVSequence, GetVDataBytes, GetVSequenceData | 1; 69; - | AddSequence: only `addu a0,s0,a0` vs `addu a0,a0,s0` for the memcpy destination (`build/medius-work/aseq2.c`); index the block array directly, no block pointer. GetSequenceData is a first draft (batch 13) |
+| MediusClient | MediusGetUniverseInformation, MediusSessionBegin | 2, 3 | GetUniverseInformation: retail stores UA[56] before FP[56] (FP in the `jal` delay slot); 240 more orderings and pointer temps tried. SessionBegin: the request byte store may alias the globals, so `sb` first lets GCC hoist the struct-copy loads (42+ words) (batch 13; `mc2_uv_a.c`, `mc2_sb1.c`) |
 | MediusClient | MediusAccountLogin, MediusAccountLogout, MediusJoinGame, MediusAccountLoginInternal | - | not attempted: billing paths with `printf`, struct copies into 0x001B78E0, NetResolveAddr in JoinGame |
-| MediusClient | MediusAccountLogoutInternal | 0 in a probe | matches, but its `printf` string must be the retail `D_1984F8` in rodata; needs a named extern or a rodata slot for the literal. It resends `mediusBillingLogoutRequest` (0x001B78E0, copy of the last logout request) |
-| MediusFileServices | MediusFileUpload, MediusFileListFiles, MediusFileInitAttributes | 19, -, - | Upload does extra work; the generator fails on the other two |
+| MediusDType | getFieldId___dupe2; createMask, create___dupe2 | 12; - | retail keeps the 0xFFFF default in v0 and loads straight into it; createMask is varargs with qsort (batch 13) |
+| MediusDArgList | FindFirstFieldId_; flush, pushRowData, FlushField_, popField, pushField, popRowData, popFieldData | 17; - | `li v1,-1` scheduled into an earlier delay slot (batch 13) |
+| DmeObject | NetRegisterStructure; NetCreateObject, NetObjectField | 4; - | first two arguments land in s1/s0 instead of s0/s1 (batch 13) |
+| MediusMessage | _getTransactionId, _packMessage, constructIn, constructOut, send, sendRequest, sendResponse, sendResult, sendException | 7 to 71 | retail loads the -21 error into v0 before the null checks and then tail-calls with `j`. `result = f(); return result;` gives that layout but a `jal`; `return f();` gives the `j` but moves the error load. Possibly a different flag set for this object. `_getTransactionId` uses 0x0016A078 (last transaction id) (batch 13) |
+| callback | MediusUniqueCallbackUniverseVariableInfoHandler | - | not attempted: flag-driven unpack into a 0x3C0-byte local, then `memcmp` against `mediusUniverseSvoURL` |
+| MediusFileServices | MediusFileUpload, MediusFileInitAttributes | 19, - | Upload does extra work; InitAttributes is not a request wrapper |
 
 PS2 declarations: Medius objects compile with the open-source PS2SDK headers
 (`PS2SDK_FLAGS` in the Makefile: `-D_EE`, `/opt/ps2dev/ps2sdk/{ee,common}/include`, plus the
@@ -52,6 +56,66 @@ Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
 `GetThreadId`; `libcdvd-common.h`: `sceCdCLOCK`). Sony SDK calls that PS2SDK lacks
 (`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
 Add new ones there rather than in individual files.
+
+## Medius batch 13 (2026-10-27)
+
+**435 Medius functions now compile to exact retail bytes** (251 after batch 12).
+
+Medius inventory: 435 of 1,462 INCLUDE_ASM entries replaced (29.75%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `MediusClientLibrary/src/callback.c` | 137 of 138: 117 dispatchers, 11 size-only handlers, 9 written-out handlers | MediusUniqueCallbackUniverseVariableInfoHandler |
+| `MediusDList/src/MediusDType.c` | 19 (mask builders, field lookup, type/meta getters, print) | getFieldId___dupe2, createMask, create___dupe2 |
+| `MediusDList/src/MediusDArgList.c` | 9 (construct, destruct, top-field getters, getNumArguments, getObjectSize, print, rewindMask) | see "Pinned for later" |
+| `dme_object/src/DmeObject.c` | 9 lock/forward wrappers (NetRegisterObjectStart … NetGetSessionMasterClientIndex) | NetRegisterStructure, NetCreateObject, NetObjectField |
+| `MediusMessage/src/MediusMessage.c` | MediusMessageDestCreate, _packTransaction, getObjectSize___dupe3 | see "Pinned for later" |
+| `MediusClientLibrary/src/MediusBilling.c` | +5: MediusBillingServerVersion, Update, IsLoaded, AccountLogout, ClientVersion | MediusBillingAccountLogin, MediusBillingLogInCallback |
+| `MediusClientLibrary/src/MediusFileServices.c` | +1: MediusFileListFiles | Upload, InitAttributes |
+| `MediusClientLibrary/src/MediusClient.c` | +1: MediusAccountLogoutInternal | see "Pinned for later" |
+
+**String literals in rodata slots.** gcc writes a function's string literals to `.rdata`
+just before the function's section directive. `svo3_rodata_sections.py` now moves such a
+block into the following Medius function's `.rodata` section. Register it like a jump
+table, with the retail string address and the end of the string, including its NUL:
+
+- `MediusBillingClientVersion`: its `sprintf` format is at 0x00197DF8.
+- `MediusAccountLogoutInternal`: its trace string is at 0x001984F8.
+
+The net segment then has no differing bytes.
+
+**Callback dispatchers.** Each dispatcher has the debug-info prototype
+`(int nNotUsed, int WorldID, int SourceClientIndex, T *ThisPacket)`. It calls
+`gMediusFunctionPointers[i](ThisPacket, gUserArguments[i])` when the pointer is set, then
+returns a constant, which looks like the size of the incoming packet. `cb_gen.py` writes
+them from the asm, taking the index from the `%lo` offset and the constant from the asm.
+The `FUN_` dispatchers keep their names, because nothing but the table index and packet
+size ties them to a message type.
+
+Globals:
+
+- `mediusBillingState` (0x00169BBC)
+- `mediusBillingServerVersion` (0x00169C48)
+- `mediusBillingLogoutEcho` (0x00169C88)
+- `mediusBillingLogoutCallback` (0x00169C94)
+- `mediusBillingLoaded` (0x001B7648)
+- `mediusBillingLogoutRequest` (0x001B78E0)
+- `mediusPostDebugInfoFlag` (0x00169CF4)
+- `mediusUniverseSvoURL` (0x0016A080)
+- `mediusFileUploadDataSize` (0x0021D998)
+
+See MEDIUS_GLOBALS.csv for what each holds.
+
+Source-shape findings:
+
+- `FileUploadResponse` matches only with `StatusCode` typed as the enum
+  `MediusCallbackStatus`. With `int`, the loads are scheduled differently.
+- Functions returning a `MediusDField` struct need `MediusDField f = {def, data}; return f;`.
+- Popcount helpers keep the masked input in its own variable. `0xFFFFFFFF >> (31 - id)`
+  gives retail's `nor` + `srlv`.
+- Store order does not always follow source order. `construct` matches only with the
+  `fieldMask` store first, and `NetSetDefaultNetUseObjectsInParams` only with the stores
+  in struct order.
 
 ## Medius batch 12 (2026-10-27)
 
