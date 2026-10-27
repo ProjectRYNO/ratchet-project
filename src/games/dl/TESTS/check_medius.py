@@ -237,6 +237,7 @@ def main():
         'MediusGetLadderStatsWide': (0x01ED81F8, 0x74),
         'MediusToken': (0x01ED83D8, 0x74),
         'MediusSetAutoChatHistory': (0x01ED8450, 0x74),
+        'NetAddressToBinaryAddress': (0x01E9EE28, 0xEC),
         'InitSequence': (0x01ED3B08, 0x58),
         'InitializePRNG': (0x01EB3ED0, 0x40),
         'KM_CreateRandomRCKey': (0x01EB3F10, 0x58),
@@ -287,7 +288,8 @@ def main():
                              ('sequence', 0x01ED3A50, 0x01ED3EA4),
                              ('vsequence', 0x01ED3EA8, 0x01ED4378),
                              ('MediusClans', 0x01ED5320, 0x01ED5524),
-                             ('MediusClient', 0x01ED5528, 0x01ED84C4)):
+                             ('MediusClient', 0x01ED5528, 0x01ED84C4),
+                             ('DmeAddress', 0x01E9EBD8, 0x01E9F050)):
         if args.objects and loaded_bytes(original, start, end - start) != loaded_bytes(rebuilt, start, end - start):
             raise SystemExit('FAIL: %s module differs' % name)
     if args.objects:

@@ -23,6 +23,27 @@ real functions and are not listed.
 | rt_token | create_table, release_ownership, grant_ownership, update_ownership | 8, 22, 31, 51 | v0-compare pattern; positive-test shape helps only partly |
 | rt_token | list_check/grant/release/update_ownership, build_token_list_msg | - | not attempted |
 | ps2/rt_mtrandgen_platform | ScrambleSeed, setNewSeed_platform | - | not attempted: COP0 Count/Random inline asm, RCNT hardware counters |
+| rt_crypt | KM_GetGameSessionKey | 1 | `beqz` vs `beqzl` on the key-master test; tried nested, inverted and early-return shapes (batch 9) |
+| rt_crypt | KM_DeleteSymmetricKey | 9 | retail does not tail-call the last `memset`; keep the original inverted `pDecrypt` test |
+| rt_crypt | KM_GetSymmetricKey, KM_CopyKeys, KM_Cleanup, KM_Create | 17, 32, 42, 57 | result-variable/branch layout; Ghidra's shapes and early returns tried |
+| rt_crypt | rt_crypt_resolve_interface, KM_DigiSign, KM_DigiVerify, KM_Encrypt, KM_Encrypt2, KM_Decrypt, KM_Decrypt2, GetSoftwareKeyPair | - | not attempted |
+| LargeInt | lintIncrement | 18 | retail jumps to the loop test first (no rotated copy); `for`, `while`, pointer and index forms tried (batch 10) |
+| LargeInt | QRMOD | 46 | block order of the subtract/shift branches; both orders tried |
+| LargeInt | EMOD, EMODM | - | not attempted: many PS2 assembly helpers (`MULT`, `XMOD`, `MontPro`) and `__assert` strings in rodata |
+| DmeMetrics | MetricsEvent | 37 | retail keeps a `sltiu <2` range check before `== 1` (a `switch`?) and copies the 12-byte record with unaligned `ldl/lwl`. It builds `NetLatencyMetricsDataArgs` with `LatencyMin`/`LatencyMax` swapped and calls the `LatencyMetrics` pair at 0x00167F80 |
+| rt_lanmessage | LANTextMessageHandler, LANRawMessageHandler | - | not attempted: 0xA8-byte message copy, then a `gLANMessage` callback |
+| MediusDMetaType | create, getThisField | - | not attempted |
+| rt_parse | rt_parse_initialize, register, reg_parser, get_callback | 32 to 58 | v0-compare pattern (batch 11) |
+| rt_parse | rt_parse_execute, fragment handling, timeout, find_frag_msg | - | not attempted |
+| DmeList | NetGenerateClientList, NetGenerateJoinedClientList | ~33 | loop and test order; first drafts only (batch 11) |
+| MediusDList_shared | MediusDListSubscribePack | 36 | `\|\|` chain and ternary tail both tried (batch 11) |
+| DmeAddress | BinaryAddressToNetAddress, StringAddressToNetAddress, NetIAddressToStringAddress | - | switch functions: register each jump table as a `rodata:` slot (see batch 11) |
+| DmeToken | (switch functions) | - | not attempted; jump tables go in `rodata:` slots |
+| sequence, vsequence | AddSequence, GetSequenceData, AddVSequence, GetVDataBytes, GetVSequenceData | - | not attempted |
+| MediusClient | MediusSessionEnd, MediusAccountLogin, MediusAccountLogout, MediusJoinGame, MediusGetUniverseInformation, MediusLadderList_ExtraInfo, MediusLadderPosition_ExtraInfo, MediusSetLobbyWorldFilter, MediusUpdateClientState | 13 to 33 | request wrappers with extra work (copies, extra tests); the generated shape does not cover them (batch 11) |
+| MediusClient | MediusAccountDelete, MediusAccountLoginInternal, MediusAccountLogoutInternal, MediusSessionBegin | - | wrapper shape, but they use unnamed statics (`0x00169D50`, `0x001B7878`, `0x001B78E0`) or stack copies |
+| MediusClans, MediusBilling | func_01ED53A8, func_01ED5428, func_01ED54A8, the `func_` Billing wrappers | - | request wrappers without a Ghidra function; create them in Ghidra for names and types, then use `genwrap.py` |
+| Dme, rt_libnet, rt_time, MediusClient | func_01E9EAF8, func_01E9BFB0, func_01EAB670, func_01ED5B70, func_01ED5CA8, func_01ED6A18, func_01ED6E30, func_01ED79C8, func_01ED7AD8, func_01ED7C88 | - | start with a leftover `addiu sp,sp,N; nop` pair; check for a real function after it and add a split symbol as for MediusClans |
 
 PS2 declarations: Medius objects compile with the open-source PS2SDK headers
 (`PS2SDK_FLAGS` in the Makefile: `-D_EE`, `/opt/ps2dev/ps2sdk/{ee,common}/include`, plus the
@@ -31,6 +52,177 @@ Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
 `GetThreadId`; `libcdvd-common.h`: `sceCdCLOCK`). Sony SDK calls that PS2SDK lacks
 (`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
 Add new ones there rather than in individual files.
+
+## Medius batch 11 (2026-10-27)
+
+**215 Medius functions now compile to exact retail bytes** (158 after batch 10).
+
+Medius inventory: 215 of 1,462 INCLUDE_ASM entries replaced (14.71%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `rt_util/rt_parse.c` | rt_parse_shutdown, rt_parse_update | see "Pinned for later" |
+| `dme_client/src/DmeRegister.c` (complete) | NetIRegisterApplicationMessage | - |
+| `dme_client/src/DmeList.c` | NetBitMaskIsSet, NetBitMaskSet | NetGenerateClientList, NetGenerateJoinedClientList |
+| `MediusDList/src/MediusDList_shared.c` | MediusDListUpdatePack, MediusDListRequestPack | MediusDListSubscribePack |
+| `StreamMedia/src/sequence.c` | CreateSequence, DestroySequence, InitSequence | AddSequence, GetSequenceData |
+| `StreamMedia/src/vsequence.c` | CreateVSequence, DestroyVSequence | AddVSequence, GetVDataBytes, GetVSequenceData |
+| `MediusClientLibrary/src/MediusClans.c` | MediusUpdateClanStats | func_01ED53A8, func_01ED5428, func_01ED54A8 |
+| `dme_client/src/DmeAddress.c` | NetAddressToBinaryAddress (switch, jump table at 0x00195BD0) | the other three switch functions |
+| `MediusClientLibrary/src/MediusClient.c` | 43 request wrappers: MediusGetServerTime, MediusDnasSignature, MediusAccountRegistration, MediusAccountUpdateStats, MediusAnonymousLogin, MediusCreateGame, MediusTextFilter, MediusCreateChannel, MediusJoinChannel, MediusGetGamePlayers, MediusGetPlayerInfo, MediusGetGameInfo, MediusGetChannelInfo, MediusFindPlayer, MediusSendGenericChatMessage, MediusSendBinaryMessage, MediusAddToBuddyList, MediusRemoveFromBuddyList, MediusGetIgnoreList, MediusAddToIgnoreList, MediusRemoveFromIgnoreList, MediusSendPlayerReport, MediusSendWorldReport, MediusSendEndGameReport, MediusGetAnnouncements, MediusGetAllAnnouncements, MediusSetGameListFilter, MediusClearGameListFilter, MediusGetGameListFilter, MediusGetMyIP, MediusAccountGetID, MediusGetLocations, MediusGenericChatSetFilter, MediusSetLocalizationParams, MediusGetBuddyList_ExtraInfo, MediusGetTotalRankings, MediusGetLobbyPlayerNames_ExtraInfo, MediusGetGames_ExtraInfo, MediusGetChannels_ExtraInfo, MediusUpdateLadderStatsWide, MediusGetLadderStatsWide, MediusToken, MediusSetAutoChatHistory | the rest of the module |
+
+Types: `MediusRequests.h` holds the request layouts from the debug information. Callback
+signatures are not recovered yet, so each `MediusType...Callback` is a generic function
+pointer. `sequence.h` holds `CSequence`/`SEQBLOCK` (0x4010) and `CVSequence`/`VSEQBLOCK`
+(0x800C). `NetBitMask` (0x28) is in `DmeList.c`. The `rt_parse` statics are named in
+`symbols_core.text.txt` (`rtParse...`, plus the debug-info name `gaTypeCount`).
+
+Jump tables: Medius objects now go through `svo3_rodata_sections.py`, like SVO3 and
+iksemel. A `switch` table compiled inside `.medius_<module>_<fn>` moves to
+`.medius_<module>_<fn>.rodata` (later tables in the same function get `.rodata.1`, …).
+Register each table under `rodata:` in `decompiled_functions.yaml`: object, function,
+section, and the retail table start and end in `core.data/091E80.rodata`. Use the end of
+the table entries, not the padding after them. The linker places the compiled table at
+that address, and an unregistered table fails the link. For `.medius_` sections the
+script writes the table load with the destination register (`lui v1; addu v1,v1,v0;
+lw v1`), as retail does. SVO3 and iksemel keep the `$at` form. Verified: `core.rdata` and
+`net.text` have no differences, and the jump table in the map comes from `DmeAddress.o`.
+
+Split fix: MediusClans and MediusBilling had three functions whose split started on a
+leftover `addiu sp,sp,N; nop` pair. The symbols `func_01ED47B0`, `func_01ED5220` and
+`func_01ED53A8` in `symbols_net.text.txt` now start them at the real first instruction.
+The leftover pairs stay as their own fragments.
+
+Source-shape findings:
+
+- **`switch` range.** List the out-of-range enum values (`NetAddressNone`,
+  `NetAddressTypeBinaryNATServices`) as cases next to `default`. Retail indexes the table
+  from 0 without subtracting. Every case ends in `break`, and the result is copied once
+  after the `switch`.
+- **No sibling calls in `rt_parse` and `DmeRegister`.** Retail keeps `jal` + `jr` where
+  gcc would tail-call. Every function in both files matches with
+  `-fno-optimize-sibling-calls`, set per object in the Makefile
+  (`MEDIUS_NO_SIBCALL_OBJECTS`). Other Medius files do tail-call.
+- **Request wrappers.** Terminate the string fields first, then
+  `if (GlobalInitFlag != 1) return MediusErrorNotInitialized;`, the other tests as early
+  returns, store the callback into `gMediusFunctionPointers[type]` **before** the user
+  data into `gUserArguments[type]`, and end with
+  `if (MediusSendMessage(...) != 0) return MediusErrorSendingMessage; return MediusErrorNone;`.
+  Storing the user data first leaves 2 words different. The candidates were generated
+  from Ghidra's debug-info decompile.
+- **Create/Destroy pairs.** `Create...` sets the pointer to 0, allocates through its
+  address, and runs the body under `if (p)`. `Destroy...` is
+  `if (p) rt_memory_free((void **)&p);`.
+
+## Medius batch 10 (2026-10-27)
+
+**158 Medius functions now compile to exact retail bytes** (143 after batch 9).
+
+Medius inventory: 158 of 1,462 INCLUDE_ASM entries replaced (10.81%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `rt_crypt/src/RSA.c` (complete) | RSAEncryptBlock, RSADecryptBlock, RSAEncrypt, RSADecrypt | - |
+| `rt_crypt/src/LargeInt.c` | lintSetSmallValue, IsEven, IsZero, lintSetBit, MOD | lintIncrement, QRMOD, EMOD, EMODM; fragments |
+| `rt_cert/src/OID.c` (complete) | GetOID | fragment `func_01EE15D0` |
+| `dme_client/src/DmeInterfaceManager.c` (complete) | ClearInterfacePointers | - |
+| `MediusClientLibrary/src/stringmanager.c` (complete) | iCreateAndAllocateMessageID | - |
+| `dme_client/src/DmeRegister.c` | NetIRegisterMessage, NetIRegParseMessage | NetIRegisterApplicationMessage |
+| `MediusDList/src/MediusDMetaType.c` | destroy | create, getThisField |
+
+Types: `lint` (0x200, 128 words, least significant first) and `RSA_BLOCK` (0x40), both
+from the debug information, in the new `LargeInt.h`/`RSA.h`. `OIDDATA` (0x18): the
+prototype names the type, and the field names are ours. RSA is 512-bit: keys and blocks
+are zero-extended into `lint` and run through `EMODM`. The public exponent is 17.
+
+Globals: `mediusACodecGSMInterfacePtr` (0x00167F44) has no debug-info name. It sits
+between `gUDPInterfacePtr` and `gACodecLPCInterfacePtr`, and `CreateCodec` uses it for
+320-byte frames encoded to 33 bytes, which is GSM 06.10. `mediusMessageIdFormat` is the
+`"%s.%d"` string at 0x00199AF8.
+
+Source-shape findings:
+
+- `lintSetBit` is `data[nBit >> 5] |= 1 << nBit`; MIPS `sllv` masks the shift itself,
+  so retail has no `& 0x1F`.
+- `RSAEncrypt` loops on a signed `int cbBytes`, `RSADecrypt` on an unsigned one.
+
+## rt_crypt batch 9 (2026-10-27)
+
+**143 Medius functions now compile to exact retail bytes** (117 after batch 8).
+
+Medius inventory: 143 of 1,462 INCLUDE_ASM entries replaced (9.78%).
+
+| Module | Compiled (exact) | Retained assembly |
+| --- | --- | --- |
+| `rt_crypt_public.c` (complete) | KM_Initialize, IsNullRSAKey, KM_GetLocalPublicKey, GetKeyMaster | - |
+| `rt_crypt.c` | NetUseCrypt, IsNullRCKey, NewKeyChain, DeleteKeyChain, AppendKeyChain, GetKeyChain, RemoveKeyChain, KM_GetVersionStringPtr, KM_SHA1, KM_Salted_SHA1, KM_SetLocalClientID, KM_SetPublicKey, KM_GetPublicKey, KM_SetLocalKeyPair, KM_SetGameSessionKey, KM_AddSymmetricKey, KM_CompareSymmetricKey, KM_DeleteKeys, KM_Destroy, InitializePRNG, KM_CreateRandomRCKey, KM_RSAAdjust (22 of 36) | see "Pinned for later"; fragment `func_01EB30B0` |
+
+Types: the new shared `rt_crypt.h` holds the key-master types from the debug information
+(`RSA_KEY`, `RSA_KEYPAIR`, `RC_KEY`, `RCDATA`, `KEY_CHAIN`, `KEY_MASTER`), plus
+`CRYPT_DME_BASE_GLOBALS` from the prototype. `gCryptGlobals` points to it, and
+GLOBAL_VARIABLES.csv already records that type. Its key pairs are `gServerKeyPair`
+(flag 0x80000000), `gClientKeyPair` (any other flag), `gUDPKeyPair` (0xFFFFFFFF) and
+`gAppKeyPair`. New globals: `rtCryptVersionString` (0x00196B38, `"rt_crypt version:
+2.10.2"`) and `rtCryptPrngSeeded` (0x001694F8).
+
+Source-shape findings:
+
+- **Setters return early; getters keep the success path first.** `KM_SetGameSessionKey` and
+  `KM_AddSymmetricKey` need `if (!pKeyMaster) return -1; if (IsNullRCKey(pKey)) return -1;`.
+  `KM_SetPublicKey` and `KM_SetLocalKeyPair` put the clear branch first
+  (`if (IsNull...) { clear } else { allocate, copy }`). `KM_GetPublicKey` tests the
+  success chain with `&&` and falls through to the clear/-1 tail.
+- **Address-taken locals.** A pointer whose address goes to `rt_memory_allocate` or
+  `rt_memory_free` is reloaded from the stack after every store. Retail allocates into
+  a separate `void *` and copies it (`NewKeyChain`). It frees through a copy assigned
+  before the null check (`DeleteKeyChain`) or just before the free (`KM_Destroy`).
+- `AppendKeyChain` reads `last` into a local once. `GetKeyChain` masks `nID &= 0x1FFFFFFF`
+  before the walk. `KM_CompareSymmetricKey` is a `do { } while (i-- > 0)` comparing
+  `pKey` first.
+- `KM_DeleteSymmetricKey` (still assembly) calls `memset` on `pDecrypt` only when it is
+  NULL, an inverted test in the original. A C version must keep that bug.
+
+## rt_crypt batch 8 (2026-10-27)
+
+**117 Medius functions now compile to exact retail bytes** (94 after batch 7). Five
+`rt_crypt/src` modules are complete and byte-identical to retail. Most of the code is
+public reference code with small Medius changes. All matched within one or two probes.
+
+Medius inventory: 117 of 1,462 INCLUDE_ASM entries replaced (8.00%).
+
+| Module | Functions (all exact) | Origin |
+| --- | --- | --- |
+| `md5.c` | KM_MD5, KM_Salted_MD5, md5Init, md5Update, md5Final | RFC 1321 with a byte count; transform/encode are PS2 assembly in `ps2/md5_platform` |
+| `md4.c` | KM_MD4, md4Init, md4Update, md4Final, md4Transform, Encode, Decode | RFC 1320 nearly verbatim; transform takes the context |
+| `md2.c` | KM_MD2, md2Init, md2Update, md2Final, md2Transform | RFC 1319; state and checksum live in the context |
+| `SHA1.c` | SHAInit, SHAUpdate, SHAFinal, endianTest | Peter Gutmann's public-domain SHS code; `longReverse`/`SHSTransform`/`SHAtoByte` are PS2 assembly in `ps2/SHA1_platform` |
+| `RC4.c` | RC4Init, RC4Code | RC4 with an add/subtract swap |
+
+Types (RECOVERED_TYPES.json): `MD5_CTX` (0x60, debug info, with an 8-byte `padding`
+tail), `MD4_CTX` (0x58), `MD2_CTX` (0x34), `SHA_CTX` (0x60, debug info) and `RC4_CTX`
+(0x102, debug info). The debug information gives `MD2_CTX`/`MD4_CTX` no usable members
+(OpenSSL-style labels for other code), so those use RFC member names at the retail
+offsets.
+
+Globals (MEDIUS_GLOBALS.csv): `rtCryptMd2Padding` (0x00169430, pad-string pointer
+table), `rtCryptMd4Padding` (0x00169478), `rtCryptMd5Padding` (0x001694B8),
+`rtCryptMd2Sbox` (0x00196820, debug-info `gS`), `rtCryptShaInitState` (0x001693D0) and
+`rtCryptShaEndianProbe` (0x00196760, the `"#S"` literal). They stay in retail data and
+the C code references them by symbol.
+
+Source-shape findings:
+
+- 64- and 16-byte block copies (`ldl/ldr/sdl/sdr` runs) are struct assignments through
+  a byte-array block type (`MD5_BLOCK`, `MD2_BLOCK`, `SHA_BLOCK`). `SHAInit` is one
+  `*shsInfo = rtCryptShaInitState`.
+- `md5Update` sets `index = 0` right after the first `memcpy`, so `index` stays live in
+  a saved register. Setting it after the loop, as RFC 1321 does, lets 2.96 fold it.
+- `SHAFinal` loads `countLo` into `count` before `(count >> 3) & 0x3F` (signed shift).
+- `RC4Code` computes `t = (a + state[y]) & 0xFF` once and stores `t - a` and
+  `t - state[y]`; `RC4Init` is `j = (j + (t + key[k])) & 0xFF` with `k = 0` set before `j`.
+
+Next in `rt_crypt`: `RSA.c`, `rt_crypt.c` (key chain and KM_* wrappers),
+`rt_crypt_public.c`, `LargeInt.c`, and the `ps2/*_platform` assembly files.
 
 ## rt_util batch 7 (2026-10-22)
 

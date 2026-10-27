@@ -465,6 +465,7 @@ functions:
   MediusGetLadderStatsWide: 0x01ED81F8
   MediusToken: 0x01ED83D8
   MediusSetAutoChatHistory: 0x01ED8450
+  NetAddressToBinaryAddress: 0x01E9EE28
   InitSequence: 0x01ED3B08
   InitializePRNG: 0x01EB3ED0
   KM_CreateRandomRCKey: 0x01EB3F10
@@ -4292,7 +4293,8 @@ objects:
     text_end: 0x01ED5524
     slots:
       - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_MediusUpdateClanStats, start: 0x01ED5320, end: 0x01ED53A0}
-      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A0, start: 0x01ED53A0, end: 0x01ED5428}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A0, start: 0x01ED53A0, end: 0x01ED53A8}
+      - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED53A8, start: 0x01ED53A8, end: 0x01ED5428}
       - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED5428, start: 0x01ED5428, end: 0x01ED54A8}
       - {object: medius/MediusClientLibrary/src/MediusClans, section: .medius_clans_func_01ED54A8, start: 0x01ED54A8, end: 0x01ED5524}
   medius/MediusClientLibrary/src/MediusClient:
@@ -4406,6 +4408,15 @@ objects:
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_vLocalSetLobbyWorldFilter, start: 0x01ED8338, end: 0x01ED83D8}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusToken, start: 0x01ED83D8, end: 0x01ED8450}
       - {object: medius/MediusClientLibrary/src/MediusClient, section: .medius_client_MediusSetAutoChatHistory, start: 0x01ED8450, end: 0x01ED84C4}
+  medius/dme_client/src/DmeAddress:
+    text_start: 0x01E9EBD8
+    text_end: 0x01E9F050
+    slots:
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_BinaryAddressToNetAddress, start: 0x01E9EBD8, end: 0x01E9ED00}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_StringAddressToNetAddress, start: 0x01E9ED00, end: 0x01E9EE28}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress, start: 0x01E9EE28, end: 0x01E9EF18}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_NetIAddressToStringAddress, start: 0x01E9EF18, end: 0x01E9F038}
+      - {object: medius/dme_client/src/DmeAddress, section: .medius_dmeaddr_func_01E9F038, start: 0x01E9F038, end: 0x01E9F050}
   sdk/libezcnf:
     text_start: 0x01E9A000
     text_end: 0x01E9A4A0
@@ -4486,3 +4497,4 @@ rodata:
       - {object: svo3/CInputContextBase, function: HasActionOccurred, section: .svo_input_HasActionOccurred.rodata, start: 0x0019C340, end: 0x0019C370}
       - {object: svo3/UTF8_Util, function: UTF8_GetNextCharIndexFromString, section: .svo_utf8_UTF8_GetNextCharIndexFromString.rodata, start: 0x0019D760, end: 0x0019D778}
       - {object: svo3/UTF8_Util, function: UTF8_CountCharacters, section: .svo_utf8_UTF8_CountCharacters.rodata, start: 0x0019D780, end: 0x0019D798}
+      - {object: medius/dme_client/src/DmeAddress, function: NetAddressToBinaryAddress, section: .medius_dmeaddr_NetAddressToBinaryAddress.rodata, start: 0x00195BD0, end: 0x00195BF4}

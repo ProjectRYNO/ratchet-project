@@ -136,7 +136,8 @@ MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util
 	$(OBJ_DIR)/medius/rt_util/rt_parse.o $(OBJ_DIR)/medius/dme_client/src/DmeList.o \
 	$(OBJ_DIR)/medius/MediusDList/src/MediusDList_shared.o \
 	$(OBJ_DIR)/medius/StreamMedia/src/sequence.o $(OBJ_DIR)/medius/StreamMedia/src/vsequence.o \
-	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClans.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClient.o
+	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClans.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClient.o \
+	$(OBJ_DIR)/medius/dme_client/src/DmeAddress.o
 # Retail rt_parse and DmeRegister never tail-call: a wrapper returning another call's
 # result keeps jal + jr. Every function in both matches with sibling calls disabled.
 MEDIUS_NO_SIBCALL_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_parse.o $(OBJ_DIR)/medius/dme_client/src/DmeRegister.o
@@ -156,6 +157,7 @@ endif
 $(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC296) -S $(MEDIUS_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
 	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
 # Boot libdma matches the same historical 991111-01 toolchain used by libm.
