@@ -30,7 +30,7 @@ extern const char sdkFsSemaName[];
 extern const char sdkFsIobSemaName[];
 extern const char sdkFsIobSemaName2[];
 extern int sdkIopHeapState;
-extern int sdkIopHeapClient[10];
+extern sifRpcClient_t sdkIopHeapClient;
 extern int sdkIopHeapSend[4];
 extern int sdkIopHeapReceive[4];
 extern int sdkLoadFileState;
@@ -44,7 +44,7 @@ extern char sdkDeci2Buffer[];
 extern ttyQueue_t sdkTtyQueue;
 extern int sceSifCallRpc(void *, int, int, void *, int, void *, int, void *, void *);
 extern void sceSifExitCmd(void);
-extern unsigned int sceSifGetReg(unsigned int);
+extern unsigned int sceSifGetReg(int);
 extern void sceResetttyinit(void);
 extern void sceSifExecNotifyHandler(int, int);
 extern int _sceSifSendCmd(int, int, void *, int, void *, void *, int);
@@ -71,7 +71,7 @@ extern int sceTtyInit(void);
 extern int sceTtyWrite(const char *, int);
 extern int sceTtyRead(void *, int);
 extern int *__errno(void);
-extern int iSetTimerHandler(int, int, void *, void *);
+extern int iSetTimerHandler(int, unsigned long, void *, void *);
 extern unsigned long iGetTimerSystemTime(void);
 extern void SetNextComp(unsigned long);
 timerCounter_t *UnlinkAlarm(timerCounter_t *counter);
@@ -95,7 +95,7 @@ extern void _LoadExecPS2(const char *, int, char **);
 extern void supplement_crt0(void);
 extern void InitSystemCallTableAddress(void);
 extern void InitAlarm(void);
-extern void InitTimer(int);
+extern int InitTimer(int);
 extern int StartTimerSystemTime(void);
 extern int InitThread(void);
 extern void InitExecPS2(void);
@@ -108,7 +108,7 @@ extern void _sceFsSigSema(void);
 extern char sdkTtySendHeader[];
 extern char sdkTtyRecvBuffer[];
 extern void FlushCache(int);
-extern void sceTtyHandler(int, int, ttyData_t *);
+extern void sceTtyHandler(int, unsigned int, ttyData_t *);
 extern int DisableDmac(int);
 extern int RemoveDmacHandler(int, int);
 extern int GetMemorySize(void);
@@ -158,6 +158,50 @@ extern int RotateThreadReadyQueue(int);
 extern int SuspendThread(int);
 extern int PatchIsNeeded(void);
 void topThread(threadQueue_t *queue);
+extern timerCounter_t sdkTimerCounters[128];
+extern int AllocTimerCounter(void);
+extern int StartTimerCounter(int);
+extern int SetTimerHandler(int, unsigned long, void *, void *);
+extern int AlarmHandler(int, int, int, timerAlarm_t *);
+extern int _InitAlarm(void);
+extern int cbTimerHandler(int);
+extern int AddIntcHandler2(int, void *, int, void *);
+extern int EnableIntc(int);
+extern void SetT2_COUNT(int);
+extern fsRequest_t sdkFsRequest;
+extern int sdkFsClient[10];
+extern int sdkFsReceive[4];
+extern const char sdkFsOpenSemaName[];
+extern const char sdkFsCloseSemaName[];
+extern const char sdkFsDevctlSemaName[];
+extern kernelVersion_t sdkKernelVersion;
+extern kernelVersion_t *sdkFsVersion;
+extern kernelVersion_t *sdkLoadFileVersion;
+extern int memcmp(const void *, const void *, unsigned int);
+extern int _sceFsWaitS(int);
+extern int sceFsInit(void);
+extern int _fs_version(void);
+#define LOAD_BUFFER ((sifLoadModuleBuffer_t *)&sdkLoadFileBuffer)
+extern sifResetPacket_t sdkSifResetPacket;
+extern const char sdkSifRebootPrefix[];
+extern const char sdkSifRebootTooLongMsg[];
+extern unsigned int sceSifSetDma(sifDmaTransfer_t *, int);
+extern void sceSifStopDma(void);
+extern int sceSifSetReg(unsigned int, unsigned int);
+extern void *memcpy(void *, const void *, unsigned int);
+int sceSifResetIop(const char *, int);
+extern const char sdkTtyMsgPacketSize[];
+extern const char sdkTtyMsgRecvError[];
+extern const char sdkTtyMsgSendError[];
+extern const char sdkTtyMsgWlenError[];
+extern kernelPatch_t sdkSyscallPatchTable[2];
+extern unsigned int sdkSyscallTable;
+extern kernelPatch_t sdkArgPatch;
+extern void setup___dupe2(int, void *);
+extern unsigned int FindAddress(unsigned int, unsigned int, unsigned int);
+extern void setup___dupe4(int, void *);
+extern int Copy___dupe3(void *, void *, int);
+extern unsigned int strlen(const char *);
 char *_sceRpcGetFPacket(sifRpcData_t *rpc);
 void _sceFsSemInit(void);
 void _sceFsIobSemaMK(void);
@@ -659,7 +703,43 @@ void KERNEL_SECTION(QueuePeekReadDone) QueuePeekReadDone(ttyQueue_t *queue)
 	if (queue->read == (char *)queue + (queue->size + 16)) queue->read = (char *)queue + 16;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceTtyHandler);
+void KERNEL_SECTION(sceTtyHandler) sceTtyHandler(int event, unsigned int param, ttyData_t *tty)
+{
+	int n, sent;
+	char *buffer;
+	switch (event) {
+	case 1:
+	case 2:
+		if (param) {
+			if (tty->rlen + param > 0x140) kprintf(sdkTtyMsgPacketSize);
+			n = sceDeci2ExRecv(tty->socket, tty->recvBuffer + tty->rlen, param);
+			if (n < 0) kprintf(sdkTtyMsgRecvError);
+			tty->rlen += n;
+		} else {
+			buffer = tty->recvBuffer;
+			for (n = 0xc; n < *(unsigned short *)buffer; n++) {
+				*tty->queue->write = tty->recvBuffer[n];
+				QueuePeekWriteDone(tty->queue);
+			}
+			tty->rlen = 0;
+		}
+		break;
+	case 3:
+		sent = sceDeci2ExSend(tty->socket, tty->sendHeader, tty->wlen);
+		if (sent < 0) {
+			kprintf(sdkTtyMsgSendError, sent);
+			tty->busy = 0;
+		} else {
+			tty->sendHeader += sent;
+			tty->wlen -= sent;
+		}
+		break;
+	case 4:
+		if (tty->wlen) kprintf(sdkTtyMsgWlenError, tty->wlen);
+		tty->busy = 0;
+		break;
+	}
+}
 
 int KERNEL_SECTION(sceTtyWrite) sceTtyWrite(const char *buffer, int size)
 {
@@ -1132,7 +1212,7 @@ void KERNEL_SECTION(_sceFsSemInit) _sceFsSemInit(void)
 	}
 }
 
-int KERNEL_SECTION(_sceFsWaitS) _sceFsWaitS(void)
+int KERNEL_SECTION(_sceFsWaitS) _sceFsWaitS(int unused)
 {
 	_sceFsSemInit();
 	WaitSema(sdkFsSema);
@@ -1148,7 +1228,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceFs
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceFsInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _fs_version);
+int KERNEL_SECTION(_fs_version) _fs_version(void)
+{
+	kernelVersion_t *kernel = &sdkKernelVersion;
+	void *local = sdkFsResetFlags;
+	int result = 0;
+	if (memcmp(local, kernel, 4) && memcmp(local, sdkFsVersion, 4))
+		result = memcmp(kernel, sdkFsVersion, 4) != 0;
+	return result;
+}
 
 int KERNEL_SECTION(sceFsReset) sceFsReset(void)
 {
@@ -1157,9 +1245,109 @@ int KERNEL_SECTION(sceFsReset) sceFsReset(void)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceOpen);
+int KERNEL_SECTION(sceOpen) sceOpen(const char *name, int flags, ...)
+{
+	fsOpenRequest_t *request;
+	kernelSemaParam_t param;
+	int result;
+	va_list args;
+	fsIob_t *iob;
+	int i, index, sema, ok, mode;
+	_sceFsWaitS(0);
+	request = &sdkFsRequest.open;
+	if (!sdkFsInitialized) sceFsInit();
+	if (_fs_version()) {
+		_sceFsSigSema();
+		return 0xfffefffc;
+	}
+	iob = new_iob();
+	if (!iob) {
+		_sceFsSigSema();
+		return -19;
+	}
+	va_start(args, flags);
+	mode = va_arg(args, int);
+	for (i = 0; i < 0x400; i++) {
+		if (!(request->name[i] = name[i])) break;
+	}
+	if (i == 0x400) request->name[0x3ff] = 0;
+	index = iob - sdkFsIob;
+	request->flags = flags & 0x7fffffff;
+	request->mode = mode;
+	param.maxCount = 1;
+	param.option = sdkFsOpenSemaName;
+	request->index = index;
+	param.initCount = 0;
+	sema = CreateSema(&param);
+	request->result = &result;
+	request->sema = sema;
+	request->size = 4;
+	if (sceFsSifCallRpc(sdkFsClient, 0, 0, &sdkFsRequest.open, 0x418, sdkFsReceive, 4, 0, 0, 0) < 0) {
+		DeleteSema(sema);
+		_sceFsSigSema();
+		return -11;
+	}
+	ok = *(int *)((unsigned int)sdkFsReceive | 0x20000000);
+	_sceFsSigSema();
+	if (!ok) {
+		DeleteSema(sema);
+		return -11;
+	}
+	WaitSema(sema);
+	DeleteSema(sema);
+	if (result < 0) {
+		WaitSema(sdkFsIobSema);
+		iob->mode = 0;
+		SignalSema(sdkFsIobSema);
+		return result;
+	}
+	ok = index;
+	WaitSema(sdkFsIobSema);
+	iob->unk00 = result;
+	iob->mode |= flags;
+	SignalSema(sdkFsIobSema);
+	return ok;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceClose);
+int KERNEL_SECTION(sceClose) sceClose(int fd)
+{
+	fsCloseRequest_t *request = &sdkFsRequest.close;
+	kernelSemaParam_t param;
+	int result;
+	fsIob_t *iob = get_iob(fd);
+	int sema, ok, ret;
+	_sceFsWaitS(1);
+	if (!sdkFsInitialized || !iob || !iob->mode) {
+		_sceFsSigSema();
+		return -9;
+	}
+	request->fd = iob->unk00;
+	request->index = iob - sdkFsIob;
+	param.maxCount = 1;
+	param.option = sdkFsCloseSemaName;
+	param.initCount = 0;
+	sema = CreateSema(&param);
+	request->sema = sema;
+	request->result = &result;
+	request->size = 4;
+	if (sceFsSifCallRpc(sdkFsClient, 1, 0, request, 0x14, sdkFsReceive, 4, 0, 0, 0) < 0) {
+		DeleteSema(sema);
+		_sceFsSigSema();
+		return -11;
+	}
+	iob->mode = 0;
+	ok = *(int *)((unsigned int)sdkFsReceive | 0x20000000);
+	_sceFsSigSema();
+	if (!ok) {
+		DeleteSema(sema);
+		return -11;
+	}
+	WaitSema(sema);
+	DeleteSema(sema);
+	ret = result;
+	if (ret < 0) return ret;
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceLseek);
 
@@ -1169,15 +1357,89 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceWri
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012BEB0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceDevctl);
+int KERNEL_SECTION(sceDevctl) sceDevctl(const char *name, int cmd, void *arg, unsigned int arglen, void *buf, unsigned int buflen)
+{
+	fsDevctlRequest_t *request;
+	kernelSemaParam_t param;
+	int result;
+	unsigned int i;
+	int n, sema, ok, rpc;
+	_sceFsWaitS(0x17);
+	request = &sdkFsRequest.devctl;
+	if (!sdkFsInitialized) sceFsInit();
+	for (n = 0; n < 0x400; n++) {
+		if (!(request->name[n] = name[n])) break;
+	}
+	if (n == 0x400) request->name[0x3ff] = 0;
+	if (arglen > 0x400 || buflen > 0x400) {
+		_sceFsSigSema();
+		return -22;
+	}
+	if (cmd == 0x4601) {
+		if (!((fsDevctlDma_t *)arg)->size) {
+			_sceFsSigSema();
+			return 0;
+		}
+		if (!((fsDevctlDma_t *)arg)->count) {
+			_sceFsSigSema();
+			return -22;
+		}
+	}
+	for (i = 0; i < arglen; i++) request->arg[i] = ((char *)arg)[i];
+	request->arglen = arglen;
+	param.maxCount = 1;
+	param.option = sdkFsDevctlSemaName;
+	request->cmd = cmd;
+	param.initCount = 0;
+	sema = CreateSema(&param);
+	request->buflen = buflen;
+	request->result = &result;
+	request->size = 4;
+	request->buf = buf;
+	request->sema = sema;
+	if (cmd == 0x4601) {
+		rpc = 0x1c;
+		sceSifWriteBackDCache(((fsDevctlDma_t *)arg)->addr, ((fsDevctlDma_t *)arg)->size * ((fsDevctlDma_t *)arg)->count);
+	} else {
+		rpc = 0x17;
+	}
+	sceSifWriteBackDCache(&sdkFsRequest.devctl, 0x81c);
+	if (sceFsSifCallRpc(sdkFsClient, rpc, 0, &sdkFsRequest.devctl, 0x81c, sdkFsReceive, 4, 0, 0, 0) < 0) {
+		DeleteSema(sema);
+		_sceFsSigSema();
+		return -11;
+	}
+	ok = *(int *)((unsigned int)sdkFsReceive | 0x20000000);
+	_sceFsSigSema();
+	if (!ok) {
+		DeleteSema(sema);
+		return -11;
+	}
+	WaitSema(sema);
+	DeleteSema(sema);
+	return result;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceSifInitIopHeap);
+int KERNEL_SECTION(sceSifInitIopHeap) sceSifInitIopHeap(void)
+{
+	int i;
+	while (1) {
+		if (sceSifBindRpc(&sdkIopHeapClient, 0x80000003, 0) < 0) return -1;
+		if (sdkIopHeapClient.server) {
+			sdkIopHeapState = 0;
+			break;
+		}
+		i = 0x100000;
+		while (i--) {}
+	}
+	return 0;
+}
 
 void *KERNEL_SECTION(sceSifAllocIopHeap) sceSifAllocIopHeap(int size)
 {
 	if (sdkIopHeapState < 0) return 0;
 	sdkIopHeapSend[0] = size;
-	if (sceSifCallRpc(sdkIopHeapClient, 1, 0, sdkIopHeapSend, 4, sdkIopHeapReceive, 4, 0, 0) < 0) return 0;
+	if (sceSifCallRpc(&sdkIopHeapClient, 1, 0, sdkIopHeapSend, 4, sdkIopHeapReceive, 4, 0, 0) < 0) return 0;
 	return (void *)sdkIopHeapReceive[0];
 }
 
@@ -1187,7 +1449,7 @@ void *KERNEL_SECTION(sceSifAllocSysMemory) sceSifAllocSysMemory(int type, int si
 	sdkIopHeapSend[0] = size;
 	sdkIopHeapSend[1] = type;
 	sdkIopHeapSend[2] = (int)addr;
-	if (sceSifCallRpc(sdkIopHeapClient, 4, 0, sdkIopHeapSend, 0xc, sdkIopHeapReceive, 4, 0, 0) < 0) return 0;
+	if (sceSifCallRpc(&sdkIopHeapClient, 4, 0, sdkIopHeapSend, 0xc, sdkIopHeapReceive, 4, 0, 0) < 0) return 0;
 	return (void *)sdkIopHeapReceive[0];
 }
 
@@ -1195,7 +1457,7 @@ int KERNEL_SECTION(sceSifFreeSysMemory) sceSifFreeSysMemory(void *addr)
 {
 	if (sdkIopHeapState < 0) return 0;
 	sdkIopHeapSend[0] = (int)addr;
-	if (sceSifCallRpc(sdkIopHeapClient, 2, 0, sdkIopHeapSend, 4, sdkIopHeapReceive, 4, 0, 0) < 0) return -1;
+	if (sceSifCallRpc(&sdkIopHeapClient, 2, 0, sdkIopHeapSend, 4, sdkIopHeapReceive, 4, 0, 0) < 0) return -1;
 	return sdkIopHeapReceive[0];
 }
 
@@ -1207,14 +1469,14 @@ int KERNEL_SECTION(sceSifFreeIopHeap) sceSifFreeIopHeap(void *addr)
 unsigned int KERNEL_SECTION(sceSifQueryMaxFreeMemSize) sceSifQueryMaxFreeMemSize(void)
 {
 	if (sdkIopHeapState < 0) return 0;
-	if (sceSifCallRpc(sdkIopHeapClient, 6, 0, 0, 0, sdkIopHeapReceive, 4, 0, 0) < 0) return 0xffffffff;
+	if (sceSifCallRpc(&sdkIopHeapClient, 6, 0, 0, 0, sdkIopHeapReceive, 4, 0, 0) < 0) return 0xffffffff;
 	return sdkIopHeapReceive[0];
 }
 
 unsigned int KERNEL_SECTION(sceSifQueryTotalFreeMemSize) sceSifQueryTotalFreeMemSize(void)
 {
 	if (sdkIopHeapState < 0) return 0;
-	if (sceSifCallRpc(sdkIopHeapClient, 7, 0, 0, 0, sdkIopHeapReceive, 4, 0, 0) < 0) return 0xffffffff;
+	if (sceSifCallRpc(&sdkIopHeapClient, 7, 0, 0, 0, sdkIopHeapReceive, 4, 0, 0) < 0) return 0xffffffff;
 	return sdkIopHeapReceive[0];
 }
 
@@ -1239,7 +1501,15 @@ int KERNEL_SECTION(_lf_bind) _lf_bind(void)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _lf_version);
+int KERNEL_SECTION(_lf_version) _lf_version(void)
+{
+	kernelVersion_t *kernel = &sdkKernelVersion;
+	void *local = sdkLoadFileFlags;
+	int result = 0;
+	if (memcmp(local, kernel, 4) && memcmp(local, sdkLoadFileVersion, 4))
+		result = memcmp(kernel, sdkLoadFileVersion, 4) != 0;
+	return result;
+}
 
 int KERNEL_SECTION(sceSifLoadFileReset) sceSifLoadFileReset(void)
 {
@@ -1248,9 +1518,53 @@ int KERNEL_SECTION(sceSifLoadFileReset) sceSifLoadFileReset(void)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceSifLoadModuleBuffer);
+int KERNEL_SECTION(_sceSifLoadModuleBuffer) _sceSifLoadModuleBuffer(void *addr, int argLength, const char *args, int *result)
+{
+	if (_lf_bind() < 0) return 0xffff0000;
+	if (_lf_version()) return 0xfffefffc;
+	LOAD_BUFFER->value = (int)addr;
+	if (args) {
+		if (argLength > 0xfc) {
+			LOAD_BUFFER->args = *(sifLoadArgs_t *)args;
+			LOAD_BUFFER->argLength = 0xfc;
+		} else {
+			memcpy(&LOAD_BUFFER->args, args, argLength);
+			LOAD_BUFFER->argLength = argLength;
+		}
+	} else {
+		LOAD_BUFFER->argLength = 0;
+	}
+	if (sceSifCallRpc(sdkLoadFileClient, 6, 0, LOAD_BUFFER, 0x200, LOAD_BUFFER, 8, 0, 0) < 0) return 0xfffeffff;
+	{
+		int value = LOAD_BUFFER->value;
+		*result = LOAD_BUFFER->argLength;
+		return value;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceSifStopModule);
+int KERNEL_SECTION(sceSifStopModule) sceSifStopModule(int id, int argLength, const char *args, int *result)
+{
+	if (_lf_bind() < 0) return 0xffff0000;
+	if (_lf_version()) return 0xfffefffc;
+	LOAD_BUFFER->value = id;
+	if (args) {
+		if (argLength > 0xfc) {
+			LOAD_BUFFER->args = *(sifLoadArgs_t *)args;
+			LOAD_BUFFER->argLength = 0xfc;
+		} else {
+			memcpy(&LOAD_BUFFER->args, args, argLength);
+			LOAD_BUFFER->argLength = argLength;
+		}
+	} else {
+		LOAD_BUFFER->argLength = 0;
+	}
+	if (sceSifCallRpc(sdkLoadFileClient, 7, 0, LOAD_BUFFER, 0x200, LOAD_BUFFER, 8, 0, 0) < 0) return 0xfffeffff;
+	{
+		int value = LOAD_BUFFER->value;
+		*result = LOAD_BUFFER->argLength;
+		return value;
+	}
+}
 
 int KERNEL_SECTION(sceSifUnloadModule) sceSifUnloadModule(int id)
 {
@@ -1284,7 +1598,41 @@ int KERNEL_SECTION(sceSifLoadStartModuleBuffer) sceSifLoadStartModuleBuffer(void
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012CC00);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceSifResetIop);
+int KERNEL_SECTION(sceSifResetIop) sceSifResetIop(const char *arg, int mode)
+{
+	sifDmaTransfer_t dma;
+	void *dest;
+	int i;
+	sceSifExecNotifyHandler(0, 0);
+	sceSifExecNotifyHandler(1, 0);
+	sceSifStopDma();
+	dest = (void *)sceSifGetReg(0x80000000);
+	sdkSifResetPacket.mode = mode;
+	i = 0;
+	while (arg[i]) {
+		sdkSifResetPacket.arg[i] = arg[i];
+		i++;
+	}
+	sdkSifResetPacket.header.dest = 0;
+	sdkSifResetPacket.argLength = i;
+	sdkSifResetPacket.header.cid = 0x80000003;
+	sdkSifResetPacket.header.dsize = 0;
+	sdkSifResetPacket.header.psize = 0x68;
+	dma.src = &sdkSifResetPacket;
+	dma.dest = dest;
+	dma.size = 0x68;
+	dma.attr = 0x44;
+	sceSifWriteBackDCache(&sdkSifResetPacket, 0x68);
+	sceSifSetReg(4, 0x40000);
+	if (sceSifSetDma(&dma, 1)) {
+		sceSifSetReg(4, 0x10000);
+		sceSifSetReg(4, 0x20000);
+		sceSifSetReg(0x80000002, 0);
+		sceSifSetReg(0x80000000, 0);
+		return 1;
+	}
+	return 0;
+}
 
 int KERNEL_SECTION(sceSifIsAliveIop) sceSifIsAliveIop(void)
 {
@@ -1301,7 +1649,31 @@ int KERNEL_SECTION(sceSifSyncIop) sceSifSyncIop(void)
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceSifRebootIop);
+/* Returns a pointer to the terminating NUL (inlined into sceSifRebootIop). */
+static inline const char *_strEnd(const char *s)
+{
+	while (*s) s++;
+	return s;
+}
+
+int KERNEL_SECTION(sceSifRebootIop) sceSifRebootIop(const char *path)
+{
+	char buffer[0x50];
+	const char *prefix = sdkSifRebootPrefix;
+	char *d;
+	char c;
+	if ((unsigned int)(_strEnd(path) + 11 - path) > 0x50) {
+		scePrintf(sdkSifRebootTooLongMsg, path);
+		return 0;
+	}
+	sceSifInitRpc(0);
+	sceSifExitRpc();
+	d = buffer;
+	while (*prefix) *d++ = *prefix++;
+	while (*path) *d++ = *path++;
+	*d = 0;
+	return sceSifResetIop(buffer, 0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012CF10);
 
@@ -1391,7 +1763,26 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", FindAd
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012D578);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", InitSystemCallTableAddress);
+void KERNEL_SECTION(InitSystemCallTableAddress) InitSystemCallTableAddress(void)
+{
+	unsigned int find, copy, a, b;
+	setup___dupe2(sdkSyscallPatchTable[0].syscall, sdkSyscallPatchTable[0].func);
+	setup___dupe2(sdkSyscallPatchTable[1].syscall, sdkSyscallPatchTable[1].func);
+	find = FindAddress(0x80000000, 0x80080000, (unsigned int)kFindAddress);
+	copy = FindAddress(0x80000000, 0x80080000, (unsigned int)kCopy___dupe2);
+	a = find - 0x20c;
+	b = copy - 0x168;
+	while (a != b) {
+		if (a < b) {
+			find = FindAddress(find + 4, 0x80080000, (unsigned int)kFindAddress);
+			a = find - 0x20c;
+		} else {
+			copy = FindAddress(copy + 4, 0x80080000, (unsigned int)kCopy___dupe2);
+			b = copy - 0x168;
+		}
+	}
+	sdkSyscallTable = a;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", setup___dupe2);
 
@@ -1467,7 +1858,28 @@ int KERNEL_SECTION(kCopy___dupe4) kCopy___dupe4(unsigned char *dst, unsigned cha
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", setup___dupe4);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", SetArg);
+char *KERNEL_SECTION(SetArg) SetArg(const char *filename, int argc, char **argv)
+{
+	char **args = sdkExecArgv;
+	char *ptr = (char *)args + 0x40;
+	char *strings = ptr;
+	int len, i;
+	setup___dupe4(sdkArgPatch.syscall, sdkArgPatch.func);
+	if (argc >= 16) argc = 15;
+	Copy___dupe3(args, &ptr, 4);
+	args++;
+	len = strlen(filename) + 1;
+	Copy___dupe3(ptr, (void *)filename, len);
+	ptr += len;
+	for (i = 0; i < argc; i++) {
+		Copy___dupe3(args, &ptr, 4);
+		args++;
+		len = strlen(argv[i]) + 1;
+		Copy___dupe3(ptr, argv[i], len);
+		ptr += len;
+	}
+	return strings;
+}
 
 void KERNEL_SECTION(TerminateLibrary) TerminateLibrary(void)
 {
@@ -1540,7 +1952,37 @@ void KERNEL_SECTION(SetT2_COMP) SetT2_COMP(int value)
 	SetT2((volatile int *)0xb0001020, value);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", InitTimer);
+int KERNEL_SECTION(InitTimer) InitTimer(int clock)
+{
+	timerData_t *timer = &sdkTimer;
+	timerCounter_t *counter, *next;
+	int i, id, intr;
+	unsigned int mode;
+	if (timer->intcHandlerId >= 0) return 0x80008001;
+	sdkTimer.highCount = 0;
+	timer->used = 0;
+	memset(sdkTimerCounters, 0, sizeof(sdkTimerCounters));
+	timer->freeList = sdkTimerCounters;
+	for (i = 127; i >= 0; i--) sdkTimerCounters[i].next = &sdkTimerCounters[i + 1];
+	sdkTimerCounters[127].next = 0;
+	_InitAlarm();
+	id = AddIntcHandler2(11, cbTimerHandler, 0, 0);
+	if (id < 0) return 0x80009021;
+	sdkTimer.intcHandlerId = id;
+	intr = DIntr();
+	mode = *(volatile unsigned int *)0x10001010;
+	mode = (mode & ~3) | clock;
+	mode |= 0x300;
+	if (!(mode & 0x80)) {
+		SetT2_COUNT(0);
+		mode |= 0xc80;
+		SetT2_COMP(0xffff);
+	}
+	SetT2_MODE(mode);
+	EnableIntc(11);
+	if (intr) EIntr();
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012DD88);
 
@@ -1702,10 +2144,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", iSetTimerHandler);
 
-int KERNEL_SECTION(SetTimerHandler) SetTimerHandler(int id, int mode, void *handler, void *arg)
+int KERNEL_SECTION(SetTimerHandler) SetTimerHandler(int id, unsigned long compare, void *handler, void *arg)
 {
 	int interrupts = DIntr();
-	int result = iSetTimerHandler(id, mode, handler, arg);
+	int result = iSetTimerHandler(id, compare, handler, arg);
 	if (interrupts) EIntr();
 	return result;
 }
@@ -1736,9 +2178,63 @@ int KERNEL_SECTION(AlarmHandler) AlarmHandler(int id, int arg1, int arg2, timerA
 	return -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", SetTimerAlarm);
+/* Pops an alarm entry from the free list (inlined by both SetTimerAlarm variants). */
+static inline timerAlarm_t *_allocAlarm(void)
+{
+	timerAlarm_t *alarm = sdkAlarmFree;
+	if (alarm) sdkAlarmFree = alarm->next;
+	return alarm;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", iSetTimerAlarm);
+int KERNEL_SECTION(SetTimerAlarm) SetTimerAlarm(unsigned long clock, int (*func)(int, int, int, void *), void *arg)
+{
+	timerAlarm_t *alarm;
+	int id, intr;
+	if (!func) return 0x80000016;
+	intr = DIntr();
+	alarm = _allocAlarm();
+	if (!alarm) {
+		if (intr) EIntr();
+		return 0x80008005;
+	}
+	id = AllocTimerCounter();
+	if (id < 0) {
+		alarm->next = sdkAlarmFree;
+		sdkAlarmFree = alarm;
+		alarm->counterId = 0;
+		if (intr) EIntr();
+		return id;
+	}
+	alarm->func = func;
+	alarm->arg = arg;
+	alarm->counterId = id;
+	SetTimerHandler(id, clock, AlarmHandler, alarm);
+	StartTimerCounter(id);
+	if (intr) EIntr();
+	return ((unsigned int)alarm << 4 | (id & 0xfe)) | 1;
+}
+
+int KERNEL_SECTION(iSetTimerAlarm) iSetTimerAlarm(unsigned long clock, int (*func)(int, int, int, void *), void *arg)
+{
+	timerAlarm_t *alarm;
+	int id;
+	if (!func) return 0x80000016;
+	alarm = _allocAlarm();
+	if (!alarm) return 0x80008005;
+	id = iAllocTimerCounter();
+	if (id < 0) {
+		alarm->next = sdkAlarmFree;
+		sdkAlarmFree = alarm;
+		alarm->counterId = 0;
+		return id;
+	}
+	alarm->func = func;
+	alarm->arg = arg;
+	alarm->counterId = id;
+	iSetTimerHandler(id, clock, AlarmHandler, alarm);
+	iStartTimerCounter(id);
+	return ((unsigned int)alarm << 4 | (id & 0xfe)) | 1;
+}
 
 int KERNEL_SECTION(ReleaseTimerAlarm) ReleaseTimerAlarm(int id)
 {

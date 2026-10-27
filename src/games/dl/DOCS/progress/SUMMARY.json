@@ -1,12 +1,12 @@
 {
-  "generated_utc": "2026-10-26T19:10:54.442618+00:00",
+  "generated_utc": "2026-10-27T03:21:52.496121+00:00",
   "game": "dl",
   "original_sha256": "ffbdb083ed3682c20dede63219a5d228c3b0fd9c9d236f0864b2faee334f05c7",
-  "rebuilt_sha256": "ab7744ea57c26ebf80639bbc45e1c0cd952b9f220be9413c3b0dafdb3be8af40",
+  "rebuilt_sha256": "2466ad476fd2e1e4f357325a801ac00b0e6dfa28b9d9061fbbd24d716530d2b7",
   "source_functions": 8601,
-  "assembly": 7259,
-  "compiled": 1342,
-  "matching_slots": 1339,
+  "assembly": 7198,
+  "compiled": 1403,
+  "matching_slots": 1400,
   "nonmatching_slots": 3,
   "scope": "Source INCLUDE_ASM entries and manifest replacements only; not a complete retail symbol inventory. Test scope names suites, not proof of a new run."
 }

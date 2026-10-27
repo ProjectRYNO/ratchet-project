@@ -43,6 +43,67 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  setD3_CHCR: 0x001466D0
+  setD4_CHCR: 0x00146748
+  sceIpuStopDMA: 0x001467C0
+  sceIpuRestartDMA: 0x001468A8
+  setD4_CHCR___dupe2: 0x00146A60
+  sceMpegDelete: 0x00142140
+  sceMpegIsEnd: 0x00142220
+  sceMpegIsRefBuffEmpty: 0x00142230
+  sceMpegGetPicture: 0x00142150
+  sceMpegReset: 0x001421A0
+  sceMpegClearRefBuff: 0x001423C8
+  sceIpuSync: 0x001469F8
+  InitSystemCallTableAddress: 0x0012D580
+  sceTtyHandler: 0x00127E70
+  SetArg: 0x0012D8B8
+  sceSifInitIopHeap: 0x0012C1B8
+  sceSifResetIop: 0x0012CC30
+  sceSifRebootIop: 0x0012CE00
+  _sceSifLoadModuleBuffer: 0x0012C680
+  sceSifStopModule: 0x0012C888
+  sceClose: 0x0012B5C8
+  _fs_version: 0x0012B270
+  _lf_version: 0x0012C5B8
+  sceDevctl: 0x0012BF10
+  sceOpen: 0x0012B338
+  sceCdCallback: 0x00136DA8
+  _sceCd_cd_callback: 0x00136E10
+  PowerOffCB: 0x001371D0
+  sceGszbufaddr: 0x001389D8
+  sceGsExecLoadImage: 0x00139130
+  sceGsSyncVCallback: 0x00139940
+  sceGsGetGParam: 0x001384E0
+  checkModelVersion: 0x001384F0
+  sceGsPutDispEnv: 0x00138918
+  sceGsPutDrawEnv: 0x00138C88
+  sceGsSyncV: 0x00138D70
+  cmd_sem_init: 0x00136F70
+  _sceCd_ncmd_prechk: 0x00137258
+  sceCdSync: 0x00137448
+  sceCdSyncS: 0x001374E8
+  _sceCd_scmd_prechk: 0x00137558
+  sceCdGetError: 0x00137FB0
+  sceCdBreak: 0x00138048
+  sceCdPowerOff: 0x00138100
+  sceCdMmode: 0x001381B8
+  sceCdReadClock: 0x00138290
+  sceCdNcmdDiskReady: 0x001373B0
+  GetRomName: 0x00155510
+  IsT10K: 0x00155580
+  sceScfGetLanguage: 0x001555C0
+  sceScfGetAspect: 0x00155628
+  tobcd: 0x00155730
+  convertfrombcd: 0x00155780
+  converttobcd: 0x001557E8
+  adddate: 0x00155850
+  subdate: 0x00155908
+  addhour: 0x001559B0
+  subhour: 0x001559E0
+  SetTimerAlarm: 0x0012E978
+  iSetTimerAlarm: 0x0012EAA8
+  InitTimer: 0x0012DC30
   supplement_crt0: 0x0012D488
   PatchIsNeeded: 0x0012D750
   InitExecPS2: 0x0012D7B8
@@ -1837,6 +1898,211 @@ objects:
       - {object: sdk/mc/libmc, section: .mc_func_0013AD88, start: 0x0013AD88, end: 0x0013AD98}
       - {object: sdk/mc/libmc, section: .mc_sceMcUnformat, start: 0x0013AD98, end: 0x0013AE68}
       - {object: sdk/mc/libmc, section: .mc_func_0013AE68, start: 0x0013AE68, end: 0x0013AE70}
+  sdk/scf/libscf:
+    text_start: 0x00155510
+    text_end: 0x00155AE0
+    slots:
+      - {object: sdk/scf/libscf, section: .scf_GetRomName, start: 0x00155510, end: 0x00155580}
+      - {object: sdk/scf/libscf, section: .scf_IsT10K, start: 0x00155580, end: 0x001555C0}
+      - {object: sdk/scf/libscf, section: .scf_sceScfGetLanguage, start: 0x001555C0, end: 0x00155620}
+      - {object: sdk/scf/libscf, section: .scf_func_00155620, start: 0x00155620, end: 0x00155628}
+      - {object: sdk/scf/libscf, section: .scf_sceScfGetAspect, start: 0x00155628, end: 0x00155668}
+      - {object: sdk/scf/libscf, section: .scf_func_00155668, start: 0x00155668, end: 0x00155670}
+      - {object: sdk/scf/libscf, section: .scf_sceScfGetTimeZone, start: 0x00155670, end: 0x001556C0}
+      - {object: sdk/scf/libscf, section: .scf_func_001556C0, start: 0x001556C0, end: 0x001556C8}
+      - {object: sdk/scf/libscf, section: .scf_sceScfGetSummerTime, start: 0x001556C8, end: 0x00155730}
+      - {object: sdk/scf/libscf, section: .scf_tobcd, start: 0x00155730, end: 0x00155760}
+      - {object: sdk/scf/libscf, section: .scf_frombcd, start: 0x00155760, end: 0x00155780}
+      - {object: sdk/scf/libscf, section: .scf_convertfrombcd, start: 0x00155780, end: 0x001557E8}
+      - {object: sdk/scf/libscf, section: .scf_converttobcd, start: 0x001557E8, end: 0x00155850}
+      - {object: sdk/scf/libscf, section: .scf_adddate, start: 0x00155850, end: 0x00155908}
+      - {object: sdk/scf/libscf, section: .scf_subdate, start: 0x00155908, end: 0x001559B0}
+      - {object: sdk/scf/libscf, section: .scf_addhour, start: 0x001559B0, end: 0x001559E0}
+      - {object: sdk/scf/libscf, section: .scf_subhour, start: 0x001559E0, end: 0x00155A08}
+      - {object: sdk/scf/libscf, section: .scf_AdjustTime, start: 0x00155A08, end: 0x00155A98}
+      - {object: sdk/scf/libscf, section: .scf_sceScfGetLocalTimefromRTC, start: 0x00155A98, end: 0x00155AE0}
+  sdk/cdvd/libcdvd:
+    text_start: 0x00136DA8
+    text_end: 0x00138350
+    slots:
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdCallback, start: 0x00136DA8, end: 0x00136E10}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd__sceCd_cd_callback, start: 0x00136E10, end: 0x00136EB0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_func_00136EB0, start: 0x00136EB0, end: 0x00136EB8}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd__sceCd_cd_read_intr, start: 0x00136EB8, end: 0x00136F70}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_cmd_sem_init, start: 0x00136F70, end: 0x00137058}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_cdvd_exit, start: 0x00137058, end: 0x001370F8}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdPOffCallback, start: 0x001370F8, end: 0x00137178}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd__sceCd_Poff_Intr, start: 0x00137178, end: 0x001371D0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_PowerOffCB, start: 0x001371D0, end: 0x00137248}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_func_00137248, start: 0x00137248, end: 0x00137258}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd__sceCd_ncmd_prechk, start: 0x00137258, end: 0x001373B0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdNcmdDiskReady, start: 0x001373B0, end: 0x00137448}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdSync, start: 0x00137448, end: 0x001374E8}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdSyncS, start: 0x001374E8, end: 0x00137558}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd__sceCd_scmd_prechk, start: 0x00137558, end: 0x001376B0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdInit, start: 0x001376B0, end: 0x00137998}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdDiskReady_old, start: 0x00137998, end: 0x00137BB0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdDiskReady, start: 0x00137BB0, end: 0x00137DD0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdRead, start: 0x00137DD0, end: 0x00137FB0}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdGetError, start: 0x00137FB0, end: 0x00138048}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdBreak, start: 0x00138048, end: 0x00138100}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdPowerOff, start: 0x00138100, end: 0x001381B4}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_func_001381B4, start: 0x001381B4, end: 0x001381B8}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdMmode, start: 0x001381B8, end: 0x00138288}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_func_00138288, start: 0x00138288, end: 0x00138290}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_sceCdReadClock, start: 0x00138290, end: 0x0013834C}
+      - {object: sdk/cdvd/libcdvd, section: .cdvd_func_0013834C, start: 0x0013834C, end: 0x00138350}
+  sdk/graph/libgraph:
+    text_start: 0x00138350
+    text_end: 0x001399E0
+    slots:
+      - {object: sdk/graph/libgraph, section: .graph_sceGsResetGraph, start: 0x00138350, end: 0x001384E0}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsGetGParam, start: 0x001384E0, end: 0x001384EC}
+      - {object: sdk/graph/libgraph, section: .graph_func_001384EC, start: 0x001384EC, end: 0x001384F0}
+      - {object: sdk/graph/libgraph, section: .graph_checkModelVersion, start: 0x001384F0, end: 0x00138590}
+      - {object: sdk/graph/libgraph, section: .graph__GetGsDxDyOffset, start: 0x00138590, end: 0x001385A0}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSetDefDispEnv, start: 0x001385A0, end: 0x00138914}
+      - {object: sdk/graph/libgraph, section: .graph_func_00138914, start: 0x00138914, end: 0x00138918}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsPutDispEnv, start: 0x00138918, end: 0x001389D4}
+      - {object: sdk/graph/libgraph, section: .graph_func_001389D4, start: 0x001389D4, end: 0x001389D8}
+      - {object: sdk/graph/libgraph, section: .graph_sceGszbufaddr, start: 0x001389D8, end: 0x00138AA0}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSetDefDrawEnv, start: 0x00138AA0, end: 0x00138C84}
+      - {object: sdk/graph/libgraph, section: .graph_func_00138C84, start: 0x00138C84, end: 0x00138C88}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsPutDrawEnv, start: 0x00138C88, end: 0x00138D70}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSyncV, start: 0x00138D70, end: 0x00138E04}
+      - {object: sdk/graph/libgraph, section: .graph_func_00138E04, start: 0x00138E04, end: 0x00138E08}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSetDefLoadImage, start: 0x00138E08, end: 0x00138FEC}
+      - {object: sdk/graph/libgraph, section: .graph_func_00138FEC, start: 0x00138FEC, end: 0x00138FF0}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSetDefStoreImage, start: 0x00138FF0, end: 0x00139130}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsExecLoadImage, start: 0x00139130, end: 0x001392AC}
+      - {object: sdk/graph/libgraph, section: .graph_func_001392AC, start: 0x001392AC, end: 0x001392B0}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsExecStoreImage, start: 0x001392B0, end: 0x0013993C}
+      - {object: sdk/graph/libgraph, section: .graph_func_0013993C, start: 0x0013993C, end: 0x00139940}
+      - {object: sdk/graph/libgraph, section: .graph_sceGsSyncVCallback, start: 0x00139940, end: 0x001399E0}
+  sdk/mpeg/libmpeg:
+    text_start: 0x0013C750
+    text_end: 0x00146D10
+    slots:
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__dualPrimeVector, start: 0x0013C750, end: 0x0013C8D8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__getAllRefs, start: 0x0013C8D8, end: 0x0013CFE0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__motionComp0, start: 0x0013CFE0, end: 0x0013D230}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__getRef0, start: 0x0013D230, end: 0x0013D6B8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__doMC, start: 0x0013D6B8, end: 0x0013D8D8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegPictureData0, start: 0x0013D8D8, end: 0x0013DB18}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__slice0, start: 0x0013DB18, end: 0x0013DE48}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__motionVector, start: 0x0013DE48, end: 0x0013E270}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__motionVectors, start: 0x0013E270, end: 0x0013E410}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__decMB0, start: 0x0013E410, end: 0x0013E968}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegMbAddressIncrement, start: 0x0013E968, end: 0x0013EAE0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegWaitIpuIdle, start: 0x0013EAE0, end: 0x0013EC48}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegWaitIpuIdle64, start: 0x0013EC48, end: 0x0013EDC8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegNextBit, start: 0x0013EDC8, end: 0x0013EEB0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegPeepBit, start: 0x0013EEB0, end: 0x0013EF40}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegFlushBuf, start: 0x0013EF40, end: 0x0013EFD8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__waitIpuIdle, start: 0x0013EFD8, end: 0x0013F010}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__flushBuf, start: 0x0013F010, end: 0x0013F018}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__skipMB0, start: 0x0013F018, end: 0x0013F0D8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__copyAddRefImage, start: 0x0013F0D8, end: 0x0013F1C8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__copyRefImage, start: 0x0013F1C8, end: 0x0013F288}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_dmaRefImage, start: 0x0013F288, end: 0x0013F408}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_000, start: 0x0013F408, end: 0x0013F480}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_000, start: 0x0013F480, end: 0x0013F518}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_001, start: 0x0013F518, end: 0x0013F5D0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_001, start: 0x0013F5D0, end: 0x0013F6A0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_010, start: 0x0013F6A0, end: 0x0013F750}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_010, start: 0x0013F750, end: 0x0013F808}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_011, start: 0x0013F808, end: 0x0013F900}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_011, start: 0x0013F900, end: 0x0013FA00}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_100, start: 0x0013FA00, end: 0x0013FAA0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_100, start: 0x0013FAA0, end: 0x0013FB50}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_101, start: 0x0013FB50, end: 0x0013FC30}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_101, start: 0x0013FC30, end: 0x0013FD18}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_110, start: 0x0013FD18, end: 0x0013FDF0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_110, start: 0x0013FDF0, end: 0x0013FEC0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__rix_111, start: 0x0013FEC0, end: 0x0013FFE0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ri0_111, start: 0x0013FFE0, end: 0x001400F8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_receiveDataFromIPU, start: 0x001400F8, end: 0x00140198}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegSliceA0, start: 0x00140198, end: 0x00140338}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__initSeq, start: 0x00140338, end: 0x00140650}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sequenceHeader, start: 0x00140650, end: 0x00140900}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__groupOfPicturesHeader, start: 0x00140900, end: 0x001409A0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pictureHeader, start: 0x001409A0, end: 0x00140AE8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sequenceExtension, start: 0x00140AE8, end: 0x00140C28}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__quantMatrixExtension, start: 0x00140C28, end: 0x00140D10}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sequenceScalableExtension, start: 0x00140D10, end: 0x00140D20}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__unknown_extension, start: 0x00140D20, end: 0x00140D30}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pictureCodingExtension, start: 0x00140D30, end: 0x00140F18}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pictureSpatialScalableExtension, start: 0x00140F18, end: 0x00140F28}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pictureTemporalScalableExtension, start: 0x00140F28, end: 0x00140F38}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__extensionAndUserData, start: 0x00140F38, end: 0x00141108}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__waitIpuIdle___dupe2, start: 0x00141108, end: 0x00141140}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__flushBuf___dupe2, start: 0x00141140, end: 0x00141148}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegNextHeader, start: 0x00141148, end: 0x001412A0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_flushBuf32, start: 0x001412A0, end: 0x001412A8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_flushByteBoundary, start: 0x001412A8, end: 0x001412F8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sequenceDisplayExtension, start: 0x001412F8, end: 0x00141388}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__copyrightExtension, start: 0x00141388, end: 0x00141420}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pictureDisplayExtension, start: 0x00141420, end: 0x00141514}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00141514, start: 0x00141514, end: 0x00141518}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__clearOnce, start: 0x00141518, end: 0x001415E8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegCreate, start: 0x001415E8, end: 0x00141820}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__clearEach, start: 0x00141820, end: 0x001418E8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__getpic, start: 0x001418E8, end: 0x00141AA0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__updateRefImage, start: 0x00141AA0, end: 0x00141D58}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__decodeOrSkipFrame, start: 0x00141D58, end: 0x00141EC8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__decodeOrSkipField, start: 0x00141EC8, end: 0x00142090}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegInit, start: 0x00142090, end: 0x00142140}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegDelete, start: 0x00142140, end: 0x00142148}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142148, start: 0x00142148, end: 0x00142150}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegGetPicture, start: 0x00142150, end: 0x00142198}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142198, start: 0x00142198, end: 0x001421A0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegReset, start: 0x001421A0, end: 0x00142220}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegIsEnd, start: 0x00142220, end: 0x00142230}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegIsRefBuffEmpty, start: 0x00142230, end: 0x00142240}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142240, start: 0x00142240, end: 0x00142248}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegAddCallback, start: 0x00142248, end: 0x00142280}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142280, start: 0x00142280, end: 0x00142290}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegDispatchMpegCallback, start: 0x00142290, end: 0x00142308}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegDispatchMpegCbNodata, start: 0x00142308, end: 0x00142380}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__decodeOrSkip, start: 0x00142380, end: 0x001423C8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegClearRefBuff, start: 0x001423C8, end: 0x00142420}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142420, start: 0x00142420, end: 0x00142448}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__decPicture, start: 0x00142448, end: 0x00142514}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00142514, start: 0x00142514, end: 0x00142518}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegAlalcInit, start: 0x00142518, end: 0x00142530}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegAlalcSetDynamic, start: 0x00142530, end: 0x00142540}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegAlalcFree, start: 0x00142540, end: 0x00142550}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegAlalcAlloc, start: 0x00142550, end: 0x001425C0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegDefaultStopDMA, start: 0x001425C0, end: 0x001425E8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegDefaultRestartDMA, start: 0x001425E8, end: 0x0014260C}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_0014260C, start: 0x0014260C, end: 0x00142610}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__cpr8, start: 0x00142610, end: 0x001428A0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__dispRefImage, start: 0x001428A0, end: 0x00142B60}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__dispRefImageField, start: 0x00142B60, end: 0x00142F80}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegFlush, start: 0x00142F80, end: 0x00143040}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegOutputFrame, start: 0x00143040, end: 0x001430D0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__doCSC2, start: 0x001430D0, end: 0x00143290}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegCscStoreRefImage, start: 0x00143290, end: 0x00143768}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ch3dmaCSC, start: 0x00143768, end: 0x001438B0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ch4dma, start: 0x001438B0, end: 0x00143984}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_func_00143984, start: 0x00143984, end: 0x00143990}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__system_header, start: 0x00143990, end: 0x00143B60}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__pack_header, start: 0x00143B60, end: 0x00144208}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__PES_packet, start: 0x00144208, end: 0x00145FB0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegDemuxPssRing, start: 0x00145FB0, end: 0x00146390}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceMpegAddStrCallback, start: 0x00146390, end: 0x001464C0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__ErrMessage, start: 0x001464C0, end: 0x001464D0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegStopIpuDma, start: 0x001464D0, end: 0x00146570}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegErrorBdec, start: 0x00146570, end: 0x00146638}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegError, start: 0x00146638, end: 0x00146690}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg__sceMpegError1, start: 0x00146690, end: 0x001466D0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_setD3_CHCR, start: 0x001466D0, end: 0x00146748}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_setD4_CHCR, start: 0x00146748, end: 0x001467C0}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuStopDMA, start: 0x001467C0, end: 0x001468A8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuRestartDMA, start: 0x001468A8, end: 0x001469F8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuSync, start: 0x001469F8, end: 0x00146A60}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_setD4_CHCR___dupe2, start: 0x00146A60, end: 0x00146AD8}
+      - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuInit, start: 0x00146AD8, end: 0x00146D10}
   sdk/dma/libdma:
     text_start: 0x001399E0
     text_end: 0x00139EC8

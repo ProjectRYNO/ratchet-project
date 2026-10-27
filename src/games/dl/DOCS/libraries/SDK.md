@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**175/387 identified boot SDK functions (45.22%) are now byte-exact** (see
+**227/387 identified boot SDK functions (58.66%) are now byte-exact** (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -15,10 +15,37 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
   (handwritten gp swap/`ei`), and near misses `scePadInit2` (one store), `scePadInfoPressMode`
   (branch vs `movz`), `scePadPortOpen`, `_send_to_iop`. Remainder is `game/lib_after_pad.cpp`.
 - `sdk/kernel/libkernel.c` (0x001267A0..0x0012EE30, carved from `game/lib.cpp`; the rest is
-  `game/lib_after_kernel.cpp`): 105 tracked functions exact (plus local helpers and `kCopy`
+  `game/lib_after_kernel.cpp`): 121 tracked functions exact (plus local helpers and `kCopy`
   duplicates) across SIF, IOP heap, load-file, file I/O, DECI2, TTY, printf, TLB/exec setup,
   timers and alarms. Syscall stubs and functions using `di`/`ei`/`sync`/`cache`/COP0 or setting
   `$gp` stay retained assembly (they were assembly or inline asm originally).
+
+- `sdk/scf/libscf.c` (0x00155510..0x00155AE0, carved from `game/lib_after_pad.cpp`; the rest
+  is `game/lib_after_scf.cpp`): 11 exact (ROMVER, OSD-config getters, BCD and date helpers).
+  Near misses: `sceScfGetTimeZone`, `sceScfGetSummerTime`, `frombcd`, `AdjustTime`,
+  `sceScfGetLocalTimefromRTC`. `clock->year % 4 == 0` (not `& 3`) was needed in adddate/subdate.
+- `sdk/cdvd/libcdvd.c` and `sdk/graph/libgraph.c` (all of former `game/lib_after_libm.cpp`):
+  CD/DVD 14 exact counting helpers, graphics 8 exact. Semaphore IDs are read through a
+  `CD_VOLATILE()` access in the functions where retail reloads them, while the short S-command
+  wrappers use plain reads; the retail library was probably split over files with different
+  declarations. `graphGParam_t` needs 8-byte alignment so GCC folds the interlace/ffmode test in
+  `sceGszbufaddr` into one 64-bit compare. `libgraph.o` is assembled with the 2.96 assembler,
+  because the 991111 assembler expands the retained asm's 3-operand `mult`. Near misses:
+  `cdvd_exit`, `_sceCd_cd_read_intr`, `sceCdPOffCallback`, `sceCdRead`, `sceGsResetGraph`
+  (one register swap). `sceGsSetDefDrawEnv`/`sceGsSetDefLoadImage`/`sceGsSetDefStoreImage`
+  contain `sync`; `_GetGsDxDyOffset` and `_sceCd_Poff_Intr` are syscall/gp code and stay asm.
+
+- `sdk/mpeg/libmpeg.c` (0x0013C750..0x00146D10, carved from `game/lib_after_pad.cpp`; the rest
+  is `game/lib_after_mpeg.cpp`): MPEG 6/11 and IPU 3/4 tracked, plus `setD3_CHCR`/`setD4_CHCR`
+  and its duplicate. Like libgraph it is assembled with the 2.96 assembler. Near misses:
+  `sceMpegInit` (retail puts a volatile store in the `jal` delay slot, as in `kputchar`),
+  `sceMpegAddCallback` (gp-read barrier, see `sceSifCallRpc`).
+- Kernel additions from parallel workers: `sceOpen`, `sceClose`, `sceDevctl` (the three requests
+  overlay `fsRequest_t sdkFsRequest`), `_fs_version`, `_lf_version`, `sceSifInitIopHeap`,
+  `sceSifResetIop`, `sceSifRebootIop`, `_sceSifLoadModuleBuffer`, `sceSifStopModule`,
+  `InitSystemCallTableAddress`, `sceTtyHandler`, `SetArg`. `printfloat` is exact in
+  `build/svo-library-work/b/C_t7.c` but needs its literal block at 0x00192E20 (0x30 bytes) mapped
+  as a rodata slot before it can be integrated.
 
 Every entry in these ranges has its own `.lib_name` slot; padding words keep their own slots.
 New globals are named in `symbols_core.text.txt` (`sdkPad*`, `sdkMc*`, `sdkSif*`, `sdkFs*`,
@@ -261,6 +288,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **175/387 identified functions (45.22%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **227/387 identified functions (58.66%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

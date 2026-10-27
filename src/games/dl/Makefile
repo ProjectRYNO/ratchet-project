@@ -156,6 +156,28 @@ $(OBJ_DIR)/sdk/mtap/libmtap.o: code/sdk/mtap/libmtap.c code/sdk/mtap/libmtap.h M
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
+# libmpeg retained asm (3-operand mult) assembles to the retail size only with the 2.96 assembler.
+$(OBJ_DIR)/sdk/mpeg/libmpeg.o: code/sdk/mpeg/libmpeg.c code/sdk/mpeg/libmpeg.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+# libgraph retained asm (3-operand mult) assembles to the retail size only with the 2.96 assembler.
+$(OBJ_DIR)/sdk/graph/libgraph.o: code/sdk/graph/libgraph.c code/sdk/graph/libgraph.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/sdk/cdvd/libcdvd.o: code/sdk/cdvd/libcdvd.c code/sdk/cdvd/libcdvd.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/sdk/scf/libscf.o: code/sdk/scf/libscf.c code/sdk/scf/libscf.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS29_01) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
 $(OBJ_DIR)/sdk/pad/libpad.o: code/sdk/pad/libpad.c code/sdk/pad/libpad.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)

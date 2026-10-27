@@ -4,6 +4,7 @@
 /* EE (EABI, single-float) varargs from GCC's va-mips.h; this compiler has no stdarg.h. */
 typedef char *va_list;
 #define va_start(ap, last) (ap = (char *)__builtin_next_arg(last) - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8))
+#define va_arg(ap, type) (*(type *)((ap += 8) - 8))
 #define va_end(ap)
 
 /* Character sink used by _sceSnprintf. */
@@ -166,6 +167,44 @@ typedef struct sifRpcOtherPkt {
 	/* 0x2c */ int unk2C[5];
 } sifRpcOtherPkt_t;
 
+/* SIF command packet header. */
+typedef struct sifCmdHeader {
+	/* 0x00 */ unsigned int psize : 8;
+	unsigned int dsize : 24;
+	/* 0x04 */ void *dest;
+	/* 0x08 */ int cid;
+	/* 0x0c */ unsigned int opt;
+} sifCmdHeader_t;
+
+/* SIF DMA transfer descriptor (sceSifSetDma). */
+typedef struct sifDmaTransfer {
+	/* 0x00 */ void *src;
+	/* 0x04 */ void *dest;
+	/* 0x08 */ int size;
+	/* 0x0c */ int attr;
+} sifDmaTransfer_t;
+
+/* IOP reset command packet; 16-byte aligned because retail clears the header with 64-bit accesses. */
+typedef struct sifResetPacket {
+	/* 0x00 */ sifCmdHeader_t header;
+	/* 0x10 */ int argLength;
+	/* 0x14 */ int mode;
+	/* 0x18 */ char arg[0x50];
+} __attribute__((aligned(16))) sifResetPacket_t;
+
+/* Module argument block copied into the load-file buffer. */
+typedef struct sifLoadArgs {
+	/* 0x00 */ char data[0xfc];
+} sifLoadArgs_t;
+
+/* Load-file RPC buffer layout used by the module load/stop requests (overlays sdkLoadFileBuffer). */
+typedef struct sifLoadModuleBuffer {
+	/* 0x000 */ int value;
+	/* 0x004 */ int argLength;
+	/* 0x008 */ char path[0xfc];
+	/* 0x104 */ sifLoadArgs_t args;
+} sifLoadModuleBuffer_t;
+
 /* Reboot notification handler entry. */
 typedef struct sifNotifyHandler {
 	/* 0x00 */ void *func;
@@ -208,6 +247,54 @@ typedef struct fsIob {
 	/* 0x0c */ int unk0C;
 } fsIob_t;
 
+/* File-system close request (shares sdkFsRequest with the other requests). */
+typedef struct fsCloseRequest {
+	/* 0x00 */ int sema;
+	/* 0x04 */ int *result;
+	/* 0x08 */ int size;
+	/* 0x0c */ int fd;
+	/* 0x10 */ int index;
+} fsCloseRequest_t;
+
+/* File-system open request. */
+typedef struct fsOpenRequest {
+	/* 0x000 */ int sema;
+	/* 0x004 */ int *result;
+	/* 0x008 */ int size;
+	/* 0x00c */ int flags;
+	/* 0x010 */ int mode;
+	/* 0x014 */ char name[0x400];
+	/* 0x414 */ int index;
+} fsOpenRequest_t;
+
+/* File-system devctl request. */
+typedef struct fsDevctlRequest {
+	/* 0x000 */ int sema;
+	/* 0x004 */ int *result;
+	/* 0x008 */ int size;
+	/* 0x00c */ char name[0x400];
+	/* 0x40c */ char arg[0x400];
+	/* 0x80c */ int cmd;
+	/* 0x810 */ unsigned int arglen;
+	/* 0x814 */ void *buf;
+	/* 0x818 */ unsigned int buflen;
+} fsDevctlRequest_t;
+
+/* DMA descriptor passed as a devctl argument. */
+typedef struct fsDevctlDma {
+	/* 0x00 */ int unk00;
+	/* 0x04 */ int size;
+	/* 0x08 */ void *addr;
+	/* 0x0c */ int count;
+} fsDevctlDma_t;
+
+/* RPC argument buffer at sdkFsRequest. */
+typedef union fsRequest {
+	fsCloseRequest_t close;
+	fsOpenRequest_t open;
+	fsDevctlRequest_t devctl;
+} fsRequest_t;
+
 /* Software timer counter (64-byte aligned; its address is encoded in the counter ID). */
 typedef struct timerCounter {
 	/* 0x00 */ struct timerCounter *next;
@@ -226,7 +313,7 @@ typedef struct timerCounter {
 /* Timer state at sdkTimer. */
 typedef struct timerData {
 	/* 0x00 */ long highCount;
-	/* 0x08 */ int unk08;
+	/* 0x08 */ int intcHandlerId;
 	/* 0x0c */ volatile int seq;
 	/* 0x10 */ volatile int used;
 	/* 0x14 */ timerCounter_t *freeList;
@@ -259,7 +346,7 @@ typedef struct osdConfig {
 	unsigned int ps1drvConfig : 8;
 	unsigned int version : 3;
 	unsigned int language : 5;
-	unsigned int timezoneOffset : 11;
+	int timezoneOffset : 11;
 } osdConfig_t;
 
 /* Kernel patch entry: syscall number and handler (sdk*PatchTable). */
