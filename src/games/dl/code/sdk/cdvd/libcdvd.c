@@ -66,6 +66,16 @@ int sceCdSyncS(int mode);
 int _sceCd_ncmd_prechk(int command);
 int _sceCd_scmd_prechk(int command);
 void cmd_sem_init(void);
+/* Plain (non-volatile) access to a flag declared volatile, where retail does not reload it. */
+#define CD_PLAIN(x) (*(int *)&(x))
+extern volatile int sdkCdReadFlags;
+extern cdvdReadArg_t sdkCdReadArg;
+extern unsigned char sdkCdReadBuffer[0x90];
+extern int sdkCdReadStatus;
+extern const char sdkCdReadStartMsg[];
+extern const char sdkCdReadEndMsg[];
+extern int sceCdNcmdDiskReady(void);
+extern void _sceCd_cd_read_intr(void *);
 extern void *sdkCdCallbackFunc;
 extern volatile int sdkCdCallbackGp;
 extern volatile int sdkCdLastStat;
@@ -261,7 +271,51 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdDiskR
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdDiskReady);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdRead);
+int CD_SECTION(sceCdRead) sceCdRead(unsigned int lsn, unsigned int sectors, void *buffer, cdvdRMode_t *mode)
+{
+	cdvdReadArg_t *arg = &sdkCdReadArg;
+	int size;
+	if (!(sdkCdReadFlags & 1)) {
+		if (sceCdNcmdDiskReady() == 6) return 0;
+	}
+	if (!_sceCd_ncmd_prechk(4)) return 0;
+	arg->lsn = lsn;
+	arg->sectors = sectors;
+	arg->buffer = buffer;
+	arg->mode.trycount = mode->trycount;
+	arg->mode.spindlctrl = mode->spindlctrl;
+	arg->mode.datapattern = mode->datapattern;
+	arg->eeBuffer = sdkCdReadBuffer;
+	arg->eeStatus = &sdkCdReadStatus;
+	switch (mode->datapattern) {
+	case 1:
+		size = sectors * 0x918;
+		break;
+	case 2:
+		size = sectors * 0x924;
+		break;
+	case 0:
+	default:
+		size = sectors << 11;
+		break;
+	}
+	sdkCdReadStatus = 0;
+	if (!(sdkCdReadFlags & 2)) sceSifWriteBackDCache(buffer, size);
+	sceSifWriteBackDCache(sdkCdReadBuffer, 0x90);
+	sceSifWriteBackDCache(arg, 0x18);
+	sceSifWriteBackDCache(&sdkCdReadStatus, 4);
+	if (sdkCdDebug > 0) scePrintf(sdkCdReadStartMsg);
+	sdkCdBreakStat = 1;
+	sdkCdNcmdBusy = 1;
+	if (sceSifCallRpc(&sdkCdNcmdClient, 1, 1, arg, 0x18, 0, 0, _sceCd_cd_read_intr, sdkCdReadBuffer) < 0) {
+		sdkCdBreakStat = 0;
+		CD_PLAIN(sdkCdNcmdBusy) = 0;
+		SignalSema(CD_VOLATILE(sdkCdNcmdSema));
+		return 0;
+	}
+	if (sdkCdDebug > 0) scePrintf(sdkCdReadEndMsg);
+	return 1;
+}
 
 int CD_SECTION(sceCdGetError) sceCdGetError(void)
 {

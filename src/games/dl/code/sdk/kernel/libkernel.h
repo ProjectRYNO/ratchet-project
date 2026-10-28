@@ -132,6 +132,27 @@ typedef struct sifRpcMsg {
 	/* 0x30 */ int unk30[4];
 } sifRpcMsg_t;
 
+/* RPC request/reply packet as seen by the EE-side request handlers (untyped argument words). */
+typedef struct sifRpcReqPkt {
+	/* 0x00 */ int unk00[4];
+	/* 0x10 */ unsigned int mode;
+	/* 0x14 */ void *paddr;
+	/* 0x18 */ int pid;
+	/* 0x1c */ void *client;
+	/* 0x20 */ void *cid;
+	/* 0x24 */ void *arg24;
+	/* 0x28 */ void *arg28;
+	/* 0x2c */ void *arg2C;
+	/* 0x30 */ int unk30[4];
+} sifRpcReqPkt_t;
+
+/* Leading fields of an RPC server registration returned by _search_svdata. */
+typedef struct sifRpcServerHead {
+	/* 0x00 */ int sid;
+	/* 0x04 */ int unk04;
+	/* 0x08 */ void *buffer;
+} sifRpcServerHead_t;
+
 /* SIF RPC client data (sceSifClientData). */
 typedef struct sifRpcClient {
 	/* 0x00 */ sifRpcMsg_t *packet;

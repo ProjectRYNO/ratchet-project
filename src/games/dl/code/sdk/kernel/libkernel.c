@@ -518,9 +518,15 @@ int KERNEL_SECTION(open) open(const char *name, int flags, int mode)
 	return -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", close);
+int KERNEL_SECTION(close) close(int fd)
+{
+	return -1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", lseek);
+int KERNEL_SECTION(lseek) lseek(int fd, int offset, int whence)
+{
+	return -1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sbrk);
 
@@ -531,7 +537,10 @@ int KERNEL_SECTION(fstat) fstat(int fd, kernelStat_t *st)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", getpid);
+int KERNEL_SECTION(getpid) getpid(void)
+{
+	return 1;
+}
 
 int KERNEL_SECTION(stat) stat(const char *name, kernelStat_t *st)
 {
@@ -1105,7 +1114,23 @@ int KERNEL_SECTION(_alarm_rdata) _alarm_rdata(int id, int a1, int a2, sifRpcAlar
 	return isceSifSendCmd(0x80000008, data, 0x40, data->src, data->dest, data->size) ? 0 : 0x800;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _request_rdata);
+void KERNEL_SECTION(_request_rdata) _request_rdata(sifRpcReqPkt_t *request, void *rpc)
+{
+	sifRpcReqPkt_t *packet;
+	void *paddr, *client;
+	if (request->mode & 4) packet = _sceRpcGetFPacket2(rpc, request->mode >> 16);
+	else packet = _sceRpcGetFPacket(rpc);
+	paddr = request->paddr;
+	client = request->client;
+	packet->paddr = paddr;
+	packet->client = client;
+	packet->cid = (void *)0x8000000c;
+	packet->arg24 = request->cid;
+	packet->arg28 = request->arg24;
+	packet->arg2C = request->arg28;
+	if (!isceSifSendCmd(0x80000008, packet, 0x40, request->cid, request->arg24, (int)request->arg28))
+		iSetTimerAlarm(0x800, _alarm_rdata, packet);
+}
 
 int KERNEL_SECTION(sceSifGetOtherData) sceSifGetOtherData(sifRpcReceiveData_t *rdata, void *src, void *dest, int size, int mode)
 {
@@ -1162,7 +1187,27 @@ int KERNEL_SECTION(_alarm_bind) _alarm_bind(int id, int a1, int a2, void *data)
 	return isceSifSendCmd(0x80000008, data, 0x40, 0, 0, 0) ? 0 : 0x800;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _request_bind);
+void KERNEL_SECTION(_request_bind) _request_bind(sifRpcReqPkt_t *request, void *rpc)
+{
+	sifRpcServerHead_t *server;
+	sifRpcReqPkt_t *packet = _sceRpcGetFPacket(rpc);
+	void *client, *paddr;
+	paddr = request->paddr;
+	client = request->client;
+	packet->client = client;
+	packet->paddr = paddr;
+	packet->cid = (void *)0x80000009;
+	server = _search_svdata((int)request->cid, rpc);
+	if (!server) {
+		packet->arg24 = 0;
+		packet->arg28 = 0;
+	} else {
+		packet->arg24 = server;
+		packet->arg28 = server->buffer;
+	}
+	if (!isceSifSendCmd(0x80000008, packet, 0x40, 0, 0, 0))
+		iSetTimerAlarm(0x800, _alarm_bind, packet);
+}
 
 int KERNEL_SECTION(sceSifBindRpc) sceSifBindRpc(sifRpcClient_t *client, int rpc, int mode)
 {

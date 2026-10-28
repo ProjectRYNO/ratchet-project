@@ -43,6 +43,35 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  _sceMpegWaitIpuIdle: 0x0013EAE0
+  _sceMpegWaitIpuIdle64: 0x0013EC48
+  _dualPrimeVector: 0x0013C750
+  _motionVectors: 0x0013E270
+  sceMpegCreate: 0x001415E8
+  sceIpuInit: 0x00146AD8
+  sceCdRead: 0x00137DD0
+  close: 0x00127288
+  lseek: 0x00127290
+  getpid: 0x00127360
+  _pictureTemporalScalableExtension: 0x00140F28
+  _unknown_extension: 0x00140D20
+  _sequenceDisplayExtension: 0x001412F8
+  _copyrightExtension: 0x00141388
+  _groupOfPicturesHeader: 0x00140900
+  receiveDataFromIPU: 0x001400F8
+  _sceMpegErrorBdec: 0x00146570
+  _quantMatrixExtension: 0x00140C28
+  _pictureDisplayExtension: 0x00141420
+  _sequenceExtension: 0x00140AE8
+  _pictureHeader: 0x001409A0
+  _sceMpegNextHeader: 0x00141148
+  _extensionAndUserData: 0x00140F38
+  _request_rdata: 0x0012A1A0
+  _request_bind: 0x0012A468
+  sceSifMInitRpc: 0x00155AE0
+  sceScfGetSummerTime: 0x001556C8
+  AdjustTime: 0x00155A08
+  sceScfGetLocalTimefromRTC: 0x00155A98
   _ErrMessage: 0x001464C0
   _pictureSpatialScalableExtension: 0x00140F18
   _sequenceScalableExtension: 0x00140D10

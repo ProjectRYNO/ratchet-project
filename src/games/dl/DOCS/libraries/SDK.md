@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**238/387 identified boot SDK functions (61.50%) are now byte-exact** (plus 35 untracked helpers) (see
+**250/387 identified boot SDK functions (64.60%) are now byte-exact** (plus 52 untracked helpers) (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -57,6 +57,20 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
   with worker D's `mpegInternal_t` layout; `sceIpuSync` takes the SDK's unused timeout argument.
 - `printfloat` is integrated; libkernel's only `.rodata` (its literals) is renamed to
   `.kerneldata_printfloat` and fills the registered rodata slot 0x00192E20..0x00192E50.
+
+- Later worker round: scf `sceScfGetSummerTime` (`GetOsdConfigParam2` returns `int`), `AdjustTime`,
+  `sceScfGetLocalTimefromRTC`; mrpc `sceSifMInitRpc`; kernel `_request_rdata`/`_request_bind`
+  (read `paddr`/`client` into locals first; packet type `sifRpcReqPkt_t` with untyped words);
+  libmpeg header parsers and stream helpers (`_sceMpegNextHeader`, `_pictureHeader`,
+  `_extensionAndUserData` copying `sdkMpegExtTable`, quant/sequence/picture extensions,
+  `receiveDataFromIPU`, `_sceMpegErrorBdec`), with `pts`/`dts` (64-bit) and frame offset arrays
+  added to `mpegInternal_t`. `frombcd` cannot be expressed: retail uses `mult $0` + `mflo`, which
+  this compiler never emits for C.
+
+- Newlib stubs `close`, `lseek`, `getpid`; `sceCdRead` (one plain busy-flag store through
+  `CD_PLAIN()`); `sceIpuInit` (quadword VLC/CSC tables `sdkIpuVlcTable`/`sdkIpuCscTable`);
+  `sceMpegCreate` with the `mpeg_t` timestamp fields, the allocator at `mpegInternal_t+0x118` and
+  nine 0x68-byte reference image buffers; IPU wait helpers and `_dualPrimeVector`/`_motionVectors`.
 
 Every entry in these ranges has its own `.lib_name` slot; padding words keep their own slots.
 New globals are named in `symbols_core.text.txt` (`sdkPad*`, `sdkMc*`, `sdkSif*`, `sdkFs*`,
@@ -299,6 +313,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **238/387 identified functions (61.50%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **250/387 identified functions (64.60%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

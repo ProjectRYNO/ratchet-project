@@ -30,4 +30,22 @@ typedef struct cdvdClock {
 	/* 0x00 */ unsigned char data[8];
 } cdvdClock_t;
 
+/* sceCdRMode: read mode bytes. */
+typedef struct cdvdRMode {
+	/* 0x00 */ unsigned char trycount;
+	/* 0x01 */ unsigned char spindlctrl;
+	/* 0x02 */ unsigned char datapattern;
+	/* 0x03 */ unsigned char pad;
+} cdvdRMode_t;
+
+/* N-command read request at sdkCdReadArg. */
+typedef struct cdvdReadArg {
+	/* 0x00 */ unsigned int lsn;
+	/* 0x04 */ unsigned int sectors;
+	/* 0x08 */ void *buffer;
+	/* 0x0c */ cdvdRMode_t mode;
+	/* 0x10 */ void *eeBuffer;
+	/* 0x14 */ int *eeStatus;
+} cdvdReadArg_t;
+
 #endif

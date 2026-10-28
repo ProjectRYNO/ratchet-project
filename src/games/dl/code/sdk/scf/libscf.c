@@ -25,7 +25,7 @@ extern int sceOpen(const char *, int);
 extern int sceRead(int, void *, int);
 extern int sceClose(int);
 extern void GetOsdConfigParam(scfOsdConfig_t *);
-extern void GetOsdConfigParam2(void *, int, int);
+extern int GetOsdConfigParam2(void *, int, int);
 char *GetRomName(void);
 int IsT10K(void);
 unsigned char frombcd(unsigned char value);
@@ -94,7 +94,26 @@ int SCF_SECTION(sceScfGetTimeZone) sceScfGetTimeZone(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", func_001556C0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", sceScfGetSummerTime);
+int SCF_SECTION(sceScfGetSummerTime) sceScfGetSummerTime(void)
+{
+	scfOsdConfig_t config;
+	unsigned int extra;
+	int summerTime;
+	if (IsT10K()) {
+		summerTime = sdkScfT10kSummerTime;
+	} else {
+		GetOsdConfigParam(&config);
+		if (!config.version) {
+			summerTime = 0;
+		} else {
+			unsigned int bits;
+			GetOsdConfigParam2(&extra, 1, 1);
+			bits = (unsigned char)extra >> 4;
+			summerTime = bits & 1;
+		}
+	}
+	return summerTime;
+}
 
 unsigned char SCF_SECTION(tobcd) tobcd(unsigned char value)
 {
@@ -173,6 +192,30 @@ void SCF_SECTION(subhour) subhour(scfClock_t *clock)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", AdjustTime);
+void SCF_SECTION(AdjustTime) AdjustTime(scfClock_t *clock, int offset)
+{
+	int minute;
+	convertfrombcd(clock);
+	minute = clock->minute + offset;
+	if (minute >= 0) {
+		while (minute >= 60) {
+			addhour(clock);
+			minute -= 60;
+		}
+	} else {
+		do {
+			minute += 60;
+			subhour(clock);
+		} while (minute < 0);
+	}
+	clock->minute = minute;
+	converttobcd(clock);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", sceScfGetLocalTimefromRTC);
+void SCF_SECTION(sceScfGetLocalTimefromRTC) sceScfGetLocalTimefromRTC(scfClock_t *clock)
+{
+	int timezone = sceScfGetTimeZone();
+	int summerTime = sceScfGetSummerTime();
+	int offset = summerTime * 60 - 0x21c;
+	AdjustTime(clock, timezone + offset);
+}

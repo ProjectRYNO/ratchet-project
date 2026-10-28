@@ -39,7 +39,26 @@ void _iopnotify(int mode);
 mrpcPkt_t *_sceRpcGetPacket___dupe2(mrpcPool_t *rpc);
 void _sceRpcFreePacket___dupe2(mrpcPkt_t *packet);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mrpc/libmrpc", sceSifMInitRpc);
+void MRPC_SECTION(sceSifMInitRpc) sceSifMInitRpc(int mode)
+{
+	mrpcPkt_t *packet;
+	if (sdkMRpcInit) return;
+	sdkMRpcInit = 1;
+	DIntr();
+	sdkMRpcPool.count = 0x20;
+	sdkMRpcPool.packets = (mrpcPkt_t *)((unsigned int)sdkMRpcPackets | 0x20000000);
+	sdkMRpcPool.pid = 1;
+	sdkMRpcPool.unk0C = 0;
+	sdkMRpcPool.unk10 = 0;
+	sceSifAddCmdHandler(0x80000018, _request_end___dupe2, &sdkMRpcPool);
+	EIntr();
+	packet = &sdkMRpcPackets[1];
+	packet->mode = 1;
+	packet->paddr = (void *)1;
+	sceSifSendCmd(0x80000001, packet, 0x18, 0, 0, 0);
+	while (!sceSifGetSreg(1)) {}
+	sceSifAddRebootNotifyHandler(0x80000014, _iopnotify, 0);
+}
 
 void MRPC_SECTION(_iopnotify) _iopnotify(int mode)
 {
