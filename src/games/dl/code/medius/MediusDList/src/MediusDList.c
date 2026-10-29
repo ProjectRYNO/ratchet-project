@@ -94,7 +94,6 @@ typedef struct {
 extern MediusDTypeInterface MediusDType_I;
 MediusBool SuscriptionIsValid_(MediusDListSubscription *pSubscription);
 
-
 unsigned int MEDIUS_DLIST_SECTION(GetNextInstanceId_) GetNextInstanceId_(void)
 {
     int i;
@@ -272,7 +271,10 @@ void MEDIUS_DLIST_SECTION(ErrorEvent_) ErrorEvent_(MediusDListSubscription *pSub
     pSubscription->pUserCallback(1, error, pMsg->transactionId, &pMsg->exceptionEvent, 0, 0, 0, pSubscription->pUserData);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusDList/src/MediusDList", print___dupe2);
+int MEDIUS_DLIST_SECTION(print___dupe2) print___dupe2(void)
+{
+    return -0x14;
+}
 
 void MEDIUS_DLIST_SECTION(Fault_) Fault_(MediusDListSubscription *pSubscription, MediusMessage *pMsg)
 {

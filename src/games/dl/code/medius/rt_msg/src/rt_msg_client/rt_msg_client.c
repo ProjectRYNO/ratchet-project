@@ -1,5 +1,24 @@
 #include "common.h"
 
+#define MEDIUS_MSGC_SECTION(name) __attribute__((section(".medius_msgc_" #name)))
+
+// Retained assembly and compiled functions keep their original retail slots.
+#if !defined(M2CTX) && !defined(PERMUTER) && !defined(ALLOW_NONMATCHING)
+#undef INCLUDE_ASM
+#define INCLUDE_ASM(FOLDER, NAME) \
+    __asm__(".section .medius_msgc_" #NAME ",\"ax\",@progbits\n" \
+            ".set noat\n.set noreorder\n" \
+            ".include \"" FOLDER "/" #NAME ".s\"\n" \
+            ".set reorder\n.set at\n.text\n")
+#endif
+
+extern int rt_mutex_unlock(void *mutex, int *count);
+
+// Message-client mutex at 0x001B69C0 (rtTimebaseQueryTimer + 0x4408).
+extern int mediusMsgClientMutex[];
+
+int FUN_01ec7878(unsigned int a);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec3288);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec3408);
@@ -8,7 +27,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_clie
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec3460);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", rt_msg_mutex_unlock);
+int MEDIUS_MSGC_SECTION(rt_msg_mutex_unlock) rt_msg_mutex_unlock(void)
+{
+    return rt_mutex_unlock(mediusMsgClientMutex, 0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", func_01EC34B8);
 
@@ -84,7 +106,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_clie
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec54e0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", rt_msg_client_calc_connect_aux_udp_msg_size);
+int MEDIUS_MSGC_SECTION(rt_msg_client_calc_connect_aux_udp_msg_size) rt_msg_client_calc_connect_aux_udp_msg_size(void)
+{
+    return 0x20;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec54f8);
 
@@ -136,7 +161,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_clie
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec7878);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec78c8);
+int MEDIUS_MSGC_SECTION(FUN_01ec78c8) FUN_01ec78c8(unsigned int a)
+{
+    return FUN_01ec7878(a) != 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_msg/src/rt_msg_client/rt_msg_client", FUN_01ec78e8);
 

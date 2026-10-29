@@ -1,5 +1,6 @@
 #include "common.h"
 #include "MediusRequests.h"
+#include "../../MediusClientLibrary/src/MediusRequests.h"
 
 #define MEDIUS_CLIENT_SECTION(name) __attribute__((section(".medius_client_" #name)))
 
@@ -21,29 +22,109 @@ extern int mediusBillingEnabled;
 extern MediusAccountLogoutRequest mediusBillingLogoutRequest;
 extern int printf(const char *, ...);
 
+
+typedef struct {
+    int AddressType;
+    char Address[20];
+} NetAddress;
+
+typedef struct {
+    NetAddress aAddressList[2];
+} NetAddressList;
+
+typedef struct {
+    char pad[0x10];
+    void *pUserData;
+} NetTypeConnectCallbackData;
+
+typedef void (*MediusTypeConnectCallback)(void);
+
+extern void *memcpy(void *, const void *, unsigned int);
+
+// NAT service address set by MediusSetNatServiceAddress.
+extern NetAddress mediusNatServiceAddress;
+// Client address list set by MediusSetClientAddrList.
+extern NetAddressList mediusClientAddrList;
+// Current Medius processing state.
+extern int mediusProcessingState;
+// Request type of the queued request.
+extern int mediusQueuedRequestType;
+// Client connect callback.
+extern MediusTypeConnectCallback mediusClientConnectCallback;
+// User argument for the client connect callback.
+extern void *mediusClientConnectCallbackArg;
+
+// Queued MediusJoinGame request (0xC4 bytes).
+extern char mediusQueuedJoinGameRequest[0xC4];
+// Queued MediusCreateGameOnSelf request (0xEC bytes).
+extern char mediusQueuedCreateGameOnSelfRequest[0xEC];
+
+extern char CurrentSessionKey[];
+int NetSendMessage(int SendFlags, int hConnection, int TargetMask, int MessageClass, int MessageType, int MessageLength, void *MessageData);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", FUN_01ed5528);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", FUN_01ed5538);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetNatServiceAddress);
+void MEDIUS_CLIENT_SECTION(MediusSetNatServiceAddress) MediusSetNatServiceAddress(NetAddress *pNatServiceAddress)
+{
+    memcpy(&mediusNatServiceAddress, pNatServiceAddress, sizeof(NetAddress));
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetNatServiceAddress);
+void MEDIUS_CLIENT_SECTION(MediusGetNatServiceAddress) MediusGetNatServiceAddress(NetAddress *pNatServiceAddress)
+{
+    memcpy(pNatServiceAddress, &mediusNatServiceAddress, sizeof(NetAddress));
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetProcessingState);
+void MEDIUS_CLIENT_SECTION(MediusSetProcessingState) MediusSetProcessingState(int state)
+{
+    mediusProcessingState = state;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetProcessingState);
+int MEDIUS_CLIENT_SECTION(MediusGetProcessingState) MediusGetProcessingState(void)
+{
+    return mediusProcessingState;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetClientAddrList);
+void MEDIUS_CLIENT_SECTION(MediusSetClientAddrList) MediusSetClientAddrList(NetAddressList stAddressList)
+{
+    memcpy(&mediusClientAddrList, &stAddressList, sizeof(NetAddressList));
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetClientAddrList);
+void MEDIUS_CLIENT_SECTION(MediusGetClientAddrList) MediusGetClientAddrList(NetAddressList *pAddressList)
+{
+    memcpy(pAddressList, &mediusClientAddrList, sizeof(NetAddressList));
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusResolveAddrCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetQueuedRequest);
+int MEDIUS_CLIENT_SECTION(MediusSetQueuedRequest) MediusSetQueuedRequest(int eMediusRequestType, void *pRequest)
+{
+    mediusQueuedRequestType = eMediusRequestType;
+    switch (eMediusRequestType) {
+    case 0x2D:
+        return (int)memcpy(mediusQueuedJoinGameRequest, pRequest, 0xC4);
+    case 0x12:
+        memcpy(mediusQueuedCreateGameOnSelfRequest, pRequest, 0xEC);
+        break;
+    }
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetQueuedRequestType);
+void MEDIUS_CLIENT_SECTION(MediusGetQueuedRequestType) MediusGetQueuedRequestType(int *peMediusRequestType)
+{
+    *peMediusRequestType = mediusQueuedRequestType;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetQueuedRequest);
+int MEDIUS_CLIENT_SECTION(MediusGetQueuedRequest) MediusGetQueuedRequest(void *pRequest)
+{
+    switch (mediusQueuedRequestType) {
+    case 0x2D:
+        return (int)memcpy(pRequest, mediusQueuedJoinGameRequest, 0xC4);
+    case 0x12:
+        memcpy(pRequest, mediusQueuedCreateGameOnSelfRequest, 0xEC);
+        break;
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusCheckRequestQueue);
 
@@ -53,13 +134,27 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/sr
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusLocalConnectCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSetClientConnectCallback);
+void MEDIUS_CLIENT_SECTION(MediusSetClientConnectCallback) MediusSetClientConnectCallback(MediusTypeConnectCallback pfMediusConnectCallback, void *pUserData)
+{
+    mediusClientConnectCallback = pfMediusConnectCallback;
+    mediusClientConnectCallbackArg = pUserData;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetClientConnectCallback);
+MediusTypeConnectCallback MEDIUS_CLIENT_SECTION(MediusGetClientConnectCallback) MediusGetClientConnectCallback(void)
+{
+    return mediusClientConnectCallback;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetClientConnectCallbackArg);
+void *MEDIUS_CLIENT_SECTION(MediusGetClientConnectCallbackArg) MediusGetClientConnectCallbackArg(void)
+{
+    return mediusClientConnectCallbackArg;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusClearClientConnectCallback);
+void MEDIUS_CLIENT_SECTION(MediusClearClientConnectCallback) MediusClearClientConnectCallback(void)
+{
+    mediusClientConnectCallback = 0;
+    mediusClientConnectCallbackArg = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", func_01ED5B70);
 
@@ -77,11 +172,21 @@ MediusErrorCode MEDIUS_CLIENT_SECTION(MediusGetServerTime) MediusGetServerTime(M
     return MediusErrorNone;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusGetMySessionKey);
+int MEDIUS_CLIENT_SECTION(MediusGetMySessionKey) MediusGetMySessionKey(char *SessionKey)
+{
+    if (CurrentSessionKey[0] == 0) {
+        return -11;
+    }
+    strncpy(SessionKey, CurrentSessionKey, 0x11);
+    return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusCloseBare);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusSendMessage);
+int MEDIUS_CLIENT_SECTION(MediusSendMessage) MediusSendMessage(int MessageClass, int MessageType, int MessageLength, void *MessageData)
+{
+    return NetSendMessage(0x40, ghMyConnection, 0xFFFF, MessageClass, MessageType, MessageLength, MessageData);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusConnect);
 
@@ -89,7 +194,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/sr
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusDisconnectCB);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MUISDisconnectCB);
+void MEDIUS_CLIENT_SECTION(MUISDisconnectCB) MUISDisconnectCB(NetTypeConnectCallbackData *pData)
+{
+    *(int *)pData->pUserData = 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusClientLibrary/src/MediusClient", MediusDisconnect);
 

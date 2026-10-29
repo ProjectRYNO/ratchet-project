@@ -58,3 +58,34 @@ mediusDListInterestIds,0x001B7908,code/medius/MediusDList/src/MediusDList.c,"cor
 mediusDListMetaTypes,0x001B7910,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDMetaType *[2], no debug-info name; per-list player list meta types filled by MediusDListInit",MediusDList
 mediusDListPlayerInterestCallback,0x001B7918,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDInterestCallback (0x14), no debug-info name; player interest callback record",MediusDList
 mediusDListSubscriptions,0x001B7930,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDListSubscription[32] (0x30 each), no debug-info name; subscription table",MediusDList
+mediusCommPlatformInitialized,0x001694FC,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; non-zero once rt_comm_platform has started the libnet interface",rt_comm_platform
+mediusCommBroadcastIP,0x00169504,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; broadcast IP of the local network",rt_comm_platform
+mediusCommInetClient,0x001B26C0,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.bss sceSifMClientData, no debug-info name; libnet SIF client passed to the sceBInet calls",rt_comm_platform
+mediusUdpInactivityTimeout,0x00169510,code/medius/rt_udp/src/rt_udp.c,"core.data word, no debug-info name; default connection inactivity timeout",rt_udp
+mediusUdpVersionString,0x00169518,code/medius/rt_udp/src/rt_udp.c,"core.data char array, no debug-info name; rt_udp version string returned by rt_udp_get_version_string",rt_udp
+mediusUdpUnexpectedPortEnabled,0x00169530,code/medius/rt_udp/src/rt_udp.c,"core.data word, no debug-info name; set by rt_udp_enable_unexpected_port",rt_udp
+mediusMsgClientMutex,0x001B69C0,code/medius/rt_msg/src/rt_msg_client/rt_msg_client.c,"core.bss mutex, no debug-info name; message-client mutex released by rt_msg_mutex_unlock",rt_msg_client
+mediusObjectLocals,0x001B7258,code/medius/dme_object/src/DmeObjectLocal.c,"core.bss struct, no debug-info name; DmeObjectLocal state: ConnInfo +0x138, creation/update/deletion callbacks +0x158/+0x15C/+0x160, object table +0x17C",DmeObjectLocal
+mediusLibnetbCidList,0x00167EEC,code/medius/rt_libnet/ee/src/libnetb.c,"core.data pointer, no debug-info name; head of the libnetb socket (CID) list",libnetb
+mediusSSLLibSourceFile,0x00199F28,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; SSLLib.c source path passed to __assert",SSLLib
+mediusSSLAssertZeroMsgSize,0x0019A270,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text "0 == nMsgSize"",SSLLib
+mediusSSLAssertHelloDoneState,0x0019A280,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text for the SERVER_HELLO_DONE state check",SSLLib
+mediusSSLAssertFinishedLen,0x0019A2B0,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text "nMsgLen == nMsgSize"",SSLLib
+mediusSSLAssertAppoutSpace,0x0019A310,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text for the app-out buffer space check",SSLLib
+mediusX509SourceFile,0x0019A9A0,code/medius/rt_cert/src/x509.c,"rodata string, no symbol; x509.c source path passed to __assert",x509
+mediusX509AssertPubKeyLen,0x0019AD18,code/medius/rt_cert/src/x509.c,"rodata string, no symbol; assert text "nDataSize == pCert->pubKeyLen"",x509
+mediusCommInetBuffer,0x001B2700,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.bss, no debug-info name; libnet RPC receive buffer that follows mediusCommInetClient",rt_comm_platform
+mediusCommPlatformInterfaceId,0x00169508,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; interface id selected by rt_comm_platform, -1 after shutdown (meaning inferred)",rt_comm_platform
+mediusNatServiceAddress,0x001B7678,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss NetAddress (0x18), no debug-info name; NAT service address set by MediusSetNatServiceAddress",MediusClient
+mediusClientAddrList,0x001B7690,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss NetAddressList (0x30), no debug-info name; client address list set by MediusSetClientAddrList",MediusClient
+mediusProcessingState,0x00169D34,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; current Medius processing state",MediusClient
+mediusQueuedRequestType,0x00169D38,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; request type of the queued request",MediusClient
+mediusClientConnectCallback,0x00169D3C,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data function pointer, no debug-info name; client connect callback",MediusClient
+mediusClientConnectCallbackArg,0x00169D40,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data pointer, no debug-info name; user argument for the client connect callback",MediusClient
+mediusStubCodecHandle,0x00169B3C,code/medius/StreamMedia/src/codec.c,"core.data word, no debug-info name; handle counter the stub codec increments and returns in stubCreate",codec
+mediusDPlayerListFields,0x0016A048,code/medius/MediusDList/src/MediusDPlayerList.c,"core.data, no debug-info name; field definitions of the player list meta type (0x2C bytes)",MediusDPlayerList
+mediusDPlayerListMetaType,0x0016A074,code/medius/MediusDList/src/MediusDPlayerList.c,"core.data pointer, no debug-info name; player list meta type created on first use",MediusDPlayerList
+mediusQueuedJoinGameRequest,0x001B76C0,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss MediusJoinGameRequest (0xC4), no debug-info name; queued JoinGame request (type 0x2D)",MediusClient
+mediusQueuedCreateGameOnSelfRequest,0x001B7788,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss 0xEC bytes, no debug-info name; queued CreateGameOnSelf request (type 0x12)",MediusClient
+mediusUdpMgr,0x001B6898,code/medius/rt_udp/src/rt_udp_mgr.c,"core.bss RT_UDP_MGR (0x108), no debug-info name; shared channel handle, 16 channel references and their count",rt_udp_mgr
+mediusSSLAssertAlertMsgSize,0x0019A3B8,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text ""nMsgSize == 2"" (ParseAlertMsg)",SSLLib

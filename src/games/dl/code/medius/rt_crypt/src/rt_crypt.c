@@ -1,6 +1,7 @@
 #include "common.h"
 #include "rt_crypt.h"
 #include "SHA1.h"
+#include "../../rt_crypt/src/rt_crypt.h"
 
 #define MEDIUS_CRYPT_SECTION(name) __attribute__((section(".medius_crypt_" #name)))
 
@@ -137,8 +138,7 @@ void MEDIUS_CRYPT_SECTION(KM_SHA1) KM_SHA1(unsigned char *pMessage, unsigned int
     SHAFinal(&context, pDigest, cbDigestSize);
 }
 
-void MEDIUS_CRYPT_SECTION(KM_Salted_SHA1) KM_Salted_SHA1(unsigned char *pSalt, unsigned int cbSaltSize, unsigned char *pMessage, unsigned int cbMessageSize,
-                    unsigned char *pDigest, unsigned int cbDigestSize)
+void MEDIUS_CRYPT_SECTION(KM_Salted_SHA1) KM_Salted_SHA1(unsigned char *pSalt, unsigned int cbSaltSize, unsigned char *pMessage, unsigned int cbMessageSize, unsigned char *pDigest, unsigned int cbDigestSize)
 {
     SHA_CTX context;
 
@@ -272,7 +272,18 @@ int MEDIUS_CRYPT_SECTION(KM_CompareSymmetricKey) KM_CompareSymmetricKey(unsigned
     return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_crypt/src/rt_crypt", KM_DeleteSymmetricKey);
+int MEDIUS_CRYPT_SECTION(KM_DeleteSymmetricKey) KM_DeleteSymmetricKey(unsigned int nMasterID, unsigned int nID)
+{
+    KEY_MASTER *pKeyMaster;
+    KEY_CHAIN *pKeyChain;
+
+    pKeyMaster = GetKeyMaster(nMasterID);
+    if (pKeyMaster && (pKeyChain = GetKeyChain(pKeyMaster, nID))) {
+        if (pKeyChain->pPeerKey) memset(pKeyChain->pPeerKey, 0, 0x40);
+        if (pKeyChain->pEncrypt) memset(pKeyChain->pEncrypt, 0, 0x10C);
+        if (!pKeyChain->pDecrypt) memset(pKeyChain->pDecrypt, 0, 0x10C);
+    }
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_crypt/src/rt_crypt", KM_CopyKeys);
 

@@ -44,6 +44,18 @@ typedef struct { // 0x14
 MediusDFieldId FindFirstFieldId_(MediusDArgList *pArgList);
 MediusDFieldDef *GetTopFieldDef_(MediusDArgList *pArgList);
 
+typedef struct { // 0x8
+    /* 0x0 */ MediusDFieldDef *def;
+    /* 0x4 */ void *pFieldData;
+} MediusDField;
+typedef struct { // 0xC
+    /* 0x0 */ MediusDMetaType *(*create)();
+    /* 0x4 */ void (*destroy)();
+    /* 0x8 */ MediusDField (*getThisField)(MediusDMetaType *pMetaType, MediusDFieldId id, void *pFieldData);
+} MediusDMetaTypeInterface;
+extern const MediusDMetaTypeInterface MediusDMetaType_I;
+int FlushField_(MediusDArgList *pArgList, MediusDField field);
+
 int MEDIUS_DARGS_SECTION(construct) construct(void *memory, RT_PACK_BUFFER *pMsg, MediusDMetaType *pMetaType, MediusDFieldMask fieldMask)
 {
     int result = -0x15;
@@ -72,7 +84,23 @@ int MEDIUS_DARGS_SECTION(destruct) destruct(MediusDArgList *pArgList)
     return result;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusDList/src/MediusDArgList", FindFirstFieldId_);
+MediusDFieldId MEDIUS_DARGS_SECTION(FindFirstFieldId_) FindFirstFieldId_(MediusDArgList *pArgList)
+{
+    MediusDFieldId id;
+    unsigned int mask;
+    if (pArgList == 0) return 0xFFFF;
+    mask = pArgList->fieldMask;
+    for (id = pArgList->firstId; id < 32; id++) {
+        unsigned int bits = mask >> id;
+        if (bits & 1) {
+            pArgList->firstId = id;
+            return id;
+        }
+        if (bits == 0) return 0xFFFF;
+    }
+    pArgList->firstId = 0xFFFF;
+    return 0xFFFF;
+}
 
 MediusDFieldId MEDIUS_DARGS_SECTION(getTopFieldId) getTopFieldId(MediusDArgList *pArgList)
 {
@@ -139,7 +167,20 @@ void MEDIUS_DARGS_SECTION(rewindMask) rewindMask(MediusDArgList *pArgList)
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/MediusDList/src/MediusDArgList", flush);
+int MEDIUS_DARGS_SECTION(flush) flush(MediusDArgList *pArgList)
+{
+    MediusDFieldId id;
+    MediusDField field;
+    if (pArgList == 0) return -0x15;
+    id = FindFirstFieldId_(pArgList);
+    while (id != 0xFFFF && pArgList->fieldMask) {
+        field = MediusDMetaType_I.getThisField(pArgList->pMetaType, id, 0);
+        if (FlushField_(pArgList, field) == 0) return -0x15;
+        pArgList->fieldMask &= ~(1 << id);
+        id = FindFirstFieldId_(pArgList);
+    }
+    return 0;
+}
 
 int MEDIUS_DARGS_SECTION(MediusDArgList_print) MediusDArgList_print(MediusDArgList *pArgList)
 {

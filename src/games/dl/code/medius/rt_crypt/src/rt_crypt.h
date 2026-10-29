@@ -100,7 +100,7 @@ unsigned int KM_GetGameSessionKey(unsigned int nMasterID, unsigned int nGameID, 
 unsigned int KM_AddSymmetricKey(unsigned int nMasterID, unsigned int nID, RC_KEY *pKey);
 unsigned int KM_GetSymmetricKey(unsigned int nMasterID, unsigned int nID, RC_KEY *pKey);
 int KM_CompareSymmetricKey(unsigned int nMasterID, unsigned int nID, RC_KEY *pKey);
-void KM_DeleteSymmetricKey(unsigned int nMasterID, unsigned int nID);
+int KM_DeleteSymmetricKey(unsigned int nMasterID, unsigned int nID);
 void KM_DeleteKeys(unsigned int nMasterID, unsigned int nID);
 void InitializePRNG(void);
 void KM_CreateRandomRCKey(RC_KEY *pNewKey);

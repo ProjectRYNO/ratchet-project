@@ -12,11 +12,12 @@
             ".set reorder\n.set at\n.text\n")
 #endif
 
+typedef struct {
+    unsigned int Addr[2];
+} RT_LINKADDRESS;
+
 typedef enum { NetErrorNone = 0, NetErrorBadPointer = 10, NetErrorInvalidArg = 23 } NetErrorCode;
 
-typedef struct {
-    unsigned char Addr[8];
-} RT_LINKADDRESS;
 
 typedef struct {
     /* 0x00 */ unsigned int SoftwareID;
@@ -36,11 +37,17 @@ typedef struct {
     /* 0x400 */ char pad400[0x4];
     /* 0x404 */ int MyClientIndex;
     /* 0x408 */ char pad408[0x8];
-    /* 0x410 */ char ServerIP[4];
+    /* 0x410 */ RT_LINKADDRESS ServerIP;
+    /* 0x418 */ char pad418[0x3C];
+    /* 0x454 */ int ConnectStatus;
 } NetTypeConnectionInfo;
 
 typedef struct {
-    /* 0x000 */ char pad000[0x138];
+    /* 0x000 */ char pad000[0xE0];
+    /* 0x0E0 */ void (*pfBroadcastUpdate)();
+    /* 0x0E4 */ char pad0E4[0x40];
+    /* 0x124 */ int bBroadcastUpdateEnabled;
+    /* 0x128 */ char pad128[0x10];
     /* 0x138 */ NetTypeConnectionInfo *pConnInfo;
 } medius_ObjectInterface;
 
@@ -111,6 +118,14 @@ int rt_memory_register_callbacks(void *, void *);
 int rt_memory_register_another_callback(void *);
 int rt_parse_execute(void *, int, int, unsigned char *, unsigned int, void *);
 void rt_timebase_get_globaltime(int *);
+
+struct NetTypeClientInfo {
+    /* 0x00 */ char pad00[0x20];
+    /* 0x20 */ int bConnected;
+    /* 0x24 */ char pad24[0x8];
+};
+
+void rt_comm_linkaddress_setnull(RT_LINKADDRESS *a);
 
 void MEDIUS_DMELOCAL_SECTION(NetSetHeartbeatInterval) NetSetHeartbeatInterval(unsigned int msecs)
 {
@@ -201,7 +216,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLoca
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", RemoteClientConnects);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", RemoteClientDisconnects);
+int MEDIUS_DMELOCAL_SECTION(RemoteClientDisconnects) RemoteClientDisconnects(NetTypeConnectionInfo *pConnInfo, int ClientIndex)
+{
+    NetTypeClientInfo *pClientInfo;
+
+    pClientInfo = NetGetClientInfo(pConnInfo, ClientIndex);
+    if (pClientInfo != 0) {
+        memset(pClientInfo, 0, sizeof(NetTypeClientInfo));
+    }
+}
 
 NetErrorCode MEDIUS_DMELOCAL_SECTION(NetIGetCurrentUDPSourceBinaryIP) NetIGetCurrentUDPSourceBinaryIP(RT_LINKADDRESS *pLinkAddr)
 {
@@ -226,15 +249,69 @@ unsigned int MEDIUS_DMELOCAL_SECTION(NetIGetTime) NetIGetTime(NetTypeConnectionI
     return gDmeGlobals->Time;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetIGetConnectStatus);
+int MEDIUS_DMELOCAL_SECTION(NetIGetConnectStatus) NetIGetConnectStatus(int *pStatus, NetTypeConnectionInfo *pConnInfo)
+{
+    unsigned int i;
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetIGetValidClientCount);
+    if (pStatus == 0) {
+        return 23;
+    }
+    if (pConnInfo != 0) {
+        for (i = 0; i < 4; i++) {
+            if (pConnInfo == mediusConnInfoTable[i]) {
+                *pStatus = pConnInfo->ConnectStatus;
+                return 0;
+            }
+        }
+    }
+    *pStatus = 0;
+    return 23;
+}
+
+NetErrorCode MEDIUS_DMELOCAL_SECTION(NetIGetValidClientCount) NetIGetValidClientCount(int *ReturnedClientCount, NetTypeConnectionInfo *pConnInfo)
+{
+    unsigned int i;
+
+    i = 0;
+    if (ReturnedClientCount == 0) {
+        return NetErrorInvalidArg;
+    }
+    *ReturnedClientCount = 0;
+    if (pConnInfo == 0) {
+        return NetErrorInvalidArg;
+    }
+    for (i = 0; i < 256; i++) {
+        if (pConnInfo->ppClientInfo[i] != 0 && pConnInfo->ppClientInfo[i]->bConnected != 0) {
+            (*ReturnedClientCount)++;
+        }
+    }
+    return NetErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", func_01EA0D08);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetISendTo);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetBitMaskToSendMask);
+int MEDIUS_DMELOCAL_SECTION(NetBitMaskToSendMask) NetBitMaskToSendMask(unsigned char *pDst, unsigned char *pSrc, unsigned int NumBits)
+{
+    unsigned int i;
+    unsigned char *p;
+
+    i = 0;
+    if (NumBits != 0) {
+        p = pDst;
+        do {
+            p[0] = pSrc[0];
+            p[1] = pSrc[1];
+            p[2] = (*(unsigned int *)pSrc & 0xFF0000) >> 16;
+            p[3] = (*(unsigned int *)pSrc & 0xFF000000) >> 24;
+            i += 32;
+            pSrc += 4;
+            p += 4;
+        } while (i < NumBits);
+    }
+    return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetSendMessageByUDP);
 
@@ -396,13 +473,22 @@ void MEDIUS_DMELOCAL_SECTION(NetDestroyClientInfo) NetDestroyClientInfo(NetTypeC
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetGetServerIpAddress);
+RT_LINKADDRESS MEDIUS_DMELOCAL_SECTION(NetGetServerIpAddress) NetGetServerIpAddress(NetTypeConnectionInfo *pConnInfo)
+{
+    RT_LINKADDRESS addr;
+
+    rt_comm_linkaddress_setnull(&addr);
+    if (pConnInfo != 0) {
+        addr = pConnInfo->ServerIP;
+    }
+    return addr;
+}
 
 NetErrorCode MEDIUS_DMELOCAL_SECTION(NetSetServerIpAddress) NetSetServerIpAddress(NetTypeConnectionInfo *pConnInfo, char *ServerIpAddress)
 {
     NetErrorCode err = NetErrorInvalidArg;
     if (ServerIpAddress && pConnInfo) {
-        rt_comm_linkaddress_toint(pConnInfo->ServerIP, ServerIpAddress);
+        rt_comm_linkaddress_toint(&pConnInfo->ServerIP, ServerIpAddress);
         err = NetErrorNone;
     }
     return err;
@@ -432,7 +518,23 @@ NetErrorCode MEDIUS_DMELOCAL_SECTION(NetGetNatService) NetGetNatService(void **p
     return NetErrorNone;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", NetConvertTransportFlags);
+NetErrorCode MEDIUS_DMELOCAL_SECTION(NetConvertTransportFlags) NetConvertTransportFlags(char TransportFlags, unsigned short *pUdpFlags)
+{
+    if (pUdpFlags == 0) {
+        return NetErrorInvalidArg;
+    }
+    *pUdpFlags = 0;
+    if (TransportFlags & 0x10) {
+        *pUdpFlags = 0x2000;
+    }
+    if (TransportFlags & 0x40) {
+        *pUdpFlags |= 0x4000;
+    }
+    if (TransportFlags & 0x80) {
+        *pUdpFlags |= 0x1000;
+    }
+    return NetErrorNone;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", p2p_connect_cb);
 
@@ -467,7 +569,17 @@ int MEDIUS_DMELOCAL_SECTION(NetGetMyWorldID) NetGetMyWorldID(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", udp_unconnected_data_cb);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", udp_event_cb);
+void MEDIUS_DMELOCAL_SECTION(udp_event_cb) udp_event_cb(int Channel, int Connection, int Event, int ErrorCode, void *UserData)
+{
+    if (gUDPInterfacePtr == 0) {
+        return;
+    }
+    if (Event == 0) {
+        gUDPInterfacePtr->pfConnect();
+    } else {
+        gUDPInterfacePtr->pfData();
+    }
+}
 
 void MEDIUS_DMELOCAL_SECTION(udp_data_cb) udp_data_cb(int Channel, int Connection, unsigned char *pData, unsigned int nDataSize, unsigned int UserIndex, int bBroadcastData, void *UserData)
 {
@@ -476,7 +588,13 @@ void MEDIUS_DMELOCAL_SECTION(udp_data_cb) udp_data_cb(int Channel, int Connectio
     }
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/dme_client/src/DmeLocal", p2p_broadcast_update_cb);
+void MEDIUS_DMELOCAL_SECTION(p2p_broadcast_update_cb) p2p_broadcast_update_cb(unsigned short peerIndex, int bBroadcastsEnabled, void *pUserData)
+{
+    if (*(int *)((char *)pUserData + 0x468) == 2 && gObjectInterfacePtr != 0 && bBroadcastsEnabled != 0
+        && gObjectInterfacePtr->bBroadcastUpdateEnabled != 0 && pUserData != 0) {
+        gObjectInterfacePtr->pfBroadcastUpdate(pUserData, peerIndex);
+    }
+}
 
 void MEDIUS_DMELOCAL_SECTION(MsgClientSystemMessageCallback) MsgClientSystemMessageCallback(void *pUserData, unsigned char severity, int encoding_type, int language_type, int bEndOfMessage, unsigned int msg_len, unsigned char *p_msg)
 {
