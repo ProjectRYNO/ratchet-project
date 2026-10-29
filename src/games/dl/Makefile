@@ -125,7 +125,23 @@ MEDIUS_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_memory.o $(OBJ_DIR)/medius/rt_util
 	$(OBJ_DIR)/medius/rt_util/rt_circ_buf.o $(OBJ_DIR)/medius/rt_util/rt_ip.o \
 	$(OBJ_DIR)/medius/rt_util/rt_list_buf.o $(OBJ_DIR)/medius/rt_util/rt_time.o \
 	$(OBJ_DIR)/medius/rt_util/rt_mtrandgen.o $(OBJ_DIR)/medius/rt_util/ps2/rt_mutex_platform.o \
-	$(OBJ_DIR)/medius/rt_util/ps2/rt_time_platform.o $(OBJ_DIR)/medius/rt_util/rt_token.o
+	$(OBJ_DIR)/medius/rt_util/ps2/rt_time_platform.o $(OBJ_DIR)/medius/rt_util/rt_token.o \
+	$(OBJ_DIR)/medius/rt_crypt/src/md5.o $(OBJ_DIR)/medius/rt_crypt/src/RC4.o \
+	$(OBJ_DIR)/medius/rt_crypt/src/md2.o $(OBJ_DIR)/medius/rt_crypt/src/SHA1.o \
+	$(OBJ_DIR)/medius/rt_crypt/src/md4.o $(OBJ_DIR)/medius/rt_crypt/src/rt_crypt_public.o \
+	$(OBJ_DIR)/medius/rt_crypt/src/rt_crypt.o $(OBJ_DIR)/medius/rt_crypt/src/LargeInt.o \
+	$(OBJ_DIR)/medius/rt_crypt/src/RSA.o $(OBJ_DIR)/medius/rt_cert/src/OID.o \
+	$(OBJ_DIR)/medius/dme_client/src/DmeInterfaceManager.o $(OBJ_DIR)/medius/MediusClientLibrary/src/stringmanager.o \
+	$(OBJ_DIR)/medius/dme_client/src/DmeRegister.o $(OBJ_DIR)/medius/MediusDList/src/MediusDMetaType.o \
+	$(OBJ_DIR)/medius/rt_util/rt_parse.o $(OBJ_DIR)/medius/dme_client/src/DmeList.o \
+	$(OBJ_DIR)/medius/MediusDList/src/MediusDList_shared.o \
+	$(OBJ_DIR)/medius/StreamMedia/src/sequence.o $(OBJ_DIR)/medius/StreamMedia/src/vsequence.o \
+	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClans.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusClient.o \
+	$(OBJ_DIR)/medius/dme_client/src/DmeAddress.o \n	$(OBJ_DIR)/medius/MediusClientLibrary/src/MediusBilling.o $(OBJ_DIR)/medius/MediusClientLibrary/src/MediusFileServices.o \n	$(OBJ_DIR)/medius/MediusDList/src/MediusDType.o $(OBJ_DIR)/medius/MediusDList/src/MediusDArgList.o \n	$(OBJ_DIR)/medius/dme_object/src/DmeObject.o $(OBJ_DIR)/medius/MediusMessage/src/MediusMessage.o \n	$(OBJ_DIR)/medius/MediusClientLibrary/src/callback.o \n	$(OBJ_DIR)/medius/dme_client/src/DmeLocal.o $(OBJ_DIR)/medius/MediusDList/src/MediusDList.o \n	$(OBJ_DIR)/medius/rt_comm/src/rt_comm.o
+# Retail rt_parse and DmeRegister never tail-call: a wrapper returning another call's
+# result keeps jal + jr. Every function in both matches with sibling calls disabled.
+MEDIUS_NO_SIBCALL_OBJECTS = $(OBJ_DIR)/medius/rt_util/rt_parse.o $(OBJ_DIR)/medius/dme_client/src/DmeRegister.o
+$(MEDIUS_NO_SIBCALL_OBJECTS): MEDIUS_COMPILE_FLAGS += -fno-optimize-sibling-calls
 # Open-source PS2SDK headers (from the ps2dev toolchain) supply EE kernel and libcdvd
 # declarations; Sony-only calls PS2SDK lacks are declared in code/sdk/sce_missing.h.
 # The ee-gcc 2.96 package ships no compiler headers, so stddef.h/stdarg.h (pulled in by
@@ -141,6 +157,7 @@ endif
 $(MEDIUS_OBJECTS): $(OBJ_DIR)/%.o: code/%.c
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC296) -S $(MEDIUS_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
 	$(EEAS296) $(MEDIUS_AS_FLAGS) $(@:.o=.s) -o $@
 
 # Boot libdma matches the same historical 991111-01 toolchain used by libm.

@@ -11905,6 +11905,460 @@
     ]
   },
   {
+    "name": "MD5_CTX",
+    "size": "0x60",
+    "owners": [
+      "medius/rt_crypt/src/md5.c"
+    ],
+    "header": "code/medius/rt_crypt/src/md5.h",
+    "evidence": "names and layout from the retail ELF debug information; md5Final clears 0x60",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "count",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "buffer",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "padding",
+        "offset": 88,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MD4_CTX",
+    "size": "0x58",
+    "owners": [
+      "medius/rt_crypt/src/md4.c"
+    ],
+    "header": "code/medius/rt_crypt/src/md4.h",
+    "evidence": "retail md4_* accesses (md4Final clears 0x58); RFC 1320 member names, the debug information labels the same words A..D, Nl, Nh, data",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "count",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "buffer",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MD2_CTX",
+    "size": "0x34",
+    "owners": [
+      "medius/rt_crypt/src/md2.c"
+    ],
+    "header": "code/medius/rt_crypt/src/md2.h",
+    "evidence": "retail md2_* accesses (md2Init clears 0x34, count at 0x30); RFC 1319 member names, the debug-info typedef names no members",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "checksum",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "buffer",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "count",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SHA_CTX",
+    "size": "0x60",
+    "owners": [
+      "medius/rt_crypt/src/SHA1.c"
+    ],
+    "header": "code/medius/rt_crypt/src/SHA1.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "data",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "digest",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "bIsBigEndian",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "countLo",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "countHi",
+        "offset": 92,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RC4_CTX",
+    "size": "0x102",
+    "owners": [
+      "medius/rt_crypt/src/RC4.c"
+    ],
+    "header": "code/medius/rt_crypt/src/RC4.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "x",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "y",
+        "offset": 257,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RSA_KEY",
+    "size": "0x40",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c",
+      "medius/rt_crypt/src/rt_crypt_public.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "key",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RSA_KEYPAIR",
+    "size": "0x80",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c",
+      "medius/rt_crypt/src/rt_crypt_public.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "publicKey",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "privateKey",
+        "offset": 64,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RC_KEY",
+    "size": "0x40",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "key",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RCDATA",
+    "size": "0x10C",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "nSequence",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "x",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "y",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "KEY_CHAIN",
+    "size": "0x20",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "prev",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "next",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "nID",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "eCypherType",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pPubKey",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pEncrypt",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "pDecrypt",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pPeerKey",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "KEY_MASTER",
+    "size": "0x30",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c",
+      "medius/rt_crypt/src/rt_crypt_public.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "names and layout from the retail ELF debug information; circular doubly linked list headed by gpKeyMaster",
+    "fields": [
+      {
+        "name": "prev",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "next",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "first",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "last",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "nMasterID",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "nClientID",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "nGameID",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pPubKey",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "pPriKey",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "pEncrypt",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "pDecrypt",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "pGameKey",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CRYPT_DME_BASE_GLOBALS",
+    "size": "0x204",
+    "owners": [
+      "medius/rt_crypt/src/rt_crypt.c",
+      "medius/rt_crypt/src/rt_crypt_public.c"
+    ],
+    "header": "code/medius/rt_crypt/src/rt_crypt.h",
+    "evidence": "prototype dltypes.txt layout and GLOBAL_VARIABLES.csv type of gCryptGlobals; rt_crypt_public selects the server/client/UDP pairs by flag",
+    "fields": [
+      {
+        "name": "gpKeyMaster",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "gServerKeyPair",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "gClientKeyPair",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "gUDPKeyPair",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "gAppKeyPair",
+        "offset": 388,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "lint",
+    "size": "0x200",
+    "owners": [
+      "medius/rt_crypt/src/LargeInt.c"
+    ],
+    "header": "code/medius/rt_crypt/src/LargeInt.h",
+    "evidence": "names and layout from the retail ELF debug information; 4096-bit integer, least significant word first",
+    "fields": [
+      {
+        "name": "data",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RSA_BLOCK",
+    "size": "0x40",
+    "owners": [
+      "medius/rt_crypt/src/RSA.c"
+    ],
+    "header": "code/medius/rt_crypt/src/RSA.h",
+    "evidence": "names and layout from the retail ELF debug information",
+    "fields": [
+      {
+        "name": "data",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "OIDDATA",
+    "size": "0x18",
+    "owners": [
+      "medius/rt_cert/src/OID.c"
+    ],
+    "header": "code/medius/rt_cert/src/OID.h",
+    "evidence": "retail GetOID walks 0x18-byte gOIDs entries (id at 0, length at 4, DER bytes at 8); type name from the prototype declaration, field names are ours",
+    "fields": [
+      {
+        "name": "oid",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nSize",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "data",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
     "name": "DmaEnv",
     "size": "0x14",
     "line": null,
@@ -11962,6 +12416,2897 @@
       {
         "name": "ringSize",
         "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "SEQBLOCK",
+    "size": "0x100",
+    "line": null,
+    "owners": [
+      "medius/StreamMedia/src/sequence.c"
+    ],
+    "header": "code/medius/StreamMedia/src/sequence.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "nSequence",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nSize",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "data",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CSequence",
+    "size": "0x4010",
+    "line": null,
+    "owners": [
+      "medius/StreamMedia/src/sequence.c"
+    ],
+    "header": "code/medius/StreamMedia/src/sequence.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "m_eThreshold",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_eMedia",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_iNext",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_nBlockCount",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "m_Blocks",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "VSEQBLOCK",
+    "size": "0x200",
+    "line": null,
+    "owners": [
+      "medius/StreamMedia/src/sequence.c"
+    ],
+    "header": "code/medius/StreamMedia/src/sequence.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "nSequence",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "nSize",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "data",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CVSequence",
+    "size": "0x800C",
+    "line": null,
+    "owners": [
+      "medius/StreamMedia/src/sequence.c"
+    ],
+    "header": "code/medius/StreamMedia/src/sequence.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "m_iNext",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_iLast",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "m_nBlockCount",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "m_Blocks",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetServerTimeRequest",
+    "size": "0x15",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusDnasSignaturePost",
+    "size": "0x50",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "DnasSignatureType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "DnasSignatureLength",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "DnasSignature",
+        "offset": 45,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAccountRegistrationRequest",
+    "size": "0x6C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "AccountName",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Password",
+        "offset": 76,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAccountUpdateStatsRequest",
+    "size": "0x126",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Stats",
+        "offset": 38,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAnonymousLoginRequest",
+    "size": "0x146",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "SessionDisplayName",
+        "offset": 38,
+        "bitfield": false
+      },
+      {
+        "name": "SessionDisplayStats",
+        "offset": 70,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusCreateGameRequest",
+    "size": "0xE8",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "MinPlayers",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "MaxPlayers",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "GameLevel",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "GameName",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "GamePassword",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "SpectatorPassword",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerSkillLevel",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "RulesSet",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField1",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField2",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField3",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField4",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField5",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField6",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField7",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField8",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "GameHostType",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "Attributes",
+        "offset": 228,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusTextFilterRequest",
+    "size": "0x6C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "TextFilterType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Text",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusCreateChannelRequest",
+    "size": "0xA4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "MaxPlayers",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "LobbyName",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "LobbyPassword",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField1",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField2",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField3",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField4",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "GenericFieldLevel",
+        "offset": 160,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusJoinChannelRequest",
+    "size": "0x4C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "LobbyChannelPassword",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGameWorldPlayerListRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusPlayerInfoRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGameInfoRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusChannelInfoRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFindPlayerRequest",
+    "size": "0x50",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "SearchType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ID",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Name",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGenericChatMessage",
+    "size": "0x70",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MessageType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "TargetID",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusBinaryMessage",
+    "size": "0x1C0",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MessageType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "TargetAccountID",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAddToBuddyListRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRemoveFromBuddyListRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetIgnoreListRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAddToIgnoreListRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "IgnoreAccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRemoveFromIgnoreListRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "IgnoreAccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusPlayerReport",
+    "size": "0x118",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "SessionKey",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "Stats",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusWorldReport",
+    "size": "0x180",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MediusWorldID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerCount",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "GameName",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "GameStats",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "MinPlayers",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "MaxPlayers",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "GameLevel",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerSkillLevel",
+        "offset": 340,
+        "bitfield": false
+      },
+      {
+        "name": "RulesSet",
+        "offset": 344,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField1",
+        "offset": 348,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField2",
+        "offset": 352,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField3",
+        "offset": 356,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField4",
+        "offset": 360,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField5",
+        "offset": 364,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField6",
+        "offset": 368,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField7",
+        "offset": 372,
+        "bitfield": false
+      },
+      {
+        "name": "GenericField8",
+        "offset": 376,
+        "bitfield": false
+      },
+      {
+        "name": "WorldStatus",
+        "offset": 380,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusEndGameReport",
+    "size": "0x7C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "SessionKey",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "WinningTeam",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "WinningPlayer",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "FinalScore",
+        "offset": 120,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetAnnouncementsRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetAllAnnouncementsRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSetGameListFilterRequest",
+    "size": "0x28",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilterField",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "Mask",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "ComparisonOperator",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "BaselineValue",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusClearGameListFilterRequest",
+    "size": "0x1C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilterID",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetGameListFilterRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetMyIPRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAccountGetIDRequest",
+    "size": "0x46",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountName",
+        "offset": 38,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetLocationsRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGenericChatSetFilterRequest",
+    "size": "0x36",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "GenericChatFilter",
+        "offset": 38,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSetLocalizationParamsRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "CharacterEncoding",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Language",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetBuddyList_ExtraInfoRequest",
+    "size": "0x15",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetTotalRankingsRequest",
+    "size": "0x1C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "LadderType",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetLobbyPlayerNames_ExtraInfoRequest",
+    "size": "0x1C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MediusWorldID",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGameList_ExtraInfoRequest",
+    "size": "0x1A",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "PageID",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusChannelList_ExtraInfoRequest",
+    "size": "0x1A",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "PageID",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusUpdateLadderStatsWideRequest",
+    "size": "0x1AC",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "LadderType",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "Stats",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetLadderStatsWideRequest",
+    "size": "0x20",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID_or_ClanID",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "LadderType",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusTokenRequest",
+    "size": "0x34",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "TokenAction",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "TokenCategory",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "EntityID",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "TokenToReplace",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "Token",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSetAutoChatHistoryRequest",
+    "size": "0x1C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "AutoChatHistoryNumMessages",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusUpdateClanStatsRequest",
+    "size": "0x12C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Stats",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFile",
+    "size": "0xAC",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "Filename",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ServerChecksum",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "FileID",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "FileSize",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "CreationTimeStamp",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "OwnerID",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "GroupID",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "OwnerPermissionRWX",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "GroupPermissionRWX",
+        "offset": 166,
+        "bitfield": false
+      },
+      {
+        "name": "GlobalPermissionRWX",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "ServerOperationID",
+        "offset": 170,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileAttributes",
+    "size": "0x114",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "Description",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "LastChangedTimeStamp",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "LastChangedByUserID",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "NumberAccesses",
+        "offset": 264,
+        "bitfield": false
+      },
+      {
+        "name": "StreamableFlag",
+        "offset": 268,
+        "bitfield": false
+      },
+      {
+        "name": "StreamingDataRate",
+        "offset": 272,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileCreateRequest",
+    "size": "0x1D8",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MediusFileToCreate",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MediusFileCreateAttributes",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 448,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileCloseRequest",
+    "size": "0xC4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MediusFileInfo",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 172,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileDownloadRequest",
+    "size": "0xC4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MediusFileInfo",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 172,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileDeleteRequest",
+    "size": "0xC4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MediusFileInfo",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 172,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusCreateClanRequest",
+    "size": "0x4C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ClanName",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusDisbandClanRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanByIDRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanByNameRequest",
+    "size": "0x4C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ApplicationID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ClanName",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusTransferClanLeadershipRequest",
+    "size": "0x4C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "NewLeaderAccountID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "NewLeaderAccountName",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRemovePlayerFromClanRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerAccountID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusInvitePlayerToClanRequest",
+    "size": "0xF4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerAccountID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "InviteMessage",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusCheckMyClanInvitationsRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanInvitationsSentRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRespondToClanInvitationRequest",
+    "size": "0xF8",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanInvitationID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Response",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRevokeClanInvitationRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "PlayerAccountID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetMyClanMessagesRequest",
+    "size": "0x34",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSendClanMessageRequest",
+    "size": "0xEE",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 38,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusModifyClanMessageRequest",
+    "size": "0xF4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanMessageID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "NewMessage",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusDeleteClanMessageRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanMessageID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRequestClanTeamChallengeRequest",
+    "size": "0xF4",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRespondToClanTeamChallengeRequest",
+    "size": "0xF8",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanChallengeID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ChallengeStatus",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Message",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusRevokeClanTeamChallengeRequest",
+    "size": "0x2C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanChallengeID",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanTeamChallengesRequest",
+    "size": "0x3C",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "Status",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "ChallengedOnly",
+        "offset": 56,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetMyClansRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetAllClanMessagesRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanTeamChallengeHistoryRequest",
+    "size": "0x38",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ThisClanIsChallenger",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "Start",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 52,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusClanLadderListRequest",
+    "size": "0x28",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ClanLadderStatIndex",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "SortOrder",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "StartPosition",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusClanLadderPositionRequest",
+    "size": "0x24",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "ClanLadderStatIndex",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "SortOrder",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusGetClanMemberList_ExtraInfoRequest",
+    "size": "0x24",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ClanID",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "LadderStatIndex",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "SortOrder",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusLadderList_ExtraInfoRequest",
+    "size": "0x28",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "LadderStatIndex",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "SortOrder",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "StartPosition",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusLadderPosition_ExtraInfoRequest",
+    "size": "0x24",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "AccountID",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "LadderStatIndex",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "SortOrder",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSessionEndRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusUpdateUserState",
+    "size": "0x18",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "SessionKey",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "UserAction",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusSetLobbyWorldFilterRequest",
+    "size": "0x30",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask1",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask2",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask3",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask4",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "LobbyFilterType",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMaskLevel",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFilterMaskInfo",
+    "size": "0x18",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "FilterMask1",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask2",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask3",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMask4",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "FilterMaskLevel",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "LobbyFilterType",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAccountDeleteRequest",
+    "size": "0x46",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      },
+      {
+        "name": "MasterPassword",
+        "offset": 38,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusAccountLogoutRequest",
+    "size": "0x26",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusClient.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "MessageID",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "SessionKey",
+        "offset": 21,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MediusFileListRequest",
+    "size": "0xB0",
+    "line": null,
+    "owners": [
+      "medius/MediusClientLibrary/src/MediusFileServices.c"
+    ],
+    "header": "code/medius/MediusClientLibrary/src/MediusRequests.h",
+    "evidence": "debug-info: retail ELF type layout; verified by exact EE GCC 2.96 output",
+    "fields": [
+      {
+        "name": "FilenameBeginsWith",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "FilesizeGreaterThan",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "FilesizeLessThan",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "OwnedByID",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "NewerThanTimestamp",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "StartingEntryNumber",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "PageSize",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "MessageID",
+        "offset": 152,
         "bitfield": false
       }
     ]
