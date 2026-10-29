@@ -57,6 +57,201 @@ Use them for EE kernel and libcdvd calls (`kernel.h`: `ee_sema_t`, `CreateSema`,
 (`sceDevctl`, `sceScfGetLocalTimefromRTC`) are declared in `code/sdk/sce_missing.h`.
 Add new ones there rather than in individual files.
 
+## Medius batch 17 (2026-10-29)
+
+**730 Medius functions now compile to exact retail bytes** (663 after batch 16).
+
+Medius inventory: 730 of 1,462 INCLUDE_ASM entries replaced (49.93%).
+
+| Module | Added |
+| --- | --- |
+| `dme_client/src/Dme.c` | 18: lock/call/unlock wrappers, NetJoin/NetLeave, StreamMedia channel calls, NetConnect/NetHostPeerToPeer, send-message builders |
+| `StreamMedia/src/codec.c` | 9: DestroyCodec, InitCodec, getters, stub codec |
+| `rt_udp/src/rt_p2p.c` | 5 |
+| `MediusDList/src/MediusDPlayerList.c` (complete) | 5 |
+| `MediusClientLibrary/src/MediusClient.c` | 4: queued-request set/get, MediusSendMessage, MediusGetMySessionKey |
+| `rt_udp/src/rt_udp.c` | 4 |
+| `rt_udp/src/rt_udp_mgr.c` | 3: create, release/find channel ref |
+| `dme_client/src/DmeLocal.c` | 3: NetIGetConnectStatus, NetBitMaskToSendMask, NetGetServerIpAddress |
+| `rt_util/rt_time.c` | 3: delay, timestamp_to_msecs, timestamp_to_usecs |
+| `MediusDList/src/MediusDMetaType.c` (complete) | 2: create, getThisField |
+| `MediusDList/src/MediusDArgList.c` | 2: FindFirstFieldId_, flush |
+| `rt_libnet/ee/src/platform.c` | 2: libnetb_mem_free, libnetb_mem_align_free |
+| `StreamMedia/src/StreamMedia.c` | 2 |
+| `rt_ssl/src/SSLLib.c` | 1: ParseAlertMsg |
+| `dme_object/src/DmeObjectMessage.c` | 1: SMMigrateOrderPacketHandler |
+| `dme_client/src/DmeMessage.c` | 1: ServerVersionPacketHandler |
+| `rt_crypt/src/rt_crypt.c` | 1: KM_DeleteSymmetricKey (`int`, no `return`; `rt_crypt.h` now declares it `int`) |
+| `MediusDList/src/MediusDList.c` | 1: print___dupe2 |
+
+Tooling: `build/medius-work/addfuncs.py` + `addmod.sh` rebuild an integrated module's
+candidate from its current `.c` file plus a file of new matches, probe the whole module and
+re-integrate it. DmeLocal now uses the debug-info `RT_LINKADDRESS` (`unsigned int Addr[2]`)
+and has `ServerIP`/`ConnectStatus` in its `NetTypeConnectionInfo`.
+
+Source-shape findings:
+
+- **Separate early returns per pointer check** (`if (!a) return 2; if (!b) return 2;`).
+  This solved the "result in v0 across the arithmetic" case of `rt_time_timestamp_to_*`.
+- `rt_time_delay` jumps into the middle of its loop: `goto check;` into a `do { } while`.
+- A store written in both branches can match where one shared store does not
+  (ParseAlertMsg, InitCodec).
+- Calls through interface structs (`MediusDMetaType_I.destroy`) appear as `lw` + `jalr`.
+  Their return type matters: `void` matched where `int` did not.
+- Loop counters typed `unsigned` give retail's `sltiu`.
+
+New globals:
+
+- MediusDPlayerList: `mediusDPlayerListFields`, `mediusDPlayerListMetaType`.
+- MediusClient: `mediusQueuedJoinGameRequest`, `mediusQueuedCreateGameOnSelfRequest`.
+- rt_udp_mgr: `mediusUdpMgr`.
+- codec: `mediusStubCodecHandle`.
+- SSLLib: `mediusSSLAssertAlertMsgSize`.
+
+**Not integrated (needs a decision).** NetIGetDataStream, MyClientJoins,
+NetStreamMediaGetMyPeerIndex and the three rt_p2p `handle_*_event` functions match only when
+the called function is declared to return `short`. Their real return types are pointer, int
+and void. The narrower return type stops gcc 2.96 from making the final call a sibling call.
+That would be a fake prototype in the module, so they stay assembly.
+
+Not matchable from C: SHA1_platform, md5_platform and RC_platform are hand-written MMI
+assembly (`pextlb`/`prevh`/`ppacb`).
+
+Pinned:
+
+- `MsgClientDisconnectCallback` (3, store scheduling)
+- `NetSetDefaultStreamMediaParams` (store order)
+- `rt_udp_mgr_get_channel_ref` (registers)
+- `ArbitrateJoinPacketHandler`, `DeleteCertificate`
+- `rt_p2p_set_peer_update_bit`, `rt_p2p_notify_peers_disconnect_forwarding`
+- `rt_udp_receive_messages` (unfilled `jal` delay slot)
+- `libnetb_mem_alloc`/`libnetb_mem_align_alloc` (size argument widening)
+- rt_circ_buf `get_avail_nowrap` (6), `get_start_used_ptr` (8), `is_wrapped` (16)
+
+## Medius batch 16 (2026-10-29)
+
+**663 Medius functions now compile to exact retail bytes** (643 after batch 15).
+
+Medius inventory: 663 of 1,462 INCLUDE_ASM entries replaced (45.35%).
+
+| Module | Added |
+| --- | --- |
+| `MediusClientLibrary/src/MediusClient.c` | 12: NAT service address, processing state, client address list, queued request type, connect callback set/get/clear, MUISDisconnectCB |
+| `dme_client/src/DmeLocal.c` | 5: RemoteClientDisconnects, NetIGetValidClientCount, NetConvertTransportFlags, udp_event_cb, p2p_broadcast_update_cb |
+| `rt_comm/src/ps2/scei/rt_comm_platform.c` | 2: rt_comm_platform_destroy, rt_comm_platform_shutdown |
+| `rt_libnet/ee/src/libnet.c` | 1: CallRpc. Its two `scePrintf` strings are placed by one slot, 0x00195858–0x001958B9. |
+
+**Keeping `jal` + `jr` before the return.** Some functions end in a call that retail does
+not tail-call, while other functions in the same file do. They match when declared `int` and
+falling off the end with no `return`. Without a return value, gcc does not make the last
+call a sibling call. Ghidra calls these functions `void`:
+
+- `RemoteClientDisconnects`
+- `rt_comm_platform_destroy`
+
+Try this on the other pinned tail-call functions (rt_p2p `handle_*_event`, DmeObjectLocal
+`NetIGetDataStream`/`MyClientJoins`, `MediusSetQueuedRequest`/`MediusGetQueuedRequest`).
+
+**Mid-word slot ends, revised.** A section that starts mid-word may still hold relocated
+words further on (CallRpc's case). The splitter now writes `.align 0` after such a
+`.section`, which turns off gas's automatic `.word` alignment for that section, instead of
+rewriting words as bytes.
+
+Globals: `mediusCommInetBuffer`, `mediusCommPlatformInterfaceId`, `mediusNatServiceAddress`,
+`mediusClientAddrList`, `mediusProcessingState`, `mediusQueuedRequestType`,
+`mediusClientConnectCallback` and `mediusClientConnectCallbackArg`. For the two queued
+request functions, use `mediusQueuedJoinGameRequest` (0x001B76C0) and
+`mediusQueuedCreateGameOnSelfRequest` (0x001B7788).
+
+Pinned:
+
+- rt_comm `rt_isdigit` (gcc folds the two compares)
+- DmeLocal `NetGetClientPingInfo` (registers)
+- MediusClient `MediusSetQueuedRequest`/`MediusGetQueuedRequest` (6, the 0x12 `memcpy` is a
+  `jal` in retail)
+
+## Medius batch 15 (2026-10-29)
+
+**643 Medius functions now compile to exact retail bytes** (503 after batch 14).
+
+Medius inventory: 643 of 1,462 INCLUDE_ASM entries replaced (43.98%).
+
+| Module | Compiled (exact) |
+| --- | --- |
+| `rt_udp/src/rt_p2p.c` | 19 (getters/setters, overlay and peer queries, send_to, latency info) |
+| `rt_udp/src/rt_udp.c` | 22 (version/timeouts, connection list, listen, deny, ack, resolve callback, first sub-header) |
+| `rt_libnet/ee/src/libnet.c` | 18 (sceInet* RPC wrappers, handler registration, address waits) |
+| `rt_libnet/ee/src/libnetb.c` | 10 (sceBInet* open/send/control, block processing) |
+| `dme_object/src/DmeObjectLocal.c` | 15 (object table, callbacks, joins, update list) |
+| `rt_comm/src/ps2/scei/rt_comm_platform.c` | 13 (link-address helpers, IP conversion, local/broadcast IP) |
+| `dme_client/src/Dme.c` | 11 (default params, time, version, disconnect, errors) |
+| `StreamMedia/src/StreamMedia.c` | 10 (enable/disable, host, peer index, response handlers) |
+| `rt_ssl/src/SSLLib.c` | 10 (init/cleanup, memory hooks, alert, server hello done/finished, app data) |
+| `rt_cert/src/x509.c` | 7 (certificate list, lookup, pub-key length, encrypt) |
+| `rt_msg/src/rt_msg_client/rt_msg_client.c` | 3 |
+| `dme_object/src/DmeObjectMessage.c` | 2 |
+
+**Mid-word slot ends.** `NetGetClientVersion`'s `"%d.%02d.%04d"` (0x00195B58) ends in the
+middle of a word that is followed by 0xCD padding. The slot ends at 0x00195B65 and the
+splitter already cuts literal words there. It now also writes every literal `.word` of a
+section that starts mid-word as `.byte`. gas aligns `.word` to 4, which would otherwise
+move that section. Relocated words in such a section are refused.
+
+**rt_msg_client looks like another compiler.**
+
+- It allocates temporaries from t7/t6/t5 down. 75 Medius files with `$15` are in this
+  directory, and at most 2 in any other.
+- It never uses branch-likely and keeps copies that 2.96 drops.
+- None of ee-gcc 2.96/3.2.3, 2.9-990721, 2.9-991111 or SN 2.95.3 reproduces it at any level
+  tried.
+- Only 3 functions match. The other 84 need the right compiler first.
+
+**Tail calls are mixed within files.** Retail sometimes keeps `jal` + `jr` where 2.96
+emits a tail `j`, and other functions in the same file do tail-call. Examples:
+
+- rt_comm_platform: `destroy` vs `linkaddress_setnull`.
+- rt_p2p: the `handle_*_event` functions.
+- DmeObjectLocal: `NetIGetDataStream` and `MyClientJoins`.
+- StreamMedia: `NetStreamMediaGetMyPeerIndex`.
+
+In libnet, `sceLibnetWaitGetAddress` matches when both calls assign a result variable that is
+returned once. Try that shape on the others.
+
+Globals (see MEDIUS_GLOBALS.csv):
+
+- rt_comm_platform: `mediusCommPlatformInitialized`, `gLocalIP` (debug-info name),
+  `mediusCommBroadcastIP`, `mediusCommInetClient`.
+- rt_udp: `mediusUdpInactivityTimeout`, `mediusUdpVersionString`,
+  `mediusUdpUnexpectedPortEnabled`.
+- rt_msg_client: `mediusMsgClientMutex`.
+- DmeObjectLocal: `mediusObjectLocals`.
+- libnetb: `mediusLibnetbCidList`.
+- `__assert` strings referenced by name: `mediusSSLLibSourceFile`, `mediusSSLAssert*`,
+  `mediusX509SourceFile`, `mediusX509AssertPubKeyLen`.
+
+Source-shape findings:
+
+- Index arrays in the expression (`p->PeerInfo[i].field`). A pointer local reverses the
+  `addu` operands, as in AddSequence.
+- Ports passed as 4-byte unsigned avoid an extra `andi 0xffff`.
+- Write separate early returns in each branch instead of one shared check.
+- Store order is usually the natural or struct order (RTIP2Address).
+
+Pinned (best attempts in `build/medius-work`):
+
+- libnet: `CallRpc` (matches with its two `scePrintf` strings as externs). The strings end
+  mid-word, so they can now become literals.
+- libnet: `MemcpyD`/`MemcpyS` (7), `sceLibnetTerminate` (delay loop).
+- rt_udp: `get_pool_used`, `get_buffer_size`, `del_conn_from_list`, `get_address`.
+- rt_p2p: `process_ignore_update`/`process_overlay_type` (12-byte `ldl`/`lwl` copy order),
+  `unpack_type`, `find_free_peer_index`.
+- SSLLib: `ParseAlertMsg` (1, `bnezl`).
+- DmeObjectMessage: `SMMigrateOrderPacketHandler`, `ArbitrateJoinPacketHandler`.
+- x509: `DeleteCertificate`.
+- DmeObjectLocal: `NetIFreeAllObjects` (1, `beqzl`), `AddToObjectUpdateList`,
+  `NetIDataStreamBytesFree`.
+- StreamMedia: `GetChannelOwners`, `ClientInfoPacketHandler`.
+
 ## Medius batch 14 (2026-10-27)
 
 **503 Medius functions now compile to exact retail bytes** (435 after batch 13).
