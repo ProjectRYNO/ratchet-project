@@ -27,6 +27,8 @@ def number(s):
     except ValueError:
         return None
 
+LIKELY_BRANCHES = {'beql', 'bnel', 'beqzl', 'bnezl', 'bgezl', 'bltzl', 'bgtzl', 'blezl'}
+
 def single_word(op, args, small_symbols=()):
     a = [x.strip() for x in args.split(',')] if args else []
     if op in {'lb', 'lbu', 'lh', 'lhu', 'lw', 'lwu', 'ld', 'sb', 'sh', 'sw', 'sd'}:
@@ -67,12 +69,17 @@ def branch_word(op, args):
         return 0x10000000, a[-1]
     if op in {'beq', 'bne'} and len(a) == 3 and all(reg(x) is not None for x in a[:2]):
         return ((4 if op == 'beq' else 5) << 26) | (reg(a[0]) << 21) | (reg(a[1]) << 16), a[-1]
+    if op in {'beql', 'bnel'} and len(a) == 3 and all(reg(x) is not None for x in a[:2]):
+        return ((20 if op == 'beql' else 21) << 26) | (reg(a[0]) << 21) | (reg(a[1]) << 16), a[-1]
+    if op in {'beqzl', 'bnezl', 'bgezl', 'bltzl', 'bgtzl', 'blezl'} and len(a) == 2 and reg(a[0]) is not None:
+        base = {'beqzl': 20 << 26, 'bnezl': 21 << 26, 'bgezl': (1 << 26) | (3 << 16), 'bltzl': (1 << 26) | (2 << 16), 'bgtzl': 23 << 26, 'blezl': 22 << 26}[op]
+        return base | (reg(a[0]) << 21), a[-1]
     if op in {'beqz', 'bnez', 'bgez', 'bltz', 'bgtz', 'blez'} and len(a) == 2 and reg(a[0]) is not None:
         base = {'beqz': 4 << 26, 'bnez': 5 << 26, 'bgez': (1 << 26) | (1 << 16), 'bltz': 1 << 26, 'bgtz': 7 << 26, 'blez': 6 << 26}[op]
         return base | (reg(a[0]) << 21), a[-1]
     return None
 
-def adapt(source):
+def adapt(source, likely=False):
     # The pinned GNU assembler uses -G8. Only sized externs without offsets
     # can be proven to expand to a single GP-relative memory instruction.
     small_symbols = {name for name, size in re.findall(
@@ -98,7 +105,7 @@ def adapt(source):
     edits = {}
     diagnostics = []
     for i, (s, op, args, reorder, section) in enumerate(parsed):
-        if op not in BRANCHES:
+        if op not in BRANCHES and not (likely and op in LIKELY_BRANCHES):
             continue
         encoded = branch_word(op, args)
         if encoded is None:
@@ -149,8 +156,9 @@ def main():
     parser.add_argument('input', type=Path)
     parser.add_argument('output', type=Path)
     parser.add_argument('--verbose', action='store_true')
+    parser.add_argument('--likely', action='store_true', help='also normalize branch-likely loops (game objects)')
     args = parser.parse_args()
-    output, diagnostics = adapt(args.input.read_text())
+    output, diagnostics = adapt(args.input.read_text(), args.likely)
     args.output.write_text(output)
     print('Legacy loop profile: %d short loops normalized' %
           sum('normalized ' in item for item in diagnostics))

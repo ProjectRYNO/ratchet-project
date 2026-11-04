@@ -20,7 +20,7 @@ def rewrite(text):
     out = []
     table_counts = {}
     for line in text.splitlines(keepends=True):
-        match = re.match(r'\s*\.section\s+(\.(?:svo|iks|graph)_[^,\s]+)', line)
+        match = re.match(r'\s*\.section\s+(\.(?:svo|iks|graph|game)_[^,\s]+)', line)
         if match:
             current = match[1]
         elif re.match(r'\s*\.(?:text|data|bss)\b', line):

@@ -44,16 +44,17 @@ def normalize_assembly(text, crt0=False):
     return re.sub(r"/\*\s*\w+\s+\w+\s+(\w{8})\s*\*/\s+bgezal\s+[^\n]+", branch, text)
 
 
-def carve_rodata(text, slots):
+def carve_rodata(text, slots, base=".rodata"):
     """Move the retail bytes of each registered rodata slot into their own section.
 
-    The bytes before, between and after slots go to `.rodata` and `.rodata.after_<end>`,
-    which the linker script places around the compiled tables. The retail slot bytes go to
-    `.rodata.slot_<start>`, which is not placed (the compiled table replaces it).
+    The bytes before, between and after slots go to `<base>` and `<base>.after_<end>`, which
+    the linker script places around the compiled tables. The retail slot bytes go to
+    `<base>.slot_<start>`, which is not placed (the compiled table replaces it). The base is
+    `.rodata`, or `.data` for the data segment that holds the game's jump tables.
     """
-    bounds = sorted([(s["start"], f".rodata.slot_{s['start']:08X}") for s in slots]
-                    + [(s["end"], f".rodata.after_{s['end']:08X}") for s in slots])
-    section = ".rodata"
+    bounds = sorted([(s["start"], f"{base}.slot_{s['start']:08X}") for s in slots]
+                    + [(s["end"], f"{base}.after_{s['end']:08X}") for s in slots])
+    section = base
     label_section = {}
     out = []
     # A string pool can end within a literal word (e.g. "asinf\0" followed
@@ -92,7 +93,7 @@ def carve_rodata(text, slots):
                 if bounds[0][0] < address:
                     raise SystemExit(f"rodata slot boundary 0x{bounds[0][0]:08X} is inside a data line")
                 section = bounds.pop(0)[1]
-                out.append(f'.section {section}, "a"\n')
+                out.append(f'.section {section}, "{"aw" if base == ".data" else "a"}"\n')
         match = re.match(r"\s*dlabel\s+(\S+)", line)
         if match:
             label_section[match[1]] = section
@@ -110,7 +111,8 @@ def runtime_linker_script(text, config, replacements=None):
     replacements = replacements or {}
     rodata_lines = {}
     for obj, bounds in replacements.get("rodata", {}).items():
-        placed = [f"        build/code/{obj}.o(.rodata);"]
+        base = ".data" if obj.endswith(".data") else ".rodata"
+        placed = [f"        build/code/{obj}.o({base});"]
         for slot in sorted(bounds["slots"], key=lambda s: s["start"]):
             placed += [
                 f'        ASSERT(ABSOLUTE(.) <= 0x{slot["start"]:X}, "data overlaps {slot["section"]}");',
@@ -118,9 +120,9 @@ def runtime_linker_script(text, config, replacements=None):
                 f'        build/code/{slot["object"]}.o({slot["section"]});',
                 f'        ASSERT(ABSOLUTE(.) <= 0x{slot["end"]:X}, "{slot["section"]} exceeds its original allocation");',
                 f'        . = ABSOLUTE(0x{slot["end"]:X});',
-                f'        build/code/{obj}.o(.rodata.after_{slot["end"]:08X});',
+                f'        build/code/{obj}.o({base}.after_{slot["end"]:08X});',
             ]
-        rodata_lines[f"        build/code/{obj}.o(.rodata*);"] = placed
+        rodata_lines[f"        build/code/{obj}.o({base}*);"] = placed
     # Splat's AT(ROM offset) is for ROM images. A PS2 ELF needs physical load
     # addresses equal to virtual addresses, with two independent PT_LOADs.
     text = re.sub(r" AT\([^)]*\)", "", text)
@@ -201,7 +203,7 @@ def main():
         normalized = normalize_assembly(original, path.name == "crt0.s")
         relative = path.relative_to(root / opts["src_path"]).with_suffix("").as_posix()
         if relative in replacements.get("rodata", {}):
-            normalized = carve_rodata(normalized, replacements["rodata"][relative]["slots"])
+            normalized = carve_rodata(normalized, replacements["rodata"][relative]["slots"], ".data" if relative.endswith(".data") else ".rodata")
         if normalized != original:
             path.write_text(normalized, newline="\n")
     linker = root / opts["ld_script_path"]

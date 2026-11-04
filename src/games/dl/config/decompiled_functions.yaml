@@ -91,6 +91,9 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  InBootUpTopPage: 0x00496308
+  GetFormattedPlanetName: 0x00496310
+  WrapValue: 0x004FE948
   SetGsCrt: 0x001267A0
   _Exit: 0x001267C0
   _LoadExecPS2: 0x001267E0
@@ -2316,6 +2319,22 @@ objects:
       - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixZ, start: 0x0013C518, end: 0x0013C5C0}
       - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixX, start: 0x0013C5C0, end: 0x0013C668}
       - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixY, start: 0x0013C668, end: 0x0013C710}
+  game/pause:
+    text_start: 0x00496308
+    text_end: 0x004963C4
+    slots:
+      - {object: game/pause, section: .game_InBootUpTopPage, start: 0x00496308, end: 0x00496310}
+      - {object: game/pause, section: .game_GetFormattedPlanetName, start: 0x00496310, end: 0x004963C4}
+  game/mathutil:
+    text_start: 0x004FE4E8
+    text_end: 0x004FE9A0
+    slots:
+      - {object: game/mathutil, section: .game_VecSlerp, start: 0x004FE4E8, end: 0x004FE840}
+      - {object: game/mathutil, section: .game_func_004FE840, start: 0x004FE840, end: 0x004FE850}
+      - {object: game/mathutil, section: .game_GetVectorSphere, start: 0x004FE850, end: 0x004FE8D8}
+      - {object: game/mathutil, section: .game_GetVectorCircle, start: 0x004FE8D8, end: 0x004FE930}
+      - {object: game/mathutil, section: .game_func_004FE930, start: 0x004FE930, end: 0x004FE948}
+      - {object: game/mathutil, section: .game_WrapValue, start: 0x004FE948, end: 0x004FE9A0}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -4243,6 +4262,9 @@ objects:
 # each slot is exactly the retail table or constant-pool extent. Compiled read-only
 # data is placed there and checked byte-for-byte by the owning library verifier.
 rodata:
+  asm/build/data.data:
+    slots:
+      - {object: game/pause, function: GetFormattedPlanetName, section: .game_GetFormattedPlanetName.rodata, start: 0x003D1160, end: 0x003D11C4}
   asm/build/core.data/091E80.rodata:
     slots:
       - {object: sdk/graph/libgraph, function: sceGsSetDefLoadImage, section: .graph_sceGsSetDefLoadImage.rodata, start: 0x00194B30, end: 0x00194C1C}

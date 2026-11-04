@@ -353,6 +353,18 @@ $(OBJ_DIR)/iksemel/%.o: code/iksemel/%.c
 	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
 	$(EEAS296) $(IKSEMEL_AS_FLAGS) $(@:.o=.s) -o $@
 
+# Game objects are SN ProDG GCC 2.95.3 v1.36 (see DOCS/libraries/GAME.md). Objects join this list one at a
+# time once their functions have registered slots; all others stay assembly-only through the generic rule.
+GAME_SN_NAMES = pause mathutil
+GAME_COMPILE_FLAGS = -G8 -O2 -fopt-stack -mno-check-zero-division -fno-exceptions
+GAME_SN_OBJS = $(GAME_SN_NAMES:%=$(OBJ_DIR)/game/%.o)
+$(GAME_SN_OBJS): $(OBJ_DIR)/game/%.o: code/game/%.cpp Makefile code/include/game_section.h $(TOOLS)/sound_loop_compat.py $(TOOLS)/svo3_rodata_sections.py
+	@$(MKDIR) -p $(dir $@)
+	$(EESN136) -x c++ -S $(GAME_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/sound_loop_compat.py --likely $(@:.o=.s) $(@:.o=.compat.s)
+	$(EEAS_SN136) -EL -G8 -g -Icode/include $(@:.o=.compat.s) -o $@
+
 $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGXX) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
