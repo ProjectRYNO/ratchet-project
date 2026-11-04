@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**292/387 identified boot SDK functions (75.45%) are now byte-exact** (plus 55 untracked helpers) (see
+**310/387 identified boot SDK functions (80.10%) are now byte-exact** (plus 55 untracked helpers) (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -108,11 +108,24 @@ Store orders that resist reasoning can be swept with `build/svo-library-work/b/p
 - D15 and D16 in `docs/decompilation/DECISIONS.md` allow small fragments in otherwise-C functions: `$gp` reads, swaps and restores, `sync`, `ei`, `mfc0 $12`, and a `cfc2` status read. `sbrk` also uses single-instruction `di` and `sync.p`. Pure syscall stubs stay `INCLUDE_ASM`.
 - `$gp` swaps stay as one two-instruction asm statement (`changeGp`, `LOAD_GP`). Splitting them loses the match.
 - libgraph now runs `svo3_rodata_sections.py`: jump tables get `.graph_<fn>.rodata`, filling slots 0x00194B30..0x00194C1C (`sceGsSetDefLoadImage`) and 0x00194D40..0x00194E2C (`sceGsExecStoreImage`).
-- `sceGsSyncPath` moved from `lib_after_kernel` to its own object, `sdk/graph/libgspath`, at 0x00131A08. `sceGsResetPath` stays assembly: its `ctc2` writes and wait loop exceed D16.
+- `sceGsSyncPath` moved from `lib_after_kernel` to its own object, `sdk/graph/libgspath`, at 0x00131A08.
 - Store-order misses often come from alias classes, not statement order. `sceSifInitCmd`, `scePadInit2` and `sceSifMUnBindRpc` needed individual stores through `int`/pointer views, and `sceFsInit` needed `fsPoffData_t`'s first field to be a pointer. The compare tool masks relocations and sees test-file prototypes, so only the 726-byte checkpoint proves a match: `sceSifGetReg(int)` cost 22 words in `sceSifInitCmd` until it became `unsigned int`.
-- D17 allows `InitTLB32MB` and `iWakeupThread` beyond D16. `SetT2`, `iGetTimerSystemTime` and `GetTimerSystemTime` also match with more asm, but were declined and stay assembly.
+- D17 allows `InitTLB32MB` and `iWakeupThread` beyond D16. D18, below, covers the larger asm conversions.
 
 
+## Reaching 80% (2026-11-04)
+
+310/387 includes functions converted under D18, which are mostly asm inside a C wrapper. They raise the percentage without adding recovered C logic:
+
+- **Essentially all asm:** `sceVu0UnitMatrix`, `sceVu0RotMatrixX`, `sceVu0RotMatrixY`, `sceVu0RotMatrixZ`, `_sceSDC`, `_sceIDC`, `sceSifWriteBackDCache`.
+- **C with a large asm block:** `DIntr`, `StartThread`, `sceGsResetPath`, `frombcd`, `SetT2`, `GetTimerSystemTime`.
+- **Recovered C this round (no D18):** `_send_to_iop`, `sceCdPOffCallback`, `_sceSifCmdIntrHdlr`, `QueryIntrContext`, `EIntr`.
+
+Layout: `sceGsResetPath` joined `sceGsSyncPath` in `sdk/graph/libgspath` (now from 0x00131968). The VU0 routines moved to the new `sdk/vu0/libvu0` (0x0013C478..0x0013C710), where `_sceVu0ecossin` stays retained assembly. `lib_after_pad` now starts at `func_0013C710`.
+
+What is left: 66 pure syscall stubs (retained by decision), `iGetTimerSystemTime` (one asm block, not needed), `_kExitTLBHandler` (GCC always appends a return that overflows its slot), and these near-misses in words differing: `sceCdInit` 4, `sceLseek` 5, `scePadPortOpen` 5, `_sceFs_Rcv_Intr` 7, `sceGsSetDefDispEnv` 13, `sceRead` 14, `sceWrite` 83, `sceMpegDemuxPssRing` 127, `_sceSnprintf` 724.
+
+## Broader runtime inventory
 
 The [SDK folder map](../../code/sdk/README.md) lists the additional boot runtime
 components still in the game library aggregates. The [version/source survey](SDK_LAYOUT.md)
@@ -322,6 +335,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **292/387 identified functions (75.45%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **310/387 identified functions (80.10%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

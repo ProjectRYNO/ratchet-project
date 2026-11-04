@@ -13,6 +13,7 @@ functions:
   scePadEnd: 0x0013B460
   scePadPortClose: 0x0013B810
   scePadGetDmaStr: 0x0013B8C8
+  _send_to_iop: 0x0013B510
   scePadInit2: 0x0013B368
   _pad_intr_hdr: 0x0013B320
   scePadInfoPressMode: 0x0013C190
@@ -46,6 +47,18 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  sceCdPOffCallback: 0x001370F8
+  SetT2: 0x0012DB90
+  GetTimerSystemTime: 0x0012E370
+  frombcd: 0x00155760
+  DIntr: 0x0012D420
+  StartThread: 0x00127AD0
+  _sceSDC: 0x00127390
+  _sceIDC: 0x001274C0
+  sceSifWriteBackDCache: 0x00129CE0
+  QueryIntrContext: 0x001275F0
+  EIntr: 0x0012D470
+  _sceSifCmdIntrHdlr: 0x00129B98
   sceFsInit: 0x0012B068
   sceSifMUnBindRpc: 0x00155FE0
   sceSifInitCmd: 0x00129660
@@ -75,6 +88,11 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  sceGsResetPath: 0x00131968
+  sceVu0UnitMatrix: 0x0013C478
+  sceVu0RotMatrixZ: 0x0013C518
+  sceVu0RotMatrixX: 0x0013C5C0
+  sceVu0RotMatrixY: 0x0013C668
   sceSifMCallRpc: 0x00156120
   sceMpegAddStrCallback: 0x00146390
   _sceSifSendCmd: 0x001299E0
@@ -2215,10 +2233,20 @@ objects:
       - {object: sdk/mpeg/libmpeg, section: .mpeg_setD4_CHCR___dupe2, start: 0x00146A60, end: 0x00146AD8}
       - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuInit, start: 0x00146AD8, end: 0x00146D10}
   sdk/graph/libgspath:
-    text_start: 0x00131A08
+    text_start: 0x00131968
     text_end: 0x00131A90
     slots:
+      - {object: sdk/graph/libgspath, section: .gspath_sceGsResetPath, start: 0x00131968, end: 0x00131A08}
       - {object: sdk/graph/libgspath, section: .gspath_sceGsSyncPath, start: 0x00131A08, end: 0x00131A90}
+  sdk/vu0/libvu0:
+    text_start: 0x0013C478
+    text_end: 0x0013C710
+    slots:
+      - {object: sdk/vu0/libvu0, section: .vu0_sceVu0UnitMatrix, start: 0x0013C478, end: 0x0013C4A0}
+      - {object: sdk/vu0/libvu0, section: .vu0__sceVu0ecossin, start: 0x0013C4A0, end: 0x0013C518}
+      - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixZ, start: 0x0013C518, end: 0x0013C5C0}
+      - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixX, start: 0x0013C5C0, end: 0x0013C668}
+      - {object: sdk/vu0/libvu0, section: .vu0_sceVu0RotMatrixY, start: 0x0013C668, end: 0x0013C710}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390

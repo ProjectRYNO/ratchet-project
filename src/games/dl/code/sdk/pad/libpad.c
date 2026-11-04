@@ -125,7 +125,35 @@ int PAD_SECTION(scePadEnd) scePadEnd(void)
 	return result;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/pad/libpad", _send_to_iop);
+int PAD_SECTION(_send_to_iop) _send_to_iop(int port, int slot)
+{
+	padDmaTransfer_t transfer[16];
+	int *send = sdkPadSlots[port][slot].send;
+	int count;
+	unsigned int dest;
+	unsigned int id;
+	if (sdkPadSlots[port][slot].dmaId) {
+		if (sceSifDmaStat(sdkPadSlots[port][slot].dmaId) >= 0) {
+			if (sdkPadDebug) scePrintf(sdkPadSendError);
+			return 0;
+		}
+	}
+	count = send[0] + 1;
+	dest = sdkPadSlots[port][slot].iop + ((count & 1) << 5);
+	send[0] = count;
+	SyncDCache(send, (char *)send + 0x1f);
+	transfer[0].dest = (void *)dest;
+	transfer[0].src = send;
+	transfer[0].size = 0x20;
+	transfer[0].attr = 0;
+	id = sceSifSetDma(transfer, 1);
+	if (!id) {
+		if (sdkPadDebug) scePrintf(sdkPadSendError);
+		return 0;
+	}
+	sdkPadSlots[port][slot].dmaId = id;
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/pad/libpad", scePadPortOpen);
 

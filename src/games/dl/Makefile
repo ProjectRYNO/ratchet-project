@@ -180,6 +180,11 @@ $(OBJ_DIR)/sdk/graph/libgspath.o: code/sdk/graph/libgspath.c Makefile | ee-gcc29
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
+$(OBJ_DIR)/sdk/vu0/libvu0.o: code/sdk/vu0/libvu0.c Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
 $(OBJ_DIR)/sdk/cdvd/libcdvd.o: code/sdk/cdvd/libcdvd.c code/sdk/cdvd/libcdvd.h Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)

@@ -19,6 +19,52 @@ extern int sdkSifSreg[32];
 extern int sdkSifRpcInitialized;
 extern sifCmdData_t sdkSifCmd;
 extern int sdkSifCmdHandlerId;
+/* D18: walks both ways of each data-cache index; `op` is the cache operation for lines in range. */
+#define DCACHE_RANGE_LOOP(op) \
+	".set noreorder\n" \
+	"\tlui $7, 0xffff\n" \
+	"\tdaddu $6, $0, $0\n" \
+	"\tori $7, $7, 0xf000\n" \
+	"\tnop\n" \
+	"1:\n" \
+	"\tsync\n" \
+	"\tcache 0x10, 0x0($6)\n" \
+	"\tsync\n" \
+	"\tmfc0 $2, $28\n" \
+	"\tand $2, $2, $7\n" \
+	"\taddu $2, $2, $6\n" \
+	"\tsltu $3, $5, $2\n" \
+	"\tsltu $2, $2, $4\n" \
+	"\tbnez $2, 2f\n" \
+	"\tnop\n" \
+	"\tbnez $3, 2f\n" \
+	"\tnop\n" \
+	"\tsync\n" \
+	"\tcache " op ", 0x0($6)\n" \
+	"\tsync\n" \
+	"2:\n" \
+	"\tsync\n" \
+	"\tcache 0x10, 0x1($6)\n" \
+	"\tsync\n" \
+	"\tmfc0 $2, $28\n" \
+	"\tand $2, $2, $7\n" \
+	"\taddu $2, $2, $6\n" \
+	"\tsltu $3, $5, $2\n" \
+	"\tsltu $2, $2, $4\n" \
+	"\tbnez $2, 3f\n" \
+	"\tnop\n" \
+	"\tbnez $3, 3f\n" \
+	"\tnop\n" \
+	"\tsync\n" \
+	"\tcache " op ", 0x1($6)\n" \
+	"\tsync\n" \
+	"3:\n" \
+	"\tsync\n" \
+	"\taddiu $6, $6, 0x40\n" \
+	"\tslti $2, $6, 0x1000\n" \
+	"\tbnez $2, 1b\n" \
+	"\tnop\n" \
+	".set reorder"
 extern int sdkSifCmdInitialized;
 extern int sdkFsInitialized;
 extern int sdkFsResetFlags[1];
@@ -263,7 +309,8 @@ extern sifCmdChangeAddrPkt_t sdkSifCmdInitPacket;
 extern sifCmdHandler_t sdkSifCmdSysHandlers[32];
 extern void sceSifSetDChain(void);
 extern int AddDmacHandler(int, void *, int);
-extern int _sceSifCmdIntrHdlr(int);
+extern int _sceSifCmdIntrHdlr(void);
+extern int isceSifSetDChain(void);
 extern fsInitRequest_t sdkFsInitRequest;
 extern char sdkFsBuffer[];
 extern int sdkFsRcvData[16];
@@ -271,6 +318,9 @@ extern fsPoffData_t sdkFsPoffData;
 extern int sdkFsIsNew;
 extern void _sceFs_Rcv_Intr(void *, void *);
 extern void _sceFs_Poff_Intr(void *, fsPoffData_t *);
+extern int ReferThreadStatus(int, threadStat_t *);
+extern int _StartThread(int, void *);
+extern int QueryIntrContext(void);
 char *_sceRpcGetFPacket(sifRpcData_t *rpc);
 void _sceFsSemInit(void);
 void _sceFsIobSemaMK(void);
@@ -670,7 +720,10 @@ int KERNEL_SECTION(stat) stat(const char *name, kernelStat_t *st)
 	return -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceSDC);
+void KERNEL_SECTION(_sceSDC) _sceSDC(unsigned int start, unsigned int end)
+{
+	__asm__ volatile(DCACHE_RANGE_LOOP("0x14"));
+}
 
 void KERNEL_SECTION(SyncDCache) SyncDCache(void *start, void *end)
 {
@@ -684,7 +737,10 @@ void KERNEL_SECTION(SyncDCache) SyncDCache(void *start, void *end)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_001274B8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceIDC);
+void KERNEL_SECTION(_sceIDC) _sceIDC(unsigned int start, unsigned int end)
+{
+	__asm__ volatile(DCACHE_RANGE_LOOP("0x16"));
+}
 
 void KERNEL_SECTION(InvalidDCache) InvalidDCache(void *start, void *end)
 {
@@ -698,7 +754,12 @@ void KERNEL_SECTION(InvalidDCache) InvalidDCache(void *start, void *end)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_001275E8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", QueryIntrContext);
+int KERNEL_SECTION(QueryIntrContext) QueryIntrContext(void)
+{
+	int status;
+	GET_STATUS(status);
+	return (status ^ 1) & 1;
+}
 
 int KERNEL_SECTION(DisableIntc) DisableIntc(int channel)
 {
@@ -848,7 +909,48 @@ int KERNEL_SECTION(DelayThread) DelayThread(int usec)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", StartThread);
+int KERNEL_SECTION(StartThread) StartThread(int id, void *arg)
+{
+	threadStat_t st;
+	char *ctx;
+	int ret;
+	if (QueryIntrContext()) return -1;
+	if (!DIntr()) return -1;
+	ret = ReferThreadStatus(id, &st);
+	if (ret < 0) {
+		EIntr();
+		return ret;
+	}
+	if (st.status != 0x10) {
+		EIntr();
+		return -1;
+	}
+	ctx = st.stack + st.stackSize - 0x2a0;
+	/* Clear the saved thread context, then seed $a0 and the low words of the saved $gp..$ra. */
+	__asm__ volatile(
+		".irp off,0x0,0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80,0x90,0xa0,0xb0,0xc0,0xd0,0xe0,0xf0,0x100,0x110,0x120,0x130,0x140,0x150,0x160,0x170,0x180,0x190,0x1a0,0x1b0,0x200,0x210,0x220,0x230,0x240,0x250,0x260,0x270\n"
+		"\tsq $0, \\off(%0)\n"
+		".endr\n"
+		"\tsll $8, %1, 0\n"
+		"\tsd $8, 0x40(%0)\n"
+		"\tlw $8, 0x1c0(%0)\n"
+		"\tsd $8, 0x1c0(%0)\n"
+		"\tsd $0, 0x1c8(%0)\n"
+		"\tlw $8, 0x1d0(%0)\n"
+		"\tsd $8, 0x1d0(%0)\n"
+		"\tsd $0, 0x1d8(%0)\n"
+		"\tlw $8, 0x1e0(%0)\n"
+		"\tsd $8, 0x1e0(%0)\n"
+		"\tsd $0, 0x1e8(%0)\n"
+		"\tlw $8, 0x1f0(%0)\n"
+		"\tsd $8, 0x1f0(%0)\n"
+		"\tsd $0, 0x1f8(%0)\n"
+		".set noreorder\n.set reorder"
+		: : "r"(ctx), "r"(arg) : "$8", "memory");
+	EIntr();
+	ret = _StartThread(id, arg);
+	return ret;
+}
 
 int KERNEL_SECTION(_DelayThreadHandler) _DelayThreadHandler(int id, int scheduled, int actual, void *arg)
 {
@@ -1366,9 +1468,114 @@ int KERNEL_SECTION(isceSifSendCmd) isceSifSendCmd(int cid, void *packet, int siz
 	return _sceSifSendCmd(cid, 1, packet, size, src, dest, length);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _sceSifCmdIntrHdlr);
+/* $2 is not written; the clobber only keeps the new $gp out of it, as retail allocates it (fake match). */
+static inline int changeGpLoad(int gp)
+{
+	int old;
+	__asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory", "$2");
+	return old;
+}
+static inline void cmdQcopy(sifQword *to, sifQword *from, int n)
+{
+	int i;
+	for (i = 0; i < n; i++) {
+		to[i] = *from++;
+	}
+}
+int KERNEL_SECTION(_sceSifCmdIntrHdlr) _sceSifCmdIntrHdlr(void)
+{
+	sifQword buf[7];
+	sifCmdData_t *cmd = &sdkSifCmd;
+	volatile sifCmdIntrPkt_t *src = cmd->packetBuffer;
+	int size = src->size;
+	sifQword *from, *to;
+	int old;
+	void (*func)(void *, void *);
+	sifCmdHandler_t *h;
+	int gp;
+	void *data;
+	if (!size) return 0;
+	size = (size + 15) / 16;
+	src->size = 0;
+	cmdQcopy(buf, (sifQword *)src, size);
+	isceSifSetDChain();
+	if (((volatile sifCmdIntrPkt_t *)buf)->cid < 0) {
+		size = ((volatile sifCmdIntrPkt_t *)buf)->cid & 0x7fffffff;
+		if (size < cmd->sysCount) {
+			func = cmd->sysHandlers[size].func;
+			if (func) {
+				gp = cmd->sysHandlers[size].gp; old = changeGpLoad(gp);
+				h = cmd->sysHandlers; data = h[size].data; func(buf, data);
+				changeGp(old);
+			}
+		}
+	} else {
+		size = ((volatile sifCmdIntrPkt_t *)buf)->cid;
+		if (size < cmd->usrCount) {
+			func = cmd->usrHandlers[size].func;
+			if (func) {
+				gp = cmd->usrHandlers[size].gp; old = changeGpLoad(gp);
+				h = cmd->usrHandlers; data = h[size].data; func(buf, data);
+				changeGp(old);
+			}
+		}
+	}
+	SYNC();
+	EI();
+	return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", sceSifWriteBackDCache);
+void KERNEL_SECTION(sceSifWriteBackDCache) sceSifWriteBackDCache(void *addr, int size)
+{
+	__asm__ volatile(
+		".set noreorder\n"
+		"\tlui $25, 0xffff\n"
+		"\tori $25, $25, 0xffc0\n"
+		"\tblez $5, 9f\n"
+		"\taddu $10, $4, $5\n"
+		"\tand $8, $4, $25\n"
+		"\taddiu $10, $10, -1\n"
+		"\tand $9, $10, $25\n"
+		"\tsubu $10, $9, $8\n"
+		"\tsrl $11, $10, 6\n"
+		"\taddiu $11, $11, 1\n"
+		"\tandi $9, $11, 7\n"
+		"\tbeqz $9, 2f\n"
+		"\tsrl $10, $11, 3\n"
+		"1:\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x0($8)\n"
+		"\tsync\n"
+		"\tnop\n"
+		"\taddiu $9, $9, -1\n"
+		"\tbgtz $9, 1b\n"
+		"\taddiu $8, $8, 0x40\n"
+		"2:\n"
+		"\tbeqz $10, 9f\n"
+		"3:\n"
+		"\taddiu $10, $10, -1\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x0($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x40($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x80($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0xc0($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x100($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x140($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x180($8)\n"
+		"\tsync\n"
+		"\tcache 0x18, 0x1c0($8)\n"
+		"\tsync\n"
+		"\tbgtz $10, 3b\n"
+		"\taddiu $8, $8, 0x200\n"
+		"9:\n"
+		".set reorder");
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_00129D8C);
 
@@ -2396,9 +2603,39 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", _kExitTLBHandler);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", DIntr);
+int KERNEL_SECTION(DIntr) DIntr(void)
+{
+	int status, result;
+	__asm__ volatile("mfc0 %0, $12\n\tlui $2, 1\n\tand %0, %0, $2" : "=r"(status) : : "$2");
+	result = status != 0;
+	if (status) {
+		__asm__ volatile(
+			".set noreorder\n"
+			".p2align 3\n"
+			"1:\n"
+			"\tdi\n"
+			"\tsync.p\n"
+			"\tmfc0 $2, $12\n"
+			"\tlui $3, 1\n"
+			"\tand $2, $2, $3\n"
+			"\tnop\n"
+			"\tnop\n"
+			"\tbnez $2, 1b\n"
+			"\tnop\n"
+			".set reorder"
+			: : : "$2", "$3");
+	} else result = 0;
+	return result;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", EIntr);
+int KERNEL_SECTION(EIntr) EIntr(void)
+{
+	int status;
+	GET_STATUS(status);
+	status &= 0x10000;
+	EI();
+	return status != 0;
+}
 
 void KERNEL_SECTION(supplement_crt0) supplement_crt0(void)
 {
@@ -2606,7 +2843,23 @@ void KERNEL_SECTION(InitAlarm) InitAlarm(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", func_0012DB8C);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", SetT2);
+void KERNEL_SECTION(SetT2) SetT2(volatile int *address, int value)
+{
+	int status;
+	int current;
+	GET_STATUS(status);
+	status &= 0x10000;
+	if (status) {
+		do {
+			__asm__ volatile("di\n\tsync.p\n\tmfc0 %0, $12" : "=r"(current));
+		} while (current & 0x10000);
+	}
+	__asm__ volatile("mfc0 %0, $12\n\tsync.p" : "=r"(current));
+	current = ((current | 6) ^ 2) | status;
+	__asm__ volatile("mtc0 %0, $12\n\tsync.p" : : "r"(current));
+	*address = value;
+	__asm__ volatile(".set noreorder\n\tmtc0 $31, $30\n\tsync.p\n\teret\n\t.set reorder");
+}
 
 void KERNEL_SECTION(SetT2_COUNT) SetT2_COUNT(int value)
 {
@@ -2784,7 +3037,37 @@ int KERNEL_SECTION(cbTimerHandler) cbTimerHandler(int cause, void *arg, void *co
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", iGetTimerSystemTime);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/kernel/libkernel", GetTimerSystemTime);
+/* D18: retail reads the timer through hand-written asm with fixed scratch registers. */
+#define READ_TIME(t) __asm__ volatile( \
+	".set noreorder\n" \
+	"lui $3, 0x1000\n" \
+	"lui $4, %%hi(sdkTimer)\n" \
+	"ori $3, $3, 0x1000\n" \
+	"lwu %0, 0($3)\n" \
+	"lw $8, 0x10($3)\n" \
+	"ld $10, %%lo(sdkTimer)($4)\n" \
+	"andi $9, $8, 0x800\n" \
+	"beqz $9, 1f\n" \
+	"addiu $9, $0, 2\n" \
+	"lwu %0, 0($3)\n" \
+	"daddiu $10, $10, 1\n" \
+	"1:\n" \
+	"andi $8, $8, 3\n" \
+	"dsll $10, $10, 16\n" \
+	"movz $9, $0, $8\n" \
+	"or %0, %0, $10\n" \
+	"dsllv $9, $9, $8\n" \
+	"dsllv %0, %0, $9\n" \
+	".set reorder\n" \
+	: "=r"(t) : : "$3", "$4", "$8", "$9", "$10")
+unsigned long KERNEL_SECTION(GetTimerSystemTime) GetTimerSystemTime(void)
+{
+	int intr = DIntr();
+	unsigned long t;
+	READ_TIME(t);
+	if (intr) EIntr();
+	return t;
+}
 
 int KERNEL_SECTION(iAllocTimerCounter) iAllocTimerCounter(void)
 {

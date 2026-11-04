@@ -1,12 +1,12 @@
 {
   "scope": "Identified named SDK functions in retail boot ELF, including verified SDK C helpers; incomplete inventory, not all SDK code",
   "tracked_functions": 387,
-  "compiled_matching_functions": 292,
-  "compiled_matching_percent": 75.45,
+  "compiled_matching_functions": 310,
+  "compiled_matching_percent": 80.1,
   "groups": {
     "CD/DVD": {
       "tracked": 14,
-      "compiled_matching": 12
+      "compiled_matching": 13
     },
     "DMA": {
       "tracked": 8,
@@ -22,15 +22,15 @@
     },
     "SIF": {
       "tracked": 50,
-      "compiled_matching": 43
+      "compiled_matching": 44
     },
     "VU0": {
       "tracked": 4,
-      "compiled_matching": 0
+      "compiled_matching": 4
     },
     "configuration": {
       "tracked": 16,
-      "compiled_matching": 15
+      "compiled_matching": 16
     },
     "file I/O": {
       "tracked": 18,
@@ -38,11 +38,11 @@
     },
     "graphics": {
       "tracked": 15,
-      "compiled_matching": 13
+      "compiled_matching": 14
     },
     "kernel/runtime": {
       "tracked": 180,
-      "compiled_matching": 108
+      "compiled_matching": 117
     },
     "memory card": {
       "tracked": 17,
@@ -58,7 +58,7 @@
     },
     "pad": {
       "tracked": 22,
-      "compiled_matching": 20
+      "compiled_matching": 21
     }
   },
   "excluded": "Unnamed/unclassified entries, instruction fragments, overlays, libc/libm/libgcc, Medius/SVO3 and other third-party libraries"

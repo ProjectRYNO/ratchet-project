@@ -169,7 +169,20 @@ void CD_SECTION(cdvd_exit) cdvd_exit(void)
 	if (intr) EIntr();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdPOffCallback);
+void *CD_SECTION(sceCdPOffCallback) sceCdPOffCallback(void (*func)(int), int arg)
+{
+	void (*old)(int);
+	int intr;
+	if (sdkCdPoffInit < 0) PowerOffCB();
+	intr = DIntr();
+	old = sdkCdPoffFunc;
+	sdkCdPoffArg = arg;
+	sdkCdPoffFunc = func;
+	/* D16: retail stores $gp directly, after the other two stores. */
+	__asm__ volatile("sw $28, %0" : "=m"(sdkCdPoffGp));
+	if (intr) EIntr();
+	return old;
+}
 
 void CD_SECTION(_sceCd_Poff_Intr) _sceCd_Poff_Intr(void *pkt, void *data)
 {

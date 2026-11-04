@@ -120,7 +120,13 @@ unsigned char SCF_SECTION(tobcd) tobcd(unsigned char value)
 	return value + (value / 10) * 6;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/scf/libscf", frombcd);
+unsigned char SCF_SECTION(frombcd) frombcd(unsigned char bcd)
+{
+	int t = bcd >> 4;
+	/* Retail's three-operand mult with rd = $0, reading the result back through mflo. */
+	__asm__ volatile("addiu $4, $0, 6\n\tmult $0, %0, $4\n\tmflo %0" : "=r"(t) : "0"(t) : "$4", "hi", "lo");
+	return bcd - t;
+}
 
 void SCF_SECTION(convertfrombcd) convertfrombcd(scfClock_t *clock)
 {

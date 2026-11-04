@@ -378,6 +378,25 @@ typedef struct fsVersion {
 	/* 0x00 */ char data[4];
 } fsVersion_t;
 
+typedef unsigned int sifQword __attribute__((mode(TI)));
+
+/* Head of a received SIF command packet; the size field is written back to mark it consumed. */
+typedef struct sifCmdIntrPkt {
+	/* 0x00 */ unsigned int size:8;
+	unsigned int dsize:24;
+	/* 0x04 */ int unk04;
+	/* 0x08 */ int cid;
+} sifCmdIntrPkt_t;
+
+/* Thread status from ReferThreadStatus; only the fields StartThread reads are named. */
+typedef struct threadStat {
+	/* 0x00 */ int status;
+	/* 0x04 */ void *func;
+	/* 0x08 */ char *stack;
+	/* 0x0c */ int stackSize;
+	/* 0x10 */ int unk10[8];
+} threadStat_t;
+
 /* Reboot notification handler entry. */
 typedef struct sifNotifyHandler {
 	/* 0x00 */ void *func;

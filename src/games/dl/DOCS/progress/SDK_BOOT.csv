@@ -63,11 +63,11 @@ sbrk,0x00127298,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byt
 fstat,0x00127348,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 getpid,0x00127360,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 stat,0x00127368,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-_sceSDC,0x00127390,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceSDC,0x00127390,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 SyncDCache,0x00127438,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-_sceIDC,0x001274C0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_sceIDC,0x001274C0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 InvalidDCache,0x00127568,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-QueryIntrContext,0x001275F0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+QueryIntrContext,0x001275F0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 DisableIntc,0x00127600,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 EnableIntc,0x00127668,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 DisableDmac,0x001276D0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -76,7 +76,7 @@ topThread,0x001277A0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matchin
 InitThread,0x00127878,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 iWakeupThread,0x00127968,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 DelayThread,0x00127A08,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-StartThread,0x00127AD0,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+StartThread,0x00127AD0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 _DelayThreadHandler,0x00127C48,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceDeci2Open,0x00127C70,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceDeci2ReqSend,0x00127CC0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -115,8 +115,8 @@ sceSifRemoveCmdHandler,0x00129990,SIF,code/sdk/kernel/libkernel.c,compiled_match
 _sceSifSendCmd,0x001299E0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceSifSendCmd,0x00129B18,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 isceSifSendCmd,0x00129B58,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-_sceSifCmdIntrHdlr,0x00129B98,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
-sceSifWriteBackDCache,0x00129CE0,SIF,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+_sceSifCmdIntrHdlr,0x00129B98,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
+sceSifWriteBackDCache,0x00129CE0,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceSifInitRpc,0x00129D90,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceSifExitRpc,0x00129F30,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 _sceRpcGetPacket,0x00129F58,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -181,8 +181,8 @@ _SetTLBEntry,0x0012D048,kernel/runtime,code/game/lib.cpp,assembly,named assembly
 InitTLB,0x0012D058,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 InitTLB32MB,0x0012D098,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 _kExitTLBHandler,0x0012D300,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
-DIntr,0x0012D420,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
-EIntr,0x0012D470,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+DIntr,0x0012D420,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
+EIntr,0x0012D470,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 supplement_crt0,0x0012D488,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 kCopy___dupe2,0x0012D4F0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 kFindAddress,0x0012D528,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -208,7 +208,7 @@ Copy___dupe4,0x0012DA60,kernel/runtime,code/game/lib.cpp,assembly,named assembly
 kCopy___dupe5,0x0012DA70,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 GetEntryAddress___dupe3,0x0012DAA8,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
 InitAlarm,0x0012DAB8,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-SetT2,0x0012DB90,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+SetT2,0x0012DB90,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 SetT2_COUNT,0x0012DC00,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 SetT2_MODE,0x0012DC10,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 SetT2_COMP,0x0012DC20,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -219,7 +219,7 @@ InsertAlarm,0x0012DFB8,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_match
 UnlinkAlarm,0x0012E040,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 cbTimerHandler,0x0012E078,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 iGetTimerSystemTime,0x0012E320,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
-GetTimerSystemTime,0x0012E370,kernel/runtime,code/game/lib.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+GetTimerSystemTime,0x0012E370,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 iAllocTimerCounter,0x0012E3F0,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 AllocTimerCounter,0x0012E460,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 iFreeTimerCounter,0x0012E4A8,kernel/runtime,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -238,10 +238,10 @@ sceSifInitRebootNotify,0x0012EC40,SIF,code/sdk/kernel/libkernel.c,compiled_match
 sceSifAddRebootNotifyHandler,0x0012EC70,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceSifRemoveRebootNotifyHandler,0x0012ED28,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceSifExecNotifyHandler,0x0012ED80,SIF,code/sdk/kernel/libkernel.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-sceGsResetPath,0x00131968,graphics,code/game/lib.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceGsResetPath,0x00131968,graphics,code/sdk/graph/libgspath.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceGsSyncPath,0x00131A08,graphics,code/sdk/graph/libgspath.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceCdCallback,0x00136DA8,CD/DVD,code/sdk/cdvd/libcdvd.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-sceCdPOffCallback,0x001370F8,CD/DVD,code/game/lib_after_libm.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceCdPOffCallback,0x001370F8,CD/DVD,code/sdk/cdvd/libcdvd.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceCdNcmdDiskReady,0x001373B0,CD/DVD,code/sdk/cdvd/libcdvd.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceCdSync,0x00137448,CD/DVD,code/sdk/cdvd/libcdvd.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceCdSyncS,0x001374E8,CD/DVD,code/sdk/cdvd/libcdvd.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -304,7 +304,7 @@ scePadInit,0x0013B1D0,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C i
 _pad_intr_hdr,0x0013B320,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadInit2,0x0013B368,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadEnd,0x0013B460,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-_send_to_iop,0x0013B510,pad,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+_send_to_iop,0x0013B510,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadPortOpen,0x0013B628,pad,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
 scePadPortClose,0x0013B810,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadGetDmaStr,0x0013B8C8,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -322,10 +322,10 @@ scePadInfoPressMode,0x0013C190,pad,code/sdk/pad/libpad.c,compiled_matching,byte-
 scePadEnterPressMode,0x0013C210,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadGetModVersion,0x0013C280,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 scePadSetDmaCallback,0x0013C2E8,pad,code/sdk/pad/libpad.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-sceVu0UnitMatrix,0x0013C478,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
-sceVu0RotMatrixZ,0x0013C518,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
-sceVu0RotMatrixX,0x0013C5C0,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
-sceVu0RotMatrixY,0x0013C668,VU0,code/game/lib_after_mtap.cpp,assembly,named SDK family in SDK_FINGERPRINTS.json
+sceVu0UnitMatrix,0x0013C478,VU0,code/sdk/vu0/libvu0.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
+sceVu0RotMatrixZ,0x0013C518,VU0,code/sdk/vu0/libvu0.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
+sceVu0RotMatrixX,0x0013C5C0,VU0,code/sdk/vu0/libvu0.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
+sceVu0RotMatrixY,0x0013C668,VU0,code/sdk/vu0/libvu0.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceMpegCreate,0x001415E8,MPEG,code/sdk/mpeg/libmpeg.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceMpegInit,0x00142090,MPEG,code/sdk/mpeg/libmpeg.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceMpegDelete,0x00142140,MPEG,code/sdk/mpeg/libmpeg.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
@@ -348,7 +348,7 @@ sceScfGetAspect,0x00155628,configuration,code/sdk/scf/libscf.c,compiled_matching
 sceScfGetTimeZone,0x00155670,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 sceScfGetSummerTime,0x001556C8,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 tobcd,0x00155730,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
-frombcd,0x00155760,configuration,code/game/lib_after_mtap.cpp,assembly,named assembly entry in identified SDK family/range; see SDK_BOOT_INVENTORY.md
+frombcd,0x00155760,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 convertfrombcd,0x00155780,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 converttobcd,0x001557E8,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
 adddate,0x00155850,configuration,code/sdk/scf/libscf.c,compiled_matching,byte-exact C in linked ELF (2026-10-26 isolated build)
