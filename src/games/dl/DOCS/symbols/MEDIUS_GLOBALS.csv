@@ -15,3 +15,77 @@ rtTimePlatformInitialized,0x00168BA1,code/medius/rt_util/ps2/rt_time_platform.c,
 rtTimePlatformBase,0x001B23E8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_PLATFORM_BASE {Secs, Ticks, USecs, LastCount}; COP0 Count time base kept by update_base",rt_time_platform
 rtTimePlatformDate,0x001B23F8,code/medius/rt_util/ps2/rt_time_platform.c,"core.bss RT_TIME_DATE; decoded from the CD RTC by update_date_time, read by get_date_time",rt_time_platform
 rtTimeCdromDevice,0x001965C8,code/medius/rt_util/ps2/rt_time_platform.c,"core.data string ""cdrom0:"" passed to sceDevctl by update_date_time",rt_time_platform
+rtCryptMd5Padding,0x001694B8,code/medius/rt_crypt/src/md5.c,"core.data 64-byte RFC 1321 PADDING (0x80 then zeros); md5Final pads with it",md5
+rtCryptMd2Padding,0x00169430,code/medius/rt_crypt/src/md2.c,"core.data RFC 1319 PADDING pointer table indexed by pad length; md2Final",md2
+rtCryptMd2Sbox,0x00196820,code/medius/rt_crypt/src/md2.c,"core.data rodata RFC 1319 PI_SUBST (debug-info name gS); md2Transform",md2
+rtCryptShaInitState,0x001693D0,code/medius/rt_crypt/src/SHA1.c,"core.data SHA_CTX (0x60) with the SHA-1 initial digest; SHAInit copies it whole",SHA1
+rtCryptShaEndianProbe,0x00196760,code/medius/rt_crypt/src/SHA1.c,"core.data rodata string ""#S"" read as an unsigned short by endianTest",SHA1
+rtCryptMd4Padding,0x00169478,code/medius/rt_crypt/src/md4.c,"core.data 64-byte RFC 1320 PADDING (0x80 then zeros); md4Final pads with it",md4
+rtCryptVersionString,0x00196B38,code/medius/rt_crypt/src/rt_crypt.c,"core.data rodata string ""rt_crypt version: 2.10.2""; returned by KM_GetVersionStringPtr",rt_crypt
+rtCryptPrngSeeded,0x001694F8,code/medius/rt_crypt/src/rt_crypt.c,"core.data byte; InitializePRNG seeds the Mersenne Twister once and sets it",rt_crypt
+mediusACodecGSMInterfacePtr,0x00167F44,code/medius/dme_client/src/DmeInterfaceManager.c,"core.data pointer between gUDPInterfacePtr and gACodecLPCInterfacePtr; no debug-info name; CreateCodec uses it for 320-byte frames encoded to 33 bytes (GSM 06.10)",DmeInterfaceManager
+mediusMessageIdFormat,0x00199AF8,code/medius/MediusClientLibrary/src/stringmanager.c,"core.data rodata string ""%s.%d""; iCreateAndAllocateMessageID formats session key and counter",stringmanager
+rtParseInitialized,0x00168B84,code/medius/rt_util/rt_parse.c,"core.data byte; set by rt_parse_initialize, cleared by rt_parse_shutdown, tested by every rt_parse entry point",rt_parse
+rtParseFragmentId,0x00168B85,code/medius/rt_util/rt_parse.c,"core.data byte; zeroed after rt_parse_initialize registers the fragment handler",rt_parse
+rtParseMessageBuffer,0x00168B88,code/medius/rt_util/rt_parse.c,"core.data pointer; MaxMessageSize*3-byte buffer each message payload is copied into before its parser runs",rt_parse
+rtParseParsers,0x00168B8C,code/medius/rt_util/rt_parse.c,"core.data pointer; parser callbacks indexed [class * rtParseMaxTypes + type]",rt_parse
+gaTypeCount,0x00168B90,code/medius/rt_util/rt_parse.c,"core.data pointer (debug-info name); registered type count per message class",rt_parse
+rtParseMessageCounts,0x00168B94,code/medius/rt_util/rt_parse.c,"core.data pointer; per-type receive counters incremented by rt_parse_execute",rt_parse
+rtParsePreExecuteCallback,0x00168B98,code/medius/rt_util/rt_parse.c,"core.data pointer; optional callback rt_parse_execute runs before each parser",rt_parse
+rtParseMaxTypes,0x001B23BC,code/medius/rt_util/rt_parse.c,"core.bss word; MaxTypes passed to rt_parse_initialize",rt_parse
+rtParseMaxClasses,0x001B23C0,code/medius/rt_util/rt_parse.c,"core.bss word; MaxClasses passed to rt_parse_initialize",rt_parse
+rtParseMaxMessageSize,0x001B23C4,code/medius/rt_util/rt_parse.c,"core.bss word; MaxMessageSize passed to rt_parse_initialize",rt_parse
+rtParseFragments,0x001B23C8,code/medius/rt_util/rt_parse.c,"core.bss pointer; 256 fragment-reassembly slots of 0x34 bytes, buffer pointer at +0x30",rt_parse
+mediusBillingEnabled,0x00169D50,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; MediusAccountDelete returns MediusErrorFeatureNotEnabled and MediusAccountLogout takes the billing path when it is 1",MediusClient
+mediusBillingState,0x00169BBC,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; MediusBillingAccountLogout sets it to 3 to request a logout",MediusBilling
+mediusBillingServerVersion,0x00169C48,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data char array, no debug-info name; server library version string copied out by MediusBillingServerVersion",MediusBilling
+mediusBillingLogoutEcho,0x00169C88,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; user argument for the billing logout callback",MediusBilling
+mediusBillingLogoutCallback,0x00169C94,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.data word, no debug-info name; billing logout completion callback set by MediusBillingAccountLogout",MediusBilling
+mediusBillingLoaded,0x001B7648,code/medius/MediusClientLibrary/src/MediusBilling.c,"core.bss word, no debug-info name; non-zero once the billing library is loaded (MediusBillingUpdate, MediusBillingIsLoaded)",MediusBilling
+mediusBillingLogoutRequest,0x001B78E0,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss MediusAccountLogoutRequest (0x26), no debug-info name; copy of the last logout request, resent by MediusAccountLogoutInternal",MediusClient
+mediusPostDebugInfoFlag,0x00169CF4,code/medius/MediusClientLibrary/src/callback.c,"core.data word, no debug-info name; cleared when the server answers PostDebugInfo with status -950",callback
+mediusUniverseSvoURL,0x0016A080,code/medius/MediusClientLibrary/src/callback.c,"core.data 0x95 bytes, no debug-info name; MessageID (21 bytes) then the SVO URL string unpacked by MediusUniqueCallbackUniverseSvoURLHandler",callback
+mediusFileUploadDataSize,0x0021D998,code/medius/MediusClientLibrary/src/callback.c,"core.bss word, no debug-info name; size of the file being uploaded, the word after G_MFS_pClientUploadData",callback
+MediusDType_I,0x001994D0,code/medius/MediusDList/src/MediusDList.c,"core.data MediusDTypeInterface (0x18); named like MediusMessage_I, the debug information has the type but no symbol",MediusDList
+mediusHeartbeatInterval,0x00167F54,code/medius/dme_client/src/DmeLocal.c,"core.data word, no debug-info name; heartbeat interval in milliseconds set by NetSetHeartbeatInterval",DmeLocal
+mediusNatServiceAddr,0x001AFD28,code/medius/dme_client/src/DmeLocal.c,"core.bss NetAddress (0x18), no debug-info name; local NAT service address",DmeLocal
+mediusConnInfoTable,0x001AF918,code/medius/dme_client/src/DmeLocal.c,"core.bss NetTypeConnectionInfo *[4], no debug-info name; connection info by connection ID",DmeLocal
+mediusClientPingInfo,0x001AF928,code/medius/dme_client/src/DmeLocal.c,"core.bss void *[256], no debug-info name; per-client ping info pointers",DmeLocal
+mediusNetUpdateErrors,0x001AFD80,code/medius/dme_client/src/DmeLocal.c,"core.bss 0x28 bytes, no debug-info name; accumulated NetUpdate connection errors",DmeLocal
+mediusParseResult,0x001B1E28,code/medius/dme_client/src/DmeLocal.c,"core.bss int[], no debug-info name; last parse result per DME connection",DmeLocal
+mediusCommMetrics,0x001B2148,code/medius/rt_comm/src/rt_comm.c,"core.bss RT_COMM_METRICS (0x38), no debug-info name; copied out by rt_comm_get_metrics after rt_comm_metric_update",rt_comm
+mediusDListInterestIds,0x001B7908,code/medius/MediusDList/src/MediusDList.c,"core.bss int[2], no debug-info name; interest id per list id",MediusDList
+mediusDListMetaTypes,0x001B7910,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDMetaType *[2], no debug-info name; per-list player list meta types filled by MediusDListInit",MediusDList
+mediusDListPlayerInterestCallback,0x001B7918,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDInterestCallback (0x14), no debug-info name; player interest callback record",MediusDList
+mediusDListSubscriptions,0x001B7930,code/medius/MediusDList/src/MediusDList.c,"core.bss MediusDListSubscription[32] (0x30 each), no debug-info name; subscription table",MediusDList
+mediusCommPlatformInitialized,0x001694FC,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; non-zero once rt_comm_platform has started the libnet interface",rt_comm_platform
+mediusCommBroadcastIP,0x00169504,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; broadcast IP of the local network",rt_comm_platform
+mediusCommInetClient,0x001B26C0,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.bss sceSifMClientData, no debug-info name; libnet SIF client passed to the sceBInet calls",rt_comm_platform
+mediusUdpInactivityTimeout,0x00169510,code/medius/rt_udp/src/rt_udp.c,"core.data word, no debug-info name; default connection inactivity timeout",rt_udp
+mediusUdpVersionString,0x00169518,code/medius/rt_udp/src/rt_udp.c,"core.data char array, no debug-info name; rt_udp version string returned by rt_udp_get_version_string",rt_udp
+mediusUdpUnexpectedPortEnabled,0x00169530,code/medius/rt_udp/src/rt_udp.c,"core.data word, no debug-info name; set by rt_udp_enable_unexpected_port",rt_udp
+mediusMsgClientMutex,0x001B69C0,code/medius/rt_msg/src/rt_msg_client/rt_msg_client.c,"core.bss mutex, no debug-info name; message-client mutex released by rt_msg_mutex_unlock",rt_msg_client
+mediusObjectLocals,0x001B7258,code/medius/dme_object/src/DmeObjectLocal.c,"core.bss struct, no debug-info name; DmeObjectLocal state: ConnInfo +0x138, creation/update/deletion callbacks +0x158/+0x15C/+0x160, object table +0x17C",DmeObjectLocal
+mediusLibnetbCidList,0x00167EEC,code/medius/rt_libnet/ee/src/libnetb.c,"core.data pointer, no debug-info name; head of the libnetb socket (CID) list",libnetb
+mediusSSLLibSourceFile,0x00199F28,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; SSLLib.c source path passed to __assert",SSLLib
+mediusSSLAssertZeroMsgSize,0x0019A270,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text "0 == nMsgSize"",SSLLib
+mediusSSLAssertHelloDoneState,0x0019A280,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text for the SERVER_HELLO_DONE state check",SSLLib
+mediusSSLAssertFinishedLen,0x0019A2B0,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text "nMsgLen == nMsgSize"",SSLLib
+mediusSSLAssertAppoutSpace,0x0019A310,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text for the app-out buffer space check",SSLLib
+mediusX509SourceFile,0x0019A9A0,code/medius/rt_cert/src/x509.c,"rodata string, no symbol; x509.c source path passed to __assert",x509
+mediusX509AssertPubKeyLen,0x0019AD18,code/medius/rt_cert/src/x509.c,"rodata string, no symbol; assert text "nDataSize == pCert->pubKeyLen"",x509
+mediusCommInetBuffer,0x001B2700,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.bss, no debug-info name; libnet RPC receive buffer that follows mediusCommInetClient",rt_comm_platform
+mediusCommPlatformInterfaceId,0x00169508,code/medius/rt_comm/src/ps2/scei/rt_comm_platform.c,"core.data word, no debug-info name; interface id selected by rt_comm_platform, -1 after shutdown (meaning inferred)",rt_comm_platform
+mediusNatServiceAddress,0x001B7678,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss NetAddress (0x18), no debug-info name; NAT service address set by MediusSetNatServiceAddress",MediusClient
+mediusClientAddrList,0x001B7690,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss NetAddressList (0x30), no debug-info name; client address list set by MediusSetClientAddrList",MediusClient
+mediusProcessingState,0x00169D34,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; current Medius processing state",MediusClient
+mediusQueuedRequestType,0x00169D38,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data word, no debug-info name; request type of the queued request",MediusClient
+mediusClientConnectCallback,0x00169D3C,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data function pointer, no debug-info name; client connect callback",MediusClient
+mediusClientConnectCallbackArg,0x00169D40,code/medius/MediusClientLibrary/src/MediusClient.c,"core.data pointer, no debug-info name; user argument for the client connect callback",MediusClient
+mediusStubCodecHandle,0x00169B3C,code/medius/StreamMedia/src/codec.c,"core.data word, no debug-info name; handle counter the stub codec increments and returns in stubCreate",codec
+mediusDPlayerListFields,0x0016A048,code/medius/MediusDList/src/MediusDPlayerList.c,"core.data, no debug-info name; field definitions of the player list meta type (0x2C bytes)",MediusDPlayerList
+mediusDPlayerListMetaType,0x0016A074,code/medius/MediusDList/src/MediusDPlayerList.c,"core.data pointer, no debug-info name; player list meta type created on first use",MediusDPlayerList
+mediusQueuedJoinGameRequest,0x001B76C0,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss MediusJoinGameRequest (0xC4), no debug-info name; queued JoinGame request (type 0x2D)",MediusClient
+mediusQueuedCreateGameOnSelfRequest,0x001B7788,code/medius/MediusClientLibrary/src/MediusClient.c,"core.bss 0xEC bytes, no debug-info name; queued CreateGameOnSelf request (type 0x12)",MediusClient
+mediusUdpMgr,0x001B6898,code/medius/rt_udp/src/rt_udp_mgr.c,"core.bss RT_UDP_MGR (0x108), no debug-info name; shared channel handle, 16 channel references and their count",rt_udp_mgr
+mediusSSLAssertAlertMsgSize,0x0019A3B8,code/medius/rt_ssl/src/SSLLib.c,"rodata string, no symbol; assert text ""nMsgSize == 2"" (ParseAlertMsg)",SSLLib

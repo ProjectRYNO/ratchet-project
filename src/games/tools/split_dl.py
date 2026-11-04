@@ -93,6 +93,10 @@ def carve_rodata(text, slots):
                     raise SystemExit(f"rodata slot boundary 0x{bounds[0][0]:08X} is inside a data line")
                 section = bounds.pop(0)[1]
                 out.append(f'.section {section}, "a"\n')
+                if address % 4:
+                    # gas would align the first `.word` and so the whole section; the data
+                    # is already at its retail addresses, so turn auto-alignment off.
+                    out.append('.align 0\n')
         match = re.match(r"\s*dlabel\s+(\S+)", line)
         if match:
             label_section[match[1]] = section

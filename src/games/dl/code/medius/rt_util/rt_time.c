@@ -1,5 +1,6 @@
 #include "common.h"
 #include "rt_time.h"
+#include "../rt_util/rt_time.h"
 
 #define MEDIUS_TIME_SECTION(name) __attribute__((section(".medius_time_" #name)))
 
@@ -72,7 +73,21 @@ int MEDIUS_TIME_SECTION(rt_time_elapsed_usecs) rt_time_elapsed_usecs(RT_TIME_STA
     return result;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_time", rt_time_delay);
+int MEDIUS_TIME_SECTION(rt_time_delay) rt_time_delay(RT_TIME_VAL MSecs)
+{
+    RT_TIME_STAMP start;
+    RT_TIME_VAL elapsed = 0;
+    int result;
+
+    result = rt_time_start(&start);
+    goto check;
+    do {
+        result = rt_time_elapsed(&start, &elapsed);
+check:
+        if (result) return result;
+    } while (elapsed < MSecs);
+    return 0;
+}
 
 int MEDIUS_TIME_SECTION(rt_time_initialize) rt_time_initialize(void)
 {
@@ -89,9 +104,23 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_time", func
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_time", rt_time_calc_diff);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_time", rt_time_timestamp_to_msecs);
+int MEDIUS_TIME_SECTION(rt_time_timestamp_to_msecs) rt_time_timestamp_to_msecs(RT_TIME_STAMP *pTimeStamp, RT_TIME_VAL *pMSecs)
+{
+    if (!pTimeStamp) return 2;
+    if (!pMSecs) return 2;
+    if (pTimeStamp->Secs > 0x418935) return RT_TIME_OVERFLOW;
+    *pMSecs = pTimeStamp->Secs * 1000 + pTimeStamp->USecs / 1000;
+    return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/medius/rt_util/rt_time", rt_time_timestamp_to_usecs);
+int MEDIUS_TIME_SECTION(rt_time_timestamp_to_usecs) rt_time_timestamp_to_usecs(RT_TIME_STAMP *pTimeStamp, RT_TIME_VAL *pUSecs)
+{
+    if (!pTimeStamp) return 2;
+    if (!pUSecs) return 2;
+    if (pTimeStamp->Secs >= 0x10C5) return RT_TIME_OVERFLOW;
+    *pUSecs = pTimeStamp->Secs * 1000000 + pTimeStamp->USecs;
+    return 0;
+}
 
 int MEDIUS_TIME_SECTION(rt_time_get_base_diff) rt_time_get_base_diff(RT_TIME_STAMP *pDiffTimeStamp)
 {
