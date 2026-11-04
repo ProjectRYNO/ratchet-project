@@ -480,11 +480,21 @@ typedef struct fsDevctlDma {
 	/* 0x0c */ int count;
 } fsDevctlDma_t;
 
+/* File-system seek, read and write request (shares sdkFsRequest with the other requests). */
+typedef struct fsRwRequest {
+	/* 0x00 */ int sema;
+	/* 0x04 */ int *result;
+	/* 0x08 */ int resultSize;
+	/* 0x0c */ int fd;
+	/* 0x10 */ int arg[4];
+} fsRwRequest_t;
+
 /* RPC argument buffer at sdkFsRequest. */
 typedef union fsRequest {
 	fsCloseRequest_t close;
 	fsOpenRequest_t open;
 	fsDevctlRequest_t devctl;
+	fsRwRequest_t rw;
 } fsRequest_t;
 
 /* Software timer counter (64-byte aligned; its address is encoded in the counter ID). */

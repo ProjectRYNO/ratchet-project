@@ -1,6 +1,6 @@
 # Identified boot SDK progress
 
-**310/387 identified functions (80.10%) are decompiled and byte-matching** (2026-10-26).
+**379/387 identified functions (97.93%) are decompiled and byte-matching** (2026-10-26).
 This is a broader named-function inventory, not an exhaustive SDK census.
 `code/sdk/` now also holds the pad, memory-card and kernel splits (`pad/libpad.c`,
 `mc/libmc.c`, `kernel/libkernel.c`); every entry in those ranges has its own slot, and
@@ -13,12 +13,12 @@ as complete. The denominator can grow as ownership is recovered.
 | DMA | 8 | 8 / 8 (100.00%) |
 | IPU | 4 | 4 / 4 (100.00%) |
 | MPEG | 11 | 10 / 11 (90.91%) |
-| SIF | 50 | 44 / 50 (88.00%) |
+| SIF | 50 | 50 / 50 (100.00%) |
 | VU0 | 4 | 4 / 4 (100.00%) |
 | configuration | 16 | 16 / 16 (100.00%) |
-| file I/O | 18 | 14 / 18 (77.78%) |
+| file I/O | 18 | 15 / 18 (83.33%) |
 | graphics | 15 | 14 / 15 (93.33%) |
-| kernel/runtime | 180 | 117 / 180 (65.00%) |
+| kernel/runtime | 180 | 179 / 180 (99.44%) |
 | memory card | 17 | 17 / 17 (100.00%) |
 | multitap | 8 | 8 / 8 (100.00%) |
 | networking/localization | 20 | 20 / 20 (100.00%) |

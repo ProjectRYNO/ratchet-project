@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**310/387 identified boot SDK functions (80.10%) are now byte-exact** (plus 55 untracked helpers) (see
+**379/387 identified boot SDK functions (97.93%) are now byte-exact** (plus 55 untracked helpers) (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -123,7 +123,22 @@ Store orders that resist reasoning can be swept with `build/svo-library-work/b/p
 
 Layout: `sceGsResetPath` joined `sceGsSyncPath` in `sdk/graph/libgspath` (now from 0x00131968). The VU0 routines moved to the new `sdk/vu0/libvu0` (0x0013C478..0x0013C710), where `_sceVu0ecossin` stays retained assembly. `lib_after_pad` now starts at `func_0013C710`.
 
-What is left: 66 pure syscall stubs (retained by decision), `iGetTimerSystemTime` (one asm block, not needed), `_kExitTLBHandler` (GCC always appends a return that overflows its slot), and these near-misses in words differing: `sceCdInit` 4, `sceLseek` 5, `scePadPortOpen` 5, `_sceFs_Rcv_Intr` 7, `sceGsSetDefDispEnv` 13, `sceRead` 14, `sceWrite` 83, `sceMpegDemuxPssRing` 127, `_sceSnprintf` 724.
+What was left at 80%: 66 pure syscall stubs (since converted under D19), `iGetTimerSystemTime` (one asm block, not needed), `_kExitTLBHandler` (GCC always appends a return that overflows its slot), and these near-misses in words differing: `sceCdInit` 4, `sceLseek` 5, `scePadPortOpen` 5, `_sceFs_Rcv_Intr` 7, `sceGsSetDefDispEnv` 13, `sceRead` 14, `sceWrite` 83, `sceMpegDemuxPssRing` 127, `_sceSnprintf` 724.
+
+## Syscall stubs (2026-11-04)
+
+D19 converted the 66 pure syscall stubs through one `SYSCALL_STUB` macro in `libkernel.c`, which took the headline from 310 to 376/387. The bytes are unchanged and no logic was recovered, so the headline overstates recovery. Count real C separately:
+
+| Count | Kind |
+|---|---|
+| 298 | Real C, with small fragments at most |
+| 15 | D18: mostly asm inside a C wrapper |
+| 66 | D19: syscall stubs |
+| 8 | Still assembly |
+
+Still assembly, in words differing: `sceRead` 4, `sceCdInit` 4, `scePadPortOpen` 5, `_sceFs_Rcv_Intr` 7, `sceGsSetDefDispEnv` 13, `sceWrite` 75, `sceMpegDemuxPssRing` 127, `_sceSnprintf` 724 (710 of 838 opcodes align; the rest is shifted code).
+
+D18 also covers `iGetTimerSystemTime` and `_kExitTLBHandler`, whose asm block ends by switching to a discarded section so GCC's appended return leaves the slot. `sceLseek` matches through always-false blocks of dead stores that the compiler removes; it is commented as a fake match.
 
 ## Broader runtime inventory
 
@@ -335,6 +350,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **310/387 identified functions (80.10%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **379/387 identified functions (97.93%), of which 298/387 (77.00%) are real C** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

@@ -47,6 +47,9 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  sceLseek: 0x0012B740
+  iGetTimerSystemTime: 0x0012E320
+  _kExitTLBHandler: 0x0012D300
   sceCdPOffCallback: 0x001370F8
   SetT2: 0x0012DB90
   GetTimerSystemTime: 0x0012E370
@@ -88,6 +91,72 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  SetGsCrt: 0x001267A0
+  _Exit: 0x001267C0
+  _LoadExecPS2: 0x001267E0
+  AddIntcHandler: 0x00126880
+  AddIntcHandler2: 0x00126890
+  RemoveIntcHandler: 0x001268A0
+  AddDmacHandler: 0x001268B0
+  AddDmacHandler2: 0x001268C0
+  RemoveDmacHandler: 0x001268D0
+  _EnableIntc: 0x001268E0
+  _DisableIntc: 0x001268F0
+  _EnableDmac: 0x00126900
+  _DisableDmac: 0x00126910
+  CreateThread: 0x001269A0
+  DeleteThread: 0x001269B0
+  _StartThread: 0x001269C0
+  TerminateThread: 0x001269F0
+  ChangeThreadPriority: 0x00126A30
+  RotateThreadReadyQueue: 0x00126A50
+  GetThreadId: 0x00126A90
+  ReferThreadStatus: 0x00126AA0
+  SleepThread: 0x00126AC0
+  WakeupThread: 0x00126AD0
+  _iWakeupThread: 0x00126AE0
+  SuspendThread: 0x00126B10
+  ResumeThread: 0x00126B30
+  EndOfHeap: 0x00126B80
+  CreateSema: 0x00126BA0
+  DeleteSema: 0x00126BB0
+  SignalSema: 0x00126BC0
+  iSignalSema: 0x00126BD0
+  WaitSema: 0x00126BE0
+  PollSema: 0x00126BF0
+  ReferSemaStatus: 0x00126C10
+  SetOsdConfigParam: 0x00126C40
+  GetOsdConfigParam: 0x00126C50
+  FlushCache: 0x00126E20
+  sceSifStopDma: 0x00126E70
+  GetOsdConfigParam2: 0x00126EB0
+  GsGetIMR: 0x00126EC0
+  GsPutIMR: 0x00126EE0
+  SetVSyncFlag: 0x00126F10
+  sceSifDmaStat: 0x00126F40
+  sceSifSetDma: 0x00126F60
+  isceSifSetDma: 0x00126F70
+  sceSifSetDChain: 0x00126F80
+  isceSifSetDChain: 0x00126F90
+  sceSifSetReg: 0x00126FA0
+  sceSifGetReg: 0x00126FB0
+  Deci2Call: 0x00126FD0
+  GetMemorySize: 0x00127000
+  _InitTLB: 0x00127010
+  Copy: 0x0012CF18
+  GetEntryAddress: 0x0012CF60
+  setup: 0x0012CF70
+  _SetTLBEntry: 0x0012D048
+  FindAddress: 0x0012D568
+  setup___dupe2: 0x0012D680
+  setup___dupe3: 0x0012D6E8
+  Copy___dupe2: 0x0012D6F8
+  GetEntryAddress___dupe2: 0x0012D740
+  Copy___dupe3: 0x0012D868
+  setup___dupe4: 0x0012D8A8
+  setup___dupe5: 0x0012DA50
+  Copy___dupe4: 0x0012DA60
+  GetEntryAddress___dupe3: 0x0012DAA8
   sceGsResetPath: 0x00131968
   sceVu0UnitMatrix: 0x0013C478
   sceVu0RotMatrixZ: 0x0013C518

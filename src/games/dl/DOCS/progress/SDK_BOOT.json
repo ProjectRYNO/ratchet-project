@@ -1,8 +1,8 @@
 {
   "scope": "Identified named SDK functions in retail boot ELF, including verified SDK C helpers; incomplete inventory, not all SDK code",
   "tracked_functions": 387,
-  "compiled_matching_functions": 310,
-  "compiled_matching_percent": 80.1,
+  "compiled_matching_functions": 379,
+  "compiled_matching_percent": 97.93,
   "groups": {
     "CD/DVD": {
       "tracked": 14,
@@ -22,7 +22,7 @@
     },
     "SIF": {
       "tracked": 50,
-      "compiled_matching": 44
+      "compiled_matching": 50
     },
     "VU0": {
       "tracked": 4,
@@ -34,7 +34,7 @@
     },
     "file I/O": {
       "tracked": 18,
-      "compiled_matching": 14
+      "compiled_matching": 15
     },
     "graphics": {
       "tracked": 15,
@@ -42,7 +42,7 @@
     },
     "kernel/runtime": {
       "tracked": 180,
-      "compiled_matching": 117
+      "compiled_matching": 179
     },
     "memory card": {
       "tracked": 17,

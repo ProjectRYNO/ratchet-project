@@ -31,4 +31,4 @@ Provenance constraint for this work: use the user-supplied retail executable and
 
 See [version evidence and comparison results](../../DOCS/libraries/SDK_LAYOUT.md) before implementing or moving any block. The strongest starting reference for pad is historical `padx`; MC uses the extended RPC family. Neither is a byte-matching drop-in. Preserve original addresses, behavior and padding, and verify each new split before claiming progress.
 
-Broader boot SDK tracking: **310/387 identified functions (80.10%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](../../DOCS/libraries/SDK_BOOT_INVENTORY.md) and [multitap verification](../../DOCS/libraries/SDK_MTAP.md).
+Broader boot SDK tracking: **379/387 identified functions (97.93%), of which 298/387 (77.00%) are real C** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](../../DOCS/libraries/SDK_BOOT_INVENTORY.md) and [multitap verification](../../DOCS/libraries/SDK_MTAP.md).
