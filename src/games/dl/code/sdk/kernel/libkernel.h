@@ -102,6 +102,13 @@ typedef struct sifRpcPool {
 	/* 0x00 */ int pid;
 	/* 0x04 */ sifRpcPkt_t *packets;
 	/* 0x08 */ int count;
+	/* 0x0c */ int unk0C;
+	/* 0x10 */ int unk10;
+	/* 0x14 */ char *recvBuffers;
+	/* 0x18 */ int recvCount;
+	/* 0x1c */ char *fixed;
+	/* 0x20 */ int fixedCount;
+	/* 0x24 */ int index;
 } sifRpcPool_t;
 
 /* Alarm callback data for the RPC rdata/bind retries. */
@@ -225,6 +232,151 @@ typedef struct sifLoadModuleBuffer {
 	/* 0x008 */ char path[0xfc];
 	/* 0x104 */ sifLoadArgs_t args;
 } sifLoadModuleBuffer_t;
+
+/* All-int view of a server registration: _request_call copies its words in source order. */
+typedef struct sifRpcCallServer {
+	/* 0x00 */ int sid;
+	/* 0x04 */ int unk04[2];
+	/* 0x0c */ int size;
+	/* 0x10 */ int unk10[3];
+	/* 0x1c */ int client;
+	/* 0x20 */ int pktAddr;
+	/* 0x24 */ int rpcNumber;
+	/* 0x28 */ int recvBuf;
+	/* 0x2c */ int rsize;
+	/* 0x30 */ int rmode;
+	/* 0x34 */ int rid;
+	/* 0x38 */ int next;
+	/* 0x3c */ int link;
+	/* 0x40 */ struct sifRpcCallQueue *base;
+} sifRpcCallServer_t;
+
+/* All-int view of a receive queue, for _request_call. */
+typedef struct sifRpcCallQueue {
+	/* 0x00 */ int threadId;
+	/* 0x04 */ int active;
+	/* 0x08 */ int link;
+	/* 0x0c */ int start;
+	/* 0x10 */ int end;
+	/* 0x14 */ int next;
+} sifRpcCallQueue_t;
+
+/* RPC call request as received by _request_call. */
+typedef struct sifRpcCallReq {
+	/* 0x00 */ int unk00[4];
+	/* 0x10 */ int mode;
+	/* 0x14 */ int paddr;
+	/* 0x18 */ int pid;
+	/* 0x1c */ int client;
+	/* 0x20 */ int rpcNumber;
+	/* 0x24 */ int sendSize;
+	/* 0x28 */ int recv;
+	/* 0x2c */ int recvSize;
+	/* 0x30 */ int rmode;
+	/* 0x34 */ sifRpcCallServer_t *server;
+} sifRpcCallReq_t;
+
+/* Packet sent by sceSifInitRpc to request the IOP RPC init. */
+typedef struct sifRpcInitPkt {
+	/* 0x00 */ int header[3];
+	/* 0x0c */ int opt;
+	/* 0x10 */ int unk10[12];
+} sifRpcInitPkt_t;
+
+/* Client layout used by sceSifCallRpc; words it only copies are int. */
+typedef struct sifRpcCallClient {
+	/* 0x00 */ void *packet;
+	/* 0x04 */ int rpcId;
+	/* 0x08 */ int sema;
+	/* 0x0c */ unsigned int mode;
+	/* 0x10 */ unsigned int command;
+	/* 0x14 */ int buffer;
+	/* 0x18 */ int gp;
+	/* 0x1c */ void *endFunc;
+	/* 0x20 */ void *endParam;
+	/* 0x24 */ int server;
+} sifRpcCallClient_t;
+
+/* RPC call packet built by sceSifCallRpc. */
+typedef struct sifRpcCallPkt {
+	/* 0x00 */ int unk00[4];
+	/* 0x10 */ unsigned int mode;
+	/* 0x14 */ int paddr;
+	/* 0x18 */ int pid;
+	/* 0x1c */ int client;
+	/* 0x20 */ int rpcNumber;
+	/* 0x24 */ int sendSize;
+	/* 0x28 */ int recv;
+	/* 0x2c */ int recvSize;
+	/* 0x30 */ int rmode;
+	/* 0x34 */ int server;
+	/* 0x38 */ int unk38[2];
+} sifRpcCallPkt_t;
+
+/* Int view of a DMA descriptor, as _sceSifSendCmd fills it. */
+typedef struct sifCmdDma {
+	/* 0x00 */ int src;
+	/* 0x04 */ int dest;
+	/* 0x08 */ int size;
+	/* 0x0c */ int attr;
+} sifCmdDma_t;
+
+/* RPC completion packet handled by _request_end. */
+typedef struct sifRpcEndPkt {
+	/* 0x00 */ int unk00[7];
+	/* 0x1c */ void *client;
+	/* 0x20 */ unsigned int cid;
+	/* 0x24 */ int server;
+	/* 0x28 */ int buffer;
+} sifRpcEndPkt_t;
+
+/* Client view used by _request_end. */
+typedef struct sifRpcEndClient {
+	/* 0x00 */ void *packet;
+	/* 0x04 */ int rpcId;
+	/* 0x08 */ int sema;
+	/* 0x0c */ int mode;
+	/* 0x10 */ int command;
+	/* 0x14 */ int buffer;
+	/* 0x18 */ int gp;
+	/* 0x1c */ void (*endFunc)(void *);
+	/* 0x20 */ void *endParam;
+	/* 0x24 */ int server;
+} sifRpcEndClient_t;
+
+/* Power-off callback registration passed to _sceFs_Poff_Intr. */
+typedef struct fsPoffData {
+	/* 0x00 */ void (*cb)(int);
+	/* 0x04 */ int arg;
+} fsPoffData_t;
+
+/* TLB layout read by InitTLB32MB; names are inferred from its boot message. */
+typedef struct tlbEntry {
+	/* 0x00 */ unsigned int pageMask;
+	/* 0x04 */ unsigned int entryHi;
+	/* 0x08 */ unsigned int entryLo0;
+	/* 0x0c */ unsigned int entryLo1;
+} tlbEntry_t;
+typedef struct tlbInfo {
+	/* 0x00 */ int kernelCount;
+	/* 0x04 */ int defaultCount;
+	/* 0x08 */ int extendedCount;
+	/* 0x0c */ int wired;
+	/* 0x10 */ tlbEntry_t *kernel;
+	/* 0x14 */ tlbEntry_t *def;
+	/* 0x18 */ tlbEntry_t *extended;
+} tlbInfo_t;
+
+/* Request sent by sceFsInit: the shared receive buffer range. */
+typedef struct fsInitRequest {
+	/* 0x00 */ void *buffer;
+	/* 0x04 */ void *end;
+} fsInitRequest_t;
+
+/* Four-byte version word copied without an alignment assumption. */
+typedef struct fsVersion {
+	/* 0x00 */ char data[4];
+} fsVersion_t;
 
 /* Reboot notification handler entry. */
 typedef struct sifNotifyHandler {

@@ -127,6 +127,12 @@ typedef struct mpegInternal {
 	/* 0xe80 */ char unkE80[0x10];
 } mpegInternal_t;
 
+/* Callback payload: the type selects the handler, the rest depends on it. */
+typedef struct mpegCbData {
+	/* 0x00 */ int type;
+	/* 0x04 */ int unk04[7];
+} mpegCbData_t;
+
 /* sceMpeg handle. */
 typedef struct mpeg {
 	/* 0x00 */ int width;
@@ -148,5 +154,21 @@ typedef void (*mpegExtFunc)(mpegInternal_t *);
 typedef struct mpegExtTable {
 	/* 0x00 */ mpegExtFunc funcs[11];
 } mpegExtTable_t;
+
+/* Stream id and mask per stream type, at sdkMpegStrIds. */
+typedef struct mpegStrId {
+	/* 0x00 */ unsigned long value;
+	/* 0x08 */ unsigned long mask;
+} mpegStrId_t;
+
+/* Stream callback table entry (table pointer at mpegInternal_t.unk60[0]). */
+typedef struct mpegStrEntry {
+	/* 0x00 */ unsigned long id;
+	/* 0x08 */ unsigned long mask;
+	/* 0x10 */ void *func;
+	/* 0x14 */ void *data;
+	/* 0x18 */ int gp;
+	/* 0x1c */ int pad;
+} mpegStrEntry_t;
 
 #endif

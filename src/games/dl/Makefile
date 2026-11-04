@@ -168,7 +168,14 @@ $(OBJ_DIR)/sdk/mpeg/libmpeg.o: code/sdk/mpeg/libmpeg.c code/sdk/mpeg/libmpeg.h M
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
 
+# Each libgraph function's jump table fills its own registered rodata slot.
 $(OBJ_DIR)/sdk/graph/libgraph.o: code/sdk/graph/libgraph.c code/sdk/graph/libgraph.h Makefile | ee-gcc29-01
+	@$(MKDIR) -p $(dir $@)
+	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
+	$(PYTHON) $(TOOLS)/svo3_rodata_sections.py $(@:.o=.s)
+	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@
+
+$(OBJ_DIR)/sdk/graph/libgspath.o: code/sdk/graph/libgspath.c Makefile | ee-gcc29-01
 	@$(MKDIR) -p $(dir $@)
 	$(EEGCC29_01) -S $(SDK_DMA_COMPILE_FLAGS) $(INCLUDE) $< -o $(@:.o=.s)
 	$(EEAS296) -EL -G0 -Icode/include $(@:.o=.s) -o $@

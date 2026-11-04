@@ -66,6 +66,16 @@ int sceCdSyncS(int mode);
 int _sceCd_ncmd_prechk(int command);
 int _sceCd_scmd_prechk(int command);
 void cmd_sem_init(void);
+extern int sdkCdDiskBound;
+extern cdvdRpcClient_t sdkCdDiskClient;
+extern int sdkCdDiskOldFlag;
+extern int sdkCdDiskArg;
+extern int sdkCdDiskResult[4];
+extern const char sdkCdDiskReadyMsg[];
+extern const char sdkCdDiskReadyOldMsg[];
+extern const char sdkCdDiskBindMsg[];
+extern const char sdkCdDiskDoneMsg[];
+int sceCdDiskReady_old(int mode);
 /* Plain (non-volatile) access to a flag declared volatile, where retail does not reload it. */
 #define CD_PLAIN(x) (*(int *)&(x))
 extern volatile int sdkCdReadFlags;
@@ -79,6 +89,12 @@ extern void _sceCd_cd_read_intr(void *);
 extern void *sdkCdCallbackFunc;
 extern volatile int sdkCdCallbackGp;
 extern volatile int sdkCdLastStat;
+/* D16: retail saves and loads $gp as one pair around the callback. */
+#define LOAD_GP(o, m) __asm__ volatile("move %0, $28\n\tlw $28, %1" : "=r"(o) : "m"(m))
+#define SET_GP(x) __asm__ volatile("move $28, %0" : : "r"(x))
+extern void (*sdkCdPoffFunc)(int);
+extern int sdkCdPoffGp;
+extern int sdkCdPoffArg;
 extern int sdkCdPoffBusy;
 extern int sdkCdPoffInit;
 extern int iSignalSema(int);
@@ -155,7 +171,15 @@ void CD_SECTION(cdvd_exit) cdvd_exit(void)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdPOffCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", _sceCd_Poff_Intr);
+void CD_SECTION(_sceCd_Poff_Intr) _sceCd_Poff_Intr(void *pkt, void *data)
+{
+	if (sdkCdPoffFunc && !sdkCdPoffBusy) {
+		void *old;
+		LOAD_GP(old, sdkCdPoffGp);
+		sdkCdPoffFunc(sdkCdPoffArg);
+		SET_GP(old);
+	}
+}
 
 int CD_SECTION(PowerOffCB) PowerOffCB(void)
 {
@@ -267,9 +291,91 @@ int CD_SECTION(_sceCd_scmd_prechk) _sceCd_scmd_prechk(int command)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdDiskReady_old);
+int CD_SECTION(sceCdDiskReady_old) sceCdDiskReady_old(int mode)
+{
+	int i, intr, ret;
+	if (sdkCdDebug > 0) scePrintf(sdkCdDiskReadyOldMsg);
+	intr = DIntr();
+	sdkCdDiskOldFlag = 1;
+	if (intr) EIntr();
+	cmd_sem_init();
+	if (CD_VOLATILE(sdkCdScmdSema) != PollSema(CD_VOLATILE(sdkCdScmdSema))) return 6;
+	if (sceCdSyncS(1)) {
+		SignalSema(CD_VOLATILE(sdkCdScmdSema));
+		return mode != 8 ? 6 : -1;
+	}
+	sceSifInitRpc(0);
+	if (sdkCdDiskBound < 0) {
+		while (1) {
+			if (sceSifBindRpc(&sdkCdDiskClient, 0x8000059a, 0) < 0) {
+				if (sdkCdDebug > 0) scePrintf(sdkCdDiskBindMsg);
+				i = 0x100000;
+				while (i--) {}
+				continue;
+			}
+			if (sdkCdDiskClient.server) {
+				sdkCdDiskBound = 0;
+				break;
+			}
+			i = 0x100000;
+			while (i--) {}
+		}
+	}
+	sdkCdDiskArg = mode;
+	sceSifWriteBackDCache(&sdkCdDiskArg, 4);
+	if (sceSifCallRpc(&sdkCdDiskClient, 0, 0, &sdkCdDiskArg, 4, sdkCdScmdResult, 4, 0, 0) < 0) {
+		SignalSema(CD_VOLATILE(sdkCdScmdSema));
+		return mode != 8 ? 6 : -1;
+	}
+	if (sdkCdDebug > 0) scePrintf(sdkCdDiskDoneMsg);
+	ret = *(int *)((unsigned int)sdkCdScmdResult | 0x20000000);
+	SignalSema(CD_VOLATILE(sdkCdScmdSema));
+	return ret;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/cdvd/libcdvd", sceCdDiskReady);
+int CD_SECTION(sceCdDiskReady) sceCdDiskReady(int mode)
+{
+	int i, n, intr, ret;
+	if (sdkCdDebug > 0) scePrintf(sdkCdDiskReadyMsg);
+	cmd_sem_init();
+	if (CD_VOLATILE(sdkCdReadSema) != PollSema(CD_VOLATILE(sdkCdReadSema))) return mode != 8 ? 6 : -1;
+	sceSifInitRpc(0);
+	n = 0;
+	if (sdkCdDiskBound < 0) {
+		while (1) {
+			if (sceSifBindRpc(&sdkCdDiskClient, 0x8000059c, 0) < 0) {
+				if (sdkCdDebug > 0) scePrintf(sdkCdDiskBindMsg);
+				i = 0x100000;
+				while (i--) {}
+				continue;
+			}
+			if (sdkCdDiskClient.server) {
+				sdkCdDiskBound = 0;
+				break;
+			}
+			if (n > 0x10) {
+				SignalSema(CD_VOLATILE(sdkCdReadSema));
+				return sceCdDiskReady_old(mode);
+			}
+			i = 0x100000;
+			while (i--) {}
+			n++;
+		}
+	}
+	intr = DIntr();
+	sdkCdDiskOldFlag = 0;
+	if (intr) EIntr();
+	sdkCdDiskArg = mode;
+	sceSifWriteBackDCache(&sdkCdDiskArg, 4);
+	if (sceSifCallRpc(&sdkCdDiskClient, 0, 0, &sdkCdDiskArg, 4, sdkCdDiskResult, 4, 0, 0) < 0) {
+		SignalSema(CD_VOLATILE(sdkCdReadSema));
+		return mode != 8 ? 6 : -1;
+	}
+	if (sdkCdDebug > 0) scePrintf(sdkCdDiskDoneMsg);
+	ret = *(int *)((unsigned int)sdkCdDiskResult | 0x20000000);
+	SignalSema(CD_VOLATILE(sdkCdReadSema));
+	return ret;
+}
 
 int CD_SECTION(sceCdRead) sceCdRead(unsigned int lsn, unsigned int sectors, void *buffer, cdvdRMode_t *mode)
 {

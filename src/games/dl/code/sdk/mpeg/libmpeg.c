@@ -38,7 +38,7 @@ extern void _sceMpegWaitIpuIdle(mpegInternal_t *);
 extern long _sceMpegWaitIpuIdle64(mpegInternal_t *);
 extern int _decodeOrSkipField(mpeg_t *, void *, int);
 extern int _decodeOrSkipFrame(mpeg_t *, void *, int);
-extern int _sceMpegDispatchMpegCallback(mpeg_t *, void *);
+extern int _sceMpegDispatchMpegCallback(mpeg_t *, mpegCbData_t *);
 extern void _dispRefImage(mpegInternal_t *, mpegRefImage_t *, int);
 extern void _dispRefImageField(mpegInternal_t *, mpegRefImage_t *, mpegRefImage_t *, int);
 extern int _sceMpegPictureData0(mpegInternal_t *);
@@ -85,6 +85,17 @@ int _sceMpegDefaultStopDMA(mpeg_t *mp);
 int _sceMpegDefaultRestartDMA(mpeg_t *mp);
 extern int _sceMpegDispatchMpegCbNodata(mpeg_t *);
 extern void _motionVector(mpegInternal_t *, int *, int *, int, int, int, int, int);
+/* D15: retail reads $gp through a volatile move that also orders the surrounding stores. */
+#define GET_GP(x) __asm__ volatile("move %0, $28" : "=r"(x))
+#define GET_GP_MEM(x) __asm__ volatile("move %0, $28" : "=r"(x) : : "memory")
+/* D16: retail swaps $gp as one move pair around the callback. */
+static inline int changeGp(int gp)
+{
+	int old;
+	__asm__ volatile("move %0, $28\n\tmove $28, %1" : "=&r"(old) : "r"(gp) : "memory");
+	return old;
+}
+extern mpegStrId_t sdkMpegStrIds[10];
 /* EXTERNS */
 
 void MPEG_SECTION(_dualPrimeVector) _dualPrimeVector(mpegInternal_t *sys, int dmv[][2], int *dmvector, int mvx, int mvy)
@@ -456,7 +467,7 @@ int MPEG_SECTION(_sceMpegNextHeader) _sceMpegNextHeader(mpegInternal_t *sys)
 			cb.type = 5;
 			cb.pts = -1;
 			cb.dts = -1;
-			_sceMpegDispatchMpegCallback(sys->mp, &cb);
+			_sceMpegDispatchMpegCallback(sys->mp, (mpegCbData_t *)&cb);
 			sys->pts = cb.pts;
 			sys->dts = cb.dts;
 			return sys->unk160;
@@ -714,13 +725,54 @@ int MPEG_SECTION(sceMpegIsRefBuffEmpty) sceMpegIsRefBuffEmpty(mpeg_t *mp)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", func_00142240);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegAddCallback);
+void *MPEG_SECTION(sceMpegAddCallback) sceMpegAddCallback(mpeg_t *mp, int type, void *func, void *data)
+{
+	int gp;
+	mpegInternal_t *sys = mp->sys;
+	void *old = sys->callbacks[type].func;
+	sys->callbacks[type].func = func;
+	sys->callbacks[type].data = data;
+	GET_GP(gp);
+	sys->callbacks[type].gp = gp;
+	return old;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", func_00142280);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDispatchMpegCallback);
+int MPEG_SECTION(_sceMpegDispatchMpegCallback) _sceMpegDispatchMpegCallback(mpeg_t *mp, mpegCbData_t *cb)
+{
+	int ret = 0;
+	if (mp) {
+		mpegInternal_t *sys = mp->sys;
+		if (sys) {
+			int (*func)(mpeg_t *, mpegCbData_t *, void *) = sys->callbacks[cb->type].func;
+			if (func) {
+				int old = changeGp(sys->callbacks[cb->type].gp);
+				ret = func(mp, cb, sys->callbacks[cb->type].data);
+				changeGp(old);
+			}
+		}
+	}
+	return ret;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _sceMpegDispatchMpegCbNodata);
+int MPEG_SECTION(_sceMpegDispatchMpegCbNodata) _sceMpegDispatchMpegCbNodata(mpeg_t *mp)
+{
+	mpegCbData_t cb;
+	cb.type = 1;
+	if (mp) {
+		mpegInternal_t *sys = mp->sys;
+		if (sys) {
+			int (*func)(mpeg_t *, mpegCbData_t *, void *) = sys->callbacks[cb.type].func;
+			if (func) {
+				int old = changeGp(sys->callbacks[cb.type].gp);
+				func(mp, &cb, sys->callbacks[cb.type].data);
+				changeGp(old);
+			}
+		}
+	}
+	return 1;
+}
 
 int MPEG_SECTION(_decodeOrSkip) _decodeOrSkip(mpeg_t *mp, void *data, int count)
 {
@@ -885,7 +937,56 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", _PES_packe
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegDemuxPssRing);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/mpeg/libmpeg", sceMpegAddStrCallback);
+/* Stream id for a type and stream number (inlined into sceMpegAddStrCallback). */
+static inline unsigned long _strId(unsigned int type, int stream)
+{
+	unsigned long id = 0;
+	int shift;
+	if (type < 10) {
+		switch (sdkMpegStrIds[type].mask) {
+		case 0xffffffffff:
+			shift = 0;
+			break;
+		case 0xffff000000:
+			shift = 0x18;
+			break;
+		case 0xff00000000:
+			shift = 0x20;
+			break;
+		default:
+			return 0;
+		}
+		id = sdkMpegStrIds[type].value | ((long)stream << shift);
+	}
+	return id;
+}
+
+void *MPEG_SECTION(sceMpegAddStrCallback) sceMpegAddStrCallback(mpeg_t *mp, unsigned int type, int stream, void *func, void *data)
+{
+	mpegInternal_t *sys = mp->sys;
+	mpegStrEntry_t *table = (mpegStrEntry_t *)sys->unk60[0];
+	void *old = 0;
+	unsigned long id = _strId(type, stream);
+	int i;
+	int gp, count;
+	for (i = 0; i < sys->unk60[1]; i++) {
+		if (id == table[i].id) {
+			old = table[i].func;
+			break;
+		}
+	}
+	if (i < 0x40) {
+		table[i].id = id;
+		table[i].func = func;
+		table[i].data = data;
+		table[i].mask = sdkMpegStrIds[type].mask;
+		GET_GP_MEM(gp);
+		count = sys->unk60[1];
+		table[i].gp = gp;
+		sys->unk60[1] = count + 1;
+	}
+	return old;
+}
 
 void MPEG_SECTION(_ErrMessage) _ErrMessage(const char *message)
 {
@@ -911,10 +1012,10 @@ void MPEG_SECTION(_sceMpegErrorBdec) _sceMpegErrorBdec(mpegInternal_t *sys)
 	int intr;
 	_sceMpegError(sys, sdkMpegErrBdec);
 	cb.type = 2;
-	_sceMpegDispatchMpegCallback(sys->mp, &cb);
+	_sceMpegDispatchMpegCallback(sys->mp, (mpegCbData_t *)&cb);
 	*(volatile unsigned int *)0x10002010 = 0x40000000;
 	cb.type = 3;
-	_sceMpegDispatchMpegCallback(sys->mp, &cb);
+	_sceMpegDispatchMpegCallback(sys->mp, (mpegCbData_t *)&cb);
 	intr = DIntr();
 	*(volatile unsigned int *)0x1000f590 = *(volatile unsigned int *)0x1000f520 | 0x10000;
 	*(volatile unsigned int *)0x1000b000 = 0;
@@ -929,7 +1030,7 @@ void MPEG_SECTION(_sceMpegError) _sceMpegError(mpegInternal_t *sys, const char *
 	if (sys->mp && sys && sys->callbacks[0].func) {
 		cb.message = message;
 		cb.type = 0;
-		_sceMpegDispatchMpegCallback(sys->mp, &cb);
+		_sceMpegDispatchMpegCallback(sys->mp, (mpegCbData_t *)&cb);
 		return;
 	}
 	_ErrMessage(message);

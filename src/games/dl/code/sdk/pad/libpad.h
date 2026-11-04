@@ -1,6 +1,12 @@
 #ifndef SDK_PAD_LIBPAD_H
 #define SDK_PAD_LIBPAD_H
 
+/* SIF command packet received by _pad_intr_hdr. */
+typedef struct padCmdPkt {
+	/* 0x00 */ int unk00[3];
+	/* 0x0c */ int arg;
+} padCmdPkt_t;
+
 /* Per port/slot client state at sdkPadSlots (2 ports x 4 slots). */
 typedef struct padSlot {
 	/* 0x00 */ unsigned char *dma;

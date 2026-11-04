@@ -16,6 +16,11 @@
 
 extern int sdkPadInitialized;
 extern int sdkPadDebug;
+/* D16: retail saves and loads $gp as one pair around the callback. */
+#define LOAD_GP(o, m) __asm__ volatile("move %0, $28\n\tlw $28, %1" : "=r"(o) : "m"(m))
+#define SET_GP(x) __asm__ volatile("move $28, %0" : : "r"(x))
+#define SYNC() __asm__ volatile("sync")
+#define EI() __asm__ volatile("ei")
 extern void (*sdkPadDmaCallback)(int);
 extern int sdkPadInitArg;
 extern int sdkPadClient[20];
@@ -40,7 +45,7 @@ extern void SyncDCache(void *, void *);
 extern void scePrintf(const char *, ...);
 extern void *memcpy(void *, const void *, unsigned int);
 extern void *memset(void *, int, unsigned int);
-extern int _pad_intr_hdr(void *);
+extern void _pad_intr_hdr(padCmdPkt_t *);
 
 int PAD_SECTION(scePadInit) scePadInit(int mode)
 {
@@ -69,9 +74,42 @@ int PAD_SECTION(scePadInit) scePadInit(int mode)
 }
 
 /* Interrupt handler written with inline asm in the original (gp swap, sync, ei). */
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/pad/libpad", _pad_intr_hdr);
+void PAD_SECTION(_pad_intr_hdr) _pad_intr_hdr(padCmdPkt_t *pkt)
+{
+	void (*cb)(int) = sdkPadDmaCallback;
+	if (cb) {
+		void *old;
+		LOAD_GP(old, sdkPadGp);
+		cb(pkt->arg);
+		SET_GP(old);
+	}
+	SYNC();
+	EI();
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/pad/libpad", scePadInit2);
+int PAD_SECTION(scePadInit2) scePadInit2(int mode)
+{
+	int slot, interrupts;
+
+	for (slot = 0; slot < 4; slot++) {
+		sdkPadSlots[0][slot].opened = 0;
+		sdkPadSlots[0][slot].unk18 = 0;
+		sdkPadSlots[0][slot].unk14 = 0;
+		sdkPadSlots[1][slot].opened = 0;
+		sdkPadSlots[1][slot].unk18 = 0;
+		sdkPadSlots[1][slot].unk14 = 0;
+	}
+	sdkPadBuffer[0] = 0x10;
+	/* Pointer view keeps retail's store order: the alias class decides what GCC may reorder. */
+	*(void **)&sdkPadBuffer[4] = 0;
+	sdkPadBuffer[5] = sdkPadInitArg;
+	if (sceSifCallRpc(sdkPadClient, 1, 0, sdkPadBuffer, 128, sdkPadBuffer, 128, 0, 0) < 0) return 0;
+	sdkPadDmaCallback = 0;
+	interrupts = DIntr();
+	sceSifAddCmdHandler(0x80000019, _pad_intr_hdr, 0);
+	if (interrupts == 1) EIntr();
+	return sdkPadBuffer[3];
+}
 
 int PAD_SECTION(scePadEnd) scePadEnd(void)
 {
@@ -262,7 +300,16 @@ int PAD_SECTION(scePadSetButtonInfo) scePadSetButtonInfo(int port, int slot, int
 	return sdkPadBuffer[4];
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/sdk/pad/libpad", scePadInfoPressMode);
+int PAD_SECTION(scePadInfoPressMode) scePadInfoPressMode(int port, int slot)
+{
+	unsigned char copy[128];
+	if (!sdkPadSlots[port][slot].opened) goto fail;
+	scePadGetDmaStr(port, slot, copy);
+	if (copy[0x72] != 1) { fail: return 0; }
+	if (copy[0x64] < 2) goto fail;
+	if (!(copy[0x66] & 2)) goto fail;
+	return 1;
+}
 
 int PAD_SECTION(scePadEnterPressMode) scePadEnterPressMode(int port, int slot)
 {

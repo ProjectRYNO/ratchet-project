@@ -6,7 +6,7 @@ The 2026-10-19 post-pull isolated build verifies 6,308 compiled bytes and all si
 
 ## Pad, memory card and kernel splits (2026-10-26)
 
-**250/387 identified boot SDK functions (64.60%) are now byte-exact** (plus 52 untracked helpers) (see
+**292/387 identified boot SDK functions (75.45%) are now byte-exact** (plus 55 untracked helpers) (see
 [inventory](SDK_BOOT_INVENTORY.md)). New split objects, all built with EE GCC 2.9 (991111-01)
 `-G0 -O2 -fno-builtin` like DMA/multitap:
 
@@ -103,7 +103,16 @@ Store orders that resist reasoning can be swept with `build/svo-library-work/b/p
 (it found `supplement_crt0`). Test sources are in `build/svo-library-work/b/` (`pad_*.c`, `mc_*.c`, `k_*.c`); compare with
 `build/svo-library-work/sdkcmp.py SRC PREFIX` inside the container.
 
-## Broader runtime inventory
+## Inline fragments and per-function rodata (2026-11-03)
+
+- D15 and D16 in `docs/decompilation/DECISIONS.md` allow small fragments in otherwise-C functions: `$gp` reads, swaps and restores, `sync`, `ei`, `mfc0 $12`, and a `cfc2` status read. `sbrk` also uses single-instruction `di` and `sync.p`. Pure syscall stubs stay `INCLUDE_ASM`.
+- `$gp` swaps stay as one two-instruction asm statement (`changeGp`, `LOAD_GP`). Splitting them loses the match.
+- libgraph now runs `svo3_rodata_sections.py`: jump tables get `.graph_<fn>.rodata`, filling slots 0x00194B30..0x00194C1C (`sceGsSetDefLoadImage`) and 0x00194D40..0x00194E2C (`sceGsExecStoreImage`).
+- `sceGsSyncPath` moved from `lib_after_kernel` to its own object, `sdk/graph/libgspath`, at 0x00131A08. `sceGsResetPath` stays assembly: its `ctc2` writes and wait loop exceed D16.
+- Store-order misses often come from alias classes, not statement order. `sceSifInitCmd`, `scePadInit2` and `sceSifMUnBindRpc` needed individual stores through `int`/pointer views, and `sceFsInit` needed `fsPoffData_t`'s first field to be a pointer. The compare tool masks relocations and sees test-file prototypes, so only the 726-byte checkpoint proves a match: `sceSifGetReg(int)` cost 22 words in `sceSifInitCmd` until it became `unsigned int`.
+- D17 allows `InitTLB32MB` and `iWakeupThread` beyond D16. `SetT2`, `iGetTimerSystemTime` and `GetTimerSystemTime` also match with more asm, but were declined and stay assembly.
+
+
 
 The [SDK folder map](../../code/sdk/README.md) lists the additional boot runtime
 components still in the game library aggregates. The [version/source survey](SDK_LAYOUT.md)
@@ -313,6 +322,6 @@ Ignored experiment outputs, initial probes, full matrix logs, and build evidence
 are under `dl/build/medius_compiler_probe/sdk/`. Regenerate production assembly
 with `make split` before a forced `make -B -j8 elf` when beginning integration.
 
-Broader boot SDK tracking: **250/387 identified functions (64.60%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
+Broader boot SDK tracking: **292/387 identified functions (75.45%)** are decompiled and byte-matching; this is an incomplete named-function inventory, not an all-SDK census. See [inventory](SDK_BOOT_INVENTORY.md) and [multitap verification](SDK_MTAP.md).
 
 Publication recheck on `cff526a` plus SDK changes: all 36 SDK functions and the incoming 46 Medius functions match; placement/global/type checks pass. The whole ELF still differs by 2,172 bytes outside SDK. See [publication details](SDK_MTAP.md#publication-recheck-after-remote-update).

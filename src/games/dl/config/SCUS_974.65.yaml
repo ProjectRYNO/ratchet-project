@@ -94,6 +94,7 @@ segments:
       - [0x1A100, cpp, game/lib] # was .s/asm
       - [0x26720, c, sdk/kernel/libkernel]
       - [0x2EDB0, cpp, game/lib_after_kernel]
+      - [0x31988, c, sdk/graph/libgspath]
       - [0x31A10, c, newlib/libm/math/e_fmod]
       - [0x31E00, c, newlib/libm/math/e_pow]
       - [0x32B28, c, newlib/libm/math/e_sqrt]

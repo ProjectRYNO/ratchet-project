@@ -13,6 +13,9 @@ functions:
   scePadEnd: 0x0013B460
   scePadPortClose: 0x0013B810
   scePadGetDmaStr: 0x0013B8C8
+  scePadInit2: 0x0013B368
+  _pad_intr_hdr: 0x0013B320
+  scePadInfoPressMode: 0x0013C190
   scePadRead: 0x0013BA20
   scePadGetState: 0x0013BA98
   scePadSetReqState: 0x0013BB18
@@ -43,6 +46,48 @@ functions:
   sceMcFormat: 0x0013AB98
   sceMcDelete: 0x0013AC68
   sceMcUnformat: 0x0013AD98
+  sceFsInit: 0x0012B068
+  sceSifMUnBindRpc: 0x00155FE0
+  sceSifInitCmd: 0x00129660
+  iWakeupThread: 0x00127968
+  InitTLB32MB: 0x0012D098
+  _request_end___dupe2: 0x00155CE8
+  _sceMpegDispatchMpegCallback: 0x00142290
+  _sceMpegDispatchMpegCbNodata: 0x00142308
+  _sceCd_Poff_Intr: 0x00137178
+  _sceFs_Poff_Intr: 0x0012B020
+  sceSifExecNotifyHandler: 0x0012ED80
+  _request_end: 0x0012A090
+  cbTimerHandler: 0x0012E078
+  sceGsSetDefDrawEnv: 0x00138AA0
+  sceGsSetDefLoadImage: 0x00138E08
+  sceGsSetDefStoreImage: 0x00138FF0
+  DisableIntc: 0x00127600
+  EnableIntc: 0x00127668
+  DisableDmac: 0x001276D0
+  EnableDmac: 0x00127738
+  SyncDCache: 0x00127438
+  InvalidDCache: 0x00127568
+  VSync: 0x00127030
+  VSync2: 0x001270C0
+  DelayThread: 0x00127A08
+  _DelayThreadHandler: 0x00127C48
+  sbrk: 0x00127298
+  sceGsExecStoreImage: 0x001392B0
+  sceGsSyncPath: 0x00131A08
+  sceSifMCallRpc: 0x00156120
+  sceMpegAddStrCallback: 0x00146390
+  _sceSifSendCmd: 0x001299E0
+  sceSifAddCmdHandler: 0x00129918
+  sceMpegAddCallback: 0x00142248
+  sceSifCallRpc: 0x0012A718
+  sceSifAddRebootNotifyHandler: 0x0012EC70
+  iSetTimerHandler: 0x0012E6D0
+  sceCdDiskReady_old: 0x00137998
+  sceCdDiskReady: 0x00137BB0
+  sceSifInitRpc: 0x00129D90
+  _request_call: 0x0012A688
+  sceSifCheckStatRpc: 0x0012A918
   _sceMpegWaitIpuIdle: 0x0013EAE0
   _sceMpegWaitIpuIdle64: 0x0013EC48
   _dualPrimeVector: 0x0013C750
@@ -2169,6 +2214,11 @@ objects:
       - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuSync, start: 0x001469F8, end: 0x00146A60}
       - {object: sdk/mpeg/libmpeg, section: .mpeg_setD4_CHCR___dupe2, start: 0x00146A60, end: 0x00146AD8}
       - {object: sdk/mpeg/libmpeg, section: .mpeg_sceIpuInit, start: 0x00146AD8, end: 0x00146D10}
+  sdk/graph/libgspath:
+    text_start: 0x00131A08
+    text_end: 0x00131A90
+    slots:
+      - {object: sdk/graph/libgspath, section: .gspath_sceGsSyncPath, start: 0x00131A08, end: 0x00131A90}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -4098,6 +4148,8 @@ objects:
 rodata:
   asm/build/core.data/091E80.rodata:
     slots:
+      - {object: sdk/graph/libgraph, function: sceGsSetDefLoadImage, section: .graph_sceGsSetDefLoadImage.rodata, start: 0x00194B30, end: 0x00194C1C}
+      - {object: sdk/graph/libgraph, function: sceGsExecStoreImage, section: .graph_sceGsExecStoreImage.rodata, start: 0x00194D40, end: 0x00194E2C}
       - {object: sdk/kernel/libkernel, function: printfloat, section: .kerneldata_printfloat, start: 0x00192E20, end: 0x00192E50}
       - {object: newlib/libm/math/ef_exp, function: __ieee754_expf, section: .libmdata_ef_exp, start: 0x001939A0, end: 0x001939EC}
       - {object: newlib/libm/math/ef_log, function: __ieee754_logf, section: .libmdata_ef_log, start: 0x001939EC, end: 0x00193A1C}

@@ -75,5 +75,3 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lib_after_kernel", _init
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lib_after_kernel", _fini);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lib_after_kernel", sceGsResetPath);
-
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lib_after_kernel", sceGsSyncPath);
