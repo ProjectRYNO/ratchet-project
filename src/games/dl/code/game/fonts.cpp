@@ -1,52 +1,152 @@
 #include "common.h"
+#include "game_section.h"
+
+
+void FontEnableColors(int) __asm__("FontEnableColors");
+extern unsigned char fontClampScale __asm__("D_21ECD8");
+extern unsigned char fontColorsEnabled __asm__("D_21ECEE");
+extern int fontLastFrame __asm__("D_21ECE0");
+extern int gsFrame __asm__("gsFrame");
+int FontStringLength(const char *, int, float) __asm__("FontStringLength");
+int FontGetMaxHeight() __asm__("FontGetMaxHeight");
+void FontLoadToGs() __asm__("FUN_00454060");
+void FontClampScale(int) __asm__("FontClampScale");
+int FontGetClampScale() __asm__("FontGetClampScale");
+void FontForceInitialize() __asm__("FontForceInitialize");
+int FontLen(const char *s, int len) __asm__("FontLen");
+int FontLenScaled(const char *s, int len, float scale) __asm__("FontLenScaled");
+int GetFontMaxHeight() __asm__("GetFontMaxHeight");
+void LoadFontToGs() __asm__("LoadFontToGs");
+void SetFontWindow(int a, int b, int c, int d, int e, int f, int g, int h, int i) __asm__("SetFontWindow");
+void DisableFontColors() __asm__("DisableFontColors");
+void EnableFontColors() __asm__("EnableFontColors");
+
+
+
+typedef struct fontWindow {
+	/* 0x00 */ short x;
+	/* 0x02 */ short y;
+	/* 0x04 */ short w;
+	/* 0x06 */ short h;
+	/* 0x08 */ short a;
+	/* 0x0a */ short b;
+	/* 0x0c */ short c;
+	/* 0x0e */ short d;
+	/* 0x10 */ short e;
+	/* 0x12 */ short f;
+	/* 0x14 */ short g;
+	/* 0x16 */ short h2;
+} fontWindow_t;
+void FontSetWindowData(fontWindow_t *w, int a, int b, int c, int d, int e, int f, int g, int h) __asm__("FontSetWindow");
+extern int *g_FontMetrics __asm__("g_FontMetrics");
+int GetCharacterIndex(unsigned char *s, int pos, int *out) __asm__("GetCharacterIndex");
+int FontGetCharacterCount() __asm__("FontGetCharacterCount");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontLoad);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FUN_00454060);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", GetCharacterIndex);
+GAME_SECTION(GetCharacterIndex) int GetCharacterIndex(unsigned char *s, int pos, int *out)
+{
+	int wide = 0;
+	int c;
+	s += pos;
+	c = *s;
+	*out = c;
+	if (c & 0x80) {
+		wide = 1;
+		*out = (((c & 0x7f) << 8) | s[1]) + 0x7f;
+	}
+	return wide;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FUN_00454298);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontForceInitialize);
+GAME_SECTION(FontForceInitialize) void FontForceInitialize()
+{
+	fontLastFrame = gsFrame - 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FUN_00454350);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontGetCharacterCount);
+GAME_SECTION(FontGetCharacterCount) int FontGetCharacterCount()
+{
+	int count = -1;
+	if (g_FontMetrics) count = g_FontMetrics[-1];
+	return count;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontGetMaxHeight);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontEnableColors);
+GAME_SECTION(FontEnableColors) void FontEnableColors(int enable)
+{
+	fontColorsEnabled = enable;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontStringHeight);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontStringLength);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontGetClampScale);
+GAME_SECTION(FontGetClampScale) int FontGetClampScale()
+{
+	return fontClampScale;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontClampScale);
+GAME_SECTION(FontClampScale) void FontClampScale(int clamp)
+{
+	fontClampScale = clamp;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontPrint);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontPrint___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontSetWindow);
+GAME_SECTION(FontSetWindow) void FontSetWindowData(fontWindow_t *w, int a, int b, int c, int d, int e, int f, int g, int h)
+{
+	w->x = a;
+	w->y = b;
+	w->w = c;
+	w->h = d;
+	w->a = e;
+	w->b = f;
+	w->e = g;
+	w->f = h;
+	w->c = 0;
+	w->d = 0;
+	w->g = 0;
+	w->h2 = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FUN_00455e78);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontPrintWindowList);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", GetFontMaxHeight);
+GAME_SECTION(GetFontMaxHeight) int GetFontMaxHeight()
+{
+	return FontGetMaxHeight();
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", EnableFontColors);
+GAME_SECTION(EnableFontColors) void EnableFontColors()
+{
+	FontEnableColors(1);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", DisableFontColors);
+GAME_SECTION(DisableFontColors) void DisableFontColors()
+{
+	FontEnableColors(0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontLen);
+GAME_SECTION(FontLen) int FontLen(const char *s, int len)
+{
+	return FontStringLength(s, len, 1.0f);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457248);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontLenScaled);
+GAME_SECTION(FontLenScaled) int FontLenScaled(const char *s, int len, float scale)
+{
+	return FontStringLength(s, len, scale);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457298);
 
@@ -66,7 +166,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontPrintScaled)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457680);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", SetFontWindow);
+GAME_SECTION(SetFontWindow) void SetFontWindow(int a, int b, int c, int d, int e, int f, int g, int h, int i)
+{
+	FontSetWindowData((fontWindow_t *)a, b, c, d, e, f, g, h, i);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_004576C0);
 
@@ -76,7 +179,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457770);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontPrintWindowScaledGenericList);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", LoadFontToGs);
+GAME_SECTION(LoadFontToGs) void LoadFontToGs()
+{
+	FontLoadToGs();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_004577D0);
 

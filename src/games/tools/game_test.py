@@ -8,7 +8,9 @@ from /tmp/ckroot, or GASM=<dl tree> to use a private copy.
 import glob, os, re, subprocess, sys, tempfile
 
 W = '/opt/wibo-1.2.0'
-FLAGS = '-G8 -O2 -fopt-stack -mno-check-zero-division -fno-exceptions'
+FLAGS = os.environ.get('GAME_FLAGS', '-G8 -O2 -g -fopt-stack -mno-check-zero-division -fno-exceptions')
+AS = os.environ.get('GAME_AS', '/opt/ee-gcc2.95.3-136/lib/gcc-lib/ee/2.95.3/Ps2EeAs.exe')
+AS_FLAGS = os.environ.get('GAME_AS_FLAGS', '-G8')
 ROOT = os.environ.get('GASM', '/tmp/ckroot/dl')
 TOOLS = '/ProjectRYNO/tools'
 INC = '-I/ProjectRYNO/dl/code/include -I/ProjectRYNO/dl/code/game -I/ProjectRYNO/dl/code'
@@ -17,7 +19,7 @@ def sh(cmd):
 	return subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
 def retail(fn):
-	paths = glob.glob(ROOT + '/code/asm/nonmatchings/game/**/%s.s' % fn, recursive=True)
+	paths = glob.glob(ROOT + '/code/asm/nonmatchings/game/**/%s.s' % fn, recursive=True) or glob.glob(ROOT + '/code/asm/matchings/game/**/%s.s' % fn, recursive=True)
 	if not paths:
 		return None
 	text = open(paths[0]).read()
@@ -29,13 +31,18 @@ def main():
 	src = os.path.abspath(sys.argv[1])
 	show = sys.argv[sys.argv.index('--show') + 1] if '--show' in sys.argv else None
 	d = tempfile.mkdtemp(prefix='gt')
-	r = sh('cd /ProjectRYNO/dl && %s /opt/ee-gcc2.95.3-136/bin/ee-gcc.exe -x c++ -S %s -DGTEST %s %s -o %s/a.s' % (W, FLAGS, INC, src, d))
+	extra = re.findall(r'^// GAME_EXTRA_FLAGS: (.*)$', open(src, errors='replace').read(), re.M)
+	r = sh('cd /ProjectRYNO/dl && %s /opt/ee-gcc2.95.3-136/bin/ee-gcc.exe -x c++ -S %s %s -DGTEST %s %s -o %s/a.s' % (W, FLAGS, ' '.join(x.strip() for x in extra), INC, src, d))
 	if r.returncode:
 		print(r.stderr[-1800:])
 		return 1
 	sh('python3 %s/svo3_rodata_sections.py %s/a.s' % (TOOLS, d))
-	sh('python3 %s/sound_loop_compat.py --likely %s/a.s %s/b.s' % (TOOLS, d, d))
-	r = sh('cd /ProjectRYNO/dl && %s /opt/ee-gcc2.95.3-136/lib/gcc-lib/ee/2.95.3/as.exe -EL -G8 -g -I/ProjectRYNO/dl/code/include %s/b.s -o %s/a.o' % (W, d, d))
+	if os.environ.get('GAME_LOOP', '1') == '1':
+		sh('python3 %s/sound_loop_compat.py --likely %s/a.s %s/b.s' % (TOOLS, d, d))
+	else:
+		sh('cp %s/a.s %s/b.s' % (d, d))
+	run = W if AS.endswith('.exe') else 'LD_PRELOAD=/opt/ee-gcc2.96/ee296_statshim.so'
+	r = sh('cd /ProjectRYNO/dl && %s %s %s -I/ProjectRYNO/dl/code/include -o %s/a.o %s/b.s' % (run, AS, AS_FLAGS, d, d))
 	if r.returncode:
 		print(r.stderr[-1200:])
 		return 1

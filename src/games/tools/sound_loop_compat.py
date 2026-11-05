@@ -29,6 +29,8 @@ def number(s):
 
 LIKELY_BRANCHES = {'beql', 'bnel', 'beqzl', 'bnezl', 'bgezl', 'bltzl', 'bgtzl', 'blezl'}
 
+GAME_MODE = False
+
 def single_word(op, args, small_symbols=()):
     a = [x.strip() for x in args.split(',')] if args else []
     if op in {'lb', 'lbu', 'lh', 'lhu', 'lw', 'lwu', 'ld', 'sb', 'sh', 'sw', 'sd'}:
@@ -53,7 +55,11 @@ def single_word(op, args, small_symbols=()):
         if n is None:
             return False
         # The compiler uses addu for an addiu immediate. Subu negates it.
+        if GAME_MODE and ((op in {'slt', 'sltu'} and -32768 <= n <= 32767) or (op in {'and', 'or', 'xor'} and 0 <= n <= 65535)):
+            return True
         return (op == 'addu' and -32768 <= n <= 32767) or (op == 'subu' and -32768 <= -n <= 32767)
+    if GAME_MODE and op in {'sll', 'srl', 'sra', 'dsll', 'dsrl', 'dsra', 'negu', 'not', 'daddu', 'dsubu', 'mult', 'lui'}:
+        return True
     if op in {'addiu', 'slti', 'sltiu', 'andi', 'ori', 'xori'}:
         if len(a) != 3 or any(reg(x) is None for x in a[:2]):
             return False
@@ -121,6 +127,11 @@ def adapt(source, likely=False):
             text, instr, operands, mode, _ = parsed[j]
             if not text or text.endswith(':') or re.fullmatch(r'\.set\s+(?:no)?(?:reorder|macro)', text):
                 continue
+            if GAME_MODE and text.startswith(('.stabn', '.stabs')):
+                continue
+            if GAME_MODE and (instr in BRANCHES or instr in LIKELY_BRANCHES):
+                count += 1
+                continue
             if not single_word(instr, operands, small_symbols):
                 reason = f'unsupported instruction/directive {instr}'
                 break
@@ -158,6 +169,8 @@ def main():
     parser.add_argument('--verbose', action='store_true')
     parser.add_argument('--likely', action='store_true', help='also normalize branch-likely loops (game objects)')
     args = parser.parse_args()
+    global GAME_MODE
+    GAME_MODE = args.likely
     output, diagnostics = adapt(args.input.read_text(), args.likely)
     args.output.write_text(output)
     print('Legacy loop profile: %d short loops normalized' %

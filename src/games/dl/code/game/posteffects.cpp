@@ -1,4 +1,29 @@
 #include "common.h"
+#include "game_section.h"
+
+
+extern int *vu1_bufPtr __asm__("vu1_bufPtr");
+int g_SandStormFlag __asm__("D_2209DC") GAME_GP_DATA = 0;
+void PostEffects_Init_new() __asm__("PostEffects_Init_new");
+void PostEffects_Blur(int, int, int, int, int) __asm__("PostEffects_Blur");
+void PostEffects_BlurOnce(int, int, int, int, int) __asm__("PostEffects_BlurOnce");
+void PostEffects_RegisterEngine_Blur(int, int, int, int, int, int) __asm__("PostEffects_RegisterEngine_Blur");
+void PostEffects_Init() __asm__("PostEffects_Init");
+void PostEffects_LocalAlloc(int *ptr, int size) __asm__("PostEffects_LocalAlloc");
+void PostEffects_Blur256(int a, int b, int c) __asm__("PostEffects_Blur256");
+void PostEffects_BlurOnce256(int a, int b, int c) __asm__("PostEffects_BlurOnce256");
+void PostEffects_RegisterEngine_Blur64(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur64");
+void PostEffects_RegisterEngine_Blur128(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur128");
+void PostEffects_RegisterEngine_Blur256(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur256");
+void PostEffects_RegisterEngineCleanup() __asm__("PostEffects_RegisterEngineCleanup");
+int PE_GetEnvironmentType() __asm__("PE_GetEnvironmentType");
+
+
+
+void *MobyGetInterface(int, int) __asm__("MobyGetInterface");
+void ComposeCameraMatrix() __asm__("ComposeCameraMatrix");
+void InitSnowParticles() __asm__("InitSnowParticles");
+void PE_UpdateEnvEffectsForCameraWarp(void *camera) __asm__("PE_UpdateEnvEffectsForCameraWarp");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LocalAlloc);
 
@@ -28,17 +53,32 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7A40);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_Blur256);
+GAME_SECTION(PostEffects_Blur256) void PostEffects_Blur256(int a, int b, int c)
+{
+	PostEffects_Blur(a, b, 0x100, 0x100, c);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7A70);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_BlurOnce256);
+GAME_SECTION(PostEffects_BlurOnce256) void PostEffects_BlurOnce256(int a, int b, int c)
+{
+	PostEffects_BlurOnce(a, b, 0x100, 0x100, c);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_Blur256);
+GAME_SECTION(PostEffects_RegisterEngine_Blur256) void PostEffects_RegisterEngine_Blur256(int a, int b, int c, int d)
+{
+	PostEffects_RegisterEngine_Blur(a, b, c, 0x100, 0x100, d);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_Blur128);
+GAME_SECTION(PostEffects_RegisterEngine_Blur128) void PostEffects_RegisterEngine_Blur128(int a, int b, int c, int d)
+{
+	PostEffects_RegisterEngine_Blur(a, b, c, 0x80, 0x80, d);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_Blur64);
+GAME_SECTION(PostEffects_RegisterEngine_Blur64) void PostEffects_RegisterEngine_Blur64(int a, int b, int c, int d)
+{
+	PostEffects_RegisterEngine_Blur(a, b, c, 0x40, 0x40, d);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7B38);
 
@@ -64,11 +104,38 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F86A0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PE_GetEnvironmentType);
+GAME_SECTION(PE_GetEnvironmentType) int PE_GetEnvironmentType()
+{
+	switch (g_SandStormFlag) {
+	case 1:
+	case 2:
+		return 1;
+	case 3:
+	case 4:
+		return 2;
+	case 5:
+	case 0xb:
+	case 0x10:
+		return 3;
+	default:
+		return 0;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PE_UpdateEnvEffectsForCameraWarp);
+GAME_SECTION(PE_UpdateEnvEffectsForCameraWarp) void PE_UpdateEnvEffectsForCameraWarp(void *camera)
+{
+	char *iface = (char *)MobyGetInterface(0x2022, 0x50);
+	if (iface) {
+		(*(void (**)(void *))(iface + 0x44))(camera);
+		ComposeCameraMatrix();
+		InitSnowParticles();
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_Init);
+GAME_SECTION(PostEffects_Init) void PostEffects_Init()
+{
+	PostEffects_Init_new();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_AddPutToScreen_imm);
 
@@ -122,4 +189,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngineInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngineCleanup);
+GAME_SECTION(PostEffects_RegisterEngineCleanup) void PostEffects_RegisterEngineCleanup()
+{
+	vu1_bufPtr[0] = 0x10000000;
+	vu1_bufPtr[2] = 0x20000000;
+	vu1_bufPtr[3] = 0;
+	vu1_bufPtr += 4;
+}

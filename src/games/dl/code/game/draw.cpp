@@ -1,4 +1,36 @@
 #include "common.h"
+#include "game_section.h"
+
+
+struct MobyInstance {
+	/* 0x00 */ char unk00[0x20];
+	/* 0x20 */ unsigned char state;
+};
+struct RegisteredDrawRoutine_t {
+	/* 0x00 */ void (*drawFunc)(MobyInstance *);
+	/* 0x04 */ MobyInstance *pMoby;
+	/* 0x08 */ RegisteredDrawRoutine_t *pNext;
+	/* 0x0c */ RegisteredDrawRoutine_t *pTail;
+};
+struct FrustumDef {
+	/* 0x00 */ char unk00[0x28];
+};
+extern int RegisteredDrawsCount __asm__("RegisteredDrawsCount");
+extern void *pRegistered_PreDraws __asm__("pRegistered_PreDraws");
+extern void *pRegistered_PostPreDraws __asm__("pRegistered_PostPreDraws");
+extern void *pRegistered_MobyDraws __asm__("pRegistered_MobyDraws");
+extern void *pRegistered_PostDraws __asm__("pRegistered_PostDraws");
+extern void *pRegistered_FontDraws __asm__("pRegistered_FontDraws");
+extern void *pRegistered_ScreenEffectDraws __asm__("pRegistered_ScreenEffectDraws");
+extern RegisteredDrawRoutine_t RegisteredDrawRoutines[] __asm__("RegisteredDrawRoutines");
+extern FrustumDef SpecialFrustums[] __asm__("D_3D74B0");
+extern FrustumDef *WideScreenFrustumMap[] __asm__("D_3D7690");
+extern unsigned char SettingsWide[] __asm__("D_171DEB");
+unsigned char EffectDrawInProgress __asm__("EffectDrawInProgress") GAME_GP_DATA = 0;
+void CleanRegisteredDraws() __asm__("CleanRegisteredDraws");
+FrustumDef *GetFrustumDef(int) __asm__("GetFrustumDef");
+void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
+void ExecuteDrawFunctions(void *&) __asm__("ExecuteDrawFunctions");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawIOPInfo);
 
@@ -36,7 +68,12 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", ResetGsRegistersP
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_004489D8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", GetFrustumDef);
+GAME_SECTION(GetFrustumDef) FrustumDef *GetFrustumDef(int frustrumIndex)
+{
+	FrustumDef *def;
+	if (SettingsWide[0] && (def = WideScreenFrustumMap[frustrumIndex])) return def;
+	return &SpecialFrustums[frustrumIndex];
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", GetScreenFrustumIndex);
 
@@ -64,7 +101,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", LoadPalToGs);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", ConstructEffectTex0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", CleanRegisteredDraws);
+GAME_SECTION(CleanRegisteredDraws) void CleanRegisteredDraws()
+{
+	RegisteredDrawsCount = 0;
+	pRegistered_PreDraws = 0;
+	pRegistered_PostPreDraws = 0;
+	pRegistered_MobyDraws = 0;
+	pRegistered_PostDraws = 0;
+	pRegistered_FontDraws = 0;
+	pRegistered_ScreenEffectDraws = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", RegisterDrawFunction);
 

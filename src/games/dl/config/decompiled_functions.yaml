@@ -91,6 +91,344 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  GetMapName: 0x0054D5E0
+  MB_MoveSystemUpdateReaction: 0x00486188
+  CleanupAnimLayers: 0x0046F448
+  MobyFreeAnimLayer: 0x0046F068
+  AnimEvaluateResolve: 0x0046EDD8
+  csf_prompt_create_failed: 0x004656A8
+  csf_formatted: 0x004650C8
+  csf_prompt_warning: 0x00464D98
+  csf_good_load: 0x00464D50
+  csf_init: 0x00464C20
+  WPN_IsUpgradeMoby: 0x004ED7A8
+  WPN_SetUpgradeGadgetMode: 0x004EAB80
+  TransitionUpdate_Multiplayer: 0x0054C250
+  Transition_SetupNextMovie: 0x004F4FB0
+  Transition_SetupFirstMovie: 0x004F4F70
+  Transition_InitPlanetTex: 0x004F3440
+  PE_UpdateEnvEffectsForCameraWarp: 0x004F8708
+  NAVG_EdgeGetType: 0x0048EB10
+  NAVG_NodeGetType: 0x0048EA08
+  music_StartCB: 0x00489D30
+  music_PreseekCB: 0x00489C90
+  music_UnpauseDelay: 0x00489498
+  music_Unpause: 0x00489478
+  music_LoadBankFromEE: 0x00488E80
+  MB_GetMoveElevation: 0x00488828
+  MB_GetMoveReaction: 0x00483368
+  MB_GetMoveAction: 0x00483340
+  MB_Stand_2: 0x00480F40
+  Moby2dGetPtr: 0x0046D820
+  Moby2dDelete: 0x0046D7D8
+  Moby2dReset: 0x0046D668
+  MobyGetInterface___dupe2: 0x0046D428
+  RestoreMobyClassDists: 0x0046D168
+  StashMobyClassDists: 0x0046D138
+  InitMobyClassDists: 0x0046D110
+  InitMobyJointCache: 0x0046F6F8
+  MobyResetAnimLayerCache: 0x0046F0D0
+  MF_GetBestSpawnPoint: 0x0046B4E0
+  csf_changed: 0x00464E50
+  UninitializeCoreIOPModules: 0x00461100
+  InitializeCoreIOPModules: 0x004610A8
+  EZNetCtlCallback: 0x004602E8
+  LgKbmCallback: 0x00460288
+  EZNetCnfCallback: 0x004601E0
+  DefaultIOPModuleUnloadCallback: 0x00460098
+  FontSetWindow: 0x00455E40
+  FontGetCharacterCount: 0x00454400
+  GetCharacterIndex: 0x00454258
+  CleanRegisteredDraws: 0x004493B0
+  GetFrustumDef: 0x00448A20
+  HandleCameraUnderWaterOverlay: 0x0043CF28
+  WPN_ClearCachedTargets: 0x004EA790
+  DMAC_VIF1_Disable: 0x004E80F8
+  VU1_texFlush: 0x004E7B88
+  VU1_addDataRef: 0x004E7878
+  TransitionUpdate_Lobby: 0x0054B150
+  ST_GetNumExterminatorCardsCollected: 0x004FD198
+  ST_GetSkillPointInfo: 0x004FC310
+  SkyLevelGeneric: 0x004DEDD8
+  PostEffects_RegisterEngineCleanup: 0x004FB940
+  PostEffects_Init: 0x004F8758
+  PE_GetEnvironmentType: 0x004F86B8
+  PostEffects_RegisterEngine_Blur64: 0x004F7B10
+  PostEffects_RegisterEngine_Blur128: 0x004F7AE8
+  PostEffects_RegisterEngine_Blur256: 0x004F7AC0
+  PostEffects_BlurOnce256: 0x004F7A98
+  PostEffects_Blur256: 0x004F7A48
+  NAVG_ResetNavigationVars: 0x0048D038
+  navg_AllocMemory: 0x0048B818
+  music_QueueLengthCB: 0x00489E68
+  music_Sync: 0x00489C28
+  music_Pause: 0x00489458
+  music_LoadBankCB: 0x00488E00
+  MB_GetMoveDamper: 0x00488A58
+  MB_SetMoveElevation: 0x004887D8
+  MVE_SpawnLavaSplash: 0x004869D8
+  MB_IncomingAnimationMayaFrame: 0x00484598
+  MB_ProcessDamage_2: 0x00482888
+  MB_StopReaction_2: 0x00481240
+  Bot_GetGlobalComm: 0x0047D4E8
+  Bot_GrantHead: 0x0047D448
+  Bot_GrantAbility: 0x0047D368
+  Bot_HasAbility: 0x0047D278
+  Bot_GetAbilityDef: 0x0047D250
+  MB_SetBogeyType: 0x0047BC38
+  MB_GetBogeyType: 0x0047BC10
+  MB_GetBogeyVars: 0x0047BBD8
+  MB_initMobyColorFlash: 0x00477650
+  MB_GetNavigationVars: 0x00476628
+  MB_GetMoveVars_2: 0x004765F0
+  MB_GetSuckVars: 0x004765B0
+  Lerp: 0x004756A8
+  GetGroundZNoWater: 0x00474090
+  FreePoseCacheEntry: 0x0046FD10
+  ResetMobyJointCache: 0x0046F6B0
+  GetMobyAnimJointMat: 0x0046F4F0
+  MCSTATE_ClearResponse: 0x00465F18
+  MCSTATE_SetResponse: 0x00465F10
+  MCSTATE_GetState: 0x00465C08
+  csf_prompt_format_failed: 0x00465678
+  csf_format_pending: 0x00465028
+  csf_prompt_autosave_warning: 0x00464DD0
+  csf_prompt_create_save_overwrite: 0x00464AF0
+  InitializeIOP: 0x00461080
+  LibNetBUnloadCallback: 0x00460260
+  LibNetBCallback: 0x00460240
+  StreamerLoadCallback: 0x00460178
+  SoundCallback: 0x00460158
+  PadCallback: 0x00460138
+  InitializeAstrm: 0x00460130
+  AstrmDestroyStreams: 0x00460110
+  DisplayIOPInfo: 0x00460018
+  Hud_sendTexture: 0x0045F200
+  LinkHudBank: 0x0045E860
+  HelpQueue_GetNextIndex: 0x0045E748
+  HelpQueue_Advance: 0x0045E710
+  msg_string_mtap: 0x0045E080
+  Help_CheckIfEmptyText: 0x0045DF28
+  Help_ClearUsedSinceDeath: 0x0045DEF0
+  Help_ShutDown: 0x0045DE38
+  Help_QueueMessageDelay: 0x0045DA70
+  InitializeLobbyControllerSettingsToDefaults: 0x0045CB88
+  LoadFontToGs: 0x004577B0
+  SetFontWindow: 0x004576A0
+  FontLenScaled: 0x00457278
+  FontLen: 0x00457220
+  DisableFontColors: 0x00457200
+  EnableFontColors: 0x004571E0
+  GetFontMaxHeight: 0x004571C0
+  FontClampScale: 0x00454A68
+  FontGetClampScale: 0x00454A60
+  FontEnableColors: 0x004545F8
+  FontForceInitialize: 0x00454338
+  Camera_UpdateFog: 0x0043D938
+  Camera_CopyLastPolarToQuat: 0x0043B698
+  Camera_Exit: 0x0043AEF8
+  Camera_runSetupToNewCam: 0x0043A988
+  Camera_DeactivateCurrent: 0x0043A8D8
+  Camera_FindCameraOfType: 0x0043A518
+  DrawQuad___dupe3: 0x0044DAB0
+  DrawStrip___dupe2: 0x0044D9E8
+  DrawStrip: 0x0044D938
+  SetIconTexture: 0x0044D5D0
+  SetTexture: 0x0044D538
+  SetTfragDistsByFOV: 0x004E2C88
+  ST_RegisterEnemyKill: 0x004FC678
+  SetupMobyFunctions: 0x00488BC8
+  actuator_SetWave: 0x00438D38
+  Vendor_GetPurchaseableWrenchUpgradeLevel: 0x004E7440
+  Vendor_IsBotUpgradeAvailableForPurchase: 0x004E7428
+  Vendor_IsPostFXModAvailableForPurchase: 0x004E73D8
+  Vendor_IsGadgetAvailableForPurchase: 0x004E7388
+  Vendor_IsCheatOn: 0x004E6F98
+  RestartGame: 0x004E5550
+  mode_movieUnInit: 0x004E4FA0
+  mpeg_malloc_reset: 0x004E4CD8
+  TransitionMP_UpdateMoby: 0x0054D3A8
+  TransitionMP_DrawTitleText: 0x0054CE80
+  TransitionMP_DrawOverlay: 0x0054CBE0
+  TransitionPost_MultiPlayer: 0x0054B5A8
+  TransitionDraw_Lobby: 0x0054B280
+  TransitionPre_Lobby: 0x0054B0E8
+  TransitionPost_ShuttleInterior: 0x004F6470
+  TransitionDraw_ShuttleInterior: 0x004F6428
+  TransitionShuttleInterior_InitMoby: 0x004F62E0
+  TransitionPre_ShuttleInterior: 0x004F6288
+  TransitionPost_Space: 0x004F6250
+  TransitionSpace_DrawMobyShip: 0x004F6098
+  TransitionSpace_UpdateMobySpace: 0x004F5E18
+  TransitionSpace_ResetParticles: 0x004F5868
+  TransitionUpdate_E3: 0x004F56A8
+  TransitionPre_E3: 0x004F5678
+  TransitionDraw_Undefined: 0x004F5670
+  TransitionUpdate_Undefined: 0x004F5620
+  TransitionPre_Undefined: 0x004F55E0
+  ST_GetNumRemainingDifficultyStars: 0x004FC650
+  ST_AcquiredAllSkillPoints: 0x004FC490
+  ST_GetTotalNumAcquiredSkillPoints: 0x004FC408
+  ST_GetNumAcquiredSkillPoints___dupe2: 0x004FC2C0
+  ST_GetNumAcquiredSkillPoints: 0x004FC298
+  ST_GetMissionRewardData: 0x004FBF78
+  SkyDrawShell: 0x004DF098
+  InitModeGadgetPuzzle: 0x004DCBA8
+  UpdatePad___dupe2: 0x00490878
+  PadRingAng: 0x0048F910
+  Pad_NonLaggedBits: 0x0048F808
+  InitPadRing: 0x0048F7E0
+  mode_peek: 0x0047F870
+  SetMobyAmbientLights: 0x004700B0
+  MF_ClearMidMissionData: 0x0046B8C8
+  MF_ClearMissionSpecificData: 0x0046B4C0
+  MF_GetNewTournamentMask: 0x0046A358
+  MF_GetNewLevelMask: 0x0046A350
+  MF_ExitPostMissionScreen: 0x0046A320
+  memcard_cleanupbeforesession: 0x004694B0
+  memcard_PatchLoaded: 0x00469280
+  memcard_LoadPatch: 0x004691F0
+  memcard_LoadNet: 0x004690E8
+  memcard_TestChecksum: 0x00468C38
+  memcard_Checksum: 0x00468BE0
+  _memcard_Checksum: 0x00468B78
+  memcard_GetDataSize: 0x00468B40
+  memcard_Init: 0x00468B20
+  memcard_MakeWholeSave: 0x00468A78
+  memcard_RestoreGame: 0x004660F8
+  DeinitNoNetHeap: 0x0045FF50
+  Hud_GsStashFreeRam: 0x0045E830
+  Hud_HeapReset: 0x0045E808
+  Hud_HeapAlloc: 0x0045E790
+  GetMobySkinBase: 0x0045CEC8
+  GetCurrentThreadPriority: 0x0045CE88
+  Global_ClearSaveErrorInSpaceTransition: 0x0045CB70
+  GetGameCompleted: 0x0045CB60
+  IsGameInChallengeMode: 0x0045CB50
+  SwitchingLevels: 0x0045CB20
+  SwitchToLevel: 0x0045CA60
+  HandleSpecialSwitchLevelCases: 0x0045CA58
+  PlayNextQueuedMovie: 0x0045C990
+  Abort___dupe2: 0x0045C960
+  TagMoviesAsPlayed: 0x0045C8E8
+  Flush: 0x0045C8C8
+  QueueMovie: 0x0045C850
+  DeQueueMovie: 0x0045C7B0
+  Construct: 0x0045C768
+  RebootToFrontEnd: 0x0045C6E8
+  PM_Malloc: 0x0045C670
+  load_complete_mission_bank: 0x00163AE0
+  abort_mission_bank: 0x00163AD8
+  is_complete_mission_bank: 0x00163AC0
+  load_complete_file: 0x00163A20
+  abort_file: 0x001639F8
+  is_complete_file: 0x001639F0
+  cb_missionBankLoadComplete: 0x00163960
+  GetBuffer: 0x00163958
+  IsLoading: 0x00163928
+  Abort: 0x001638E8
+  Load: 0x00163808
+  Reset: 0x001637F0
+  Initialize: 0x001637D0
+  Update___dupe53: 0x001634F0
+  Sync: 0x001634A8
+  cb_cdComplete: 0x00163448
+  Freeze_KillMessage: 0x0045C630
+  Freeze_MessageCallback: 0x0045C610
+  Freeze_DisplayMessage: 0x0045C598
+  Freeze_ClearLastUserResponse: 0x0045C580
+  Freeze_SetFreezeOcclusion: 0x004599E8
+  mode_freezeUnInit: 0x00459978
+  UpdateProgressiveScan: 0x004598E8
+  GetLastFreezeDialogType: 0x004598E0
+  AA_BlurPass: 0x00459758
+  PutDrawBufferSmall: 0x004596E0
+  PutDispBuffer: 0x00459408
+  SetBackgroundColor: 0x004593D8
+  SetVideoMode: 0x00458670
+  DrawQuad___dupe2: 0x0044B680
+  PackQuadLTRB: 0x0044B250
+  RotatePoints: 0x0044B1B8
+  ScalePoints: 0x0044B178
+  TranslatePoints: 0x0044B138
+  ResetZ: 0x0044B128
+  SetZ: 0x0044B110
+  Credit_SequenceTrigger: 0x00446A50
+  Credit_PageForLine: 0x004469E8
+  Credit_InitializeMessagePool: 0x00446988
+  setArrayContents: 0x004455F8
+  MB_randSphere: 0x00472798
+  MB_randRot: 0x00472690
+  MB_randRange2: 0x00472630
+  MB_randRange: 0x004725D8
+  MB_randRangeInt: 0x00472590
+  MB_rand: 0x00472560
+  MB_IsPntInCuboid: 0x00472518
+  Boot_ResetTimeOutCounter: 0x00438C88
+  GetBootPlate: 0x00437E70
+  GetBootMemoryMap: 0x00437E40
+  mode_lobbyInit: 0x00437E18
+  mode_lobbyUnInit: 0x00437E10
+  mode_creditsUnInit: 0x00437DF0
+  mode_creditsInit: 0x00437DD0
+  GetCurrentFrameRate: 0x00437DC8
+  Level_TransitionFX: 0x00437CA8
+  InitForCheats: 0x00436C58
+  UpdateSceneMonitors: 0x00436C50
+  LevelTScene_VoxShuttle_UpdateFX: 0x00436C48
+  LevelTScene_VoxShuttle_UpdateMonitors: 0x00436C40
+  CubicLineSet_SetStyle: 0x004526E0
+  CubicLineSet_SetEndPointPos: 0x00452698
+  AttachPointToJoint: 0x00451230
+  ZAddGSRegister: 0x0044DE80
+  SetTextureDirect: 0x0044D668
+  ResetRegisterTex1: 0x0044D238
+  ResetRegisterZBuf: 0x0044D1B8
+  IsTrackingRegisters: 0x0044D1A8
+  CleanUpAfterEffectsRendering: 0x0044D150
+  GetWidget2DScreenSize: 0x004EE368
+  DrawWidget2D: 0x004EE248
+  wad_GetSectors: 0x00159A00
+  wad_GetHeaders: 0x00159A50
+  ResetGameCounters: 0x004E5590
+  HideMobysForScene: 0x004E55C0
+  TN_CalculateAmmoFromEnemies: 0x004FBDD0
+  PatchTfragGifs: 0x004E2E30
+  DmaTfragTextures: 0x004E2D20
+  GetMovieOffset: 0x004E2AF8
+  DoSpaceTransition: 0x004E25E8
+  UnInitModeGadgetPuzzle: 0x004DCC38
+  MB_GetEffectorVars: 0x0048F440
+  UpdateMovieOverlay: 0x00488A98
+  MODELEVEL_HandleOcclusionExceptions: 0x0047EF38
+  RefreshPauseModeCoolDown: 0x0047F538
+  SetModeChangeRequestDelay: 0x0047F548
+  IsThisGameModePending: 0x0047F550
+  GetMobyFunctions: 0x00488C98
+  GetMobyFunctions___dupe2: 0x00488D40
+  UpdateMissionLoad: 0x004FE9A0
+  IsMissionLoading: 0x004FEC80
+  AbortMissionLoad: 0x004FECA0
+  EndLoadData_CB: 0x004FECE8
+  EndLoadSound_CB: 0x004FED60
+  Gui_DrawRC1_Help_Decorator: 0x00469610
+  DeletePointLight: 0x00461240
+  LoadFont: 0x0045FEB8
+  SetMediaMode: 0x0045F9F8
+  UnloadModule: 0x0045F410
+  UnloadModuleByName: 0x0045F460
+  MB_GetRoleVars: 0x0045D090
+  SetPmMemory: 0x0045C6D8
+  InitMultiplayerProfiles: 0x00159C60
+  SetFrontEndState: 0x00159C28
+  nwKbdTimerFunc: 0x00159C30
+  DR_InitVars: 0x0054B010
+  ConfigUtil_ReadNumber: 0x004FDC78
+  LoadDebugFont: 0x00439FB8
+  actuator_dbgplaywave: 0x00438C90
+  actuator_dbgstopwave: 0x00438CD0
+  actuator_killWave: 0x00438F58
+  actuator_CalcPower: 0x00438FB8
   InBootUpTopPage: 0x00496308
   GetFormattedPlanetName: 0x00496310
   WrapValue: 0x004FE948
@@ -2335,6 +2673,1573 @@ objects:
       - {object: game/mathutil, section: .game_GetVectorCircle, start: 0x004FE8D8, end: 0x004FE930}
       - {object: game/mathutil, section: .game_func_004FE930, start: 0x004FE930, end: 0x004FE948}
       - {object: game/mathutil, section: .game_WrapValue, start: 0x004FE948, end: 0x004FE9A0}
+  game/actuator:
+    text_start: 0x00438C90
+    text_end: 0x004393D0
+    slots:
+      - {object: game/actuator, section: .game_actuator_dbgplaywave, start: 0x00438C90, end: 0x00438CD0}
+      - {object: game/actuator, section: .game_actuator_dbgstopwave, start: 0x00438CD0, end: 0x00438D30}
+      - {object: game/actuator, section: .game_func_00438D30, start: 0x00438D30, end: 0x00438D38}
+      - {object: game/actuator, section: .game_actuator_SetWave, start: 0x00438D38, end: 0x00438F58}
+      - {object: game/actuator, section: .game_actuator_killWave, start: 0x00438F58, end: 0x00438FB8}
+      - {object: game/actuator, section: .game_actuator_CalcPower, start: 0x00438FB8, end: 0x004393C0}
+      - {object: game/actuator, section: .game_func_004393C0, start: 0x004393C0, end: 0x004393D0}
+  game/bloaders:
+    text_start: 0x00439DE0
+    text_end: 0x0043A068
+    slots:
+      - {object: game/bloaders, section: .game_LoadPifAsPSMT8H, start: 0x00439DE0, end: 0x00439FB8}
+      - {object: game/bloaders, section: .game_LoadDebugFont, start: 0x00439FB8, end: 0x0043A040}
+      - {object: game/bloaders, section: .game_func_0043A040, start: 0x0043A040, end: 0x0043A068}
+  game/config_util:
+    text_start: 0x004FD268
+    text_end: 0x004FDD10
+    slots:
+      - {object: game/config_util, section: .game_ConfigUtil_ParseLine, start: 0x004FD268, end: 0x004FDAA0}
+      - {object: game/config_util, section: .game_ConfigUtil_ReadLine, start: 0x004FDAA0, end: 0x004FDB48}
+      - {object: game/config_util, section: .game_ConfigUtil_ReadWord, start: 0x004FDB48, end: 0x004FDC78}
+      - {object: game/config_util, section: .game_ConfigUtil_ReadNumber, start: 0x004FDC78, end: 0x004FDCF0}
+      - {object: game/config_util, section: .game_func_004FDCF0, start: 0x004FDCF0, end: 0x004FDD10}
+  game/dead_reckon:
+    text_start: 0x0054B010
+    text_end: 0x0054B0E8
+    slots:
+      - {object: game/dead_reckon, section: .game_DR_InitVars, start: 0x0054B010, end: 0x0054B0A0}
+      - {object: game/dead_reckon, section: .game_func_0054B0A0, start: 0x0054B0A0, end: 0x0054B0E8}
+  game/gameglobals:
+    text_start: 0x00159C28
+    text_end: 0x00159CF4
+    slots:
+      - {object: game/gameglobals, section: .game_SetFrontEndState, start: 0x00159C28, end: 0x00159C30}
+      - {object: game/gameglobals, section: .game_nwKbdTimerFunc, start: 0x00159C30, end: 0x00159C60}
+      - {object: game/gameglobals, section: .game_InitMultiplayerProfiles, start: 0x00159C60, end: 0x00159CF4}
+  game/gearmenu:
+    text_start: 0x0045C670
+    text_end: 0x0045C6E8
+    slots:
+      - {object: game/gearmenu, section: .game_PM_Malloc, start: 0x0045C670, end: 0x0045C6D8}
+      - {object: game/gearmenu, section: .game_SetPmMemory, start: 0x0045C6D8, end: 0x0045C6E0}
+      - {object: game/gearmenu, section: .game_func_0045C6E0, start: 0x0045C6E0, end: 0x0045C6E8}
+  game/group_control:
+    text_start: 0x0045D090
+    text_end: 0x0045D0C4
+    slots:
+      - {object: game/group_control, section: .game_MB_GetRoleVars, start: 0x0045D090, end: 0x0045D0C4}
+  game/init:
+    text_start: 0x0045F410
+    text_end: 0x0045F6D8
+    slots:
+      - {object: game/init, section: .game_UnloadModule, start: 0x0045F410, end: 0x0045F460}
+      - {object: game/init, section: .game_UnloadModuleByName, start: 0x0045F460, end: 0x0045F498}
+      - {object: game/init, section: .game_BootElf, start: 0x0045F498, end: 0x0045F6D8}
+  game/initonce:
+    text_start: 0x0045F700
+    text_end: 0x0045FF78
+    slots:
+      - {object: game/initonce, section: .game_InitMemSlots, start: 0x0045F700, end: 0x0045F9F8}
+      - {object: game/initonce, section: .game_SetMediaMode, start: 0x0045F9F8, end: 0x0045FA18}
+      - {object: game/initonce, section: .game_InitOnce, start: 0x0045FA18, end: 0x0045FEB8}
+      - {object: game/initonce, section: .game_LoadFont, start: 0x0045FEB8, end: 0x0045FEE0}
+      - {object: game/initonce, section: .game_InitNoNetHeap, start: 0x0045FEE0, end: 0x0045FF50}
+      - {object: game/initonce, section: .game_DeinitNoNetHeap, start: 0x0045FF50, end: 0x0045FF78}
+  game/lights:
+    text_start: 0x00461130
+    text_end: 0x00461424
+    slots:
+      - {object: game/lights, section: .game_CreatePointLight, start: 0x00461130, end: 0x00461240}
+      - {object: game/lights, section: .game_DeletePointLight, start: 0x00461240, end: 0x004612A8}
+      - {object: game/lights, section: .game_func_004612A8, start: 0x004612A8, end: 0x004612B8}
+      - {object: game/lights, section: .game_DetachPointLight, start: 0x004612B8, end: 0x00461424}
+  game/menu:
+    text_start: 0x00469610
+    text_end: 0x004697A8
+    slots:
+      - {object: game/menu, section: .game_Gui_DrawRC1_Help_Decorator, start: 0x00469610, end: 0x00469618}
+      - {object: game/menu, section: .game_Gui_DrawDecoratedWindow, start: 0x00469618, end: 0x00469798}
+      - {object: game/menu, section: .game_func_00469798, start: 0x00469798, end: 0x004697A8}
+  game/missionload:
+    text_start: 0x004FE9A0
+    text_end: 0x004FEDC8
+    slots:
+      - {object: game/missionload, section: .game_UpdateMissionLoad, start: 0x004FE9A0, end: 0x004FEC58}
+      - {object: game/missionload, section: .game_func_004FEC58, start: 0x004FEC58, end: 0x004FEC80}
+      - {object: game/missionload, section: .game_IsMissionLoading, start: 0x004FEC80, end: 0x004FEC90}
+      - {object: game/missionload, section: .game_func_004FEC90, start: 0x004FEC90, end: 0x004FECA0}
+      - {object: game/missionload, section: .game_AbortMissionLoad, start: 0x004FECA0, end: 0x004FECE8}
+      - {object: game/missionload, section: .game_EndLoadData_CB, start: 0x004FECE8, end: 0x004FED60}
+      - {object: game/missionload, section: .game_EndLoadSound_CB, start: 0x004FED60, end: 0x004FEDC8}
+  game/mobyupd:
+    text_start: 0x00488BC8
+    text_end: 0x00488DE4
+    slots:
+      - {object: game/mobyupd, section: .game_SetupMobyFunctions, start: 0x00488BC8, end: 0x00488C98}
+      - {object: game/mobyupd, section: .game_GetMobyFunctions, start: 0x00488C98, end: 0x00488D40}
+      - {object: game/mobyupd, section: .game_GetMobyFunctions___dupe2, start: 0x00488D40, end: 0x00488DE4}
+  game/mode:
+    text_start: 0x0047F538
+    text_end: 0x0047F8A0
+    slots:
+      - {object: game/mode, section: .game_RefreshPauseModeCoolDown, start: 0x0047F538, end: 0x0047F540}
+      - {object: game/mode, section: .game_func_0047F540, start: 0x0047F540, end: 0x0047F548}
+      - {object: game/mode, section: .game_SetModeChangeRequestDelay, start: 0x0047F548, end: 0x0047F550}
+      - {object: game/mode, section: .game_IsThisGameModePending, start: 0x0047F550, end: 0x0047F568}
+      - {object: game/mode, section: .game_mode_requestChange, start: 0x0047F568, end: 0x0047F768}
+      - {object: game/mode, section: .game_mode_pop, start: 0x0047F768, end: 0x0047F870}
+      - {object: game/mode, section: .game_mode_peek, start: 0x0047F870, end: 0x0047F8A0}
+  game/mode_level:
+    text_start: 0x0047EF38
+    text_end: 0x0047F538
+    slots:
+      - {object: game/mode_level, section: .game_MODELEVEL_HandleOcclusionExceptions, start: 0x0047EF38, end: 0x0047EFA8}
+      - {object: game/mode_level, section: .game_mode_doChange, start: 0x0047EFA8, end: 0x0047F530}
+      - {object: game/mode_level, section: .game_func_0047F530, start: 0x0047F530, end: 0x0047F538}
+  game/movieoverlay:
+    text_start: 0x00488A98
+    text_end: 0x00488BC8
+    slots:
+      - {object: game/movieoverlay, section: .game_UpdateMovieOverlay, start: 0x00488A98, end: 0x00488BC8}
+  game/navsyslocal:
+    text_start: 0x0048EC70
+    text_end: 0x0048F4C0
+    slots:
+      - {object: game/navsyslocal, section: .game_NAVL_GetEffectorsOfType, start: 0x0048EC70, end: 0x0048F000}
+      - {object: game/navsyslocal, section: .game_func_0048F000, start: 0x0048F000, end: 0x0048F008}
+      - {object: game/navsyslocal, section: .game_NAVL_ProcessEffectors, start: 0x0048F008, end: 0x0048F430}
+      - {object: game/navsyslocal, section: .game_func_0048F430, start: 0x0048F430, end: 0x0048F440}
+      - {object: game/navsyslocal, section: .game_MB_GetEffectorVars, start: 0x0048F440, end: 0x0048F478}
+      - {object: game/navsyslocal, section: .game_func_0048F478, start: 0x0048F478, end: 0x0048F4C0}
+  game/puzzle:
+    text_start: 0x004DCBA8
+    text_end: 0x004DCC9C
+    slots:
+      - {object: game/puzzle, section: .game_InitModeGadgetPuzzle, start: 0x004DCBA8, end: 0x004DCC38}
+      - {object: game/puzzle, section: .game_UnInitModeGadgetPuzzle, start: 0x004DCC38, end: 0x004DCC9C}
+  game/space:
+    text_start: 0x004E25E8
+    text_end: 0x004E28EC
+    slots:
+      - {object: game/space, section: .game_DoSpaceTransition, start: 0x004E25E8, end: 0x004E28EC}
+  game/tables:
+    text_start: 0x004E2AF8
+    text_end: 0x004E2B40
+    slots:
+      - {object: game/tables, section: .game_GetMovieOffset, start: 0x004E2AF8, end: 0x004E2B40}
+  game/tfragfunc:
+    text_start: 0x004E2B40
+    text_end: 0x004E301C
+    slots:
+      - {object: game/tfragfunc, section: .game_SetTfragDists, start: 0x004E2B40, end: 0x004E2C88}
+      - {object: game/tfragfunc, section: .game_SetTfragDistsByFOV, start: 0x004E2C88, end: 0x004E2D20}
+      - {object: game/tfragfunc, section: .game_DmaTfragTextures, start: 0x004E2D20, end: 0x004E2E30}
+      - {object: game/tfragfunc, section: .game_PatchTfragGifs, start: 0x004E2E30, end: 0x004E2ED0}
+      - {object: game/tfragfunc, section: .game_DrawTfrag, start: 0x004E2ED0, end: 0x004E301C}
+  game/tuning:
+    text_start: 0x004FBDD0
+    text_end: 0x004FBF78
+    slots:
+      - {object: game/tuning, section: .game_TN_CalculateAmmoFromEnemies, start: 0x004FBDD0, end: 0x004FBF38}
+      - {object: game/tuning, section: .game_func_004FBF38, start: 0x004FBF38, end: 0x004FBF78}
+  game/update:
+    text_start: 0x004E5590
+    text_end: 0x004E6038
+    slots:
+      - {object: game/update, section: .game_ResetGameCounters, start: 0x004E5590, end: 0x004E55B8}
+      - {object: game/update, section: .game_func_004E55B8, start: 0x004E55B8, end: 0x004E55C0}
+      - {object: game/update, section: .game_HideMobysForScene, start: 0x004E55C0, end: 0x004E5638}
+      - {object: game/update, section: .game_mode_sceneInit, start: 0x004E5638, end: 0x004E5C10}
+      - {object: game/update, section: .game_mode_sceneUnInit, start: 0x004E5C10, end: 0x004E6038}
+  game/wad:
+    text_start: 0x00159A00
+    text_end: 0x00159C28
+    slots:
+      - {object: game/wad, section: .game_wad_GetSectors, start: 0x00159A00, end: 0x00159A50}
+      - {object: game/wad, section: .game_wad_GetHeaders, start: 0x00159A50, end: 0x00159AA8}
+      - {object: game/wad, section: .game_func_00159AA8, start: 0x00159AA8, end: 0x00159AB0}
+      - {object: game/wad, section: .game_wad_GetLevelHeaders, start: 0x00159AB0, end: 0x00159C28}
+  game/widget:
+    text_start: 0x004EE248
+    text_end: 0x004EE370
+    slots:
+      - {object: game/widget, section: .game_DrawWidget2D, start: 0x004EE248, end: 0x004EE368}
+      - {object: game/widget, section: .game_GetWidget2DScreenSize, start: 0x004EE368, end: 0x004EE370}
+  game/FXRegistry:
+    text_start: 0x0044CFE8
+    text_end: 0x0044E04C
+    slots:
+      - {object: game/FXRegistry, section: .game_PrepForEffectsRendering, start: 0x0044CFE8, end: 0x0044D150}
+      - {object: game/FXRegistry, section: .game_CleanUpAfterEffectsRendering, start: 0x0044D150, end: 0x0044D1A8}
+      - {object: game/FXRegistry, section: .game_IsTrackingRegisters, start: 0x0044D1A8, end: 0x0044D1B0}
+      - {object: game/FXRegistry, section: .game_func_0044D1B0, start: 0x0044D1B0, end: 0x0044D1B8}
+      - {object: game/FXRegistry, section: .game_ResetRegisterZBuf, start: 0x0044D1B8, end: 0x0044D238}
+      - {object: game/FXRegistry, section: .game_ResetRegisterTex1, start: 0x0044D238, end: 0x0044D2B8}
+      - {object: game/FXRegistry, section: .game_SetBlendMode, start: 0x0044D2B8, end: 0x0044D538}
+      - {object: game/FXRegistry, section: .game_SetTexture, start: 0x0044D538, end: 0x0044D5D0}
+      - {object: game/FXRegistry, section: .game_SetIconTexture, start: 0x0044D5D0, end: 0x0044D668}
+      - {object: game/FXRegistry, section: .game_SetTextureDirect, start: 0x0044D668, end: 0x0044D6D0}
+      - {object: game/FXRegistry, section: .game_SetTextureClamp, start: 0x0044D6D0, end: 0x0044D818}
+      - {object: game/FXRegistry, section: .game_SetFogMode, start: 0x0044D818, end: 0x0044D930}
+      - {object: game/FXRegistry, section: .game_func_0044D930, start: 0x0044D930, end: 0x0044D938}
+      - {object: game/FXRegistry, section: .game_DrawStrip, start: 0x0044D938, end: 0x0044D9E8}
+      - {object: game/FXRegistry, section: .game_DrawStrip___dupe2, start: 0x0044D9E8, end: 0x0044DAB0}
+      - {object: game/FXRegistry, section: .game_DrawQuad___dupe3, start: 0x0044DAB0, end: 0x0044DB48}
+      - {object: game/FXRegistry, section: .game_func_0044DB48, start: 0x0044DB48, end: 0x0044DB58}
+      - {object: game/FXRegistry, section: .game_DrawQuad___dupe4, start: 0x0044DB58, end: 0x0044DD98}
+      - {object: game/FXRegistry, section: .game_func_0044DD98, start: 0x0044DD98, end: 0x0044DDA0}
+      - {object: game/FXRegistry, section: .game_STScale, start: 0x0044DDA0, end: 0x0044DE70}
+      - {object: game/FXRegistry, section: .game_func_0044DE70, start: 0x0044DE70, end: 0x0044DE80}
+      - {object: game/FXRegistry, section: .game_ZAddGSRegister, start: 0x0044DE80, end: 0x0044DF08}
+      - {object: game/FXRegistry, section: .game_ZUpdateRegisterValue, start: 0x0044DF08, end: 0x0044E04C}
+  game/FXUtil:
+    text_start: 0x0044F6F0
+    text_end: 0x00452E04
+    slots:
+      - {object: game/FXUtil, section: .game_CalcCycleFade, start: 0x0044F6F0, end: 0x0044F930}
+      - {object: game/FXUtil, section: .game_func_0044F930, start: 0x0044F930, end: 0x0044F938}
+      - {object: game/FXUtil, section: .game_DrawShellEdgeFaded, start: 0x0044F938, end: 0x00450210}
+      - {object: game/FXUtil, section: .game_func_00450210, start: 0x00450210, end: 0x00450220}
+      - {object: game/FXUtil, section: .game_DrawAlphaMaskPoly, start: 0x00450220, end: 0x00450970}
+      - {object: game/FXUtil, section: .game_DrawPinchDistort, start: 0x00450970, end: 0x00450EB0}
+      - {object: game/FXUtil, section: .game_FXU_SetupRingStripVerts, start: 0x00450EB0, end: 0x00450FC8}
+      - {object: game/FXUtil, section: .game_DrawLayeredRing, start: 0x00450FC8, end: 0x00451230}
+      - {object: game/FXUtil, section: .game_AttachPointToJoint, start: 0x00451230, end: 0x004512D0}
+      - {object: game/FXUtil, section: .game_CubicLine_Init, start: 0x004512D0, end: 0x004514D0}
+      - {object: game/FXUtil, section: .game_CubicLine_Update, start: 0x004514D0, end: 0x00451530}
+      - {object: game/FXUtil, section: .game_func_00451530, start: 0x00451530, end: 0x00451538}
+      - {object: game/FXUtil, section: .game_FXU_BuildCubicLineGeometry, start: 0x00451538, end: 0x00451938}
+      - {object: game/FXUtil, section: .game_CubicLine_Draw, start: 0x00451938, end: 0x00452598}
+      - {object: game/FXUtil, section: .game_CubicLineSet_Init, start: 0x00452598, end: 0x00452698}
+      - {object: game/FXUtil, section: .game_CubicLineSet_SetEndPointPos, start: 0x00452698, end: 0x004526E0}
+      - {object: game/FXUtil, section: .game_CubicLineSet_SetStyle, start: 0x004526E0, end: 0x00452790}
+      - {object: game/FXUtil, section: .game_CubicLineSet_Update, start: 0x00452790, end: 0x00452958}
+      - {object: game/FXUtil, section: .game_CubicLineSet_Draw, start: 0x00452958, end: 0x00452A90}
+      - {object: game/FXUtil, section: .game_func_00452A90, start: 0x00452A90, end: 0x00452A98}
+      - {object: game/FXUtil, section: .game_CubicLineSet_InitAsLightning, start: 0x00452A98, end: 0x00452CB8}
+      - {object: game/FXUtil, section: .game_Contrail_Init, start: 0x00452CB8, end: 0x00452D70}
+      - {object: game/FXUtil, section: .game_func_00452D70, start: 0x00452D70, end: 0x00452D98}
+      - {object: game/FXUtil, section: .game_IsDrawOK, start: 0x00452D98, end: 0x00452E04}
+  game/bootutil:
+    text_start: 0x00472518
+    text_end: 0x004728B0
+    slots:
+      - {object: game/bootutil, section: .game_MB_IsPntInCuboid, start: 0x00472518, end: 0x00472560}
+      - {object: game/bootutil, section: .game_MB_rand, start: 0x00472560, end: 0x00472590}
+      - {object: game/bootutil, section: .game_MB_randRangeInt, start: 0x00472590, end: 0x004725D8}
+      - {object: game/bootutil, section: .game_MB_randRange, start: 0x004725D8, end: 0x00472630}
+      - {object: game/bootutil, section: .game_MB_randRange2, start: 0x00472630, end: 0x00472690}
+      - {object: game/bootutil, section: .game_MB_randRot, start: 0x00472690, end: 0x004726D8}
+      - {object: game/bootutil, section: .game_MB_randVector, start: 0x004726D8, end: 0x00472798}
+      - {object: game/bootutil, section: .game_MB_randSphere, start: 0x00472798, end: 0x00472818}
+      - {object: game/bootutil, section: .game_FUN_00472818, start: 0x00472818, end: 0x004728B0}
+  game/credits:
+    text_start: 0x004454E0
+    text_end: 0x00446C50
+    slots:
+      - {object: game/credits, section: .game__mode_creditsInit, start: 0x004454E0, end: 0x004455A8}
+      - {object: game/credits, section: .game__mode_creditsUnInit, start: 0x004455A8, end: 0x004455F8}
+      - {object: game/credits, section: .game_setArrayContents, start: 0x004455F8, end: 0x00445630}
+      - {object: game/credits, section: .game__credits_update, start: 0x00445630, end: 0x00446880}
+      - {object: game/credits, section: .game_Credit_AddSequence, start: 0x00446880, end: 0x00446968}
+      - {object: game/credits, section: .game_func_00446968, start: 0x00446968, end: 0x00446988}
+      - {object: game/credits, section: .game_Credit_InitializeMessagePool, start: 0x00446988, end: 0x004469E8}
+      - {object: game/credits, section: .game_Credit_PageForLine, start: 0x004469E8, end: 0x00446A50}
+      - {object: game/credits, section: .game_Credit_SequenceTrigger, start: 0x00446A50, end: 0x00446A70}
+      - {object: game/credits, section: .game_Credit_AdvancePage, start: 0x00446A70, end: 0x00446B68}
+      - {object: game/credits, section: .game_Credit_SeekNextLines, start: 0x00446B68, end: 0x00446C50}
+  game/draw2d:
+    text_start: 0x0044B110
+    text_end: 0x0044CEC8
+    slots:
+      - {object: game/draw2d, section: .game_SetZ, start: 0x0044B110, end: 0x0044B128}
+      - {object: game/draw2d, section: .game_ResetZ, start: 0x0044B128, end: 0x0044B138}
+      - {object: game/draw2d, section: .game_TranslatePoints, start: 0x0044B138, end: 0x0044B178}
+      - {object: game/draw2d, section: .game_ScalePoints, start: 0x0044B178, end: 0x0044B1B8}
+      - {object: game/draw2d, section: .game_RotatePoints, start: 0x0044B1B8, end: 0x0044B250}
+      - {object: game/draw2d, section: .game_PackQuadLTRB, start: 0x0044B250, end: 0x0044B278}
+      - {object: game/draw2d, section: .game_DrawQuad, start: 0x0044B278, end: 0x0044B680}
+      - {object: game/draw2d, section: .game_DrawQuad___dupe2, start: 0x0044B680, end: 0x0044B6B0}
+      - {object: game/draw2d, section: .game_CalcMapUvs, start: 0x0044B6B0, end: 0x0044B800}
+      - {object: game/draw2d, section: .game_DrawQuadMap, start: 0x0044B800, end: 0x0044BD10}
+      - {object: game/draw2d, section: .game_FastIntersectVert, start: 0x0044BD10, end: 0x0044BE88}
+      - {object: game/draw2d, section: .game_FastGenerateVert, start: 0x0044BE88, end: 0x0044BF48}
+      - {object: game/draw2d, section: .game_FastNearestPointOnLine3, start: 0x0044BF48, end: 0x0044BFA8}
+      - {object: game/draw2d, section: .game_FastDrawQuadReal, start: 0x0044BFA8, end: 0x0044C568}
+      - {object: game/draw2d, section: .game_writeSetupBlock, start: 0x0044C568, end: 0x0044C5E8}
+      - {object: game/draw2d, section: .game_writeGSHeader, start: 0x0044C5E8, end: 0x0044C628}
+      - {object: game/draw2d, section: .game_ScisAndRender, start: 0x0044C628, end: 0x0044CC28}
+      - {object: game/draw2d, section: .game_FastDrawStrip, start: 0x0044CC28, end: 0x0044CE08}
+      - {object: game/draw2d, section: .game_FasterDrawStrip, start: 0x0044CE08, end: 0x0044CEC8}
+  game/fs:
+    text_start: 0x00163448
+    text_end: 0x00163960
+    slots:
+      - {object: game/fs, section: .game_cb_cdComplete, start: 0x00163448, end: 0x001634A8}
+      - {object: game/fs, section: .game_Sync, start: 0x001634A8, end: 0x001634F0}
+      - {object: game/fs, section: .game_Update___dupe53, start: 0x001634F0, end: 0x001637D0}
+      - {object: game/fs, section: .game_Initialize, start: 0x001637D0, end: 0x001637F0}
+      - {object: game/fs, section: .game_Reset, start: 0x001637F0, end: 0x00163808}
+      - {object: game/fs, section: .game_Load, start: 0x00163808, end: 0x00163840}
+      - {object: game/fs, section: .game_LoadAsync, start: 0x00163840, end: 0x001638E8}
+      - {object: game/fs, section: .game_Abort, start: 0x001638E8, end: 0x00163928}
+      - {object: game/fs, section: .game_IsLoading, start: 0x00163928, end: 0x00163958}
+      - {object: game/fs, section: .game_GetBuffer, start: 0x00163958, end: 0x00163960}
+  game/fs_handlers:
+    text_start: 0x00163960
+    text_end: 0x00163B10
+    slots:
+      - {object: game/fs_handlers, section: .game_cb_missionBankLoadComplete, start: 0x00163960, end: 0x00163980}
+      - {object: game/fs_handlers, section: .game_load_file, start: 0x00163980, end: 0x001639F0}
+      - {object: game/fs_handlers, section: .game_is_complete_file, start: 0x001639F0, end: 0x001639F8}
+      - {object: game/fs_handlers, section: .game_abort_file, start: 0x001639F8, end: 0x00163A18}
+      - {object: game/fs_handlers, section: .game_func_00163A18, start: 0x00163A18, end: 0x00163A20}
+      - {object: game/fs_handlers, section: .game_load_complete_file, start: 0x00163A20, end: 0x00163A28}
+      - {object: game/fs_handlers, section: .game_load_mission_bank, start: 0x00163A28, end: 0x00163AC0}
+      - {object: game/fs_handlers, section: .game_is_complete_mission_bank, start: 0x00163AC0, end: 0x00163AD8}
+      - {object: game/fs_handlers, section: .game_abort_mission_bank, start: 0x00163AD8, end: 0x00163AE0}
+      - {object: game/fs_handlers, section: .game_load_complete_mission_bank, start: 0x00163AE0, end: 0x00163B10}
+  game/globals:
+    text_start: 0x0045C6E8
+    text_end: 0x0045D090
+    slots:
+      - {object: game/globals, section: .game_RebootToFrontEnd, start: 0x0045C6E8, end: 0x0045C768}
+      - {object: game/globals, section: .game_Construct, start: 0x0045C768, end: 0x0045C7B0}
+      - {object: game/globals, section: .game_DeQueueMovie, start: 0x0045C7B0, end: 0x0045C850}
+      - {object: game/globals, section: .game_QueueMovie, start: 0x0045C850, end: 0x0045C8C8}
+      - {object: game/globals, section: .game_Flush, start: 0x0045C8C8, end: 0x0045C8E8}
+      - {object: game/globals, section: .game_TagMoviesAsPlayed, start: 0x0045C8E8, end: 0x0045C960}
+      - {object: game/globals, section: .game_Abort___dupe2, start: 0x0045C960, end: 0x0045C990}
+      - {object: game/globals, section: .game_PlayNextQueuedMovie, start: 0x0045C990, end: 0x0045CA58}
+      - {object: game/globals, section: .game_HandleSpecialSwitchLevelCases, start: 0x0045CA58, end: 0x0045CA60}
+      - {object: game/globals, section: .game_SwitchToLevel, start: 0x0045CA60, end: 0x0045CB20}
+      - {object: game/globals, section: .game_SwitchingLevels, start: 0x0045CB20, end: 0x0045CB30}
+      - {object: game/globals, section: .game_func_0045CB30, start: 0x0045CB30, end: 0x0045CB50}
+      - {object: game/globals, section: .game_IsGameInChallengeMode, start: 0x0045CB50, end: 0x0045CB60}
+      - {object: game/globals, section: .game_GetGameCompleted, start: 0x0045CB60, end: 0x0045CB70}
+      - {object: game/globals, section: .game_Global_ClearSaveErrorInSpaceTransition, start: 0x0045CB70, end: 0x0045CB78}
+      - {object: game/globals, section: .game_func_0045CB78, start: 0x0045CB78, end: 0x0045CB88}
+      - {object: game/globals, section: .game_InitializeLobbyControllerSettingsToDefaults, start: 0x0045CB88, end: 0x0045CC28}
+      - {object: game/globals, section: .game_ControllerSettingsToLobbyStorage, start: 0x0045CC28, end: 0x0045CE88}
+      - {object: game/globals, section: .game_GetCurrentThreadPriority, start: 0x0045CE88, end: 0x0045CEB8}
+      - {object: game/globals, section: .game_func_0045CEB8, start: 0x0045CEB8, end: 0x0045CEC8}
+      - {object: game/globals, section: .game_GetMobySkinBase, start: 0x0045CEC8, end: 0x0045CF88}
+      - {object: game/globals, section: .game_func_0045CF88, start: 0x0045CF88, end: 0x0045D090}
+  game/hud:
+    text_start: 0x0045E790
+    text_end: 0x0045F410
+    slots:
+      - {object: game/hud, section: .game_Hud_HeapAlloc, start: 0x0045E790, end: 0x0045E808}
+      - {object: game/hud, section: .game_Hud_HeapReset, start: 0x0045E808, end: 0x0045E830}
+      - {object: game/hud, section: .game_Hud_GsStashFreeRam, start: 0x0045E830, end: 0x0045E860}
+      - {object: game/hud, section: .game_LinkHudBank, start: 0x0045E860, end: 0x0045E9C0}
+      - {object: game/hud, section: .game_func_0045E9C0, start: 0x0045E9C0, end: 0x0045E9C8}
+      - {object: game/hud, section: .game_Hud_SendResidentBank, start: 0x0045E9C8, end: 0x0045EB08}
+      - {object: game/hud, section: .game_Hud_GetIconIndex, start: 0x0045EB08, end: 0x0045EB60}
+      - {object: game/hud, section: .game_GetIconFrame, start: 0x0045EB60, end: 0x0045EC28}
+      - {object: game/hud, section: .game_GetFrameTex, start: 0x0045EC28, end: 0x0045EE68}
+      - {object: game/hud, section: .game_func_0045EE68, start: 0x0045EE68, end: 0x0045EE90}
+      - {object: game/hud, section: .game_Hud_DrawRotatedSprite16, start: 0x0045EE90, end: 0x0045F1E8}
+      - {object: game/hud, section: .game_func_0045F1E8, start: 0x0045F1E8, end: 0x0045F200}
+      - {object: game/hud, section: .game_Hud_sendTexture, start: 0x0045F200, end: 0x0045F370}
+      - {object: game/hud, section: .game_func_0045F370, start: 0x0045F370, end: 0x0045F410}
+  game/memcard:
+    text_start: 0x00465F38
+    text_end: 0x0046960C
+    slots:
+      - {object: game/memcard, section: .game_memcard_GetName, start: 0x00465F38, end: 0x004660E0}
+      - {object: game/memcard, section: .game_func_004660E0, start: 0x004660E0, end: 0x004660F8}
+      - {object: game/memcard, section: .game_memcard_RestoreGame, start: 0x004660F8, end: 0x004661D8}
+      - {object: game/memcard, section: .game_memcard_ResetGame, start: 0x004661D8, end: 0x00466310}
+      - {object: game/memcard, section: .game_memcard_Update, start: 0x00466310, end: 0x00468A78}
+      - {object: game/memcard, section: .game_memcard_MakeWholeSave, start: 0x00468A78, end: 0x00468B20}
+      - {object: game/memcard, section: .game_memcard_Init, start: 0x00468B20, end: 0x00468B40}
+      - {object: game/memcard, section: .game_memcard_GetDataSize, start: 0x00468B40, end: 0x00468B78}
+      - {object: game/memcard, section: .game__memcard_Checksum, start: 0x00468B78, end: 0x00468BE0}
+      - {object: game/memcard, section: .game_memcard_Checksum, start: 0x00468BE0, end: 0x00468C38}
+      - {object: game/memcard, section: .game_memcard_TestChecksum, start: 0x00468C38, end: 0x00468C78}
+      - {object: game/memcard, section: .game_memcard_PrepData, start: 0x00468C78, end: 0x00468D90}
+      - {object: game/memcard, section: .game_memcard_RestoreInfo, start: 0x00468D90, end: 0x00468E58}
+      - {object: game/memcard, section: .game_memcard_RestoreData, start: 0x00468E58, end: 0x004690E8}
+      - {object: game/memcard, section: .game_memcard_LoadNet, start: 0x004690E8, end: 0x00469118}
+      - {object: game/memcard, section: .game_memcard_SaveNet, start: 0x00469118, end: 0x004691F0}
+      - {object: game/memcard, section: .game_memcard_LoadPatch, start: 0x004691F0, end: 0x00469280}
+      - {object: game/memcard, section: .game_memcard_PatchLoaded, start: 0x00469280, end: 0x004692B8}
+      - {object: game/memcard, section: .game_func_004692B8, start: 0x004692B8, end: 0x004692C8}
+      - {object: game/memcard, section: .game_memcard_Save, start: 0x004692C8, end: 0x004694B0}
+      - {object: game/memcard, section: .game_memcard_cleanupbeforesession, start: 0x004694B0, end: 0x004694B8}
+      - {object: game/memcard, section: .game_DNAS_ExtractPatch, start: 0x004694B8, end: 0x0046960C}
+  game/mobyproc:
+    text_start: 0x00470090
+    text_end: 0x00472518
+    slots:
+      - {object: game/mobyproc, section: .game_SetMobyLights, start: 0x00470090, end: 0x004700B0}
+      - {object: game/mobyproc, section: .game_SetMobyAmbientLights, start: 0x004700B0, end: 0x004700C8}
+      - {object: game/mobyproc, section: .game_GetMobyAmbientLights, start: 0x004700C8, end: 0x004700F0}
+      - {object: game/mobyproc, section: .game_AllocMobyVar, start: 0x004700F0, end: 0x00470260}
+      - {object: game/mobyproc, section: .game_FreeMobyVar, start: 0x00470260, end: 0x00470338}
+      - {object: game/mobyproc, section: .game_FreeMobyGridLists, start: 0x00470338, end: 0x00470398}
+      - {object: game/mobyproc, section: .game_AllocMobyGridLists, start: 0x00470398, end: 0x00470410}
+      - {object: game/mobyproc, section: .game_UpdateMobyGrids, start: 0x00470410, end: 0x004706F0}
+      - {object: game/mobyproc, section: .game_PostUpdateMoby, start: 0x004706F0, end: 0x00470870}
+      - {object: game/mobyproc, section: .game_PostUpdateMobyBsphere, start: 0x00470870, end: 0x00470878}
+      - {object: game/mobyproc, section: .game_BuildMobyTextureDma, start: 0x00470878, end: 0x00470B38}
+      - {object: game/mobyproc, section: .game_MobyAnimProc, start: 0x00470B38, end: 0x00470BF0}
+      - {object: game/mobyproc, section: .game_FUN_00470bf0, start: 0x00470BF0, end: 0x004723E0}
+      - {object: game/mobyproc, section: .game_SetMobyLightCuboid, start: 0x004723E0, end: 0x00472510}
+      - {object: game/mobyproc, section: .game_func_00472510, start: 0x00472510, end: 0x00472518}
+  game/bmain:
+    text_start: 0x00436C40
+    text_end: 0x00438C90
+    slots:
+      - {object: game/bmain, section: .game_LevelTScene_VoxShuttle_UpdateMonitors, start: 0x00436C40, end: 0x00436C48}
+      - {object: game/bmain, section: .game_LevelTScene_VoxShuttle_UpdateFX, start: 0x00436C48, end: 0x00436C50}
+      - {object: game/bmain, section: .game_UpdateSceneMonitors, start: 0x00436C50, end: 0x00436C58}
+      - {object: game/bmain, section: .game_InitForCheats, start: 0x00436C58, end: 0x00436C60}
+      - {object: game/bmain, section: .game_Level_PostTransitionFX, start: 0x00436C60, end: 0x00437CA8}
+      - {object: game/bmain, section: .game_Level_TransitionFX, start: 0x00437CA8, end: 0x00437CD8}
+      - {object: game/bmain, section: .game_SetLanguage, start: 0x00437CD8, end: 0x00437DC8}
+      - {object: game/bmain, section: .game_GetCurrentFrameRate, start: 0x00437DC8, end: 0x00437DD0}
+      - {object: game/bmain, section: .game_mode_creditsInit, start: 0x00437DD0, end: 0x00437DF0}
+      - {object: game/bmain, section: .game_mode_creditsUnInit, start: 0x00437DF0, end: 0x00437E10}
+      - {object: game/bmain, section: .game_mode_lobbyUnInit, start: 0x00437E10, end: 0x00437E18}
+      - {object: game/bmain, section: .game_mode_lobbyInit, start: 0x00437E18, end: 0x00437E20}
+      - {object: game/bmain, section: .game_func_00437E20, start: 0x00437E20, end: 0x00437E40}
+      - {object: game/bmain, section: .game_GetBootMemoryMap, start: 0x00437E40, end: 0x00437E70}
+      - {object: game/bmain, section: .game_GetBootPlate, start: 0x00437E70, end: 0x00437EA8}
+      - {object: game/bmain, section: .game_func_00437EA8, start: 0x00437EA8, end: 0x00437EB0}
+      - {object: game/bmain, section: .game_startlevel, start: 0x00437EB0, end: 0x00438688}
+      - {object: game/bmain, section: .game_UpdateBoot, start: 0x00438688, end: 0x00438C80}
+      - {object: game/bmain, section: .game_func_00438C80, start: 0x00438C80, end: 0x00438C88}
+      - {object: game/bmain, section: .game_Boot_ResetTimeOutCounter, start: 0x00438C88, end: 0x00438C90}
+  game/framebuf:
+    text_start: 0x00458670
+    text_end: 0x004598E0
+    slots:
+      - {object: game/framebuf, section: .game_SetVideoMode, start: 0x00458670, end: 0x004586E0}
+      - {object: game/framebuf, section: .game_func_004586E0, start: 0x004586E0, end: 0x004586F8}
+      - {object: game/framebuf, section: .game_SetMovieDrawSmallVIFChain, start: 0x004586F8, end: 0x004588D0}
+      - {object: game/framebuf, section: .game_SetupFS_AA_buffer, start: 0x004588D0, end: 0x004593D8}
+      - {object: game/framebuf, section: .game_SetBackgroundColor, start: 0x004593D8, end: 0x00459400}
+      - {object: game/framebuf, section: .game_func_00459400, start: 0x00459400, end: 0x00459408}
+      - {object: game/framebuf, section: .game_PutDispBuffer, start: 0x00459408, end: 0x00459430}
+      - {object: game/framebuf, section: .game_PutDrawBufferLarge, start: 0x00459430, end: 0x004594C8}
+      - {object: game/framebuf, section: .game_ClearDrawBufferLarge, start: 0x004594C8, end: 0x004596E0}
+      - {object: game/framebuf, section: .game_PutDrawBufferSmall, start: 0x004596E0, end: 0x00459750}
+      - {object: game/framebuf, section: .game_func_00459750, start: 0x00459750, end: 0x00459758}
+      - {object: game/framebuf, section: .game_AA_BlurPass, start: 0x00459758, end: 0x004597B8}
+      - {object: game/framebuf, section: .game_AA_DisplayPass, start: 0x004597B8, end: 0x004598D8}
+      - {object: game/framebuf, section: .game_func_004598D8, start: 0x004598D8, end: 0x004598E0}
+  game/freeze:
+    text_start: 0x004598E0
+    text_end: 0x0045C66C
+    slots:
+      - {object: game/freeze, section: .game_GetLastFreezeDialogType, start: 0x004598E0, end: 0x004598E8}
+      - {object: game/freeze, section: .game_UpdateProgressiveScan, start: 0x004598E8, end: 0x00459960}
+      - {object: game/freeze, section: .game_func_00459960, start: 0x00459960, end: 0x00459978}
+      - {object: game/freeze, section: .game_mode_freezeUnInit, start: 0x00459978, end: 0x004599E8}
+      - {object: game/freeze, section: .game_Freeze_SetFreezeOcclusion, start: 0x004599E8, end: 0x004599F8}
+      - {object: game/freeze, section: .game_mode_freezeInit, start: 0x004599F8, end: 0x00459C00}
+      - {object: game/freeze, section: .game_DrawDialogText, start: 0x00459C00, end: 0x0045A7F0}
+      - {object: game/freeze, section: .game_UpdateModeFreeze, start: 0x0045A7F0, end: 0x0045BFA0}
+      - {object: game/freeze, section: .game_Freeze_SphereMap_OrientDown, start: 0x0045BFA0, end: 0x0045C3A0}
+      - {object: game/freeze, section: .game_Freeze_SphereMap_Spin, start: 0x0045C3A0, end: 0x0045C4C8}
+      - {object: game/freeze, section: .game_Freeze_SphereMap_Strafe, start: 0x0045C4C8, end: 0x0045C578}
+      - {object: game/freeze, section: .game_func_0045C578, start: 0x0045C578, end: 0x0045C580}
+      - {object: game/freeze, section: .game_Freeze_ClearLastUserResponse, start: 0x0045C580, end: 0x0045C590}
+      - {object: game/freeze, section: .game_func_0045C590, start: 0x0045C590, end: 0x0045C598}
+      - {object: game/freeze, section: .game_Freeze_DisplayMessage, start: 0x0045C598, end: 0x0045C610}
+      - {object: game/freeze, section: .game_Freeze_MessageCallback, start: 0x0045C610, end: 0x0045C630}
+      - {object: game/freeze, section: .game_Freeze_KillMessage, start: 0x0045C630, end: 0x0045C66C}
+  game/missionfunc:
+    text_start: 0x0046A290
+    text_end: 0x0046B8F4
+    slots:
+      - {object: game/missionfunc, section: .game_MF_SetupSwitchMissionIndex, start: 0x0046A290, end: 0x0046A300}
+      - {object: game/missionfunc, section: .game_func_0046A300, start: 0x0046A300, end: 0x0046A320}
+      - {object: game/missionfunc, section: .game_MF_ExitPostMissionScreen, start: 0x0046A320, end: 0x0046A350}
+      - {object: game/missionfunc, section: .game_MF_GetNewLevelMask, start: 0x0046A350, end: 0x0046A358}
+      - {object: game/missionfunc, section: .game_MF_GetNewTournamentMask, start: 0x0046A358, end: 0x0046A360}
+      - {object: game/missionfunc, section: .game_MF_UpdateProgress, start: 0x0046A360, end: 0x0046A510}
+      - {object: game/missionfunc, section: .game_MF_UpdateLevelProgress, start: 0x0046A510, end: 0x0046A9E8}
+      - {object: game/missionfunc, section: .game_MF_UpdateMissionProgress, start: 0x0046A9E8, end: 0x0046AAC0}
+      - {object: game/missionfunc, section: .game_MF_IsMissionIndexVisibleToMenu, start: 0x0046AAC0, end: 0x0046AC80}
+      - {object: game/missionfunc, section: .game_MF_GetNextMissionIndex, start: 0x0046AC80, end: 0x0046B048}
+      - {object: game/missionfunc, section: .game_func_0046B048, start: 0x0046B048, end: 0x0046B058}
+      - {object: game/missionfunc, section: .game_MF_AllocateXPReward, start: 0x0046B058, end: 0x0046B170}
+      - {object: game/missionfunc, section: .game_MF_AllocateBoltReward, start: 0x0046B170, end: 0x0046B288}
+      - {object: game/missionfunc, section: .game_MF_GetDepreciatedValue, start: 0x0046B288, end: 0x0046B328}
+      - {object: game/missionfunc, section: .game_func_0046B328, start: 0x0046B328, end: 0x0046B330}
+      - {object: game/missionfunc, section: .game_MF_AllocatePointReward, start: 0x0046B330, end: 0x0046B3B8}
+      - {object: game/missionfunc, section: .game_MF_AllocateMissionBoltReward, start: 0x0046B3B8, end: 0x0046B4A8}
+      - {object: game/missionfunc, section: .game_func_0046B4A8, start: 0x0046B4A8, end: 0x0046B4C0}
+      - {object: game/missionfunc, section: .game_MF_ClearMissionSpecificData, start: 0x0046B4C0, end: 0x0046B4E0}
+      - {object: game/missionfunc, section: .game_MF_GetBestSpawnPoint, start: 0x0046B4E0, end: 0x0046B5B8}
+      - {object: game/missionfunc, section: .game_MF_GetBestSpawnPointByOther, start: 0x0046B5B8, end: 0x0046B6D0}
+      - {object: game/missionfunc, section: .game_func_0046B6D0, start: 0x0046B6D0, end: 0x0046B6D8}
+      - {object: game/missionfunc, section: .game_MF_CheckSpawnPoint, start: 0x0046B6D8, end: 0x0046B8C8}
+      - {object: game/missionfunc, section: .game_MF_ClearMidMissionData, start: 0x0046B8C8, end: 0x0046B8F4}
+  game/pad:
+    text_start: 0x0048F7E0
+    text_end: 0x00490960
+    slots:
+      - {object: game/pad, section: .game_InitPadRing, start: 0x0048F7E0, end: 0x0048F800}
+      - {object: game/pad, section: .game_func_0048F800, start: 0x0048F800, end: 0x0048F808}
+      - {object: game/pad, section: .game_Pad_NonLaggedBits, start: 0x0048F808, end: 0x0048F868}
+      - {object: game/pad, section: .game_func_0048F868, start: 0x0048F868, end: 0x0048F878}
+      - {object: game/pad, section: .game_PadRingBitsOn, start: 0x0048F878, end: 0x0048F908}
+      - {object: game/pad, section: .game_func_0048F908, start: 0x0048F908, end: 0x0048F910}
+      - {object: game/pad, section: .game_PadRingAng, start: 0x0048F910, end: 0x0048F960}
+      - {object: game/pad, section: .game_pad_Init, start: 0x0048F960, end: 0x0048FA80}
+      - {object: game/pad, section: .game_ClearPadInput, start: 0x0048FA80, end: 0x0048FB70}
+      - {object: game/pad, section: .game_ProcessPadInput, start: 0x0048FB70, end: 0x004903F8}
+      - {object: game/pad, section: .game_func_004903F8, start: 0x004903F8, end: 0x00490400}
+      - {object: game/pad, section: .game_UpdatePad, start: 0x00490400, end: 0x00490878}
+      - {object: game/pad, section: .game_UpdatePad___dupe2, start: 0x00490878, end: 0x004908D0}
+      - {object: game/pad, section: .game_Pad_MappedPad, start: 0x004908D0, end: 0x00490960}
+  game/skyfunc:
+    text_start: 0x004DE880
+    text_end: 0x004DF770
+    slots:
+      - {object: game/skyfunc, section: .game_SkyInitNightSprites, start: 0x004DE880, end: 0x004DEAE0}
+      - {object: game/skyfunc, section: .game_SkyUpdateNightSprites, start: 0x004DEAE0, end: 0x004DEBA0}
+      - {object: game/skyfunc, section: .game_UpdateSkyShellMatrix, start: 0x004DEBA0, end: 0x004DEDD8}
+      - {object: game/skyfunc, section: .game_SkyLevelGeneric, start: 0x004DEDD8, end: 0x004DEEF8}
+      - {object: game/skyfunc, section: .game_SetupSkyGifPaging, start: 0x004DEEF8, end: 0x004DEF78}
+      - {object: game/skyfunc, section: .game_DoSkyGifPaging, start: 0x004DEF78, end: 0x004DF090}
+      - {object: game/skyfunc, section: .game_func_004DF090, start: 0x004DF090, end: 0x004DF098}
+      - {object: game/skyfunc, section: .game_SkyDrawShell, start: 0x004DF098, end: 0x004DF0F8}
+      - {object: game/skyfunc, section: .game_SkyDrawShellTextured, start: 0x004DF0F8, end: 0x004DF2B8}
+      - {object: game/skyfunc, section: .game_SkyDrawShellGouraud, start: 0x004DF2B8, end: 0x004DF468}
+      - {object: game/skyfunc, section: .game_SkySpriteProc, start: 0x004DF468, end: 0x004DF770}
+  game/stats:
+    text_start: 0x004FBF78
+    text_end: 0x004FD244
+    slots:
+      - {object: game/stats, section: .game_ST_GetMissionRewardData, start: 0x004FBF78, end: 0x004FBF90}
+      - {object: game/stats, section: .game_ST_GetMissionRewardData___dupe2, start: 0x004FBF90, end: 0x004FBFD0}
+      - {object: game/stats, section: .game_ST_GetMissionRewards, start: 0x004FBFD0, end: 0x004FC160}
+      - {object: game/stats, section: .game_ST_GetMissionStatistics, start: 0x004FC160, end: 0x004FC288}
+      - {object: game/stats, section: .game_func_004FC288, start: 0x004FC288, end: 0x004FC298}
+      - {object: game/stats, section: .game_ST_GetNumAcquiredSkillPoints, start: 0x004FC298, end: 0x004FC2C0}
+      - {object: game/stats, section: .game_ST_GetNumAcquiredSkillPoints___dupe2, start: 0x004FC2C0, end: 0x004FC310}
+      - {object: game/stats, section: .game_ST_GetSkillPointInfo, start: 0x004FC310, end: 0x004FC408}
+      - {object: game/stats, section: .game_ST_GetTotalNumAcquiredSkillPoints, start: 0x004FC408, end: 0x004FC490}
+      - {object: game/stats, section: .game_ST_AcquiredAllSkillPoints, start: 0x004FC490, end: 0x004FC518}
+      - {object: game/stats, section: .game_ST_GetNumDifficultyStars, start: 0x004FC518, end: 0x004FC650}
+      - {object: game/stats, section: .game_ST_GetNumRemainingDifficultyStars, start: 0x004FC650, end: 0x004FC678}
+      - {object: game/stats, section: .game_ST_RegisterEnemyKill, start: 0x004FC678, end: 0x004FC6F0}
+      - {object: game/stats, section: .game_FUN_004fc6f0, start: 0x004FC6F0, end: 0x004FCE78}
+      - {object: game/stats, section: .game_FUN_004fce78, start: 0x004FCE78, end: 0x004FD198}
+      - {object: game/stats, section: .game_ST_GetNumExterminatorCardsCollected, start: 0x004FD198, end: 0x004FD244}
+  game/transitionfunc:
+    text_start: 0x004F5530
+    text_end: 0x004F6494
+    slots:
+      - {object: game/transitionfunc, section: .game_Transition_InitMobys, start: 0x004F5530, end: 0x004F55E0}
+      - {object: game/transitionfunc, section: .game_TransitionPre_Undefined, start: 0x004F55E0, end: 0x004F5620}
+      - {object: game/transitionfunc, section: .game_TransitionUpdate_Undefined, start: 0x004F5620, end: 0x004F5670}
+      - {object: game/transitionfunc, section: .game_TransitionDraw_Undefined, start: 0x004F5670, end: 0x004F5678}
+      - {object: game/transitionfunc, section: .game_TransitionPre_E3, start: 0x004F5678, end: 0x004F56A8}
+      - {object: game/transitionfunc, section: .game_TransitionUpdate_E3, start: 0x004F56A8, end: 0x004F5700}
+      - {object: game/transitionfunc, section: .game_TransitionDraw_E3, start: 0x004F5700, end: 0x004F5868}
+      - {object: game/transitionfunc, section: .game_TransitionSpace_ResetParticles, start: 0x004F5868, end: 0x004F5890}
+      - {object: game/transitionfunc, section: .game_FUN_004f5890, start: 0x004F5890, end: 0x004F5AA8}
+      - {object: game/transitionfunc, section: .game_TransitionSpace_InitMoby, start: 0x004F5AA8, end: 0x004F5B50}
+      - {object: game/transitionfunc, section: .game_TransitionUpdate_Space, start: 0x004F5B50, end: 0x004F5C80}
+      - {object: game/transitionfunc, section: .game_TransitionPostUpdate_Space, start: 0x004F5C80, end: 0x004F5E18}
+      - {object: game/transitionfunc, section: .game_TransitionSpace_UpdateMobySpace, start: 0x004F5E18, end: 0x004F5E48}
+      - {object: game/transitionfunc, section: .game_TransitionSpace_DrawMobyPlanet, start: 0x004F5E48, end: 0x004F6098}
+      - {object: game/transitionfunc, section: .game_TransitionSpace_DrawMobyShip, start: 0x004F6098, end: 0x004F60B8}
+      - {object: game/transitionfunc, section: .game_TransitionDraw_Space, start: 0x004F60B8, end: 0x004F6250}
+      - {object: game/transitionfunc, section: .game_TransitionPost_Space, start: 0x004F6250, end: 0x004F6288}
+      - {object: game/transitionfunc, section: .game_TransitionPre_ShuttleInterior, start: 0x004F6288, end: 0x004F62E0}
+      - {object: game/transitionfunc, section: .game_TransitionShuttleInterior_InitMoby, start: 0x004F62E0, end: 0x004F6328}
+      - {object: game/transitionfunc, section: .game_TransitionUpdate_ShuttleInterior, start: 0x004F6328, end: 0x004F63A8}
+      - {object: game/transitionfunc, section: .game_TransitionPostUpdate_ShuttleInterior, start: 0x004F63A8, end: 0x004F6428}
+      - {object: game/transitionfunc, section: .game_TransitionDraw_ShuttleInterior, start: 0x004F6428, end: 0x004F6470}
+      - {object: game/transitionfunc, section: .game_TransitionPost_ShuttleInterior, start: 0x004F6470, end: 0x004F6494}
+  game/transitionmulti:
+    text_start: 0x0054B0E8
+    text_end: 0x0054D700
+    slots:
+      - {object: game/transitionmulti, section: .game_TransitionPre_Lobby, start: 0x0054B0E8, end: 0x0054B150}
+      - {object: game/transitionmulti, section: .game_TransitionUpdate_Lobby, start: 0x0054B150, end: 0x0054B280}
+      - {object: game/transitionmulti, section: .game_TransitionDraw_Lobby, start: 0x0054B280, end: 0x0054B2B8}
+      - {object: game/transitionmulti, section: .game_Transition_LobbyDrawTitle, start: 0x0054B2B8, end: 0x0054B378}
+      - {object: game/transitionmulti, section: .game_TransitionPre_Multiplayer, start: 0x0054B378, end: 0x0054B5A8}
+      - {object: game/transitionmulti, section: .game_TransitionPost_MultiPlayer, start: 0x0054B5A8, end: 0x0054B5C8}
+      - {object: game/transitionmulti, section: .game_TransitionMP_SetupCommonRulesText, start: 0x0054B5C8, end: 0x0054B938}
+      - {object: game/transitionmulti, section: .game_TransitionMP_SetupGameRulesText, start: 0x0054B938, end: 0x0054C248}
+      - {object: game/transitionmulti, section: .game_func_0054C248, start: 0x0054C248, end: 0x0054C250}
+      - {object: game/transitionmulti, section: .game_TransitionUpdate_Multiplayer, start: 0x0054C250, end: 0x0054C3B8}
+      - {object: game/transitionmulti, section: .game_func_0054C3B8, start: 0x0054C3B8, end: 0x0054C3C8}
+      - {object: game/transitionmulti, section: .game_Transition_DrawBootLoadTexture, start: 0x0054C3C8, end: 0x0054C8B0}
+      - {object: game/transitionmulti, section: .game_func_0054C8B0, start: 0x0054C8B0, end: 0x0054C8C0}
+      - {object: game/transitionmulti, section: .game_TransitionDraw_Multiplayer, start: 0x0054C8C0, end: 0x0054CBE0}
+      - {object: game/transitionmulti, section: .game_TransitionMP_DrawOverlay, start: 0x0054CBE0, end: 0x0054CC60}
+      - {object: game/transitionmulti, section: .game_TransitionMP_DrawSplashArt, start: 0x0054CC60, end: 0x0054CE80}
+      - {object: game/transitionmulti, section: .game_TransitionMP_DrawTitleText, start: 0x0054CE80, end: 0x0054CEE8}
+      - {object: game/transitionmulti, section: .game_TransitionMP_DrawWeaponsAndVehicleIcons, start: 0x0054CEE8, end: 0x0054D2E0}
+      - {object: game/transitionmulti, section: .game_TransitionMP_SetupSpinningMoby, start: 0x0054D2E0, end: 0x0054D3A8}
+      - {object: game/transitionmulti, section: .game_TransitionMP_UpdateMoby, start: 0x0054D3A8, end: 0x0054D400}
+      - {object: game/transitionmulti, section: .game_TransitionMP_DrawTextData, start: 0x0054D400, end: 0x0054D5A8}
+      - {object: game/transitionmulti, section: .game_mpIsWeaponEnabled, start: 0x0054D5A8, end: 0x0054D5E0}
+      - {object: game/transitionmulti, section: .game_GetMapName, start: 0x0054D5E0, end: 0x0054D700}
+  game/update_core:
+    text_start: 0x004E4CD8
+    text_end: 0x004E558C
+    slots:
+      - {object: game/update_core, section: .game_mpeg_malloc_reset, start: 0x004E4CD8, end: 0x004E4D38}
+      - {object: game/update_core, section: .game_mpeg_malloc, start: 0x004E4D38, end: 0x004E4DF0}
+      - {object: game/update_core, section: .game_mode_movieInit, start: 0x004E4DF0, end: 0x004E4EB8}
+      - {object: game/update_core, section: .game_mode_movieInit___dupe2, start: 0x004E4EB8, end: 0x004E4FA0}
+      - {object: game/update_core, section: .game_mode_movieUnInit, start: 0x004E4FA0, end: 0x004E5070}
+      - {object: game/update_core, section: .game_UpdateModeMovie, start: 0x004E5070, end: 0x004E5548}
+      - {object: game/update_core, section: .game_func_004E5548, start: 0x004E5548, end: 0x004E5550}
+      - {object: game/update_core, section: .game_RestartGame, start: 0x004E5550, end: 0x004E558C}
+  game/vendor:
+    text_start: 0x004E6048
+    text_end: 0x004E7448
+    slots:
+      - {object: game/vendor, section: .game_Vendor_GetAvailableItems, start: 0x004E6048, end: 0x004E6F98}
+      - {object: game/vendor, section: .game_Vendor_IsCheatOn, start: 0x004E6F98, end: 0x004E6FA0}
+      - {object: game/vendor, section: .game_Vendor_CanPurchaseItem, start: 0x004E6FA0, end: 0x004E7000}
+      - {object: game/vendor, section: .game_FUN_004e7000, start: 0x004E7000, end: 0x004E7378}
+      - {object: game/vendor, section: .game_func_004E7378, start: 0x004E7378, end: 0x004E7388}
+      - {object: game/vendor, section: .game_Vendor_IsGadgetAvailableForPurchase, start: 0x004E7388, end: 0x004E73D0}
+      - {object: game/vendor, section: .game_func_004E73D0, start: 0x004E73D0, end: 0x004E73D8}
+      - {object: game/vendor, section: .game_Vendor_IsPostFXModAvailableForPurchase, start: 0x004E73D8, end: 0x004E7428}
+      - {object: game/vendor, section: .game_Vendor_IsBotUpgradeAvailableForPurchase, start: 0x004E7428, end: 0x004E7440}
+      - {object: game/vendor, section: .game_Vendor_GetPurchaseableWrenchUpgradeLevel, start: 0x004E7440, end: 0x004E7448}
+  game/camera:
+    text_start: 0x0043A068
+    text_end: 0x0043DAF0
+    slots:
+      - {object: game/camera, section: .game_Camera_InitFovSystem, start: 0x0043A068, end: 0x0043A118}
+      - {object: game/camera, section: .game_Camera_SetFov, start: 0x0043A118, end: 0x0043A1E0}
+      - {object: game/camera, section: .game_Camera_UpdateFov, start: 0x0043A1E0, end: 0x0043A3C8}
+      - {object: game/camera, section: .game_func_0043A3C8, start: 0x0043A3C8, end: 0x0043A3D8}
+      - {object: game/camera, section: .game_BackupCurrentCam, start: 0x0043A3D8, end: 0x0043A470}
+      - {object: game/camera, section: .game_ExecuteCamPostUpdFuncs, start: 0x0043A470, end: 0x0043A518}
+      - {object: game/camera, section: .game_Camera_FindCameraOfType, start: 0x0043A518, end: 0x0043A558}
+      - {object: game/camera, section: .game_Cam_InterpVecs, start: 0x0043A558, end: 0x0043A760}
+      - {object: game/camera, section: .game_Cam_InterpValues, start: 0x0043A760, end: 0x0043A818}
+      - {object: game/camera, section: .game_func_0043A818, start: 0x0043A818, end: 0x0043A820}
+      - {object: game/camera, section: .game_Cam_InterpAngles, start: 0x0043A820, end: 0x0043A8D8}
+      - {object: game/camera, section: .game_Camera_DeactivateCurrent, start: 0x0043A8D8, end: 0x0043A908}
+      - {object: game/camera, section: .game_Camera_handleCollWithHero, start: 0x0043A908, end: 0x0043A988}
+      - {object: game/camera, section: .game_Camera_runSetupToNewCam, start: 0x0043A988, end: 0x0043A9D0}
+      - {object: game/camera, section: .game_Camera_switchToNewCam, start: 0x0043A9D0, end: 0x0043AD00}
+      - {object: game/camera, section: .game_Camera_ActivationCheckPriority, start: 0x0043AD00, end: 0x0043AEF8}
+      - {object: game/camera, section: .game_Camera_Exit, start: 0x0043AEF8, end: 0x0043AF40}
+      - {object: game/camera, section: .game_UpdateAllCameras, start: 0x0043AF40, end: 0x0043B0A0}
+      - {object: game/camera, section: .game_Camera_Pos2Polar3d, start: 0x0043B0A0, end: 0x0043B4B8}
+      - {object: game/camera, section: .game_Camera_InitBlenderPolarHero, start: 0x0043B4B8, end: 0x0043B648}
+      - {object: game/camera, section: .game_Camera_CopyLastQuatToPolar, start: 0x0043B648, end: 0x0043B698}
+      - {object: game/camera, section: .game_Camera_CopyLastPolarToQuat, start: 0x0043B698, end: 0x0043B6D0}
+      - {object: game/camera, section: .game_Camera_InitBlender, start: 0x0043B6D0, end: 0x0043B9C0}
+      - {object: game/camera, section: .game_Camera_BlendCamsPosQuat, start: 0x0043B9C0, end: 0x0043BB50}
+      - {object: game/camera, section: .game_Camera_BlendCamsPolQuat, start: 0x0043BB50, end: 0x0043C790}
+      - {object: game/camera, section: .game_Camera_BlendCams, start: 0x0043C790, end: 0x0043C838}
+      - {object: game/camera, section: .game_HandleCameraShake, start: 0x0043C838, end: 0x0043CB90}
+      - {object: game/camera, section: .game_Camera_UpdateHeroInfo, start: 0x0043CB90, end: 0x0043CF28}
+      - {object: game/camera, section: .game_HandleCameraUnderWaterOverlay, start: 0x0043CF28, end: 0x0043CF48}
+      - {object: game/camera, section: .game_Cam_HandleHotspots, start: 0x0043CF48, end: 0x0043D160}
+      - {object: game/camera, section: .game_Camera_HandleScreenFade, start: 0x0043D160, end: 0x0043D250}
+      - {object: game/camera, section: .game_Camera_HandleScreenFlash, start: 0x0043D250, end: 0x0043D360}
+      - {object: game/camera, section: .game_Camera_CopyGameCameraToRenderCamera, start: 0x0043D360, end: 0x0043D4C0}
+      - {object: game/camera, section: .game_UpdateCamera, start: 0x0043D4C0, end: 0x0043D780}
+      - {object: game/camera, section: .game_Camera_resetToFollow, start: 0x0043D780, end: 0x0043D8E8}
+      - {object: game/camera, section: .game_func_0043D8E8, start: 0x0043D8E8, end: 0x0043D918}
+      - {object: game/camera, section: .game_Camera_DestroyReticule, start: 0x0043D918, end: 0x0043D930}
+      - {object: game/camera, section: .game_func_0043D930, start: 0x0043D930, end: 0x0043D938}
+      - {object: game/camera, section: .game_Camera_UpdateFog, start: 0x0043D938, end: 0x0043D940}
+      - {object: game/camera, section: .game_Camera_StartShake, start: 0x0043D940, end: 0x0043DA90}
+      - {object: game/camera, section: .game_func_0043DA90, start: 0x0043DA90, end: 0x0043DAF0}
+  game/fonts:
+    text_start: 0x00453FA8
+    text_end: 0x00457A58
+    slots:
+      - {object: game/fonts, section: .game_FontLoad, start: 0x00453FA8, end: 0x00454060}
+      - {object: game/fonts, section: .game_FUN_00454060, start: 0x00454060, end: 0x00454258}
+      - {object: game/fonts, section: .game_GetCharacterIndex, start: 0x00454258, end: 0x00454298}
+      - {object: game/fonts, section: .game_FUN_00454298, start: 0x00454298, end: 0x00454338}
+      - {object: game/fonts, section: .game_FontForceInitialize, start: 0x00454338, end: 0x00454350}
+      - {object: game/fonts, section: .game_FUN_00454350, start: 0x00454350, end: 0x00454400}
+      - {object: game/fonts, section: .game_FontGetCharacterCount, start: 0x00454400, end: 0x00454420}
+      - {object: game/fonts, section: .game_FontGetMaxHeight, start: 0x00454420, end: 0x004545F8}
+      - {object: game/fonts, section: .game_FontEnableColors, start: 0x004545F8, end: 0x00454600}
+      - {object: game/fonts, section: .game_FontStringHeight, start: 0x00454600, end: 0x00454780}
+      - {object: game/fonts, section: .game_FontStringLength, start: 0x00454780, end: 0x00454A60}
+      - {object: game/fonts, section: .game_FontGetClampScale, start: 0x00454A60, end: 0x00454A68}
+      - {object: game/fonts, section: .game_FontClampScale, start: 0x00454A68, end: 0x00454A70}
+      - {object: game/fonts, section: .game_FontPrint, start: 0x00454A70, end: 0x004553D8}
+      - {object: game/fonts, section: .game_FontPrint___dupe2, start: 0x004553D8, end: 0x00455E40}
+      - {object: game/fonts, section: .game_FontSetWindow, start: 0x00455E40, end: 0x00455E78}
+      - {object: game/fonts, section: .game_FUN_00455e78, start: 0x00455E78, end: 0x00456918}
+      - {object: game/fonts, section: .game_FontPrintWindowList, start: 0x00456918, end: 0x004571C0}
+      - {object: game/fonts, section: .game_GetFontMaxHeight, start: 0x004571C0, end: 0x004571E0}
+      - {object: game/fonts, section: .game_EnableFontColors, start: 0x004571E0, end: 0x00457200}
+      - {object: game/fonts, section: .game_DisableFontColors, start: 0x00457200, end: 0x00457220}
+      - {object: game/fonts, section: .game_FontLen, start: 0x00457220, end: 0x00457248}
+      - {object: game/fonts, section: .game_func_00457248, start: 0x00457248, end: 0x00457278}
+      - {object: game/fonts, section: .game_FontLenScaled, start: 0x00457278, end: 0x00457298}
+      - {object: game/fonts, section: .game_func_00457298, start: 0x00457298, end: 0x004572E0}
+      - {object: game/fonts, section: .game_FontPrintCenter, start: 0x004572E0, end: 0x00457388}
+      - {object: game/fonts, section: .game_FontPrintCenterSmall, start: 0x00457388, end: 0x00457468}
+      - {object: game/fonts, section: .game_func_00457468, start: 0x00457468, end: 0x00457478}
+      - {object: game/fonts, section: .game_FontPrintCenterScaledLarge, start: 0x00457478, end: 0x004574D8}
+      - {object: game/fonts, section: .game_FontPrintRightSmall, start: 0x004574D8, end: 0x00457590}
+      - {object: game/fonts, section: .game_FontPrintSmall, start: 0x00457590, end: 0x00457648}
+      - {object: game/fonts, section: .game_FontPrintScaled, start: 0x00457648, end: 0x00457680}
+      - {object: game/fonts, section: .game_func_00457680, start: 0x00457680, end: 0x004576A0}
+      - {object: game/fonts, section: .game_SetFontWindow, start: 0x004576A0, end: 0x004576C0}
+      - {object: game/fonts, section: .game_func_004576C0, start: 0x004576C0, end: 0x004576E8}
+      - {object: game/fonts, section: .game_FontPrintWindowSmall, start: 0x004576E8, end: 0x00457770}
+      - {object: game/fonts, section: .game_func_00457770, start: 0x00457770, end: 0x00457780}
+      - {object: game/fonts, section: .game_FontPrintWindowScaledGenericList, start: 0x00457780, end: 0x004577B0}
+      - {object: game/fonts, section: .game_LoadFontToGs, start: 0x004577B0, end: 0x004577D0}
+      - {object: game/fonts, section: .game_func_004577D0, start: 0x004577D0, end: 0x004577E8}
+      - {object: game/fonts, section: .game_FontGetUnicodeCharacter, start: 0x004577E8, end: 0x00457A28}
+      - {object: game/fonts, section: .game_func_00457A28, start: 0x00457A28, end: 0x00457A58}
+  game/help:
+    text_start: 0x0045D108
+    text_end: 0x0045E790
+    slots:
+      - {object: game/help, section: .game_Help_Reset, start: 0x0045D108, end: 0x0045D168}
+      - {object: game/help, section: .game_Help_Update, start: 0x0045D168, end: 0x0045D7A8}
+      - {object: game/help, section: .game_func_0045D7A8, start: 0x0045D7A8, end: 0x0045D7B0}
+      - {object: game/help, section: .game_Help_QueueMessage, start: 0x0045D7B0, end: 0x0045D888}
+      - {object: game/help, section: .game_Help_IsMessageInQueue, start: 0x0045D888, end: 0x0045D950}
+      - {object: game/help, section: .game_Help_QueueMessageOnce, start: 0x0045D950, end: 0x0045D9C8}
+      - {object: game/help, section: .game_Help_QueueMessageOncePerLevel, start: 0x0045D9C8, end: 0x0045DA60}
+      - {object: game/help, section: .game_func_0045DA60, start: 0x0045DA60, end: 0x0045DA70}
+      - {object: game/help, section: .game_Help_QueueMessageDelay, start: 0x0045DA70, end: 0x0045DAC0}
+      - {object: game/help, section: .game_Help_QueueMessageRepeatDelay, start: 0x0045DAC0, end: 0x0045DB78}
+      - {object: game/help, section: .game_Help_QueueMessageEveryNTimes, start: 0x0045DB78, end: 0x0045DC60}
+      - {object: game/help, section: .game_Help_QueueMenuMessage, start: 0x0045DC60, end: 0x0045DE00}
+      - {object: game/help, section: .game_Help_KillMenuMessage, start: 0x0045DE00, end: 0x0045DE38}
+      - {object: game/help, section: .game_Help_ShutDown, start: 0x0045DE38, end: 0x0045DE88}
+      - {object: game/help, section: .game_Help_Kill, start: 0x0045DE88, end: 0x0045DED8}
+      - {object: game/help, section: .game_func_0045DED8, start: 0x0045DED8, end: 0x0045DEE0}
+      - {object: game/help, section: .game_Help_Resume, start: 0x0045DEE0, end: 0x0045DEF0}
+      - {object: game/help, section: .game_Help_ClearUsedSinceDeath, start: 0x0045DEF0, end: 0x0045DF28}
+      - {object: game/help, section: .game_Help_CheckIfEmptyText, start: 0x0045DF28, end: 0x0045DF58}
+      - {object: game/help, section: .game_FUN_0045df58, start: 0x0045DF58, end: 0x0045E020}
+      - {object: game/help, section: .game_Help_DoAddToHelpLogException, start: 0x0045E020, end: 0x0045E038}
+      - {object: game/help, section: .game_msg_string, start: 0x0045E038, end: 0x0045E078}
+      - {object: game/help, section: .game_func_0045E078, start: 0x0045E078, end: 0x0045E080}
+      - {object: game/help, section: .game_msg_string_mtap, start: 0x0045E080, end: 0x0045E0D0}
+      - {object: game/help, section: .game_Help_MessageCancelled, start: 0x0045E0D0, end: 0x0045E160}
+      - {object: game/help, section: .game_Help_MessageCompleted, start: 0x0045E160, end: 0x0045E1E0}
+      - {object: game/help, section: .game_Help_SetState, start: 0x0045E1E0, end: 0x0045E1F8}
+      - {object: game/help, section: .game_Help_StopVoice, start: 0x0045E1F8, end: 0x0045E250}
+      - {object: game/help, section: .game_Help_AddToLog, start: 0x0045E250, end: 0x0045E360}
+      - {object: game/help, section: .game_Help_FindIndex, start: 0x0045E360, end: 0x0045E3D0}
+      - {object: game/help, section: .game_HelpQueue_Insert, start: 0x0045E3D0, end: 0x0045E658}
+      - {object: game/help, section: .game_HelpQueue_GetInsertIndex, start: 0x0045E658, end: 0x0045E710}
+      - {object: game/help, section: .game_HelpQueue_Advance, start: 0x0045E710, end: 0x0045E748}
+      - {object: game/help, section: .game_HelpQueue_GetNextIndex, start: 0x0045E748, end: 0x0045E780}
+      - {object: game/help, section: .game_HelpQueue_IsEmpty, start: 0x0045E780, end: 0x0045E790}
+  game/iopload:
+    text_start: 0x0045FF78
+    text_end: 0x00461130
+    slots:
+      - {object: game/iopload, section: .game_DmaToIop, start: 0x0045FF78, end: 0x00460018}
+      - {object: game/iopload, section: .game_DisplayIOPInfo, start: 0x00460018, end: 0x00460020}
+      - {object: game/iopload, section: .game_UnloadIOPModule, start: 0x00460020, end: 0x00460090}
+      - {object: game/iopload, section: .game_func_00460090, start: 0x00460090, end: 0x00460098}
+      - {object: game/iopload, section: .game_DefaultIOPModuleUnloadCallback, start: 0x00460098, end: 0x004600C0}
+      - {object: game/iopload, section: .game_AstrmCreateStreams, start: 0x004600C0, end: 0x00460110}
+      - {object: game/iopload, section: .game_AstrmDestroyStreams, start: 0x00460110, end: 0x00460130}
+      - {object: game/iopload, section: .game_InitializeAstrm, start: 0x00460130, end: 0x00460138}
+      - {object: game/iopload, section: .game_PadCallback, start: 0x00460138, end: 0x00460158}
+      - {object: game/iopload, section: .game_SoundCallback, start: 0x00460158, end: 0x00460178}
+      - {object: game/iopload, section: .game_StreamerLoadCallback, start: 0x00460178, end: 0x00460180}
+      - {object: game/iopload, section: .game_Dev9Callback, start: 0x00460180, end: 0x004601E0}
+      - {object: game/iopload, section: .game_EZNetCnfCallback, start: 0x004601E0, end: 0x00460210}
+      - {object: game/iopload, section: .game_EZNetCnfUnloadCallback, start: 0x00460210, end: 0x00460240}
+      - {object: game/iopload, section: .game_LibNetBCallback, start: 0x00460240, end: 0x00460260}
+      - {object: game/iopload, section: .game_LibNetBUnloadCallback, start: 0x00460260, end: 0x00460288}
+      - {object: game/iopload, section: .game_LgKbmCallback, start: 0x00460288, end: 0x004602C0}
+      - {object: game/iopload, section: .game_LgKbmUnloadCallback, start: 0x004602C0, end: 0x004602E8}
+      - {object: game/iopload, section: .game_EZNetCtlCallback, start: 0x004602E8, end: 0x00460328}
+      - {object: game/iopload, section: .game_EZNetCtlUnloadCallback, start: 0x00460328, end: 0x004603F0}
+      - {object: game/iopload, section: .game_func_004603F0, start: 0x004603F0, end: 0x004603F8}
+      - {object: game/iopload, section: .game_GetModuleLoadCondition, start: 0x004603F8, end: 0x00460448}
+      - {object: game/iopload, section: .game_GetModuleLoadCallback, start: 0x00460448, end: 0x00460498}
+      - {object: game/iopload, section: .game_GetModuleUnloadCallback, start: 0x00460498, end: 0x004604E8}
+      - {object: game/iopload, section: .game_func_004604E8, start: 0x004604E8, end: 0x004604F0}
+      - {object: game/iopload, section: .game_ClearIOPModuleQueue, start: 0x004604F0, end: 0x00460558}
+      - {object: game/iopload, section: .game_ClearIOPModuleQueueSet, start: 0x00460558, end: 0x004605A8}
+      - {object: game/iopload, section: .game_QueueIOPModuleLoad, start: 0x004605A8, end: 0x00460700}
+      - {object: game/iopload, section: .game_LoadIOPModuleQueue, start: 0x00460700, end: 0x004608E8}
+      - {object: game/iopload, section: .game_LoadIOPModuleQueueSet, start: 0x004608E8, end: 0x004609E8}
+      - {object: game/iopload, section: .game_UnloadIOPModuleQueue, start: 0x004609E8, end: 0x00460AA8}
+      - {object: game/iopload, section: .game_UnloadIOPModuleQueueSet, start: 0x00460AA8, end: 0x00460B00}
+      - {object: game/iopload, section: .game_LoadCoreIOPModules, start: 0x00460B00, end: 0x00460CA0}
+      - {object: game/iopload, section: .game_LoadSinglePlayerIOPModules, start: 0x00460CA0, end: 0x00460D00}
+      - {object: game/iopload, section: .game_UnloadSinglePlayerIOPModules, start: 0x00460D00, end: 0x00460D48}
+      - {object: game/iopload, section: .game_LoadMultiPlayerIOPModules, start: 0x00460D48, end: 0x00461030}
+      - {object: game/iopload, section: .game_UnloadMultiPlayerIOPModules, start: 0x00461030, end: 0x00461080}
+      - {object: game/iopload, section: .game_InitializeIOP, start: 0x00461080, end: 0x004610A8}
+      - {object: game/iopload, section: .game_InitializeCoreIOPModules, start: 0x004610A8, end: 0x00461100}
+      - {object: game/iopload, section: .game_UninitializeCoreIOPModules, start: 0x00461100, end: 0x00461130}
+  game/mcstate:
+    text_start: 0x00464AF0
+    text_end: 0x00465F38
+    slots:
+      - {object: game/mcstate, section: .game_csf_prompt_create_save_overwrite, start: 0x00464AF0, end: 0x00464AF8}
+      - {object: game/mcstate, section: .game_MCSTATE_TransToState, start: 0x00464AF8, end: 0x00464B60}
+      - {object: game/mcstate, section: .game_UpdateMCState, start: 0x00464B60, end: 0x00464C20}
+      - {object: game/mcstate, section: .game_csf_init, start: 0x00464C20, end: 0x00464C70}
+      - {object: game/mcstate, section: .game_csf_good_save, start: 0x00464C70, end: 0x00464D50}
+      - {object: game/mcstate, section: .game_csf_good_load, start: 0x00464D50, end: 0x00464D98}
+      - {object: game/mcstate, section: .game_csf_prompt_warning, start: 0x00464D98, end: 0x00464DD0}
+      - {object: game/mcstate, section: .game_csf_prompt_autosave_warning, start: 0x00464DD0, end: 0x00464E08}
+      - {object: game/mcstate, section: .game_csf_nocard, start: 0x00464E08, end: 0x00464E50}
+      - {object: game/mcstate, section: .game_csf_changed, start: 0x00464E50, end: 0x00464E80}
+      - {object: game/mcstate, section: .game_csf_wait_for_card, start: 0x00464E80, end: 0x00464F28}
+      - {object: game/mcstate, section: .game_csf_unformatted, start: 0x00464F28, end: 0x00464F98}
+      - {object: game/mcstate, section: .game_csf_prompt_format, start: 0x00464F98, end: 0x00465028}
+      - {object: game/mcstate, section: .game_csf_format_pending, start: 0x00465028, end: 0x00465068}
+      - {object: game/mcstate, section: .game_csf_formatting, start: 0x00465068, end: 0x004650C8}
+      - {object: game/mcstate, section: .game_csf_formatted, start: 0x004650C8, end: 0x00465118}
+      - {object: game/mcstate, section: .game_csf_check_save, start: 0x00465118, end: 0x00465178}
+      - {object: game/mcstate, section: .game_csf_checking_save, start: 0x00465178, end: 0x00465238}
+      - {object: game/mcstate, section: .game_csf_nosave, start: 0x00465238, end: 0x004652B8}
+      - {object: game/mcstate, section: .game_csf_prompt_create_save, start: 0x004652B8, end: 0x00465340}
+      - {object: game/mcstate, section: .game_csf_create_save_pending, start: 0x00465340, end: 0x004653A8}
+      - {object: game/mcstate, section: .game_csf_creating_save, start: 0x004653A8, end: 0x00465450}
+      - {object: game/mcstate, section: .game_csf_init_save, start: 0x00465450, end: 0x00465530}
+      - {object: game/mcstate, section: .game_csf_init_load, start: 0x00465530, end: 0x004655A0}
+      - {object: game/mcstate, section: .game_csf_newcard, start: 0x004655A0, end: 0x00465678}
+      - {object: game/mcstate, section: .game_csf_prompt_format_failed, start: 0x00465678, end: 0x004656A8}
+      - {object: game/mcstate, section: .game_csf_prompt_create_failed, start: 0x004656A8, end: 0x004656F0}
+      - {object: game/mcstate, section: .game_csf_no_room, start: 0x004656F0, end: 0x00465740}
+      - {object: game/mcstate, section: .game_csf_prompt_load_failed, start: 0x00465740, end: 0x00465788}
+      - {object: game/mcstate, section: .game_csf_loading, start: 0x00465788, end: 0x00465800}
+      - {object: game/mcstate, section: .game_csf_prompt_save_failed, start: 0x00465800, end: 0x00465830}
+      - {object: game/mcstate, section: .game_csf_saving, start: 0x00465830, end: 0x004658E0}
+      - {object: game/mcstate, section: .game_csf_auto_saving, start: 0x004658E0, end: 0x00465980}
+      - {object: game/mcstate, section: .game_csf_prompt_begin_unformatted, start: 0x00465980, end: 0x004659D0}
+      - {object: game/mcstate, section: .game_csf_prompt_begin_nosave, start: 0x004659D0, end: 0x00465A20}
+      - {object: game/mcstate, section: .game_csf_prompt_save_overwrite, start: 0x00465A20, end: 0x00465AA0}
+      - {object: game/mcstate, section: .game_func_00465AA0, start: 0x00465AA0, end: 0x00465AB0}
+      - {object: game/mcstate, section: .game_MCSTATE_SetSaveSlotUponSaveCreationTo, start: 0x00465AB0, end: 0x00465AD8}
+      - {object: game/mcstate, section: .game_func_00465AD8, start: 0x00465AD8, end: 0x00465AE8}
+      - {object: game/mcstate, section: .game_MCSTATE_LoadGame, start: 0x00465AE8, end: 0x00465B40}
+      - {object: game/mcstate, section: .game_MCSTATE_SaveGame, start: 0x00465B40, end: 0x00465C08}
+      - {object: game/mcstate, section: .game_MCSTATE_GetState, start: 0x00465C08, end: 0x00465C10}
+      - {object: game/mcstate, section: .game_MCSTATE_SetCommand, start: 0x00465C10, end: 0x00465DF8}
+      - {object: game/mcstate, section: .game_MCSTATE_ClearCommand, start: 0x00465DF8, end: 0x00465E80}
+      - {object: game/mcstate, section: .game_MCSTATE_CommandIsSet, start: 0x00465E80, end: 0x00465F10}
+      - {object: game/mcstate, section: .game_MCSTATE_SetResponse, start: 0x00465F10, end: 0x00465F18}
+      - {object: game/mcstate, section: .game_MCSTATE_ClearResponse, start: 0x00465F18, end: 0x00465F20}
+      - {object: game/mcstate, section: .game_func_00465F20, start: 0x00465F20, end: 0x00465F38}
+  game/mobyanim_c:
+    text_start: 0x0046E9E8
+    text_end: 0x0046FD2C
+    slots:
+      - {object: game/mobyanim_c, section: .game_AnimEvaluate_LowLevel, start: 0x0046E9E8, end: 0x0046EAC8}
+      - {object: game/mobyanim_c, section: .game_AnimEvaluateBlend_LowLevel, start: 0x0046EAC8, end: 0x0046EBD0}
+      - {object: game/mobyanim_c, section: .game_AnimEvaluate, start: 0x0046EBD0, end: 0x0046EDD8}
+      - {object: game/mobyanim_c, section: .game_AnimEvaluateResolve, start: 0x0046EDD8, end: 0x0046EE30}
+      - {object: game/mobyanim_c, section: .game_ProcessManipulators, start: 0x0046EE30, end: 0x0046EFE0}
+      - {object: game/mobyanim_c, section: .game_MobyAllocAnimLayer, start: 0x0046EFE0, end: 0x0046F068}
+      - {object: game/mobyanim_c, section: .game_MobyFreeAnimLayer, start: 0x0046F068, end: 0x0046F0D0}
+      - {object: game/mobyanim_c, section: .game_MobyResetAnimLayerCache, start: 0x0046F0D0, end: 0x0046F100}
+      - {object: game/mobyanim_c, section: .game_MobyAttachAnimLayer, start: 0x0046F100, end: 0x0046F220}
+      - {object: game/mobyanim_c, section: .game_MobyDetachAnimLayer, start: 0x0046F220, end: 0x0046F2A8}
+      - {object: game/mobyanim_c, section: .game_func_0046F2A8, start: 0x0046F2A8, end: 0x0046F2B0}
+      - {object: game/mobyanim_c, section: .game_MobyTransitionSequence, start: 0x0046F2B0, end: 0x0046F448}
+      - {object: game/mobyanim_c, section: .game_CleanupAnimLayers, start: 0x0046F448, end: 0x0046F4A0}
+      - {object: game/mobyanim_c, section: .game_func_0046F4A0, start: 0x0046F4A0, end: 0x0046F4A8}
+      - {object: game/mobyanim_c, section: .game_GetMobyAnimJointOffset, start: 0x0046F4A8, end: 0x0046F4F0}
+      - {object: game/mobyanim_c, section: .game_GetMobyAnimJointMat, start: 0x0046F4F0, end: 0x0046F530}
+      - {object: game/mobyanim_c, section: .game_NewPostUpdateMobyBsphere, start: 0x0046F530, end: 0x0046F6B0}
+      - {object: game/mobyanim_c, section: .game_ResetMobyJointCache, start: 0x0046F6B0, end: 0x0046F6F8}
+      - {object: game/mobyanim_c, section: .game_InitMobyJointCache, start: 0x0046F6F8, end: 0x0046F738}
+      - {object: game/mobyanim_c, section: .game_RebuildMobyJointCache, start: 0x0046F738, end: 0x0046F7A8}
+      - {object: game/mobyanim_c, section: .game_AllocJointCache, start: 0x0046F7A8, end: 0x0046F8C8}
+      - {object: game/mobyanim_c, section: .game_JointCacheMarkDeleted, start: 0x0046F8C8, end: 0x0046F998}
+      - {object: game/mobyanim_c, section: .game_JointCacheCleanup, start: 0x0046F998, end: 0x0046FB30}
+      - {object: game/mobyanim_c, section: .game_ResetPoseCache, start: 0x0046FB30, end: 0x0046FBA0}
+      - {object: game/mobyanim_c, section: .game_AllocPoseCacheEntry, start: 0x0046FBA0, end: 0x0046FD10}
+      - {object: game/mobyanim_c, section: .game_FreePoseCacheEntry, start: 0x0046FD10, end: 0x0046FD2C}
+  game/mobyutil:
+    text_start: 0x004728B0
+    text_end: 0x0047EF38
+    slots:
+      - {object: game/mobyutil, section: .game_MB_QueueUpgradeScene, start: 0x004728B0, end: 0x00472900}
+      - {object: game/mobyutil, section: .game_MB_CheckQueuedUpgradeScene, start: 0x00472900, end: 0x00472940}
+      - {object: game/mobyutil, section: .game_MB_AddHoloshieldGadgetXP, start: 0x00472940, end: 0x004729D8}
+      - {object: game/mobyutil, section: .game_MB_standardDeath, start: 0x004729D8, end: 0x00473428}
+      - {object: game/mobyutil, section: .game_MB_BundleDamage, start: 0x00473428, end: 0x00473560}
+      - {object: game/mobyutil, section: .game_MB_AllocateXPBundle, start: 0x00473560, end: 0x00473650}
+      - {object: game/mobyutil, section: .game_MB_SpawnBolts, start: 0x00473650, end: 0x00473778}
+      - {object: game/mobyutil, section: .game_MB_HandleBoltMultiplier, start: 0x00473778, end: 0x004737F0}
+      - {object: game/mobyutil, section: .game_MB_snapAnim, start: 0x004737F0, end: 0x00473868}
+      - {object: game/mobyutil, section: .game_MB_transAnim, start: 0x00473868, end: 0x00473980}
+      - {object: game/mobyutil, section: .game_MB_transAnim___dupe2, start: 0x00473980, end: 0x00473A80}
+      - {object: game/mobyutil, section: .game_func_00473A80, start: 0x00473A80, end: 0x00473A88}
+      - {object: game/mobyutil, section: .game_MB_setState, start: 0x00473A88, end: 0x00473AD0}
+      - {object: game/mobyutil, section: .game_func_00473AD0, start: 0x00473AD0, end: 0x00473AE0}
+      - {object: game/mobyutil, section: .game_Bias0, start: 0x00473AE0, end: 0x00473AE8}
+      - {object: game/mobyutil, section: .game_Bias1, start: 0x00473AE8, end: 0x00473B08}
+      - {object: game/mobyutil, section: .game_func_00473B08, start: 0x00473B08, end: 0x00473B10}
+      - {object: game/mobyutil, section: .game_MB_CubicInterpolate, start: 0x00473B10, end: 0x00473B48}
+      - {object: game/mobyutil, section: .game_MB_CubicInterpVec, start: 0x00473B48, end: 0x00473C08}
+      - {object: game/mobyutil, section: .game_MB_CosineInterpolate, start: 0x00473C08, end: 0x00473C78}
+      - {object: game/mobyutil, section: .game_MB_CosineInterpolateUnit, start: 0x00473C78, end: 0x00473CB8}
+      - {object: game/mobyutil, section: .game_func_00473CB8, start: 0x00473CB8, end: 0x00473D78}
+      - {object: game/mobyutil, section: .game_MB_getJumpPeak, start: 0x00473D78, end: 0x00473DE0}
+      - {object: game/mobyutil, section: .game_MB_SetOClass, start: 0x00473DE0, end: 0x00473F20}
+      - {object: game/mobyutil, section: .game_func_00473F20, start: 0x00473F20, end: 0x00473F28}
+      - {object: game/mobyutil, section: .game_SolveQuad, start: 0x00473F28, end: 0x00473FE8}
+      - {object: game/mobyutil, section: .game_GetGroundZ, start: 0x00473FE8, end: 0x00474088}
+      - {object: game/mobyutil, section: .game_func_00474088, start: 0x00474088, end: 0x00474090}
+      - {object: game/mobyutil, section: .game_GetGroundZNoWater, start: 0x00474090, end: 0x004740C0}
+      - {object: game/mobyutil, section: .game_func_004740C0, start: 0x004740C0, end: 0x004740C8}
+      - {object: game/mobyutil, section: .game_PointInsideComplexPoly, start: 0x004740C8, end: 0x00474198}
+      - {object: game/mobyutil, section: .game_SegmentIntersect2D, start: 0x00474198, end: 0x00474290}
+      - {object: game/mobyutil, section: .game_func_00474290, start: 0x00474290, end: 0x004742B0}
+      - {object: game/mobyutil, section: .game_SetCollDamIn, start: 0x004742B0, end: 0x004742D0}
+      - {object: game/mobyutil, section: .game_func_004742D0, start: 0x004742D0, end: 0x004742D8}
+      - {object: game/mobyutil, section: .game_DamageSphereAtPos, start: 0x004742D8, end: 0x00474478}
+      - {object: game/mobyutil, section: .game_func_00474478, start: 0x00474478, end: 0x00474488}
+      - {object: game/mobyutil, section: .game_CollDamageMobyDirect, start: 0x00474488, end: 0x00474580}
+      - {object: game/mobyutil, section: .game_CollDamageMobyDirect___dupe2, start: 0x00474580, end: 0x004746C0}
+      - {object: game/mobyutil, section: .game_func_004746C0, start: 0x004746C0, end: 0x004746C8}
+      - {object: game/mobyutil, section: .game_CollWaterHeight, start: 0x004746C8, end: 0x00474818}
+      - {object: game/mobyutil, section: .game_CollMovingSphere, start: 0x00474818, end: 0x00474C48}
+      - {object: game/mobyutil, section: .game_MB_RegisterLameShadow, start: 0x00474C48, end: 0x00474DA0}
+      - {object: game/mobyutil, section: .game_func_00474DA0, start: 0x00474DA0, end: 0x00474DB0}
+      - {object: game/mobyutil, section: .game_TweenColor, start: 0x00474DB0, end: 0x00474DD0}
+      - {object: game/mobyutil, section: .game__MB_damage, start: 0x00474DD0, end: 0x00474E18}
+      - {object: game/mobyutil, section: .game_func_00474E18, start: 0x00474E18, end: 0x00474E20}
+      - {object: game/mobyutil, section: .game_MB_computeLobVelocity, start: 0x00474E20, end: 0x00474EC8}
+      - {object: game/mobyutil, section: .game_MB_randPrimPoints, start: 0x00474EC8, end: 0x00475680}
+      - {object: game/mobyutil, section: .game_func_00475680, start: 0x00475680, end: 0x004756A8}
+      - {object: game/mobyutil, section: .game_Lerp, start: 0x004756A8, end: 0x004756D0}
+      - {object: game/mobyutil, section: .game_Lerp___dupe2, start: 0x004756D0, end: 0x004756E0}
+      - {object: game/mobyutil, section: .game_Lerp___dupe3, start: 0x004756E0, end: 0x00475708}
+      - {object: game/mobyutil, section: .game_func_00475708, start: 0x00475708, end: 0x00475710}
+      - {object: game/mobyutil, section: .game_SubLerp, start: 0x00475710, end: 0x00475740}
+      - {object: game/mobyutil, section: .game_GainDampLimit, start: 0x00475740, end: 0x00475798}
+      - {object: game/mobyutil, section: .game_func_00475798, start: 0x00475798, end: 0x004757A0}
+      - {object: game/mobyutil, section: .game_Delt, start: 0x004757A0, end: 0x004757D8}
+      - {object: game/mobyutil, section: .game_func_004757D8, start: 0x004757D8, end: 0x004757E0}
+      - {object: game/mobyutil, section: .game_SlideDelt, start: 0x004757E0, end: 0x00475858}
+      - {object: game/mobyutil, section: .game_SlideDelt___dupe2, start: 0x00475858, end: 0x004758E8}
+      - {object: game/mobyutil, section: .game_AccelDelt, start: 0x004758E8, end: 0x00475988}
+      - {object: game/mobyutil, section: .game_AccelDelt___dupe2, start: 0x00475988, end: 0x00475AD0}
+      - {object: game/mobyutil, section: .game_OrganicDelt, start: 0x00475AD0, end: 0x00475C68}
+      - {object: game/mobyutil, section: .game_SubRots, start: 0x00475C68, end: 0x00475D18}
+      - {object: game/mobyutil, section: .game_DeltAng, start: 0x00475D18, end: 0x00475D98}
+      - {object: game/mobyutil, section: .game_AccelDeltAng, start: 0x00475D98, end: 0x00475EF8}
+      - {object: game/mobyutil, section: .game_func_00475EF8, start: 0x00475EF8, end: 0x00475F00}
+      - {object: game/mobyutil, section: .game_OrganicDeltAng, start: 0x00475F00, end: 0x00476158}
+      - {object: game/mobyutil, section: .game_OrganicDeltSpeed, start: 0x00476158, end: 0x00476320}
+      - {object: game/mobyutil, section: .game_MatAdjoint, start: 0x00476320, end: 0x00476450}
+      - {object: game/mobyutil, section: .game_Float_To_RGBA, start: 0x00476450, end: 0x004764B8}
+      - {object: game/mobyutil, section: .game_ReorderRGB, start: 0x004764B8, end: 0x00476518}
+      - {object: game/mobyutil, section: .game_ReorderRGB___dupe2, start: 0x00476518, end: 0x004765A0}
+      - {object: game/mobyutil, section: .game_func_004765A0, start: 0x004765A0, end: 0x004765B0}
+      - {object: game/mobyutil, section: .game_MB_GetSuckVars, start: 0x004765B0, end: 0x004765E8}
+      - {object: game/mobyutil, section: .game_func_004765E8, start: 0x004765E8, end: 0x004765F0}
+      - {object: game/mobyutil, section: .game_MB_GetMoveVars_2, start: 0x004765F0, end: 0x00476628}
+      - {object: game/mobyutil, section: .game_MB_GetNavigationVars, start: 0x00476628, end: 0x00476660}
+      - {object: game/mobyutil, section: .game_MB_getReactVars, start: 0x00476660, end: 0x00476690}
+      - {object: game/mobyutil, section: .game_MB_getTargetVars, start: 0x00476690, end: 0x00476700}
+      - {object: game/mobyutil, section: .game_func_00476700, start: 0x00476700, end: 0x00476710}
+      - {object: game/mobyutil, section: .game_MB_MistDeathEffect, start: 0x00476710, end: 0x00476C38}
+      - {object: game/mobyutil, section: .game_MB_SetDefaultLights, start: 0x00476C38, end: 0x00476C80}
+      - {object: game/mobyutil, section: .game_CollLineValidate, start: 0x00476C80, end: 0x00476D60}
+      - {object: game/mobyutil, section: .game_DecomposeMtx4ToAng, start: 0x00476D60, end: 0x00476F50}
+      - {object: game/mobyutil, section: .game_MB_GetFlashVars, start: 0x00476F50, end: 0x00476F88}
+      - {object: game/mobyutil, section: .game_MB_StartColorFlash, start: 0x00476F88, end: 0x00477120}
+      - {object: game/mobyutil, section: .game_MB_EndColorFlash, start: 0x00477120, end: 0x004771B0}
+      - {object: game/mobyutil, section: .game_MB_UpdateColorFlash, start: 0x004771B0, end: 0x00477648}
+      - {object: game/mobyutil, section: .game_func_00477648, start: 0x00477648, end: 0x00477650}
+      - {object: game/mobyutil, section: .game_MB_initMobyColorFlash, start: 0x00477650, end: 0x00477678}
+      - {object: game/mobyutil, section: .game_func_00477678, start: 0x00477678, end: 0x00477680}
+      - {object: game/mobyutil, section: .game_MB_WrapRot, start: 0x00477680, end: 0x004776C0}
+      - {object: game/mobyutil, section: .game_func_004776C0, start: 0x004776C0, end: 0x004776C8}
+      - {object: game/mobyutil, section: .game_MB_isCrateOClass, start: 0x004776C8, end: 0x004776D8}
+      - {object: game/mobyutil, section: .game_MB_isCrate, start: 0x004776D8, end: 0x00477770}
+      - {object: game/mobyutil, section: .game_MB_isMorph, start: 0x00477770, end: 0x004777C0}
+      - {object: game/mobyutil, section: .game_func_004777C0, start: 0x004777C0, end: 0x004777C8}
+      - {object: game/mobyutil, section: .game_MB_genericExplosion, start: 0x004777C8, end: 0x00477A90}
+      - {object: game/mobyutil, section: .game_func_00477A90, start: 0x00477A90, end: 0x00477A98}
+      - {object: game/mobyutil, section: .game_MB_AddMobyToDynamicGroup, start: 0x00477A98, end: 0x00477B10}
+      - {object: game/mobyutil, section: .game_MB_DeleteMobyFromDynamicGroup, start: 0x00477B10, end: 0x00477B88}
+      - {object: game/mobyutil, section: .game_func_00477B88, start: 0x00477B88, end: 0x00477B90}
+      - {object: game/mobyutil, section: .game_MB_RandomizeVector, start: 0x00477B90, end: 0x00477C18}
+      - {object: game/mobyutil, section: .game_MB_RandomizeVector___dupe2, start: 0x00477C18, end: 0x00477C98}
+      - {object: game/mobyutil, section: .game_MB_RandomizeVectorRange, start: 0x00477C98, end: 0x00477D18}
+      - {object: game/mobyutil, section: .game_MB_IsPntInCylinder, start: 0x00477D18, end: 0x00477E10}
+      - {object: game/mobyutil, section: .game_MB_IsPntInSphere, start: 0x00477E10, end: 0x00477ED0}
+      - {object: game/mobyutil, section: .game_MB_IsPntInPath, start: 0x00477ED0, end: 0x00477F30}
+      - {object: game/mobyutil, section: .game_func_00477F30, start: 0x00477F30, end: 0x00477F80}
+      - {object: game/mobyutil, section: .game_MB_SlerpVectors, start: 0x00477F80, end: 0x00477FB8}
+      - {object: game/mobyutil, section: .game_func_00477FB8, start: 0x00477FB8, end: 0x00477FE0}
+      - {object: game/mobyutil, section: .game_MB_getTrackVars, start: 0x00477FE0, end: 0x00478018}
+      - {object: game/mobyutil, section: .game_MB_TrackMoby_OneFrame, start: 0x00478018, end: 0x00478568}
+      - {object: game/mobyutil, section: .game_MB_TrackMoby_OneFrame_Vel, start: 0x00478568, end: 0x004788E8}
+      - {object: game/mobyutil, section: .game_func_004788E8, start: 0x004788E8, end: 0x00478900}
+      - {object: game/mobyutil, section: .game_MB_GadgetDamageIndex, start: 0x00478900, end: 0x00478C78}
+      - {object: game/mobyutil, section: .game_MB_MP_GadgetDamageIndex, start: 0x00478C78, end: 0x00478C80}
+      - {object: game/mobyutil, section: .game_SetNtscPalTiming, start: 0x00478C80, end: 0x00478E20}
+      - {object: game/mobyutil, section: .game_func_00478E20, start: 0x00478E20, end: 0x00478E28}
+      - {object: game/mobyutil, section: .game_MB_compressVector, start: 0x00478E28, end: 0x00478F50}
+      - {object: game/mobyutil, section: .game_MB_decompressVector, start: 0x00478F50, end: 0x00478FD8}
+      - {object: game/mobyutil, section: .game_func_00478FD8, start: 0x00478FD8, end: 0x00478FF8}
+      - {object: game/mobyutil, section: .game_MB_MayaFrameTrigger, start: 0x00478FF8, end: 0x004790B0}
+      - {object: game/mobyutil, section: .game_func_004790B0, start: 0x004790B0, end: 0x004790C0}
+      - {object: game/mobyutil, section: .game_CreateMotionBlur, start: 0x004790C0, end: 0x004790E8}
+      - {object: game/mobyutil, section: .game_AddMotionBlurElem, start: 0x004790E8, end: 0x00479280}
+      - {object: game/mobyutil, section: .game_UpdateMotionBlur, start: 0x00479280, end: 0x004794F0}
+      - {object: game/mobyutil, section: .game_DeleteMotionBlur, start: 0x004794F0, end: 0x00479570}
+      - {object: game/mobyutil, section: .game_func_00479570, start: 0x00479570, end: 0x00479580}
+      - {object: game/mobyutil, section: .game_MB_SetAmbientLights, start: 0x00479580, end: 0x004795B0}
+      - {object: game/mobyutil, section: .game_func_004795B0, start: 0x004795B0, end: 0x004795C0}
+      - {object: game/mobyutil, section: .game_MB_BobMotion, start: 0x004795C0, end: 0x004795E0}
+      - {object: game/mobyutil, section: .game_MB_BobMotion___dupe2, start: 0x004795E0, end: 0x004796C0}
+      - {object: game/mobyutil, section: .game_func_004796C0, start: 0x004796C0, end: 0x004796C8}
+      - {object: game/mobyutil, section: .game_MB_SwingMotion, start: 0x004796C8, end: 0x00479790}
+      - {object: game/mobyutil, section: .game_func_00479790, start: 0x00479790, end: 0x004797D8}
+      - {object: game/mobyutil, section: .game_MB_AddVectorSphere, start: 0x004797D8, end: 0x00479818}
+      - {object: game/mobyutil, section: .game_func_00479818, start: 0x00479818, end: 0x00479820}
+      - {object: game/mobyutil, section: .game_MB_AttachMobyToJoint, start: 0x00479820, end: 0x00479960}
+      - {object: game/mobyutil, section: .game_MB_ComputeTargetScore, start: 0x00479960, end: 0x00479B38}
+      - {object: game/mobyutil, section: .game_MB_getTarget, start: 0x00479B38, end: 0x00479D28}
+      - {object: game/mobyutil, section: .game_FUN_00479d28, start: 0x00479D28, end: 0x0047AA28}
+      - {object: game/mobyutil, section: .game_func_0047AA28, start: 0x0047AA28, end: 0x0047AA40}
+      - {object: game/mobyutil, section: .game_MB_GetLocalSpaceVector, start: 0x0047AA40, end: 0x0047AAE8}
+      - {object: game/mobyutil, section: .game_MB_GetWorldSpaceVector, start: 0x0047AAE8, end: 0x0047AB20}
+      - {object: game/mobyutil, section: .game_func_0047AB20, start: 0x0047AB20, end: 0x0047AB30}
+      - {object: game/mobyutil, section: .game_MB_scaleRelativeXY, start: 0x0047AB30, end: 0x0047ABD0}
+      - {object: game/mobyutil, section: .game_MB_relativeXYComponent, start: 0x0047ABD0, end: 0x0047AC20}
+      - {object: game/mobyutil, section: .game_func_0047AC20, start: 0x0047AC20, end: 0x0047AC28}
+      - {object: game/mobyutil, section: .game_MB_FindGravity_CageMatch, start: 0x0047AC28, end: 0x0047ACC0}
+      - {object: game/mobyutil, section: .game_MB_FindGravity, start: 0x0047ACC0, end: 0x0047ADE0}
+      - {object: game/mobyutil, section: .game_func_0047ADE0, start: 0x0047ADE0, end: 0x0047ADF0}
+      - {object: game/mobyutil, section: .game_MB_AddGravity, start: 0x0047ADF0, end: 0x0047AEA8}
+      - {object: game/mobyutil, section: .game_func_0047AEA8, start: 0x0047AEA8, end: 0x0047AEB0}
+      - {object: game/mobyutil, section: .game_MB_SphericalHeight, start: 0x0047AEB0, end: 0x0047AF68}
+      - {object: game/mobyutil, section: .game_MB_AlignWithGravity, start: 0x0047AF68, end: 0x0047AF98}
+      - {object: game/mobyutil, section: .game_MB_AlignWithNormal, start: 0x0047AF98, end: 0x0047B0F0}
+      - {object: game/mobyutil, section: .game_func_0047B0F0, start: 0x0047B0F0, end: 0x0047B110}
+      - {object: game/mobyutil, section: .game_MB_DrawGlowFX, start: 0x0047B110, end: 0x0047B2D0}
+      - {object: game/mobyutil, section: .game_func_0047B2D0, start: 0x0047B2D0, end: 0x0047B320}
+      - {object: game/mobyutil, section: .game_MB_BlowCorn, start: 0x0047B320, end: 0x0047B6A8}
+      - {object: game/mobyutil, section: .game_MB_BlowFlamingCorn, start: 0x0047B6A8, end: 0x0047B7E8}
+      - {object: game/mobyutil, section: .game_func_0047B7E8, start: 0x0047B7E8, end: 0x0047B7F8}
+      - {object: game/mobyutil, section: .game_FUN_0047b7f8, start: 0x0047B7F8, end: 0x0047B978}
+      - {object: game/mobyutil, section: .game_func_0047B978, start: 0x0047B978, end: 0x0047B9B8}
+      - {object: game/mobyutil, section: .game_MB_SpawnInit, start: 0x0047B9B8, end: 0x0047BA28}
+      - {object: game/mobyutil, section: .game_func_0047BA28, start: 0x0047BA28, end: 0x0047BA40}
+      - {object: game/mobyutil, section: .game_MB_IsPntInArea, start: 0x0047BA40, end: 0x0047BBD8}
+      - {object: game/mobyutil, section: .game_MB_GetBogeyVars, start: 0x0047BBD8, end: 0x0047BC10}
+      - {object: game/mobyutil, section: .game_MB_GetBogeyType, start: 0x0047BC10, end: 0x0047BC38}
+      - {object: game/mobyutil, section: .game_MB_SetBogeyType, start: 0x0047BC38, end: 0x0047BC68}
+      - {object: game/mobyutil, section: .game_func_0047BC68, start: 0x0047BC68, end: 0x0047BC80}
+      - {object: game/mobyutil, section: .game_MB_UnlockBogey, start: 0x0047BC80, end: 0x0047BD18}
+      - {object: game/mobyutil, section: .game_func_0047BD18, start: 0x0047BD18, end: 0x0047BDC0}
+      - {object: game/mobyutil, section: .game_MB_FastBsphereCheck, start: 0x0047BDC0, end: 0x0047BF48}
+      - {object: game/mobyutil, section: .game_MB_PlaySoundsInSeq, start: 0x0047BF48, end: 0x0047C018}
+      - {object: game/mobyutil, section: .game_MB_GetCommandVars, start: 0x0047C018, end: 0x0047C050}
+      - {object: game/mobyutil, section: .game_func_0047C050, start: 0x0047C050, end: 0x0047C058}
+      - {object: game/mobyutil, section: .game_MB_InitializeCommandCache, start: 0x0047C058, end: 0x0047C0F0}
+      - {object: game/mobyutil, section: .game_MB_DrawDestroyIcon, start: 0x0047C0F0, end: 0x0047C3D0}
+      - {object: game/mobyutil, section: .game_MB_FindVisibleContextCommand, start: 0x0047C3D0, end: 0x0047CE20}
+      - {object: game/mobyutil, section: .game_MB_GetCommandName, start: 0x0047CE20, end: 0x0047CE60}
+      - {object: game/mobyutil, section: .game_func_0047CE60, start: 0x0047CE60, end: 0x0047CE78}
+      - {object: game/mobyutil, section: .game_MB_IssueCommand, start: 0x0047CE78, end: 0x0047D038}
+      - {object: game/mobyutil, section: .game_MB_IssueCommand___dupe2, start: 0x0047D038, end: 0x0047D240}
+      - {object: game/mobyutil, section: .game_func_0047D240, start: 0x0047D240, end: 0x0047D250}
+      - {object: game/mobyutil, section: .game_Bot_GetAbilityDef, start: 0x0047D250, end: 0x0047D278}
+      - {object: game/mobyutil, section: .game_Bot_HasAbility, start: 0x0047D278, end: 0x0047D2A8}
+      - {object: game/mobyutil, section: .game_Bot_HasCommandAbility, start: 0x0047D2A8, end: 0x0047D368}
+      - {object: game/mobyutil, section: .game_Bot_GrantAbility, start: 0x0047D368, end: 0x0047D3A8}
+      - {object: game/mobyutil, section: .game_Bot_GrantPaintjob, start: 0x0047D3A8, end: 0x0047D3F8}
+      - {object: game/mobyutil, section: .game_Bot_HasPaintjob, start: 0x0047D3F8, end: 0x0047D420}
+      - {object: game/mobyutil, section: .game_Bot_GetCurrentPaintjob, start: 0x0047D420, end: 0x0047D448}
+      - {object: game/mobyutil, section: .game_Bot_GrantHead, start: 0x0047D448, end: 0x0047D488}
+      - {object: game/mobyutil, section: .game_Bot_HasHead, start: 0x0047D488, end: 0x0047D4B0}
+      - {object: game/mobyutil, section: .game_Bot_GetCurrentHead, start: 0x0047D4B0, end: 0x0047D4E8}
+      - {object: game/mobyutil, section: .game_Bot_GetGlobalComm, start: 0x0047D4E8, end: 0x0047D520}
+      - {object: game/mobyutil, section: .game_Bot_ResetGlobalComm, start: 0x0047D520, end: 0x0047D6A8}
+      - {object: game/mobyutil, section: .game_func_0047D6A8, start: 0x0047D6A8, end: 0x0047D6D8}
+      - {object: game/mobyutil, section: .game_MB_GetShadowSurface, start: 0x0047D6D8, end: 0x0047D850}
+      - {object: game/mobyutil, section: .game_MB_GetRandomShadowPoints, start: 0x0047D850, end: 0x0047DED8}
+      - {object: game/mobyutil, section: .game_MB_GetRandomShadowSurfacePoint, start: 0x0047DED8, end: 0x0047E4C8}
+      - {object: game/mobyutil, section: .game_MB_GetRandomShadowSurfacePoints, start: 0x0047E4C8, end: 0x0047EB40}
+      - {object: game/mobyutil, section: .game_func_0047EB40, start: 0x0047EB40, end: 0x0047EB50}
+      - {object: game/mobyutil, section: .game_FUN_0047eb50, start: 0x0047EB50, end: 0x0047EB58}
+      - {object: game/mobyutil, section: .game_FUN_0047eb58, start: 0x0047EB58, end: 0x0047EB60}
+      - {object: game/mobyutil, section: .game_MB_SetMobyTeamTex, start: 0x0047EB60, end: 0x0047EBB0}
+      - {object: game/mobyutil, section: .game_func_0047EBB0, start: 0x0047EBB0, end: 0x0047EBC0}
+      - {object: game/mobyutil, section: .game_MB_SelectRespawnNode, start: 0x0047EBC0, end: 0x0047EC08}
+      - {object: game/mobyutil, section: .game_MB_ValidateRespawnNode, start: 0x0047EC08, end: 0x0047EC78}
+      - {object: game/mobyutil, section: .game_MB_NumValidRespawnNodes, start: 0x0047EC78, end: 0x0047ECC8}
+      - {object: game/mobyutil, section: .game_MB_GhostMe, start: 0x0047ECC8, end: 0x0047ED10}
+      - {object: game/mobyutil, section: .game_MB_Level99ColorTimeBased, start: 0x0047ED10, end: 0x0047EE10}
+      - {object: game/mobyutil, section: .game_MB_GetXPBundle, start: 0x0047EE10, end: 0x0047EEA8}
+      - {object: game/mobyutil, section: .game_func_0047EEA8, start: 0x0047EEA8, end: 0x0047EF38}
+  game/move:
+    text_start: 0x0047F8A0
+    text_end: 0x00488A98
+    slots:
+      - {object: game/move, section: .game_MB_Move_2, start: 0x0047F8A0, end: 0x00480EB8}
+      - {object: game/move, section: .game_func_00480EB8, start: 0x00480EB8, end: 0x00480EC8}
+      - {object: game/move, section: .game_MB_Move_2___dupe2, start: 0x00480EC8, end: 0x00480F40}
+      - {object: game/move, section: .game_MB_Stand_2, start: 0x00480F40, end: 0x00480F90}
+      - {object: game/move, section: .game_func_00480F90, start: 0x00480F90, end: 0x00480FB8}
+      - {object: game/move, section: .game_MB_Action_2, start: 0x00480FB8, end: 0x00481100}
+      - {object: game/move, section: .game_MB_StopAction_2, start: 0x00481100, end: 0x00481240}
+      - {object: game/move, section: .game_MB_StopReaction_2, start: 0x00481240, end: 0x00481298}
+      - {object: game/move, section: .game_FUN_00481298, start: 0x00481298, end: 0x00482888}
+      - {object: game/move, section: .game_MB_ProcessDamage_2, start: 0x00482888, end: 0x004828B0}
+      - {object: game/move, section: .game_MB_UpdateReaction_2, start: 0x004828B0, end: 0x00483330}
+      - {object: game/move, section: .game_func_00483330, start: 0x00483330, end: 0x00483340}
+      - {object: game/move, section: .game_MB_GetMoveAction, start: 0x00483340, end: 0x00483368}
+      - {object: game/move, section: .game_MB_GetMoveReaction, start: 0x00483368, end: 0x00483390}
+      - {object: game/move, section: .game_func_00483390, start: 0x00483390, end: 0x00483398}
+      - {object: game/move, section: .game_MVE_GetBoundArea, start: 0x00483398, end: 0x00483418}
+      - {object: game/move, section: .game_MVE_DrawImpactEffect, start: 0x00483418, end: 0x00483648}
+      - {object: game/move, section: .game_func_00483648, start: 0x00483648, end: 0x00483650}
+      - {object: game/move, section: .game_MVE_GetGroundInfo2, start: 0x00483650, end: 0x00483B08}
+      - {object: game/move, section: .game_MVE_Collision2, start: 0x00483B08, end: 0x00484098}
+      - {object: game/move, section: .game_MB_MoveSystemInit, start: 0x00484098, end: 0x00484320}
+      - {object: game/move, section: .game_MB_InitCache, start: 0x00484320, end: 0x004844E0}
+      - {object: game/move, section: .game_MB_SetAnimCache, start: 0x004844E0, end: 0x00484598}
+      - {object: game/move, section: .game_MB_IncomingAnimationMayaFrame, start: 0x00484598, end: 0x004845B8}
+      - {object: game/move, section: .game_MB_IncomingMayaFrameTrigger, start: 0x004845B8, end: 0x00484670}
+      - {object: game/move, section: .game_MB_SwitchToDeathState, start: 0x00484670, end: 0x00484710}
+      - {object: game/move, section: .game_FUN_00484710, start: 0x00484710, end: 0x00484F68}
+      - {object: game/move, section: .game_MB_MoveSystemUpdateAction, start: 0x00484F68, end: 0x00485198}
+      - {object: game/move, section: .game_func_00485198, start: 0x00485198, end: 0x004851A0}
+      - {object: game/move, section: .game_MB_UpdateReactionEffects, start: 0x004851A0, end: 0x00486188}
+      - {object: game/move, section: .game_MB_MoveSystemUpdateReaction, start: 0x00486188, end: 0x004861E8}
+      - {object: game/move, section: .game_MB_MoveSystemUpdateAttach, start: 0x004861E8, end: 0x004863F0}
+      - {object: game/move, section: .game_MVE_SpawnWaterSplash, start: 0x004863F0, end: 0x004869D8}
+      - {object: game/move, section: .game_MVE_SpawnLavaSplash, start: 0x004869D8, end: 0x004869E0}
+      - {object: game/move, section: .game_MVE_SpawnHitGroundDust, start: 0x004869E0, end: 0x00486D58}
+      - {object: game/move, section: .game_MB_UpdateMoveEffects, start: 0x00486D58, end: 0x00486E68}
+      - {object: game/move, section: .game_MB_MoveSystemUpdate, start: 0x00486E68, end: 0x004873E8}
+      - {object: game/move, section: .game_MB_SetMoveAnim, start: 0x004873E8, end: 0x00487B00}
+      - {object: game/move, section: .game_MB_GetBestAnimSlow, start: 0x00487B00, end: 0x00487F08}
+      - {object: game/move, section: .game_MB_UseLinearAnim, start: 0x00487F08, end: 0x00487FA0}
+      - {object: game/move, section: .game_MB_GetBestAnimFast, start: 0x00487FA0, end: 0x004887B0}
+      - {object: game/move, section: .game_func_004887B0, start: 0x004887B0, end: 0x004887D8}
+      - {object: game/move, section: .game_MB_SetMoveElevation, start: 0x004887D8, end: 0x00488828}
+      - {object: game/move, section: .game_MB_GetMoveElevation, start: 0x00488828, end: 0x00488850}
+      - {object: game/move, section: .game_func_00488850, start: 0x00488850, end: 0x00488870}
+      - {object: game/move, section: .game_MB_SetMoveDistanceThresholds, start: 0x00488870, end: 0x004888E0}
+      - {object: game/move, section: .game_MB_SetMoveSpeedLimits, start: 0x004888E0, end: 0x00488980}
+      - {object: game/move, section: .game_MB_SetMoveAngularSpeeds, start: 0x00488980, end: 0x004889E0}
+      - {object: game/move, section: .game_MB_SetMoveDamper, start: 0x004889E0, end: 0x00488A58}
+      - {object: game/move, section: .game_MB_GetMoveDamper, start: 0x00488A58, end: 0x00488A98}
+  game/music:
+    text_start: 0x00488E00
+    text_end: 0x00489EEC
+    slots:
+      - {object: game/music, section: .game_music_LoadBankCB, start: 0x00488E00, end: 0x00488E18}
+      - {object: game/music, section: .game_music_LoadCoreBank, start: 0x00488E18, end: 0x00488E80}
+      - {object: game/music, section: .game_music_LoadBankFromEE, start: 0x00488E80, end: 0x00488EB8}
+      - {object: game/music, section: .game_music_Init, start: 0x00488EB8, end: 0x00488F28}
+      - {object: game/music, section: .game_func_00488F28, start: 0x00488F28, end: 0x00488F30}
+      - {object: game/music, section: .game_music_PreseekTrack, start: 0x00488F30, end: 0x00489030}
+      - {object: game/music, section: .game_music_StartTrack, start: 0x00489030, end: 0x00489130}
+      - {object: game/music, section: .game_music_StartTrackBody, start: 0x00489130, end: 0x00489278}
+      - {object: game/music, section: .game_music_Transition, start: 0x00489278, end: 0x00489368}
+      - {object: game/music, section: .game_music_Stop, start: 0x00489368, end: 0x00489458}
+      - {object: game/music, section: .game_music_Pause, start: 0x00489458, end: 0x00489478}
+      - {object: game/music, section: .game_music_Unpause, start: 0x00489478, end: 0x00489498}
+      - {object: game/music, section: .game_music_UnpauseDelay, start: 0x00489498, end: 0x004894D8}
+      - {object: game/music, section: .game_music_UpdateStream, start: 0x004894D8, end: 0x00489740}
+      - {object: game/music, section: .game_music_Update, start: 0x00489740, end: 0x00489C20}
+      - {object: game/music, section: .game_func_00489C20, start: 0x00489C20, end: 0x00489C28}
+      - {object: game/music, section: .game_music_Sync, start: 0x00489C28, end: 0x00489C88}
+      - {object: game/music, section: .game_func_00489C88, start: 0x00489C88, end: 0x00489C90}
+      - {object: game/music, section: .game_music_PreseekCB, start: 0x00489C90, end: 0x00489CC0}
+      - {object: game/music, section: .game_music_PreseekTrackCB, start: 0x00489CC0, end: 0x00489D30}
+      - {object: game/music, section: .game_music_StartCB, start: 0x00489D30, end: 0x00489D80}
+      - {object: game/music, section: .game_music_StartBodyCB, start: 0x00489D80, end: 0x00489DD8}
+      - {object: game/music, section: .game_music_StartHeadCB, start: 0x00489DD8, end: 0x00489E28}
+      - {object: game/music, section: .game_music_FreshenCB, start: 0x00489E28, end: 0x00489E68}
+      - {object: game/music, section: .game_music_QueueLengthCB, start: 0x00489E68, end: 0x00489E80}
+      - {object: game/music, section: .game_music_TimeRemainingCB, start: 0x00489E80, end: 0x00489EEC}
+  game/navsysglobal:
+    text_start: 0x0048AFF8
+    text_end: 0x0048EC6C
+    slots:
+      - {object: game/navsysglobal, section: .game_navg_CollideLineSegmentBoxLocalZeroVec, start: 0x0048AFF8, end: 0x0048B0A0}
+      - {object: game/navsysglobal, section: .game_navg_CollideLineSegmentSphereLocal, start: 0x0048B0A0, end: 0x0048B1C0}
+      - {object: game/navsysglobal, section: .game_func_0048B1C0, start: 0x0048B1C0, end: 0x0048B1C8}
+      - {object: game/navsysglobal, section: .game_navg_CollideLineSegmentCylinderLocal, start: 0x0048B1C8, end: 0x0048B468}
+      - {object: game/navsysglobal, section: .game_func_0048B468, start: 0x0048B468, end: 0x0048B470}
+      - {object: game/navsysglobal, section: .game_navg_CollideLineSegmentPath, start: 0x0048B470, end: 0x0048B560}
+      - {object: game/navsysglobal, section: .game_func_0048B560, start: 0x0048B560, end: 0x0048B580}
+      - {object: game/navsysglobal, section: .game_navg_NodeGetDistSqr, start: 0x0048B580, end: 0x0048B688}
+      - {object: game/navsysglobal, section: .game_navg_TestInside, start: 0x0048B688, end: 0x0048B800}
+      - {object: game/navsysglobal, section: .game_func_0048B800, start: 0x0048B800, end: 0x0048B818}
+      - {object: game/navsysglobal, section: .game_navg_AllocMemory, start: 0x0048B818, end: 0x0048B840}
+      - {object: game/navsysglobal, section: .game_navg_LoadClusters, start: 0x0048B840, end: 0x0048B968}
+      - {object: game/navsysglobal, section: .game_navg_LoadNodes, start: 0x0048B968, end: 0x0048BA50}
+      - {object: game/navsysglobal, section: .game_navg_LoadNeighbors, start: 0x0048BA50, end: 0x0048BB38}
+      - {object: game/navsysglobal, section: .game_navg_LoadEdges, start: 0x0048BB38, end: 0x0048BC20}
+      - {object: game/navsysglobal, section: .game_navg_LoadClusterPaths, start: 0x0048BC20, end: 0x0048BD08}
+      - {object: game/navsysglobal, section: .game_navg_LoadPaths, start: 0x0048BD08, end: 0x0048BDF0}
+      - {object: game/navsysglobal, section: .game_navg_LoadClusterPathLists, start: 0x0048BDF0, end: 0x0048BEC0}
+      - {object: game/navsysglobal, section: .game_navg_LoadPathLists, start: 0x0048BEC0, end: 0x0048BF90}
+      - {object: game/navsysglobal, section: .game_navg_LoadCuboids, start: 0x0048BF90, end: 0x0048C078}
+      - {object: game/navsysglobal, section: .game_navg_LoadSpheres, start: 0x0048C078, end: 0x0048C160}
+      - {object: game/navsysglobal, section: .game_navg_LoadCylinders, start: 0x0048C160, end: 0x0048C248}
+      - {object: game/navsysglobal, section: .game_navg_LoadBoundPaths, start: 0x0048C248, end: 0x0048C330}
+      - {object: game/navsysglobal, section: .game_navg_LoadPartitions, start: 0x0048C330, end: 0x0048C440}
+      - {object: game/navsysglobal, section: .game_navg_LoadSectors, start: 0x0048C440, end: 0x0048C5C0}
+      - {object: game/navsysglobal, section: .game_NAVG_LoadFile, start: 0x0048C5C0, end: 0x0048D028}
+      - {object: game/navsysglobal, section: .game_func_0048D028, start: 0x0048D028, end: 0x0048D038}
+      - {object: game/navsysglobal, section: .game_NAVG_ResetNavigationVars, start: 0x0048D038, end: 0x0048D058}
+      - {object: game/navsysglobal, section: .game_func_0048D058, start: 0x0048D058, end: 0x0048D060}
+      - {object: game/navsysglobal, section: .game_NAVG_FindClosestNode, start: 0x0048D060, end: 0x0048D220}
+      - {object: game/navsysglobal, section: .game_func_0048D220, start: 0x0048D220, end: 0x0048D228}
+      - {object: game/navsysglobal, section: .game_navg_FindBestIntraClusterPath, start: 0x0048D228, end: 0x0048D330}
+      - {object: game/navsysglobal, section: .game_navg_FindBestInterClusterPath, start: 0x0048D330, end: 0x0048D758}
+      - {object: game/navsysglobal, section: .game_navg_FindBestInterSectorPathStep, start: 0x0048D758, end: 0x0048DA78}
+      - {object: game/navsysglobal, section: .game_navg_FindBestInterSectorPath, start: 0x0048DA78, end: 0x0048DCC8}
+      - {object: game/navsysglobal, section: .game_NAVG_UpdateNavigationWpEasy, start: 0x0048DCC8, end: 0x0048DEB0}
+      - {object: game/navsysglobal, section: .game_NAVG_SetTargetWp, start: 0x0048DEB0, end: 0x0048DEC0}
+      - {object: game/navsysglobal, section: .game_NAVG_UpdateMe, start: 0x0048DEC0, end: 0x0048E3B0}
+      - {object: game/navsysglobal, section: .game_NAVG_UpdateNavigation, start: 0x0048E3B0, end: 0x0048E650}
+      - {object: game/navsysglobal, section: .game_func_0048E650, start: 0x0048E650, end: 0x0048E670}
+      - {object: game/navsysglobal, section: .game_NAVG_NodeFindClosestNode, start: 0x0048E670, end: 0x0048EA08}
+      - {object: game/navsysglobal, section: .game_NAVG_NodeGetType, start: 0x0048EA08, end: 0x0048EA40}
+      - {object: game/navsysglobal, section: .game_NAVG_NodeGetTraversalFlags, start: 0x0048EA40, end: 0x0048EA78}
+      - {object: game/navsysglobal, section: .game_NAVG_NodeGetCenter, start: 0x0048EA78, end: 0x0048EAB0}
+      - {object: game/navsysglobal, section: .game_func_0048EAB0, start: 0x0048EAB0, end: 0x0048EAC0}
+      - {object: game/navsysglobal, section: .game_NAVG_NodeGet3DSpline, start: 0x0048EAC0, end: 0x0048EB10}
+      - {object: game/navsysglobal, section: .game_NAVG_EdgeGetType, start: 0x0048EB10, end: 0x0048EB48}
+      - {object: game/navsysglobal, section: .game_NAVG_EdgeGetCliffSpline, start: 0x0048EB48, end: 0x0048EB98}
+      - {object: game/navsysglobal, section: .game_NAVG_WpSet, start: 0x0048EB98, end: 0x0048EBC0}
+      - {object: game/navsysglobal, section: .game_NAVG_WpSetPos, start: 0x0048EBC0, end: 0x0048EC08}
+      - {object: game/navsysglobal, section: .game_NAVG_WpMovePos, start: 0x0048EC08, end: 0x0048EC58}
+      - {object: game/navsysglobal, section: .game_func_0048EC58, start: 0x0048EC58, end: 0x0048EC60}
+      - {object: game/navsysglobal, section: .game_NAVG_WpGetNode, start: 0x0048EC60, end: 0x0048EC6C}
+  game/posteffects:
+    text_start: 0x004F6498
+    text_end: 0x004FB980
+    slots:
+      - {object: game/posteffects, section: .game_PostEffects_LocalAlloc, start: 0x004F6498, end: 0x004F64B8}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddStrips, start: 0x004F64B8, end: 0x004F6648}
+      - {object: game/posteffects, section: .game_PostEffects_AddStrips, start: 0x004F6648, end: 0x004F6750}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddStrips___dupe2, start: 0x004F6750, end: 0x004F6940}
+      - {object: game/posteffects, section: .game_func_004F6940, start: 0x004F6940, end: 0x004F6960}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_Clear, start: 0x004F6960, end: 0x004F6AE0}
+      - {object: game/posteffects, section: .game_func_004F6AE0, start: 0x004F6AE0, end: 0x004F6AF0}
+      - {object: game/posteffects, section: .game_PostEffects_AddFilterCopy, start: 0x004F6AF0, end: 0x004F6D08}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddFilterCopy, start: 0x004F6D08, end: 0x004F6EF8}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddFilterCopy___dupe2, start: 0x004F6EF8, end: 0x004F7008}
+      - {object: game/posteffects, section: .game_PostEffects_Blur, start: 0x004F7008, end: 0x004F7420}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_Blur, start: 0x004F7420, end: 0x004F77C0}
+      - {object: game/posteffects, section: .game_PostEffects_BlurOnce, start: 0x004F77C0, end: 0x004F7A40}
+      - {object: game/posteffects, section: .game_func_004F7A40, start: 0x004F7A40, end: 0x004F7A48}
+      - {object: game/posteffects, section: .game_PostEffects_Blur256, start: 0x004F7A48, end: 0x004F7A70}
+      - {object: game/posteffects, section: .game_func_004F7A70, start: 0x004F7A70, end: 0x004F7A98}
+      - {object: game/posteffects, section: .game_PostEffects_BlurOnce256, start: 0x004F7A98, end: 0x004F7AC0}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_Blur256, start: 0x004F7AC0, end: 0x004F7AE8}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_Blur128, start: 0x004F7AE8, end: 0x004F7B10}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_Blur64, start: 0x004F7B10, end: 0x004F7B38}
+      - {object: game/posteffects, section: .game_func_004F7B38, start: 0x004F7B38, end: 0x004F7B40}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddBloomAccum, start: 0x004F7B40, end: 0x004F7EA0}
+      - {object: game/posteffects, section: .game_func_004F7EA0, start: 0x004F7EA0, end: 0x004F7ED8}
+      - {object: game/posteffects, section: .game_PostEffects_SandStorm_Init_AlphaMappingPalette, start: 0x004F7ED8, end: 0x004F7FD0}
+      - {object: game/posteffects, section: .game_func_004F7FD0, start: 0x004F7FD0, end: 0x004F7FD8}
+      - {object: game/posteffects, section: .game_PostEffects_SandStorm_Init_CreateB, start: 0x004F7FD8, end: 0x004F81D8}
+      - {object: game/posteffects, section: .game_func_004F81D8, start: 0x004F81D8, end: 0x004F81E0}
+      - {object: game/posteffects, section: .game_PostEffects_SandStorm_Init_Apply, start: 0x004F81E0, end: 0x004F8228}
+      - {object: game/posteffects, section: .game_PostEffects_SandStorm_Init_Globals, start: 0x004F8228, end: 0x004F8600}
+      - {object: game/posteffects, section: .game_func_004F8600, start: 0x004F8600, end: 0x004F8610}
+      - {object: game/posteffects, section: .game_PostEffects_SandStorm_Init, start: 0x004F8610, end: 0x004F86A0}
+      - {object: game/posteffects, section: .game_func_004F86A0, start: 0x004F86A0, end: 0x004F86B8}
+      - {object: game/posteffects, section: .game_PE_GetEnvironmentType, start: 0x004F86B8, end: 0x004F8708}
+      - {object: game/posteffects, section: .game_PE_UpdateEnvEffectsForCameraWarp, start: 0x004F8708, end: 0x004F8758}
+      - {object: game/posteffects, section: .game_PostEffects_Init, start: 0x004F8758, end: 0x004F8778}
+      - {object: game/posteffects, section: .game_PostEffects_AddPutToScreen_imm, start: 0x004F8778, end: 0x004F8B60}
+      - {object: game/posteffects, section: .game_PostEffects_CreateFrameBufferAlphaFromDepth_imm, start: 0x004F8B60, end: 0x004F8DF8}
+      - {object: game/posteffects, section: .game_PostEffects_LoadPalToGs_imm, start: 0x004F8DF8, end: 0x004F8EA0}
+      - {object: game/posteffects, section: .game_PostEffects_SetDofRamp, start: 0x004F8EA0, end: 0x004F8F30}
+      - {object: game/posteffects, section: .game_PostEffects_AddRemapAlpha, start: 0x004F8F30, end: 0x004F92F0}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddRemapAlpha, start: 0x004F92F0, end: 0x004F9680}
+      - {object: game/posteffects, section: .game_PostEffects_AddRemapAlpha_imm, start: 0x004F9680, end: 0x004F9768}
+      - {object: game/posteffects, section: .game_func_004F9768, start: 0x004F9768, end: 0x004F9770}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_AddMulByAlpha, start: 0x004F9770, end: 0x004F9AC8}
+      - {object: game/posteffects, section: .game_PostEffects_Init_new, start: 0x004F9AC8, end: 0x004F9B18}
+      - {object: game/posteffects, section: .game_PostEffects_FrameInit_new, start: 0x004F9B18, end: 0x004F9CC0}
+      - {object: game/posteffects, section: .game_PostEffects_CommonInit_new, start: 0x004F9CC0, end: 0x004F9D38}
+      - {object: game/posteffects, section: .game_PostEffects_BloomInit_new, start: 0x004F9D38, end: 0x004F9F28}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_BloomInitCreateA_new, start: 0x004F9F28, end: 0x004FA100}
+      - {object: game/posteffects, section: .game_PostEffects_BloomCreateB_new, start: 0x004FA100, end: 0x004FA398}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_BloomInitCreateC_new, start: 0x004FA398, end: 0x004FA838}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngine_BloomInitApply_new, start: 0x004FA838, end: 0x004FA8D0}
+      - {object: game/posteffects, section: .game_PostEffects_BloomCreate_new, start: 0x004FA8D0, end: 0x004FAAA8}
+      - {object: game/posteffects, section: .game_PostEffects_BloomApply_new, start: 0x004FAAA8, end: 0x004FAB80}
+      - {object: game/posteffects, section: .game_PostEffects_DofInit_new, start: 0x004FAB80, end: 0x004FAC38}
+      - {object: game/posteffects, section: .game_PostEffects_DofCreateA_new, start: 0x004FAC38, end: 0x004FAF08}
+      - {object: game/posteffects, section: .game_PostEffects_DofInitCreateB_new, start: 0x004FAF08, end: 0x004FAFE8}
+      - {object: game/posteffects, section: .game_PostEffects_DofCreate_new, start: 0x004FAFE8, end: 0x004FB210}
+      - {object: game/posteffects, section: .game_PostEffects_FbCopyInit, start: 0x004FB210, end: 0x004FB4E0}
+      - {object: game/posteffects, section: .game_PostEffects_GetFbTex, start: 0x004FB4E0, end: 0x004FB860}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngineInit, start: 0x004FB860, end: 0x004FB940}
+      - {object: game/posteffects, section: .game_PostEffects_RegisterEngineCleanup, start: 0x004FB940, end: 0x004FB980}
+  game/vuchain:
+    text_start: 0x004E7450
+    text_end: 0x004E82CC
+    slots:
+      - {object: game/vuchain, section: .game_VU0_loadMicroProgram, start: 0x004E7450, end: 0x004E7520}
+      - {object: game/vuchain, section: .game_VU1_setBufSizeByLevel, start: 0x004E7520, end: 0x004E75D0}
+      - {object: game/vuchain, section: .game_VU1_resetScratch, start: 0x004E75D0, end: 0x004E7638}
+      - {object: game/vuchain, section: .game_VU1_initChain, start: 0x004E7638, end: 0x004E7688}
+      - {object: game/vuchain, section: .game_VU1_swapChain, start: 0x004E7688, end: 0x004E7708}
+      - {object: game/vuchain, section: .game_VU1_sendChain, start: 0x004E7708, end: 0x004E7830}
+      - {object: game/vuchain, section: .game_VU1_syncChain, start: 0x004E7830, end: 0x004E7878}
+      - {object: game/vuchain, section: .game_VU1_addDataRef, start: 0x004E7878, end: 0x004E78C8}
+      - {object: game/vuchain, section: .game_func_004E78C8, start: 0x004E78C8, end: 0x004E78D0}
+      - {object: game/vuchain, section: .game_VU1_addDataDirect, start: 0x004E78D0, end: 0x004E7978}
+      - {object: game/vuchain, section: .game_func_004E7978, start: 0x004E7978, end: 0x004E7990}
+      - {object: game/vuchain, section: .game_VU1_addGSregister, start: 0x004E7990, end: 0x004E7A68}
+      - {object: game/vuchain, section: .game_func_004E7A68, start: 0x004E7A68, end: 0x004E7A70}
+      - {object: game/vuchain, section: .game_VU1_setScissor, start: 0x004E7A70, end: 0x004E7B88}
+      - {object: game/vuchain, section: .game_VU1_texFlush, start: 0x004E7B88, end: 0x004E7BE8}
+      - {object: game/vuchain, section: .game_VU1_gsRegsNormal, start: 0x004E7BE8, end: 0x004E7C48}
+      - {object: game/vuchain, section: .game_VU1_gsRegsEffects, start: 0x004E7C48, end: 0x004E7CA8}
+      - {object: game/vuchain, section: .game_func_004E7CA8, start: 0x004E7CA8, end: 0x004E7CB0}
+      - {object: game/vuchain, section: .game_VU1_resetDrawContexts, start: 0x004E7CB0, end: 0x004E7D90}
+      - {object: game/vuchain, section: .game_StashGSMem, start: 0x004E7D90, end: 0x004E7E50}
+      - {object: game/vuchain, section: .game_func_004E7E50, start: 0x004E7E50, end: 0x004E7E58}
+      - {object: game/vuchain, section: .game_UploadGSMemLinear, start: 0x004E7E58, end: 0x004E8068}
+      - {object: game/vuchain, section: .game_DMAC_VIF1_Enable, start: 0x004E8068, end: 0x004E80F8}
+      - {object: game/vuchain, section: .game_DMAC_VIF1_Disable, start: 0x004E80F8, end: 0x004E8168}
+      - {object: game/vuchain, section: .game_DMAC_VIF1_Handler, start: 0x004E8168, end: 0x004E8268}
+      - {object: game/vuchain, section: .game_DMAC_BEIS_Handler, start: 0x004E8268, end: 0x004E8298}
+      - {object: game/vuchain, section: .game_Vif1ChainCmd, start: 0x004E8298, end: 0x004E82CC}
+  game/weapons:
+    text_start: 0x004E8DD0
+    text_end: 0x004EE248
+    slots:
+      - {object: game/weapons, section: .game_WPN_DrawReticule, start: 0x004E8DD0, end: 0x004E9490}
+      - {object: game/weapons, section: .game_func_004E9490, start: 0x004E9490, end: 0x004E9498}
+      - {object: game/weapons, section: .game_WPN_MP_CalcProjectileVelocity, start: 0x004E9498, end: 0x004E9D60}
+      - {object: game/weapons, section: .game_WPN_CalculateTrajectory, start: 0x004E9D60, end: 0x004EA168}
+      - {object: game/weapons, section: .game_WPN_AddGravity, start: 0x004EA168, end: 0x004EA1C8}
+      - {object: game/weapons, section: .game_WPN_GetUp, start: 0x004EA1C8, end: 0x004EA370}
+      - {object: game/weapons, section: .game_WPN_MP_AddGravity, start: 0x004EA370, end: 0x004EA490}
+      - {object: game/weapons, section: .game_WPN_MP_GetUp, start: 0x004EA490, end: 0x004EA5E0}
+      - {object: game/weapons, section: .game_func_004EA5E0, start: 0x004EA5E0, end: 0x004EA5F0}
+      - {object: game/weapons, section: .game_WPN_CacheTarget, start: 0x004EA5F0, end: 0x004EA658}
+      - {object: game/weapons, section: .game_WPN_CheckCacheForTargetable, start: 0x004EA658, end: 0x004EA6C0}
+      - {object: game/weapons, section: .game_func_004EA6C0, start: 0x004EA6C0, end: 0x004EA6D0}
+      - {object: game/weapons, section: .game_WPN_UpdateCachedTargets, start: 0x004EA6D0, end: 0x004EA790}
+      - {object: game/weapons, section: .game_WPN_ClearCachedTargets, start: 0x004EA790, end: 0x004EA7C0}
+      - {object: game/weapons, section: .game_WPN_AttachVelOrientExternal, start: 0x004EA7C0, end: 0x004EA8B0}
+      - {object: game/weapons, section: .game_WPN_RemoveVelOrientExternal, start: 0x004EA8B0, end: 0x004EA8D0}
+      - {object: game/weapons, section: .game_WPN_VelOrientExternal, start: 0x004EA8D0, end: 0x004EAAD8}
+      - {object: game/weapons, section: .game_func_004EAAD8, start: 0x004EAAD8, end: 0x004EAAE0}
+      - {object: game/weapons, section: .game_WPN_KillAllSoundsForPendingScene, start: 0x004EAAE0, end: 0x004EAB68}
+      - {object: game/weapons, section: .game_func_004EAB68, start: 0x004EAB68, end: 0x004EAB80}
+      - {object: game/weapons, section: .game_WPN_SetUpgradeGadgetMode, start: 0x004EAB80, end: 0x004EABC8}
+      - {object: game/weapons, section: .game_WPN_UpgradeModeInit, start: 0x004EABC8, end: 0x004EAE88}
+      - {object: game/weapons, section: .game_WPN_UpgradeModeUnInit, start: 0x004EAE88, end: 0x004EAF58}
+      - {object: game/weapons, section: .game_WPN_SetOClass, start: 0x004EAF58, end: 0x004EAFB8}
+      - {object: game/weapons, section: .game_WPN_CreateMoby, start: 0x004EAFB8, end: 0x004EB2B8}
+      - {object: game/weapons, section: .game_WPN_DeleteMoby, start: 0x004EB2B8, end: 0x004EB388}
+      - {object: game/weapons, section: .game_FUN_004eb388, start: 0x004EB388, end: 0x004EBD30}
+      - {object: game/weapons, section: .game_WPN_PostFX_Showcase, start: 0x004EBD30, end: 0x004EC3F0}
+      - {object: game/weapons, section: .game_WPN_PostFX_Screen, start: 0x004EC3F0, end: 0x004ECAC0}
+      - {object: game/weapons, section: .game_WPN_FontTicker, start: 0x004ECAC0, end: 0x004ED0C8}
+      - {object: game/weapons, section: .game_WPN_FontScroll, start: 0x004ED0C8, end: 0x004ED688}
+      - {object: game/weapons, section: .game_WPN_drawIcon, start: 0x004ED688, end: 0x004ED7A8}
+      - {object: game/weapons, section: .game_WPN_IsUpgradeMoby, start: 0x004ED7A8, end: 0x004ED7F0}
+      - {object: game/weapons, section: .game_func_004ED7F0, start: 0x004ED7F0, end: 0x004ED7F8}
+      - {object: game/weapons, section: .game_WPN_ShowcaseGadget, start: 0x004ED7F8, end: 0x004EDA48}
+      - {object: game/weapons, section: .game_WPN_Showcase_Side, start: 0x004EDA48, end: 0x004EDB80}
+      - {object: game/weapons, section: .game_WPN_Showcase_Visor, start: 0x004EDB80, end: 0x004EDC48}
+      - {object: game/weapons, section: .game_WPN_ShowcaseGadgets, start: 0x004EDC48, end: 0x004EDCE8}
+      - {object: game/weapons, section: .game_WPN_UpgradeDrawFx, start: 0x004EDCE8, end: 0x004EDD80}
+      - {object: game/weapons, section: .game_func_004EDD80, start: 0x004EDD80, end: 0x004EDD90}
+      - {object: game/weapons, section: .game_WPN_AddHeroExternal_Pos, start: 0x004EDD90, end: 0x004EDE10}
+      - {object: game/weapons, section: .game_func_004EDE10, start: 0x004EDE10, end: 0x004EDE40}
+      - {object: game/weapons, section: .game_WPN_RC3InitWeaponsOnMovingTrain, start: 0x004EDE40, end: 0x004EDEA0}
+      - {object: game/weapons, section: .game_func_004EDEA0, start: 0x004EDEA0, end: 0x004EDEA8}
+      - {object: game/weapons, section: .game_WPN_BangelizeWeapons, start: 0x004EDEA8, end: 0x004EE000}
+      - {object: game/weapons, section: .game_WPN_TurnOnHoloShields, start: 0x004EE000, end: 0x004EE150}
+      - {object: game/weapons, section: .game_WPN_TurnOffHoloShields, start: 0x004EE150, end: 0x004EE230}
+      - {object: game/weapons, section: .game_func_004EE230, start: 0x004EE230, end: 0x004EE248}
+  game/draw:
+    text_start: 0x00446C70
+    text_end: 0x0044B108
+    slots:
+      - {object: game/draw, section: .game_DrawIOPInfo, start: 0x00446C70, end: 0x00446C78}
+      - {object: game/draw, section: .game_func_00446C78, start: 0x00446C78, end: 0x00446C88}
+      - {object: game/draw, section: .game_SetupUVMatrix, start: 0x00446C88, end: 0x00446E90}
+      - {object: game/draw, section: .game_ComposeCameraMatrix, start: 0x00446E90, end: 0x004472E0}
+      - {object: game/draw, section: .game_UpdateFog, start: 0x004472E0, end: 0x004473C0}
+      - {object: game/draw, section: .game_ParseOcclGrid, start: 0x004473C0, end: 0x00447498}
+      - {object: game/draw, section: .game_GetOcclGridFromPair, start: 0x00447498, end: 0x00447550}
+      - {object: game/draw, section: .game_BuildOcclVisibility, start: 0x00447550, end: 0x00447938}
+      - {object: game/draw, section: .game_UpdateOcclusion, start: 0x00447938, end: 0x00447988}
+      - {object: game/draw, section: .game_CalcAdditionalScrnInfo, start: 0x00447988, end: 0x00447A10}
+      - {object: game/draw, section: .game_InitViewContext, start: 0x00447A10, end: 0x00447BA8}
+      - {object: game/draw, section: .game_UpdateViewContext, start: 0x00447BA8, end: 0x00448340}
+      - {object: game/draw, section: .game_func_00448340, start: 0x00448340, end: 0x00448350}
+      - {object: game/draw, section: .game_SetPalMode, start: 0x00448350, end: 0x00448720}
+      - {object: game/draw, section: .game_ResetDrawGlobals, start: 0x00448720, end: 0x00448788}
+      - {object: game/draw, section: .game_ResetGsRegisters, start: 0x00448788, end: 0x00448960}
+      - {object: game/draw, section: .game_ResetGsRegistersPr, start: 0x00448960, end: 0x004489D8}
+      - {object: game/draw, section: .game_func_004489D8, start: 0x004489D8, end: 0x00448A20}
+      - {object: game/draw, section: .game_GetFrustumDef, start: 0x00448A20, end: 0x00448A68}
+      - {object: game/draw, section: .game_GetScreenFrustumIndex, start: 0x00448A68, end: 0x00448B40}
+      - {object: game/draw, section: .game_GetScreenFrustumCoords, start: 0x00448B40, end: 0x00448C10}
+      - {object: game/draw, section: .game_GetScreenFrustumScales, start: 0x00448C10, end: 0x00448C50}
+      - {object: game/draw, section: .game_func_00448C50, start: 0x00448C50, end: 0x00448C68}
+      - {object: game/draw, section: .game_SetupGifPaging, start: 0x00448C68, end: 0x00448D98}
+      - {object: game/draw, section: .game_DoGifPaging, start: 0x00448D98, end: 0x00448EA0}
+      - {object: game/draw, section: .game_func_00448EA0, start: 0x00448EA0, end: 0x00448EA8}
+      - {object: game/draw, section: .game_CalcWorldSpaceUV, start: 0x00448EA8, end: 0x00448F90}
+      - {object: game/draw, section: .game_func_00448F90, start: 0x00448F90, end: 0x00448F98}
+      - {object: game/draw, section: .game_GetEffectTex, start: 0x00448F98, end: 0x00449120}
+      - {object: game/draw, section: .game_LoadTexToGs, start: 0x00449120, end: 0x00449298}
+      - {object: game/draw, section: .game_LoadPalToGs, start: 0x00449298, end: 0x00449350}
+      - {object: game/draw, section: .game_ConstructEffectTex0, start: 0x00449350, end: 0x004493B0}
+      - {object: game/draw, section: .game_CleanRegisteredDraws, start: 0x004493B0, end: 0x004493E8}
+      - {object: game/draw, section: .game_RegisterDrawFunction, start: 0x004493E8, end: 0x00449448}
+      - {object: game/draw, section: .game_ExecuteDrawFunctions, start: 0x00449448, end: 0x004494E8}
+      - {object: game/draw, section: .game_FadeToBlack, start: 0x004494E8, end: 0x004496E0}
+      - {object: game/draw, section: .game_DrawLogoAndStart, start: 0x004496E0, end: 0x00449840}
+      - {object: game/draw, section: .game_DrawSubtitles, start: 0x00449840, end: 0x00449BE8}
+      - {object: game/draw, section: .game_func_00449BE8, start: 0x00449BE8, end: 0x00449BF8}
+      - {object: game/draw, section: .game_DrawScreenOverlay, start: 0x00449BF8, end: 0x00449E98}
+      - {object: game/draw, section: .game_DrawRectOverlay, start: 0x00449E98, end: 0x0044A070}
+      - {object: game/draw, section: .game_func_0044A070, start: 0x0044A070, end: 0x0044A080}
+      - {object: game/draw, section: .game_DrawSprite, start: 0x0044A080, end: 0x0044A238}
+      - {object: game/draw, section: .game_DrawSprite___dupe2, start: 0x0044A238, end: 0x0044A408}
+      - {object: game/draw, section: .game_func_0044A408, start: 0x0044A408, end: 0x0044A410}
+      - {object: game/draw, section: .game_DrawSpriteFont, start: 0x0044A410, end: 0x0044A5C8}
+      - {object: game/draw, section: .game_DrawSpriteFontGouraud, start: 0x0044A5C8, end: 0x0044A7D0}
+      - {object: game/draw, section: .game_DrawSpriteFontWithShadow, start: 0x0044A7D0, end: 0x0044AA50}
+      - {object: game/draw, section: .game_func_0044AA50, start: 0x0044AA50, end: 0x0044AA58}
+      - {object: game/draw, section: .game_DrawScreenGQuad, start: 0x0044AA58, end: 0x0044AB20}
+      - {object: game/draw, section: .game_DrawScreenGQuad___dupe2, start: 0x0044AB20, end: 0x0044ABC0}
+      - {object: game/draw, section: .game_DrawTextShadow, start: 0x0044ABC0, end: 0x0044AD00}
+      - {object: game/draw, section: .game_func_0044AD00, start: 0x0044AD00, end: 0x0044AD28}
+      - {object: game/draw, section: .game_FastDrawStripInit, start: 0x0044AD28, end: 0x0044B058}
+      - {object: game/draw, section: .game_func_0044B058, start: 0x0044B058, end: 0x0044B080}
+      - {object: game/draw, section: .game_Screen_FadeOut, start: 0x0044B080, end: 0x0044B108}
+  game/mobyfunc:
+    text_start: 0x0046B930
+    text_end: 0x0046DAF4
+    slots:
+      - {object: game/mobyfunc, section: .game_CreateMoby, start: 0x0046B930, end: 0x0046BA60}
+      - {object: game/mobyfunc, section: .game_InitMobyInstance, start: 0x0046BA60, end: 0x0046BDD0}
+      - {object: game/mobyfunc, section: .game_DeleteMoby, start: 0x0046BDD0, end: 0x0046BEC8}
+      - {object: game/mobyfunc, section: .game_SetupMobyVars, start: 0x0046BEC8, end: 0x0046BF30}
+      - {object: game/mobyfunc, section: .game_MobyPlayDesiredSound, start: 0x0046BF30, end: 0x0046C060}
+      - {object: game/mobyfunc, section: .game_MobyMayaFrame, start: 0x0046C060, end: 0x0046C0D8}
+      - {object: game/mobyfunc, section: .game_SetMobyCollPill, start: 0x0046C0D8, end: 0x0046C1D8}
+      - {object: game/mobyfunc, section: .game_GetMobyBangleStats, start: 0x0046C1D8, end: 0x0046C220}
+      - {object: game/mobyfunc, section: .game_GetMobyBangleVolume, start: 0x0046C220, end: 0x0046C418}
+      - {object: game/mobyfunc, section: .game_MobyCornExists, start: 0x0046C418, end: 0x0046C448}
+      - {object: game/mobyfunc, section: .game_GetMobyCornVerts, start: 0x0046C448, end: 0x0046C590}
+      - {object: game/mobyfunc, section: .game_GetMobyShadowVolumes, start: 0x0046C590, end: 0x0046C690}
+      - {object: game/mobyfunc, section: .game_GetMobyShadowVolumesAndJoints, start: 0x0046C690, end: 0x0046C718}
+      - {object: game/mobyfunc, section: .game_AttachManipulator, start: 0x0046C718, end: 0x0046C7D0}
+      - {object: game/mobyfunc, section: .game_DetachManipulator, start: 0x0046C7D0, end: 0x0046C880}
+      - {object: game/mobyfunc, section: .game_GetMobyJointMatrix, start: 0x0046C880, end: 0x0046C978}
+      - {object: game/mobyfunc, section: .game_GetMobyJointWorld, start: 0x0046C978, end: 0x0046CA08}
+      - {object: game/mobyfunc, section: .game_func_0046CA08, start: 0x0046CA08, end: 0x0046CA10}
+      - {object: game/mobyfunc, section: .game_GetMobyJointLocs, start: 0x0046CA10, end: 0x0046CAE0}
+      - {object: game/mobyfunc, section: .game_func_0046CAE0, start: 0x0046CAE0, end: 0x0046CAE8}
+      - {object: game/mobyfunc, section: .game_DmaMobyTextures, start: 0x0046CAE8, end: 0x0046CBD8}
+      - {object: game/mobyfunc, section: .game_PatchMobyGifs, start: 0x0046CBD8, end: 0x0046CCB0}
+      - {object: game/mobyfunc, section: .game_func_0046CCB0, start: 0x0046CCB0, end: 0x0046CCB8}
+      - {object: game/mobyfunc, section: .game_ProcessMobyShadows, start: 0x0046CCB8, end: 0x0046CEA0}
+      - {object: game/mobyfunc, section: .game_ProcessMobyTeamTexs, start: 0x0046CEA0, end: 0x0046D0C8}
+      - {object: game/mobyfunc, section: .game_ProcessMobyAnimData, start: 0x0046D0C8, end: 0x0046D110}
+      - {object: game/mobyfunc, section: .game_InitMobyClassDists, start: 0x0046D110, end: 0x0046D138}
+      - {object: game/mobyfunc, section: .game_StashMobyClassDists, start: 0x0046D138, end: 0x0046D168}
+      - {object: game/mobyfunc, section: .game_RestoreMobyClassDists, start: 0x0046D168, end: 0x0046D198}
+      - {object: game/mobyfunc, section: .game_DrawMobysSetup, start: 0x0046D198, end: 0x0046D2A0}
+      - {object: game/mobyfunc, section: .game_DrawMobyList, start: 0x0046D2A0, end: 0x0046D340}
+      - {object: game/mobyfunc, section: .game_DrawMobysCleanup, start: 0x0046D340, end: 0x0046D3A0}
+      - {object: game/mobyfunc, section: .game_DrawMobys, start: 0x0046D3A0, end: 0x0046D408}
+      - {object: game/mobyfunc, section: .game_MobyGetInterface, start: 0x0046D408, end: 0x0046D428}
+      - {object: game/mobyfunc, section: .game_MobyGetInterface___dupe2, start: 0x0046D428, end: 0x0046D488}
+      - {object: game/mobyfunc, section: .game_func_0046D488, start: 0x0046D488, end: 0x0046D498}
+      - {object: game/mobyfunc, section: .game_MobyDynamicGroup_RemoveMoby, start: 0x0046D498, end: 0x0046D588}
+      - {object: game/mobyfunc, section: .game_func_0046D588, start: 0x0046D588, end: 0x0046D590}
+      - {object: game/mobyfunc, section: .game_MobyDynamicGroup_IsDynamicGroup, start: 0x0046D590, end: 0x0046D5B0}
+      - {object: game/mobyfunc, section: .game_func_0046D5B0, start: 0x0046D5B0, end: 0x0046D5B8}
+      - {object: game/mobyfunc, section: .game_CollSphereFail, start: 0x0046D5B8, end: 0x0046D5C0}
+      - {object: game/mobyfunc, section: .game_CountMobyGridUsage, start: 0x0046D5C0, end: 0x0046D600}
+      - {object: game/mobyfunc, section: .game_ValidateMobyGrids, start: 0x0046D600, end: 0x0046D668}
+      - {object: game/mobyfunc, section: .game_Moby2dReset, start: 0x0046D668, end: 0x0046D6A8}
+      - {object: game/mobyfunc, section: .game_Moby2dSetWindow, start: 0x0046D6A8, end: 0x0046D708}
+      - {object: game/mobyfunc, section: .game_Moby2dCreate, start: 0x0046D708, end: 0x0046D7D8}
+      - {object: game/mobyfunc, section: .game_Moby2dDelete, start: 0x0046D7D8, end: 0x0046D820}
+      - {object: game/mobyfunc, section: .game_Moby2dGetPtr, start: 0x0046D820, end: 0x0046D860}
+      - {object: game/mobyfunc, section: .game_Moby2dDraw, start: 0x0046D860, end: 0x0046DAA0}
+      - {object: game/mobyfunc, section: .game_SetMobyLightDefault, start: 0x0046DAA0, end: 0x0046DAF4}
+  game/transition:
+    text_start: 0x004F2430
+    text_end: 0x004F552C
+    slots:
+      - {object: game/transition, section: .game_Transition_GetDropshipTexture, start: 0x004F2430, end: 0x004F24A8}
+      - {object: game/transition, section: .game_Transition_GetLandStalkerTexture, start: 0x004F24A8, end: 0x004F2520}
+      - {object: game/transition, section: .game_Transition_GetLevelTo, start: 0x004F2520, end: 0x004F2528}
+      - {object: game/transition, section: .game_Transition_GetLevelFrom, start: 0x004F2528, end: 0x004F2530}
+      - {object: game/transition, section: .game_Transition_LoadSoundBank, start: 0x004F2530, end: 0x004F25C8}
+      - {object: game/transition, section: .game_Transition_PlaySound_cb, start: 0x004F25C8, end: 0x004F25D8}
+      - {object: game/transition, section: .game_Transition_PlaySound, start: 0x004F25D8, end: 0x004F2680}
+      - {object: game/transition, section: .game_Transition_UnloadSounds, start: 0x004F2680, end: 0x004F2728}
+      - {object: game/transition, section: .game_Transition_LoadWad, start: 0x004F2728, end: 0x004F3220}
+      - {object: game/transition, section: .game_Transition_LoadSounds, start: 0x004F3220, end: 0x004F3390}
+      - {object: game/transition, section: .game_Transition_LoadPlanetTex, start: 0x004F3390, end: 0x004F3440}
+      - {object: game/transition, section: .game_Transition_InitPlanetTex, start: 0x004F3440, end: 0x004F3468}
+      - {object: game/transition, section: .game_Transition_ParseMovie, start: 0x004F3468, end: 0x004F3538}
+      - {object: game/transition, section: .game_Transition_CleanupMovie, start: 0x004F3538, end: 0x004F35B0}
+      - {object: game/transition, section: .game_Transition_Draw, start: 0x004F35B0, end: 0x004F3608}
+      - {object: game/transition, section: .game_Transition_PostDraw, start: 0x004F3608, end: 0x004F3800}
+      - {object: game/transition, section: .game_Transition_Update, start: 0x004F3800, end: 0x004F3898}
+      - {object: game/transition, section: .game_Transition_DefaultDraw, start: 0x004F3898, end: 0x004F3B18}
+      - {object: game/transition, section: .game_Transition_DrawSky, start: 0x004F3B18, end: 0x004F3B78}
+      - {object: game/transition, section: .game_Transition_SetupForFrontend, start: 0x004F3B78, end: 0x004F3DA8}
+      - {object: game/transition, section: .game_Transition_Pre, start: 0x004F3DA8, end: 0x004F43C0}
+      - {object: game/transition, section: .game_Transition_Post, start: 0x004F43C0, end: 0x004F4558}
+      - {object: game/transition, section: .game_Transition_DoTransition, start: 0x004F4558, end: 0x004F47A0}
+      - {object: game/transition, section: .game_Transition_UpdateMovieCamera, start: 0x004F47A0, end: 0x004F48B8}
+      - {object: game/transition, section: .game_Transition_DrawClankEffects, start: 0x004F48B8, end: 0x004F48F8}
+      - {object: game/transition, section: .game_Transition_MovieRobotEyeGlow, start: 0x004F48F8, end: 0x004F4A78}
+      - {object: game/transition, section: .game_Transition_UpdateClankEffects, start: 0x004F4A78, end: 0x004F4B88}
+      - {object: game/transition, section: .game_Transition_UpdateMovieMobys, start: 0x004F4B88, end: 0x004F4D28}
+      - {object: game/transition, section: .game_Transition_UpdateMovie, start: 0x004F4D28, end: 0x004F4E00}
+      - {object: game/transition, section: .game_Transition_SetupMovieIds, start: 0x004F4E00, end: 0x004F4E58}
+      - {object: game/transition, section: .game_Transition_ResetPlayedMovies, start: 0x004F4E58, end: 0x004F4E88}
+      - {object: game/transition, section: .game_Transition_GetMovieId, start: 0x004F4E88, end: 0x004F4F70}
+      - {object: game/transition, section: .game_Transition_SetupFirstMovie, start: 0x004F4F70, end: 0x004F4FB0}
+      - {object: game/transition, section: .game_Transition_SetupNextMovie, start: 0x004F4FB0, end: 0x004F4FF0}
+      - {object: game/transition, section: .game_func_004F4FF0, start: 0x004F4FF0, end: 0x004F5000}
+      - {object: game/transition, section: .game_Transition_GetNumMoviesPlayed, start: 0x004F5000, end: 0x004F5008}
+      - {object: game/transition, section: .game_Transition_ResetParticles, start: 0x004F5008, end: 0x004F5028}
+      - {object: game/transition, section: .game_Transition_UpdateScreenFade, start: 0x004F5028, end: 0x004F50D0}
+      - {object: game/transition, section: .game_Transition_SetScreenFade, start: 0x004F50D0, end: 0x004F50D8}
+      - {object: game/transition, section: .game_Transition_QueueMidSceneOrMovie, start: 0x004F50D8, end: 0x004F5180}
+      - {object: game/transition, section: .game_Transition_SetupMidSceneOrMovie, start: 0x004F5180, end: 0x004F5350}
+      - {object: game/transition, section: .game_Transition_UpdateMidSceneOrMovie, start: 0x004F5350, end: 0x004F53C0}
+      - {object: game/transition, section: .game_Transition_DoMovieMpeg, start: 0x004F53C0, end: 0x004F5418}
+      - {object: game/transition, section: .game_Transition_DoMovieNpc, start: 0x004F5418, end: 0x004F5420}
+      - {object: game/transition, section: .game_Transition_SetKeepLastFrame, start: 0x004F5420, end: 0x004F5428}
+      - {object: game/transition, section: .game_Transition_DisplayPassBlur, start: 0x004F5428, end: 0x004F552C}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -4264,6 +6169,11 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/transitionmulti, function: GetMapName, section: .game_GetMapName.rodata, start: 0x003D4EA0, end: 0x003D4ED8}
+      - {object: game/posteffects, function: PE_GetEnvironmentType, section: .game_PE_GetEnvironmentType.rodata, start: 0x003D32F0, end: 0x003D3330}
+      - {object: game/missionload, function: UpdateMissionLoad, section: .game_UpdateMissionLoad.rodata, start: 0x003D34E0, end: 0x003D34FC}
+      - {object: game/mode_level, function: MODELEVEL_HandleOcclusionExceptions, section: .game_MODELEVEL_HandleOcclusionExceptions.rodata, start: 0x003D0E30, end: 0x003D0E7C}
+      - {object: game/actuator, function: actuator_CalcPower, section: .game_actuator_CalcPower.rodata, start: 0x003CFF50, end: 0x003CFF68}
       - {object: game/pause, function: GetFormattedPlanetName, section: .game_GetFormattedPlanetName.rodata, start: 0x003D1160, end: 0x003D11C4}
   asm/build/core.data/091E80.rodata:
     slots:

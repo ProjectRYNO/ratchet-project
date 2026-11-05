@@ -1,8 +1,22 @@
 #include "common.h"
+#include "game_section.h"
+
+
+
+typedef struct mobyLights {
+	/* 0x00 */ char unk00[0x38];
+	/* 0x38 */ unsigned long lights;
+} mobyLights_t;
+void SetMobyAmbientLights(mobyLights_t *moby, unsigned int r, unsigned int g, unsigned int b) __asm__("SetMobyAmbientLights");
+
+void SetMobyLights(mobyLights_t *moby, unsigned long ambient, unsigned long a, unsigned long b, unsigned long c) __asm__("SetMobyLights");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", SetMobyLights);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", SetMobyAmbientLights);
+GAME_SECTION(SetMobyAmbientLights) void SetMobyAmbientLights(mobyLights_t *moby, unsigned int r, unsigned int g, unsigned int b)
+{
+	*(unsigned int *)((char *)moby + 0x3c) = r | (g << 8) | (b << 16);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", GetMobyAmbientLights);
 

@@ -1,4 +1,40 @@
 #include "common.h"
+#include "game_section.h"
+
+
+struct MobyClass {
+	/* 0x00 */ char unk00[0x2e];
+	/* 0x2e */ short corncob;
+};
+struct MobyInstance {
+	/* 0x00 */ char unk00[0x24];
+	/* 0x24 */ MobyClass *pClass;
+};
+struct Moby2dCon {
+	/* 0x00 */ MobyInstance *mobys[8];
+	/* 0x20 */ int active;
+	/* 0x24 */ int unk24[3];
+};
+struct mobyfuncs {
+	/* 0x00 */ int unk00[4];
+	/* 0x10 */ void *(*getMobyInterface)(int, int, void *);
+};
+extern Moby2dCon g_Moby2dCon __asm__("g_Moby2dCon");
+extern char g_MobyClassDistsStash[] __asm__("g_MobyClassDistsStash");
+extern long _dma_1[] __asm__("D_1170D0");
+void FastMemSet(void *, int, int) __asm__("FastMemSet");
+void FastMemCopy16(void *, const void *, int) __asm__("FastMemCopy16");
+void VU0_loadMicroProgram(long *) __asm__("VU0_loadMicroProgram");
+void DeleteMoby(MobyInstance *) __asm__("DeleteMoby");
+mobyfuncs *GetMobyFunctions(int) __asm__("GetMobyFunctions___dupe2");
+void InitMobyClassDists() __asm__("InitMobyClassDists");
+int MobyCornExists(MobyInstance *, int) __asm__("MobyCornExists");
+void StashMobyClassDists() __asm__("StashMobyClassDists");
+void RestoreMobyClassDists() __asm__("RestoreMobyClassDists");
+MobyInstance *Moby2dGetPtr(int) __asm__("Moby2dGetPtr");
+void Moby2dReset() __asm__("Moby2dReset");
+void Moby2dDelete(int) __asm__("Moby2dDelete");
+void *MobyGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", CreateMoby);
 
@@ -52,11 +88,20 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", ProcessMobyTe
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", ProcessMobyAnimData);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", InitMobyClassDists);
+GAME_SECTION(InitMobyClassDists) void InitMobyClassDists()
+{
+	FastMemSet((void *)0x70003a00, 0x40000000, 0x3c0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", StashMobyClassDists);
+GAME_SECTION(StashMobyClassDists) void StashMobyClassDists()
+{
+	FastMemCopy16(g_MobyClassDistsStash, (void *)0x70003a00, 0x3c0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", RestoreMobyClassDists);
+GAME_SECTION(RestoreMobyClassDists) void RestoreMobyClassDists()
+{
+	FastMemCopy16((void *)0x70003a00, g_MobyClassDistsStash, 0x3c0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", DrawMobysSetup);
 
@@ -68,7 +113,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", DrawMobys);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", MobyGetInterface);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", MobyGetInterface___dupe2);
+GAME_SECTION(MobyGetInterface___dupe2) void *MobyGetInterface(int oClass, int id, int param)
+{
+	long args[2];
+	mobyfuncs *funcs = GetMobyFunctions(oClass);
+	if (funcs && funcs->getMobyInterface) {
+		return funcs->getMobyInterface(oClass, id, args);
+	}
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046D488);
 
@@ -86,15 +139,32 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", CountMobyGrid
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", ValidateMobyGrids);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dReset);
+GAME_SECTION(Moby2dReset) void Moby2dReset()
+{
+	int id;
+	g_Moby2dCon.active = 0;
+	for (id = 0; id < 8; id++) {
+		Moby2dDelete(id);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dSetWindow);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dCreate);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dDelete);
+GAME_SECTION(Moby2dDelete) void Moby2dDelete(int id)
+{
+	if (g_Moby2dCon.mobys[id]) {
+		DeleteMoby(g_Moby2dCon.mobys[id]);
+		g_Moby2dCon.mobys[id] = 0;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dGetPtr);
+GAME_SECTION(Moby2dGetPtr) MobyInstance *Moby2dGetPtr(int id)
+{
+	VU0_loadMicroProgram(_dma_1);
+	return g_Moby2dCon.mobys[id];
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", Moby2dDraw);
 

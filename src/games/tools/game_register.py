@@ -17,8 +17,11 @@ def segments():
 	return out
 
 segs = segments()
+manifest_text = open(root + 'config/decompiled_functions.yaml', newline='').read().replace('\r\n', '\n')
 for name in sys.argv[1:]:
 	obj = 'game/' + name
+	if '\n  %s:\n' % obj in manifest_text:
+		continue
 	path = root + 'code/game/%s.cpp' % name
 	src = open(path, newline='').read()
 	nl = '\r\n' if '\r\n' in src else '\n'
@@ -37,7 +40,6 @@ for name in sys.argv[1:]:
 	y = root + 'config/decompiled_functions.yaml'
 	u = open(y, newline='').read()
 	ynl = '\r\n' if '\r\n' in u else '\n'
-	assert '  %s:%s' % (obj, ynl) not in u, obj
 	block = ['  %s:' % obj, '    text_start: 0x%08X' % addrs[0], '    text_end: 0x%08X' % end, '    slots:']
 	for n, a, b in zip(names, addrs, addrs[1:] + [end]):
 		block.append('      - {object: %s, section: .game_%s, start: 0x%08X, end: 0x%08X}' % (obj, n, a, b))

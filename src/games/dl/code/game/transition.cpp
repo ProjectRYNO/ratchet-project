@@ -1,4 +1,28 @@
 #include "common.h"
+#include "game_section.h"
+
+
+struct SpaceDef {
+	/* 0x00 */ short unk00;
+	/* 0x02 */ short timer;
+	/* 0x04 */ short unk04[3];
+	/* 0x0a */ short draw_monitors;
+	/* 0x0c */ short ship_trans;
+	/* 0x0e */ short unk0e[3];
+	/* 0x14 */ int movie_index;
+	/* 0x18 */ int movie_cnt;
+};
+extern SpaceDef Space __asm__("Space");
+extern unsigned char g_TransitionMoviePlayed[0x10] __asm__("g_TransitionMoviePlayed");
+struct PifHeader;
+unsigned long QueuePifLoad(PifHeader *) __asm__("QueuePifLoad");
+void Transition_ParseMovie(int) __asm__("Transition_ParseMovie");
+void ParseSpaceSceneChunk(int) __asm__("ParseSpaceSceneChunk");
+void Transition_UpdateMovieMobys() __asm__("Transition_UpdateMovieMobys");
+void Transition_InitPlanetTex(void *, unsigned long &) __asm__("Transition_InitPlanetTex");
+void Transition_ResetPlayedMovies() __asm__("Transition_ResetPlayedMovies");
+void Transition_SetupFirstMovie(int) __asm__("Transition_SetupFirstMovie");
+void Transition_SetupNextMovie(int) __asm__("Transition_SetupNextMovie");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_GetDropshipTexture);
 
@@ -22,7 +46,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_LoadPlanetTex);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_InitPlanetTex);
+GAME_SECTION(Transition_InitPlanetTex) void Transition_InitPlanetTex(void *pPlanetTex_, unsigned long &Tex0_)
+{
+	Tex0_ = QueuePifLoad((PifHeader *)pPlanetTex_);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_ParseMovie);
 
@@ -64,9 +91,21 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_GetMovieId);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_SetupFirstMovie);
+GAME_SECTION(Transition_SetupFirstMovie) void Transition_SetupFirstMovie(int MovieId_)
+{
+	Transition_ParseMovie(MovieId_);
+	Space.movie_index = MovieId_;
+	Space.movie_cnt = 0;
+	ParseSpaceSceneChunk(0);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_SetupNextMovie);
+GAME_SECTION(Transition_SetupNextMovie) void Transition_SetupNextMovie(int MovieId_)
+{
+	Transition_ParseMovie(MovieId_);
+	Space.movie_index = MovieId_;
+	ParseSpaceSceneChunk(0);
+	Transition_UpdateMovieMobys();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", func_004F4FF0);
 
