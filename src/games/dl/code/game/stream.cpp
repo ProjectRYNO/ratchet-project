@@ -60,6 +60,7 @@ extern "C" {
 void InitSoundDef(SoundDef *) __asm__("InitSoundDef");
 
 
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", InitSoundDef);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Reset___dupe3);
@@ -154,7 +155,17 @@ GAME_SECTION(GetStreamFromHandle) Stream *StreamInterface::GetStreamFromHandle(u
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", CreateHandle);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Initialize___dupe3);
+GAME_SECTION(Initialize___dupe3) void StreamInterface::Initialize(Stream *stream)
+{
+	stream->m_master_gain = 1.0f;
+	stream->m_fade_gain = 1.0f;
+	stream->m_989_handle = 0xffffffff;
+	stream->m_fade_time_remaining = 0.0f;
+	stream->m_inv_fade_time = 0.0f;
+	stream->m_command = 0;
+	stream->m_internal_flags = 0;
+	stream->m_owner = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", AcquireResources);
 

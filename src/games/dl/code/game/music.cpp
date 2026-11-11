@@ -56,6 +56,10 @@ void music_StartCB(int handle, unsigned long user) __asm__("music_StartCB");
 void music_UnpauseDelay(int time) __asm__("music_UnpauseDelay");
 void music_Init() __asm__("music_Init");
 
+extern int g_gameType __asm__("g_gameType");
+void music_StartHeadCB(unsigned int, unsigned long) __asm__("music_StartHeadCB");
+void music_StartBodyCB(unsigned int, unsigned long) __asm__("music_StartBodyCB");
+
 GAME_SECTION(music_LoadBankCB) void music_LoadBankCB(unsigned int handle, unsigned long user)
 {
 	unsigned int *p = (unsigned int *)(long)(int)user;
@@ -147,9 +151,43 @@ GAME_SECTION(music_StartCB) void music_StartCB(int handle, unsigned long user)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_StartBodyCB);
+GAME_SECTION(music_StartBodyCB) void music_StartBodyCB(unsigned int ret_val, unsigned long p_data)
+{
+	musicTrack_t *mp = (musicTrack_t *)(int)p_data;
+	if (mp) {
+		if ((int)ret_val < 0) mp->handle = ret_val;
+		if (ret_val != 0) {
+			if (mp->state == 9) {
+				mp->state = 4;
+				if (mp->startPending) {
+					musicStart.value = 1;
+					return;
+				}
+			}
+		} else {
+			mp->state = 0;
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_StartHeadCB);
+GAME_SECTION(music_StartHeadCB) void music_StartHeadCB(unsigned int ret_val, unsigned long p_data)
+{
+	musicTrack_t *mp = (musicTrack_t *)(int)p_data;
+	if (mp) {
+		mp->handle = ret_val;
+		if (ret_val != 0) {
+			if (mp->state == 1) {
+				if (g_gameType == 1) {
+					mp->state = 4;
+					return;
+				}
+				mp->state = 8;
+			}
+		} else {
+			mp->state = 0;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_FreshenCB);
 

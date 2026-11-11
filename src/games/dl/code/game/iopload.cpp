@@ -60,13 +60,66 @@ int LgKbmCallback() __asm__("LgKbmCallback");
 void UninitializeCoreIOPModules() __asm__("UninitializeCoreIOPModules");
 void InitializeCoreIOPModules() __asm__("InitializeCoreIOPModules");
 
+struct IOPMODULELOAD {
+	/* 0x000 */ int module_id;
+	/* 0x004 */ char unk004[0x164];
+};
+struct IOPMODULELOADQUEUE {
+	/* 0x0000 */ int num_iop_modules;
+	/* 0x0004 */ int max_size;
+	/* 0x0008 */ int actual_load_size;
+	/* 0x000c */ int expected_load_size;
+	/* 0x0010 */ IOPMODULELOAD iop_modules[25];
+};
+extern int g_iopload_single_gadgetcache_size __asm__("D_21DD4C");
+extern int g_iopload_single_astrm_size __asm__("D_21DD48");
+extern int g_iopload_multi_size __asm__("D_21DD44");
+extern IOPMODULELOADQUEUE g_iopload_multiplayer_queues[1] __asm__("g_iopload_multiplayer_queues");
+extern char g_iopload_multiplayer_unload_message[] __asm__("D_3D08A8");
+extern "C" {
+	int sceSifStopModule(int, int, const char *, int *);
+	int sceSifUnloadModule(int);
+	int snd_InitVAGStreamingEx(int, int, int, int);
+	int ezNetCnfExit(void *);
+	int lgKbMResumeThread(void *);
+	int lgKbMUnloadIopModule();
+}
+struct Fs {
+	static void Initialize() __asm__("Initialize");
+};
+struct GadgetCache {
+	static void Initialize() __asm__("Initialize___dupe2");
+	static void UnInitialize() __asm__("UnInitialize");
+};
+bool EZNetCnfUnloadCallback(void *) __asm__("EZNetCnfUnloadCallback");
+bool LgKbmUnloadCallback(void *) __asm__("LgKbmUnloadCallback");
+void ClearIOPModuleQueue(IOPMODULELOADQUEUE *) __asm__("ClearIOPModuleQueue");
+void ClearIOPModuleQueueSet(IOPMODULELOADQUEUE *, int) __asm__("ClearIOPModuleQueueSet");
+void UnloadIOPModuleQueue(IOPMODULELOADQUEUE *) __asm__("UnloadIOPModuleQueue");
+void UnloadIOPModuleQueueSet(IOPMODULELOADQUEUE *, int, char *) __asm__("UnloadIOPModuleQueueSet");
+void LoadSinglePlayerIOPModules(void *) __asm__("LoadSinglePlayerIOPModules");
+void UnloadSinglePlayerIOPModules() __asm__("UnloadSinglePlayerIOPModules");
+void UnloadMultiPlayerIOPModules() __asm__("UnloadMultiPlayerIOPModules");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", DmaToIop);
 
 GAME_SECTION(DisplayIOPInfo) void DisplayIOPInfo()
 {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", UnloadIOPModule);
+GAME_SECTION(UnloadIOPModule) int UnloadIOPModule(int id)
+{
+	int result = 0;
+	bool ret = true;
+	if (id >= 0) {
+		if (sceSifStopModule(id, 0, 0, &result) < 0) {
+			ret = false;
+		} else if (sceSifUnloadModule(id) < 0) {
+			ret = false;
+		}
+	}
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_00460090);
 
@@ -77,7 +130,15 @@ GAME_SECTION(DefaultIOPModuleUnloadCallback) int DefaultIOPModuleUnloadCallback(
 	return result;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", AstrmCreateStreams);
+GAME_SECTION(AstrmCreateStreams) int AstrmCreateStreams(int segments_per_buffer_half, int num_streams)
+{
+	bool b_ret = false;
+	if (snd_InitVAGStreamingEx(num_streams, segments_per_buffer_half, 0, 1)) {
+		Fs::Initialize();
+		b_ret = true;
+	}
+	return b_ret;
+}
 
 GAME_SECTION(AstrmDestroyStreams) int AstrmDestroyStreams()
 {
@@ -137,7 +198,11 @@ GAME_SECTION(LgKbmCallback) int LgKbmCallback()
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LgKbmUnloadCallback);
+GAME_SECTION(LgKbmUnloadCallback) bool LgKbmUnloadCallback(void *module_info)
+{
+	lgKbMResumeThread(module_info);
+	return lgKbMUnloadIopModule() == 0;
+}
 
 GAME_SECTION(EZNetCtlCallback) int EZNetCtlCallback()
 {
@@ -158,9 +223,26 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", GetModuleUnloa
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_004604E8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", ClearIOPModuleQueue);
+GAME_SECTION(ClearIOPModuleQueue) void ClearIOPModuleQueue(IOPMODULELOADQUEUE *queue)
+{
+	int i;
+	queue->num_iop_modules = 0;
+	queue->max_size = 0;
+	queue->actual_load_size = 0;
+	queue->expected_load_size = 0;
+	FastMemSet(queue->iop_modules, 0, sizeof(queue->iop_modules));
+	for (i = 24; i >= 0; i--) {
+		queue->iop_modules[i].module_id = -1;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", ClearIOPModuleQueueSet);
+GAME_SECTION(ClearIOPModuleQueueSet) void ClearIOPModuleQueueSet(IOPMODULELOADQUEUE *queues, int num_queues)
+{
+	int i;
+	for (i = 0; i < num_queues; i++) {
+		ClearIOPModuleQueue(&queues[i]);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", QueueIOPModuleLoad);
 
@@ -170,17 +252,41 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadIOPModuleQ
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", UnloadIOPModuleQueue);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", UnloadIOPModuleQueueSet);
+GAME_SECTION(UnloadIOPModuleQueueSet) void UnloadIOPModuleQueueSet(IOPMODULELOADQUEUE *queues, int num_queues, char *message)
+{
+	int i;
+	for (i = num_queues - 1; i >= 0; i--) {
+		UnloadIOPModuleQueue(&queues[i]);
+		ClearIOPModuleQueue(&queues[i]);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadCoreIOPModules);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadSinglePlayerIOPModules);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", UnloadSinglePlayerIOPModules);
+GAME_SECTION(UnloadSinglePlayerIOPModules) void UnloadSinglePlayerIOPModules()
+{
+	if (g_iopload_singleplayer_modules_loaded) {
+		GadgetCache::UnInitialize();
+		AstrmDestroyStreams();
+		g_iopload_single_gadgetcache_size = 0;
+		g_iopload_single_astrm_size = 0;
+		g_iopload_singleplayer_modules_loaded = false;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadMultiPlayerIOPModules);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", UnloadMultiPlayerIOPModules);
+GAME_SECTION(UnloadMultiPlayerIOPModules) void UnloadMultiPlayerIOPModules()
+{
+	if (g_iopload_multiplayer_modules_loaded) {
+		AstrmDestroyStreams();
+		UnloadIOPModuleQueueSet(g_iopload_multiplayer_queues, 1, g_iopload_multiplayer_unload_message);
+		g_iopload_multi_size = 0;
+		g_iopload_multiplayer_modules_loaded = false;
+	}
+}
 
 GAME_SECTION(InitializeIOP) void InitializeIOP()
 {

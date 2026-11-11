@@ -91,6 +91,39 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  music_StartHeadCB: 0x00489DD8
+  music_StartBodyCB: 0x00489D80
+  WPN_RC3InitWeaponsOnMovingTrain: 0x004EDE40
+  WPN_SetOClass: 0x004EAF58
+  WPN_KillAllSoundsForPendingScene: 0x004EAAE0
+  WPN_CheckCacheForTargetable: 0x004EA658
+  PostEffects_RegisterEngine_BloomInitApply_new: 0x004FA838
+  PostEffects_SetDofRamp: 0x004F8EA0
+  PostEffects_SandStorm_Init: 0x004F8610
+  PostEffects_SandStorm_Init_Apply: 0x004F81E0
+  Initialize___dupe3: 0x0048A9F8
+  NAVG_NodeGetTraversalFlags: 0x0048EA40
+  navg_LoadBoundPaths: 0x0048C248
+  navg_LoadCylinders: 0x0048C160
+  navg_LoadSpheres: 0x0048C078
+  navg_LoadCuboids: 0x0048BF90
+  navg_LoadPaths: 0x0048BD08
+  navg_LoadEdges: 0x0048BB38
+  navg_LoadNeighbors: 0x0048BA50
+  navg_LoadNodes: 0x0048B968
+  UnloadMultiPlayerIOPModules: 0x00461030
+  UnloadSinglePlayerIOPModules: 0x00460D00
+  UnloadIOPModuleQueueSet: 0x00460AA8
+  ClearIOPModuleQueueSet: 0x00460558
+  ClearIOPModuleQueue: 0x004604F0
+  LgKbmUnloadCallback: 0x004602C0
+  AstrmCreateStreams: 0x004600C0
+  UnloadIOPModule: 0x00460020
+  FontPrintWindowScaledGenericList: 0x00457780
+  FontPrintWindowSmall: 0x004576E8
+  FontPrintScaled: 0x00457648
+  FontPrintCenterScaledLarge: 0x00457478
+  FontPrintCenter: 0x004572E0
   SetMobyLightDefault: 0x0046DAA0
   Moby2dSetWindow: 0x0046D6A8
   CollSphereFail: 0x0046D5B8

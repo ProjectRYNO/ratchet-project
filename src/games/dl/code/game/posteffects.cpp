@@ -15,6 +15,8 @@ void PostEffects_BlurOnce256(int a, int b, int c) __asm__("PostEffects_BlurOnce2
 void PostEffects_RegisterEngine_Blur64(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur64");
 void PostEffects_RegisterEngine_Blur128(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur128");
 void PostEffects_RegisterEngine_Blur256(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur256");
+int PostEffects_LocalAlloc(int &, int) __asm__("PostEffects_LocalAlloc");
+void PostEffects_RegisterEngine_Blur256(unsigned long *&, int &, int, int) __asm__("PostEffects_RegisterEngine_Blur256");
 void PostEffects_RegisterEngineCleanup() __asm__("PostEffects_RegisterEngineCleanup");
 int PE_GetEnvironmentType() __asm__("PE_GetEnvironmentType");
 
@@ -24,6 +26,62 @@ void *MobyGetInterface(int, int) __asm__("MobyGetInterface");
 void ComposeCameraMatrix() __asm__("ComposeCameraMatrix");
 void InitSnowParticles() __asm__("InitSnowParticles");
 void PE_UpdateEnvEffectsForCameraWarp(void *camera) __asm__("PE_UpdateEnvEffectsForCameraWarp");
+
+struct PESandStorm {
+	/* 0x00 */ char unk00[0x57];
+	/* 0x57 */ unsigned char cDepthOfFieldA;
+	/* 0x58 */ char unk58[0x10];
+	/* 0x68 */ unsigned char sandTexture[8];
+};
+PESandStorm *PE_pSandStorm __asm__("PE_pSandStorm") GAME_GP_DATA = 0;
+unsigned char PE_bHeroOutdoors __asm__("PE_bHeroOutdoors") GAME_GP_DATA = 0;
+int g_iDofPalette __asm__("D_220A1C") GAME_GP_DATA = 0;
+extern int g_SandStormApplySize __asm__("g_SandStormApplySize");
+extern int g_pSandStormTemp1 __asm__("D_21DF18");
+extern int g_pSandStormTex __asm__("g_pSandStormTex");
+extern int g_pSandStormPal __asm__("D_21DF10");
+extern int g_pSandStormSrc __asm__("D_21DF14");
+extern int g_PostEffectsFlags __asm__("g_PostEffectsFlags");
+struct GsMemDef {
+	/* 0x00 */ int unk00;
+	/* 0x04 */ int draw;
+	/* 0x08 */ int unk08[6];
+};
+extern GsMemDef GSmem __asm__("GSmem");
+extern unsigned int g_DofPalette[2][256] __asm__("g_DofPalette");
+struct AABuffDef {
+	/* 0x000 */ char unk000[0x150];
+	/* 0x150 */ short drawW;
+	/* 0x152 */ short drawH;
+	/* 0x154 */ int unk154[3];
+};
+extern AABuffDef aaBuff __asm__("aaBuff");
+struct PEInfo {
+	/* 0x00 */ int unk00[2];
+	/* 0x08 */ int m_PrevScreenW;
+	/* 0x0c */ int m_PrevScreenH;
+	/* 0x10 */ float m_PrevPane_sx;
+	/* 0x14 */ float m_PrevPane_sy;
+	/* 0x18 */ int unk18[2];
+};
+extern PEInfo g_PeInfo __asm__("g_PeInfo");
+extern int g_PostEffectsSrcH __asm__("g_PostEffectsSrcH");
+extern int g_PostEffectsSrcW __asm__("g_PostEffectsSrcW");
+extern unsigned long g_PostEffects_Common_new[10] __asm__("g_PostEffects_Common_new");
+extern int g_PostEffectsCommonSize_new __asm__("D_21DF1C");
+extern int g_pBloomTex1 __asm__("g_pBloomTex1");
+extern int g_pBloomTemp1 __asm__("g_pBloomTemp1");
+extern int g_pBloomTemp2 __asm__("g_pBloomTemp2");
+void PostEffects_SandStorm_Init_Globals() __asm__("PostEffects_SandStorm_Init_Globals");
+void PostEffects_SandStorm_Init_AlphaMappingPalette() __asm__("PostEffects_SandStorm_Init_AlphaMappingPalette");
+void PostEffects_SandStorm_Init_CreateB() __asm__("PostEffects_SandStorm_Init_CreateB");
+void PostEffects_FrameInit_new() __asm__("PostEffects_FrameInit_new");
+void PostEffects_RegisterEngine_AddFilterCopy(unsigned long *&, int &, int, int, int, int, int, int) __asm__("PostEffects_RegisterEngine_AddFilterCopy___dupe2");
+void PostEffects_SandStorm_Init_Apply() __asm__("PostEffects_SandStorm_Init_Apply");
+void PostEffects_SandStorm_Init() __asm__("PostEffects_SandStorm_Init");
+void PostEffects_SetDofRamp(unsigned char *) __asm__("PostEffects_SetDofRamp");
+void PostEffects_CommonInit_new() __asm__("PostEffects_CommonInit_new");
+void PostEffects_RegisterEngine_BloomInitApply_new(unsigned long *&, int &) __asm__("PostEffects_RegisterEngine_BloomInitApply_new");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LocalAlloc);
 
@@ -94,13 +152,31 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F81D8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init_Apply);
+GAME_SECTION(PostEffects_SandStorm_Init_Apply) void PostEffects_SandStorm_Init_Apply()
+{
+	g_SandStormApplySize = 0;
+	if ((PE_pSandStorm->cDepthOfFieldA || PE_pSandStorm->sandTexture[0]) && PE_bHeroOutdoors && PE_pSandStorm->cDepthOfFieldA) {
+		g_SandStormApplySize = 1;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init_Globals);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F8600);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init);
+GAME_SECTION(PostEffects_SandStorm_Init) void PostEffects_SandStorm_Init()
+{
+	int LocalGsLoc = 0x37e000;
+	g_pSandStormTemp1 = PostEffects_LocalAlloc(LocalGsLoc, 0x40000);
+	g_pSandStormTex = PostEffects_LocalAlloc(LocalGsLoc, 0x40000);
+	g_pSandStormPal = PostEffects_LocalAlloc(LocalGsLoc, 0x400);
+	g_pSandStormSrc = GSmem.draw;
+	PostEffects_SandStorm_Init_Globals();
+	PostEffects_SandStorm_Init_AlphaMappingPalette();
+	PostEffects_SandStorm_Init_CreateB();
+	PostEffects_SandStorm_Init_Apply();
+	g_PostEffectsFlags |= 4;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F86A0);
 
@@ -143,7 +219,18 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LoadPalToGs_imm);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SetDofRamp);
+GAME_SECTION(PostEffects_SetDofRamp) void PostEffects_SetDofRamp(unsigned char *Ramp_)
+{
+	int i;
+	unsigned int *pDofPalette;
+	g_iDofPalette ^= 1;
+	pDofPalette = g_DofPalette[g_iDofPalette];
+	for (i = 0; i < 0x100; i++) {
+		int ci = (i & 0xe7) | ((i & 8) << 1) | ((i & 0x10) >> 1);
+		pDofPalette[ci] = ((0xff - Ramp_[i]) >> 1) << 24;
+	}
+	FlushCache(0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_AddRemapAlpha);
 
@@ -169,7 +256,12 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_BloomInitCreateC_new);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_BloomInitApply_new);
+GAME_SECTION(PostEffects_RegisterEngine_BloomInitApply_new) void PostEffects_RegisterEngine_BloomInitApply_new(unsigned long *&pCurrent, int &RegEngBase)
+{
+	PostEffects_RegisterEngine_AddFilterCopy(pCurrent, RegEngBase, g_pBloomTex1, 0x40, 0x40, g_pBloomTemp2, 0x80, 0x80);
+	PostEffects_RegisterEngine_AddFilterCopy(pCurrent, RegEngBase, g_pBloomTemp2, 0x80, 0x80, g_pBloomTemp1, 0x100, 0x100);
+	PostEffects_RegisterEngine_Blur256(pCurrent, RegEngBase, g_pBloomTemp1, g_pBloomTemp2);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_BloomCreate_new);
 
