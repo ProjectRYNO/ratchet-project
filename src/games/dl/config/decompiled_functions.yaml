@@ -91,6 +91,90 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  SetMobyLightDefault: 0x0046DAA0
+  Moby2dSetWindow: 0x0046D6A8
+  CollSphereFail: 0x0046D5B8
+  MobyDynamicGroup_IsDynamicGroup: 0x0046D590
+  MobyGetInterface: 0x0046D408
+  DrawMobys: 0x0046D3A0
+  DrawMobysCleanup: 0x0046D340
+  ProcessMobyAnimData: 0x0046D0C8
+  ResetGadgetBank: 0x00464088
+  ParseSpaceSceneChunk: 0x00464038
+  UnloadNpcMobys: 0x00463C68
+  SwitchMobyToCoOpArmor: 0x00461E90
+  SwitchArmor2: 0x00461E48
+  SwitchArmor: 0x00461E08
+  IsSceneLevel: 0x00461430
+  GetScreenFrustumScales: 0x00448C10
+  ResetGsRegistersPr: 0x00448960
+  ResetDrawGlobals: 0x00448720
+  UpdateOcclusion: 0x00447938
+  DrawIOPInfo: 0x00446C70
+  SetMinMaxRange: 0x0048A430
+  sound_initLineEmitters: 0x004E2568
+  sound_FreshenCB: 0x004E24A0
+  sound_PlayCB: 0x004E2458
+  sound_BasicCB: 0x004E2440
+  sound_KillByChannel: 0x004E1B18
+  sound_Kill: 0x004E1AE8
+  IsMobyPlayingSound: 0x004E1978
+  sound_LevelInit: 0x004E0820
+  MCSTATE_CommandIsSet: 0x00465E80
+  MCSTATE_ClearCommand: 0x00465DF8
+  csf_prompt_save_overwrite: 0x00465A20
+  csf_prompt_begin_nosave: 0x004659D0
+  csf_prompt_begin_unformatted: 0x00465980
+  csf_auto_saving: 0x004658E0
+  csf_saving: 0x00465830
+  csf_prompt_save_failed: 0x00465800
+  csf_loading: 0x00465788
+  csf_prompt_load_failed: 0x00465740
+  csf_no_room: 0x004656F0
+  csf_init_load: 0x00465530
+  csf_creating_save: 0x004653A8
+  csf_create_save_pending: 0x00465340
+  csf_prompt_create_save: 0x004652B8
+  csf_nosave: 0x00465238
+  csf_check_save: 0x00465118
+  csf_formatting: 0x00465068
+  csf_prompt_format: 0x00464F98
+  csf_unformatted: 0x00464F28
+  csf_wait_for_card: 0x00464E80
+  UpdateMCState: 0x00464B60
+  MCSTATE_TransToState: 0x00464AF8
+  Start___dupe2: 0x0048AC48
+  GetStreamFromHandle: 0x0048A970
+  Free: 0x0048A950
+  StreamsStopped: 0x0048A798
+  GetState: 0x0048A230
+  Play___dupe2: 0x0048A120
+  Transition_SetKeepLastFrame: 0x004F5420
+  Transition_DoMovieNpc: 0x004F5418
+  Transition_DoMovieMpeg: 0x004F53C0
+  Transition_UpdateMidSceneOrMovie: 0x004F5350
+  Transition_SetScreenFade: 0x004F50D0
+  Transition_ResetParticles: 0x004F5008
+  Transition_GetNumMoviesPlayed: 0x004F5000
+  Transition_DrawSky: 0x004F3B18
+  Transition_Draw: 0x004F35B0
+  Transition_CleanupMovie: 0x004F3538
+  Transition_UnloadSounds: 0x004F2680
+  Transition_PlaySound: 0x004F25D8
+  Transition_PlaySound_cb: 0x004F25C8
+  Transition_LoadSoundBank: 0x004F2530
+  Transition_GetLevelFrom: 0x004F2528
+  Transition_GetLevelTo: 0x004F2520
+  Transition_GetLandStalkerTexture: 0x004F24A8
+  Transition_GetDropshipTexture: 0x004F2430
+  HelpQueue_IsEmpty: 0x0045E780
+  Help_SetState: 0x0045E1E0
+  msg_string: 0x0045E038
+  Help_DoAddToHelpLogException: 0x0045E020
+  Help_Resume: 0x0045DEE0
+  Help_QueueMessageOncePerLevel: 0x0045D9C8
+  Help_QueueMessageOnce: 0x0045D950
+  Help_QueueMessage: 0x0045D7B0
   GetMapName: 0x0054D5E0
   MB_MoveSystemUpdateReaction: 0x00486188
   CleanupAnimLayers: 0x0046F448
@@ -4240,6 +4324,124 @@ objects:
       - {object: game/transition, section: .game_Transition_DoMovieNpc, start: 0x004F5418, end: 0x004F5420}
       - {object: game/transition, section: .game_Transition_SetKeepLastFrame, start: 0x004F5420, end: 0x004F5428}
       - {object: game/transition, section: .game_Transition_DisplayPassBlur, start: 0x004F5428, end: 0x004F552C}
+  game/stream:
+    text_start: 0x00489EF0
+    text_end: 0x0048AFF8
+    slots:
+      - {object: game/stream, section: .game_InitSoundDef, start: 0x00489EF0, end: 0x00489F30}
+      - {object: game/stream, section: .game_Reset___dupe3, start: 0x00489F30, end: 0x00489F98}
+      - {object: game/stream, section: .game_func_00489F98, start: 0x00489F98, end: 0x00489FA0}
+      - {object: game/stream, section: .game_StopAll___dupe2, start: 0x00489FA0, end: 0x0048A060}
+      - {object: game/stream, section: .game_PauseAll, start: 0x0048A060, end: 0x0048A0C0}
+      - {object: game/stream, section: .game_UnPauseAll, start: 0x0048A0C0, end: 0x0048A120}
+      - {object: game/stream, section: .game_Play___dupe2, start: 0x0048A120, end: 0x0048A170}
+      - {object: game/stream, section: .game_Queue, start: 0x0048A170, end: 0x0048A230}
+      - {object: game/stream, section: .game_GetState, start: 0x0048A230, end: 0x0048A280}
+      - {object: game/stream, section: .game_func_0048A280, start: 0x0048A280, end: 0x0048A290}
+      - {object: game/stream, section: .game_Start, start: 0x0048A290, end: 0x0048A2F8}
+      - {object: game/stream, section: .game_Stop, start: 0x0048A2F8, end: 0x0048A368}
+      - {object: game/stream, section: .game_SetGain, start: 0x0048A368, end: 0x0048A3C0}
+      - {object: game/stream, section: .game_SetMinMaxVolume, start: 0x0048A3C0, end: 0x0048A430}
+      - {object: game/stream, section: .game_SetMinMaxRange, start: 0x0048A430, end: 0x0048A488}
+      - {object: game/stream, section: .game_func_0048A488, start: 0x0048A488, end: 0x0048A498}
+      - {object: game/stream, section: .game_Update___dupe54, start: 0x0048A498, end: 0x0048A798}
+      - {object: game/stream, section: .game_StreamsStopped, start: 0x0048A798, end: 0x0048A7C8}
+      - {object: game/stream, section: .game_WaitForStop, start: 0x0048A7C8, end: 0x0048A8B0}
+      - {object: game/stream, section: .game_Alloc, start: 0x0048A8B0, end: 0x0048A950}
+      - {object: game/stream, section: .game_Free, start: 0x0048A950, end: 0x0048A970}
+      - {object: game/stream, section: .game_GetStreamFromHandle, start: 0x0048A970, end: 0x0048A9A8}
+      - {object: game/stream, section: .game_CreateHandle, start: 0x0048A9A8, end: 0x0048A9F8}
+      - {object: game/stream, section: .game_Initialize___dupe3, start: 0x0048A9F8, end: 0x0048AA30}
+      - {object: game/stream, section: .game_AcquireResources, start: 0x0048AA30, end: 0x0048AC48}
+      - {object: game/stream, section: .game_Start___dupe2, start: 0x0048AC48, end: 0x0048AC68}
+      - {object: game/stream, section: .game_SetGain___dupe2, start: 0x0048AC68, end: 0x0048ACC0}
+      - {object: game/stream, section: .game_GetLocs, start: 0x0048ACC0, end: 0x0048AEB8}
+      - {object: game/stream, section: .game_Callback_PlayVAGStreamByLoc, start: 0x0048AEB8, end: 0x0048AF30}
+      - {object: game/stream, section: .game_Callback_IsVAGStreamBuffered, start: 0x0048AF30, end: 0x0048AF98}
+      - {object: game/stream, section: .game_Callback_SoundIsStillPlaying, start: 0x0048AF98, end: 0x0048AFF8}
+  game/sound:
+    text_start: 0x004DFEC8
+    text_end: 0x004E25E8
+    slots:
+      - {object: game/sound, section: .game_sound_CreateHandle, start: 0x004DFEC8, end: 0x004DFF28}
+      - {object: game/sound, section: .game_SOUND_PLAY_LOOP, start: 0x004DFF28, end: 0x004DFFA0}
+      - {object: game/sound, section: .game_sound_CamOfs, start: 0x004DFFA0, end: 0x004E0058}
+      - {object: game/sound, section: .game_sound_Occl, start: 0x004E0058, end: 0x004E0148}
+      - {object: game/sound, section: .game_sound_GetFade, start: 0x004E0148, end: 0x004E0248}
+      - {object: game/sound, section: .game_sound_GetFade___dupe2, start: 0x004E0248, end: 0x004E02C0}
+      - {object: game/sound, section: .game_sound_GetPan, start: 0x004E02C0, end: 0x004E04E0}
+      - {object: game/sound, section: .game_sound_setVolumes, start: 0x004E04E0, end: 0x004E0638}
+      - {object: game/sound, section: .game_sound_Init, start: 0x004E0638, end: 0x004E0820}
+      - {object: game/sound, section: .game_sound_LevelInit, start: 0x004E0820, end: 0x004E0858}
+      - {object: game/sound, section: .game_FUN_004e0858, start: 0x004E0858, end: 0x004E1978}
+      - {object: game/sound, section: .game_IsMobyPlayingSound, start: 0x004E1978, end: 0x004E19D0}
+      - {object: game/sound, section: .game_func_004E19D0, start: 0x004E19D0, end: 0x004E19D8}
+      - {object: game/sound, section: .game_sound_KillById, start: 0x004E19D8, end: 0x004E1A58}
+      - {object: game/sound, section: .game_sound_KillByMoby, start: 0x004E1A58, end: 0x004E1AE8}
+      - {object: game/sound, section: .game_sound_Kill, start: 0x004E1AE8, end: 0x004E1B18}
+      - {object: game/sound, section: .game_sound_KillByChannel, start: 0x004E1B18, end: 0x004E1B58}
+      - {object: game/sound, section: .game_sound_GetFreeChannel, start: 0x004E1B58, end: 0x004E1C00}
+      - {object: game/sound, section: .game_FUN_004e1c00, start: 0x004E1C00, end: 0x004E1F90}
+      - {object: game/sound, section: .game_sound_MobyPlay, start: 0x004E1F90, end: 0x004E2038}
+      - {object: game/sound, section: .game_sound_MobyPlay___dupe2, start: 0x004E2038, end: 0x004E2118}
+      - {object: game/sound, section: .game_sound_MobyPlay___dupe3, start: 0x004E2118, end: 0x004E21D8}
+      - {object: game/sound, section: .game_sound_CorePlay, start: 0x004E21D8, end: 0x004E2278}
+      - {object: game/sound, section: .game_func_004E2278, start: 0x004E2278, end: 0x004E2288}
+      - {object: game/sound, section: .game_sound_FootstepPlay, start: 0x004E2288, end: 0x004E2338}
+      - {object: game/sound, section: .game_sound_SetOffset, start: 0x004E2338, end: 0x004E2388}
+      - {object: game/sound, section: .game_func_004E2388, start: 0x004E2388, end: 0x004E23A0}
+      - {object: game/sound, section: .game_sound_StopAllSounds, start: 0x004E23A0, end: 0x004E2440}
+      - {object: game/sound, section: .game_sound_BasicCB, start: 0x004E2440, end: 0x004E2458}
+      - {object: game/sound, section: .game_sound_PlayCB, start: 0x004E2458, end: 0x004E24A0}
+      - {object: game/sound, section: .game_sound_FreshenCB, start: 0x004E24A0, end: 0x004E24E0}
+      - {object: game/sound, section: .game_func_004E24E0, start: 0x004E24E0, end: 0x004E24E8}
+      - {object: game/sound, section: .game_lineEmitterSetAttrib, start: 0x004E24E8, end: 0x004E2568}
+      - {object: game/sound, section: .game_sound_initLineEmitters, start: 0x004E2568, end: 0x004E25D0}
+      - {object: game/sound, section: .game_func_004E25D0, start: 0x004E25D0, end: 0x004E25E8}
+  game/loaders:
+    text_start: 0x00461430
+    text_end: 0x00464A7C
+    slots:
+      - {object: game/loaders, section: .game_IsSceneLevel, start: 0x00461430, end: 0x00461438}
+      - {object: game/loaders, section: .game_func_00461438, start: 0x00461438, end: 0x00461440}
+      - {object: game/loaders, section: .game_SwizzleTextureInPlace, start: 0x00461440, end: 0x00461570}
+      - {object: game/loaders, section: .game_ParseParticleTexs, start: 0x00461570, end: 0x00461690}
+      - {object: game/loaders, section: .game_ParseEffectTexs, start: 0x00461690, end: 0x00461740}
+      - {object: game/loaders, section: .game_ParseSky, start: 0x00461740, end: 0x00461990}
+      - {object: game/loaders, section: .game_LoadArmor, start: 0x00461990, end: 0x00461CD8}
+      - {object: game/loaders, section: .game_RemapArmor, start: 0x00461CD8, end: 0x00461E08}
+      - {object: game/loaders, section: .game_SwitchArmor, start: 0x00461E08, end: 0x00461E48}
+      - {object: game/loaders, section: .game_SwitchArmor2, start: 0x00461E48, end: 0x00461E90}
+      - {object: game/loaders, section: .game_SwitchMobyToCoOpArmor, start: 0x00461E90, end: 0x00461EA0}
+      - {object: game/loaders, section: .game_AttachPaintJobTextures, start: 0x00461EA0, end: 0x00462080}
+      - {object: game/loaders, section: .game_LoadBotTextures, start: 0x00462080, end: 0x00462160}
+      - {object: game/loaders, section: .game_LoadLandStalkerTextures, start: 0x00462160, end: 0x00462240}
+      - {object: game/loaders, section: .game_LoadDropshipTextures, start: 0x00462240, end: 0x00462320}
+      - {object: game/loaders, section: .game_LoadHudBanks, start: 0x00462320, end: 0x004625A0}
+      - {object: game/loaders, section: .game_LoadCompressedHudBank, start: 0x004625A0, end: 0x00462608}
+      - {object: game/loaders, section: .game_SetUpVisGif, start: 0x00462608, end: 0x00462910}
+      - {object: game/loaders, section: .game_SetUpVisGifViewer, start: 0x00462910, end: 0x00462A78}
+      - {object: game/loaders, section: .game_ParsePermGsRam, start: 0x00462A78, end: 0x00462D68}
+      - {object: game/loaders, section: .game_ParseMobyGifs, start: 0x00462D68, end: 0x00462E80}
+      - {object: game/loaders, section: .game_ParseMobyClass, start: 0x00462E80, end: 0x004631B8}
+      - {object: game/loaders, section: .game_ParseMoby, start: 0x004631B8, end: 0x004632E0}
+      - {object: game/loaders, section: .game_ParseTfrag, start: 0x004632E0, end: 0x004635C8}
+      - {object: game/loaders, section: .game_LoadFrontData, start: 0x004635C8, end: 0x004636B8}
+      - {object: game/loaders, section: .game_func_004636B8, start: 0x004636B8, end: 0x004636C8}
+      - {object: game/loaders, section: .game_LoadLevelData, start: 0x004636C8, end: 0x00463AC0}
+      - {object: game/loaders, section: .game_LoadNpcMobys, start: 0x00463AC0, end: 0x00463B78}
+      - {object: game/loaders, section: .game_ParseNpcMobys, start: 0x00463B78, end: 0x00463C68}
+      - {object: game/loaders, section: .game_UnloadNpcMobys, start: 0x00463C68, end: 0x00463CB8}
+      - {object: game/loaders, section: .game_LoadNpcSubtitles, start: 0x00463CB8, end: 0x00463D70}
+      - {object: game/loaders, section: .game_PreLoadNpcChunk, start: 0x00463D70, end: 0x00463E08}
+      - {object: game/loaders, section: .game_ParseNpcChunk, start: 0x00463E08, end: 0x00464038}
+      - {object: game/loaders, section: .game_ParseSpaceSceneChunk, start: 0x00464038, end: 0x00464088}
+      - {object: game/loaders, section: .game_ResetGadgetBank, start: 0x00464088, end: 0x00464090}
+      - {object: game/loaders, section: .game_func_00464090, start: 0x00464090, end: 0x004640A0}
+      - {object: game/loaders, section: .game_PushMobyStack, start: 0x004640A0, end: 0x004645E8}
+      - {object: game/loaders, section: .game_PopMobyStack, start: 0x004645E8, end: 0x00464778}
+      - {object: game/loaders, section: .game_QueuePifLoad, start: 0x00464778, end: 0x00464980}
+      - {object: game/loaders, section: .game_ResetLevelData, start: 0x00464980, end: 0x00464A7C}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -6169,6 +6371,11 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/mcstate, function: MCSTATE_TransToState, section: .game_MCSTATE_TransToState.rodata, start: 0x003D0900, end: 0x003D097C}
+      - {object: game/mcstate, function: MCSTATE_ClearCommand, section: .game_MCSTATE_ClearCommand.rodata, start: 0x003D09A0, end: 0x003D09C0}
+      - {object: game/mcstate, function: MCSTATE_CommandIsSet, section: .game_MCSTATE_CommandIsSet.rodata, start: 0x003D09C0, end: 0x003D09DC}
+      - {object: game/transition, function: Transition_GetDropshipTexture, section: .game_Transition_GetDropshipTexture.rodata, start: 0x003D3270, end: 0x003D32AC}
+      - {object: game/transition, function: Transition_GetLandStalkerTexture, section: .game_Transition_GetLandStalkerTexture.rodata, start: 0x003D32B0, end: 0x003D32EC}
       - {object: game/transitionmulti, function: GetMapName, section: .game_GetMapName.rodata, start: 0x003D4EA0, end: 0x003D4ED8}
       - {object: game/posteffects, function: PE_GetEnvironmentType, section: .game_PE_GetEnvironmentType.rodata, start: 0x003D32F0, end: 0x003D3330}
       - {object: game/missionload, function: UpdateMissionLoad, section: .game_UpdateMissionLoad.rodata, start: 0x003D34E0, end: 0x003D34FC}

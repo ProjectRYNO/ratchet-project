@@ -3,26 +3,52 @@
 
 
 
+struct memcard_saveinfo {
+	/* 0x00 */ int unk00[8];
+};
+struct memcard_data {
+	/* 0x00 */ int port;
+	/* 0x04 */ int slot;
+	/* 0x08 */ int type;
+	/* 0x0c */ int free;
+	/* 0x10 */ int changed;
+	/* 0x14 */ int format;
+	/* 0x18 */ short saveslot;
+	/* 0x1a */ short curslot;
+	/* 0x1c */ int RC1and2_weapons_checked;
+	/* 0x20 */ int corrupt_size;
+	/* 0x24 */ unsigned int patch_size;
+	/* 0x28 */ int oldsave;
+	/* 0x2c */ int gamesize;
+	/* 0x30 */ int levelsize;
+	/* 0x34 */ memcard_saveinfo info[5];
+};
 struct McState {
-	/* 0x000 */ char unk000[8];
-	/* 0x008 */ int cardState;
-	/* 0x00c */ int unk00c;
-	/* 0x010 */ int unk010;
-	/* 0x014 */ int unk014;
-	/* 0x018 */ short command;
-	/* 0x01a */ char unk01a[0x1b0 - 0x1a];
-	/* 0x1b0 */ int unk1b0;
-	/* 0x1b4 */ char unk1b4[0x1cc - 0x1b4];
-	/* 0x1cc */ int slotA;
-	/* 0x1d0 */ int slotB;
-	/* 0x1d4 */ int loaded;
-	/* 0x1d8 */ char unk1d8[0x1e4 - 0x1d8];
-	/* 0x1e4 */ int pending;
+	/* 0x000 */ memcard_data memcards[2];
+	/* 0x1a8 */ int cmd;
+	/* 0x1ac */ int res;
+	/* 0x1b0 */ int useslot;
+	/* 0x1b4 */ int slot;
+	/* 0x1b8 */ int level;
+	/* 0x1bc */ int sync;
+	/* 0x1c0 */ int file;
+	/* 0x1c4 */ int stage;
+	/* 0x1c8 */ int substage;
+	/* 0x1cc */ int nextstage;
+	/* 0x1d0 */ int nextslot;
+	/* 0x1d4 */ int err;
+	/* 0x1d8 */ int errslot;
+	/* 0x1dc */ char *addr;
+	/* 0x1e0 */ int size;
+	/* 0x1e4 */ int autosave;
+	/* 0x1e8 */ int checkslot;
+	/* 0x1ec */ int timer;
+	/* 0x1f0 */ int savesize;
 };
 int SaveSlotUponCreation __asm__("D_21F150") GAME_GP_DATA = 0;
 extern int mcstate_response __asm__("mcstate_response");
 extern int mc_state __asm__("mc_state");
-extern unsigned int mcstate_flags __asm__("mcstate_flags");
+extern int mcstate_flags __asm__("mcstate_flags");
 extern McState mcState __asm__("D_171948");
 void MCSTATE_TransToState(int) __asm__("MCSTATE_TransToState");
 void MCSTATE_ClearCommand(int) __asm__("MCSTATE_ClearCommand");
@@ -52,18 +78,84 @@ void MCSTATE_LoadGame(short) __asm__("MCSTATE_LoadGame");
 void csf_prompt_warning() __asm__("csf_prompt_warning");
 
 
+void (*save_done_cb)() __asm__("D_21F15C") GAME_GP_DATA = 0;
+void (*init_load_cb)() __asm__("D_21F160") GAME_GP_DATA = 0;
+short MCSTATE_which_slot __asm__("D_21F16C") GAME_GP_DATA = 0;
+extern unsigned char InEndgame __asm__("InEndgame");
+extern unsigned char InFrontEnd __asm__("InFrontEnd");
+extern unsigned char mcstate_error __asm__("mcstate_error");
+extern unsigned char Update_ShowFreezePulled __asm__("Update_ShowFreezePulled");
+void csf_prompt_save_failed() __asm__("csf_prompt_save_failed");
+void csf_prompt_load_failed() __asm__("csf_prompt_load_failed");
+void csf_no_room() __asm__("csf_no_room");
+void csf_prompt_begin_nosave() __asm__("csf_prompt_begin_nosave");
+void csf_prompt_begin_unformatted() __asm__("csf_prompt_begin_unformatted");
+void csf_formatting() __asm__("csf_formatting");
+void csf_check_save() __asm__("csf_check_save");
+void csf_create_save_pending() __asm__("csf_create_save_pending");
+void csf_unformatted() __asm__("csf_unformatted");
+void csf_loading() __asm__("csf_loading");
+void csf_nosave() __asm__("csf_nosave");
+void csf_prompt_save_overwrite() __asm__("csf_prompt_save_overwrite");
+void csf_prompt_create_save() __asm__("csf_prompt_create_save");
+void csf_prompt_format() __asm__("csf_prompt_format");
+void csf_auto_saving() __asm__("csf_auto_saving");
+void csf_creating_save() __asm__("csf_creating_save");
+void csf_saving() __asm__("csf_saving");
+void csf_init_load() __asm__("csf_init_load");
+void csf_checking_save() __asm__("csf_checking_save");
+void csf_wait_for_card() __asm__("csf_wait_for_card");
+int MCSTATE_CommandIsSet(int) __asm__("MCSTATE_CommandIsSet");
+extern void (*state_functions[])() __asm__("D_3D8038");
+extern int MCSTATE_idle_time __asm__("MCSTATE_idle_time");
+void UpdateMCState() __asm__("UpdateMCState");
+
 GAME_SECTION(csf_prompt_create_save_overwrite) void csf_prompt_create_save_overwrite()
 {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_TransToState);
+GAME_SECTION(MCSTATE_TransToState) void MCSTATE_TransToState(int new_state)
+{
+	mc_state = new_state;
+	if (new_state == 3) Update_ShowFreezePulled = 1;
+	switch (new_state) {
+	case 3:
+	case 0x13:
+	case 0x14:
+	case 0x16:
+	case 0x18:
+	case 0x21:
+		mcstate_error = 1;
+	case 8:
+	case 0xf:
+	case 0x1a:
+	case 0x1b:
+	case 0x1f:
+	case 0x20:
+		MCSTATE_ClearResponse();
+		break;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", UpdateMCState);
+GAME_SECTION(UpdateMCState) void UpdateMCState()
+{
+	int old_state;
+	int ticks = McRetries - 1;
+	if (ticks < 0) ticks = 0;
+	McRetries = ticks;
+	if (mcState.err || (mcState.memcards[0].type == 2 && mcState.memcards[0].changed) || mcState.memcards[0].oldsave > 0) {
+		mcstate_error = 1;
+	}
+	old_state = mc_state;
+	state_functions[mc_state]();
+	MCSTATE_idle_time++;
+	if (mc_state != old_state) MCSTATE_idle_time = 0;
+}
 
 GAME_SECTION(csf_init) void csf_init()
 {
-	if (!g_gameType && !g_gameRules) mcState.pending = 0;
-	mcState.unk010 = 0;
+	if (!g_gameType && !g_gameRules) mcState.autosave = 0;
+	mcState.memcards[0].changed = 0;
 	MCSTATE_TransToState(4);
 	McRetries = 5;
 }
@@ -76,7 +168,7 @@ GAME_SECTION(csf_good_load) void csf_good_load()
 		LoadDoneCallback();
 		LoadDoneCallback = 0;
 	}
-	if (!mcState.loaded) mcState.pending = 1;
+	if (!mcState.err) mcState.autosave = 1;
 	MCSTATE_TransToState(1);
 }
 
@@ -100,50 +192,169 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_nocard);
 
 GAME_SECTION(csf_changed) void csf_changed()
 {
-	mcState.slotA = -1;
-	mcState.slotB = -1;
+	mcState.nextstage = -1;
+	mcState.nextslot = -1;
 	MCSTATE_TransToState(6);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_wait_for_card);
+GAME_SECTION(csf_wait_for_card) void csf_wait_for_card()
+{
+	MCSTATE_ClearResponse();
+	if (mcState.memcards[0].type != 2) return;
+	if (mcState.memcards[0].changed != 0) {
+		if (mcState.memcards[0].format != 0) goto formatted;
+		mcState.memcards[0].changed = 0;
+		MCSTATE_TransToState(7);
+	}
+	if (mcState.memcards[0].format == 0) {
+		MCSTATE_TransToState(7);
+		return;
+	}
+formatted:
+	if (mcState.memcards[0].type == 2 && mcState.memcards[0].changed != 0) mcState.memcards[0].changed = 0;
+	MCSTATE_TransToState(0xb);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_unformatted);
+GAME_SECTION(csf_unformatted) void csf_unformatted()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else if (mcState.memcards[0].changed != 0) {
+		MCSTATE_TransToState(5);
+	} else {
+		if (InEndgame || (mcstate_flags & 0x1a)) MCSTATE_TransToState(8);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_format);
+GAME_SECTION(csf_prompt_format) void csf_prompt_format()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else if (mcState.memcards[0].changed != 0) {
+		MCSTATE_TransToState(5);
+	} else if (mcstate_response == 2) {
+		MCSTATE_TransToState(7);
+	} else if (mcstate_response == 1) {
+		mcstate_flags |= 8;
+		MCSTATE_TransToState(9);
+	}
+}
 
 GAME_SECTION(csf_format_pending) void csf_format_pending()
 {
-	mcState.unk010 = 0;
-	if (mcState.slotA < 0) {
-		mcState.slotB = 0;
-		mcState.slotA = 3;
+	mcState.memcards[0].changed = 0;
+	if (mcState.nextstage < 0) {
+		mcState.nextslot = 0;
+		mcState.nextstage = 3;
 	}
 	MCSTATE_TransToState(0xa);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_formatting);
+GAME_SECTION(csf_formatting) void csf_formatting()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		if (mcState.err != 0) {
+			MCSTATE_TransToState(0x13);
+		} else {
+			MCSTATE_TransToState(0xb);
+		}
+	}
+}
 
 GAME_SECTION(csf_formatted) void csf_formatted()
 {
-	if (mcState.cardState != 2) MCSTATE_TransToState(4);
+	if (mcState.memcards[0].type != 2) MCSTATE_TransToState(4);
 	else if (mcstate_flags & 0x806) MCSTATE_TransToState(0xc);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_check_save);
+GAME_SECTION(csf_check_save) void csf_check_save()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		mcState.nextstage = 7;
+		mcstate_flags &= ~0x800;
+		mcState.memcards[0].changed = 0;
+		mcState.nextslot = 0;
+		MCSTATE_TransToState(0xd);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_checking_save);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_nosave);
+GAME_SECTION(csf_nosave) void csf_nosave()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		if (mcState.memcards[0].type != 2) {
+			MCSTATE_TransToState(4);
+		} else if (mcState.memcards[0].changed != 0) {
+			MCSTATE_TransToState(5);
+		} else {
+			if (mcstate_flags & 0x12) MCSTATE_TransToState(0xf);
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_create_save);
+GAME_SECTION(csf_prompt_create_save) void csf_prompt_create_save()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else if (mcstate_response == 2) {
+		if (InFrontEnd) {
+			MCSTATE_TransToState(0x1b);
+		} else {
+			MCSTATE_TransToState(0xe);
+		}
+	} else if (mcstate_response == 1) {
+		MCSTATE_TransToState(0x10);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_create_save_pending);
+GAME_SECTION(csf_create_save_pending) void csf_create_save_pending()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		mcState.nextstage = 9;
+		mcstate_flags &= ~2;
+		mcstate_flags &= ~0x10;
+		mcState.nextslot = 0;
+		MCSTATE_TransToState(0x11);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_creating_save);
+GAME_SECTION(csf_creating_save) void csf_creating_save()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		if (mcState.err != 0) {
+			MCSTATE_TransToState(0x14);
+		} else {
+			mcState.useslot = 0;
+			mcState.memcards[0].saveslot = 0;
+			if (mcstate_flags & 0x1000) {
+				mcstate_flags &= ~0x1000;
+				mcState.memcards[0].saveslot = SaveSlotUponCreation;
+				SaveSlotUponCreation = -1;
+			}
+			MCSTATE_TransToState(0x12);
+		}
+		if (CreateFailedCallback) {
+			CreateFailedCallback();
+			CreateFailedCallback = 0;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_init_save);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_init_load);
+GAME_SECTION(csf_init_load) void csf_init_load()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		if (init_load_cb) {
+			init_load_cb();
+			init_load_cb = 0;
+		}
+		mcState.useslot = 0;
+		mcState.memcards[0].saveslot = MCSTATE_which_slot;
+		MCSTATE_TransToState(0x17);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_newcard);
 
@@ -161,23 +372,106 @@ GAME_SECTION(csf_prompt_create_failed) void csf_prompt_create_failed()
 	if (mcstate_response == 3) MCSTATE_TransToState(0xb);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_no_room);
+GAME_SECTION(csf_no_room) void csf_no_room()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else {
+		if (mcState.memcards[0].changed) MCSTATE_TransToState(5);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_load_failed);
+GAME_SECTION(csf_prompt_load_failed) void csf_prompt_load_failed()
+{
+	if (LoadDoneCallback) {
+		LoadDoneCallback();
+		LoadDoneCallback = 0;
+	}
+	if (mcstate_response == 3) MCSTATE_TransToState(6);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_loading);
+GAME_SECTION(csf_loading) void csf_loading()
+{
+	mcstate_flags &= ~4;
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		if (mcState.err != 0) {
+			MCSTATE_ClearResponse();
+			MCSTATE_TransToState(0x16);
+		} else {
+			MCSTATE_TransToState(2);
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_save_failed);
+GAME_SECTION(csf_prompt_save_failed) void csf_prompt_save_failed()
+{
+	if (mcstate_response == 3) MCSTATE_TransToState(0xb);
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_saving);
+GAME_SECTION(csf_saving) void csf_saving()
+{
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		mcstate_flags &= ~2;
+		if (mcState.err != 0 || mcState.memcards[0].oldsave != 0) {
+			if (g_gameType == 0 && mcState.autosave != 0) mcState.autosave = 0;
+			MCSTATE_TransToState(0x18);
+		} else {
+			if (g_gameType == 0) mcState.autosave = 1;
+			MCSTATE_TransToState(1);
+		}
+		if (save_done_cb) {
+			save_done_cb();
+			save_done_cb = 0;
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_auto_saving);
+GAME_SECTION(csf_auto_saving) void csf_auto_saving()
+{
+	mcstate_flags &= ~0x200;
+	if (g_gameType == 0 && mcState.stage == 2 && mcState.nextstage < 0) {
+		if (mcState.err != 0 || (mcState.memcards[0].type == 2 && mcState.memcards[0].changed != 0)) {
+			mcState.autosave = 0;
+			MCSTATE_TransToState(3);
+		} else {
+			mcState.autosave = 1;
+			MCSTATE_TransToState(1);
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_begin_unformatted);
+GAME_SECTION(csf_prompt_begin_unformatted) void csf_prompt_begin_unformatted()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else {
+		if (mcstate_response == 2) MCSTATE_TransToState(7);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_begin_nosave);
+GAME_SECTION(csf_prompt_begin_nosave) void csf_prompt_begin_nosave()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else {
+		if (mcstate_response) MCSTATE_TransToState(0xe);
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_prompt_save_overwrite);
+GAME_SECTION(csf_prompt_save_overwrite) void csf_prompt_save_overwrite()
+{
+	if (mcState.memcards[0].type != 2) {
+		if (mcState.autosave != 0) {
+			MCSTATE_TransToState(3);
+		} else {
+			MCSTATE_TransToState(4);
+		}
+	} else if (mcstate_response == 2) {
+		MCSTATE_TransToState(0x12);
+	} else if (mcstate_response == 1) {
+		MCSTATE_TransToState(0x1d);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AA0);
 
@@ -196,9 +490,56 @@ GAME_SECTION(MCSTATE_GetState) int MCSTATE_GetState()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_SetCommand);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_ClearCommand);
+GAME_SECTION(MCSTATE_ClearCommand) void MCSTATE_ClearCommand(int cmd)
+{
+	switch (cmd) {
+	case 5:
+		mcstate_flags &= ~8;
+		break;
+	case 7:
+		mcstate_flags &= ~0x200;
+		break;
+	case 0:
+		mcstate_flags &= ~2;
+		mcstate_flags &= ~4;
+		mcstate_flags &= ~0x1000;
+		mcstate_flags &= ~8;
+		mcstate_flags &= ~0x10;
+		break;
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 6:
+		break;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_CommandIsSet);
+GAME_SECTION(MCSTATE_CommandIsSet) int MCSTATE_CommandIsSet(int cmd)
+{
+	int ret = 0;
+	switch (cmd) {
+	case 1:
+		ret = mcstate_flags & 2;
+		break;
+	case 3:
+		ret = mcstate_flags & 4;
+		break;
+	case 4:
+		ret = mcstate_flags & 0x10;
+		break;
+	case 6:
+		ret = mcstate_flags & 0x800;
+		break;
+	case 5:
+		ret = mcstate_flags & 8;
+		break;
+	case 7:
+		ret = mcstate_flags & 0x200;
+		break;
+	}
+	return ret;
+}
 
 GAME_SECTION(MCSTATE_SetResponse) void MCSTATE_SetResponse(int response)
 {
