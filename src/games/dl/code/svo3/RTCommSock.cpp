@@ -1,4 +1,4 @@
-#include "DnsCache.h"
+#include "DNSCache.h"
 #include "SVOString.h"
 #include "CError.h"
 #include "SVTagModule.h"

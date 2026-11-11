@@ -1,1 +1,4 @@
-*.sh text eol=lf 
+# Check out text files with LF on every platform. The PS2 compilers (ee-gcc 2.9 reads a CRLF
+# backslash continuation as a stray '\') and the Linux build container need LF; Git detects binaries.
+* text=auto eol=lf
+*.sh text eol=lf

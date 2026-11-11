@@ -375,6 +375,15 @@ $(OBJ_DIR)/%.o: code/%.cpp
 	@$(MKDIR) -p $(dir $@)
 	$(EEGXX) -c $(COMMON_COMPILE_FLAGS) $(INCLUDE) $< -o $@
 
+# .vutext (VIF chains and VU microcode) is VU assembly written by split (tools/vu_split.py) and
+# assembled by PS2SDK's dvp-as; the segment's wrapper includes the result.
+DVP_BIN = $(PS2DEV_DIR)/dvp/bin
+$(BUILD_DIR)/vu/vutext.bin: code/asm/build/vutext/vutext.vsm
+	@$(MKDIR) -p $(dir $@)
+	$(DVP_BIN)/dvp-as -o $(@:.bin=.o) $<
+	$(DVP_BIN)/dvp-objcopy -O binary -j .vutext $(@:.bin=.o) $@
+$(OBJ_DIR)/asm/build/vutext/000000.o: $(BUILD_DIR)/vu/vutext.bin
+
 $(BUILD_DIR)/assets/%.o: assets/%.bin
 	@$(MKDIR) -p $(dir $@)
 	$(CROSS)-objcopy -I binary -O elf32-tradlittlemips -B mips $< $@

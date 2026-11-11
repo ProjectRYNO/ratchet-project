@@ -69,8 +69,8 @@ before assigning them to a vendor library.
 
 ## Other configured areas needing classification
 
-* `vutext/000000` is a raw textbin block at VRAM `0x00100080`, ROM `0x000000`.
-  It is a candidate for a VU microcode inventory, not an identified C library.
+* `vutext/000000` at VRAM `0x00100080`, ROM `0x000000` is VIF DMA chains with VU microcode
+  (22 microprograms), built from generated VU assembly; see [VU microcode](../build/VU_MICROCODE.md).
 * `crt0` is an assembly startup entry at VRAM `0x001574E8`, ROM `0x057468`.
   It is runtime startup rather than a missing middleware library.
 * `net.nostomp/4E5380` is an assembly split at VRAM `0x01F31380`, ROM `0x4E5380`,

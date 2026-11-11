@@ -6,6 +6,7 @@ actual C/C++ implementations are retained. Original wrappers are backed up once
 under build/split_source_backup before splat regenerates them.
 """
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -14,6 +15,7 @@ from pathlib import Path
 import yaml
 
 from asm_preprocess import preprocess_line
+from vu_split import convert as vu_convert
 
 
 def is_generated_wrapper(text):
@@ -168,6 +170,36 @@ def runtime_linker_script(text, config, replacements=None):
     return "\n".join(lines + assertions) + "\n"
 
 
+def split_vutext(root, opts, config):
+    """Write .vutext's VIF chains and VU microcode as dvp-as source, built from it by the Makefile.
+
+    vu_split.py only writes a file that dvp-as reassembles to the extracted segment byte for byte.
+    The segment's assembly wrapper then includes the dvp-as output instead of the extracted blob.
+    """
+    segment = next((s for s in config["segments"] if isinstance(s, dict) and s.get("name") == "vutext"), None)
+    if segment is None:
+        return
+    name = next(sub[2] for sub in segment["subsegments"] if sub[1] == "textbin")
+    blob = root / "assets" / f"{name}.textbin.bin"
+    wrappers = [p for p in (root / opts["asm_path"]).rglob("*.s") if p.as_posix().endswith(f"/{name}.s")]
+    if len(wrappers) != 1:
+        raise SystemExit(f"vutext: expected one wrapper for {name}, found {wrappers}")
+    dvp = os.environ.get("PS2DEV_DIR", "/opt/ps2dev") + "/dvp/bin"
+    try:
+        source, summary = vu_convert(blob.read_bytes(), segment["vram"], dvp)
+    except RuntimeError as e:
+        raise SystemExit(str(e))
+    (wrappers[0].parent / "vutext.vsm").write_text(source, newline="\n")
+    text = wrappers[0].read_text()
+    incbin, built = f"assets/{name}.textbin.bin", "build/vu/vutext.bin"
+    # splat keeps an existing wrapper, so a later split finds it already rewritten.
+    if text.count(incbin) == 1:
+        wrappers[0].write_text(text.replace(incbin, built), newline="\n")
+    elif text.count(built) != 1:
+        raise SystemExit(f"vutext: {wrappers[0]} includes neither {incbin} nor {built}")
+    print(summary)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("config", type=Path)
@@ -206,6 +238,7 @@ def main():
             normalized = carve_rodata(normalized, replacements["rodata"][relative]["slots"], ".data" if relative.endswith(".data") else ".rodata")
         if normalized != original:
             path.write_text(normalized, newline="\n")
+    split_vutext(root, opts, config)
     linker = root / opts["ld_script_path"]
     linker.write_text(runtime_linker_script(linker.read_text(), config, replacements), newline="\n")
     print(f"Refreshed {len(refreshed)} generated wrappers; backups: build/split_source_backup")
