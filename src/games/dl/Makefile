@@ -372,7 +372,7 @@ $(OBJ_DIR)/iksemel/%.o: code/iksemel/%.c
 
 # Game objects are SN ProDG GCC 2.95.3 v1.36 (see DOCS/libraries/GAME.md). Objects join this list one at a
 # time once their functions have registered slots; all others stay assembly-only through the generic rule.
-GAME_SN_NAMES = pause mathutil actuator bloaders config_util dead_reckon gameglobals gearmenu group_control init initonce lights menu missionload mobyupd mode mode_level movieoverlay navsyslocal puzzle space tables tfragfunc tuning update wad widget FXRegistry FXUtil bootutil credits draw2d fs fs_handlers globals hud memcard mobyproc bmain framebuf freeze missionfunc pad skyfunc stats transitionfunc transitionmulti update_core vendor camera fonts help iopload mcstate mobyanim_c mobyutil move music navsysglobal posteffects vuchain weapons draw mobyfunc transition stream sound loaders
+GAME_SN_NAMES = pause mathutil actuator bloaders config_util dead_reckon gameglobals gearmenu group_control init initonce lights menu missionload mobyupd mode mode_level movieoverlay navsyslocal puzzle space tables tfragfunc tuning update wad widget FXRegistry FXUtil bootutil credits draw2d fs fs_handlers globals hud memcard mobyproc bmain framebuf freeze missionfunc pad skyfunc stats transitionfunc transitionmulti update_core vendor camera fonts help iopload mcstate mobyanim_c mobyutil move music navsysglobal posteffects vuchain weapons draw mobyfunc transition stream sound loaders partupd
 GAME_COMPILE_FLAGS = -G8 -O2 -g -fopt-stack -mno-check-zero-division -fno-exceptions
 EEAS_SNAS136 = $(WIBO) $(EESN136_DIR)/lib/gcc-lib/ee/2.95.3/Ps2EeAs.exe
 GAME_SN_OBJS = $(GAME_SN_NAMES:%=$(OBJ_DIR)/game/%.o)

@@ -61,17 +61,63 @@ void InitSoundDef(SoundDef *) __asm__("InitSoundDef");
 
 
 
+struct StreamInterface2 {
+	void Reset() __asm__("Reset___dupe3");
+	void PauseAll(unsigned int) __asm__("PauseAll");
+	void UnPauseAll(unsigned int) __asm__("UnPauseAll");
+	unsigned int Start(unsigned int) __asm__("Start");
+	void Update(float) __asm__("Update___dupe54");
+	void Initialize(Stream *) __asm__("Initialize___dupe3");
+	static void Callback_SoundIsStillPlaying(unsigned int, unsigned long) __asm__("Callback_SoundIsStillPlaying");
+};
+extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFloat");
+extern "C" int snd_FlushSoundCommands();
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", InitSoundDef);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Reset___dupe3);
+GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
+{
+	Stream *stream;
+	m_num_open_streams = 3;
+	stream = m_streams;
+	do {
+		Initialize(stream);
+		stream->m_state = 0;
+		stream++;
+	} while ((int)stream < (int)&m_streams[3]);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_00489F98);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", StopAll___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", PauseAll);
+GAME_SECTION(PauseAll) void StreamInterface2::PauseAll(unsigned int synchronous)
+{
+	Stream *stream;
+	stream = m_streams;
+	do {
+		if (stream->m_state) stream->m_command |= 2;
+		stream++;
+	} while ((int)stream < (int)&m_streams[3]);
+	if (synchronous) {
+		Update(NtscPalFrameTimeInSecondsFloat);
+		snd_FlushSoundCommands();
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", UnPauseAll);
+GAME_SECTION(UnPauseAll) void StreamInterface2::UnPauseAll(unsigned int synchronous)
+{
+	Stream *stream;
+	stream = m_streams;
+	do {
+		if (stream->m_state) stream->m_command |= 4;
+		stream++;
+	} while ((int)stream < (int)&m_streams[3]);
+	if (synchronous) {
+		Update(NtscPalFrameTimeInSecondsFloat);
+		snd_FlushSoundCommands();
+	}
+}
 
 GAME_SECTION(Play___dupe2) unsigned int StreamInterface::Play(int track, int type, MobyInstance *owner, unsigned int flags)
 {
@@ -97,7 +143,16 @@ GAME_SECTION(GetState) unsigned int StreamInterface::GetState(unsigned int strea
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_0048A280);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Start);
+GAME_SECTION(Start) unsigned int StreamInterface2::Start(unsigned int stream_handle)
+{
+	unsigned int ret = 0;
+	Stream *stream = StreamInterface::GetStreamFromHandle(stream_handle);
+	if (stream && stream->m_state != 5 && stream->m_state != 6 && stream->m_state != 7) {
+		ret = 1;
+		stream->m_command |= 1;
+	}
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Stop);
 
@@ -182,4 +237,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Callback_PlayVA
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Callback_IsVAGStreamBuffered);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Callback_SoundIsStillPlaying);
+GAME_SECTION(Callback_SoundIsStillPlaying) void StreamInterface2::Callback_SoundIsStillPlaying(unsigned int ret_val, unsigned long data)
+{
+	Stream *stream = StreamInterface::GetStreamFromHandle(data);
+	if (stream && ret_val == 0 && stream->m_989_handle != 0xffffffff) {
+		StreamInterface::Free(stream);
+	}
+}

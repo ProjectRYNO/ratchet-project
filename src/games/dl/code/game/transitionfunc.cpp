@@ -44,6 +44,7 @@ struct MobyInstance {
 	/* 0xa8 */ void *pUpdate;
 	/* 0xac */ char unkac[0xbc - 0xac];
 	/* 0xbc */ short oClass;
+	/* 0xbe */ char unkbe[0x100 - 0xbe];
 };
 extern void *pRegistered_MobyDraws __asm__("pRegistered_MobyDraws");
 void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
@@ -70,7 +71,36 @@ void TransitionDraw_ShuttleInterior(bool) __asm__("TransitionDraw_ShuttleInterio
 void TransitionPost_ShuttleInterior() __asm__("TransitionPost_ShuttleInterior");
 
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", Transition_InitMobys);
+struct SceneActors {
+	/* 0x000 */ char unk000[0x84];
+	/* 0x084 */ short actor_cnt;
+	/* 0x086 */ char unk086[0x16a];
+	/* 0x1f0 */ MobyInstance *actors[16];
+	/* 0x230 */ char unk230[0x10];
+};
+extern SceneActors Scene __asm__("Scene");
+extern MobyInstance *MobyInstances __asm__("MobyInstances");
+extern MobyInstance *MobyInstancePermEnd __asm__("MobyInstancePermEnd");
+extern int g_TransitionSpace_Amb __asm__("g_TransitionSpace_Amb");
+void SetMobyLights(MobyInstance *, int, int, int, int) __asm__("SetMobyLights");
+void PostUpdateMobyBsphere(MobyInstance *) __asm__("PostUpdateMobyBsphere");
+bool Transition_UpdateMovie() __asm__("Transition_UpdateMovie");
+void LevelTScene_VoxShuttle_UpdateMonitors() __asm__("LevelTScene_VoxShuttle_UpdateMonitors");
+void LevelTScene_VoxShuttle_UpdateFX() __asm__("LevelTScene_VoxShuttle_UpdateFX");
+void TransitionSpace_InitMoby(MobyInstance *) __asm__("TransitionSpace_InitMoby");
+bool TransitionUpdate_ShuttleInterior(bool) __asm__("TransitionUpdate_ShuttleInterior");
+
+GAME_SECTION(Transition_InitMobys) void Transition_InitMobys(void (*fnInit_)(MobyInstance *))
+{
+	MobyInstance *pMoby;
+	int cActor;
+	for (pMoby = MobyInstances; pMoby != MobyInstancePermEnd; pMoby++) {
+		fnInit_(pMoby);
+	}
+	for (cActor = 0; cActor < Scene.actor_cnt; cActor++) {
+		if (Scene.actors[cActor]) fnInit_(Scene.actors[cActor]);
+	}
+}
 
 GAME_SECTION(TransitionPre_Undefined) bool TransitionPre_Undefined(unsigned int Arg1_, unsigned int Arg2_)
 {

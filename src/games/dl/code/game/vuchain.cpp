@@ -30,6 +30,30 @@ void VU1_texFlush() __asm__("VU1_texFlush");
 void DMAC_VIF1_Disable() __asm__("DMAC_VIF1_Disable");
 
 
+extern int vu1_bufSize __asm__("vu1_bufSize");
+extern int EngScratchPadSize __asm__("EngScratchPadSize");
+extern int ShadowScratchPadSize __asm__("ShadowScratchPadSize");
+extern char *EngScratchPad __asm__("EngScratchPad");
+extern char *ShadowScratchPad __asm__("ShadowScratchPad");
+extern char *SkinVertexCache __asm__("SkinVertexCache");
+extern char gs_regs_normal[] __asm__("gs_regs_normal");
+extern char gs_regs_effects[] __asm__("gs_regs_effects");
+extern int vu1_buf_table[] __asm__("vu1_buf_table");
+extern int Level __asm__("Level");
+extern "C" {
+	int AddDmacHandler(int, int (*)(int), int);
+	int EnableDmac(int);
+}
+int DMAC_VIF1_Handler(int) __asm__("DMAC_VIF1_Handler");
+int DMAC_BEIS_Handler(int) __asm__("DMAC_BEIS_Handler");
+void FastMemCopy16(void *, void *, int) __asm__("FastMemCopy16");
+void VU1_gsRegsNormal() __asm__("VU1_gsRegsNormal");
+void VU1_gsRegsEffects() __asm__("VU1_gsRegsEffects");
+void VU1_swapChain() __asm__("VU1_swapChain");
+void VU1_setBufSizeByLevel() __asm__("VU1_setBufSizeByLevel");
+void VU1_addDataDirect(int, void *, int) __asm__("VU1_addDataDirect");
+void DMAC_VIF1_Enable() __asm__("DMAC_VIF1_Enable");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU0_loadMicroProgram);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_setBufSizeByLevel);
@@ -55,7 +79,16 @@ GAME_SECTION(VU1_addDataRef) void VU1_addDataRef(void *data, int qcnt)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E78C8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_addDataDirect);
+GAME_SECTION(VU1_addDataDirect) void VU1_addDataDirect(int addr, void *data, int qcnt)
+{
+	(*vu1_bufPtr)[0] = qcnt | 0x10000000;
+	(*vu1_bufPtr)[1] = 0;
+	(*vu1_bufPtr)[2] = 0x1000404;
+	(*vu1_bufPtr)[3] = addr | qcnt << 16 | 0x6c000000;
+	vu1_bufPtr = vu1_bufPtr + 1;
+	FastMemCopy16(vu1_bufPtr, data, qcnt * 16);
+	vu1_bufPtr = vu1_bufPtr + qcnt;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7978);
 
@@ -74,9 +107,23 @@ GAME_SECTION(VU1_texFlush) void VU1_texFlush()
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_gsRegsNormal);
+GAME_SECTION(VU1_gsRegsNormal) void VU1_gsRegsNormal()
+{
+	(*vu1_bufPtr)[0] = 0x30000003;
+	(*vu1_bufPtr)[1] = (int)gs_regs_normal;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000003;
+	vu1_bufPtr = vu1_bufPtr + 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_gsRegsEffects);
+GAME_SECTION(VU1_gsRegsEffects) void VU1_gsRegsEffects()
+{
+	(*vu1_bufPtr)[0] = 0x30000004;
+	(*vu1_bufPtr)[1] = (int)gs_regs_effects;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000004;
+	vu1_bufPtr = vu1_bufPtr + 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7CA8);
 
@@ -88,7 +135,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7E50)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", UploadGSMemLinear);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", DMAC_VIF1_Enable);
+GAME_SECTION(DMAC_VIF1_Enable) void DMAC_VIF1_Enable()
+{
+	if (_dmacHandle[0] == 0 && _dmacHandle[1] == 0) {
+		unsigned int d_stat = *(volatile unsigned int *)0x1000e010;
+		if ((d_stat & 0x20000) == 0) *(unsigned int *)0x1000e010 = 0x20000;
+		_dmacHandle[0] = AddDmacHandler(1, DMAC_VIF1_Handler, 0);
+		_dmacHandle[1] = AddDmacHandler(0xf, DMAC_BEIS_Handler, 0);
+		EnableDmac(1);
+	}
+}
 
 GAME_SECTION(DMAC_VIF1_Disable) void DMAC_VIF1_Disable()
 {

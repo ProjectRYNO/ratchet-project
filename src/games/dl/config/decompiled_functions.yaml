@@ -91,6 +91,84 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  DMAC_VIF1_Enable: 0x004E8068
+  VU1_gsRegsEffects: 0x004E7C48
+  VU1_gsRegsNormal: 0x004E7BE8
+  VU1_addDataDirect: 0x004E78D0
+  MB_SetMoveAngularSpeeds: 0x00488980
+  MB_SetMoveSpeedLimits: 0x004888E0
+  MB_SetMoveDistanceThresholds: 0x00488870
+  MB_GetXPBundle: 0x0047EE10
+  MB_Level99ColorTimeBased: 0x0047ED10
+  MB_ValidateRespawnNode: 0x0047EC08
+  Bot_HasCommandAbility: 0x0047D2A8
+  MB_InitializeCommandCache: 0x0047C058
+  MB_PlaySoundsInSeq: 0x0047BF48
+  MB_UnlockBogey: 0x0047BC80
+  MB_SwingMotion: 0x004796C8
+  DeleteMotionBlur: 0x004794F0
+  MB_DeleteMobyFromDynamicGroup: 0x00477B10
+  MB_AddMobyToDynamicGroup: 0x00477A98
+  MB_EndColorFlash: 0x00477120
+  MB_getTargetVars: 0x00476690
+  ReorderRGB___dupe2: 0x00476518
+  Float_To_RGBA: 0x00476450
+  DeltAng: 0x00475D18
+  SlideDelt: 0x004757E0
+  PointInsideComplexPoly: 0x004740C8
+  MB_transAnim___dupe2: 0x00473980
+  MB_snapAnim: 0x004737F0
+  MB_AddHoloshieldGadgetXP: 0x00472940
+  ResetPoseCache: 0x0046FB30
+  RebuildMobyJointCache: 0x0046F738
+  MobyAttachAnimLayer: 0x0046F100
+  MobyAllocAnimLayer: 0x0046EFE0
+  MF_AllocateMissionBoltReward: 0x0046B3B8
+  MF_GetDepreciatedValue: 0x0046B288
+  MF_AllocateXPReward: 0x0046B058
+  Bot_GrantPaintjob: 0x0047D3A8
+  MB_InitCache: 0x00484320
+  MB_StopAction_2: 0x00481100
+  Callback_SoundIsStillPlaying: 0x0048AF98
+  Start: 0x0048A290
+  UnPauseAll: 0x0048A0C0
+  PauseAll: 0x0048A060
+  Reset___dupe3: 0x00489F30
+  sound_KillByMoby: 0x004E1A58
+  sound_KillById: 0x004E19D8
+  SOUND_PLAY_LOOP: 0x004DFF28
+  MB_UpdateMoveEffects: 0x00486D58
+  MB_Action_2: 0x00480FB8
+  MB_GhostMe: 0x0047ECC8
+  MB_NumValidRespawnNodes: 0x0047EC78
+  ReorderRGB: 0x004764B8
+  _MB_damage: 0x00474DD0
+  MB_CosineInterpolate: 0x00473C08
+  MB_HandleBoltMultiplier: 0x00473778
+  MB_SetAnimCache: 0x004844E0
+  MB_GetCommandName: 0x0047CE20
+  Transition_InitMobys: 0x004F5530
+  SpawnPart_097: 0x004945C0
+  MB_UseLinearAnim: 0x00487F08
+  MB_SwitchToDeathState: 0x00484670
+  MB_SelectRespawnNode: 0x0047EBC0
+  MB_SetMobyTeamTex: 0x0047EB60
+  FUN_0047eb58: 0x0047EB58
+  FUN_0047eb50: 0x0047EB50
+  MB_BobMotion: 0x004795C0
+  MB_MP_GadgetDamageIndex: 0x00478C78
+  MB_isMorph: 0x00477770
+  MB_isCrateOClass: 0x004776C8
+  MB_SetDefaultLights: 0x00476C38
+  Lerp___dupe2: 0x004756D0
+  TweenColor: 0x00474DB0
+  MB_CosineInterpolateUnit: 0x00473C78
+  MB_CubicInterpolate: 0x00473B10
+  Bias1: 0x00473AE8
+  Bias0: 0x00473AE0
+  MB_setState: 0x00473A88
+  _mode_creditsUnInit: 0x004455A8
+  _mode_creditsInit: 0x004454E0
   music_StartHeadCB: 0x00489DD8
   music_StartBodyCB: 0x00489D80
   WPN_RC3InitWeaponsOnMovingTrain: 0x004EDE40
@@ -5111,6 +5189,68 @@ objects:
       - {object: game/loaders, section: .game_PopMobyStack, start: 0x004645E8, end: 0x00464778}
       - {object: game/loaders, section: .game_QueuePifLoad, start: 0x00464778, end: 0x00464980}
       - {object: game/loaders, section: .game_ResetLevelData, start: 0x00464980, end: 0x00464A7C}
+  game/partupd:
+    text_start: 0x00491920
+    text_end: 0x00495490
+    slots:
+      - {object: game/partupd, section: .game_SpawnPart_002_Main, start: 0x00491920, end: 0x00491AC0}
+      - {object: game/partupd, section: .game_SpawnPart_002, start: 0x00491AC0, end: 0x00491B80}
+      - {object: game/partupd, section: .game_func_00491B80, start: 0x00491B80, end: 0x00491B88}
+      - {object: game/partupd, section: .game_SpawnPart_004, start: 0x00491B88, end: 0x00491C88}
+      - {object: game/partupd, section: .game_func_00491C88, start: 0x00491C88, end: 0x00491CC0}
+      - {object: game/partupd, section: .game_SpawnPart_011, start: 0x00491CC0, end: 0x00491FA8}
+      - {object: game/partupd, section: .game_func_00491FA8, start: 0x00491FA8, end: 0x00491FC8}
+      - {object: game/partupd, section: .game_SpawnPart_015, start: 0x00491FC8, end: 0x00492130}
+      - {object: game/partupd, section: .game_func_00492130, start: 0x00492130, end: 0x00492150}
+      - {object: game/partupd, section: .game_SpawnPart_021, start: 0x00492150, end: 0x00492240}
+      - {object: game/partupd, section: .game_func_00492240, start: 0x00492240, end: 0x00492248}
+      - {object: game/partupd, section: .game_SpawnPart_022, start: 0x00492248, end: 0x00492368}
+      - {object: game/partupd, section: .game_SpawnPart_023, start: 0x00492368, end: 0x00492530}
+      - {object: game/partupd, section: .game_func_00492530, start: 0x00492530, end: 0x00492538}
+      - {object: game/partupd, section: .game_SpawnPart_025, start: 0x00492538, end: 0x004926C8}
+      - {object: game/partupd, section: .game_func_004926C8, start: 0x004926C8, end: 0x004926D8}
+      - {object: game/partupd, section: .game_SpawnPart_028, start: 0x004926D8, end: 0x004929D8}
+      - {object: game/partupd, section: .game_SpawnPart_029, start: 0x004929D8, end: 0x00492B70}
+      - {object: game/partupd, section: .game_func_00492B70, start: 0x00492B70, end: 0x00492B90}
+      - {object: game/partupd, section: .game_SpawnPart_034, start: 0x00492B90, end: 0x00492D78}
+      - {object: game/partupd, section: .game_func_00492D78, start: 0x00492D78, end: 0x00492D80}
+      - {object: game/partupd, section: .game_SpawnPart_035, start: 0x00492D80, end: 0x00492E88}
+      - {object: game/partupd, section: .game_func_00492E88, start: 0x00492E88, end: 0x00492EC8}
+      - {object: game/partupd, section: .game_SpawnPart_044, start: 0x00492EC8, end: 0x00493038}
+      - {object: game/partupd, section: .game_func_00493038, start: 0x00493038, end: 0x00493040}
+      - {object: game/partupd, section: .game_SpawnPart_045, start: 0x00493040, end: 0x004931B8}
+      - {object: game/partupd, section: .game_SpawnPart_046, start: 0x004931B8, end: 0x004932C8}
+      - {object: game/partupd, section: .game_func_004932C8, start: 0x004932C8, end: 0x004932F0}
+      - {object: game/partupd, section: .game_SpawnPart_053, start: 0x004932F0, end: 0x004934A8}
+      - {object: game/partupd, section: .game_func_004934A8, start: 0x004934A8, end: 0x004934F8}
+      - {object: game/partupd, section: .game_SpawnPart_064, start: 0x004934F8, end: 0x00493618}
+      - {object: game/partupd, section: .game_func_00493618, start: 0x00493618, end: 0x00493668}
+      - {object: game/partupd, section: .game_SpawnPart_074, start: 0x00493668, end: 0x00493820}
+      - {object: game/partupd, section: .game_func_00493820, start: 0x00493820, end: 0x00493888}
+      - {object: game/partupd, section: .game_SpawnPart_085, start: 0x00493888, end: 0x00493A78}
+      - {object: game/partupd, section: .game_UpdatePart_085, start: 0x00493A78, end: 0x00493BD0}
+      - {object: game/partupd, section: .game_func_00493BD0, start: 0x00493BD0, end: 0x00493BF8}
+      - {object: game/partupd, section: .game_UpdatePart_089, start: 0x00493BF8, end: 0x00494078}
+      - {object: game/partupd, section: .game_SpawnPart_091, start: 0x00494078, end: 0x00494208}
+      - {object: game/partupd, section: .game_func_00494208, start: 0x00494208, end: 0x00494210}
+      - {object: game/partupd, section: .game_SpawnPart_092, start: 0x00494210, end: 0x00494440}
+      - {object: game/partupd, section: .game_func_00494440, start: 0x00494440, end: 0x00494468}
+      - {object: game/partupd, section: .game_SpawnPart_097_Main, start: 0x00494468, end: 0x004945C0}
+      - {object: game/partupd, section: .game_SpawnPart_097, start: 0x004945C0, end: 0x004946A8}
+      - {object: game/partupd, section: .game_UpdatePart_097, start: 0x004946A8, end: 0x00494820}
+      - {object: game/partupd, section: .game_func_00494820, start: 0x00494820, end: 0x00494830}
+      - {object: game/partupd, section: .game_SpawnPart_099, start: 0x00494830, end: 0x00494980}
+      - {object: game/partupd, section: .game_func_00494980, start: 0x00494980, end: 0x00494990}
+      - {object: game/partupd, section: .game_SpawnPart_102, start: 0x00494990, end: 0x00494B08}
+      - {object: game/partupd, section: .game_func_00494B08, start: 0x00494B08, end: 0x00494B40}
+      - {object: game/partupd, section: .game_SpawnPart_111, start: 0x00494B40, end: 0x00494C68}
+      - {object: game/partupd, section: .game_func_00494C68, start: 0x00494C68, end: 0x00494CA8}
+      - {object: game/partupd, section: .game_SpawnPart_121, start: 0x00494CA8, end: 0x00494E08}
+      - {object: game/partupd, section: .game_func_00494E08, start: 0x00494E08, end: 0x00494E30}
+      - {object: game/partupd, section: .game_SpawnPart_126, start: 0x00494E30, end: 0x00494FC8}
+      - {object: game/partupd, section: .game_SpawnPart_127, start: 0x00494FC8, end: 0x00495148}
+      - {object: game/partupd, section: .game_UpdatePart_127, start: 0x00495148, end: 0x004952F8}
+      - {object: game/partupd, section: .game_SpawnPart_128, start: 0x004952F8, end: 0x00495490}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -8463,6 +8603,7 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/mobyutil, function: Bot_HasCommandAbility, section: .game_Bot_HasCommandAbility.rodata, start: 0x003D0DF0, end: 0x003D0E28}
       - {object: game/mcstate, function: MCSTATE_TransToState, section: .game_MCSTATE_TransToState.rodata, start: 0x003D0900, end: 0x003D097C}
       - {object: game/mcstate, function: MCSTATE_ClearCommand, section: .game_MCSTATE_ClearCommand.rodata, start: 0x003D09A0, end: 0x003D09C0}
       - {object: game/mcstate, function: MCSTATE_CommandIsSet, section: .game_MCSTATE_CommandIsSet.rodata, start: 0x003D09C0, end: 0x003D09DC}

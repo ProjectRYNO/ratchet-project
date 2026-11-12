@@ -1,4 +1,11 @@
 #include "common.h"
+#include "game_section.h"
+
+struct vec4 { float x, y, z, w; };
+struct part;
+part *CreatePart(int) __asm__("CreatePart");
+void SpawnPart_097_Main(part *, vec4 &, vec4 &, int, int, int, int, int, float, float, float, int) __asm__("SpawnPart_097_Main");
+part *SpawnPart_097(vec4 &pos, vec4 &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID) __asm__("SpawnPart_097");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_002_Main);
 
@@ -86,7 +93,12 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00494440)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_097_Main);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_097);
+GAME_SECTION(SpawnPart_097) part *SpawnPart_097(vec4 &pos, vec4 &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID)
+{
+	part *pPart = CreatePart(0x61);
+	if (pPart) SpawnPart_097_Main(pPart, pos, vel, frames, rgb, rotSp, initAlpha, endAlpha, initScale, endScale, gravity, texID);
+	return pPart;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", UpdatePart_097);
 

@@ -30,9 +30,11 @@ struct MissionDef {
 	/* 0x00 */ char unk00[0x18];
 	/* 0x18 */ int visibility_type;
 	/* 0x1c */ int points;
+	/* 0x20 */ int bolt_reward;
 };
 struct MissionStat {
-	/* 0x00 */ char unk00[8];
+	/* 0x00 */ int xp;
+	/* 0x04 */ int bolts;
 	/* 0x08 */ unsigned char status;
 	/* 0x09 */ unsigned char rewards;
 	/* 0x0a */ char unk0a[2];
@@ -73,6 +75,43 @@ Hero *GB_GetLocalHeroFromSlot(int) __asm__("GB_GetLocalHeroFromSlot");
 bool MF_GetBestSpawnPointByOther(SpawnPointData **, Hero *, SpawnPointList *) __asm__("MF_GetBestSpawnPointByOther");
 SpawnPointData *MF_GetBestSpawnPoint(Hero *) __asm__("MF_GetBestSpawnPoint");
 
+extern float boltMultiplierPerLevel[] __asm__("boltMultiplierPerLevel");
+int IsGameInChallengeMode() __asm__("IsGameInChallengeMode");
+int MF_AllocateMissionBoltReward(int, int) __asm__("MF_AllocateMissionBoltReward");
+int MF_GetDepreciatedValue(int, float, float, float, float) __asm__("MF_GetDepreciatedValue");
+static inline MissionStat *MF_GetMissionStat(int level, int missionIndex)
+{
+	int l = (level - 1) % 20;
+	return (MissionStat *)((missionIndex * sizeof(MissionStat) + l * sizeof(LevelStat)) + (char *)mf_levelStats);
+}
+struct MissionReward {
+	/* 0x00 */ int xp;
+	/* 0x04 */ int bolts;
+	/* 0x08 */ int unk08[2];
+};
+struct RewardDecay {
+	/* 0x00 */ int rate;
+	/* 0x04 */ int min;
+};
+struct RewardData {
+	/* 0x000 */ MissionReward mission[64];
+	/* 0x400 */ RewardDecay xpDecay;
+	/* 0x408 */ RewardDecay boltDecay;
+};
+struct RewardMoby {
+	/* 0x00 */ char unk00[0xb4];
+	/* 0xb4 */ short bolts;
+	/* 0xb6 */ unsigned short xp;
+};
+extern RewardData mf_rewardData __asm__("mf_rewardData");
+int MF_AllocateXPReward(RewardMoby *) __asm__("MF_AllocateXPReward");
+int MF_AllocateBoltReward(RewardMoby *) __asm__("MF_AllocateBoltReward");
+static inline int *MF_GetMissionBolts(int level, int missionIndex)
+{
+	int l = (level - 1) % 20;
+	return (int *)((missionIndex * sizeof(MissionStat) + l * sizeof(LevelStat)) + (char *)&mf_levelStats[0].missions[0].bolts);
+}
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_SetupSwitchMissionIndex);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046A300);
@@ -106,17 +145,61 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_GetNext
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B048);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocateXPReward);
+GAME_SECTION(MF_AllocateXPReward) int MF_AllocateXPReward(RewardMoby *pMoby)
+{
+	int xpReward;
+	if (IsGameInChallengeMode()) return pMoby->xp;
+	{
+		xpReward = MF_GetDepreciatedValue(pMoby->xp, (float)MF_GetMissionStat(Level, mf_activeMissionIndex)->xp, (float)mf_rewardData.mission[mf_activeMissionIndex].xp, (float)mf_rewardData.xpDecay.rate / 100.0f, (float)mf_rewardData.xpDecay.min / 100.0f);
+		MF_GetMissionStat(Level, mf_activeMissionIndex)->xp += xpReward;
+	}
+	return xpReward;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocateBoltReward);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_GetDepreciatedValue);
+GAME_SECTION(MF_GetDepreciatedValue) int MF_GetDepreciatedValue(int rewardAmount, float accumulated, float limit, float decayRate, float minRate)
+{
+	float remainingReward = (float)rewardAmount;
+	float loopLimit = limit;
+	float loopDecayRate = 1.0f;
+	float reward = 0.0f;
+	float nextLoopDecayRate;
+	for (; 0.0f < remainingReward; remainingReward *= decayRate, loopLimit += limit * loopDecayRate) {
+		if (accumulated < loopLimit) {
+			float d = loopLimit - accumulated;
+			float rewardToGive = remainingReward <? d;
+			reward += rewardToGive;
+			remainingReward -= rewardToGive;
+		}
+		nextLoopDecayRate = loopDecayRate * decayRate;
+		if (nextLoopDecayRate < minRate) {
+			reward += (remainingReward / loopDecayRate) * minRate;
+			break;
+		}
+		loopDecayRate = nextLoopDecayRate;
+	}
+	return (int)reward;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B328);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocatePointReward);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocateMissionBoltReward);
+GAME_SECTION(MF_AllocateMissionBoltReward) int MF_AllocateMissionBoltReward(int level, int missionIndex)
+{
+	int boltReward = GetMissionDef(ConvertMissionIndex(level, missionIndex))->bolt_reward;
+	if (IsGameInChallengeMode()) {
+		boltReward = (int)((float)boltReward * boltMultiplierPerLevel[(Level - 1) % 20]);
+		boltReward /= 1000;
+		boltReward *= 1000;
+	} else {
+		int completes = MF_GetMissionStat(level, missionIndex)->rewards;
+		if (completes >= 3) boltReward = 0;
+		else if (completes) boltReward >>= completes;
+	}
+	return boltReward;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B4A8);
 

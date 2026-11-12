@@ -2,7 +2,11 @@
 #include "game_section.h"
 
 
-struct moby;
+struct moby {
+	/* 0x00 */ char unk00[0x6e];
+	/* 0x6e */ short soundChannel;
+	/* 0x70 */ char unk70[0x90];
+};
 struct SoundInstance;
 struct SoundDef;
 struct SoundData {
@@ -75,9 +79,20 @@ void sound_PlayCB(unsigned int, unsigned long) __asm__("sound_PlayCB");
 void sound_FreshenCB(unsigned int, unsigned long) __asm__("sound_FreshenCB");
 void sound_initLineEmitters() __asm__("sound_initLineEmitters");
 
+short sound_MobyPlay(unsigned int, unsigned int, moby *) __asm__("sound_MobyPlay");
+void SOUND_PLAY_LOOP(int &, moby *, int) __asm__("SOUND_PLAY_LOOP");
+void sound_KillById(int, moby *) __asm__("sound_KillById");
+void sound_KillByMoby(moby *, int) __asm__("sound_KillByMoby");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CreateHandle);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", SOUND_PLAY_LOOP);
+GAME_SECTION(SOUND_PLAY_LOOP) void SOUND_PLAY_LOOP(int &handle, moby *pMoby, int sound_id)
+{
+	SoundData *channel = sound_GetChannelFromHandle(handle);
+	if (channel == 0 || (pMoby == channel->pMoby && channel->status == 0)) {
+		handle = sound_MobyPlay(sound_id, 4, pMoby);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CamOfs);
 
@@ -113,9 +128,33 @@ GAME_SECTION(IsMobyPlayingSound) int IsMobyPlayingSound(moby *pMoby, short handl
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E19D0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_KillById);
+GAME_SECTION(sound_KillById) void sound_KillById(int sound_id, moby *pMoby)
+{
+	int i;
+	SoundData *channel = Sound.channels;
+	for (i = 0x33; i >= 0; i--) {
+		if ((pMoby == 0 || pMoby == channel->pMoby) && sound_id == channel->def_index) {
+			sound_KillByChannel(channel);
+		}
+		channel++;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_KillByMoby);
+GAME_SECTION(sound_KillByMoby) void sound_KillByMoby(moby *pMoby, int bLoopingSoundsOnly)
+{
+	int i;
+	SoundData *channel;
+	if (pMoby) {
+		channel = Sound.channels;
+		for (i = 0x33; i >= 0; i--) {
+			if (pMoby == channel->pMoby && (bLoopingSoundsOnly == 0 || (channel->flags & 4))) {
+				sound_KillByChannel(channel);
+			}
+			channel++;
+		}
+		pMoby->soundChannel = -1;
+	}
+}
 
 GAME_SECTION(sound_Kill) void sound_Kill(int handle)
 {
