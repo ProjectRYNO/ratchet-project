@@ -37,14 +37,25 @@ struct CameraPolar {
 	/* 0x50 */ vec4 quat[2];
 	/* 0x70 */ char unk70[0x50];
 	/* 0xc0 */ vec4 lastPolar[2];
-	/* 0xe0 */ char unke0[0x1b0 - 0xe0];
+	/* 0xe0 */ char unke0[0x180 - 0xe0];
+	/* 0x180 */ float fovSpeed;
+	/* 0x184 */ float fovIdeal;
+	/* 0x188 */ float fovActual;
+	/* 0x18c */ float fovGain;
+	/* 0x190 */ float fovDamp;
+	/* 0x194 */ float fovLimit;
+	/* 0x198 */ char fovChangeType;
+	/* 0x199 */ char fovState;
+	/* 0x19a */ char unk19a[0x1b0 - 0x19a];
 	/* 0x1b0 */ int underwater;
 	/* 0x1b4 */ char unk1b4[0x470 - 0x2b0 - 0x1b4];
 };
 struct GameCameraData {
 	/* 0x000 */ char unk000[0x50];
 	/* 0x050 */ UpdateCam *pCurrent;
-	/* 0x054 */ char unk054[0x2b0 - 0x54];
+	/* 0x054 */ char unk054[0x124 - 0x54];
+	/* 0x124 */ moby *pCamColl;
+	/* 0x128 */ char unk128[0x2b0 - 0x128];
 	/* 0x2b0 */ CameraPolar polar;
 };
 struct CamClassDef {
@@ -71,6 +82,35 @@ void Camera_runSetupToNewCam(UpdateCam *) __asm__("Camera_runSetupToNewCam");
 
 extern CameraSystem GameCameraSystem __asm__("GameCamera");
 
+
+/* ===== AG3 additions ===== */
+struct RETICULE {
+	/* 0x000 */ char unk000[0x380];
+	/* 0x380 */ int numActive;
+	/* 0x384 */ int unk384[3];
+};
+extern RETICULE Reticule __asm__("Reticule");
+struct ViewContext {
+	/* 0x00 */ char unk00[0xb0];
+	/* 0xb0 */ float xratio;
+};
+extern ViewContext VC __asm__("VC");
+float FastSin(float) __asm__("FastSin");
+float FastCos(float) __asm__("FastCos");
+float FastSubRots(float, float) __asm__("FastSubRots");
+float FastAddRots(float, float) __asm__("FastAddRots");
+void UpdateViewContext() __asm__("UpdateViewContext");
+moby *Spawn_Moby1007(vec4 &, int) __asm__("Spawn_Moby1007");
+void DeleteMoby(moby *) __asm__("DeleteMoby");
+struct NetInfo {
+	/* 0x00 */ int NumLocalPlayers;
+};
+extern NetInfo g_nwInfo __asm__("D_172174");
+extern int gFrameHz __asm__("gFrameHz");
+void Camera_InitFovSystem(int) __asm__("Camera_InitFovSystem");
+void Camera_handleCollWithHero(int, UpdateCam *) __asm__("Camera_handleCollWithHero");
+float Cam_InterpAngles(float, float, float *, float, float, float) __asm__("Cam_InterpAngles");
+float Cam_InterpValues(float, float, float *, float, float, float) __asm__("Cam_InterpValues");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitFovSystem);
 
@@ -174,7 +214,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_resetToF
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043D8E8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_DestroyReticule);
+GAME_SECTION(Camera_DestroyReticule) void Camera_DestroyReticule(moby *pMoby)
+{
+	Reticule.numActive = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043D930);
 

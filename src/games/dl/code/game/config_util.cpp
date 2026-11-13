@@ -26,9 +26,27 @@ inline bool isAlpha(int c)
 	return (unsigned int)(c - 0x41) < 26 || (unsigned int)(c - 0x61) < 26;
 }
 
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/config_util", ConfigUtil_ParseLine);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/config_util", ConfigUtil_ReadLine);
+GAME_SECTION(ConfigUtil_ReadLine) unsigned char *ConfigUtil_ReadLine(unsigned char *input, unsigned char *buff, unsigned int buff_size)
+{
+	int comment = 0;
+	int quote = 0;
+	unsigned int cnt;
+	for (cnt = 0; cnt < buff_size - 1; cnt++) {
+		if (*input == 0x22 && input[-1] != 0x5c) quote = !quote;
+		if (*input == 0xa && !quote) break;
+		if (*input == 0) break;
+		if (*input == 0x3b) comment = !comment;
+		if (*input != 0xd && !comment) *buff++ = *input;
+		input++;
+	}
+	*buff = 0;
+	unsigned char *ret = input + 1;
+	if (!*input) ret = input;
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/config_util", ConfigUtil_ReadWord);
 

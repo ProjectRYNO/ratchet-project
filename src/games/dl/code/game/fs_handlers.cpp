@@ -42,6 +42,18 @@ extern void *soundBank3Addr;
 int snd_StreamSafeCdRead(int lsn, int length, void *buffer, void *mode) __asm__("snd_StreamSafeCdRead");
 unsigned int load_file(fsLoadFile_t *p_load, fsDeviceArgs_t *p_device) __asm__("load_file");
 
+/* ===== AM additions ===== */
+struct WadLevelDef {
+	/* 0x0000 */ char unk0000[0xcbb4];
+	/* 0xcbb4 */ int level_sector;
+	/* 0xcbb8 */ char unkcbb8[0xd410 - 0xcbb8];
+	/* 0xd410 */ struct { int offset; int length; } mission_banks[64];
+};
+extern WadLevelDef g_wad __asm__("D_001C2040");
+extern "C" void snd_UnloadBank(unsigned int);
+void snd_BankLoadByLoc_CB(int, int, void (*)(unsigned int, unsigned long), unsigned long) __asm__("snd_BankLoadByLoc_CB");
+unsigned int load_mission_bank(fsLoadBank_t *, fsDeviceArgs_t *) __asm__("load_mission_bank");
+
 GAME_SECTION(cb_missionBankLoadComplete) void cb_missionBankLoadComplete(unsigned int handle, unsigned long user)
 {
 	fsLoadBank_t *args = (fsLoadBank_t *)(long)(int)user;
@@ -68,7 +80,15 @@ GAME_SECTION(load_complete_file) int load_complete_file(fsLoadFile_t *p_load)
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fs_handlers", load_mission_bank);
+GAME_SECTION(load_mission_bank) unsigned int load_mission_bank(fsLoadBank_t *p_args, fsDeviceArgs_t *p_device)
+{
+	snd_UnloadBank(Sound.handles[3]);
+	snd_SRAMGetFreeMem();
+	p_args->m_pp_bank_handle = &Sound.handles[3];
+	Sound.handles[3] = 0xffffffff;
+	snd_BankLoadByLoc_CB(g_wad.mission_banks[p_args->mission].offset + g_wad.level_sector, 0, cb_missionBankLoadComplete, (unsigned long)(unsigned int)p_args);
+	return 1;
+}
 
 GAME_SECTION(is_complete_mission_bank) unsigned int is_complete_mission_bank(fsLoadBank_t *p_args, fsDeviceArgs_t *p_device)
 {

@@ -15,10 +15,14 @@ void WPN_ClearCachedTargets(void *target) __asm__("WPN_ClearCachedTargets");
 
 
 typedef struct wpnUpgradeVars {
-	/* 0x00 */ char unk00[8];
+	/* 0x00 */ short state;
+	/* 0x02 */ short transTimer;
+	/* 0x04 */ float transTimerInv;
 	/* 0x08 */ short gadget;
 	/* 0x0a */ short mode;
-	/* 0x0c */ char unk0c[0xac];
+	/* 0x0c */ char unk0c[0x40 - 0xc];
+	/* 0x40 */ unsigned char blackOverlayAlpha;
+	/* 0x41 */ char unk41[0xb8 - 0x41];
 	/* 0xb8 */ void *mobys[4];
 } wpnUpgradeVars_t;
 extern wpnUpgradeVars_t _WPN_umv __asm__("_WPN_umv");
@@ -60,6 +64,71 @@ void WPN_RemoveVelOrientExternal(int) __asm__("WPN_RemoveVelOrientExternal");
 void WPN_KillAllSoundsForPendingScene(WpnHero *) __asm__("WPN_KillAllSoundsForPendingScene");
 void WPN_SetOClass(WpnMoby *, int) __asm__("WPN_SetOClass");
 int WPN_RC3InitWeaponsOnMovingTrain(WpnHero *) __asm__("WPN_RC3InitWeaponsOnMovingTrain");
+
+struct WpnTargetMoby {
+	/* 0x00 */ char unk00[0x20];
+	/* 0x20 */ unsigned char state;
+	/* 0x21 */ char unk21[0x34 - 0x21];
+	/* 0x34 */ unsigned short modeBits;
+};
+int FastDecTimer(int &) __asm__("FastDecTimer");
+void WPN_UpdateCachedTargets(void *) __asm__("WPN_UpdateCachedTargets");
+void WPN_UpgradeDrawFx(void *) __asm__("WPN_UpgradeDrawFx");
+
+struct HelpDataMessage {
+	/* 0x00 */ unsigned short timesUsed;
+	/* 0x02 */ char unk02[0xa];
+};
+extern HelpDataMessage HelpDataMessages[] __asm__("HelpDataMessages");
+extern int g_gameType __asm__("g_gameType");
+extern int *WPN_HoloShields[10][4] __asm__("WPN_HoloShields");
+extern "C" {
+	void snd_ContinueAllSoundsInGroup(int);
+	void snd_FlushSoundCommands();
+}
+void music_Unpause() __asm__("music_Unpause");
+void Help_QueueMessage(short, short, short, void *, float, float, float, float) __asm__("Help_QueueMessage");
+void *MobyGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
+void WPN_UpgradeModeUnInit() __asm__("WPN_UpgradeModeUnInit");
+void WPN_TurnOffHoloShields() __asm__("WPN_TurnOffHoloShields");
+
+/* ===== AM additions ===== */
+struct BangleMoby {
+	/* 0x00 */ char unk00[0x74];
+	/* 0x74 */ short bangles;
+	/* 0x76 */ char unk76[0xbc - 0x76];
+	/* 0xbc */ short oClass;
+	/* 0xbe */ char unkbe[2];
+};
+struct WpnGadgetDef {
+	/* 0x00 */ char unk00[0x3c];
+	/* 0x3c */ short ammoClass;
+	/* 0x3e */ char unk3e[2];
+};
+WpnGadgetDef *GetGadgetDef(int, int) __asm__("GetGadgetDef");
+void WPN_BangelizeWeapons(BangleMoby *, int, int) __asm__("WPN_BangelizeWeapons");
+struct HoloClass {
+	/* 0x00 */ char unk00[0x10];
+	/* 0x10 */ int collision;
+};
+struct HoloMoby {
+	/* 0x00 */ char unk00[0x24];
+	/* 0x24 */ HoloClass *pClass;
+	/* 0x28 */ char unk28[0x98 - 0x28];
+	/* 0x98 */ int collData;
+};
+struct HoloHero {
+	/* 0x0000 */ char unk0000[0x2f14];
+	/* 0x2f14 */ int teamIndex;
+};
+struct HoloInterface {
+	/* 0x00 */ void *unk00[2];
+	/* 0x08 */ void (*turnOn)();
+	/* 0x0c */ void (*turnOnTeam)(int);
+};
+extern HoloHero *g_HoloHero[10] __asm__("g_Hero");
+extern volatile int g_gameRulesVol __asm__("g_gameRules");
+void WPN_TurnOnHoloShields(int) __asm__("WPN_TurnOnHoloShields");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_DrawReticule);
 
@@ -138,7 +207,18 @@ GAME_SECTION(WPN_SetUpgradeGadgetMode) void WPN_SetUpgradeGadgetMode(int gadget,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_UpgradeModeInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_UpgradeModeUnInit);
+GAME_SECTION(WPN_UpgradeModeUnInit) void WPN_UpgradeModeUnInit()
+{
+	snd_ContinueAllSoundsInGroup(0xcd);
+	music_Unpause();
+	snd_FlushSoundCommands();
+	if (g_gameType != 1) {
+		if (HelpDataMessages[0x680].timesUsed == 0) Help_QueueMessage(0x2fab, 0x680, 2, 0, 0.0f, 1.0f, 0.0f, 64.0f);
+		else if (HelpDataMessages[0x681].timesUsed == 0) Help_QueueMessage(0x2fac, 0x681, 2, 0, 0.0f, 1.0f, 0.0f, 64.0f);
+	}
+	_WPN_umv.gadget = -1;
+	_WPN_umv.mode = -1;
+}
 
 GAME_SECTION(WPN_SetOClass) void WPN_SetOClass(WpnMoby *pMoby, int oClass)
 {
@@ -185,7 +265,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_Showcase_V
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_ShowcaseGadgets);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_UpgradeDrawFx);
+GAME_SECTION(WPN_UpgradeDrawFx) void WPN_UpgradeDrawFx(void *pMoby)
+{
+	float fac = (float)_WPN_umv.transTimer * _WPN_umv.transTimerInv;
+	if (_WPN_umv.state == 0 || _WPN_umv.state == 6 || _WPN_umv.state == 7) {
+		_WPN_umv.blackOverlayAlpha = (int)((1.0f - fac) * 128.0f);
+	} else if (_WPN_umv.state == 1) {
+		_WPN_umv.blackOverlayAlpha = (int)(fac * 128.0f);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EDD80);
 
@@ -213,10 +301,143 @@ GAME_SECTION(WPN_RC3InitWeaponsOnMovingTrain) int WPN_RC3InitWeaponsOnMovingTrai
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EDEA0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_BangelizeWeapons);
+GAME_SECTION(WPN_BangelizeWeapons) void WPN_BangelizeWeapons(BangleMoby *pMoby, int rootID, int wpnLvl)
+{
+	WpnGadgetDef *pGadget = GetGadgetDef(rootID, 0);
+	switch (rootID) {
+	case 2:
+		if (wpnLvl != 9) {
+			pMoby->bangles = 0;
+			return;
+		}
+		pMoby->bangles = 1;
+		break;
+	case 3:
+		if (wpnLvl == 9) {
+			pMoby->bangles = 0x31;
+		} else {
+			pMoby->bangles = 3;
+		}
+		break;
+	case 6:
+		if (wpnLvl != 9) {
+			pMoby->bangles = 0;
+			return;
+		}
+		pMoby->bangles = 0xf;
+		break;
+	case 7:
+		if (wpnLvl != 9) {
+			pMoby->bangles = 0;
+			return;
+		}
+		pMoby->bangles = 7;
+		break;
+	case 4:
+		if (wpnLvl == 9) {
+			pMoby->bangles = 0xc;
+		} else {
+			pMoby->bangles = 3;
+		}
+		break;
+	case 8:
+		if (wpnLvl == 9) {
+			pMoby->bangles = 0xf;
+		} else {
+			pMoby->bangles = 1;
+		}
+		break;
+	case 5:
+		if (wpnLvl != 9) {
+			pMoby->bangles = 1;
+			return;
+		}
+		pMoby->bangles = 6;
+		break;
+	case 15:
+		if (wpnLvl == 9) {
+			pMoby->bangles = 0x1f;
+		} else {
+			pMoby->bangles = 3;
+		}
+		break;
+	case 9:
+		if (pMoby->oClass == 0x24f2) {
+			if (wpnLvl == 9) {
+				pMoby->bangles = 3;
+			} else {
+				pMoby->bangles = 0;
+			}
+		} else {
+			if (pMoby->oClass != pGadget->ammoClass) {
+				return;
+			}
+			if (wpnLvl == 9) {
+				pMoby->bangles = 7;
+			} else {
+				pMoby->bangles = 6;
+			}
+		}
+		break;
+	case 10:
+	case 11:
+	case 12:
+	case 13:
+	case 14:
+	default:
+		return;
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_TurnOnHoloShields);
+extern volatile int g_gameTypeVol __asm__("g_gameType");
+extern int g_gameTypeAM __asm__("g_gameType");
+HoloInterface *HoloGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
+GAME_SECTION(WPN_TurnOnHoloShields) void WPN_TurnOnHoloShields(int teamIndex)
+{
+	int i;
+	int j;
+	HoloInterface *pInterface;
+	for (i = 0; i < 10; i++) {
+		if (g_HoloHero[i] == 0 || (g_HoloHero[i]->teamIndex != teamIndex && (g_gameTypeVol != 0 || g_gameRulesVol != 1 || teamIndex < 0))) {
+			for (j = 0; j < 4; j++) {
+				HoloMoby *pMoby = (HoloMoby *)WPN_HoloShields[i][j];
+				if (pMoby) {
+					pMoby->collData = pMoby->pClass->collision;
+				}
+			}
+		}
+	}
+	if (g_gameTypeAM == 0 && teamIndex == -1) {
+		pInterface = HoloGetInterface(0x263b, 0, 0xc);
+		if (pInterface && pInterface->turnOn) {
+			pInterface->turnOn();
+		}
+	}
+	if (g_gameTypeAM == 1) {
+		pInterface = HoloGetInterface(0x265b, 0, 0x14);
+		if (pInterface && pInterface->turnOnTeam) {
+			pInterface->turnOnTeam(teamIndex);
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_TurnOffHoloShields);
+GAME_SECTION(WPN_TurnOffHoloShields) void WPN_TurnOffHoloShields()
+{
+	int i;
+	int j;
+	for (i = 0; i < 10; i++) {
+		for (j = 0; j < 4; j++) {
+			if (WPN_HoloShields[i][j]) WPN_HoloShields[i][j][0x26] = 0;
+		}
+	}
+	if (g_gameType == 0) {
+		void *pInterface = MobyGetInterface(0x263b, 0, 0xc);
+		if (pInterface && ((void (**)())pInterface)[1]) ((void (**)())pInterface)[1]();
+	}
+	if (g_gameType == 1) {
+		void *pInterface = MobyGetInterface(0x265b, 0, 0x14);
+		if (pInterface && ((void (**)(int))pInterface)[4]) ((void (**)(int))pInterface)[4](-1);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EE230);

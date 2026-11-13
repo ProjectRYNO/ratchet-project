@@ -50,6 +50,10 @@ struct StreamInterface {
 	void Start(Stream *) __asm__("Start___dupe2");
 	static Stream *GetStreamFromHandle(unsigned int) __asm__("GetStreamFromHandle");
 	static void Free(Stream *) __asm__("Free");
+	unsigned int Alloc(Stream **) __asm__("Alloc");
+	unsigned int StreamsStoppedAM(Stream **) __asm__("StreamsStopped");
+	void Update(float) __asm__("Update___dupe54");
+	void WaitForStop(Stream **, int, void (*)(void *), void *) __asm__("WaitForStop");
 };
 extern Stream m_streams[3] __asm__("StreamInterface_m_streams");
 int m_num_open_streams __asm__("D_21F358") GAME_GP_DATA = 0;
@@ -73,6 +77,27 @@ struct StreamInterface2 {
 extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFloat");
 extern "C" int snd_FlushSoundCommands();
 
+struct StreamInterface3 {
+	unsigned int Stop(unsigned int, float) __asm__("Stop");
+	unsigned int SetMinMaxVolume(unsigned int, float, float) __asm__("SetMinMaxVolume");
+	static void Callback_PlayVAGStreamByLoc(unsigned int, unsigned long) __asm__("Callback_PlayVAGStreamByLoc");
+	static void Callback_IsVAGStreamBuffered(unsigned int, unsigned long) __asm__("Callback_IsVAGStreamBuffered");
+};
+struct SoundChannelHandle {
+	/* 0x00 */ unsigned int handle;
+};
+SoundChannelHandle *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
+
+/* ===== AM additions ===== */
+struct StreamInterfaceAM {
+	void SetGain(Stream *) __asm__("SetGain___dupe2");
+	unsigned int StopAll(unsigned int, int, void (*)(void *), void *) __asm__("StopAll___dupe2");
+	void WaitForStop(Stream **, int, void (*)(void *), void *) __asm__("WaitForStop");
+	unsigned int Alloc(Stream **) __asm__("Alloc");
+};
+extern "C" void *memset(void *, int, unsigned int);
+extern "C" int sceGsSyncV(int);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", InitSoundDef);
 
 GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
@@ -89,7 +114,22 @@ GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_00489F98);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", StopAll___dupe2);
+GAME_SECTION(StopAll___dupe2) unsigned int StreamInterfaceAM::StopAll(unsigned int synchronous, int timeout_vsyncs, void (*func)(void *), void *arg)
+{
+	Stream *pp_streams[3];
+	int i;
+	memset(pp_streams, 0, sizeof(pp_streams));
+	for (i = 0; i < 3; i++) {
+		if (m_streams[i].m_state) {
+			pp_streams[i] = &m_streams[i];
+			m_streams[i].m_command |= 8;
+		}
+	}
+	if (synchronous) {
+		WaitForStop(pp_streams, timeout_vsyncs, func, arg);
+	}
+	return 1;
+}
 
 GAME_SECTION(PauseAll) void StreamInterface2::PauseAll(unsigned int synchronous)
 {
@@ -128,7 +168,21 @@ GAME_SECTION(Play___dupe2) unsigned int StreamInterface::Play(int track, int typ
 	return stream_handle;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Queue);
+GAME_SECTION(Queue) unsigned int StreamInterface::Queue(int track, int type, MobyInstance *owner, unsigned int flags)
+{
+	unsigned int handle = 0xffffffff;
+	Stream *stream = 0;
+	if (Alloc(&stream)) {
+		Initialize(stream);
+		stream->m_flags = flags;
+		stream->m_type = type;
+		stream->m_track_id = track;
+		stream->m_owner = owner;
+		stream->m_state = 1;
+		handle = CreateHandle(stream);
+	}
+	return handle;
+}
 
 GAME_SECTION(GetState) unsigned int StreamInterface::GetState(unsigned int stream_handle, int *stream_state)
 {
@@ -154,11 +208,32 @@ GAME_SECTION(Start) unsigned int StreamInterface2::Start(unsigned int stream_han
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Stop);
+GAME_SECTION(Stop) unsigned int StreamInterface3::Stop(unsigned int stream_handle, float fade_time_s)
+{
+	unsigned int ret = 0;
+	Stream *stream = StreamInterface::GetStreamFromHandle(stream_handle);
+	if (stream) {
+		stream->m_fade_time_remaining = fade_time_s;
+		stream->m_command |= 8;
+		stream->m_inv_fade_time = 1.0f / fade_time_s;
+		ret = 1;
+	}
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", SetGain);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", SetMinMaxVolume);
+GAME_SECTION(SetMinMaxVolume) unsigned int StreamInterface3::SetMinMaxVolume(unsigned int stream_handle, float min_volume, float max_volume)
+{
+	unsigned int ret = 0;
+	Stream *stream = StreamInterface::GetStreamFromHandle(stream_handle);
+	if (stream) {
+		((int *)stream->m_sd)[2] = (int)(min_volume * 1024.0f);
+		((int *)stream->m_sd)[3] = (int)(max_volume * 1024.0f);
+		ret = 1;
+	}
+	return ret;
+}
 
 GAME_SECTION(SetMinMaxRange) unsigned int StreamInterface::SetMinMaxRange(unsigned int stream_handle, float min_range, float max_range)
 {
@@ -187,7 +262,25 @@ GAME_SECTION(StreamsStopped) unsigned int StreamInterface::StreamsStopped(Stream
 	return b_stopped;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", WaitForStop);
+GAME_SECTION(WaitForStop) void StreamInterface::WaitForStop(Stream **pp_streams_observed, int timeout_vsyncs, void (*func)(void *), void *arg)
+{
+	int i;
+	for (; !StreamsStopped(pp_streams_observed) && timeout_vsyncs != 0; timeout_vsyncs--) {
+		if (func) {
+			func(arg);
+		}
+		Update(NtscPalFrameTimeInSecondsFloat);
+		snd_FlushSoundCommands();
+		sceGsSyncV(0);
+	}
+	if (!StreamsStopped(pp_streams_observed)) {
+		for (i = 0; i < 3; i++) {
+			if (m_streams[i].m_state) {
+				Free(&m_streams[i]);
+			}
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Alloc);
 
@@ -229,13 +322,45 @@ GAME_SECTION(Start___dupe2) void StreamInterface::Start(Stream *stream)
 	snd_ContinueVAGStream(stream->m_989_handle);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", SetGain___dupe2);
+GAME_SECTION(SetGain___dupe2) void StreamInterfaceAM::SetGain(Stream *stream)
+{
+	int gain = (int)(stream->m_master_gain * stream->m_fade_gain * 1024.0f);
+	SoundChannelHandle *ch;
+	if (gain > 1024) {
+		gain = 1024;
+	}
+	ch = sound_GetChannelFromHandle(stream->m_sound_handle);
+	if (ch) {
+		((short *)ch)[6] = gain;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", GetLocs);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Callback_PlayVAGStreamByLoc);
+GAME_SECTION(Callback_PlayVAGStreamByLoc) void StreamInterface3::Callback_PlayVAGStreamByLoc(unsigned int _989_handle, unsigned long data)
+{
+	Stream *stream = StreamInterface::GetStreamFromHandle(data);
+	if (stream) {
+		if (_989_handle != 0) {
+			SoundChannelHandle *channel = sound_GetChannelFromHandle(stream->m_sound_handle);
+			if (channel) {
+				channel->handle = _989_handle;
+				stream->m_989_handle = _989_handle;
+				stream->m_state = 3;
+			}
+		} else {
+			StreamInterface::Free(stream);
+		}
+	}
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Callback_IsVAGStreamBuffered);
+GAME_SECTION(Callback_IsVAGStreamBuffered) void StreamInterface3::Callback_IsVAGStreamBuffered(unsigned int ret_val, unsigned long data)
+{
+	Stream *stream = StreamInterface::GetStreamFromHandle(data);
+	if (stream && ret_val != 0 && ret_val != 0xffffffff && stream->m_state == 3) {
+		stream->m_state = 4;
+	}
+}
 
 GAME_SECTION(Callback_SoundIsStillPlaying) void StreamInterface2::Callback_SoundIsStillPlaying(unsigned int ret_val, unsigned long data)
 {

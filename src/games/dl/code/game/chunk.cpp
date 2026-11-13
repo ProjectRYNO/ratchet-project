@@ -1,4 +1,9 @@
 #include "common.h"
+#include "game_section.h"
+struct MobyInstance;
+
+int CS_RodType_Move(MobyInstance *pMoby) __asm__("CS_RodType_Move");
+int CS_BallsType_Move(MobyInstance *pMoby) __asm__("CS_BallsType_Move");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_SpawnChunk);
 
@@ -10,9 +15,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_BlockType_Mov
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_SphereType_Move);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_RodType_Move);
+GAME_SECTION(CS_RodType_Move) int CS_RodType_Move(MobyInstance *pMoby) { return 1; }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_BallsType_Move);
+GAME_SECTION(CS_BallsType_Move) int CS_BallsType_Move(MobyInstance *pMoby) { return 1; }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_MoveFree);
 

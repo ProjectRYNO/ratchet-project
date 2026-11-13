@@ -30,19 +30,33 @@ typedef struct navElem4 {
 typedef struct navElem8 {
 	/* 0x00 */ int data[2];
 } navElem8_t;
+typedef struct navCluster {
+	/* 0x00 */ int firstNode;
+	/* 0x04 */ int unk04;
+	/* 0x08 */ short sector;
+	/* 0x0a */ short unk0a;
+} navCluster_t;
+typedef struct navElem12 {
+	/* 0x00 */ int data[3];
+} navElem12_t;
 typedef struct navSys {
-	/* 0x0000 */ char unk00[0x300c];
+	/* 0x0000 */ char unk00[0x3000];
+	/* 0x3000 */ int version;
+	/* 0x3004 */ navElem4_t *clusterPathLists;
+	/* 0x3008 */ navElem4_t *pathLists;
 	/* 0x300c */ int numClusters;
-	/* 0x3010 */ void *clusters;
+	/* 0x3010 */ navCluster_t *clusters;
 	/* 0x3014 */ int nodeMax;
 	/* 0x3018 */ navNode_t *nodes;
 	/* 0x301c */ int numNeighbors;
 	/* 0x3020 */ navElem8_t *neighbors;
 	/* 0x3024 */ int edgeMax;
 	/* 0x3028 */ navEdge_t *edges;
-	/* 0x302c */ int unk302c[4];
+	/* 0x302c */ int unk302c[2];
+	/* 0x3034 */ int numPartitions;
+	/* 0x3038 */ navElem4_t *partitions;
 	/* 0x303c */ int numClusterPaths;
-	/* 0x3040 */ void *clusterPaths;
+	/* 0x3040 */ navElem12_t *clusterPaths;
 	/* 0x3044 */ int numPaths;
 	/* 0x3048 */ navElem8_t *paths;
 	/* 0x304c */ int unk304c[4];
@@ -73,6 +87,12 @@ int navg_LoadCylinders(char *, char *&, void *) __asm__("navg_LoadCylinders");
 int navg_LoadBoundPaths(char *, char *&, void *) __asm__("navg_LoadBoundPaths");
 int NAVG_NodeGetTraversalFlags(unsigned short) __asm__("NAVG_NodeGetTraversalFlags");
 int NAVG_NodeGet3DSpline(unsigned short) __asm__("NAVG_NodeGet3DSpline");
+
+int navg_LoadPathLists(char *, char *&, void *) __asm__("navg_LoadPathLists");
+int navg_LoadClusterPathLists(char *, char *&, void *) __asm__("navg_LoadClusterPathLists");
+int navg_LoadClusterPaths(char *, char *&, void *) __asm__("navg_LoadClusterPaths");
+int navg_LoadPartitions(char *, char *&, void *) __asm__("navg_LoadPartitions");
+int navg_LoadClusters(char *, char *&, void *) __asm__("navg_LoadClusters");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentBoxLocalZeroVec);
 
@@ -147,7 +167,19 @@ GAME_SECTION(navg_LoadEdges) int navg_LoadEdges(char *fileData, char *&dataMem, 
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadClusterPaths);
+GAME_SECTION(navg_LoadClusterPaths) int navg_LoadClusterPaths(char *fileData, char *&dataMem, void *endMemory)
+{
+	int i;
+	FastMemCopy(&g_navSys->numClusterPaths, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navElem12_t, clusterPaths) = (navElem12_t *)navg_AllocMemory(g_navSys->numClusterPaths * 12, &dataMem, (char *)endMemory);
+	if (g_navSys->clusterPaths == 0) return 1;
+	for (i = 0; i < g_navSys->numClusterPaths; i++) {
+		FastMemCopy(&g_navSys->clusterPaths[i], fileData, 12);
+		fileData += 12;
+	}
+	return 0;
+}
 
 GAME_SECTION(navg_LoadPaths) int navg_LoadPaths(char *fileData, char *&dataMem, void *endMemory)
 {
@@ -163,9 +195,35 @@ GAME_SECTION(navg_LoadPaths) int navg_LoadPaths(char *fileData, char *&dataMem, 
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadClusterPathLists);
+GAME_SECTION(navg_LoadClusterPathLists) int navg_LoadClusterPathLists(char *fileData, char *&dataMem, void *endMemory)
+{
+	int count;
+	int i;
+	FastMemCopy(&count, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navElem4_t, clusterPathLists) = (navElem4_t *)navg_AllocMemory(count << 2, &dataMem, (char *)endMemory);
+	if (g_navSys->clusterPathLists == 0) return 1;
+	for (i = 0; i < count; i++) {
+		FastMemCopy(&g_navSys->clusterPathLists[i], fileData, 4);
+		fileData += 4;
+	}
+	return 0;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadPathLists);
+GAME_SECTION(navg_LoadPathLists) int navg_LoadPathLists(char *fileData, char *&dataMem, void *endMemory)
+{
+	int count;
+	int i;
+	FastMemCopy(&count, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navElem4_t, pathLists) = (navElem4_t *)navg_AllocMemory(count << 2, &dataMem, (char *)endMemory);
+	if (g_navSys->pathLists == 0) return 1;
+	for (i = 0; i < count; i++) {
+		FastMemCopy(&g_navSys->pathLists[i], fileData, 4);
+		fileData += 4;
+	}
+	return 0;
+}
 
 GAME_SECTION(navg_LoadCuboids) int navg_LoadCuboids(char *fileData, char *&dataMem, void *endMemory)
 {
@@ -223,7 +281,24 @@ GAME_SECTION(navg_LoadBoundPaths) int navg_LoadBoundPaths(char *fileData, char *
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadPartitions);
+GAME_SECTION(navg_LoadPartitions) int navg_LoadPartitions(char *fileData, char *&dataMem, void *endMemory)
+{
+	int i;
+	if (g_navSys->version < 2) {
+		NAVG_STORE(navElem4_t, partitions) = 0;
+		g_navSys->numPartitions = 0;
+		return 0;
+	}
+	FastMemCopy(&g_navSys->numPartitions, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navElem4_t, partitions) = (navElem4_t *)navg_AllocMemory(g_navSys->numPartitions << 2, &dataMem, (char *)endMemory);
+	if (g_navSys->partitions == 0) return 1;
+	for (i = 0; i < g_navSys->numPartitions; i++) {
+		FastMemCopy(&g_navSys->partitions[i], fileData, 4);
+		fileData += 4;
+	}
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadSectors);
 

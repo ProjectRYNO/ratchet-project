@@ -54,6 +54,7 @@ int PadRingBitsOn(int bits, int frames, int *pFrame, PAD *pIn) __asm__("PadRingB
 int Pad_MappedPad(int bits, int index) __asm__("Pad_MappedPad");
 void ClearPadInput(PAD &pad) __asm__("ClearPadInput");
 
+
 GAME_SECTION(InitPadRing) void InitPadRing(PAD *pIn)
 {
 	PAD *pPad = pIn ? pIn : Pad;
@@ -71,7 +72,20 @@ GAME_SECTION(Pad_NonLaggedBits) int Pad_NonLaggedBits(PAD *pIn)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/pad", func_0048F868);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/pad", PadRingBitsOn);
+GAME_SECTION(PadRingBitsOn) int PadRingBitsOn(int bits, int frames, int *pFrame, PAD *pIn)
+{
+	int i;
+	if (!pIn) pIn = Pad;
+	if (pIn->ringValidSize < frames) frames = pIn->ringValidSize;
+	for (i = 1; i < frames + 1; i++) {
+		int idx = (pIn->ringIndex - i + 30) % 30;
+		if (pIn->bitsRing[idx] & bits) {
+			if (pFrame) *pFrame = i - 1;
+			return pIn->bitsRing[idx] & bits;
+		}
+	}
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/pad", func_0048F908);
 
@@ -105,4 +119,19 @@ GAME_SECTION(UpdatePad___dupe2) void UpdatePads()
 	Update_HudBitsRepeat();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/pad", Pad_MappedPad);
+GAME_SECTION(Pad_MappedPad) int Pad_MappedPad(int bits, int index)
+{
+	if (g_gameType != 1 && bits == 1) return 3;
+	if (bootSettings.FirstPersonModeOn[index]) {
+		switch (bits) {
+		case 0x40:
+			return 0x44;
+		case 4:
+		case 8:
+			return 1;
+		case 0x10:
+			return 0x12;
+		}
+	}
+	return bits;
+}

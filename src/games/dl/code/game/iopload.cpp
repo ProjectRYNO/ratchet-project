@@ -60,9 +60,24 @@ int LgKbmCallback() __asm__("LgKbmCallback");
 void UninitializeCoreIOPModules() __asm__("UninitializeCoreIOPModules");
 void InitializeCoreIOPModules() __asm__("InitializeCoreIOPModules");
 
+struct IopDataBlock {
+	/* 0x0 */ int offset;
+	/* 0x4 */ int length;
+};
 struct IOPMODULELOAD {
 	/* 0x000 */ int module_id;
-	/* 0x004 */ char unk004[0x164];
+	/* 0x004 */ int unk004;
+	/* 0x008 */ int load_size;
+	/* 0x00c */ int unload_size;
+	/* 0x010 */ int size_diff;
+	/* 0x014 */ int argument_size;
+	/* 0x018 */ char arguments[256];
+	/* 0x118 */ char name[64];
+	/* 0x158 */ unsigned char loaded;
+	/* 0x159 */ char unk159[3];
+	/* 0x15c */ void *irx_data;
+	/* 0x160 */ IopDataBlock *irx_module;
+	/* 0x164 */ int function_set;
 };
 struct IOPMODULELOADQUEUE {
 	/* 0x0000 */ int num_iop_modules;
@@ -100,6 +115,40 @@ void UnloadIOPModuleQueueSet(IOPMODULELOADQUEUE *, int, char *) __asm__("UnloadI
 void LoadSinglePlayerIOPModules(void *) __asm__("LoadSinglePlayerIOPModules");
 void UnloadSinglePlayerIOPModules() __asm__("UnloadSinglePlayerIOPModules");
 void UnloadMultiPlayerIOPModules() __asm__("UnloadMultiPlayerIOPModules");
+
+struct ezNetCtlStatus {
+	/* 0x00 */ int unk00[12];
+	/* 0x30 */ int state;
+	/* 0x34 */ int unk34[3];
+};
+typedef int (*IOPLOAD_UNLOAD_CALLBACK)(IOPMODULELOAD *);
+extern "C" {
+	int sceSifSearchModuleByName(const char *);
+	int sceSifQueryTotalFreeMemSize();
+	int ezNetCtlGetStatus(ezNetCtlStatus *, char *, int);
+	int ezNetCtlDownInterface();
+	int ezNetCtlExit(int);
+	int DelayThread(int);
+}
+extern char g_dev9ModuleName[] __asm__("D_21EF20");
+void PreparePowerOff() __asm__("PreparePowerOff");
+void nwGuiRefreshCallback() __asm__("nwGuiRefreshCallback");
+unsigned char Dev9Callback() __asm__("Dev9Callback");
+bool EZNetCtlUnloadCallback(void *) __asm__("EZNetCtlUnloadCallback");
+
+/* ===== AM additions ===== */
+extern "C" char *strncpy(char *, const char *, unsigned int);
+void FastMemSet(void *, int, int) __asm__("FastMemSet");
+void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
+void QueueIOPModuleLoad(IOPMODULELOADQUEUE *, char *, void *, void *, int, int, char *, int) __asm__("QueueIOPModuleLoad");
+struct sceSifDmaData {
+	/* 0x0 */ unsigned int data;
+	/* 0x4 */ unsigned int addr;
+	/* 0x8 */ unsigned int size;
+	/* 0xc */ unsigned int mode;
+};
+extern "C" unsigned int sceSifSetDma(sceSifDmaData *, int);
+static void DmaToIop(void *, void *, int) __asm__("DmaToIop");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", DmaToIop);
 
@@ -168,7 +217,16 @@ GAME_SECTION(StreamerLoadCallback) int StreamerLoadCallback()
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", Dev9Callback);
+GAME_SECTION(Dev9Callback) unsigned char Dev9Callback()
+{
+	if (sceSifSearchModuleByName(g_dev9ModuleName) >= 0) {
+		g_nwInfo.useNet = 1;
+		PreparePowerOff();
+	} else {
+		g_nwInfo.useNet = 0;
+	}
+	return g_nwInfo.useNet;
+}
 
 GAME_SECTION(EZNetCnfCallback) int EZNetCnfCallback()
 {
@@ -211,7 +269,24 @@ GAME_SECTION(EZNetCtlCallback) int EZNetCtlCallback()
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", EZNetCtlUnloadCallback);
+GAME_SECTION(EZNetCtlUnloadCallback) bool EZNetCtlUnloadCallback(void *module_info)
+{
+	int iterations = 5000;
+	char status_message[64];
+	ezNetCtlStatus status;
+	if (g_nwInfo.useNet) {
+		ezNetCtlGetStatus(&status, status_message, 0x40);
+		if (status.state != 5 && status.state != 0) ezNetCtlDownInterface();
+		do {
+			nwGuiRefreshCallback();
+			ezNetCtlGetStatus(&status, status_message, 0x40);
+			DelayThread(500);
+			if (status.state == 5 || status.state == 0) break;
+		} while (--iterations != -1);
+		ezNetCtlExit(0);
+	}
+	return true;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_004603F0);
 
@@ -244,7 +319,36 @@ GAME_SECTION(ClearIOPModuleQueueSet) void ClearIOPModuleQueueSet(IOPMODULELOADQU
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", QueueIOPModuleLoad);
+GAME_SECTION(QueueIOPModuleLoad) void QueueIOPModuleLoad(IOPMODULELOADQUEUE *queue, char *module_name, void *irx_data, void *irx_module, int expected_size, int argc, char *argp, int function_set)
+{
+	int n;
+	int max;
+	int len;
+	queue->iop_modules[queue->num_iop_modules].irx_data = irx_data;
+	queue->iop_modules[queue->num_iop_modules].irx_module = (IopDataBlock *)irx_module;
+	queue->iop_modules[queue->num_iop_modules].unk004 = expected_size;
+	queue->iop_modules[queue->num_iop_modules].argument_size = argc;
+	queue->iop_modules[queue->num_iop_modules].function_set = function_set;
+	if (module_name) {
+		strncpy(queue->iop_modules[queue->num_iop_modules].name, module_name, 0x40);
+	} else {
+		FastMemSet(queue->iop_modules[queue->num_iop_modules].arguments, 0, 0x40);
+	}
+	if (argp) {
+		FastMemCopy(queue->iop_modules[queue->num_iop_modules].arguments, argp, argc);
+	} else {
+		FastMemSet(queue->iop_modules[queue->num_iop_modules].arguments, 0, 0x100);
+	}
+	n = queue->num_iop_modules;
+	max = queue->max_size;
+	if (max < queue->iop_modules[n].irx_module->length) {
+		max = queue->iop_modules[n].irx_module->length;
+	}
+	queue->max_size = max;
+	len = queue->iop_modules[n].unk004;
+	queue->num_iop_modules = n + 1;
+	queue->expected_load_size = queue->expected_load_size + len;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadIOPModuleQueue);
 

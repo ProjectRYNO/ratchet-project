@@ -91,6 +91,127 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  TransitionPostUpdate_ShuttleInterior: 0x004F63A8
+  TransitionPostUpdate_Space: 0x004F5C80
+  TransitionUpdate_Space: 0x004F5B50
+  Transition_DisplayPassBlur: 0x004F5428
+  Transition_SetupMidSceneOrMovie: 0x004F5180
+  Transition_DoTransition: 0x004F4558
+  Transition_Post: 0x004F43C0
+  Transition_SetupForFrontend: 0x004F3B78
+  Transition_DefaultDraw: 0x004F3898
+  Transition_PostDraw: 0x004F3608
+  PostEffects_BloomCreate_new: 0x004FA8D0
+  SpawnPart_021: 0x00492150
+  SpawnPart_004: 0x00491B88
+  MB_SetMoveDamper: 0x004889E0
+  FUN_0047b7f8: 0x0047B7F8
+  MatAdjoint: 0x00476320
+  AllocPoseCacheEntry: 0x0046FBA0
+  AnimEvaluate: 0x0046EBD0
+  memcard_GetName: 0x00465F38
+  ResetLevelData: 0x00464980
+  FontStringLength: 0x00454780
+  DrawTextShadow: 0x0044ABC0
+  LoadTexToGs: 0x00449120
+  ResetGsRegisters: 0x00448788
+  CubicLineSet_InitAsLightning: 0x00452A98
+  CalcCycleFade: 0x0044F6F0
+  WPN_TurnOnHoloShields: 0x004EE000
+  WPN_BangelizeWeapons: 0x004EDEA8
+  Stop___dupe2: 0x004E4C50
+  Transition_QueueMidSceneOrMovie: 0x004F50D8
+  Transition_UpdateMovie: 0x004F4D28
+  SetGain___dupe2: 0x0048AC68
+  WaitForStop: 0x0048A7C8
+  Queue: 0x0048A170
+  StopAll___dupe2: 0x00489FA0
+  sound_MobyPlay___dupe3: 0x004E2118
+  PostEffects_DofInitCreateB_new: 0x004FAF08
+  PostEffects_DofInit_new: 0x004FAB80
+  PostEffects_BloomApply_new: 0x004FAAA8
+  PostEffects_LoadPalToGs_imm: 0x004F8DF8
+  PostEffects_SandStorm_Init_AlphaMappingPalette: 0x004F7ED8
+  Pad_MappedPad: 0x004908D0
+  PadRingBitsOn: 0x0048F878
+  SetNtscPalTiming: 0x00478C80
+  MB_StartColorFlash: 0x00476F88
+  AccelDeltAng: 0x00475D98
+  MB_SetOClass: 0x00473DE0
+  MB_transAnim: 0x00473868
+  MobyDynamicGroup_RemoveMoby: 0x0046D498
+  PatchMobyGifs: 0x0046CBD8
+  DmaMobyTextures: 0x0046CAE8
+  MobyCornExists: 0x0046C418
+  MobyPlayDesiredSound: 0x0046BF30
+  DeleteMoby: 0x0046BDD0
+  CreateMoby: 0x0046B930
+  DNAS_ExtractPatch: 0x004694B8
+  memcard_RestoreInfo: 0x00468D90
+  memcard_PrepData: 0x00468C78
+  memcard_ResetGame: 0x004661D8
+  MCSTATE_SaveGame: 0x00465B40
+  csf_init_save: 0x00465450
+  csf_good_save: 0x00464C70
+  QueueIOPModuleLoad: 0x004605A8
+  Help_StopVoice: 0x0045E1F8
+  FUN_0045df58: 0x0045DF58
+  Help_Kill: 0x0045DE88
+  Help_KillMenuMessage: 0x0045DE00
+  load_mission_bank: 0x00163A28
+  AA_DisplayPass: 0x004597B8
+  PutDrawBufferLarge: 0x00459430
+  FontStringHeight: 0x00454600
+  FontGetMaxHeight: 0x00454420
+  DrawScreenGQuad___dupe2: 0x0044AB20
+  LoadPalToGs: 0x00449298
+  DoGifPaging: 0x00448D98
+  SetupGifPaging: 0x00448C68
+  GetScreenFrustumCoords: 0x00448B40
+  GetOcclGridFromPair: 0x00447498
+  UpdateFog: 0x004472E0
+  Credit_SeekNextLines: 0x00446B68
+  ConfigUtil_ReadLine: 0x004FDAA0
+  CS_BallsType_Move: 0x0043E910
+  CS_RodType_Move: 0x0043E908
+  CubicLineSet_Draw: 0x00452958
+  CubicLineSet_Init: 0x00452598
+  ZUpdateRegisterValue: 0x0044DF08
+  SetFogMode: 0x0044D818
+  SetTextureClamp: 0x0044D6D0
+  PrepForEffectsRendering: 0x0044CFE8
+  WPN_TurnOffHoloShields: 0x004EE150
+  WPN_UpgradeModeUnInit: 0x004EAE88
+  Camera_DestroyReticule: 0x0043D918
+  WPN_UpgradeDrawFx: 0x004EDCE8
+  csf_newcard: 0x004655A0
+  StashGSMem: 0x004E7D90
+  VU1_resetDrawContexts: 0x004E7CB0
+  VU1_addGSregister: 0x004E7990
+  VU1_setBufSizeByLevel: 0x004E7520
+  Transition_UpdateScreenFade: 0x004F5028
+  Transition_LoadPlanetTex: 0x004F3390
+  FontPrintSmall: 0x00457590
+  FontPrintRightSmall: 0x004574D8
+  FontPrintCenterSmall: 0x00457388
+  navg_LoadPartitions: 0x0048C330
+  navg_LoadPathLists: 0x0048BEC0
+  navg_LoadClusterPathLists: 0x0048BDF0
+  navg_LoadClusterPaths: 0x0048BC20
+  music_PreseekTrackCB: 0x00489CC0
+  PreLoadNpcChunk: 0x00463D70
+  LoadNpcSubtitles: 0x00463CB8
+  LoadNpcMobys: 0x00463AC0
+  music_TimeRemainingCB: 0x00489E80
+  music_LoadCoreBank: 0x00488E18
+  Callback_IsVAGStreamBuffered: 0x0048AF30
+  Callback_PlayVAGStreamByLoc: 0x0048AEB8
+  SetMinMaxVolume: 0x0048A3C0
+  Stop: 0x0048A2F8
+  DrawMobyList: 0x0046D2A0
+  MobyMayaFrame: 0x0046C060
+  EZNetCtlUnloadCallback: 0x00460328
+  Dev9Callback: 0x00460180
   DMAC_VIF1_Enable: 0x004E8068
   VU1_gsRegsEffects: 0x004E7C48
   VU1_gsRegsNormal: 0x004E7BE8
@@ -5251,6 +5372,33 @@ objects:
       - {object: game/partupd, section: .game_SpawnPart_127, start: 0x00494FC8, end: 0x00495148}
       - {object: game/partupd, section: .game_UpdatePart_127, start: 0x00495148, end: 0x004952F8}
       - {object: game/partupd, section: .game_SpawnPart_128, start: 0x004952F8, end: 0x00495490}
+  game/chunk:
+    text_start: 0x0043DAF0
+    text_end: 0x0043FC2C
+    slots:
+      - {object: game/chunk, section: .game_CS_SpawnChunk, start: 0x0043DAF0, end: 0x0043DF10}
+      - {object: game/chunk, section: .game_CS_InitChunk, start: 0x0043DF10, end: 0x0043E130}
+      - {object: game/chunk, section: .game_CS_UpdateChunk, start: 0x0043E130, end: 0x0043E328}
+      - {object: game/chunk, section: .game_CS_BlockType_Move, start: 0x0043E328, end: 0x0043E500}
+      - {object: game/chunk, section: .game_CS_SphereType_Move, start: 0x0043E500, end: 0x0043E908}
+      - {object: game/chunk, section: .game_CS_RodType_Move, start: 0x0043E908, end: 0x0043E910}
+      - {object: game/chunk, section: .game_CS_BallsType_Move, start: 0x0043E910, end: 0x0043E918}
+      - {object: game/chunk, section: .game_CS_MoveFree, start: 0x0043E918, end: 0x0043EA08}
+      - {object: game/chunk, section: .game_CS_MoveFree_Sphere, start: 0x0043EA08, end: 0x0043EAF8}
+      - {object: game/chunk, section: .game_CS_MovePivot, start: 0x0043EAF8, end: 0x0043EDB0}
+      - {object: game/chunk, section: .game_CS_DoCollision, start: 0x0043EDB0, end: 0x0043F1A8}
+      - {object: game/chunk, section: .game_CS_DoCollision_Sphere, start: 0x0043F1A8, end: 0x0043F248}
+      - {object: game/chunk, section: .game_CS_AttachPivot, start: 0x0043F248, end: 0x0043F308}
+      - {object: game/chunk, section: .game_CS_RemoveUnusedPivots, start: 0x0043F308, end: 0x0043F680}
+      - {object: game/chunk, section: .game_CS_AddRotationVel, start: 0x0043F680, end: 0x0043F8B8}
+      - {object: game/chunk, section: .game_CS_RemoveRotationAroundAxis, start: 0x0043F8B8, end: 0x0043F9C8}
+      - {object: game/chunk, section: .game_CS_ReflectVector, start: 0x0043F9C8, end: 0x0043FB38}
+      - {object: game/chunk, section: .game_CS_UnPackCollData, start: 0x0043FB38, end: 0x0043FC2C}
+  game/ubersound:
+    text_start: 0x004E4C50
+    text_end: 0x004E4CD4
+    slots:
+      - {object: game/ubersound, section: .game_Stop___dupe2, start: 0x004E4C50, end: 0x004E4CD4}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -8603,6 +8751,8 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/FXUtil, function: CalcCycleFade, section: .game_CalcCycleFade.rodata, start: 0x003D03A0, end: 0x003D03C4}
+      - {object: game/weapons, function: WPN_BangelizeWeapons, section: .game_WPN_BangelizeWeapons.rodata, start: 0x003D2F70, end: 0x003D2FA8}
       - {object: game/mobyutil, function: Bot_HasCommandAbility, section: .game_Bot_HasCommandAbility.rodata, start: 0x003D0DF0, end: 0x003D0E28}
       - {object: game/mcstate, function: MCSTATE_TransToState, section: .game_MCSTATE_TransToState.rodata, start: 0x003D0900, end: 0x003D097C}
       - {object: game/mcstate, function: MCSTATE_ClearCommand, section: .game_MCSTATE_ClearCommand.rodata, start: 0x003D09A0, end: 0x003D09C0}

@@ -182,6 +182,8 @@ void MB_MoveSystemUpdateAction(moby *, MoveVars_V2 *) __asm__("MB_MoveSystemUpda
 
 typedef GroupSpawnData *(*getSpawnData_t)(moby *);
 
+typedef GroupSpawnData *(*getSpawnData_t)(moby *);
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_Move_2);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00480EB8);
@@ -491,7 +493,20 @@ GAME_SECTION(MB_SetMoveAngularSpeeds) int MB_SetMoveAngularSpeeds(moby *pMoby, f
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_SetMoveDamper);
+GAME_SECTION(MB_SetMoveDamper) int MB_SetMoveDamper(moby *pMoby, float amount, int ticks)
+{
+	MoveVars_V2 *pMoveVars = MB_GetMoveVars(pMoby);
+	if (!pMoveVars) return 0;
+	if ((pMoveVars->flagsA & 0x20) && ticks > 0) {
+		pMoveVars->damper = amount;
+		pMoveVars->moveDamperTimer = ticks;
+		pMoveVars->dirty = 1;
+	} else {
+		pMoveVars->damper = 1.0f;
+		pMoveVars->moveDamperTimer = 0;
+	}
+	return 1;
+}
 
 GAME_SECTION(MB_GetMoveDamper) float MB_GetMoveDamper(moby *pMoby)
 {

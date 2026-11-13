@@ -72,7 +72,12 @@ void TransitionPost_ShuttleInterior() __asm__("TransitionPost_ShuttleInterior");
 
 
 struct SceneActors {
-	/* 0x000 */ char unk000[0x84];
+	/* 0x000 */ char unk000[0x74];
+	/* 0x074 */ int iframe;
+	/* 0x078 */ int cframe;
+	/* 0x07c */ int ichunk;
+	/* 0x080 */ short frame_cnt;
+	/* 0x082 */ short unk082;
 	/* 0x084 */ short actor_cnt;
 	/* 0x086 */ char unk086[0x16a];
 	/* 0x1f0 */ MobyInstance *actors[16];
@@ -89,6 +94,59 @@ void LevelTScene_VoxShuttle_UpdateMonitors() __asm__("LevelTScene_VoxShuttle_Upd
 void LevelTScene_VoxShuttle_UpdateFX() __asm__("LevelTScene_VoxShuttle_UpdateFX");
 void TransitionSpace_InitMoby(MobyInstance *) __asm__("TransitionSpace_InitMoby");
 bool TransitionUpdate_ShuttleInterior(bool) __asm__("TransitionUpdate_ShuttleInterior");
+
+/* ===== AM additions ===== */
+int Transition_GetNumMoviesPlayed() __asm__("Transition_GetNumMoviesPlayed");
+void Transition_UpdateMidSceneOrMovie() __asm__("Transition_UpdateMidSceneOrMovie");
+void TransitionPostUpdate_ShuttleInterior(bool) __asm__("TransitionPostUpdate_ShuttleInterior");
+struct TransitionData_Space {
+	/* 0x00 */ char unk00[0x10];
+	/* 0x10 */ char m_StrPlanetName[64];
+	/* 0x50 */ unsigned char m_bMovieDone;
+	/* 0x51 */ unsigned char m_bPlayingFinalAproach;
+	/* 0x52 */ char unk52[2];
+};
+extern TransitionData_Space g_TransitionData_Space __asm__("g_TransitionData_Space");
+struct SpaceShipClass {
+	/* 0x00 */ char unk00[0x24];
+	/* 0x24 */ float scale;
+};
+struct SpaceShip {
+	/* 0x00 */ char unk00[0x24];
+	/* 0x24 */ SpaceShipClass *pClass;
+	/* 0x28 */ char unk28[0x69 - 0x28];
+	/* 0x69 */ unsigned char alpha;
+	/* 0x6a */ char unk6a[6];
+	/* 0x70 */ float scale;
+};
+bool TransitionUpdate_Space(bool) __asm__("TransitionUpdate_Space");
+struct PartInstanceAM {
+	/* 0x00 */ unsigned char unk00;
+	/* 0x01 */ unsigned char type;
+	/* 0x02 */ unsigned char unk02[5];
+	/* 0x07 */ unsigned char alpha;
+	/* 0x08 */ char unk08[0x38];
+};
+extern PartInstanceAM *PartInstances __asm__("PartInstances");
+extern int PartIndexTop __asm__("PartIndexTop");
+extern int TransitionSpace_MovieIds[] __asm__("TransitionSpace_MovieIds");
+int Transition_GetMovieId() __asm__("Transition_GetMovieId");
+void Transition_SetupNextMovie(int) __asm__("Transition_SetupNextMovie");
+void TransitionPostUpdate_Space(bool) __asm__("TransitionPostUpdate_Space");
+struct ScrnAM {
+	/* 0x00 */ int size_x;
+	/* 0x04 */ int size_y;
+};
+extern ScrnAM Scrn __asm__("Scrn");
+extern int g_CurrentFontName __asm__("g_CurrentFontName");
+int FontStringLength(const char *, int, float) __asm__("FontStringLength");
+void FontPrint(float, float, unsigned long, char *, int, float, float, int, bool, unsigned long, float, float) __asm__("FontPrint");
+void FontSet(int) __asm__("FUN_00454350");
+void SetupGifPaging(int) __asm__("SetupGifPaging");
+void DoGifPaging() __asm__("DoGifPaging");
+void VU1_addGSregister(unsigned int, unsigned long, int) __asm__("VU1_addGSregister");
+void DrawTextShadow(int, int, int, int, int, int) __asm__("DrawTextShadow");
+void TransitionDraw_Space(bool) __asm__("TransitionDraw_Space");
 
 GAME_SECTION(Transition_InitMobys) void Transition_InitMobys(void (*fnInit_)(MobyInstance *))
 {
@@ -149,9 +207,72 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", FUN_004
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionSpace_InitMoby);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionUpdate_Space);
+GAME_SECTION(TransitionUpdate_Space) bool TransitionUpdate_Space(bool bLevelLoadAlmostDone_)
+{
+	bool bDone = false;
+	MobyInstance *pMoby;
+	float scale;
+	SpaceShip *ship;
+	for (pMoby = MobyInstances; pMoby < MobyInstancePermEnd; pMoby++) {
+		PostUpdateMobyBsphere(pMoby);
+	}
+	g_TransitionData_Space.m_bMovieDone = Transition_UpdateMovie();
+	if (g_TransitionData_Space.m_bMovieDone && bLevelLoadAlmostDone_) {
+		bDone = g_TransitionData_Space.m_bPlayingFinalAproach != 0;
+	}
+	if (g_TransitionData_Space.m_bPlayingFinalAproach && Scene.frame_cnt - 0x50 < Scene.iframe) {
+		ship = (SpaceShip *)Scene.actors[0];
+		scale = ((float)(Scene.frame_cnt - Scene.iframe - 4) * 0.013157895f) >? 0.0f;
+		ship->scale = ship->pClass->scale * scale;
+		ship->alpha = 0x80 - (int)(scale * 128.0f);
+	}
+	return bDone;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionPostUpdate_Space);
+GAME_SECTION(TransitionPostUpdate_Space) void TransitionPostUpdate_Space(bool bLevelLoadAlmostDone_)
+{
+	int MovieId;
+	SpaceShip *ship;
+	int max_alpha;
+	PartInstanceAM *pTerm;
+	PartInstanceAM *pPart;
+	if (g_TransitionData_Space.m_bMovieDone) {
+		Transition_CleanupMovie();
+		if (Transition_GetNumMoviesPlayed() == 1) {
+			Transition_UpdateMidSceneOrMovie();
+		}
+		if (!g_TransitionData_Space.m_bPlayingFinalAproach) {
+			if (Transition_GetNumMoviesPlayed() > 0 && bLevelLoadAlmostDone_) {
+				g_TransitionData_Space.m_bPlayingFinalAproach = 1;
+				MovieId = TransitionSpace_MovieIds[0];
+			} else {
+				MovieId = Transition_GetMovieId();
+			}
+			Transition_SetupNextMovie(MovieId);
+			Transition_InitMobys(TransitionSpace_InitMoby);
+			Transition_ResetParticles();
+			TransitionSpace_ResetParticles();
+		}
+	}
+	if (g_TransitionData_Space.m_bPlayingFinalAproach) {
+		Transition_UpdateScreenFade(Scene.iframe, Scene.frame_cnt + 1, 0xf, 0);
+	} else {
+		Transition_UpdateScreenFade(Scene.iframe, Scene.frame_cnt, 0xf, 0xf);
+	}
+	if (g_TransitionData_Space.m_bPlayingFinalAproach) {
+		ship = (SpaceShip *)Scene.actors[0];
+		max_alpha = 0;
+		if (ship) {
+			max_alpha = 0x80 - ship->alpha;
+		}
+		pTerm = PartInstances + PartIndexTop + 1;
+		for (pPart = PartInstances; pPart < pTerm; pPart++) {
+			if (!(pPart->type & 0x80)) {
+				pPart->alpha = (pPart->alpha * max_alpha) >> 7;
+			}
+		}
+	}
+}
 
 GAME_SECTION(TransitionSpace_UpdateMobySpace) void TransitionSpace_UpdateMobySpace(MobyInstance *pMoby_)
 {
@@ -202,7 +323,19 @@ GAME_SECTION(TransitionShuttleInterior_InitMoby) void TransitionShuttleInterior_
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionUpdate_ShuttleInterior);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionPostUpdate_ShuttleInterior);
+GAME_SECTION(TransitionPostUpdate_ShuttleInterior) void TransitionPostUpdate_ShuttleInterior(bool bLevelLoadAlmostDone_)
+{
+	if (g_TransitionData_ShuttleInterior.m_bMovieDone) {
+		Transition_CleanupMovie();
+		if (Transition_GetNumMoviesPlayed() == 1) {
+			Transition_UpdateMidSceneOrMovie();
+		}
+		if (!g_TransitionData_ShuttleInterior.m_bPlayingFinalAproach) {
+			g_TransitionData_ShuttleInterior.m_bPlayingFinalAproach = 1;
+		}
+	}
+	Transition_UpdateScreenFade(Scene.iframe, Scene.frame_cnt, 0xf, 0xf);
+}
 
 GAME_SECTION(TransitionDraw_ShuttleInterior) void TransitionDraw_ShuttleInterior(bool b)
 {

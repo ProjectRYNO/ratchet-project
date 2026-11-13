@@ -16,14 +16,23 @@ struct moby {
 	/* 0x31 */ unsigned char drawn;
 	/* 0x32 */ char unk32[0x34 - 0x32];
 	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0x50 - 0x36];
+	/* 0x36 */ char unk36[0x40 - 0x36];
+	/* 0x40 */ struct MobySeq *animSeq;
+	/* 0x44 */ float animSeqT;
+	/* 0x48 */ float animSpeed;
+	/* 0x4c */ unsigned short animIScale;
+	/* 0x4e */ short poseCacheEntryIndex;
 	/* 0x50 */ struct MobyAnimLayer *pLayers;
 	/* 0x54 */ char unk54;
 	/* 0x55 */ unsigned char animFlags;
 	/* 0x56 */ char unk56;
 	/* 0x57 */ unsigned char jointCnt;
 	/* 0x58 */ char *pJoints;
-	/* 0x5c */ char unk5c[0xbc - 0x5c];
+	/* 0x5c */ void *pManipulator;
+	/* 0x60 */ char unk60[0x6c - 0x60];
+	/* 0x6c */ unsigned char soundTrigger;
+	/* 0x6d */ unsigned char soundDesired;
+	/* 0x6e */ char unk6e[0xbc - 0x6e];
 	/* 0xbc */ short oClass;
 	/* 0xbe */ char unkbe[0x100 - 0xbe];
 };
@@ -110,7 +119,12 @@ struct MobySeqFrame {
 	/* 0x02 */ short unk02;
 };
 struct MobySeq {
-	/* 0x00 */ char unk00[0x20];
+	/* 0x00 */ char unk00[0x10];
+	/* 0x10 */ unsigned char frameCnt;
+	/* 0x11 */ unsigned char sound;
+	/* 0x12 */ unsigned char trigsCnt;
+	/* 0x13 */ char unk13[0x1c - 0x13];
+	/* 0x1c */ unsigned char *frameData;
 	/* 0x20 */ MobySeqFrame frames[1];
 };
 struct AnimMobyClass {
@@ -121,11 +135,79 @@ MobyAnimLayer *MobyAttachAnimLayer(moby *, MobySeq *, int, float, int, int, int)
 void MobyDetachAnimLayer(moby *, MobyAnimLayer *, int) __asm__("MobyDetachAnimLayer");
 void JointCacheMarkDeleted(moby *) __asm__("JointCacheMarkDeleted");
 
+void DmaToSpr(void *, int, int) __asm__("DmaToSpr");
+void DmaToSprSync() __asm__("DmaToSprSync");
+void AnimDecompInterp(float) __asm__("AnimDecompInterp");
+void AnimDecompInterpBlend(float, float) __asm__("AnimDecompInterpBlend");
+void AnimEvaluate_LowLevel(MobySeq *, float) __asm__("AnimEvaluate_LowLevel");
+void AnimEvaluateBlend_LowLevel(MobySeq *, float, float) __asm__("AnimEvaluateBlend_LowLevel");
+struct AK_EvalClass {
+	/* 0x00 */ char unk00[8];
+	/* 0x08 */ unsigned char jointCnt;
+	/* 0x09 */ char unk09[0x18 - 0x9];
+	/* 0x18 */ void *common_trans;
+	/* 0x1c */ void **anim_joints;
+};
+extern char AK_PoseCache2[] __asm__("PoseCache");
+void InitQSTBuffer(int) __asm__("InitQSTBuffer");
+void AnimDecompCached(void *, int) __asm__("AnimDecompCached");
+void AnimDecompBlendCached(void *, int, float) __asm__("AnimDecompBlendCached");
+void AnimPreprocessSubskeleton(int, int, void *, void *) __asm__("AnimPreprocessSubskeleton");
+void ProcessManipulators(void *) __asm__("ProcessManipulators");
+void DmaFromSpr(void *, int, int) __asm__("DmaFromSpr");
+void DmaFromSprSync() __asm__("DmaFromSprSync");
+struct AK_SeqHdr { float bSphere[4]; char unk10[0x10]; };
+void AllocPoseCacheEntry(MobyAnimLayer *, void *) __asm__("AllocPoseCacheEntry");
+void MobyTransitionSequence(moby *pMoby, MobySeq *seq, int seqId, float seqT, int fadeSteps) __asm__("MobyTransitionSequence");
+struct AK_PoseClass {
+	/* 0x00 */ char unk00[8];
+	/* 0x08 */ unsigned char jointCnt;
+	/* 0x09 */ char unk09[0x18 - 0x9];
+	/* 0x18 */ void *common_trans;
+};
+extern char AK_PoseCache[] __asm__("PoseCache");
+void AnimCachePose(void *, int) __asm__("AnimCachePose");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", AnimEvaluate_LowLevel);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", AnimEvaluateBlend_LowLevel);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", AnimEvaluate);
+GAME_SECTION(AnimEvaluate) void AnimEvaluate(moby *pMoby, int QST)
+{
+	AK_EvalClass *pClass = (AK_EvalClass *)pMoby->pClass;
+	if (!pClass->jointCnt) return;
+	DmaToSpr(pClass->common_trans, pClass->jointCnt, 0x2000);
+	DmaToSprSync();
+	InitQSTBuffer(pClass->jointCnt);
+	if (pMoby->animFlags & 4) {
+		PoseCacheEntry *p_entry = &PoseCacheEntryList[pMoby->poseCacheEntryIndex];
+		AnimDecompCached(AK_PoseCache2 + p_entry->cacheIndex * 0x20, p_entry->jointCnt);
+	} else {
+		AnimEvaluate_LowLevel(pMoby->animSeq, pMoby->animSeqT);
+	}
+	MobyAnimLayer *pLayer;
+	for (pLayer = pMoby->pLayers; pLayer; pLayer = pLayer->next) {
+		unsigned char *pFrameData = pLayer->animSeq->frameData;
+		if ((unsigned char)pLayer->animJointIndexA == 0xff) {
+			AnimPreprocessSubskeleton(pFrameData[6], pFrameData[7], 0, 0);
+		} else if ((unsigned char)pLayer->animJointIndexB == 0xff) {
+			AnimPreprocessSubskeleton(pFrameData[6], pFrameData[7], pClass->anim_joints[(unsigned char)pLayer->animJointIndexA + 1], 0);
+		} else {
+			AnimPreprocessSubskeleton(pFrameData[6], pFrameData[7], pClass->anim_joints[(unsigned char)pLayer->animJointIndexA + 1], pClass->anim_joints[(unsigned char)pLayer->animJointIndexB + 1]);
+		}
+		if (pLayer->flags & 4) {
+			PoseCacheEntry *p_entry = &PoseCacheEntryList[((MobyAnimLayerCommon *)pLayer)->poseIndex];
+			AnimDecompBlendCached(AK_PoseCache2 + p_entry->cacheIndex * 0x20, p_entry->jointCnt, pLayer->blendWeight);
+		} else {
+			AnimEvaluateBlend_LowLevel(pLayer->animSeq, pLayer->animSeqT, pLayer->blendWeight);
+		}
+	}
+	if (pMoby->pManipulator) ProcessManipulators(pMoby->pManipulator);
+	if (QST != 0x70000000) {
+		DmaFromSpr((void *)QST, pClass->jointCnt * 4, 0);
+		DmaFromSprSync();
+	}
+}
 
 GAME_SECTION(AnimEvaluateResolve) void AnimEvaluateResolve(moby *pMoby)
 {
@@ -268,7 +350,40 @@ GAME_SECTION(ResetPoseCache) void ResetPoseCache()
 	PoseCacheEntryList[i].nextIndex = 0xff;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", AllocPoseCacheEntry);
+GAME_SECTION(AllocPoseCacheEntry) void AllocPoseCacheEntry(MobyAnimLayer *pLayer, void *pClass_)
+{
+	AK_PoseClass *pClass = (AK_PoseClass *)pClass_;
+	int garbage = PoseGarbageIndex;
+	int joint_cnt = pClass->jointCnt;
+	if (garbage == 0xff) return;
+	int index = PoseHeadIndex;
+	if (index == 0xff) return;
+	PoseCacheEntry *pEntry = &PoseCacheEntryList[index];
+	while (pEntry->used || pEntry->jointCnt < joint_cnt) {
+		index = pEntry->nextIndex;
+		if (index == 0xff) return;
+		pEntry = &PoseCacheEntryList[index];
+	}
+	if (index == 0xff) return;
+	if (joint_cnt < pEntry->jointCnt) {
+		PoseCacheEntry *pNewEntry = &PoseCacheEntryList[garbage];
+		PoseGarbageIndex = pNewEntry->nextIndex;
+		pNewEntry->nextIndex = pEntry->nextIndex;
+		pEntry->nextIndex = garbage;
+		pNewEntry->used = 0;
+		pNewEntry->cacheIndex = pEntry->cacheIndex + joint_cnt;
+		pNewEntry->jointCnt = pEntry->jointCnt - joint_cnt;
+	}
+	pEntry->jointCnt = joint_cnt;
+	pEntry->used = 1;
+	DmaToSpr(pClass->common_trans, joint_cnt, 0x2000);
+	DmaToSprSync();
+	InitQSTBuffer(joint_cnt);
+	AnimEvaluate_LowLevel(pLayer->animSeq, pLayer->animSeqT);
+	AnimCachePose(AK_PoseCache + pEntry->cacheIndex * 0x20, joint_cnt);
+	((MobyAnimLayerCommon *)pLayer)->poseIndex = index;
+	pLayer->flags |= 4;
+}
 
 GAME_SECTION(FreePoseCacheEntry) void FreePoseCacheEntry(MobyAnimLayerCommon *pLayer)
 {

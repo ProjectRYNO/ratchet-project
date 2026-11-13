@@ -81,7 +81,17 @@ def strip(code):
 def declared(chunk):
     labels = re.findall(r'__asm__\s*\(\s*"(\w+)"', chunk)
     if labels and not re.search(r'^\s*(?:typedef\s+)?(?:struct|union|enum|class)\b', strip(chunk)):
-        return {'label:' + label for label in labels}
+        # The C name counts too: an alias of an already-declared label under a new name is still needed.
+        names = {'label:' + label for label in labels}
+        m = re.match(r'[^(\[=;{]*?(\w+)\s*(?:__asm__|[(\[=;{])', strip(chunk).strip(), re.S)
+        if m and m[1] not in KEYWORDS:
+            names.add(m[1])
+        # So does a function's parameter list: an overload under an existing label must be kept, or its
+        # definition is emitted under a mangled name.
+        params = re.search(r'\(([^()]*)\)\s*__asm__', strip(chunk))
+        if params:
+            names.add('params:%s:%s' % (labels[0], re.sub(r'\s+', ' ', params[1]).strip()))
+        return names
     code = strip(chunk).strip()
     names = set()
     if code.startswith('extern "C"') or code.startswith('extern  {'):
@@ -93,9 +103,13 @@ def declared(chunk):
     if m:
         names.add(m[1])
     if code.startswith('typedef'):
-        m = re.search(r'(\w+)\s*(?:__attribute__\s*\(\(.*\)\)\s*)?;\s*$', code, re.S)
+        # A function-pointer typedef names its type inside the parentheses: typedef void (*fn)();
+        m = re.match(r'typedef[^(;{]*\(\s*\*\s*(\w+)\s*\)', code) or \
+            re.search(r'(\w+)\s*(?:__attribute__\s*\(\(.*\)\)\s*)?;\s*$', code, re.S)
         if m:
             names.add(m[1])
+            if '{' not in code:
+                return names
     if not re.match(r'(typedef|struct|union|enum|class)\b', code) or '{' not in code.split('(')[0]:
         m = re.match(r'[^(\[=;{]*?(\w+)\s*(?:__asm__|[(\[=;{])', code, re.S)
         if m:
@@ -179,6 +193,12 @@ def main():
             print('not registered, skipped', obj)
             continue
         at = text.index(k) + len(k)
+        # Forward declarations go first: a struct replaced in place above the insertion point may
+        # use a type the test file only forward-declares.
+        forward = [c for c in kept if re.match(r'\s*(?:struct|union|class)\s+\w+\s*;\s*$', strip(c))]
+        kept = [c for c in kept if c not in forward]
+        text = text[:at] + ''.join(c if c.endswith('\n') else c + '\n' for c in forward) + text[at:]
+        at += sum(len(c if c.endswith('\n') else c + '\n') for c in forward)
         first = re.search(r'^(GAME_SECTION\(|INCLUDE_ASM\()', text[at:], re.M)
         at += first.start() if first else 0
         text = text[:at] + ''.join(c if c.endswith('\n') else c + '\n' for c in kept) + '\n' + text[at:]

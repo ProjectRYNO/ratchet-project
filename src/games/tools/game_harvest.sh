@@ -2,7 +2,7 @@
 # game_harvest.sh : integrate every exact, not-yet-integrated function from the worker test files.
 # Run in the container. Rerun the full checkpoint afterwards; only that proves a match.
 cd /ProjectRYNO/dl/build/game-work || exit 1
-for f in A[C-H]_*.cpp; do
+for f in A[C-M]*.cpp; do
 	python3 /ProjectRYNO/tools/game_test.py "$PWD/$f" 2>&1 | grep EXACT | awk -v f="$f" '{sub(/:/,"",$1); print f, $1}'
 done > /tmp/ex.txt
 grep -E '^  [A-Za-z_0-9]+: 0x' /ProjectRYNO/dl/config/decompiled_functions.yaml | sed 's/^  //; s/:.*//' | sort -u > /tmp/have.txt

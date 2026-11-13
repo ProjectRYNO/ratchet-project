@@ -84,6 +84,57 @@ void SOUND_PLAY_LOOP(int &, moby *, int) __asm__("SOUND_PLAY_LOOP");
 void sound_KillById(int, moby *) __asm__("sound_KillById");
 void sound_KillByMoby(moby *, int) __asm__("sound_KillByMoby");
 
+/* ===== AM additions ===== */
+struct SndMobyClass {
+	/* 0x00 */ char unk00[0xd];
+	/* 0x0d */ unsigned char sound_cnt;
+	/* 0x0e */ char unk0e[0x1a];
+	/* 0x28 */ SoundDef *sound_defs;
+};
+extern unsigned char MobyClassLookup[] __asm__("MobyClassLookup");
+extern SndMobyClass *MobyClassPtrs[] __asm__("MobyClassPtrs");
+int sound_Play(SoundDef *, unsigned int, moby *, float *, int) __asm__("FUN_004e1c00");
+static inline SndMobyClass *sound_GetMobyClass(int oClass)
+{
+	int idx;
+	if (oClass < 0) {
+		return 0;
+	}
+	idx = MobyClassLookup[oClass];
+	if (idx == 0xff) {
+		return 0;
+	}
+	return MobyClassPtrs[idx];
+}
+short sound_MobyPlayOClass(int, unsigned int, moby *, int) __asm__("sound_MobyPlay___dupe2");
+short sound_MobyPlayPos(int, unsigned int, moby *, float *, int) __asm__("sound_MobyPlay___dupe3");
+struct SoundDefAM {
+	/* 0x00 */ float minRange;
+	/* 0x04 */ float maxRange;
+	/* 0x08 */ int minVolume;
+	/* 0x0c */ int maxVolume;
+	/* 0x10 */ int minPitch;
+	/* 0x14 */ int maxPitch;
+	/* 0x18 */ unsigned char loop;
+	/* 0x19 */ unsigned char flags;
+	/* 0x1a */ short index;
+	/* 0x1c */ int bank_index;
+};
+extern int Level __asm__("Level");
+static inline int IsMultiplayerLevel()
+{
+	return Level == 0 || Level >= 0x28;
+}
+static inline int sound_GetMinVolume(SoundDefAM *sd)
+{
+	int minVolume = sd->minVolume;
+	if (IsMultiplayerLevel()) {
+		minVolume = 0;
+	}
+	return minVolume;
+}
+int sound_GetFade(SoundDefAM *, float, float, float, bool) __asm__("sound_GetFade");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CreateHandle);
 
 GAME_SECTION(SOUND_PLAY_LOOP) void SOUND_PLAY_LOOP(int &handle, moby *pMoby, int sound_id)
@@ -182,7 +233,25 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_MobyPlay);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_MobyPlay___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_MobyPlay___dupe3);
+GAME_SECTION(sound_MobyPlay___dupe3) short sound_MobyPlayPos(int sound, unsigned int flags, moby *pMoby, float *pos, int oClass)
+{
+	SndMobyClass *pClass = MobyClassPtrs[MobyClassLookup[oClass]];
+	int channel;
+	if (!pClass) {
+		return -1;
+	}
+	if (!pClass->sound_defs || sound >= pClass->sound_cnt) {
+		return -1;
+	}
+	channel = sound_Play((SoundDef *)((char *)pClass->sound_defs + sound * 0x20), flags, 0, pos, 0x400);
+	if (channel >= 0) {
+		SoundData *ch = (SoundData *)((char *)&Sound + channel * sizeof(SoundData));
+		((SoundData *)((char *)ch + 0x2c0))->pMoby = pMoby;
+		((SoundData *)((char *)ch + 0x2c0))->def_index = sound;
+		((SoundData *)((char *)ch + 0x2c0))->oClass = oClass;
+	}
+	return sound_CreateHandle(channel);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CorePlay);
 

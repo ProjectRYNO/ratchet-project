@@ -83,6 +83,82 @@ void PostEffects_SetDofRamp(unsigned char *) __asm__("PostEffects_SetDofRamp");
 void PostEffects_CommonInit_new() __asm__("PostEffects_CommonInit_new");
 void PostEffects_RegisterEngine_BloomInitApply_new(unsigned long *&, int &) __asm__("PostEffects_RegisterEngine_BloomInitApply_new");
 
+/* ===== AL additions ===== */
+typedef unsigned int alQword[4];
+void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
+extern char FastPalTrns_8[] __asm__("FastPalTrns_8");
+extern char Gif_Tex_Flush[] __asm__("Gif_Tex_Flush");
+extern int g_pDofTemp1 __asm__("g_pDofTemp1");
+extern int g_pDofTex __asm__("g_pDofTex");
+extern int g_pDofPal __asm__("g_pDofPal");
+extern int g_pDofSrc __asm__("g_pDofSrc");
+void PostEffects_DofInitCreateB_new() __asm__("PostEffects_DofInitCreateB_new");
+void PostEffects_DofInit_new() __asm__("PostEffects_DofInit_new");
+void PostEffects_LoadPalToGs_imm(int, void *) __asm__("PostEffects_LoadPalToGs_imm");
+extern int g_BloomApplySize_new __asm__("g_BloomApplySize_new");
+extern int g_BloomApplySize_vu1 __asm__("g_BloomApplySize_vu1");
+extern unsigned long g_BloomApply_new[] __asm__("g_BloomApply_new");
+extern int g_RegEngBase __asm__("g_RegEngBase");
+int g_BloomApply1A __asm__("g_BloomApply1A") GAME_GP_DATA = 0;
+int g_BloomTexOffset __asm__("g_BloomTexOffset") GAME_GP_DATA = 0;
+void PostEffects_AddPutToScreen_imm(int, int, int, bool, bool, int, int, int) __asm__("PostEffects_AddPutToScreen_imm");
+void PostEffects_BloomApply_new() __asm__("PostEffects_BloomApply_new");
+extern unsigned long g_DofCreateB_new[] __asm__("g_DofCreateB_new");
+extern int g_DofCreateSizeB_new __asm__("g_DofCreateSizeB_new");
+int g_RegEngResident __asm__("g_RegEngResident") GAME_GP_DATA = 0;
+extern unsigned short regeng_mpg_qwc __asm__("D_118150");
+extern char regeng_mpg[] __asm__("D_118160");
+extern char regeng_vu_addr[] __asm__("D_3E80");
+void VU1_addDataRef(void *, int) __asm__("VU1_addDataRef");
+void PostEffects_RegisterEngineInit() __asm__("PostEffects_RegisterEngineInit");
+extern unsigned int PE_sandStormPal[256] __asm__("PE_sandStormPal");
+float Lerp(float, float, float) __asm__("Lerp___dupe2");
+
+extern int g_BloomTexEnd __asm__("g_BloomTexEnd");
+extern int g_pBloomPal __asm__("g_pBloomPal");
+extern int g_pBloomTex2 __asm__("g_pBloomTex2");
+extern int g_pBloomTempCopy __asm__("g_pBloomTempCopy");
+extern int g_pBloomSrc __asm__("g_pBloomSrc");
+extern unsigned int g_BloomPal[256] __asm__("g_BloomPal");
+extern unsigned long g_BloomCreateA_new[] __asm__("g_BloomCreateA_new");
+extern unsigned long g_BloomCreateC_new[] __asm__("g_BloomCreateC_new");
+extern int g_BloomCreateSizeA_new __asm__("g_BloomCreateSizeA_new");
+extern int g_BloomCreateSizeA_vu1 __asm__("g_BloomCreateSizeA_vu1");
+extern int g_BloomCreateSizeC_new __asm__("g_BloomCreateSizeC_new");
+extern int g_BloomCreateSizeC_vu1 __asm__("g_BloomCreateSizeC_vu1");
+void PostEffects_RegisterEngine_BloomInitCreateA_new(unsigned long *&, int &) __asm__("PostEffects_RegisterEngine_BloomInitCreateA_new");
+void PostEffects_RegisterEngine_BloomInitCreateC_new(unsigned long *&, int &) __asm__("PostEffects_RegisterEngine_BloomInitCreateC_new");
+void PostEffects_BloomInit_new() __asm__("PostEffects_BloomInit_new");
+void PostEffects_BloomCreateB_new(unsigned long *&, int &) __asm__("PostEffects_BloomCreateB_new");
+void PostEffects_BloomCreate_new() __asm__("PostEffects_BloomCreate_new");
+struct alPEInfo {
+	/* 0x00 */ int unk00[6];
+	/* 0x18 */ int m_ScreenW;
+	/* 0x1c */ int m_ScreenH;
+	/* 0x20 */ int unk20[3];
+	/* 0x2c */ int m_PaneW;
+	/* 0x30 */ int m_PaneH;
+	/* 0x34 */ int m_Pane_x1;
+	/* 0x38 */ int m_Pane_y1;
+	/* 0x3c */ int m_Pane_x2;
+	/* 0x40 */ int m_Pane_y2;
+};
+extern alPEInfo alPeInfo __asm__("g_PeInfo");
+struct alScrnDef {
+	/* 0x00 */ int size_x;
+	/* 0x04 */ int size_y;
+	/* 0x08 */ int unk08[2];
+	/* 0x10 */ int ofs_x;
+	/* 0x14 */ int ofs_y;
+};
+extern alScrnDef alScrn __asm__("Scrn");
+unsigned char bTemp_ShowDestAlpha_2866 __asm__("bTemp_ShowDestAlpha_2866") GAME_GP_DATA = 0;
+void PostEffects_DofCreateA_new() __asm__("PostEffects_DofCreateA_new");
+void PostEffects_CreateFrameBufferAlphaFromDepth_imm() __asm__("PostEffects_CreateFrameBufferAlphaFromDepth_imm");
+void PostEffects_AddRemapAlpha_imm(int, int, int, int, int, int, int, int, int) __asm__("PostEffects_AddRemapAlpha_imm");
+void VU1_addGSregister(unsigned int, unsigned long, bool) __asm__("VU1_addGSregister");
+void PostEffects_DofCreate_new() __asm__("PostEffects_DofCreate_new");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LocalAlloc);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddStrips);
@@ -144,7 +220,23 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7EA0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init_AlphaMappingPalette);
+GAME_SECTION(PostEffects_SandStorm_Init_AlphaMappingPalette) void PostEffects_SandStorm_Init_AlphaMappingPalette()
+{
+	int i;
+	float fFrac;
+	unsigned char Ramp[256];
+	int ci;
+
+	for (i = 0; i < 0x100; i++) {
+		fFrac = 1.0f - (float)i / 255.0f;
+		Ramp[i] = (int)Lerp((float)i, (1.0f - fFrac * fFrac) * 255.0f, 0.8f);
+	}
+	for (i = 0; i < 0x100; i++) {
+		ci = (i & 0xe7) | (i & 8) << 1 | (i & 0x10) >> 1;
+		PE_sandStormPal[ci] = ((0xff - Ramp[i]) >> 1) << 24;
+	}
+	FlushCache(0);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7FD0);
 
@@ -217,7 +309,24 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_CreateFrameBufferAlphaFromDepth_imm);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LoadPalToGs_imm);
+extern alQword *alVu1 __asm__("vu1_bufPtr");
+GAME_SECTION(PostEffects_LoadPalToGs_imm) void PostEffects_LoadPalToGs_imm(int pPalGS_, void *pPal_)
+{
+	unsigned char *pc;
+	alQword *q;
+
+	FastMemCopy(alVu1, FastPalTrns_8, 0x70);
+	pc = (unsigned char *)alVu1;
+	*(short *)(pc + 0x24) = pPalGS_ >> 8;
+	*(int *)(pc + 0x64) = (int)pPal_;
+	q = alVu1 + 7;
+	alVu1 = q;
+	(*q)[0] = 0x30000003;
+	(*q)[1] = (unsigned int)Gif_Tex_Flush;
+	(*q)[2] = 0;
+	(*q)[3] = 0x50000003;
+	alVu1 = alVu1 + 1;
+}
 
 GAME_SECTION(PostEffects_SetDofRamp) void PostEffects_SetDofRamp(unsigned char *Ramp_)
 {
@@ -263,15 +372,98 @@ GAME_SECTION(PostEffects_RegisterEngine_BloomInitApply_new) void PostEffects_Reg
 	PostEffects_RegisterEngine_Blur256(pCurrent, RegEngBase, g_pBloomTemp1, g_pBloomTemp2);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_BloomCreate_new);
+GAME_SECTION(PostEffects_BloomCreate_new) void PostEffects_BloomCreate_new()
+{
+	unsigned long *pCurrent;
+	int RegEngBase;
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_BloomApply_new);
+	g_BloomTexOffset = 0x6000;
+	(*alVu1)[0] = g_BloomCreateSizeA_new >> 4 | 0x30000000;
+	(*alVu1)[1] = (unsigned int)g_BloomCreateA_new;
+	(*alVu1)[2] = g_RegEngBase | 0x3000000;
+	(*alVu1)[3] = 0x2000000;
+	RegEngBase = 0;
+	alVu1 = alVu1 + 1;
+	pCurrent = (unsigned long *)(alVu1 + 1);
+	g_RegEngBase = g_RegEngBase + g_BloomCreateSizeA_vu1;
+	PostEffects_BloomCreateB_new(pCurrent, RegEngBase);
+	(*alVu1)[0] = ((int)pCurrent + (-0x10 - (int)alVu1)) >> 4 | 0x10000000;
+	(*alVu1)[2] = g_RegEngBase | 0x3000000;
+	(*alVu1)[3] = 0x2000000;
+	g_RegEngBase = g_RegEngBase + RegEngBase;
+	alVu1 = (alQword *)pCurrent;
+	PostEffects_LoadPalToGs_imm(g_pBloomPal, g_BloomPal);
+	(*alVu1)[0] = g_BloomCreateSizeC_new >> 4 | 0x30000000;
+	(*alVu1)[1] = (unsigned int)g_BloomCreateC_new;
+	(*alVu1)[2] = g_RegEngBase | 0x3000000;
+	(*alVu1)[3] = 0x2000000;
+	g_RegEngBase = g_RegEngBase + g_BloomCreateSizeC_vu1;
+	alVu1 = alVu1 + 1;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_DofInit_new);
+GAME_SECTION(PostEffects_BloomApply_new) void PostEffects_BloomApply_new()
+{
+	(*alVu1)[0] = g_BloomApplySize_new >> 4 | 0x30000000;
+	(*alVu1)[1] = (unsigned int)g_BloomApply_new;
+	(*alVu1)[2] = g_RegEngBase | 0x3000000;
+	(*alVu1)[3] = 0x2000000;
+	g_RegEngBase = g_RegEngBase + g_BloomApplySize_vu1;
+	alVu1 = alVu1 + 1;
+	PostEffects_AddPutToScreen_imm(g_pBloomTemp1, 0x100, 0x100, true, false, g_BloomApply1A, 0x808080, 0xffffff);
+	g_BloomTexOffset = 0;
+}
+
+GAME_SECTION(PostEffects_DofInit_new) void PostEffects_DofInit_new()
+{
+	int LocalGsLoc;
+	unsigned char Ramp[256];
+	int i;
+
+	LocalGsLoc = 0x37e000;
+	g_pDofTemp1 = PostEffects_LocalAlloc(LocalGsLoc, 0x40000);
+	g_pDofTex = PostEffects_LocalAlloc(LocalGsLoc, 0x40000);
+	g_pDofPal = PostEffects_LocalAlloc(LocalGsLoc, 0x400);
+	g_pDofSrc = GSmem.draw;
+	PostEffects_DofInitCreateB_new();
+	g_iDofPalette = 0;
+	{
+		unsigned char *p;
+		i = 0xff;
+		p = Ramp + 0xff;
+		do {
+			*p = i;
+			i--;
+			p--;
+		} while (i >= 0);
+	}
+	PostEffects_SetDofRamp(Ramp);
+	g_PostEffectsFlags |= 2;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_DofCreateA_new);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_DofInitCreateB_new);
+void PostEffects_Blur256(unsigned long **, int, int) __asm__("PostEffects_Blur256");
+GAME_SECTION(PostEffects_DofInitCreateB_new) void PostEffects_DofInitCreateB_new()
+{
+	unsigned long *pCurrent;
+
+	g_DofCreateB_new[0] = 0x1000000000000005;
+	g_DofCreateB_new[1] = 0xe;
+	g_DofCreateB_new[3] = 0x3f;
+	g_DofCreateB_new[4] = 0xa0000000a0;
+	g_DofCreateB_new[5] = 0x19;
+	g_DofCreateB_new[6] = 0x100000000;
+	g_DofCreateB_new[7] = 0x4f;
+	g_DofCreateB_new[8] = 0x60;
+	g_DofCreateB_new[9] = 0x15;
+	g_DofCreateB_new[10] = 5;
+	g_DofCreateB_new[0xb] = 9;
+	pCurrent = g_DofCreateB_new + 0xc;
+	g_DofCreateB_new[2] = 0;
+	PostEffects_Blur256(&pCurrent, g_pDofTex, g_pDofTemp1);
+	PostEffects_Blur256(&pCurrent, g_pDofTex, g_pDofTemp1);
+	g_DofCreateSizeB_new = (char *)pCurrent - (char *)g_DofCreateB_new;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_DofCreate_new);
 

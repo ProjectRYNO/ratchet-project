@@ -3,8 +3,12 @@
 
 
 
+
+
+
 struct memcard_saveinfo {
-	/* 0x00 */ int unk00[8];
+	/* 0x00 */ int level;
+	/* 0x04 */ int unk04[7];
 };
 struct memcard_data {
 	/* 0x00 */ int port;
@@ -80,7 +84,7 @@ void csf_prompt_warning() __asm__("csf_prompt_warning");
 
 void (*save_done_cb)() __asm__("D_21F15C") GAME_GP_DATA = 0;
 void (*init_load_cb)() __asm__("D_21F160") GAME_GP_DATA = 0;
-short MCSTATE_which_slot __asm__("D_21F16C") GAME_GP_DATA = 0;
+int MCSTATE_which_slot __asm__("D_21F16C") GAME_GP_DATA = 0;
 extern unsigned char InEndgame __asm__("InEndgame");
 extern unsigned char InFrontEnd __asm__("InFrontEnd");
 extern unsigned char mcstate_error __asm__("mcstate_error");
@@ -109,6 +113,24 @@ int MCSTATE_CommandIsSet(int) __asm__("MCSTATE_CommandIsSet");
 extern void (*state_functions[])() __asm__("D_3D8038");
 extern int MCSTATE_idle_time __asm__("MCSTATE_idle_time");
 void UpdateMCState() __asm__("UpdateMCState");
+
+/* ===== AG additions ===== */
+
+void csf_newcard() __asm__("csf_newcard");
+
+/* ===== AM additions ===== */
+struct McClock {
+	/* 0x0 */ unsigned char b[8];
+};
+extern "C" int sceCdReadClock(McClock *);
+extern "C" int sceScfGetLocalTimefromRTC(McClock *);
+extern McClock LastSaveTime __asm__("LastSaveTime");
+extern int Level __asm__("Level");
+void memcard_MakeWholeSave(char *) __asm__("memcard_MakeWholeSave");
+void MCSTATE_SaveGame(char *, int) __asm__("MCSTATE_SaveGame");
+void (*do_save_cb)() __asm__("D_21F158") GAME_GP_DATA = 0;
+void csf_init_save() __asm__("csf_init_save");
+void csf_good_save() __asm__("csf_good_save");
 
 GAME_SECTION(csf_prompt_create_save_overwrite) void csf_prompt_create_save_overwrite()
 {
@@ -160,7 +182,27 @@ GAME_SECTION(csf_init) void csf_init()
 	McRetries = 5;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_good_save);
+GAME_SECTION(csf_good_save) void csf_good_save()
+{
+	if (mcState.memcards[0].type != 2) {
+		if (g_gameType == 1 || !mcState.autosave) {
+			MCSTATE_TransToState(4);
+		} else {
+			mcState.autosave = 0;
+			MCSTATE_TransToState(3);
+		}
+	} else if (mcstate_flags & 4) {
+		MCSTATE_TransToState(0x1e);
+	} else if (mcstate_flags & 2) {
+		MCSTATE_TransToState(0x1d);
+	} else if (g_gameType == 0) {
+		if (!mcState.autosave || mcState.memcards[0].changed) {
+			MCSTATE_TransToState(5);
+		} else if (mcstate_flags & 0x200) {
+			MCSTATE_TransToState(0x1c);
+		}
+	}
+}
 
 GAME_SECTION(csf_good_load) void csf_good_load()
 {
@@ -341,7 +383,27 @@ GAME_SECTION(csf_creating_save) void csf_creating_save()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_init_save);
+GAME_SECTION(csf_init_save) void csf_init_save()
+{
+	bool bOkToSave;
+	if (mcState.stage == 2 && mcState.nextstage < 0) {
+		bOkToSave = false;
+		if ((g_gameType == 0 && mcState.memcards[0].info[MCSTATE_which_slot].level == -1) || mcstate_response || (mcstate_flags & 0x4000)) {
+			bOkToSave = true;
+		}
+		if (bOkToSave) {
+			mcstate_flags &= ~0x4000;
+			if (do_save_cb) {
+				do_save_cb();
+				do_save_cb = 0;
+			}
+			mcState.memcards[0].saveslot = MCSTATE_which_slot;
+			MCSTATE_TransToState(0x19);
+		} else {
+			MCSTATE_TransToState(0x1f);
+		}
+	}
+}
 
 GAME_SECTION(csf_init_load) void csf_init_load()
 {
@@ -356,7 +418,22 @@ GAME_SECTION(csf_init_load) void csf_init_load()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_newcard);
+GAME_SECTION(csf_newcard) void csf_newcard()
+{
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+	} else if (g_gameType == 0 && mcState.autosave) {
+		MCSTATE_TransToState(1);
+	} else if (mcstate_flags & 4) {
+		MCSTATE_TransToState(0x1e);
+	} else if (mcstate_flags & 2) {
+		MCSTATE_TransToState(0x1d);
+	} else if (mcstate_flags & 0x800) {
+		MCSTATE_TransToState(0xc);
+	} else if (mcState.memcards[0].type == 2 && mcState.memcards[0].changed) {
+		MCSTATE_TransToState(5);
+	}
+}
 
 GAME_SECTION(csf_prompt_format_failed) void csf_prompt_format_failed()
 {
@@ -481,7 +558,25 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AD8)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_LoadGame);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_SaveGame);
+GAME_SECTION(MCSTATE_SaveGame) void MCSTATE_SaveGame(char *addr, int which_level)
+{
+	McState *mc = &mcState;
+	sceCdReadClock(&LastSaveTime);
+	sceScfGetLocalTimefromRTC(&LastSaveTime);
+	memcard_MakeWholeSave(addr);
+	mc->memcards[0].saveslot = MCSTATE_which_slot;
+	mc->useslot = 0;
+	mc->addr = addr;
+	if (which_level == -1) {
+		mc->memcards[0].info[MCSTATE_which_slot].level = Level;
+	} else {
+		mc->memcards[0].info[MCSTATE_which_slot].level = which_level;
+	}
+	if (mcState.nextstage < 0) {
+		mcState.nextslot = 0;
+		mcState.nextstage = 0x13;
+	}
+}
 
 GAME_SECTION(MCSTATE_GetState) int MCSTATE_GetState()
 {

@@ -112,6 +112,15 @@ bool Help_MessageCompleted() __asm__("Help_MessageCompleted");
 bool HelpQueue_IsEmpty() __asm__("HelpQueue_IsEmpty");
 int HelpQueue_GetInsertIndex(int, short) __asm__("HelpQueue_GetInsertIndex");
 
+struct StreamInterfaceAJ {
+	unsigned int Stop(unsigned int, float) __asm__("Stop");
+};
+/* ===== AL additions ===== */
+extern unsigned short HelpLog[] __asm__("HelpLog");
+extern int HelpLogPos __asm__("HelpLogPos");
+bool Help_DontAddToHelpLogException(int) __asm__("FUN_0045df58");
+bool Help_AddToLog(int) __asm__("Help_AddToLog");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_Reset);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_Update);
@@ -166,7 +175,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMessage
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMenuMessage);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_KillMenuMessage);
+extern StreamInterfaceAJ StreamSysAJ __asm__("StreamSys");
+GAME_SECTION(Help_KillMenuMessage) bool Help_KillMenuMessage()
+{
+	return StreamSysAJ.Stop(Menu_voStream, 0.0f) != 0;
+}
 
 GAME_SECTION(Help_ShutDown) void Help_ShutDown()
 {
@@ -177,7 +190,17 @@ GAME_SECTION(Help_ShutDown) void Help_ShutDown()
 	else Help_SetState(0);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_Kill);
+/* AJ near misses */
+GAME_SECTION(Help_Kill) void Help_Kill()
+{
+	if (Help.state != 0) {
+		Help_StopVoice();
+		Help.message_id = -1;
+		Help.message_index = -1;
+		Help.message_flg = -1;
+		Help_SetState(0);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", func_0045DED8);
 
@@ -199,7 +222,37 @@ GAME_SECTION(Help_CheckIfEmptyText) bool Help_CheckIfEmptyText(int id)
 	return msg_string(id) == (char *)HelpMsgs;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", FUN_0045df58);
+GAME_SECTION(FUN_0045df58) bool Help_DontAddToHelpLogException(int id)
+{
+	switch (id) {
+	case 0x26d4:
+	case 0x2922:
+	case 0x2923:
+	case 0x2924:
+	case 0x2925:
+	case 0x3098:
+	case 0x3099:
+	case 0x309c:
+	case 0x309d:
+	case 0x309e:
+	case 0x309f:
+	case 0x30a0:
+	case 0x30a1:
+	case 0x30a6:
+	case 0x30a7:
+	case 0x31f5:
+	case 0x31f9:
+	case 0x3223:
+	case 0x3224:
+	case 0x3225:
+	case 0x354c:
+	case 0x354d:
+	case 0x3779:
+	case 0x377a:
+		return true;
+	}
+	return false;
+}
 
 GAME_SECTION(Help_DoAddToHelpLogException) bool Help_DoAddToHelpLogException(int id)
 {
@@ -232,7 +285,14 @@ GAME_SECTION(Help_SetState) void Help_SetState(int state)
 	Help.counter = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_StopVoice);
+GAME_SECTION(Help_StopVoice) void Help_StopVoice()
+{
+	unsigned int none = 0xffffffff;
+	if (Help.streamHandle != none) {
+		StreamSysAJ.Stop(Help.streamHandle, 0.0f);
+		Help.streamHandle = none;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_AddToLog);
 

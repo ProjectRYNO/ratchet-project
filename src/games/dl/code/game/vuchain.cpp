@@ -54,9 +54,59 @@ void VU1_setBufSizeByLevel() __asm__("VU1_setBufSizeByLevel");
 void VU1_addDataDirect(int, void *, int) __asm__("VU1_addDataDirect");
 void DMAC_VIF1_Enable() __asm__("DMAC_VIF1_Enable");
 
+struct sceGsStoreImage {
+	/* 0x00 */ char unk00[0x70];
+};
+extern "C" {
+	void sceGsSetDefStoreImage(sceGsStoreImage *, short, short, short, short, short, short, short);
+	int sceGsExecStoreImage(sceGsStoreImage *, void *);
+	int sceGsSyncPath(int, unsigned short);
+	void FlushCache(int);
+}
+unsigned long *g_current_vu0_program __asm__("g_current_vu0_program") GAME_GP_DATA = 0;
+int GSRegisterListOpen __asm__("GSRegisterListOpen") GAME_GP_DATA = 0;
+void VU0_loadMicroProgram(unsigned long *) __asm__("VU0_loadMicroProgram");
+void VU1_addGSregister(unsigned int, unsigned long, int) __asm__("VU1_addGSregister");
+void StashGSMem(void *, int, int) __asm__("StashGSMem");
+struct AABuff {
+	/* 0x000 */ char unk000[0x150];
+	/* 0x150 */ short drawW;
+	/* 0x152 */ short drawH;
+};
+extern AABuff aaBuff __asm__("aaBuff");
+extern char reset_gs_regs_draw[] __asm__("reset_gs_regs_draw");
+extern char reset_gs_regs_scis[] __asm__("reset_gs_regs_scis");
+extern int vu1_use __asm__("vu1_use");
+extern int vu1_maxUse __asm__("vu1_maxUse");
+struct sceDmaChan {
+	/* 0x00 */ unsigned int chcr;
+};
+extern "C" {
+	sceDmaChan *sceDmaGetChan(int);
+	void sceDmaSend(sceDmaChan *, void *);
+}
+void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
+void ResetTieLightingCache() __asm__("ResetTieLightingCache");
+void VU1_resetDrawContexts() __asm__("VU1_resetDrawContexts");
+void VU1_setScissor(int, int, int, int) __asm__("VU1_setScissor");
+void VU1_sendChain() __asm__("VU1_sendChain");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU0_loadMicroProgram);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_setBufSizeByLevel);
+GAME_SECTION(VU1_setBufSizeByLevel) void VU1_setBufSizeByLevel()
+{
+	vu1_bufSize = 0x160000;
+	if (0 < Level) {
+		if (Level < 20) vu1_bufSize = vu1_buf_table[Level];
+		else if (Level < 40) vu1_bufSize = vu1_buf_table[Level - 20];
+		else if (Level < 60) vu1_bufSize = 0x120000;
+		else if (Level < 80) vu1_bufSize = 0x120000;
+		else vu1_bufSize = 0x160000;
+	}
+	ShadowScratchPadSize = 0xf000;
+	EngScratchPadSize = 0x1e000;
+	VU1_resetScratch();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_resetScratch);
 
@@ -92,7 +142,24 @@ GAME_SECTION(VU1_addDataDirect) void VU1_addDataDirect(int addr, void *data, int
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7978);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_addGSregister);
+GAME_SECTION(VU1_addGSregister) void VU1_addGSregister(unsigned int reg, unsigned long rval, int bFXRegTrackingAcknowledged)
+{
+	if (GSRegisterListOpen == 0) {
+		(*vu1_bufPtr)[0] = 0x10000002;
+		(*vu1_bufPtr)[1] = 0;
+		(*vu1_bufPtr)[2] = 0;
+		(*vu1_bufPtr)[3] = 0x50000002;
+		vu1_bufPtr[1][0] = 0x8001;
+		vu1_bufPtr[1][1] = 0x10000000;
+		vu1_bufPtr[1][2] = 0xe;
+		vu1_bufPtr[1][3] = 0;
+		vu1_bufPtr = vu1_bufPtr + 2;
+	}
+	*(unsigned long *)*vu1_bufPtr = rval;
+	(*vu1_bufPtr)[2] = reg;
+	(*vu1_bufPtr)[3] = 0;
+	vu1_bufPtr = vu1_bufPtr + 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7A68);
 
@@ -127,9 +194,37 @@ GAME_SECTION(VU1_gsRegsEffects) void VU1_gsRegsEffects()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7CA8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_resetDrawContexts);
+GAME_SECTION(VU1_resetDrawContexts) void VU1_resetDrawContexts()
+{
+	(*vu1_bufPtr)[0] = 0x30000009;
+	(*vu1_bufPtr)[1] = (int)reset_gs_regs_draw;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000009;
+	vu1_bufPtr = vu1_bufPtr + 1;
+	(*vu1_bufPtr)[0] = 0x10000003;
+	(*vu1_bufPtr)[1] = 0;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000003;
+	vu1_bufPtr = vu1_bufPtr + 1;
+	FastMemCopy(vu1_bufPtr, reset_gs_regs_scis, 0x30);
+	vu1_bufPtr = vu1_bufPtr + 3;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", StashGSMem);
+GAME_SECTION(StashGSMem) void StashGSMem(void *ram, int gs_start, int size)
+{
+	sceGsStoreImage image;
+	int gs_pos = 0;
+	int ram_pos = 0;
+	int left = size + 0x3fff & -0x4000;
+	for (; left > 0; left -= 0x4000) {
+		sceGsSetDefStoreImage(&image, (gs_start + gs_pos) >> 8, 1, 1, 0, 0, 0x40, 0x40);
+		gs_pos += 0x4000;
+		FlushCache(0);
+		sceGsExecStoreImage(&image, (char *)ram + ram_pos);
+		ram_pos += 0x3000;
+		sceGsSyncPath(0, 0);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7E50);
 

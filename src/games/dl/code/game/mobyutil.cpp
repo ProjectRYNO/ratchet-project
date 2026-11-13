@@ -30,13 +30,13 @@ struct MobyInstance {
 	/* 0x50 */ void *animLayers;
 	/* 0x54 */ char animSeqId;
 	/* 0x55 */ char animFlags;
-	/* 0x56 */ char lSeq;
+	/* 0x56 */ unsigned char lSeq;
 	/* 0x57 */ char jointCnt;
 	/* 0x58 */ void *jointCache;
 	/* 0x5c */ void *pManipulator;
 	/* 0x60 */ int glow_rgba;
 	/* 0x64 */ char lod_trans;
-	/* 0x65 */ char lod_trans2;
+	/* 0x65 */ unsigned char lod_trans2;
 	/* 0x66 */ char metal;
 	/* 0x67 */ char subState;
 	/* 0x68 */ char prevState;
@@ -117,7 +117,9 @@ struct Bot_Communication {
 	/* 0x1f4 */ unsigned char botAbilities[0x11];
 };
 struct MotionBlur {
-	/* 0x000 */ char unk000[0x120];
+	/* 0x000 */ char unk000[0x100];
+	/* 0x100 */ int blurAlphas[4];
+	/* 0x110 */ int blurSteps[4];
 	/* 0x120 */ MobyInstance *blurMobys[4];
 	/* 0x130 */ float gapReduction[4];
 	/* 0x140 */ short ringIndex;
@@ -182,10 +184,20 @@ struct MobySeq {
 	/* 0x1c */ void *frameData;
 };
 struct MobyClass {
-	/* 0x00 */ char unk00[0xb];
+	/* 0x00 */ char unk00[0x6];
+	/* 0x06 */ unsigned char metal_cnt;
+	/* 0x07 */ char unk07[0xb - 0x7];
 	/* 0x0b */ unsigned char team_texs;
 	/* 0x0c */ unsigned char seq_cnt;
-	/* 0x0d */ char unk0d[0x46 - 0xd];
+	/* 0x0d */ char unk0d;
+	/* 0x0e */ char lod_trans;
+	/* 0x0f */ unsigned char shadow;
+	/* 0x10 */ int *collision;
+	/* 0x14 */ char unk14[0x24 - 0x14];
+	/* 0x24 */ float gScale;
+	/* 0x28 */ char unk28[0x40 - 0x28];
+	/* 0x40 */ int glow_rgba;
+	/* 0x44 */ char unk44[0x46 - 0x44];
 	/* 0x46 */ unsigned char type;
 	/* 0x47 */ char mode_bits2;
 	/* 0x48 */ MobySeq *seqs[0];
@@ -342,6 +354,84 @@ void MB_transAnim___dupe2(MobyInstance *, int, float, int, int) __asm__("MB_tran
 int PointInsideComplexPoly(vec4f &, vec4f *, int) __asm__("PointInsideComplexPoly");
 int MB_Level99ColorTimeBased(int) __asm__("MB_Level99ColorTimeBased");
 
+static inline int AK_GetXPBundle(MobyInstance *pMoby)
+{
+	int empty = -1;
+	int i;
+	for (i = 0; i < 3; i++) {
+		if (MB_xpBundle[i].pMoby == 0) empty = i;
+		if (MB_xpBundle[i].pMoby == pMoby) return i;
+	}
+	if (empty >= 0) {
+		FastMemSet(&MB_xpBundle[empty], 0, 0x54);
+		MB_xpBundle[empty].pMoby = pMoby;
+		return empty;
+	}
+	return -1;
+}
+int MB_BundleDamage(MobyInstance *pMoby, unsigned int gadgetId, float damage, int index) __asm__("MB_BundleDamage");
+void MB_transAnim(MobyInstance *pMoby, int seq, float frm, int steps) __asm__("MB_transAnim");
+extern unsigned char MobyClassLookup[] __asm__("MobyClassLookup");
+extern MobyClass *MobyClasses[] __asm__("MobyClassPtrs");
+void PostUpdateMoby(MobyInstance *) __asm__("PostUpdateMoby");
+int MB_SetOClass(MobyInstance *pMoby, int oClass) __asm__("MB_SetOClass");
+int SolveQuad(float a, float b, float c, float &r1, float &r2) __asm__("SolveQuad");
+float AccelDeltAng(float &val, float target, float &speed, float gain, float damp, float limit, int turnDir) __asm__("AccelDeltAng");
+void GetMobyAmbientLights(MobyInstance *, int *, int *, int *) __asm__("GetMobyAmbientLights");
+extern int AK_bootSettings[16] __asm__("bootSettings");
+extern float NtscPalSpeedAdjuster __asm__("NtscPalSpeedAdjuster");
+extern float NtscPalAccelAdjuster __asm__("NtscPalAccelAdjuster");
+extern float NtscPalFrameAdjuster __asm__("NtscPalFrameAdjuster");
+extern float NtscPalSpeedPerSecAdjuster __asm__("NtscPalSpeedPerSecAdjuster");
+extern float NtscPalAccelPerSecAdjuster __asm__("NtscPalAccelPerSecAdjuster");
+extern float NtscPalAccelXlPerSecAdjuster __asm__("NtscPalAccelXlPerSecAdjuster");
+extern int NtscPalTimerTicksPerFrame __asm__("NtscPalTimerTicksPerFrame");
+extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFloat");
+void SetNtscPalTiming(int mode) __asm__("SetNtscPalTiming");
+
+struct AK_mtx3 { float m[3][4]; };
+void MatAdjoint(AK_mtx3 &dm, AK_mtx3 &u) __asm__("MatAdjoint");
+struct AK_GDHero {
+	/* 0x0000 */ char unk0000[0x2318];
+	/* 0x2318 */ int gadgetIndex;
+	/* 0x231c */ char unk231c[0x26e4 - 0x231c];
+	/* 0x26e4 */ void *pGadgetBox;
+};
+extern AK_GDHero *AK_g_Hero[10] __asm__("g_Hero");
+int FUN_00472818(MobyInstance *) __asm__("FUN_00472818");
+int GadgetIsModSupported(int, int) __asm__("GadgetIsModSupported___dupe2");
+int GetActivePostFXMod(void *, int) __asm__("GetActivePostFXMod");
+static inline MobyInstance *AK_RootParent(MobyInstance *p)
+{
+	if (p->pParent) return AK_RootParent(p->pParent);
+	return p;
+}
+int MB_GadgetDamageIndex(MobyInstance *pMoby, int hero_index) __asm__("MB_GadgetDamageIndex");
+extern int g_gameRules __asm__("g_gameRules");
+MobyInstance *CreateMoby(int, int) __asm__("CreateMoby");
+void SwitchMobyToCoOpArmor(MobyInstance *) __asm__("SwitchMobyToCoOpArmor");
+void AddMotionBlurElem(MotionBlur &blur, int alpha, int stepsBehindTarget, float gapReductionFactor) __asm__("AddMotionBlurElem");
+struct AK_TriMode {
+	/* 0x00 */ int mode;
+	/* 0x04 */ int msg;
+	/* 0x08 */ int state;
+	/* 0x0c */ char unk0c[0x1c - 0xc];
+};
+struct AK_HeroVtbl {
+	/* 0x00 */ char unk00[0x4c];
+	/* 0x4c */ int (*getPrompt)(struct AK_TriHero *);
+};
+struct AK_TriHero {
+	/* 0x0000 */ char unk0000[0x14];
+	/* 0x0014 */ AK_HeroVtbl *vtbl;
+	/* 0x0018 */ char unk0018[0x266d - 0x18];
+	/* 0x266d */ unsigned char promptOk;
+};
+extern AK_TriMode tri_mode[10] __asm__("tri_mode");
+AK_TriHero *GB_GetHeroFromPlayerIndex(int) __asm__("GB_GetHeroFromPlayerIndex");
+void GUI_PrintPrompt(int, char *) __asm__("GUI_PrintPrompt");
+int FUN_0047b7f8(int iPlayer, int mode, int msg) __asm__("FUN_0047b7f8");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_QueueUpgradeScene);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_CheckQueuedUpgradeScene);
@@ -382,7 +472,18 @@ GAME_SECTION(MB_snapAnim) void MB_snapAnim(MobyInstance *pMoby, int seq, float f
 	pMoby->animFlags &= ~2;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_transAnim);
+GAME_SECTION(MB_transAnim) void MB_transAnim(MobyInstance *pMoby, int seq, float frm, int steps)
+{
+	int cnt = pMoby->pClass->seqs[seq]->frameCnt;
+	if ((float)cnt <= frm) frm = cnt - 1;
+	if (frm > 0.0f && frm <= 11.0f) MB_PlaySoundsInSeq(pMoby, seq, (int)frm);
+	if (steps <= 0) {
+		MB_snapAnim(pMoby, seq, frm);
+	} else {
+		MobyTransitionSequence(pMoby, pMoby->pClass->seqs[seq], seq, frm, steps);
+		pMoby->animFlags &= ~2;
+	}
+}
 
 GAME_SECTION(MB_transAnim___dupe2) void MB_transAnim___dupe2(MobyInstance *pMoby, int seq, float frm, int steps, int flags)
 {
@@ -451,7 +552,38 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473CB8
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_getJumpPeak);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SetOClass);
+GAME_SECTION(MB_SetOClass) int MB_SetOClass(MobyInstance *pMoby, int oClass)
+{
+	if (pMoby->oClass == oClass) return 0;
+	pMoby->oClass = oClass;
+	pMoby->mClass = MobyClassLookup[(short)oClass];
+	pMoby->pClass = MobyClasses[(unsigned char)pMoby->mClass];
+	MB_snapAnim(pMoby, 0, 0.0f);
+	MobyClass *pClass = pMoby->pClass;
+	pMoby->lod_trans = pClass->lod_trans;
+	pMoby->lod_trans2 = 0xff;
+	pMoby->scale = pClass->gScale;
+	if (pMoby->collData) pMoby->collData = pClass->collision;
+	pMoby->lSeq = 0xff;
+	if (pMoby->pClass) {
+		if (pMoby->pClass->glow_rgba) {
+			pMoby->modeBits |= 0x10;
+			pMoby->glow_rgba = pMoby->pClass->glow_rgba;
+		}
+		if (!pMoby->pClass->shadow) {
+			pMoby->modeBits &= ~0x400;
+		} else {
+			pMoby->shadow = 0x18;
+			pMoby->shadow_plane = 0.0f;
+			pMoby->modeBits |= 0x400;
+			pMoby->shadow_range = 0.0f;
+			pMoby->shadow_index = 0;
+		}
+		if (pMoby->pClass->metal_cnt) pMoby->metal = 0x18;
+	}
+	PostUpdateMoby(pMoby);
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473F20);
 
@@ -585,7 +717,27 @@ GAME_SECTION(DeltAng) float DeltAng(float &val, float target, float speed, int t
 	return SubRots(target, val, turnDir);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", AccelDeltAng);
+GAME_SECTION(AccelDeltAng) float AccelDeltAng(float &val, float target, float &speed, float gain, float damp, float limit, int turnDir)
+{
+	if (turnDir == 2) {
+		if ((target > 0.0f && val < 0.0f) || (target < 0.0f && val > 0.0f)) {
+			turnDir = 1;
+			if (target < 0.0f) turnDir = -1;
+		} else {
+			turnDir = 0;
+		}
+	}
+	float delt = SubRots(target, val, turnDir);
+	GainDampLimit(speed, delt, gain, damp, limit);
+	val = FastAddRots(val, speed);
+	float f = SubRots(target, val, turnDir);
+	if (__builtin_fabsf(f) < limit * 0.01f) {
+		val = target;
+		speed = 0.0f;
+		return speed;
+	}
+	return f;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00475EF8);
 
@@ -593,7 +745,21 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltAn
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltSpeed);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MatAdjoint);
+GAME_SECTION(MatAdjoint) void MatAdjoint(AK_mtx3 &dm, AK_mtx3 &u)
+{
+	dm.m[0][0] = u.m[2][2] * u.m[1][1] - u.m[1][2] * u.m[2][1];
+	dm.m[0][1] = u.m[0][2] * u.m[2][1] - u.m[2][2] * u.m[0][1];
+	dm.m[0][2] = u.m[1][2] * u.m[0][1] - u.m[0][2] * u.m[1][1];
+	dm.m[0][3] = 0;
+	dm.m[1][0] = u.m[1][2] * u.m[2][0] - u.m[1][0] * u.m[2][2];
+	dm.m[1][1] = u.m[2][2] * u.m[0][0] - u.m[0][2] * u.m[2][0];
+	dm.m[1][2] = u.m[1][0] * u.m[0][2] - u.m[1][2] * u.m[0][0];
+	dm.m[1][3] = 0;
+	dm.m[2][0] = u.m[1][0] * u.m[2][1] - u.m[2][0] * u.m[1][1];
+	dm.m[2][1] = u.m[2][0] * u.m[0][1] - u.m[0][0] * u.m[2][1];
+	dm.m[2][2] = u.m[0][0] * u.m[1][1] - u.m[1][0] * u.m[0][1];
+	dm.m[2][3] = 0;
+}
 
 GAME_SECTION(Float_To_RGBA) unsigned int Float_To_RGBA(float r, float g, float b, float alpha)
 {
@@ -703,7 +869,41 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", DecomposeMtx4
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetFlashVars);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_StartColorFlash);
+GAME_SECTION(MB_StartColorFlash) void MB_StartColorFlash(MobyInstance *pMoby, int ft, int color, FlashVars *fVars)
+{
+	int r;
+	int g;
+	int b;
+	if (!fVars) {
+		fVars = (FlashVars *)MB_GetFlashVars(pMoby);
+		if (!fVars) return;
+	}
+	if (ft == fVars->type) {
+		if (color == fVars->destColor) return;
+		if (fVars->timer < 20) return;
+	}
+	if (!color) {
+		if (ft == 1) color = 0x800000f0;
+		else if (ft == 2) color = 0x80f00000;
+		else if (ft == 3) color = 0x8010a0a0;
+		else if (ft == 4) color = 0x80f0f0f0;
+		else if (ft == 5) color = 0x80804000;
+		else if (ft == 6) color = 0x80808080;
+		else if (ft == 0) color = fVars->srcColor;
+	}
+	if (ft == 0 && fVars->type) {
+		b = ((unsigned char *)&fVars->srcColor)[2];
+		g = ((unsigned char *)&fVars->srcColor)[1];
+		r = ((unsigned char *)&fVars->srcColor)[0];
+		SetMobyAmbientLights(pMoby, r, g, b);
+	} else if (!fVars->type) {
+		GetMobyAmbientLights(pMoby, &r, &g, &b);
+		fVars->srcColor = (unsigned char)pMoby->alpha << 24 | b << 16 | g << 8 | r;
+	}
+	fVars->destColor = color;
+	fVars->type = ft;
+	fVars->timer = 0;
+}
 
 GAME_SECTION(MB_EndColorFlash) void MB_EndColorFlash(MobyInstance *pMoby, FlashVars *fVars)
 {
@@ -817,7 +1017,47 @@ GAME_SECTION(MB_MP_GadgetDamageIndex) int MB_MP_GadgetDamageIndex(MobyInstance *
 	return 0xff;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SetNtscPalTiming);
+GAME_SECTION(SetNtscPalTiming) void SetNtscPalTiming(int mode)
+{
+	AK_bootSettings[0] = mode;
+	if (mode == 0) {
+		NtscPalSpeedAdjuster = 1.0f;
+		NtscPalAccelAdjuster = 1.0f;
+		NtscPalFrameAdjuster = 1.0f;
+		NtscPalSpeedPerSecAdjuster = 1.0f / 60.0f;
+		NtscPalAccelPerSecAdjuster = 1.0f / 3600.0f;
+		NtscPalAccelXlPerSecAdjuster = 1.0f / 216000.0f;
+		NtscPalTimerTicksPerFrame = 5;
+		NtscPalFrameTimeInSecondsFloat = 1.0f / 60.0f;
+	} else if (mode == 1) {
+		NtscPalSpeedAdjuster = 1.2f;
+		NtscPalAccelAdjuster = 1.44f;
+		NtscPalFrameAdjuster = 0.8333333f;
+		NtscPalSpeedPerSecAdjuster = 0.020000001f;
+		NtscPalAccelPerSecAdjuster = 0.00040000002f;
+		NtscPalAccelXlPerSecAdjuster = 8e-06f;
+		NtscPalTimerTicksPerFrame = 6;
+		NtscPalFrameTimeInSecondsFloat = 0.02f;
+	} else if (mode == 2) {
+		NtscPalSpeedAdjuster = 2.0f;
+		NtscPalAccelAdjuster = 2.0f;
+		NtscPalFrameAdjuster = 2.0f;
+		NtscPalSpeedPerSecAdjuster = 0.033333335f;
+		NtscPalAccelPerSecAdjuster = 0.0011111111f;
+		NtscPalAccelXlPerSecAdjuster = 3.7037036e-05f;
+		NtscPalTimerTicksPerFrame = 10;
+		NtscPalFrameTimeInSecondsFloat = 0.033333335f;
+	} else if (mode == 3) {
+		NtscPalSpeedAdjuster = 4.0f;
+		NtscPalAccelAdjuster = 4.0f;
+		NtscPalFrameAdjuster = 4.0f;
+		NtscPalSpeedPerSecAdjuster = 0.06666667f;
+		NtscPalAccelPerSecAdjuster = 0.0044444446f;
+		NtscPalAccelXlPerSecAdjuster = 0.0002962963f;
+		NtscPalTimerTicksPerFrame = 20;
+		NtscPalFrameTimeInSecondsFloat = 0.06666667f;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00478E20);
 
@@ -930,7 +1170,38 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_BlowFlamin
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B7E8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", FUN_0047b7f8);
+GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
+{
+	AK_TriMode *pEntry = &tri_mode[iPlayer];
+	int state = 2;
+	if (pEntry->mode == mode && pEntry->msg == msg) {
+		if (msg) {
+			AK_TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
+			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
+		}
+		pEntry->state = state;
+		pEntry->msg = msg;
+		return 2;
+	}
+	if (g_gameType == 0) {
+		int i;
+		for (i = 0; i < 10; i++) {
+			if (i == iPlayer) continue;
+			if (tri_mode[i].mode) return 0;
+		}
+	}
+	if (!pEntry->mode) {
+		if (msg) {
+			AK_TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
+			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
+		}
+		pEntry->state = state;
+		pEntry->mode = mode;
+		pEntry->msg = msg;
+		return 1;
+	}
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B978);
 

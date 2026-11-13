@@ -14,7 +14,9 @@ extern "C" {
 }
 void SetVideoMode() __asm__("SetVideoMode");
 struct fsAABuff {
-	/* 0x00 */ char unk00[0xc0];
+	/* 0x00 */ char unk00[0x30];
+	/* 0x30 */ char giftagDrawLarge[0x10];
+	/* 0x40 */ char unk40[0x80];
 	/* 0xc0 */ char giftagDrawSmall[0x10];
 };
 extern fsAABuff *pAAbuff __asm__("pAAbuff");
@@ -28,6 +30,15 @@ extern long aaBlurRegs[] __asm__("aaBlurRegs");
 void AA_BlurPass() __asm__("AA_BlurPass");
 void PutDrawBufferSmall() __asm__("PutDrawBufferSmall");
 
+
+/* ===== AL additions ===== */
+extern "C" void sceGsPutDrawEnv(void *);
+extern unsigned int gs_regs_opaque_copy[] __asm__("gs_regs_opaque_copy");
+extern unsigned int gs_regs_alpha_copy[] __asm__("gs_regs_alpha_copy");
+extern long aaDisplayRegs[] __asm__("aaDisplayRegs");
+extern unsigned int gs_regs_normal[] __asm__("gs_regs_normal");
+void PutDrawBufferLarge() __asm__("PutDrawBufferLarge");
+void AA_DisplayPass(int) __asm__("AA_DisplayPass");
 
 GAME_SECTION(SetVideoMode) void SetVideoMode()
 {
@@ -60,7 +71,18 @@ GAME_SECTION(PutDispBuffer) void PutDispBuffer()
 	sceGsPutDispEnv(pAAbuff);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", PutDrawBufferLarge);
+GAME_SECTION(PutDrawBufferLarge) void PutDrawBufferLarge()
+{
+	if (vu1_bufPtr != 0) {
+		(*vu1_bufPtr)[0] = 0x30000009;
+		(*vu1_bufPtr)[1] = (unsigned int)pAAbuff->giftagDrawLarge & 0xfffffff;
+		(*vu1_bufPtr)[2] = 0;
+		(*vu1_bufPtr)[3] = 0x50000009;
+		vu1_bufPtr = vu1_bufPtr + 1;
+	} else {
+		sceGsPutDrawEnv(pAAbuff->giftagDrawLarge);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", ClearDrawBufferLarge);
 
@@ -84,6 +106,27 @@ GAME_SECTION(AA_BlurPass) void AA_BlurPass()
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", AA_DisplayPass);
+GAME_SECTION(AA_DisplayPass) void AA_DisplayPass(int opaque)
+{
+	(*vu1_bufPtr)[0] = 0x30000002;
+	if (opaque) {
+		(*vu1_bufPtr)[1] = (int)gs_regs_opaque_copy;
+	} else {
+		(*vu1_bufPtr)[1] = (int)gs_regs_alpha_copy;
+	}
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000002;
+	vu1_bufPtr++;
+	(*vu1_bufPtr)[0] = 0x30000029;
+	(*vu1_bufPtr)[1] = (int)aaDisplayRegs;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000029;
+	vu1_bufPtr++;
+	(*vu1_bufPtr)[0] = 0x30000003;
+	(*vu1_bufPtr)[1] = (int)gs_regs_normal;
+	(*vu1_bufPtr)[2] = 0;
+	(*vu1_bufPtr)[3] = 0x50000003;
+	vu1_bufPtr++;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", func_004598D8);

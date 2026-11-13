@@ -81,6 +81,7 @@ void _mode_creditsInit() __asm__("_mode_creditsInit");
 void _mode_creditsUnInit() __asm__("_mode_creditsUnInit");
 void Credit_AdvancePage() __asm__("Credit_AdvancePage");
 
+
 GAME_SECTION(_mode_creditsInit) void _mode_creditsInit()
 {
 	VU1_syncChain(1);
@@ -155,4 +156,23 @@ GAME_SECTION(Credit_SequenceTrigger) int Credit_SequenceTrigger()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/credits", Credit_AdvancePage);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/credits", Credit_SeekNextLines);
+GAME_SECTION(Credit_SeekNextLines) bool Credit_SeekNextLines()
+{
+	int newCurrentSequence;
+	int newCurrentTopLine;
+
+	if (Credit.page == -1) {
+		Credit.page = 0;
+		Credit.line = 0;
+		return true;
+	}
+	if (Credit_PageForLine(g_CreditPages.pages[Credit.page].numLinesOnScreen, &newCurrentSequence, &newCurrentTopLine) &&
+		g_CreditPages.pages[Credit.page].numLinesOnScreen != 0) {
+		Credit.page = newCurrentSequence;
+		Credit.line = newCurrentTopLine;
+		return true;
+	}
+	Credit.page = Credit.page + 1;
+	Credit.line = 0;
+	return Credit.page < g_CreditPages.count;
+}
