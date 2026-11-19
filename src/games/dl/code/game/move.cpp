@@ -286,7 +286,6 @@ GAME_SECTION(MB_GetMoveReaction) int MB_GetMoveReaction(moby *pMoby)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00483390);
 
-/* ===== AJ near misses ===== */
 GAME_SECTION(MVE_GetBoundArea) int MVE_GetBoundArea(moby *pMoby, MoveVars_V2 *pMoveVars)
 {
 	int area = pMoveVars->boundArea;

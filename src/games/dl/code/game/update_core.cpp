@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+struct binblock;
+struct UberSound;
 
 typedef struct restartData {
 	/* 0x00 */ int flag;
@@ -53,6 +55,23 @@ void VU1_initChain() __asm__("VU1_initChain");
 void mode_movieUnInit() __asm__("mode_movieUnInit");
 
 
+struct musicStartView {
+	/* 0x00 */ char unk00[0x1c];
+	/* 0x1c */ short track;
+	/* 0x1e */ char unk1e[0x100];
+};
+extern musicStartView musicStart __asm__("musicStart");
+extern int g_movie_lsn __asm__("g_movie_lsn");
+extern int g_movie_size __asm__("g_movie_size");
+extern binblock *g_movie_subtitles __asm__("g_movie_subtitles");
+extern int g_movie_language __asm__("g_movie_language");
+extern int g_fullscreen __asm__("g_fullscreen");
+extern "C" int snd_SetReverbEx(int, int, int, int, int);
+extern "C" void FlushCache(int);
+void UberSound_Stop(unsigned int) __asm__("Stop___dupe2");
+void Help_Kill() __asm__("Help_Kill");
+void mode_movieInit(int lsn, int size, binblock *subtitles, int language, bool fullscreen) __asm__("mode_movieInit___dupe2");
+
 GAME_SECTION(mpeg_malloc_reset) void mpeg_malloc_reset(void *a, unsigned int size_a, void *b, unsigned int size_b, void *c, unsigned int size_c)
 {
 	mpeg_b_buff = b;
@@ -73,7 +92,22 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update_core", mpeg_mallo
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update_core", mode_movieInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update_core", mode_movieInit___dupe2);
+GAME_SECTION(mode_movieInit___dupe2) void mode_movieInit(int lsn, int size, binblock *subtitles, int language, bool fullscreen)
+{
+	Sound.reverb_changed |= 8;
+	snd_SetReverbEx(2, 0, 0, 0, 0);
+	FlushCache(0);
+	g_movie_lsn = lsn;
+	g_movie_size = size;
+	g_movie_subtitles = subtitles;
+	g_movie_language = language;
+	g_fullscreen = fullscreen;
+	FadeToBlack(4, 1);
+	movie_track = musicStart.track;
+	UberSound_Stop(1);
+	FastMemSet(gFadeVolumes, 0x400, 0x18);
+	Help_Kill();
+}
 
 GAME_SECTION(mode_movieUnInit) void mode_movieUnInit()
 {

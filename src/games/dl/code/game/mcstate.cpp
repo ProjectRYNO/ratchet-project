@@ -114,11 +114,9 @@ extern void (*state_functions[])() __asm__("D_3D8038");
 extern int MCSTATE_idle_time __asm__("MCSTATE_idle_time");
 void UpdateMCState() __asm__("UpdateMCState");
 
-/* ===== AG additions ===== */
 
 void csf_newcard() __asm__("csf_newcard");
 
-/* ===== AM additions ===== */
 struct McClock {
 	/* 0x0 */ unsigned char b[8];
 };
@@ -234,7 +232,6 @@ GAME_SECTION(csf_prompt_autosave_warning) void csf_prompt_autosave_warning()
 	}
 }
 
-/* ===== AJ near misses ===== */
 GAME_SECTION(csf_nocard) void csf_nocard()
 {
 	mcState.nextstage = -1;

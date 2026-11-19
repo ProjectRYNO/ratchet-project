@@ -112,10 +112,10 @@ bool Help_MessageCompleted() __asm__("Help_MessageCompleted");
 bool HelpQueue_IsEmpty() __asm__("HelpQueue_IsEmpty");
 int HelpQueue_GetInsertIndex(int, short) __asm__("HelpQueue_GetInsertIndex");
 
-struct StreamInterfaceAJ {
+/* data-less view of StreamSys: small enough to be addressed through $gp like retail */
+struct StreamInterfaceSmall {
 	unsigned int Stop(unsigned int, float) __asm__("Stop");
 };
-/* ===== AL additions ===== */
 extern unsigned short HelpLog[] __asm__("HelpLog");
 extern int HelpLogPos __asm__("HelpLogPos");
 bool Help_DontAddToHelpLogException(int) __asm__("FUN_0045df58");
@@ -175,10 +175,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMessage
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMenuMessage);
 
-extern StreamInterfaceAJ StreamSysAJ __asm__("StreamSys");
+extern StreamInterfaceSmall StreamSysSmall __asm__("StreamSys");
 GAME_SECTION(Help_KillMenuMessage) bool Help_KillMenuMessage()
 {
-	return StreamSysAJ.Stop(Menu_voStream, 0.0f) != 0;
+	return StreamSysSmall.Stop(Menu_voStream, 0.0f) != 0;
 }
 
 GAME_SECTION(Help_ShutDown) void Help_ShutDown()
@@ -190,7 +190,6 @@ GAME_SECTION(Help_ShutDown) void Help_ShutDown()
 	else Help_SetState(0);
 }
 
-/* AJ near misses */
 GAME_SECTION(Help_Kill) void Help_Kill()
 {
 	if (Help.state != 0) {
@@ -289,7 +288,7 @@ GAME_SECTION(Help_StopVoice) void Help_StopVoice()
 {
 	unsigned int none = 0xffffffff;
 	if (Help.streamHandle != none) {
-		StreamSysAJ.Stop(Help.streamHandle, 0.0f);
+		StreamSysSmall.Stop(Help.streamHandle, 0.0f);
 		Help.streamHandle = none;
 	}
 }

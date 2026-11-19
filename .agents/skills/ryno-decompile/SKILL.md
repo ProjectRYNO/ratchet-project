@@ -38,6 +38,13 @@ entry, retaining untouched functions. Use the established EE C/C++ dialect
 C++98-compatible code), correct C linkage for assembly-facing names,
 and verified globals/types. Do not assume host pointer or integer widths.
 
+Name every type, global, helper, and overload with its real retail/prototype name.
+Never carry worker or test-file tags into source (`AK_vec4`, `NetInfoAJ`,
+`FadeToBlackAM`, `/* ===== AJ additions ===== */`); those prefixes are only for
+scratch file names. Merge into an existing declaration when the name is taken, and
+use a descriptive name plus a comment only for a view that matching truly requires
+(see INSTRUCTIONS.md invariant 11).
+
 Inspect `config/decompiled_functions.yaml`, `tools/split_dl.py`, and
 `tools/gen_matching_symbols.py` (tools are under `src/games/tools`). Register the
 function's real entry address and its placement within the owning object's bounds.

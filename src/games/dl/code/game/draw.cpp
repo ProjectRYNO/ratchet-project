@@ -84,7 +84,6 @@ unsigned long ConstructEffectTex0(int, int, int, int, int) __asm__("ConstructEff
 bool Screen_FadeOut(float) __asm__("Screen_FadeOut");
 #define GS_REG(a) (*(volatile unsigned long *)(a))
 
-/* ===== AL additions ===== */
 typedef unsigned int alQword[4];
 extern alQword *vu1_bufPtr __asm__("vu1_bufPtr");
 extern int GSloc __asm__("GSloc");
@@ -235,6 +234,12 @@ void FontSet(int) __asm__("FUN_00454350");
 char *msg_string(int) __asm__("msg_string");
 void FontPrint(float, float, unsigned long, char *, int, float, float, int, bool, unsigned long, float, float) __asm__("FontPrint");
 void DrawLogoAndStart() __asm__("DrawLogoAndStart");
+
+struct FXRegistryDraw {
+	void ZUpdateRegisterValue(unsigned int, unsigned long) __asm__("ZUpdateRegisterValue");
+};
+extern FXRegistryDraw FXRegDraw __asm__("FXReg");
+bool DrawSpriteFont(float, float, float, float, int, int, int, int, unsigned long, unsigned long, int) __asm__("DrawSpriteFont");
 
 GAME_SECTION(DrawIOPInfo) void DrawIOPInfo()
 {
@@ -554,7 +559,40 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSprite___dupe
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044A408);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSpriteFont);
+GAME_SECTION(DrawSpriteFont) bool DrawSpriteFont(float sc_x, float sc_y, float sc_w, float sc_h, int tx_u, int tx_v, int tx_w, int tx_h, unsigned long rgba, unsigned long tex0, int one_to_one)
+{
+	int sc_left;
+	int sc_right;
+	int sc_top;
+	int sc_bot;
+	unsigned long *reg;
+	sc_left = (int)(sc_x * 16.0f) + alScrnVar.ofs_x - 8;
+	sc_right = (int)((sc_x + sc_w) * 16.0f) + alScrnVar.ofs_x - 8;
+	sc_top = (int)(sc_y * 16.0f) + alScrnVar.ofs_y - 8;
+	sc_bot = (int)((sc_y + sc_h) * 16.0f) + alScrnVar.ofs_y - 8;
+	if (sc_left > 0x9000 || sc_right < 0x7000 || sc_top > 0x9000 || sc_bot < 0x7000) return false;
+	if (one_to_one) {
+		sc_left = (sc_left & 0xfff0) + 8;
+		sc_right = (sc_right & 0xfff0) + 8;
+		sc_top = (sc_top & 0xfff0) + 8;
+		sc_bot = (sc_bot & 0xfff0) + 8;
+	}
+	reg = (unsigned long *)vu1_bufPtr;
+	reg[0] = tex0;
+	reg[1] = 0x156;
+	{
+		unsigned long t = (long)(tx_u + tx_w - 1) << 14 | 10;
+		reg[2] = (long)tx_u << 4 | t | (long)tx_v << 24 | (long)(tx_v + tx_h - 1) << 34;
+	}
+	reg[3] = rgba;
+	reg[4] = tx_v << 20 | tx_u << 4;
+	reg[5] = (long)sc_left | (long)sc_top << 16;
+	reg[6] = (tx_v + tx_h) << 20 | (tx_u + tx_w) << 4;
+	reg[7] = (long)sc_right | (long)sc_bot << 16;
+	vu1_bufPtr += 4;
+	FXRegDraw.ZUpdateRegisterValue(6, tex0);
+	return true;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSpriteFontGouraud);
 

@@ -122,7 +122,6 @@ struct Manipulator {
 	/* 0x08 */ Manipulator *pChain;
 	/* 0x0c */ char unk0c[0x34];
 };
-/* ===== AG additions ===== */
 extern int MobyShadowList[2] __asm__("MobyShadowList");
 extern int MobyShadowCnt __asm__("MobyShadowCnt");
 void ShadowBuildPrimList(void *, int) __asm__("ShadowBuildPrimList");
@@ -157,12 +156,12 @@ struct SoundData {
 	/* 0x11 */ char unk11[0x1c - 0x11];
 	/* 0x1c */ MobyInstance *pMoby;
 };
-extern int AK_g_gameType __asm__("g_gameType");
+extern int g_gameType __asm__("g_gameType");
 int GB_IsMobyAHero(MobyInstance *) __asm__("GB_IsMobyAHero");
 SoundData *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
 void sound_Kill(int) __asm__("sound_Kill");
 short sound_MobyPlay(unsigned int, unsigned int, MobyInstance *) __asm__("sound_MobyPlay");
-static inline int AK_sound_IsMobyPlaying(MobyInstance *pMoby)
+static inline int sound_IsMobyPlaying(MobyInstance *pMoby)
 {
 	int ret = 0;
 	SoundData *channel = sound_GetChannelFromHandle(pMoby->soundChannel);
@@ -170,25 +169,25 @@ static inline int AK_sound_IsMobyPlaying(MobyInstance *pMoby)
 	return ret;
 }
 void MobyPlayDesiredSound(MobyInstance *pMoby) __asm__("MobyPlayDesiredSound");
-typedef int AK_qword[4];
-extern AK_qword *vu1_bufPtr __asm__("vu1_bufPtr");
-extern AK_qword *MobyVu1Marker __asm__("MobyVu1Marker");
+typedef int qword[4];
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *MobyVu1Marker __asm__("MobyVu1Marker");
 extern int GSloc __asm__("GSloc");
 int BuildMobyTextureDma(int) __asm__("BuildMobyTextureDma");
 void VU1_texFlush() __asm__("VU1_texFlush");
 extern int MobyClassRectify[] __asm__("MobyClassRectify");
-extern char *AK_MobyClasses[] __asm__("MobyClassPtrs");
+extern char *MobyClasses[] __asm__("MobyClassPtrs");
 extern short MobyGsLocStash[] __asm__("MobyGsLocStash");
 void PatchMobyGifs() __asm__("PatchMobyGifs");
-extern unsigned short AK_vis_mpg_size __asm__("D_110920");
-extern char AK_vis_mpg[] __asm__("D_110930");
-extern long AK_moby_mpg[] __asm__("D_100080");
+extern unsigned short vis_mpg_size __asm__("D_110920");
+extern char vis_mpg[] __asm__("D_110930");
+extern long moby_mpg[] __asm__("D_100080");
 extern int active_vu1_mpg __asm__("active_vu1_mpg");
 extern int FXReg __asm__("FXReg");
 extern int vu1_bufId __asm__("vu1_bufId");
 extern int vu1_maxUseBeforeMobys __asm__("vu1_maxUseBeforeMobys");
 extern int vu1_useBeforeMobys __asm__("vu1_useBeforeMobys");
-extern AK_qword *vu1_bufLimit __asm__("vu1_bufLimit");
+extern qword *vu1_bufLimit __asm__("vu1_bufLimit");
 extern char *vu1_DmaBuffers[2] __asm__("vu1_DmaBuffers");
 extern int GSbase __asm__("GSbase");
 void VU1_addDataRef(void *, int) __asm__("VU1_addDataRef");
@@ -252,10 +251,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", SetupMobyVars
 GAME_SECTION(MobyPlayDesiredSound) void MobyPlayDesiredSound(MobyInstance *pMoby)
 {
 	unsigned int b_no_anim_update = 0;
-	if (AK_g_gameType != 1 || !GB_IsMobyAHero(pMoby)) {
+	if (g_gameType != 1 || !GB_IsMobyAHero(pMoby)) {
 		if (pMoby->modeBits & 0x40) b_no_anim_update = 1;
 	}
-	if (AK_sound_IsMobyPlaying(pMoby)) {
+	if (sound_IsMobyPlaying(pMoby)) {
 		SoundData *channel = sound_GetChannelFromHandle(pMoby->soundChannel);
 		if (channel->pMoby == pMoby) {
 			if (channel->id == pMoby->soundDesired && !b_no_anim_update && !(pMoby->bangles & 0x8000)) return;
@@ -316,7 +315,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046CAE0
 
 GAME_SECTION(DmaMobyTextures) void DmaMobyTextures()
 {
-	AK_qword *dmaMarker;
+	qword *dmaMarker;
 	dmaMarker = vu1_bufPtr++;
 	(*MobyVu1Marker)[0] = 0x20000000;
 	(*MobyVu1Marker)[1] = (int)vu1_bufPtr;
@@ -339,7 +338,7 @@ GAME_SECTION(PatchMobyGifs) void PatchMobyGifs()
 {
 	int *pClass;
 	for (pClass = MobyClassRectify; *pClass >= 0; pClass++) {
-		unsigned char *gifUsage = *(unsigned char **)(AK_MobyClasses[*pClass] + 0x20);
+		unsigned char *gifUsage = *(unsigned char **)(MobyClasses[*pClass] + 0x20);
 		for (;; gifUsage += 0x10) {
 			unsigned int *pGif = (unsigned int *)(*(int *)(gifUsage + 0xc) & 0x7fffffff);
 			unsigned char *pTex = gifUsage;

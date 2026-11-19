@@ -41,7 +41,6 @@ MobyAttachInterface *MobyGetInterface(int, int, int) __asm__("MobyGetInterface__
 int AttachPointToJoint(void *, void *, vec4 &, vec4 &, unsigned char, short, int) __asm__("AttachPointToJoint");
 
 
-/* ===== AL additions ===== */
 extern int worldUpdateTime __asm__("worldUpdateTime");
 void CubicLine_Init(void *, FXU_CubicPoint *, int, void *, int) __asm__("CubicLine_Init");
 void CubicLine_Draw(void *, FXU_CubicPoint *, int, void *, float) __asm__("CubicLine_Draw");

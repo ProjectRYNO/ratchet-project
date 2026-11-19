@@ -89,7 +89,6 @@ void UnloadNpcMobys() __asm__("UnloadNpcMobys");
 void ParseSpaceSceneChunk(int) __asm__("ParseSpaceSceneChunk");
 void LoadCompressedHudBank(int, char *) __asm__("LoadCompressedHudBank");
 
-/* ===== AG additions ===== */
 struct WadSceneDef {
 	/* 0x000 */ int unk000[2];
 	/* 0x008 */ int subtitles_offset;
@@ -123,7 +122,9 @@ int LoadNpcMobys(int, int) __asm__("LoadNpcMobys");
 int LoadNpcSubtitles(int, int) __asm__("LoadNpcSubtitles");
 int PreLoadNpcChunk(int) __asm__("PreLoadNpcChunk");
 struct GSMEM {
-	/* 0x00 */ int unk00[8];
+	/* 0x00 */ int unk00[4];
+	/* 0x10 */ int perm_grey_tex;
+	/* 0x14 */ int unk14[3];
 	/* 0x20 */ int perm_bots;
 	/* 0x24 */ int perm_landstalker;
 	/* 0x28 */ int perm_dropship;
@@ -145,7 +146,6 @@ void LoadBotTextures(int) __asm__("LoadBotTextures");
 void LoadLandStalkerTextures(int) __asm__("LoadLandStalkerTextures");
 void LoadDropshipTextures(int) __asm__("LoadDropshipTextures");
 
-/* ===== AM additions (pass 4) ===== */
 struct LdCollOutput {
 	/* 0x00 */ int unk00[4];
 	/* 0x10 */ int call_cnt;
@@ -229,10 +229,13 @@ extern MobyInstance *MobyInstances __asm__("MobyInstances");
 extern MobyInstance *MobyInstanceEnd __asm__("MobyInstanceEnd");
 extern int GSbase __asm__("GSbase");
 extern int MobyTexCnt __asm__("MobyTexCnt");
-/* ===== AJ near misses ===== */
 /* LevelLoad seen as a 4-byte object here: retail loads level_data with an lw macro (lui/lw same register) */
-struct LevelLoadAJ { char *level_data; };
-extern LevelLoadAJ LevelLoadAJv __asm__("LevelLoad");
+struct LevelLoadHead { char *level_data; };
+extern LevelLoadHead LevelLoadHeadView __asm__("LevelLoad");
+
+extern unsigned long ViewerGsRegs[] __asm__("ViewerGsRegs");
+extern unsigned long GlassGsRegs[] __asm__("GlassGsRegs");
+extern unsigned long ChromeGsRegs[] __asm__("D_00241CE0");
 
 GAME_SECTION(IsSceneLevel) bool IsSceneLevel()
 {
@@ -309,14 +312,43 @@ GAME_SECTION(LoadCompressedHudBank) void LoadCompressedHudBank(int bank, char *d
 {
 	decomp = (char *)(((unsigned int)decomp + 0xf) & ~0xf);
 	if (decomp) {
-		FastDecompress((char *)(((LevelDataHeader *)LevelLoadAJv.level_data)->banks[bank + 1].offset + (int)LevelLoadAJv.level_data), decomp);
+		FastDecompress((char *)(((LevelDataHeader *)LevelLoadHeadView.level_data)->banks[bank + 1].offset + (int)LevelLoadHeadView.level_data), decomp);
 	}
 	Hud.header->bank_load[bank] = 0;
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", SetUpVisGif);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", SetUpVisGifViewer);
+GAME_SECTION(SetUpVisGifViewer) void SetUpVisGifViewer(int *pGif, int mip_dist, int filter, int u_clamp, int v_clamp, int index)
+{
+	unsigned long tex_0 = ViewerGsRegs[index * 3];
+	unsigned long tex_1 = ViewerGsRegs[index * 3 + 1];
+	unsigned long mip_0 = ViewerGsRegs[index * 3 + 2];
+	if (index >= 0) {
+		*(unsigned long *)pGif = (tex_1 & 0x1c) | 0x20 | (long)filter << 6 | (long)mip_dist << 32;
+		pGif += 4;
+		*(unsigned long *)pGif = (long)u_clamp | (long)v_clamp << 2 | (long)index << 24;
+		pGif += 4;
+		((unsigned long *)pGif)[0] = tex_0;
+		((unsigned long *)pGif)[2] = mip_0;
+	} else if (index < -1) {
+		unsigned long *src = ChromeGsRegs;
+		if (index == -3) src = GlassGsRegs;
+		*(unsigned long *)pGif = 0x20 | (long)filter << 6 | (long)mip_dist << 32;
+		pGif += 4;
+		*(unsigned long *)pGif = 5;
+		pGif += 4;
+		((unsigned long *)pGif)[0] = src[0];
+		((unsigned long *)pGif)[2] = src[2];
+	} else {
+		*(unsigned long *)pGif = 0x20 | (long)filter << 6 | (long)mip_dist << 32;
+		pGif += 4;
+		*(unsigned long *)pGif = 5;
+		pGif += 4;
+		((unsigned long *)pGif)[0] = (long)((GSmem.perm_grey_tex >> 8) | 0xc004000) | 0x80000004c0000000;
+		((unsigned long *)pGif)[2] = 0;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParsePermGsRam);
 

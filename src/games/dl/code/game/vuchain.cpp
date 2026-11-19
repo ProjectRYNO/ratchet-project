@@ -9,7 +9,8 @@ struct MemSlotsVu {
 	/* 0x14 */ int unk14[0x40];
 };
 extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
-extern qwordWords *vu1_DmaBuffers[2] __asm__("vu1_DmaBuffers");
+/* vu1_DmaBuffers declared with unknown size so it is not treated as small data (split lui/addiu) */
+extern qwordWords *vu1_DmaBuffers[] __asm__("vu1_DmaBuffers");
 extern int vu1_maxUseBeforeMobys __asm__("vu1_maxUseBeforeMobys");
 extern int vu1_bufId __asm__("vu1_bufId");
 extern int _dmacHandle[2] __asm__("_dmacHandle");
@@ -91,6 +92,7 @@ void VU1_resetDrawContexts() __asm__("VU1_resetDrawContexts");
 void VU1_setScissor(int, int, int, int) __asm__("VU1_setScissor");
 void VU1_sendChain() __asm__("VU1_sendChain");
 
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU0_loadMicroProgram);
 
 GAME_SECTION(VU1_setBufSizeByLevel) void VU1_setBufSizeByLevel()
@@ -110,11 +112,47 @@ GAME_SECTION(VU1_setBufSizeByLevel) void VU1_setBufSizeByLevel()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_resetScratch);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_initChain);
+GAME_SECTION(VU1_initChain) void VU1_initChain()
+{
+	vu1_DmaBuffers[0] = (qwordWords *)MemSlots.vu1_chain[0];
+	vu1_DmaBuffers[1] = (qwordWords *)MemSlots.vu1_chain[1];
+	vu1_bufPtr = vu1_DmaBuffers[0];
+	vu1_bufId = 0;
+	VU1_resetScratch();
+	vu1_maxUseBeforeMobys = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_swapChain);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_sendChain);
+GAME_SECTION(VU1_sendChain) void VU1_sendChain()
+{
+	int overflow;
+	sceDmaChan *chVif1;
+	int use = (int)vu1_bufPtr - (int)vu1_DmaBuffers[vu1_bufId];
+	vu1_use = use;
+	VifChainFlags |= 0x1f;
+	int maxUse = vu1_maxUse;
+	if (maxUse < use) maxUse = use;
+	vu1_maxUse = maxUse;
+	overflow = vu1_bufSize < use;
+	if (!overflow || vu1_bufId == 0) {
+		(*vu1_bufPtr)[0] = 0x70000000;
+		(*vu1_bufPtr)[1] = 0;
+		(*vu1_bufPtr)[2] = 0;
+		(*vu1_bufPtr)[3] = 0;
+		chVif1 = sceDmaGetChan(1);
+		chVif1->chcr |= 0xc0;
+		FlushCache(0);
+		sceDmaSend(chVif1, vu1_DmaBuffers[vu1_bufId]);
+		if (overflow) {
+			VU1_syncChain(1);
+			VU1_swapChain();
+		}
+	} else {
+		*(volatile int *)&VifChainFlags = 0;
+		ResetTieLightingCache();
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_syncChain);
 

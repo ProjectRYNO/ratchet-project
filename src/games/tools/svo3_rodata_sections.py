@@ -9,7 +9,9 @@ unchanged. Iksemel `.iks_<fn>`, libgraph `.graph_<fn>`, game `.game_<fn>` and Me
 `.medius_<module>_<fn>` sections use the same convention; subsequent tables receive `.rodata.1`,
 `.rodata.2`, etc., so retail inter-table padding remains in its original data section. SVO3 routing
 is unchanged. A top-level `.rdata` block of string literals (gcc does not always write it next to its
-user) goes to the `.rodata` section of the one Medius function that references its labels.
+user) goes to the `.rodata` section of the one Medius function that references its labels; a game
+`.rdata` block (such as array initializer data emitted before its function's section starts) goes to
+the one `.game_` function that references its labels.
 Unregistered sections are discarded by the linker script, so a table without a
 registered rodata slot fails the link instead of being placed silently.
 """
@@ -17,8 +19,8 @@ import re
 import sys
 
 
-def literal_owner(lines, start):
-    """Medius function section that uses the labels defined in an `.rdata` block."""
+def literal_owner(lines, start, family):
+    """Function section of `family` (`.medius_` or `.game_`) that uses the labels defined in an `.rdata` block."""
     labels = []
     for line in lines[start + 1:]:
         if re.match(r'\s*\.(?:section|text|data|bss|rdata)\b', line):
@@ -37,7 +39,7 @@ def literal_owner(lines, start):
             section = match[1]
         elif re.match(r'\s*\.(?:text|data|bss|rdata)\b', line):
             section = None
-        elif section and section.startswith('.medius_') and not section.endswith('.rodata') \
+        elif section and section.startswith(family) and not section.endswith('.rodata') \
                 and pattern.search(line):
             owners.add(section)
     if len(owners) != 1:
@@ -51,9 +53,12 @@ def rewrite(text):
     table_counts = {}
     lines = text.splitlines(keepends=True)
     for number, line in enumerate(lines):
-        if (current is None or current.startswith('.medius_')) and re.match(r'\s*\.rdata\s*$', line):
-            # gcc does not always write string literals next to their user; follow the labels.
-            owner = literal_owner(lines, number)
+        if (current is None or current.startswith(('.medius_', '.game_'))) and re.match(r'\s*\.rdata\s*$', line):
+            # gcc does not always write string literals or array initializers next to their user
+            # (game code emits a function's initializer data before switching to its section);
+            # follow the labels.
+            family = '.game_' if current and current.startswith('.game_') else '.medius_'
+            owner = literal_owner(lines, number, family)
             if owner:
                 index = table_counts.get(owner, 0)
                 table_counts[owner] = index + 1

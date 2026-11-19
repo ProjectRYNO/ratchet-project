@@ -42,7 +42,6 @@ extern void *soundBank3Addr;
 int snd_StreamSafeCdRead(int lsn, int length, void *buffer, void *mode) __asm__("snd_StreamSafeCdRead");
 unsigned int load_file(fsLoadFile_t *p_load, fsDeviceArgs_t *p_device) __asm__("load_file");
 
-/* ===== AM additions ===== */
 struct WadLevelDef {
 	/* 0x0000 */ char unk0000[0xcbb4];
 	/* 0xcbb4 */ int level_sector;

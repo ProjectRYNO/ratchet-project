@@ -15,3 +15,6 @@ grep -E 'code/game/[a-zA-Z_0-9]*\.cpp:[0-9]+' elf.log | grep -v 'warning\|In fun
 grep -o 'undefined reference to .[A-Za-z_0-9.]*' elf.log | cut -c24- | sort -u | tr '\n' ' ' | cut -c1-500
 grep -E 'cannot move|exceeds|undefined symbol' elf.log | head -5 | cut -c1-150
 python3 /ProjectRYNO/tools/compare_elf.py /ProjectRYNO/assets/dl/boot.elf build/boot_elf.elf 2>&1 | grep -E 'differences; ' | cut -c1-90
+# Worker/test-file tags must never reach the sources (.agents/INSTRUCTIONS.md invariant 11).
+grep -nE '\bA[B-Z][0-9]?_[A-Za-z]\w*|\b[A-Za-z_][A-Za-z0-9_]*[a-z0-9]A[J-Z][0-9]?v?\b|===== A[A-Z]' /ProjectRYNO/dl/code/game/*.cpp \
+	| grep -vE '\bAA_|\bA[HI]_RSA|\bAI_(PKCS|Feedback)' | sed 's/^/WORKER TAG: /' | cut -c1-150 | head -20

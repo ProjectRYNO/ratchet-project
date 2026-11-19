@@ -42,7 +42,6 @@ int FontGetCharacterCount() __asm__("FontGetCharacterCount");
 
 struct FontWindow;
 extern int g_CurrentFontName __asm__("g_CurrentFontName");
-extern char *g_FontArray[4] __asm__("D_21DE98");
 extern unsigned int *g_FontMetricsArray[4] __asm__("D_21DEA8");
 extern char *g_FontKerningArray[4] __asm__("D_21DEB8");
 void FontPrint(float, float, unsigned long, char *, int, float, float, int, bool, unsigned long, float, float) __asm__("FontPrint");
@@ -68,7 +67,6 @@ extern char g_FontTableB[4][0x40] __asm__("D_3D7C80");
 char *g_FontTableAPtr __asm__("D_21ECE4") GAME_GP_DATA = 0;
 char *g_FontTableBPtr __asm__("D_21ECE8") GAME_GP_DATA = 0;
 
-/* ===== AL additions ===== */
 struct alFontMetric {
 	/* 0x00 */ unsigned int w0;
 	/* 0x04 */ unsigned int lo : 9;
@@ -111,9 +109,37 @@ struct alFontKerning {
 	/* 0x03 */ unsigned char end;
 };
 
+/* g_FontArray seen as a data-less struct so its address is an la macro (lui/addiu same register) */
+struct fontArray { };
+extern fontArray g_FontArray __asm__("D_21DE98");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontLoad);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FUN_00454060);
+GAME_SECTION(FUN_00454060) void FontLoadToGs()
+{
+	int i;
+	int j;
+
+	if (fontLastFrame == gsFrame && g_FontTableAPtr && g_FontTableBPtr && !g_FontForceReload) {
+		return;
+	}
+	fontLastFrame = gsFrame;
+	g_FontForceReload = 0;
+	for (i = 0; i < 3; i++) {
+		if (Level >= 0 && !InFrontEnd && i == 2) {
+			continue;
+		}
+		for (j = 0; j < ((alFontHeader *)((char **)&g_FontArray)[i])->palCount; j++) {
+			((int *)g_FontTableB[i])[j] = LoadPalToGs(((char **)&g_FontArray)[i] + ((alFontHeader *)((char **)&g_FontArray)[i])->palOffset[j], ((alFontHeader *)((char **)&g_FontArray)[i])->palFormat[j]);
+		}
+		for (j = 0; j < ((alFontHeader *)((char **)&g_FontArray)[i])->texCount; j++) {
+			((int *)g_FontTableA[i])[j] = LoadTexToGs(((char **)&g_FontArray)[i] + ((alFontHeader *)((char **)&g_FontArray)[i])->texOffset[j],
+				((alFontHeader *)((char **)&g_FontArray)[i])->texSize[j][0] - 1, ((alFontHeader *)((char **)&g_FontArray)[i])->texSize[j][1] - 1,
+				((alFontHeader *)((char **)&g_FontArray)[i])->texFormat[j] == 0x14 ? 2 : 0);
+		}
+	}
+	FontSet(g_CurrentFontName);
+}
 
 GAME_SECTION(GetCharacterIndex) int GetCharacterIndex(unsigned char *s, int pos, int *out)
 {

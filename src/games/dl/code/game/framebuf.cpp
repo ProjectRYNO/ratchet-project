@@ -31,7 +31,6 @@ void AA_BlurPass() __asm__("AA_BlurPass");
 void PutDrawBufferSmall() __asm__("PutDrawBufferSmall");
 
 
-/* ===== AL additions ===== */
 extern "C" void sceGsPutDrawEnv(void *);
 extern unsigned int gs_regs_opaque_copy[] __asm__("gs_regs_opaque_copy");
 extern unsigned int gs_regs_alpha_copy[] __asm__("gs_regs_alpha_copy");

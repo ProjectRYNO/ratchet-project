@@ -52,7 +52,7 @@ int memcard_LoadPatch(unsigned char *, unsigned int) __asm__("memcard_LoadPatch"
 extern mc_data mc_leveldata[] __asm__("mc_leveldata");
 int memcard_PrepData(char *, int, mc_data *) __asm__("memcard_PrepData");
 void memcard_MakeWholeSave(char *) __asm__("memcard_MakeWholeSave");
-void memcard_RestoreData(char *, char *, int, mc_data *) __asm__("memcard_RestoreData");
+int memcard_RestoreData(char *, char *, int, mc_data *) __asm__("memcard_RestoreData");
 void memcard_RestoreGame(char *) __asm__("memcard_RestoreGame");
 void memcard_cleanupbeforesession() __asm__("memcard_cleanupbeforesession");
 extern "C" int sceMcInit();
@@ -70,7 +70,6 @@ int _memcard_Checksum(char *addr, int size) __asm__("_memcard_Checksum");
 
 
 
-/* ===== AM additions ===== */
 void FastMemSet(void *, int, int) __asm__("FastMemSet");
 void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
 void memcard_RestoreInfo(char *, int, int) __asm__("memcard_RestoreInfo");
@@ -119,7 +118,6 @@ static inline int GetElapsedTime() { return ElapsedTime; }
 static inline int GetLevelIndex(int l) { return (l - 1) % 20; }
 int memcard_Save(int) __asm__("memcard_Save");
 
-/* ===== AM additions (pass 3) ===== */
 extern "C" char *strncpy(char *, const char *, unsigned int);
 extern char BOOTELF_NAME[] __asm__("BOOTELF_NAME");
 extern char SAVEGAME_NAME[] __asm__("SAVEGAME_NAME");
@@ -133,7 +131,6 @@ extern char SAVEGAME_SLOT[] __asm__("SAVEGAME_SLOT");
 void memcard_GetName(char *) __asm__("memcard_GetName");
 extern "C" int memcmp(const void *, const void *, unsigned int);
 int g_loaderr __asm__("g_loaderr") GAME_GP_DATA = 0;
-int memcard_RestoreDataAM(char *, char *, int, mc_data *) __asm__("memcard_RestoreData");
 
 GAME_SECTION(memcard_GetName) void memcard_GetName(char *buff)
 {

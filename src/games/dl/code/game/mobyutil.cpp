@@ -202,7 +202,6 @@ struct MobyClass {
 	/* 0x47 */ char mode_bits2;
 	/* 0x48 */ MobySeq *seqs[0];
 };
-/* ===== AG additions ===== */
 struct CollDamOut {
 	/* 0x00 */ char unk00[0x24];
 	/* 0x24 */ int damageFlags;
@@ -215,7 +214,9 @@ struct CommandData {
 };
 struct LocalHero {
 	/* 0x0000 */ char unk0000[0x1f9c];
-	/* 0x1f9c */ char target[0x25cc - 0x1f9c];
+	/* 0x1f9c */ char target[0x2318 - 0x1f9c];
+	/* 0x2318 */ int gadgetIndex;
+	/* 0x231c */ char unk231c[0x25cc - 0x231c];
 	/* 0x25cc */ int state;
 	/* 0x25d0 */ char unk25d0[0x26e4 - 0x25d0];
 	/* 0x26e4 */ void *pGadgetBox;
@@ -354,7 +355,7 @@ void MB_transAnim___dupe2(MobyInstance *, int, float, int, int) __asm__("MB_tran
 int PointInsideComplexPoly(vec4f &, vec4f *, int) __asm__("PointInsideComplexPoly");
 int MB_Level99ColorTimeBased(int) __asm__("MB_Level99ColorTimeBased");
 
-static inline int AK_GetXPBundle(MobyInstance *pMoby)
+static inline int GetXPBundle(MobyInstance *pMoby)
 {
 	int empty = -1;
 	int i;
@@ -378,7 +379,7 @@ int MB_SetOClass(MobyInstance *pMoby, int oClass) __asm__("MB_SetOClass");
 int SolveQuad(float a, float b, float c, float &r1, float &r2) __asm__("SolveQuad");
 float AccelDeltAng(float &val, float target, float &speed, float gain, float damp, float limit, int turnDir) __asm__("AccelDeltAng");
 void GetMobyAmbientLights(MobyInstance *, int *, int *, int *) __asm__("GetMobyAmbientLights");
-extern int AK_bootSettings[16] __asm__("bootSettings");
+extern int bootSettings[16] __asm__("bootSettings");
 extern float NtscPalSpeedAdjuster __asm__("NtscPalSpeedAdjuster");
 extern float NtscPalAccelAdjuster __asm__("NtscPalAccelAdjuster");
 extern float NtscPalFrameAdjuster __asm__("NtscPalFrameAdjuster");
@@ -389,21 +390,14 @@ extern int NtscPalTimerTicksPerFrame __asm__("NtscPalTimerTicksPerFrame");
 extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFloat");
 void SetNtscPalTiming(int mode) __asm__("SetNtscPalTiming");
 
-struct AK_mtx3 { float m[3][4]; };
-void MatAdjoint(AK_mtx3 &dm, AK_mtx3 &u) __asm__("MatAdjoint");
-struct AK_GDHero {
-	/* 0x0000 */ char unk0000[0x2318];
-	/* 0x2318 */ int gadgetIndex;
-	/* 0x231c */ char unk231c[0x26e4 - 0x231c];
-	/* 0x26e4 */ void *pGadgetBox;
-};
-extern AK_GDHero *AK_g_Hero[10] __asm__("g_Hero");
+struct mtx3 { float m[3][4]; };
+void MatAdjoint(mtx3 &dm, mtx3 &u) __asm__("MatAdjoint");
 int FUN_00472818(MobyInstance *) __asm__("FUN_00472818");
 int GadgetIsModSupported(int, int) __asm__("GadgetIsModSupported___dupe2");
 int GetActivePostFXMod(void *, int) __asm__("GetActivePostFXMod");
-static inline MobyInstance *AK_RootParent(MobyInstance *p)
+static inline MobyInstance *RootParent(MobyInstance *p)
 {
-	if (p->pParent) return AK_RootParent(p->pParent);
+	if (p->pParent) return RootParent(p->pParent);
 	return p;
 }
 int MB_GadgetDamageIndex(MobyInstance *pMoby, int hero_index) __asm__("MB_GadgetDamageIndex");
@@ -411,24 +405,24 @@ extern int g_gameRules __asm__("g_gameRules");
 MobyInstance *CreateMoby(int, int) __asm__("CreateMoby");
 void SwitchMobyToCoOpArmor(MobyInstance *) __asm__("SwitchMobyToCoOpArmor");
 void AddMotionBlurElem(MotionBlur &blur, int alpha, int stepsBehindTarget, float gapReductionFactor) __asm__("AddMotionBlurElem");
-struct AK_TriMode {
+struct TriMode {
 	/* 0x00 */ int mode;
 	/* 0x04 */ int msg;
 	/* 0x08 */ int state;
 	/* 0x0c */ char unk0c[0x1c - 0xc];
 };
-struct AK_HeroVtbl {
+struct HeroVtbl {
 	/* 0x00 */ char unk00[0x4c];
-	/* 0x4c */ int (*getPrompt)(struct AK_TriHero *);
+	/* 0x4c */ int (*getPrompt)(struct TriHero *);
 };
-struct AK_TriHero {
+struct TriHero {
 	/* 0x0000 */ char unk0000[0x14];
-	/* 0x0014 */ AK_HeroVtbl *vtbl;
+	/* 0x0014 */ HeroVtbl *vtbl;
 	/* 0x0018 */ char unk0018[0x266d - 0x18];
 	/* 0x266d */ unsigned char promptOk;
 };
-extern AK_TriMode tri_mode[10] __asm__("tri_mode");
-AK_TriHero *GB_GetHeroFromPlayerIndex(int) __asm__("GB_GetHeroFromPlayerIndex");
+extern TriMode tri_mode[10] __asm__("tri_mode");
+TriHero *GB_GetHeroFromPlayerIndex(int) __asm__("GB_GetHeroFromPlayerIndex");
 void GUI_PrintPrompt(int, char *) __asm__("GUI_PrintPrompt");
 int FUN_0047b7f8(int iPlayer, int mode, int msg) __asm__("FUN_0047b7f8");
 
@@ -771,7 +765,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltAn
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltSpeed);
 
-GAME_SECTION(MatAdjoint) void MatAdjoint(AK_mtx3 &dm, AK_mtx3 &u)
+GAME_SECTION(MatAdjoint) void MatAdjoint(mtx3 &dm, mtx3 &u)
 {
 	dm.m[0][0] = u.m[2][2] * u.m[1][1] - u.m[1][2] * u.m[2][1];
 	dm.m[0][1] = u.m[0][2] * u.m[2][1] - u.m[2][2] * u.m[0][1];
@@ -1045,7 +1039,7 @@ GAME_SECTION(MB_MP_GadgetDamageIndex) int MB_MP_GadgetDamageIndex(MobyInstance *
 
 GAME_SECTION(SetNtscPalTiming) void SetNtscPalTiming(int mode)
 {
-	AK_bootSettings[0] = mode;
+	bootSettings[0] = mode;
 	if (mode == 0) {
 		NtscPalSpeedAdjuster = 1.0f;
 		NtscPalAccelAdjuster = 1.0f;
@@ -1212,11 +1206,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B7E8
 
 GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
 {
-	AK_TriMode *pEntry = &tri_mode[iPlayer];
+	TriMode *pEntry = &tri_mode[iPlayer];
 	int state = 2;
 	if (pEntry->mode == mode && pEntry->msg == msg) {
 		if (msg) {
-			AK_TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
+			TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
 			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
 		}
 		pEntry->state = state;
@@ -1232,7 +1226,7 @@ GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
 	}
 	if (!pEntry->mode) {
 		if (msg) {
-			AK_TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
+			TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
 			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
 		}
 		pEntry->state = state;
@@ -1421,7 +1415,6 @@ GAME_SECTION(Bot_HasPaintjob) bool Bot_HasPaintjob(unsigned int paintjob)
 	return false;
 }
 
-/* ===== AJ near misses ===== */
 GAME_SECTION(Bot_GetCurrentPaintjob) int Bot_GetCurrentPaintjob(unsigned int botNum)
 {
 	if (botNum < 2) return BotSave.curBotPaintJob[botNum];

@@ -1,6 +1,8 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+  NAVG_SetTargetWp: 0x0048DEB0
+  NAVG_WpSet: 0x0048EB98
   DPRINT: 0x0013AE70
   sceMtapSetWorkAddr: 0x0013AE98
   sceMtapInit: 0x0013AEF8
@@ -91,6 +93,21 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  TransitionMP_DrawSplashArt: 0x0054CC60
+  mode_freezeInit: 0x004599F8
+  SetUpVisGifViewer: 0x00462910
+  DrawSpriteFont: 0x0044A410
+  Camera_UpdateFov: 0x0043A1E0
+  LoadMultiPlayerIOPModules: 0x00460D48
+  FUN_00454060: 0x00454060
+  VU1_sendChain: 0x004E7708
+  VU1_initChain: 0x004E7638
+  mode_movieInit___dupe2: 0x004E4EB8
+  PostEffects_SandStorm_Init_CreateB: 0x004F7FD8
+  AnimEvaluateBlend_LowLevel: 0x0046EAC8
+  AnimEvaluate_LowLevel: 0x0046E9E8
+  LoadCoreIOPModules: 0x00460B00
+  SetLanguage: 0x00437CD8
   TransitionMP_DrawTextData: 0x0054D400
   navg_FindBestIntraClusterPath: 0x0048D228
   navg_LoadSectors: 0x0048C440
@@ -8795,6 +8812,8 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/transitionmulti, function: TransitionMP_DrawSplashArt, section: .game_TransitionMP_DrawSplashArt.rodata, start: 0x003D4E38, end: 0x003D4E78}
+      - {object: game/bmain, function: SetLanguage, section: .game_SetLanguage.rodata, start: 0x003CFA00, end: 0x003CFA18}
       - {object: game/mcstate, function: MCSTATE_SetCommand, section: .game_MCSTATE_SetCommand.rodata, start: 0x003D0980, end: 0x003D099C}
       - {object: game/FXUtil, function: CalcCycleFade, section: .game_CalcCycleFade.rodata, start: 0x003D03A0, end: 0x003D03C4}
       - {object: game/weapons, function: WPN_BangelizeWeapons, section: .game_WPN_BangelizeWeapons.rodata, start: 0x003D2F70, end: 0x003D2FA8}

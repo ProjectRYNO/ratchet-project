@@ -92,7 +92,6 @@ void *MobyGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
 void WPN_UpgradeModeUnInit() __asm__("WPN_UpgradeModeUnInit");
 void WPN_TurnOffHoloShields() __asm__("WPN_TurnOffHoloShields");
 
-/* ===== AM additions ===== */
 struct BangleMoby {
 	/* 0x00 */ char unk00[0x74];
 	/* 0x74 */ short bangles;
@@ -130,9 +129,7 @@ extern HoloHero *g_HoloHero[10] __asm__("g_Hero");
 extern volatile int g_gameRulesVol __asm__("g_gameRules");
 void WPN_TurnOnHoloShields(int) __asm__("WPN_TurnOnHoloShields");
 
-/* ===== AJ near misses ===== */
 /* FXRegistrySystemInterface has no data members so &FXReg is emitted as an la macro (lui/addiu same reg, not delay-slot fillable) */
-/* ===== AM additions (pass 4) ===== */
 struct WpnVec2 {
 	/* 0x0 */ float x;
 	/* 0x4 */ float y;
@@ -150,7 +147,7 @@ struct GadgetBox {
 struct FXRegistrySystemInterface {
 	void SetBlendMode(int, int, int) __asm__("SetBlendMode");
 };
-extern FXRegistrySystemInterface FXRegAM __asm__("FXReg");
+extern FXRegistrySystemInterface FXReg __asm__("FXReg");
 int GetIconFrame(int, int) __asm__("GetIconFrame");
 unsigned long GetFrameTex(int) __asm__("GetFrameTex");
 void DrawQuadTex(WpnVec2 *, unsigned int, unsigned long) __asm__("DrawQuad___dupe2");
@@ -285,7 +282,7 @@ GAME_SECTION(WPN_drawIcon) void WPN_drawIcon(void *pMoby)
 	PackQuadLTRB(vPoints, 390.0f, 345.0f, 430.0f, 385.0f);
 	index = GetIconFrame(pMod.icon, 0);
 	iTex0 = GetFrameTex(index);
-	FXRegAM.SetBlendMode(2, 1, 1);
+	FXReg.SetBlendMode(2, 1, 1);
 	DrawQuadTex(vPoints, 0xaaaaaaaa, iTex0);
 }
 
@@ -434,7 +431,6 @@ GAME_SECTION(WPN_BangelizeWeapons) void WPN_BangelizeWeapons(BangleMoby *pMoby, 
 }
 
 extern volatile int g_gameTypeVol __asm__("g_gameType");
-extern int g_gameTypeAM __asm__("g_gameType");
 HoloInterface *HoloGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
 GAME_SECTION(WPN_TurnOnHoloShields) void WPN_TurnOnHoloShields(int teamIndex)
 {
@@ -451,13 +447,13 @@ GAME_SECTION(WPN_TurnOnHoloShields) void WPN_TurnOnHoloShields(int teamIndex)
 			}
 		}
 	}
-	if (g_gameTypeAM == 0 && teamIndex == -1) {
+	if (g_gameType == 0 && teamIndex == -1) {
 		pInterface = HoloGetInterface(0x263b, 0, 0xc);
 		if (pInterface && pInterface->turnOn) {
 			pInterface->turnOn();
 		}
 	}
-	if (g_gameTypeAM == 1) {
+	if (g_gameType == 1) {
 		pInterface = HoloGetInterface(0x265b, 0, 0x14);
 		if (pInterface && pInterface->turnOnTeam) {
 			pInterface->turnOnTeam(teamIndex);

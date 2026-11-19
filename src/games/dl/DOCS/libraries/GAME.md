@@ -52,7 +52,7 @@ Objects opt in through `GAME_SN_NAMES` in the Makefile. Everything else stays as
 
 - **Same-file data:** retail uses `$gp` for symbols defined in the same source file. Declare those `GAME_GP_DATA` (see `game_section.h`), and `game_fix_symtab.py` turns the definition back into an external reference, so the real bytes stay in the retained data segment.
 - **`bool`:** this compiler's `bool` is 4 bytes, but retail structs use 1-byte fields, so test files use `unsigned char`. A flag may be missing.
-- **Inline asm:** the rules for game code are undecided, so functions that need it stay as retained assembly.
+- **Inline asm:** allowed only for VU0 macro-mode and 128-bit MMI operations (decision D20), through the `VU0_ASM`/`MMI_ASM` macros in `code/include/game_vu0.h`. Game code is compiled with `-mvu0-use-vf0-vf31`, so the compiler emits the VU0 loads, stores and moves itself. Every converted function is tracked in [GAME_VU0.md](GAME_VU0.md), and its asm is marked to be revisited later. Hand-written assembly and all other inline asm stay retained assembly.
 
 ## Verification
 

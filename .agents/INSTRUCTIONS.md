@@ -61,6 +61,16 @@ publishing, deleting someone else's work, or changing unrelated tools.
 10. Keep tests outside production headers/source; do not restore SND_HOST_TEST
     branches or header size-check typedefs. Extend external ABI/behavior checks
     for meaningful new behavior. A cosmetic/documentation edit needs no ELF build.
+11. Never leave worker, agent, or session tags in source, headers, or config. Test-file
+    prefixes such as `AK_` or `AP_` belong only to scratch file names under
+    `build/game-work/`; identifiers must not carry them (`AK_vec4`, `AK_g_Hero`) or
+    tag suffixes (`NetInfoAJ`, `FadeToBlackAM`, `FsAM2`), and section comments must
+    not say `===== AJ additions =====`. Use the real retail/prototype name. If the
+    name already exists, extend or merge into the existing declaration (split filler,
+    keep the real size and offsets) instead of adding a second view. Only when a
+    distinct view is truly required for matching (for example a data-less or
+    unknown-size declaration to avoid small-data addressing), give it a descriptive
+    name such as `StreamSysSmall` or `g_gameTypeVol`, with a comment saying why.
 
 ## Nonmatching development builds
 

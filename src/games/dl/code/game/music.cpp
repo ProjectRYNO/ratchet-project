@@ -91,7 +91,6 @@ extern int g_gameType __asm__("g_gameType");
 void music_StartHeadCB(unsigned int, unsigned long) __asm__("music_StartHeadCB");
 void music_StartBodyCB(unsigned int, unsigned long) __asm__("music_StartBodyCB");
 
-/* ===== AG additions ===== */
 struct WadDef {
 	/* 0x0000 */ char unk0000[0xcbb4];
 	/* 0xcbb4 */ int sector;

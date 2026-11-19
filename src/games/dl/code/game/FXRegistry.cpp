@@ -314,7 +314,6 @@ GAME_SECTION(ZAddGSRegister) void ZAddGSRegister(FXRegistrySystemInternal *self,
 	}
 }
 
-/* ===== AL additions ===== */
 GAME_SECTION(ZUpdateRegisterValue) int ZUpdateRegisterValue(FXRegistrySystemInternal *self, unsigned int reg, uint64 value)
 {
 	if (!IntFXReg.tracking) {

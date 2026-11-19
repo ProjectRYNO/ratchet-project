@@ -38,6 +38,34 @@ void Level_TransitionFX(bool) __asm__("Level_TransitionFX");
 void *GetBootPlate(int) __asm__("GetBootPlate");
 
 
+struct HelpMsg {
+	/* 0x00 */ char *text;
+	/* 0x04 */ short id;
+	/* 0x06 */ short shortid;
+	/* 0x08 */ int unk08[2];
+};
+struct HelpDef {
+	/* 0x00 */ int unk00[6];
+	/* 0x18 */ int message_cnt;
+	/* 0x1c */ int unk1c[0x40];
+};
+struct LangOffset {
+	/* 0x00 */ int offset;
+	/* 0x04 */ int size;
+};
+struct BootSettingsDef {
+	/* 0x00 */ char unk00[0xbd];
+	/* 0xbd */ unsigned char Language;
+	/* 0xbe */ char unkbe[0x42];
+};
+extern BootSettingsDef bootSettings __asm__("bootSettings");
+extern HelpDef Help __asm__("Help");
+extern HelpMsg *HelpMsgs __asm__("HelpMsgs");
+LangOffset *helpLangTable __asm__("D_21E1CC") GAME_GP_DATA = 0;
+char *helpDecompBuffer __asm__("D_21E1C8") GAME_GP_DATA = 0;
+int FastDecompress(char *, char *) __asm__("FastDecompress");
+void SetLanguage(unsigned short language) __asm__("SetLanguage");
+
 GAME_SECTION(LevelTScene_VoxShuttle_UpdateMonitors) void LevelTScene_VoxShuttle_UpdateMonitors()
 {
 }
@@ -61,7 +89,36 @@ GAME_SECTION(Level_TransitionFX) void Level_TransitionFX(bool b)
 	RegisterDrawFunction(pRegistered_PostDraws, Level_PostTransitionFX, Scene.actors[0]);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", SetLanguage);
+GAME_SECTION(SetLanguage) void SetLanguage(unsigned short language)
+{
+	char *src = 0;
+	int i;
+	LangOffset *table = helpLangTable;
+	if (!table || !helpDecompBuffer) return;
+	bootSettings.Language = language;
+	switch (bootSettings.Language) {
+	case 0:
+	case 1:
+		src = (char *)table + table[0].offset;
+		break;
+	case 2:
+		src = (char *)table + table[1].offset;
+		break;
+	case 3:
+		src = (char *)table + table[2].offset;
+		break;
+	case 4:
+		src = (char *)table + table[3].offset;
+		break;
+	case 5:
+		src = (char *)table + table[4].offset;
+		break;
+	}
+	FastDecompress(src, helpDecompBuffer);
+	HelpMsgs = (HelpMsg *)helpDecompBuffer;
+	Help.message_cnt = *(unsigned int *)HelpMsgs >> 4;
+	for (i = 0; i < Help.message_cnt; i++) *(int *)&HelpMsgs[i].text += (int)HelpMsgs;
+}
 
 GAME_SECTION(GetCurrentFrameRate) int GetCurrentFrameRate()
 {

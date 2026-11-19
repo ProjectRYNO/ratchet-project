@@ -136,7 +136,6 @@ void nwGuiRefreshCallback() __asm__("nwGuiRefreshCallback");
 unsigned char Dev9Callback() __asm__("Dev9Callback");
 bool EZNetCtlUnloadCallback(void *) __asm__("EZNetCtlUnloadCallback");
 
-/* ===== AM additions ===== */
 extern "C" char *strncpy(char *, const char *, unsigned int);
 void FastMemSet(void *, int, int) __asm__("FastMemSet");
 void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
@@ -149,6 +148,68 @@ struct sceSifDmaData {
 };
 extern "C" unsigned int sceSifSetDma(sceSifDmaData *, int);
 static void DmaToIop(void *, void *, int) __asm__("DmaToIop");
+
+void LoadIOPModuleQueueSet(IOPMODULELOADQUEUE *, int, char *) __asm__("LoadIOPModuleQueueSet");
+extern IOPMODULELOADQUEUE g_core_iop_module_queue[1] __asm__("g_core_iop_module_queue");
+extern char g_irxname_sio2man[] __asm__("D_21EF38");
+extern char g_irxname_mtapman[] __asm__("D_3D0738");
+extern char g_irxname_mcman[] __asm__("D_21EF40");
+extern char g_irxname_mcserv[] __asm__("D_21EF48");
+extern char g_irxname_padman[] __asm__("D_21EF50");
+extern char g_irxname_libsd[] __asm__("D_3D0750");
+extern char g_irxname_989snd[] __asm__("D_21EF58");
+extern char g_irxname_astrm[] __asm__("D_21EF68");
+extern char g_core_iop_message[] __asm__("D_3D0768");
+struct irxwad {
+	/* 0x00 */ IopDataBlock unk00;
+	/* 0x08 */ IopDataBlock sio2man;
+	/* 0x10 */ IopDataBlock mcman;
+	/* 0x18 */ IopDataBlock mcserv;
+	/* 0x20 */ IopDataBlock padman;
+	/* 0x28 */ IopDataBlock mtapman;
+	/* 0x30 */ IopDataBlock libsd;
+	/* 0x38 */ IopDataBlock _989snd;
+	/* 0x40 */ IopDataBlock unk40;
+	/* 0x48 */ IopDataBlock inet;
+	/* 0x50 */ IopDataBlock netcnf;
+	/* 0x58 */ IopDataBlock inetctl;
+	/* 0x60 */ IopDataBlock msifrpc;
+	/* 0x68 */ IopDataBlock dev9;
+	/* 0x70 */ IopDataBlock smap;
+	/* 0x78 */ IopDataBlock libnetb;
+	/* 0x80 */ IopDataBlock ppp;
+	/* 0x88 */ IopDataBlock pppoe;
+	/* 0x90 */ IopDataBlock usbd;
+	/* 0x98 */ IopDataBlock lgaud;
+	/* 0xa0 */ IopDataBlock eznetcnf;
+	/* 0xa8 */ IopDataBlock eznetctl;
+	/* 0xb0 */ IopDataBlock lgkbm;
+	/* 0xb8 */ IopDataBlock unkb8;
+	/* 0xc0 */ IopDataBlock astrm;
+};
+void LoadCoreIOPModules(irxwad *irx_data) __asm__("LoadCoreIOPModules");
+
+extern char g_irxname_inet[] __asm__("D_21EF70");
+extern char g_irxname_netcnf[] __asm__("D_3D0780");
+extern char g_irxargs_netcnf[] __asm__("D_3D0798");
+extern char g_irxname_inetctl[] __asm__("D_21EF80");
+extern char g_irxargs_inetctl[] __asm__("D_3D07D8");
+extern char g_irxname_smap[] __asm__("D_3D07F0");
+extern char g_irxname_ppp[] __asm__("D_21EF90");
+extern char g_irxname_pppoe[] __asm__("D_3D0808");
+extern char g_irxname_msifrpc[] __asm__("D_3D0820");
+extern char g_irxname_libnetb[] __asm__("D_21EFA0");
+extern char g_irxargs_libnetb[] __asm__("D_21EFA8");
+extern char g_irxname_usbd[] __asm__("D_21EFB8");
+extern char g_irxargs_usbd[] __asm__("D_3D0838");
+extern char g_irxname_eznetcnf[] __asm__("D_21EFC8");
+extern char g_irxname_lgkbm[] __asm__("D_21EFD8");
+extern char g_irxargs_lgkbm[] __asm__("D_3D0868");
+extern char g_irxname_lgaud[] __asm__("D_21EFE0");
+extern char g_irxargs_lgaud[] __asm__("D_21EFE8");
+extern char g_irxname_eznetctl[] __asm__("D_21EFF8");
+extern char g_multiplayer_iop_message[] __asm__("D_3D0888");
+void LoadMultiPlayerIOPModules(irxwad *irx_data) __asm__("LoadMultiPlayerIOPModules");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", DmaToIop);
 
@@ -365,7 +426,19 @@ GAME_SECTION(UnloadIOPModuleQueueSet) void UnloadIOPModuleQueueSet(IOPMODULELOAD
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadCoreIOPModules);
+GAME_SECTION(LoadCoreIOPModules) void LoadCoreIOPModules(irxwad *irx_data)
+{
+	ClearIOPModuleQueueSet(g_core_iop_module_queue, 1);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_sio2man, irx_data, &irx_data->sio2man, 0x1a00, 0, 0, 1);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_mtapman, irx_data, &irx_data->mtapman, 0x3100, 0, 0, 2);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_mcman, irx_data, &irx_data->mcman, 0x27500, 0, 0, 3);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_mcserv, irx_data, &irx_data->mcserv, 0x4800, 0, 0, 4);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_padman, irx_data, &irx_data->padman, 0x1c200, 0, 0, 5);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_libsd, irx_data, &irx_data->libsd, 0x5e00, 0, 0, 6);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_989snd, irx_data, &irx_data->_989snd, 0x2b200, 0, 0, 7);
+	QueueIOPModuleLoad(g_core_iop_module_queue, g_irxname_astrm, irx_data, &irx_data->astrm, 0x1400, 0, 0, 9);
+	LoadIOPModuleQueueSet(g_core_iop_module_queue, 1, g_core_iop_message);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadSinglePlayerIOPModules);
 
@@ -380,7 +453,29 @@ GAME_SECTION(UnloadSinglePlayerIOPModules) void UnloadSinglePlayerIOPModules()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", LoadMultiPlayerIOPModules);
+GAME_SECTION(LoadMultiPlayerIOPModules) void LoadMultiPlayerIOPModules(irxwad *irx_data)
+{
+	if (!g_iopload_core_modules_initialized && !g_iopload_multiplayer_modules_loaded && !g_iopload_singleplayer_modules_loaded) {
+		ClearIOPModuleQueueSet(g_iopload_multiplayer_queues, 1);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_inet, irx_data, &irx_data->inet, 0x40e00, 0, 0, 0xe);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_netcnf, irx_data, &irx_data->netcnf, 0xcd00, 0x3e, g_irxargs_netcnf, 0xc);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_inetctl, irx_data, &irx_data->inetctl, 0x9100, 0x12, g_irxargs_inetctl, 0xf);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_dev9ModuleName, irx_data, &irx_data->dev9, 0x2900, 0, 0, 0xa);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_smap, irx_data, &irx_data->smap, 0x8600, 0, 0, 0x13);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_ppp, irx_data, &irx_data->ppp, 0x18b00, 0, 0, 0x10);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_pppoe, irx_data, &irx_data->pppoe, 0x7500, 0, 0, 0x11);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_msifrpc, irx_data, &irx_data->msifrpc, 0x2600, 0, 0, 0xb);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_libnetb, irx_data, &irx_data->libnetb, 0x6100, 0xe, g_irxargs_libnetb, 0x12);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_usbd, irx_data, &irx_data->usbd, 0x15f00, 0x2b, g_irxargs_usbd, 0x14);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_eznetcnf, irx_data, &irx_data->eznetcnf, 0x3000, 0, 0, 0xd);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_lgkbm, irx_data, &irx_data->lgkbm, 0x2a00, 0x1c, g_irxargs_lgkbm, 0x15);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_lgaud, irx_data, &irx_data->lgaud, 0xcc00, 0xf, g_irxargs_lgaud, 0x16);
+		QueueIOPModuleLoad(g_iopload_multiplayer_queues, g_irxname_eznetctl, irx_data, &irx_data->eznetctl, 0x3500, 0, 0, 0x17);
+		LoadIOPModuleQueueSet(g_iopload_multiplayer_queues, 1, g_multiplayer_iop_message);
+		AstrmCreateStreams(0x8000, 3);
+		g_iopload_multiplayer_modules_loaded = true;
+	}
+}
 
 GAME_SECTION(UnloadMultiPlayerIOPModules) void UnloadMultiPlayerIOPModules()
 {

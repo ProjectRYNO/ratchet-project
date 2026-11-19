@@ -95,7 +95,6 @@ void LevelTScene_VoxShuttle_UpdateFX() __asm__("LevelTScene_VoxShuttle_UpdateFX"
 void TransitionSpace_InitMoby(MobyInstance *) __asm__("TransitionSpace_InitMoby");
 bool TransitionUpdate_ShuttleInterior(bool) __asm__("TransitionUpdate_ShuttleInterior");
 
-/* ===== AM additions ===== */
 int Transition_GetNumMoviesPlayed() __asm__("Transition_GetNumMoviesPlayed");
 void Transition_UpdateMidSceneOrMovie() __asm__("Transition_UpdateMidSceneOrMovie");
 void TransitionPostUpdate_ShuttleInterior(bool) __asm__("TransitionPostUpdate_ShuttleInterior");
@@ -120,24 +119,24 @@ struct SpaceShip {
 	/* 0x70 */ float scale;
 };
 bool TransitionUpdate_Space(bool) __asm__("TransitionUpdate_Space");
-struct PartInstanceAM {
+struct PartInstance {
 	/* 0x00 */ unsigned char unk00;
 	/* 0x01 */ unsigned char type;
 	/* 0x02 */ unsigned char unk02[5];
 	/* 0x07 */ unsigned char alpha;
 	/* 0x08 */ char unk08[0x38];
 };
-extern PartInstanceAM *PartInstances __asm__("PartInstances");
+extern PartInstance *PartInstances __asm__("PartInstances");
 extern int PartIndexTop __asm__("PartIndexTop");
 extern int TransitionSpace_MovieIds[] __asm__("TransitionSpace_MovieIds");
 int Transition_GetMovieId() __asm__("Transition_GetMovieId");
 void Transition_SetupNextMovie(int) __asm__("Transition_SetupNextMovie");
 void TransitionPostUpdate_Space(bool) __asm__("TransitionPostUpdate_Space");
-struct ScrnAM {
+struct Screen {
 	/* 0x00 */ int size_x;
 	/* 0x04 */ int size_y;
 };
-extern ScrnAM Scrn __asm__("Scrn");
+extern Screen Scrn __asm__("Scrn");
 extern int g_CurrentFontName __asm__("g_CurrentFontName");
 int FontStringLength(const char *, int, float) __asm__("FontStringLength");
 void FontPrint(float, float, unsigned long, char *, int, float, float, int, bool, unsigned long, float, float) __asm__("FontPrint");
@@ -234,8 +233,8 @@ GAME_SECTION(TransitionPostUpdate_Space) void TransitionPostUpdate_Space(bool bL
 	int MovieId;
 	SpaceShip *ship;
 	int max_alpha;
-	PartInstanceAM *pTerm;
-	PartInstanceAM *pPart;
+	PartInstance *pTerm;
+	PartInstance *pPart;
 	if (g_TransitionData_Space.m_bMovieDone) {
 		Transition_CleanupMovie();
 		if (Transition_GetNumMoviesPlayed() == 1) {

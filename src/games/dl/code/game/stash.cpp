@@ -1,7 +1,6 @@
 #include "common.h"
 #include "game_section.h"
 
-/* ===== AJ near misses ===== */
 struct StashInfo {
 	/* 0x00 */ char *base;
 	/* 0x04 */ int size;

@@ -46,7 +46,10 @@ struct CameraPolar {
 	/* 0x194 */ float fovLimit;
 	/* 0x198 */ char fovChangeType;
 	/* 0x199 */ char fovState;
-	/* 0x19a */ char unk19a[0x1b0 - 0x19a];
+	/* 0x19a */ short fovTimer;
+	/* 0x19c */ float fovTimerInv;
+	/* 0x1a0 */ float fovInit;
+	/* 0x1a4 */ char unk1a4[0x1b0 - 0x1a4];
 	/* 0x1b0 */ int underwater;
 	/* 0x1b4 */ char unk1b4[0x470 - 0x2b0 - 0x1b4];
 };
@@ -83,7 +86,6 @@ void Camera_runSetupToNewCam(UpdateCam *) __asm__("Camera_runSetupToNewCam");
 extern CameraSystem GameCameraSystem __asm__("GameCamera");
 
 
-/* ===== AG3 additions ===== */
 struct RETICULE {
 	/* 0x000 */ char unk000[0x380];
 	/* 0x380 */ int numActive;
@@ -102,8 +104,10 @@ float FastAddRots(float, float) __asm__("FastAddRots");
 void UpdateViewContext() __asm__("UpdateViewContext");
 moby *Spawn_Moby1007(vec4 &, int) __asm__("Spawn_Moby1007");
 void DeleteMoby(moby *) __asm__("DeleteMoby");
+/* g_nwInfo must be > 8 bytes so it is not treated as small data (lui $3 / lw $2 pattern) */
 struct NetInfo {
 	/* 0x00 */ int NumLocalPlayers;
+	/* 0x04 */ int pad[3];
 };
 extern NetInfo g_nwInfo __asm__("D_172174");
 extern int gFrameHz __asm__("gFrameHz");
@@ -112,16 +116,60 @@ void Camera_handleCollWithHero(int, UpdateCam *) __asm__("Camera_handleCollWithH
 float Cam_InterpAngles(float, float, float *, float, float, float) __asm__("Cam_InterpAngles");
 float Cam_InterpValues(float, float, float *, float, float, float) __asm__("Cam_InterpValues");
 
-/* ===== AJ near misses ===== */
-/* g_nwInfo must be > 8 bytes so it is not treated as small data (lui $3 / lw $2 pattern) */
-struct NetInfoAJ { /* 0x00 */ int NumLocalPlayers; /* 0x04 */ int pad[3]; };
-extern NetInfoAJ g_nwInfoAJ __asm__("D_172174");
+
+struct NetInfoFov {
+	/* 0x00 */ int unk00[5];
+	/* 0x14 */ int NumLocalPlayers;
+	/* 0x18 */ int unk18[0x10];
+};
+extern NetInfoFov g_nwInfoFov __asm__("g_nwInfo");
+int FastDecTimer(short &) __asm__("FastDecTimer___dupe2");
+float MB_CosineInterpolate(float, float, float) __asm__("MB_CosineInterpolate");
+void Camera_UpdateFov(int) __asm__("Camera_UpdateFov");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitFovSystem);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_SetFov);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_UpdateFov);
+/* fovActual store must not be moved into the bc1f delay slot: volatile store */
+GAME_SECTION(Camera_UpdateFov) void Camera_UpdateFov(int cameraIndex)
+{
+	GameCameraData *gameCam = &GameCamera[cameraIndex];
+	if ((unsigned char)gameCam->polar.fovState == 1) {
+		switch ((unsigned char)gameCam->polar.fovChangeType) {
+		case 0:
+			if (g_nwInfoFov.NumLocalPlayers == 1) gameCam->polar.fovState = 0;
+			gameCam->polar.fovActual = gameCam->polar.fovIdeal;
+			break;
+		case 3: {
+			float res = Cam_InterpAngles(gameCam->polar.fovActual, gameCam->polar.fovIdeal, &gameCam->polar.fovSpeed, gameCam->polar.fovGain, gameCam->polar.fovDamp, gameCam->polar.fovLimit);
+			float ideal = gameCam->polar.fovIdeal;
+			*(volatile float *)&gameCam->polar.fovActual = res;
+			if (__builtin_fabsf(res - ideal) < 0.0001f) {
+				if (g_nwInfoFov.NumLocalPlayers != 1) return;
+				gameCam->polar.fovState = 0;
+			}
+			break;
+		}
+		case 1: {
+			float fac;
+			if (FastDecTimer(gameCam->polar.fovTimer)) gameCam->polar.fovState = 0;
+			fac = (float)gameCam->polar.fovTimer * gameCam->polar.fovTimerInv;
+			gameCam->polar.fovActual = gameCam->polar.fovIdeal + (gameCam->polar.fovInit - gameCam->polar.fovIdeal) * fac;
+			break;
+		}
+		case 2:
+			if (FastDecTimer(gameCam->polar.fovTimer)) gameCam->polar.fovState = 0;
+			gameCam->polar.fovActual = MB_CosineInterpolate(gameCam->polar.fovIdeal, gameCam->polar.fovInit, (float)gameCam->polar.fovTimer * gameCam->polar.fovTimerInv);
+			break;
+		}
+		if (g_nwInfoFov.NumLocalPlayers == 1) {
+			float hTheta = gameCam->polar.fovActual * 0.5f;
+			VC.xratio = FastSin(hTheta) / FastCos(hTheta);
+			UpdateViewContext();
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043A3C8);
 
@@ -144,7 +192,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Cam_InterpVecs)
 GAME_SECTION(Cam_InterpValues) float Cam_InterpValues(float current, float target, float *speed, float gain, float damp, float limit)
 {
 	float diff = target - current;
-	if (g_nwInfoAJ.NumLocalPlayers >= 2 && gFrameHz == 1) {
+	if (g_nwInfo.NumLocalPlayers >= 2 && gFrameHz == 1) {
 		gain = gain * 60.0f / 30.0f;
 		if (limit != 0.0f) limit = limit * 60.0f / 30.0f;
 	}

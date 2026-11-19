@@ -11,6 +11,7 @@ void PostEffects_RegisterEngine_Blur(int, int, int, int, int, int) __asm__("Post
 void PostEffects_Init() __asm__("PostEffects_Init");
 void PostEffects_LocalAlloc(int *ptr, int size) __asm__("PostEffects_LocalAlloc");
 void PostEffects_Blur256(int a, int b, int c) __asm__("PostEffects_Blur256");
+void PostEffects_Blur256(unsigned long **, int, int) __asm__("PostEffects_Blur256");
 void PostEffects_BlurOnce256(int a, int b, int c) __asm__("PostEffects_BlurOnce256");
 void PostEffects_RegisterEngine_Blur64(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur64");
 void PostEffects_RegisterEngine_Blur128(int a, int b, int c, int d) __asm__("PostEffects_RegisterEngine_Blur128");
@@ -28,9 +29,13 @@ void InitSnowParticles() __asm__("InitSnowParticles");
 void PE_UpdateEnvEffectsForCameraWarp(void *camera) __asm__("PE_UpdateEnvEffectsForCameraWarp");
 
 struct PESandStorm {
-	/* 0x00 */ char unk00[0x57];
+	/* 0x00 */ char unk00[0x50];
+	/* 0x50 */ int iNumDistanceBlurs;
+	/* 0x54 */ char unk54[3];
 	/* 0x57 */ unsigned char cDepthOfFieldA;
-	/* 0x58 */ char unk58[0x10];
+	/* 0x58 */ char unk58[0xa];
+	/* 0x62 */ signed char iFullScreenBlurLayerPlacement;
+	/* 0x63 */ char unk63[5];
 	/* 0x68 */ unsigned char sandTexture[8];
 };
 PESandStorm *PE_pSandStorm __asm__("PE_pSandStorm") GAME_GP_DATA = 0;
@@ -83,7 +88,6 @@ void PostEffects_SetDofRamp(unsigned char *) __asm__("PostEffects_SetDofRamp");
 void PostEffects_CommonInit_new() __asm__("PostEffects_CommonInit_new");
 void PostEffects_RegisterEngine_BloomInitApply_new(unsigned long *&, int &) __asm__("PostEffects_RegisterEngine_BloomInitApply_new");
 
-/* ===== AL additions ===== */
 typedef unsigned int alQword[4];
 void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
 extern char FastPalTrns_8[] __asm__("FastPalTrns_8");
@@ -159,7 +163,11 @@ void PostEffects_AddRemapAlpha_imm(int, int, int, int, int, int, int, int, int) 
 void VU1_addGSregister(unsigned int, unsigned long, bool) __asm__("VU1_addGSregister");
 void PostEffects_DofCreate_new() __asm__("PostEffects_DofCreate_new");
 
-/* ===== AJ near misses ===== */
+
+extern unsigned long g_SandStormCreate[] __asm__("g_SandStormCreate");
+extern int g_SandStormCreateSize __asm__("g_SandStormCreateSize");
+extern int g_pSandStormTexOrTemp1 __asm__("g_pSandStormTexOrTemp1");
+void PostEffects_BlurOnce256(unsigned long **, int, int) __asm__("PostEffects_BlurOnce256");
 
 GAME_SECTION(PostEffects_LocalAlloc) int PostEffects_LocalAlloc(int &loc, int size)
 {
@@ -247,7 +255,40 @@ GAME_SECTION(PostEffects_SandStorm_Init_AlphaMappingPalette) void PostEffects_Sa
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7FD0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init_CreateB);
+GAME_SECTION(PostEffects_SandStorm_Init_CreateB) void PostEffects_SandStorm_Init_CreateB()
+{
+	unsigned long *pInitial = g_SandStormCreate;
+	unsigned long *pCurrent = pInitial;
+	int i;
+	if (PE_pSandStorm->cDepthOfFieldA == 0 && PE_pSandStorm->iFullScreenBlurLayerPlacement == -1) {
+		g_SandStormCreateSize = 0;
+		g_pSandStormTexOrTemp1 = g_pSandStormTex;
+		return;
+	}
+	*pCurrent++ = 0x1000000000000005;
+	*pCurrent++ = 0xe;
+	*pCurrent++ = 0;
+	*pCurrent++ = 0x3f;
+	*pCurrent++ = 0xa0000000a0;
+	*pCurrent++ = 0x19;
+	*pCurrent++ = 0x100000000;
+	*pCurrent++ = 0x4f;
+	*pCurrent++ = 0x60;
+	*pCurrent++ = 0x15;
+	*pCurrent++ = 5;
+	*pCurrent++ = 9;
+	{ int *pn = &PE_pSandStorm->iNumDistanceBlurs; *pn = *pn <? 4; }
+	if (PE_pSandStorm->iNumDistanceBlurs == 4) {
+		PostEffects_BlurOnce256(&pCurrent, g_pSandStormTex, g_pSandStormTemp1);
+		g_pSandStormTexOrTemp1 = g_pSandStormTemp1;
+	} else {
+		for (i = 0; i < PE_pSandStorm->iNumDistanceBlurs; i++) {
+			PostEffects_Blur256(&pCurrent, g_pSandStormTex, g_pSandStormTemp1);
+		}
+		g_pSandStormTexOrTemp1 = g_pSandStormTex;
+	}
+	g_SandStormCreateSize = (char *)pCurrent - (char *)pInitial;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F81D8);
 
@@ -458,7 +499,6 @@ GAME_SECTION(PostEffects_DofInit_new) void PostEffects_DofInit_new()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_DofCreateA_new);
 
-void PostEffects_Blur256(unsigned long **, int, int) __asm__("PostEffects_Blur256");
 GAME_SECTION(PostEffects_DofInitCreateB_new) void PostEffects_DofInitCreateB_new()
 {
 	unsigned long *pCurrent;

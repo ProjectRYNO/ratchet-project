@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 typedef struct navgWp {
@@ -10,6 +11,22 @@ typedef struct navgWp {
 void NAVG_WpSetPos(void *, int, int) __asm__("NAVG_WpSetPos");
 int NAVG_WpGetNode(navgWp_t *wp) __asm__("NAVG_WpGetNode");
 void NAVG_ResetNavigationVars(char *vars, int a, int b) __asm__("NAVG_ResetNavigationVars");
+struct vec4 {
+	/* 0x00 */ uint128 m_v;
+};
+struct NavigationVars {
+	/* 0x00 */ char unk00[0x20];
+	/* 0x20 */ vec4 targetLoc;
+};
+/* A waypoint is a vec4 whose w word holds the node handle. */
+struct navgWaypoint {
+	/* 0x00 */ float x;
+	/* 0x04 */ float y;
+	/* 0x08 */ float z;
+	/* 0x0c */ int node;
+};
+int NAVG_SetTargetWp(NavigationVars *navVars, vec4 &wp) __asm__("NAVG_SetTargetWp");
+void NAVG_WpSet(vec4 &wp, vec4 &iPos, unsigned short node) __asm__("NAVG_WpSet");
 char *navg_AllocMemory(int size, char **ptr, char *end) __asm__("navg_AllocMemory");
 
 
@@ -47,22 +64,22 @@ typedef struct navSector {
 	/* 0x08 */ short flags;
 	/* 0x0a */ short pad;
 } navSector_t;
-typedef struct navgNodeAJ {
+typedef struct navgNode {
 	/* 0x00 */ char unk00[8];
 	/* 0x08 */ unsigned short cluster;
 	/* 0x0a */ char unk0a[0x16];
 } navgNodeAJ_t;
-typedef struct navgClusterAJ {
+typedef struct navgCluster {
 	/* 0x00 */ unsigned short firstNode;
 	/* 0x02 */ unsigned short numNodes;
 	/* 0x04 */ unsigned short firstPath;
 	/* 0x06 */ short unk06[3];
 } navgClusterAJ_t;
-typedef struct navgPathListAJ {
+typedef struct navgPathList {
 	/* 0x00 */ unsigned short firstPath;
 	/* 0x02 */ short numPaths;
 } navgPathListAJ_t;
-typedef struct navgPathAJ {
+typedef struct navgPath {
 	/* 0x00 */ unsigned short nextNode;
 	/* 0x02 */ unsigned short nextEdge;
 	/* 0x04 */ unsigned short dist;
@@ -124,7 +141,6 @@ int navg_LoadClusterPaths(char *, char *&, void *) __asm__("navg_LoadClusterPath
 int navg_LoadPartitions(char *, char *&, void *) __asm__("navg_LoadPartitions");
 int navg_LoadClusters(char *, char *&, void *) __asm__("navg_LoadClusters");
 
-/* ===== AJ additions ===== */
 void navg_FindBestIntraClusterPath(unsigned short, unsigned short, int, unsigned short &, unsigned short &, int &) __asm__("navg_FindBestIntraClusterPath");
 #define NAVG_VSET(type, lvalue, value) (*(type volatile *)&(lvalue) = (value))
 int navg_LoadSectors(char *, char *&, void *) __asm__("navg_LoadSectors");
@@ -424,7 +440,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_Find
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_UpdateNavigationWpEasy);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_SetTargetWp);
+GAME_SECTION(NAVG_SetTargetWp) int NAVG_SetTargetWp(NavigationVars *navVars, vec4 &wp)
+{
+	navVars->targetLoc = wp;
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_UpdateMe);
 
@@ -460,7 +480,12 @@ GAME_SECTION(NAVG_EdgeGetType) int NAVG_EdgeGetType(unsigned short edge)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_EdgeGetCliffSpline);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpSet);
+GAME_SECTION(NAVG_WpSet) void NAVG_WpSet(vec4 &wp, vec4 &iPos, unsigned short node)
+{
+	vec4 ret = iPos;
+	((navgWaypoint *)&ret)->node = node;
+	wp = ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpSetPos);
 

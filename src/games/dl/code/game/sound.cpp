@@ -9,7 +9,16 @@ struct moby {
 };
 struct SoundInstance;
 struct SoundDef {
-	/* 0x00 */ char unk00[0x20];
+	/* 0x00 */ float minRange;
+	/* 0x04 */ float maxRange;
+	/* 0x08 */ int minVolume;
+	/* 0x0c */ int maxVolume;
+	/* 0x10 */ int minPitch;
+	/* 0x14 */ int maxPitch;
+	/* 0x18 */ unsigned char loop;
+	/* 0x19 */ unsigned char flags;
+	/* 0x1a */ short index;
+	/* 0x1c */ int bank_index;
 };
 struct SoundData {
 	/* 0x00 */ unsigned int handle;
@@ -86,7 +95,6 @@ void SOUND_PLAY_LOOP(int &, moby *, int) __asm__("SOUND_PLAY_LOOP");
 void sound_KillById(int, moby *) __asm__("sound_KillById");
 void sound_KillByMoby(moby *, int) __asm__("sound_KillByMoby");
 
-/* ===== AM additions ===== */
 struct SndMobyClass {
 	/* 0x00 */ char unk00[0xd];
 	/* 0x0d */ unsigned char sound_cnt;
@@ -110,24 +118,12 @@ static inline SndMobyClass *sound_GetMobyClass(int oClass)
 }
 short sound_MobyPlayOClass(int, unsigned int, moby *, int) __asm__("sound_MobyPlay___dupe2");
 short sound_MobyPlayPos(int, unsigned int, moby *, float *, int) __asm__("sound_MobyPlay___dupe3");
-struct SoundDefAM {
-	/* 0x00 */ float minRange;
-	/* 0x04 */ float maxRange;
-	/* 0x08 */ int minVolume;
-	/* 0x0c */ int maxVolume;
-	/* 0x10 */ int minPitch;
-	/* 0x14 */ int maxPitch;
-	/* 0x18 */ unsigned char loop;
-	/* 0x19 */ unsigned char flags;
-	/* 0x1a */ short index;
-	/* 0x1c */ int bank_index;
-};
 extern int Level __asm__("Level");
 static inline int IsMultiplayerLevel()
 {
 	return Level == 0 || Level >= 0x28;
 }
-static inline int sound_GetMinVolume(SoundDefAM *sd)
+static inline int sound_GetMinVolume(SoundDef *sd)
 {
 	int minVolume = sd->minVolume;
 	if (IsMultiplayerLevel()) {
@@ -135,9 +131,8 @@ static inline int sound_GetMinVolume(SoundDefAM *sd)
 	}
 	return minVolume;
 }
-int sound_GetFade(SoundDefAM *, float, float, float, bool) __asm__("sound_GetFade");
+int sound_GetFade(SoundDef *, float, float, float, bool) __asm__("sound_GetFade");
 
-/* ===== AJ near misses ===== */
 extern SoundDef *LevelSounds __asm__("LevelSounds");
 extern int CoreSoundCnt __asm__("CoreSoundCnt");
 extern int LevelSoundCnt __asm__("LevelSoundCnt");

@@ -8,7 +8,7 @@ from /tmp/ckroot, or GASM=<dl tree> to use a private copy.
 import glob, os, re, subprocess, sys, tempfile
 
 W = '/opt/wibo-1.2.0'
-FLAGS = os.environ.get('GAME_FLAGS', '-G8 -O2 -g -fopt-stack -mno-check-zero-division -fno-exceptions')
+FLAGS = os.environ.get('GAME_FLAGS', '-G8 -O2 -g -fopt-stack -mno-check-zero-division -fno-exceptions -mvu0-use-vf0-vf31')
 AS = os.environ.get('GAME_AS', '/opt/ee-gcc2.95.3-136/lib/gcc-lib/ee/2.95.3/Ps2EeAs.exe')
 AS_FLAGS = os.environ.get('GAME_AS_FLAGS', '-G8')
 ROOT = os.environ.get('GASM', '/tmp/ckroot/dl')
@@ -24,8 +24,17 @@ def retail(fn):
 		return None
 	text = open(paths[0]).read()
 	head = text.split('endlabel')[0]
-	lines = re.findall(r'/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/\s*(.*)', head)
-	return [(int(w[6:8] + w[4:6] + w[2:4] + w[:2], 16), a.strip()) for w, a in lines], paths[0]
+	words = []
+	# splat writes VU0 macro instructions it cannot disassemble (vmula*, vmsub*, ...) as `.byte`
+	# lines; keep them in order so the compare stays aligned.
+	for m in re.finditer(r'/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/\s*(.*)|^\s*\.byte\s+(0x[0-9A-Fa-f]+(?:\s*,\s*0x[0-9A-Fa-f]+){3})\s*$', head, re.M):
+		if m[1]:
+			w = m[1]
+			words.append((int(w[6:8] + w[4:6] + w[2:4] + w[:2], 16), m[2].strip()))
+		else:
+			b = [int(x, 16) for x in m[3].split(',')]
+			words.append((b[0] | b[1] << 8 | b[2] << 16 | b[3] << 24, '.byte (VU0 op)'))
+	return words, paths[0]
 
 def main():
 	src = os.path.abspath(sys.argv[1])

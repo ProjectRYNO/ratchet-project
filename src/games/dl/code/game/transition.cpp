@@ -145,7 +145,6 @@ void Transition_DoMovieMpeg() __asm__("Transition_DoMovieMpeg");
 void Transition_DoMovieNpc() __asm__("Transition_DoMovieNpc");
 void Transition_SetKeepLastFrame(int) __asm__("Transition_SetKeepLastFrame");
 
-/* ===== AG additions ===== */
 extern int PlanetTexLookup[36] __asm__("D_3DBF10");
 int FastDecompress(void *, void *) __asm__("FastDecompress");
 void Transition_UpdateScreenFade(int, int, int, int) __asm__("Transition_UpdateScreenFade");
@@ -160,7 +159,6 @@ extern MemSlotsFullDef MemSlotsFull __asm__("D_0023AB00");
 extern int vu1_bufSize __asm__("vu1_bufSize");
 void FastMemSet(void *, int, int) __asm__("FastMemSet");
 
-/* ===== AM additions ===== */
 extern unsigned int MoviesPlayedRecord[] __asm__("MoviesPlayedRecord");
 bool Transition_QueueMidSceneOrMovie(int, int, int) __asm__("Transition_QueueMidSceneOrMovie");
 extern long _dma_1[] __asm__("D_1170D0");
@@ -170,7 +168,6 @@ bool Transition_UpdateMovie() __asm__("Transition_UpdateMovie");
 int MB_rand(int) __asm__("MB_rand");
 int Transition_GetMovieId() __asm__("Transition_GetMovieId");
 
-/* ===== AM additions (pass 3) ===== */
 struct TrMemcardDef {
 	/* 0x000 */ char unk000[0x18];
 	/* 0x018 */ short saveslot;
@@ -193,9 +190,10 @@ void UpdateMCState() __asm__("UpdateMCState");
 int LoadLevelData() __asm__("LoadLevelData");
 void DMAC_VIF1_Disable() __asm__("DMAC_VIF1_Disable");
 void ResetDrawGlobals() __asm__("ResetDrawGlobals");
-struct FsAM {
+struct Fs {
 	static unsigned int IsLoading() __asm__("IsLoading");
 	static void Update(float) __asm__("Update___dupe53");
+	static void Sync(unsigned int) __asm__("Sync");
 };
 void Transition_Post() __asm__("Transition_Post");
 struct TrSoundGlobals {
@@ -256,9 +254,9 @@ void ClearDrawBufferLarge(int) __asm__("ClearDrawBufferLarge");
 void AA_DisplayPass(int) __asm__("AA_DisplayPass");
 void UpdatePad() __asm__("UpdatePad___dupe2");
 void UpdateOcclusion() __asm__("UpdateOcclusion");
-void FadeToBlackAM(int, unsigned int) __asm__("FadeToBlack");
-bool Transition_UpdateAM(unsigned char) __asm__("Transition_Update");
-static inline void AM_NetUpdate()
+void FadeToBlack(int, unsigned int) __asm__("FadeToBlack");
+bool Transition_Update(unsigned char) __asm__("Transition_Update");
+static inline void NetUpdate()
 {
 	if (g_gameType == 1) {
 		VoiceProcess();
@@ -294,13 +292,10 @@ void music_Stop() __asm__("music_Stop");
 void MCSTATE_ClearCommand(int) __asm__("MCSTATE_ClearCommand");
 int music_Sync(int) __asm__("music_Sync");
 void LoadFrontData() __asm__("LoadFrontData");
-struct FsAM2 {
-	static void Sync(unsigned int) __asm__("Sync");
-};
 extern int memcard_icon_delay __asm__("memcard_icon_delay");
 extern int g_lastlevelnum __asm__("D_21DA78");
-void SetupGifPagingAM(int) __asm__("SetupGifPaging");
-void DoGifPagingAM() __asm__("DoGifPaging");
+void SetupGifPaging(int) __asm__("SetupGifPaging");
+void DoGifPaging() __asm__("DoGifPaging");
 unsigned long GetEffectTex(int, int) __asm__("GetEffectTex");
 void DrawSprite(int, int, int, int, int, int, int, int, unsigned long, unsigned long) __asm__("DrawSprite");
 void Hud_DrawRotatedSprite16(float, float, float, float, float, int, int, unsigned long) __asm__("Hud_DrawRotatedSprite16");
@@ -324,7 +319,6 @@ void VU1_gsRegsNormal() __asm__("VU1_gsRegsNormal");
 void ExecuteDrawFunctions(void *&) __asm__("ExecuteDrawFunctions");
 void DrawMobys() __asm__("DrawMobys");
 extern "C" void PartProc();
-void VU0_loadMicroProgramAM(long *) __asm__("VU0_loadMicroProgram");
 struct Math {
 	static void PreserveRegs() __asm__("PreserveRegs");
 	static void RestoreRegs() __asm__("RestoreRegs");
@@ -341,7 +335,7 @@ void PostEffects_BloomCreate_new() __asm__("PostEffects_BloomCreate_new");
 void PostEffects_BloomApply_new() __asm__("PostEffects_BloomApply_new");
 void PostEffects_DofCreate_new() __asm__("PostEffects_DofCreate_new");
 void PostEffects_RegisterEngineCleanup() __asm__("PostEffects_RegisterEngineCleanup");
-void Transition_DefaultDrawAM(bool) __asm__("Transition_DefaultDraw");
+void Transition_DefaultDraw(bool) __asm__("Transition_DefaultDraw");
 
 GAME_SECTION(Transition_GetDropshipTexture) int Transition_GetDropshipTexture(int level)
 {
@@ -515,14 +509,14 @@ GAME_SECTION(Transition_PostDraw) void Transition_PostDraw()
 	int ROT_ARROW_SPEED;
 	float width;
 	if ((unsigned int)(g_memcard.stage - 0xf) < 2 || g_memcard.nextstage == 0xf || (memcard_icon_delay && g_lastlevelnum >= 0)) {
-		SetupGifPagingAM(1);
+		SetupGifPaging(1);
 		ROT_ARROW_SPEED = 55;
 		width = 272.0f;
 		VU1_addGSregister(0x42, 0x8000000044, 0);
 		VU1_addGSregister(0x47, 0x3004b, 0);
 		DrawSprite(0x1a9, 0xfa, 0x40, 0x40, 0, 0, 0x40, 0x40, 0x80808080, GetEffectTex(3, 1));
 		Hud_DrawRotatedSprite16(7312.0f, 4512.0f, width, width, (float)(gsFrame % ROT_ARROW_SPEED) * -6.2831855f / (float)ROT_ARROW_SPEED, 0x40, 0x40, GetEffectTex(4, 1));
-		DoGifPagingAM();
+		DoGifPaging();
 		if ((unsigned int)(g_memcard.stage - 0xf) < 2 || g_memcard.nextstage == 0xf) {
 			memcard_icon_delay = 30;
 		} else {
@@ -535,7 +529,7 @@ GAME_SECTION(Transition_PostDraw) void Transition_PostDraw()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_Update);
 
-GAME_SECTION(Transition_DefaultDraw) void Transition_DefaultDrawAM(bool bLevelLoadAlmostDone_)
+GAME_SECTION(Transition_DefaultDraw) void Transition_DefaultDraw(bool bLevelLoadAlmostDone_)
 {
 	g_ActiveDrawPane = 0;
 	g_ActiveDrawFrustum = GetScreenFrustumIndex(0);
@@ -551,16 +545,16 @@ GAME_SECTION(Transition_DefaultDraw) void Transition_DefaultDrawAM(bool bLevelLo
 	}
 	if (pRegistered_PreDraws) {
 		VU1_gsRegsEffects();
-		SetupGifPagingAM(1);
+		SetupGifPaging(1);
 		ExecuteDrawFunctions(pRegistered_PreDraws);
-		DoGifPagingAM();
+		DoGifPaging();
 		VU1_gsRegsNormal();
 	}
 	if (g_TransitionFlags & 0xc) {
 		DrawMobys();
 		Vif1ChainCmd(0x2080000);
 	}
-	SetupGifPagingAM(1);
+	SetupGifPaging(1);
 	if (pRegistered_MobyDraws) {
 		ExecuteDrawFunctions(pRegistered_MobyDraws);
 	}
@@ -571,7 +565,7 @@ GAME_SECTION(Transition_DefaultDraw) void Transition_DefaultDrawAM(bool bLevelLo
 	PartProc();
 	active_vu1_mpg = 9;
 	VU1_addGSregister(0x47, 0x5360b, 0);
-	VU0_loadMicroProgramAM(_dma_vu0);
+	VU0_loadMicroProgram(_dma_vu0);
 	FlushCache(0);
 	if (g_TransitionFlags & 2) {
 		VU1_syncChain(2);
@@ -584,12 +578,12 @@ GAME_SECTION(Transition_DefaultDraw) void Transition_DefaultDrawAM(bool bLevelLo
 		VU1_syncChain(0x10);
 		PatchMobyGifs();
 	}
-	DoGifPagingAM();
+	DoGifPaging();
 	if (pRegistered_PostDraws) {
 		PrepForEffectsRendering(&IntFXReg);
-		SetupGifPagingAM(1);
+		SetupGifPaging(1);
 		ExecuteDrawFunctions(pRegistered_PostDraws);
-		DoGifPagingAM();
+		DoGifPaging();
 		CleanUpAfterEffectsRendering(&IntFXReg);
 	}
 	UpdateFog(0);
@@ -664,10 +658,10 @@ GAME_SECTION(Transition_SetupForFrontend) void Transition_SetupForFrontend()
 		}
 	}
 	Music.off = 1;
-	FadeToBlackAM(6, 0);
+	FadeToBlack(6, 0);
 	Level = g_newlevelnum;
 	LoadFrontData();
-	FsAM2::Sync(1);
+	Fs::Sync(1);
 	Music.off = 0;
 	DMAC_VIF1_Disable();
 }
@@ -700,9 +694,9 @@ GAME_SECTION(Transition_Post) void Transition_Post()
 		}
 	}
 	Transition_UnloadSounds();
-	while (FsAM::IsLoading()) {
+	while (Fs::IsLoading()) {
 		sceGsSyncV(0);
-		FsAM::Update(NtscPalFrameTimeInSecondsFloat);
+		Fs::Update(NtscPalFrameTimeInSecondsFloat);
 		if (g_gameType == 1) {
 			VoiceProcess();
 			nwUpdate();
@@ -726,14 +720,14 @@ GAME_SECTION(Transition_DoTransition) bool Transition_DoTransition()
 	if (g_gameType != 1 && !InFrontEnd) {
 		memcard_Save(0, g_newlevelnum);
 	}
-	AM_NetUpdate();
+	NetUpdate();
 	if (g_newlevelnum < 0) {
 		Transition_SetupForFrontend();
 		return true;
 	}
-	AM_NetUpdate();
+	NetUpdate();
 	Transition_Pre();
-	AM_NetUpdate();
+	NetUpdate();
 	g_bLevelLoadAlmostDone = false;
 	g_bLevelLoadComplete = false;
 	bTransitionDone = false;
@@ -750,8 +744,8 @@ GAME_SECTION(Transition_DoTransition) bool Transition_DoTransition()
 		ClearDrawBufferLarge(0);
 		ResetDrawGlobals();
 		UpdatePad();
-		AM_NetUpdate();
-		bTransitionDone = Transition_UpdateAM(g_bLevelLoadAlmostDone);
+		NetUpdate();
+		bTransitionDone = Transition_Update(g_bLevelLoadAlmostDone);
 		OcclUpdate = 0;
 		UpdateOcclusion();
 		Transition_Draw(g_bLevelLoadAlmostDone);
@@ -765,11 +759,11 @@ GAME_SECTION(Transition_DoTransition) bool Transition_DoTransition()
 		}
 		g_bLevelLoadAlmostDone = LevelLoadState > 9;
 	}
-	AM_NetUpdate();
+	NetUpdate();
 	if (!g_bTransitionKeepLastFrame) {
-		FadeToBlackAM(6, 0);
+		FadeToBlack(6, 0);
 	}
-	AM_NetUpdate();
+	NetUpdate();
 	Transition_Post();
 	return true;
 }

@@ -91,7 +91,6 @@ int mpIsWeaponEnabled(unsigned int weapon) __asm__("mpIsWeaponEnabled");
 char *msg_string(int) __asm__("msg_string");
 char *GetMapName(int nLevel) __asm__("GetMapName");
 
-/* ===== AJ additions ===== */
 typedef struct mpTransitionText {
 	/* 0x000 */ char unk000[0x720];
 	/* 0x720 */ char m_sGameLbls[7][32];
@@ -108,6 +107,22 @@ float text_yStart __asm__("text_yStart") GAME_GP_DATA = 75.0f;
 float text_yOffset __asm__("text_yOffset") GAME_GP_DATA = 18.0f;
 void FontPrintRightSmall(int, int, unsigned long, char *, int) __asm__("FontPrintRightSmall");
 void TransitionMP_DrawTextData() __asm__("TransitionMP_DrawTextData");
+
+float fScreenBlock __asm__("D_220FFC") GAME_GP_DATA = 0.125f;
+float g_Splash_fWidthFactor[2] __asm__("g_Splash_fWidthFactor") GAME_GP_DATA = { 0.13f, 0.11f };
+float g_Splash_fHeight __asm__("g_Splash_fHeight") GAME_GP_DATA = 60.0f;
+float incX __asm__("incX") GAME_GP_DATA = 64.0f;
+float incY __asm__("incY") GAME_GP_DATA = 64.0f;
+float g_Splash_Top_x __asm__("g_Splash_Top_x") GAME_GP_DATA = 0.0f;
+float g_Splash_Top_y[2] __asm__("g_Splash_Top_y") GAME_GP_DATA = { 15.0f, 0.0f };
+float g_Splash_Bottom_y __asm__("g_Splash_Bottom_y") GAME_GP_DATA = 350.0f;
+float g_Splash_fTopHeight __asm__("g_Splash_fTopHeight") GAME_GP_DATA = 60.0f;
+unsigned long g_Splash_Color __asm__("g_Splash_Color") GAME_GP_DATA = 0xffffffff803c3c3c;
+extern float g_Splash_fWidth __asm__("g_Splash_fWidth");
+void VU1_addGSregister(unsigned int, unsigned long, bool) __asm__("VU1_addGSregister");
+unsigned long GetEffectTex(int, int) __asm__("GetEffectTex");
+void DrawSprite(float, float, float, float, int, int, int, int, unsigned long, unsigned long) __asm__("DrawSprite___dupe2");
+void TransitionMP_DrawSplashArt() __asm__("TransitionMP_DrawSplashArt");
 
 GAME_SECTION(TransitionPre_Lobby) int TransitionPre_Lobby(int arg)
 {
@@ -227,7 +242,26 @@ GAME_SECTION(TransitionMP_DrawOverlay) void TransitionMP_DrawOverlay()
 	DrawRectOverlay((int)((float)Scrn.size_y * D_220FF4), (int)((float)Scrn.size_y * D_220FF8), (int)((float)Scrn.size_x * D_220FEC), (int)((float)Scrn.size_x * D_220FF0), 0x64191919);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", TransitionMP_DrawSplashArt);
+GAME_SECTION(TransitionMP_DrawSplashArt) void TransitionMP_DrawSplashArt()
+{
+	int i;
+	unsigned long rgba = g_Splash_Color;
+	VU1_addGSregister(0x42, 0x8000000044, false);
+	VU1_addGSregister(0x47, 0x3004b, false);
+	incX = fScreenBlock * (float)Scrn.size_x;
+	int topSprites2Draw[8] = { 0x16, 0x17, 0x17, 0x18, 0x19, 0x1a, 0x1a, 0x1b };
+	incY = fScreenBlock * (float)Scrn.size_y;
+	g_Splash_fWidth = g_Splash_fWidthFactor[0] * (float)Scrn.size_x * 0.96f;
+	for (i = 0; i < 8; i++) {
+		g_Splash_Top_x = (float)i * incX;
+		DrawSprite(g_Splash_Top_x, g_Splash_Top_y[0], g_Splash_fWidth, g_Splash_fTopHeight, 0, 0, 0x40, 0x40, rgba, GetEffectTex(topSprites2Draw[i], 1));
+	}
+	int bottomSprites2Draw[8] = { 0x1c, 0x1d, 0x1d, 0x1d, 0x1e, 0x1f, 0x20, 0x21 };
+	for (i = 0; i < 8; i++) {
+		g_Splash_Top_x = (float)i * incX;
+		DrawSprite(g_Splash_Top_x, g_Splash_Bottom_y, g_Splash_fWidth, g_Splash_fHeight, 0, 0, 0x40, 0x40, rgba, GetEffectTex(bottomSprites2Draw[i], 1));
+	}
+}
 
 GAME_SECTION(TransitionMP_DrawTitleText) void TransitionMP_DrawTitleText()
 {

@@ -152,7 +152,6 @@ GAME_SECTION(ST_AcquiredAllSkillPoints) int ST_AcquiredAllSkillPoints()
 	return 1;
 }
 
-/* ===== AJ near misses ===== */
 GAME_SECTION(ST_GetNumDifficultyStars) int ST_GetNumDifficultyStars()
 {
 	int totalStars = 0;

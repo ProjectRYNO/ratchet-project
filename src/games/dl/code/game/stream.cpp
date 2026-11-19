@@ -43,6 +43,8 @@ struct StreamInterface {
 	unsigned int Start(unsigned int) __asm__("Start");
 	unsigned int GetState(unsigned int, int *) __asm__("GetState");
 	unsigned int SetGain(unsigned int, float) __asm__("SetGain");
+	void SetGain(Stream *) __asm__("SetGain___dupe2");
+	unsigned int StopAll(unsigned int, int, void (*)(void *), void *) __asm__("StopAll___dupe2");
 	unsigned int SetMinMaxRange(unsigned int, float, float) __asm__("SetMinMaxRange");
 	unsigned int StreamsStopped(Stream **) __asm__("StreamsStopped");
 	unsigned int CreateHandle(Stream *) __asm__("CreateHandle");
@@ -51,7 +53,6 @@ struct StreamInterface {
 	static Stream *GetStreamFromHandle(unsigned int) __asm__("GetStreamFromHandle");
 	static void Free(Stream *) __asm__("Free");
 	unsigned int Alloc(Stream **) __asm__("Alloc");
-	unsigned int StreamsStoppedAM(Stream **) __asm__("StreamsStopped");
 	void Update(float) __asm__("Update___dupe54");
 	void WaitForStop(Stream **, int, void (*)(void *), void *) __asm__("WaitForStop");
 };
@@ -88,17 +89,9 @@ struct SoundChannelHandle {
 };
 SoundChannelHandle *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
 
-/* ===== AM additions ===== */
-struct StreamInterfaceAM {
-	void SetGain(Stream *) __asm__("SetGain___dupe2");
-	unsigned int StopAll(unsigned int, int, void (*)(void *), void *) __asm__("StopAll___dupe2");
-	void WaitForStop(Stream **, int, void (*)(void *), void *) __asm__("WaitForStop");
-	unsigned int Alloc(Stream **) __asm__("Alloc");
-};
 extern "C" void *memset(void *, int, unsigned int);
 extern "C" int sceGsSyncV(int);
 
-/* ===== AJ near misses ===== */
 
 GAME_SECTION(InitSoundDef) void InitSoundDef(SoundDef *p_def)
 {
@@ -128,7 +121,7 @@ GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_00489F98);
 
-GAME_SECTION(StopAll___dupe2) unsigned int StreamInterfaceAM::StopAll(unsigned int synchronous, int timeout_vsyncs, void (*func)(void *), void *arg)
+GAME_SECTION(StopAll___dupe2) unsigned int StreamInterface::StopAll(unsigned int synchronous, int timeout_vsyncs, void (*func)(void *), void *arg)
 {
 	Stream *pp_streams[3];
 	int i;
@@ -336,7 +329,7 @@ GAME_SECTION(Start___dupe2) void StreamInterface::Start(Stream *stream)
 	snd_ContinueVAGStream(stream->m_989_handle);
 }
 
-GAME_SECTION(SetGain___dupe2) void StreamInterfaceAM::SetGain(Stream *stream)
+GAME_SECTION(SetGain___dupe2) void StreamInterface::SetGain(Stream *stream)
 {
 	int gain = (int)(stream->m_master_gain * stream->m_fade_gain * 1024.0f);
 	SoundChannelHandle *ch;
