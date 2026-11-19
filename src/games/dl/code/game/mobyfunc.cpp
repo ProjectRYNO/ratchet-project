@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 
@@ -8,7 +9,9 @@ struct Manipulator;
 struct MobyClass {
 	/* 0x00 */ char unk00[0xf];
 	/* 0x0f */ unsigned char shadow;
-	/* 0x10 */ char unk10[0x2e - 0x10];
+	/* 0x10 */ char unk10[0x2c - 0x10];
+	/* 0x2c */ unsigned char bangles;
+	/* 0x2d */ char mip_dist;
 	/* 0x2e */ short corncob;
 };
 struct MobyInstance {
@@ -196,6 +199,8 @@ extern void *MobyGroupData[] __asm__("MobyGroupData");
 extern short MobyGroupDynamicDataChunk[][24] __asm__("MobyGroupDynamicDataChunk");
 extern int MobyGrids[0x1000] __asm__("MobyGrids");
 
+void GetMobyBangleStats(MobyInstance *pMoby, int &bangle_bits, int &bangle_cnt) __asm__("GetMobyBangleStats");
+
 GAME_SECTION(CreateMoby) MobyInstance *CreateMoby(int mClass, int var_size)
 {
 	MobyInstance *pMoby = MobyInstancePermEnd;
@@ -282,7 +287,21 @@ GAME_SECTION(MobyMayaFrame) float MobyMayaFrame(MobyInstance *pMoby)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", SetMobyCollPill);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", GetMobyBangleStats);
+GAME_SECTION(GetMobyBangleStats) void GetMobyBangleStats(MobyInstance *pMoby, int &bangle_bits, int &bangle_cnt)
+{
+	if (pMoby->pClass->bangles) {
+		int res;
+		char *pbangles = (char *)pMoby->pClass + pMoby->pClass->bangles * 0x10;
+		int bits = *(short *)(pbangles + 2);
+		bangle_bits = bits;
+		/* MMI_OP (non-volatile): retail schedules the li 0x1e and a store across the plzcw. */
+		MMI_OP("plzcw %0, %1" : "=r"(res) : "r"(bits << 1));
+		bangle_cnt = 0x1e - res;
+	} else {
+		bangle_bits = 0;
+		bangle_cnt = 0;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", GetMobyBangleVolume);
 

@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 typedef unsigned int s128 __attribute__((mode(TI)));
@@ -429,6 +430,43 @@ int FUN_0047b7f8(int iPlayer, int mode, int msg) __asm__("FUN_0047b7f8");
 struct UQ { };
 extern UQ MB_UQ __asm__("MB_UpgradeSceneQueue");
 
+
+struct vec4 {
+	/* 0x00 */ uint128 m_v;
+};
+float MB_getJumpPeak(vec4 pos, vec4 vel, float gravity, int *ticks) __asm__("MB_getJumpPeak");
+struct COLL_DAM_IN {
+	/* 0x00 */ vec4 momentum;
+	/* 0x10 */ MobyInstance *pMoby;
+	/* 0x14 */ int damageFlags;
+	/* 0x18 */ unsigned char damageClass;
+	/* 0x19 */ unsigned char damageStrength;
+	/* 0x1a */ unsigned short damageIndex;
+	/* 0x1c */ float damageHp;
+	/* 0x20 */ int flags;
+	/* 0x24 */ float damageHeroHp;
+	/* 0x28 */ int shotUID;
+	/* 0x2c */ int pad[1];
+};
+void SetCollDamIn(COLL_DAM_IN &cdi, MobyInstance *pDamager, int damageFlags, float damageHp, vec4 momentum) __asm__("SetCollDamIn");
+struct Path {
+	/* 0x00 */ int nNodes;
+	/* 0x04 */ int unk04[3];
+};
+extern Path *Paths[] __asm__("Paths");
+int MB_IsPntInPath(vec4 pnt, int path, int error) __asm__("MB_IsPntInPath");
+struct MathUtilities {
+	/* 0x00 */ int unk00[4];
+	uint128 VecSlerp(vec4 vFrom, vec4 vTo, float fInterp, float fLimit, bool bNormalized, bool bClamp) __asm__("VecSlerp");
+};
+extern MathUtilities MU __asm__("D_222010");
+uint128 MB_SlerpVectors(vec4 vFrom, vec4 vTo, float fInterp, bool bNormalized) __asm__("MB_SlerpVectors");
+void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent) __asm__("MB_SpawnInit");
+
+uint128 MB_GetWorldSpaceVector(MobyInstance *pMoby) __asm__("MB_GetWorldSpaceVector");
+void MB_AlignWithNormal(mtx3 &, uint128, mtx3 *) __asm__("MB_AlignWithNormal");
+void MB_AlignWithGravity(mtx3 &, uint128, mtx3 *) __asm__("MB_AlignWithGravity");
+
 GAME_SECTION(MB_QueueUpgradeScene) bool MB_QueueUpgradeScene(int rootID)
 {
 	int i;
@@ -570,7 +608,21 @@ GAME_SECTION(MB_CosineInterpolateUnit) float MB_CosineInterpolateUnit(float x)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473CB8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_getJumpPeak);
+GAME_SECTION(MB_getJumpPeak) float MB_getJumpPeak(vec4 pos, vec4 vel, float gravity, int *ticks)
+{
+	float velZ;
+	float posZ;
+	float peak;
+	float t;
+	int peak_time;
+	MMI_ASM("pextuw %0, $0, %1" : "=r"(velZ) : "r"(vel.m_v));
+	t = velZ / gravity;
+	MMI_ASM("pextuw %0, $0, %1" : "=r"(posZ) : "r"(pos.m_v));
+	peak_time = (int)t;
+	peak = posZ + velZ * (float)peak_time - (float)((peak_time * peak_time + peak_time) >> 1) * gravity;
+	if (ticks) *ticks = peak_time;
+	return peak;
+}
 
 GAME_SECTION(MB_SetOClass) int MB_SetOClass(MobyInstance *pMoby, int oClass)
 {
@@ -639,7 +691,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SegmentInters
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474290);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SetCollDamIn);
+GAME_SECTION(SetCollDamIn) void SetCollDamIn(COLL_DAM_IN &cdi, MobyInstance *pDamager, int damageFlags, float damageHp, vec4 momentum)
+{
+	cdi.momentum = momentum;
+	cdi.pMoby = pDamager;
+	cdi.damageFlags = damageFlags;
+	cdi.damageHp = damageHp;
+	cdi.flags = 1;
+	cdi.damageStrength = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004742D0);
 
@@ -1014,7 +1074,12 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IsPntInCyl
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IsPntInSphere);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IsPntInPath);
+GAME_SECTION(MB_IsPntInPath) int MB_IsPntInPath(vec4 pnt, int path, int error)
+{
+	Path *pPath;
+	if (path != -1 && (pPath = Paths[path]) != 0 && pPath->nNodes != 0) return PointInsideComplexPoly(*(vec4f *)&pnt, (vec4f *)(pPath + 1), pPath->nNodes);
+	return error;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477F30);
 
@@ -1166,7 +1231,19 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AA28
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetLocalSpaceVector);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetWorldSpaceVector);
+GAME_SECTION(MB_GetWorldSpaceVector) uint128 MB_GetWorldSpaceVector(MobyInstance *pMoby)
+{
+	uint128 *m = (uint128 *)pMoby->rMtx;
+	register uint128 v __asm__("vf3") = ((uint128 *)pMoby->pVar)[2];
+	register uint128 r __asm__("vf1");
+	register uint128 pos __asm__("vf4");
+	VU0_ASM("vmulax.xyzw ACC, %0, %1x" : : "j"(m[0]), "j"(v));
+	VU0_ASM("vmadday.xyzw ACC, %0, %1y" : : "j"(m[1]), "j"(v));
+	VU0_ASM("vmaddaz.xyzw ACC, %0, %1z" : : "j"(m[2]), "j"(v));
+	pos = *(uint128 *)pMoby->pos;
+	VU0_OP("vmaddw.xyzw %0, vf0, %1w\n\tvadd.xyz %0, %0, %2" : "=j"(r) : "j"(v), "j"(pos));
+	return r;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AB20);
 
@@ -1188,7 +1265,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AEA8
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SphericalHeight);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AlignWithGravity);
+GAME_SECTION(MB_AlignWithGravity) void MB_AlignWithGravity(mtx3 &rMtx, uint128 gravity, mtx3 *adjMtx)
+{
+	register uint128 g __asm__("vf1") = gravity;
+	register uint128 tmp __asm__("vf2");
+	long bits = (int)0xbf800000;
+	VU0_OP("qmtc2.ni %1, %0" : "=j"(tmp) : "r"(bits));
+	VU0_OP("vmulx.xyz %0, %0, %1x" : "+j"(g) : "j"(tmp));
+	MB_AlignWithNormal(rMtx, g, adjMtx);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AlignWithNormal);
 
@@ -1239,7 +1324,22 @@ GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B978);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SpawnInit);
+GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent)
+{
+	pMoby->drawn = 1;
+	if (pParent) {
+		pMoby->pParent = pParent;
+		pMoby->updateDist = pParent->updateDist;
+		pMoby->drawDist = pParent->drawDist;
+		*(vec4 *)pMoby->pos = *(vec4 *)pParent->pos;
+		*(vec4 *)pMoby->rot = *(vec4 *)pParent->rot;
+		pMoby->lights = pParent->lights;
+		PostUpdateMoby(pMoby);
+	} else {
+		*(unsigned char *)&pMoby->updateDist = 0xff;
+		pMoby->drawDist = 0xff;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047BA28);
 

@@ -35,7 +35,7 @@ typedef struct navNode {
 	/* 0x02 */ char unk02[8];
 	/* 0x0a */ unsigned short traversalFlags;
 	/* 0x0c */ int infolink;
-	/* 0x10 */ char unk10[0x10];
+	/* 0x10 */ vec4 centroid;
 } navNode_t;
 typedef struct navEdge {
 	/* 0x00 */ unsigned short type;
@@ -144,6 +144,18 @@ int navg_LoadClusters(char *, char *&, void *) __asm__("navg_LoadClusters");
 void navg_FindBestIntraClusterPath(unsigned short, unsigned short, int, unsigned short &, unsigned short &, int &) __asm__("navg_FindBestIntraClusterPath");
 #define NAVG_VSET(type, lvalue, value) (*(type volatile *)&(lvalue) = (value))
 int navg_LoadSectors(char *, char *&, void *) __asm__("navg_LoadSectors");
+
+unsigned short NAVG_WpGetNode(vec4 &wp) __asm__("NAVG_WpGetNode");
+/* Integer w word of a vec4; retail reads it as a full word (lw + andi), which a volatile read keeps. */
+inline int vec4GetWi(vec4 &v)
+{
+	return *(volatile int *)&((navgWaypoint *)&v)->node;
+}
+void NAVG_WpSetPos(vec4 &wp, vec4 &iPos) __asm__("NAVG_WpSetPos");
+void NAVG_WpMovePos(vec4 &wp, vec4 &newPos) __asm__("NAVG_WpMovePos");
+unsigned short NAVG_FindClosestNode(vec4 &pos, float *dist) __asm__("NAVG_FindClosestNode");
+unsigned short NAVG_NodeFindClosestNode(unsigned short node, vec4 &pos, float *dist) __asm__("NAVG_NodeFindClosestNode");
+void NAVG_NodeGetCenter(unsigned short node, vec4 &oPos) __asm__("NAVG_NodeGetCenter");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentBoxLocalZeroVec);
 
@@ -466,7 +478,10 @@ GAME_SECTION(NAVG_NodeGetTraversalFlags) int NAVG_NodeGetTraversalFlags(unsigned
 	return g_navSys->nodes[node].traversalFlags;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_NodeGetCenter);
+GAME_SECTION(NAVG_NodeGetCenter) void NAVG_NodeGetCenter(unsigned short node, vec4 &oPos)
+{
+	if (g_navSys && node <= g_navSys->nodeMax) oPos = g_navSys->nodes[node].centroid;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048EAB0);
 
@@ -487,10 +502,22 @@ GAME_SECTION(NAVG_WpSet) void NAVG_WpSet(vec4 &wp, vec4 &iPos, unsigned short no
 	wp = ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpSetPos);
+GAME_SECTION(NAVG_WpSetPos) void NAVG_WpSetPos(vec4 &wp, vec4 &iPos)
+{
+	vec4 ret;
+	unsigned short node;
+	wp = iPos;
+	node = NAVG_FindClosestNode(iPos, 0);
+	ret = wp;
+	((navgWaypoint *)&ret)->node = node;
+	wp = ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpMovePos);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048EC58);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpGetNode);
+GAME_SECTION(NAVG_WpGetNode) unsigned short NAVG_WpGetNode(vec4 &wp)
+{
+	return vec4GetWi(wp);
+}

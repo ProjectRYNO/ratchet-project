@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 typedef int s128 __attribute__((mode(TI)));
@@ -33,7 +34,8 @@ struct UpdateCam {
 struct CameraPolar {
 	/* 0x00 */ char unk00[2];
 	/* 0x02 */ unsigned char valid;
-	/* 0x03 */ char unk03[0x4d];
+	/* 0x03 */ unsigned char reqType;
+	/* 0x04 */ char unk04[0x4c];
 	/* 0x50 */ vec4 quat[2];
 	/* 0x70 */ char unk70[0x50];
 	/* 0xc0 */ vec4 lastPolar[2];
@@ -58,7 +60,9 @@ struct GameCameraData {
 	/* 0x050 */ UpdateCam *pCurrent;
 	/* 0x054 */ char unk054[0x124 - 0x54];
 	/* 0x124 */ moby *pCamColl;
-	/* 0x128 */ char unk128[0x2b0 - 0x128];
+	/* 0x128 */ char unk128[0x1c0 - 0x128];
+	/* 0x1c0 */ vec4 moveActualFromExternal;
+	/* 0x1d0 */ char unk1d0[0x2b0 - 0x1d0];
 	/* 0x2b0 */ CameraPolar polar;
 };
 struct CamClassDef {
@@ -126,6 +130,8 @@ extern NetInfoFov g_nwInfoFov __asm__("g_nwInfo");
 int FastDecTimer(short &) __asm__("FastDecTimer___dupe2");
 float MB_CosineInterpolate(float, float, float) __asm__("MB_CosineInterpolate");
 void Camera_UpdateFov(int) __asm__("Camera_UpdateFov");
+
+void Camera_CopyLastQuatToPolar(int) __asm__("Camera_CopyLastQuatToPolar");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitFovSystem);
 
@@ -242,7 +248,20 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_Pos2Pola
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitBlenderPolarHero);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_CopyLastQuatToPolar);
+GAME_SECTION(Camera_CopyLastQuatToPolar) void Camera_CopyLastQuatToPolar(int cameraIndex)
+{
+	CameraPolar *polar = (CameraPolar *)((char *)GameCamera + 0x2b0 + cameraIndex * 0x470);
+	if (polar->valid == 0) {
+		s128 pos = polar->quat[0].q;
+		polar->lastPolar[0].q = pos;
+		if (polar->reqType == 2) {
+			s128 m = GameCamera[cameraIndex].moveActualFromExternal.q;
+			VU0_OP("vadd.xyz %0, %0, %1" : "+j"(m) : "j"(pos));
+			polar->lastPolar[0].q = m;
+		}
+		polar->lastPolar[1] = polar->quat[1];
+	}
+}
 
 GAME_SECTION(Camera_CopyLastPolarToQuat) void Camera_CopyLastPolarToQuat(int cameraIndex)
 {

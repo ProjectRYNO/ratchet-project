@@ -145,6 +145,7 @@ def main():
         crlf = '\r\n' in text
         text = text.replace('\r\n', '\n')
         kept = []
+        includes = []
         placed = []
         seen_aggregates = {}
         existing = set()
@@ -166,7 +167,13 @@ def main():
                 continue
             # Every declaration in the test file, skipping names the object already has.
             for c in all_chunks:
-                if 'GAME_SECTION' in strip(c) or strip(c).strip().startswith('#include') or '#define KERNEL' in c:
+                if strip(c).strip().startswith('#include'):
+                    # Headers a test file adds (such as game_vu0.h) go after game_section.h below.
+                    for inc in re.findall(r'^#include\s+"[^"]+"', c, re.M):
+                        if inc not in includes:
+                            includes.append(inc)
+                    continue
+                if 'GAME_SECTION' in strip(c) or '#define KERNEL' in c:
                     continue
                 names = declared(c)
                 tag = re.match(r'\s*(?:typedef\s+)?(?:struct|union|class)\s+(\w+)\s*\{', strip(c))
@@ -193,6 +200,9 @@ def main():
             print('not registered, skipped', obj)
             continue
         at = text.index(k) + len(k)
+        new_includes = ''.join(inc + '\n' for inc in includes if inc not in text)
+        text = text[:at] + new_includes + text[at:]
+        at += len(new_includes)
         # Forward declarations go first: a struct replaced in place above the insertion point may
         # use a type the test file only forward-declares.
         forward = [c for c in kept if re.match(r'\s*(?:struct|union|class)\s+\w+\s*;\s*$', strip(c))]

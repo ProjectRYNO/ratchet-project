@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 struct moby {
@@ -47,7 +48,11 @@ struct SoundData {
 	/* 0x5c */ char occl[36];
 };
 struct SoundGlobals {
-	/* 0x000 */ char unk000[0x2c0];
+	/* 0x000 */ char unk000[0x48];
+	/* 0x048 */ int cam_history_pos;
+	/* 0x04c */ int unk04c;
+	/* 0x050 */ uint128 cam_history[4];
+	/* 0x090 */ char unk090[0x2c0 - 0x90];
 	/* 0x2c0 */ SoundData channels[52];
 };
 struct lineEmitter {
@@ -137,6 +142,25 @@ extern SoundDef *LevelSounds __asm__("LevelSounds");
 extern int CoreSoundCnt __asm__("CoreSoundCnt");
 extern int LevelSoundCnt __asm__("LevelSoundCnt");
 
+struct vec4 {
+	/* 0x00 */ uint128 m_v;
+};
+int sound_SetOffset(short handle, vec4 &offset) __asm__("sound_SetOffset");
+extern "C" {
+	void snd_SendCache();
+	int snd_FlushSoundCommands();
+	void snd_StopAllSounds();
+}
+void sound_StopAllSounds() __asm__("sound_StopAllSounds");
+void lineEmitterSetAttrib(lineEmitter *pEmitter, unsigned int attrib, void *value) __asm__("lineEmitterSetAttrib");
+
+/* Camera is only reached here for its position quadword */
+struct CameraPosView {
+	/* 0x00 */ uint128 pos;
+};
+extern CameraPosView Camera __asm__("Camera");
+int sound_GetFade(SoundData *, uint128 &, uint128 *, bool) __asm__("sound_GetFade___dupe2");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CreateHandle);
 
 GAME_SECTION(SOUND_PLAY_LOOP) void SOUND_PLAY_LOOP(int &handle, moby *pMoby, int sound_id)
@@ -153,7 +177,31 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_Occl);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_GetFade);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_GetFade___dupe2);
+GAME_SECTION(sound_GetFade___dupe2) int sound_GetFade(SoundData *channel, uint128 &soundPos, uint128 *camPos, bool bForceExp)
+{
+	volatile uint128 tmp;
+	volatile uint128 tmp2;
+	float dist;
+	if (!camPos) camPos = &Camera.pos;
+	{
+		register uint128 c __asm__("vf3") = *camPos;
+		register uint128 one __asm__("vf2");
+		register uint128 d __asm__("vf1");
+		VU0_OP("vmaxw.xyzw %0, vf0, vf0w" : "=j"(one));
+		d = soundPos;
+		VU0_OP("vsub.xyz %0, %0, %1" : "+j"(d) : "j"(c));
+		VU0_OP("vmul.xyzw %0, %0, %0" : "+j"(d));
+		VU0_ASM("vadday.x ACC, %0, %0y" : : "j"(d));
+		VU0_ASM("vmaddz.x %0, %0, %1z" : "+j"(one) : "j"(d));
+		VU0_ASM("vsqrt Q, %0x" : : "j"(one));
+		tmp = one;
+		VU0_ASM("vwaitq");
+		VU0_OP("vaddq.x %0, vf0, Q" : "=j"(d));
+		tmp2 = d;
+		VU0_OP("qmfc2.ni %0, %1" : "=r"(dist) : "j"(d));
+	}
+	return sound_GetFade(channel->def, dist, channel->def->minRange, channel->def->maxRange, bForceExp);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_GetPan);
 
@@ -290,7 +338,15 @@ GAME_SECTION(sound_FootstepPlay) short sound_FootstepPlay(unsigned int ground_ty
 	return sound_CreateHandle(channel);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_SetOffset);
+GAME_SECTION(sound_SetOffset) int sound_SetOffset(short handle, vec4 &offset)
+{
+	SoundData *channel = sound_GetChannelFromHandle(handle);
+	if (channel) {
+		channel->flags |= 0x40;
+		*(vec4 *)channel->offset = offset;
+	}
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E2388);
 
@@ -336,7 +392,32 @@ GAME_SECTION(sound_FreshenCB) void sound_FreshenCB(unsigned int ret_val, unsigne
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E24E0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", lineEmitterSetAttrib);
+GAME_SECTION(lineEmitterSetAttrib) void lineEmitterSetAttrib(lineEmitter *pEmitter, unsigned int attrib, void *value)
+{
+	switch (attrib) {
+	case 3:
+		pEmitter->flags = *(unsigned int *)value;
+		break;
+	case 0:
+		*(vec4 *)pEmitter->p0 = *(vec4 *)value;
+		break;
+	case 1:
+		*(vec4 *)pEmitter->p1 = *(vec4 *)value;
+		break;
+	case 2:
+		pEmitter->radius = *(float *)value;
+		break;
+	case 4:
+		pEmitter->sound = *(unsigned int *)value;
+		break;
+	case 5:
+		pEmitter->pOwner = (moby *)value;
+		break;
+	case 6:
+		pEmitter->oclass = *(int *)value;
+		break;
+	}
+}
 
 GAME_SECTION(sound_initLineEmitters) void sound_initLineEmitters()
 {

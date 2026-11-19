@@ -93,6 +93,21 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  sound_GetFade___dupe2: 0x004E0248
+  Camera_CopyLastQuatToPolar: 0x0043B648
+  CubicLine_Update: 0x004514D0
+  MB_AlignWithGravity: 0x0047AF68
+  MB_GetWorldSpaceVector: 0x0047AAE8
+  lineEmitterSetAttrib: 0x004E24E8
+  sound_SetOffset: 0x004E2338
+  NAVG_WpGetNode: 0x0048EC60
+  NAVG_WpSetPos: 0x0048EBC0
+  NAVG_NodeGetCenter: 0x0048EA78
+  MB_SpawnInit: 0x0047B9B8
+  MB_IsPntInPath: 0x00477ED0
+  SetCollDamIn: 0x004742B0
+  MB_getJumpPeak: 0x00473D78
+  GetMobyBangleStats: 0x0046C1D8
   TransitionMP_DrawSplashArt: 0x0054CC60
   mode_freezeInit: 0x004599F8
   SetUpVisGifViewer: 0x00462910
@@ -8812,6 +8827,7 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/sound, function: lineEmitterSetAttrib, section: .game_lineEmitterSetAttrib.rodata, start: 0x003D2D10, end: 0x003D2D2C}
       - {object: game/transitionmulti, function: TransitionMP_DrawSplashArt, section: .game_TransitionMP_DrawSplashArt.rodata, start: 0x003D4E38, end: 0x003D4E78}
       - {object: game/bmain, function: SetLanguage, section: .game_SetLanguage.rodata, start: 0x003CFA00, end: 0x003CFA18}
       - {object: game/mcstate, function: MCSTATE_SetCommand, section: .game_MCSTATE_SetCommand.rodata, start: 0x003D0980, end: 0x003D099C}

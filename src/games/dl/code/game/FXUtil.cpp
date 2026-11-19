@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "game_vu0.h"
 
 
 
@@ -14,7 +15,8 @@ struct FXU_CubicPoint {
 	/* 0x0b */ unsigned char bDisabled;
 	/* 0x0c */ int iNumSkipPoints;
 	/* 0x10 */ vec4 pos;
-	/* 0x20 */ char unk20[0x20];
+	/* 0x20 */ vec4 vTangent;
+	/* 0x30 */ vec4 vTangentOccQuat;
 };
 struct FXU_CubicLineSet_t {
 	/* 0x00 */ int unk00[4];
@@ -56,6 +58,7 @@ float MB_randRange(float, float) __asm__("MB_randRange");
 void CubicLineSet_InitAsLightning(void *, FXU_CubicLineSet_t &, int, int, int, int, int) __asm__("CubicLineSet_InitAsLightning");
 float FastSin(float) __asm__("FastSin");
 float FastCos(float) __asm__("FastCos");
+
 
 GAME_SECTION(CalcCycleFade) float CalcCycleFade(void *self, float fCycleFrac, int fadeType)
 {
@@ -144,7 +147,27 @@ GAME_SECTION(AttachPointToJoint) int AttachPointToJoint(void *self, void *pTarge
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", CubicLine_Init);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", CubicLine_Update);
+GAME_SECTION(CubicLine_Update) void CubicLine_Update(void *pThis, FXU_CubicPoint *pEndPoints, int iNumEndPoints)
+{
+	if (iNumEndPoints == 0) iNumEndPoints = pEndPoints->count;
+	if (iNumEndPoints > 0) {
+		long bits = 0x3fb504f3;
+		register s128 sqrt2 __asm__("vf4");
+		VU0_OP("qmtc2.ni %1, %0" : "=j"(sqrt2) : "r"(bits));
+		do {
+			register s128 q __asm__("vf1") = pEndPoints->vTangentOccQuat.q;
+			register s128 v __asm__("vf2");
+			register s128 t __asm__("vf3");
+			iNumEndPoints--;
+			v = pEndPoints->vTangent.q;
+			VU0_OP("vmulx.xyzw %0, %0, %1x" : "+j"(q) : "j"(sqrt2));
+			VU0_OP("vopmula.xyz ACC, %1, %2\n\tvmaddaw.xyz ACC, %2, %1w\n\tvopmsub.xyz %0, %2, %1" : "=j"(t) : "j"(q), "j"(v));
+			VU0_OP("vopmula.xyz ACC, %1, %2\n\tvmaddaw.xyz ACC, %0, vf0w\n\tvopmsub.xyz %0, %2, %1" : "+j"(v) : "j"(q), "j"(t));
+			pEndPoints->vTangent.q = v;
+			pEndPoints++;
+		} while (iNumEndPoints != 0);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_00451530);
 
