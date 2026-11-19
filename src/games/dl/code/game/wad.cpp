@@ -27,6 +27,22 @@ extern unsigned int LevelHeaderB[] __asm__("D_001CF858");
 extern unsigned int LevelHeaderC[] __asm__("D_001CFAF8");
 extern unsigned int LevelHeaderEnd[] __asm__("D_001D21E8");
 
+struct wadSectors {
+	/* 0x00 */ int offset;
+	/* 0x04 */ int size;
+};
+struct wadLevelEntry {
+	/* 0x00 */ wadSectors levelaudiowad;
+	/* 0x08 */ wadSectors levelwad;
+	/* 0x10 */ wadSectors levelscenewad;
+};
+struct wadDef {
+	/* 0x0000 */ char unk0000[0xc430];
+	/* 0xc430 */ wadLevelEntry levels[0x50];
+	/* 0xc8b0 */ char unkc8b0[0x101a8 - 0xc8b0];
+};
+extern wadDef g_wad __asm__("D_001C2040");
+
 GAME_SECTION(wad_GetSectors) void wad_GetSectors(int lsn, int size, void *buff)
 {
 	sceCdRMode CdRMode;
@@ -52,4 +68,31 @@ GAME_SECTION(wad_GetHeaders) void wad_GetHeaders(char *buff)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/wad", func_00159AA8);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/wad", wad_GetLevelHeaders);
+GAME_SECTION(wad_GetLevelHeaders) void wad_GetLevelHeaders(int level, char *buff)
+{
+	int audio_scene_level;
+	audio_scene_level = level;
+	if (level >= 0x28) audio_scene_level = 0;
+	else if (level >= 0x14) audio_scene_level = level - 0x14;
+	wad_GetSectors(g_wad.levels[level].levelwad.offset, 2, buff);
+	{
+		unsigned int *s = (unsigned int *)buff;
+		unsigned int *d = LevelHeaderA;
+		unsigned int *e = LevelHeaderB;
+		while (d != e) *d++ = *s++;
+	}
+	wad_GetSectors(g_wad.levels[audio_scene_level].levelaudiowad.offset, 1, buff);
+	{
+		unsigned int *s = (unsigned int *)buff;
+		unsigned int *d = LevelHeaderB;
+		unsigned int *e = LevelHeaderC;
+		while (d != e) *d++ = *s++;
+	}
+	wad_GetSectors(g_wad.levels[audio_scene_level].levelscenewad.offset, 5, buff);
+	{
+		unsigned int *s = (unsigned int *)buff;
+		unsigned int *d = LevelHeaderC;
+		unsigned int *e = LevelHeaderEnd;
+		while (d != e) *d++ = *s++;
+	}
+}

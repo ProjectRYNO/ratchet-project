@@ -130,6 +130,33 @@ extern HoloHero *g_HoloHero[10] __asm__("g_Hero");
 extern volatile int g_gameRulesVol __asm__("g_gameRules");
 void WPN_TurnOnHoloShields(int) __asm__("WPN_TurnOnHoloShields");
 
+/* ===== AJ near misses ===== */
+/* FXRegistrySystemInterface has no data members so &FXReg is emitted as an la macro (lui/addiu same reg, not delay-slot fillable) */
+/* ===== AM additions (pass 4) ===== */
+struct WpnVec2 {
+	/* 0x0 */ float x;
+	/* 0x4 */ float y;
+};
+struct ModBasicDef {
+	/* 0x00 */ int unk00[7];
+	/* 0x1c */ unsigned short icon;
+	/* 0x1e */ short unk1e;
+	/* 0x20 */ int unk20[6];
+};
+struct GadgetBox {
+	static int GetDefaultBasicMod(int, int) __asm__("GetDefaultBasicMod");
+	static ModBasicDef *GetModBasicDefDirectly(int) __asm__("GetModBasicDefDirectly");
+};
+struct FXRegistrySystemInterface {
+	void SetBlendMode(int, int, int) __asm__("SetBlendMode");
+};
+extern FXRegistrySystemInterface FXRegAM __asm__("FXReg");
+int GetIconFrame(int, int) __asm__("GetIconFrame");
+unsigned long GetFrameTex(int) __asm__("GetFrameTex");
+void DrawQuadTex(WpnVec2 *, unsigned int, unsigned long) __asm__("DrawQuad___dupe2");
+void PackQuadLTRB(WpnVec2 *, float, float, float, float) __asm__("PackQuadLTRB");
+void WPN_drawIcon(void *) __asm__("WPN_drawIcon");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_DrawReticule);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004E9490);
@@ -177,7 +204,12 @@ GAME_SECTION(WPN_ClearCachedTargets) void WPN_ClearCachedTargets(void *target)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_AttachVelOrientExternal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_RemoveVelOrientExternal);
+GAME_SECTION(WPN_RemoveVelOrientExternal) void WPN_RemoveVelOrientExternal(int index)
+{
+	if (index < 0) return;
+	WPN_VelOrientCache *c = &WPN_velOrientationCache[index];
+	c->pParent = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_VelOrientExternal);
 
@@ -243,7 +275,19 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_FontTicker
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_FontScroll);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_drawIcon);
+GAME_SECTION(WPN_drawIcon) void WPN_drawIcon(void *pMoby)
+{
+	WpnVec2 vPoints[4];
+	ModBasicDef pMod;
+	unsigned long iTex0;
+	int index;
+	pMod = *GadgetBox::GetModBasicDefDirectly(GadgetBox::GetDefaultBasicMod(_WPN_umv.gadget, _WPN_umv.mode + 1));
+	PackQuadLTRB(vPoints, 390.0f, 345.0f, 430.0f, 385.0f);
+	index = GetIconFrame(pMod.icon, 0);
+	iTex0 = GetFrameTex(index);
+	FXRegAM.SetBlendMode(2, 1, 1);
+	DrawQuadTex(vPoints, 0xaaaaaaaa, iTex0);
+}
 
 GAME_SECTION(WPN_IsUpgradeMoby) int WPN_IsUpgradeMoby(void *moby)
 {

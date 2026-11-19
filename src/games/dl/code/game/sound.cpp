@@ -8,7 +8,9 @@ struct moby {
 	/* 0x70 */ char unk70[0x90];
 };
 struct SoundInstance;
-struct SoundDef;
+struct SoundDef {
+	/* 0x00 */ char unk00[0x20];
+};
 struct SoundData {
 	/* 0x00 */ unsigned int handle;
 	/* 0x04 */ SoundDef *def;
@@ -135,6 +137,11 @@ static inline int sound_GetMinVolume(SoundDefAM *sd)
 }
 int sound_GetFade(SoundDefAM *, float, float, float, bool) __asm__("sound_GetFade");
 
+/* ===== AJ near misses ===== */
+extern SoundDef *LevelSounds __asm__("LevelSounds");
+extern int CoreSoundCnt __asm__("CoreSoundCnt");
+extern int LevelSoundCnt __asm__("LevelSoundCnt");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CreateHandle);
 
 GAME_SECTION(SOUND_PLAY_LOOP) void SOUND_PLAY_LOOP(int &handle, moby *pMoby, int sound_id)
@@ -253,11 +260,40 @@ GAME_SECTION(sound_MobyPlay___dupe3) short sound_MobyPlayPos(int sound, unsigned
 	return sound_CreateHandle(channel);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CorePlay);
+short sound_CorePlay(unsigned int sound, unsigned int flags, moby *pMoby) __asm__("sound_CorePlay");
+GAME_SECTION(sound_CorePlay) short sound_CorePlay(unsigned int sound, unsigned int flags, moby *pMoby)
+{
+	int channel;
+	if (sound == 0xffffffff) return -1;
+	if (!LevelSounds) return -1;
+	if ((int)sound >= CoreSoundCnt) return -1;
+	channel = sound_Play(LevelSounds + sound, flags, pMoby, 0, 0x400);
+	if (channel >= 0) {
+		SoundGlobals *g = (SoundGlobals *)((char *)&Sound + channel * sizeof(SoundData));
+		g->channels[0].pMoby = pMoby;
+		g->channels[0].def_index = sound;
+	}
+	return sound_CreateHandle(channel);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E2278);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_FootstepPlay);
+short sound_FootstepPlay(unsigned int ground_type, unsigned int right_foot, unsigned int magneboots, unsigned int flags, moby *pMoby, int vol_mod) __asm__("sound_FootstepPlay");
+GAME_SECTION(sound_FootstepPlay) short sound_FootstepPlay(unsigned int ground_type, unsigned int right_foot, unsigned int magneboots, unsigned int flags, moby *pMoby, int vol_mod)
+{
+	int channel;
+	int sound;
+	if (ground_type == 0xffffffff) return -1;
+	sound = ground_type * 4 + right_foot * 2 + magneboots + CoreSoundCnt;
+	if (sound >= LevelSoundCnt) return -1;
+	channel = sound_Play(LevelSounds + sound, flags, pMoby, 0, vol_mod);
+	if (channel >= 0) {
+		SoundGlobals *g = (SoundGlobals *)((char *)&Sound + channel * sizeof(SoundData));
+		g->channels[0].pMoby = pMoby;
+		g->channels[0].def_index = sound;
+	}
+	return sound_CreateHandle(channel);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_SetOffset);
 

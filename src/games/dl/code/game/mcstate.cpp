@@ -132,6 +132,10 @@ void (*do_save_cb)() __asm__("D_21F158") GAME_GP_DATA = 0;
 void csf_init_save() __asm__("csf_init_save");
 void csf_good_save() __asm__("csf_good_save");
 
+
+extern unsigned char MCSTATE_lastOpLoad __asm__("MCSTATE_lastOpLoad");
+int MCSTATE_SetCommand(int cmd, int data, void (*pre_cb)(), void (*post_cb)()) __asm__("MCSTATE_SetCommand");
+
 GAME_SECTION(csf_prompt_create_save_overwrite) void csf_prompt_create_save_overwrite()
 {
 }
@@ -230,7 +234,14 @@ GAME_SECTION(csf_prompt_autosave_warning) void csf_prompt_autosave_warning()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_nocard);
+/* ===== AJ near misses ===== */
+GAME_SECTION(csf_nocard) void csf_nocard()
+{
+	mcState.nextstage = -1;
+	mcstate_flags &= ~0x4000;
+	mcState.nextslot = -1;
+	MCSTATE_TransToState(6);
+}
 
 GAME_SECTION(csf_changed) void csf_changed()
 {
@@ -552,7 +563,13 @@ GAME_SECTION(csf_prompt_save_overwrite) void csf_prompt_save_overwrite()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AA0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_SetSaveSlotUponSaveCreationTo);
+GAME_SECTION(MCSTATE_SetSaveSlotUponSaveCreationTo) int MCSTATE_SetSaveSlotUponSaveCreationTo(int slot)
+{
+	if ((unsigned int)slot >= 5) return 0;
+	SaveSlotUponCreation = slot;
+	mcstate_flags |= 0x1000;
+	return 1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AD8);
 
@@ -583,7 +600,78 @@ GAME_SECTION(MCSTATE_GetState) int MCSTATE_GetState()
 	return mc_state;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_SetCommand);
+GAME_SECTION(MCSTATE_SetCommand) int MCSTATE_SetCommand(int cmd, int data, void (*pre_cb)(), void (*post_cb)())
+{
+	int ret = 0;
+	switch (cmd) {
+	case 1:
+	case 2:
+		MCSTATE_which_slot = data;
+		do_save_cb = pre_cb;
+		save_done_cb = post_cb;
+		mcState.useslot = 0;
+		init_load_cb = 0;
+		LoadDoneCallback = 0;
+		CreateFailedCallback = 0;
+		mcstate_error = 0;
+		MCSTATE_lastOpLoad = 0;
+		MCSTATE_ClearResponse();
+		mcState.memcards[0].changed = 0;
+		mcstate_flags &= ~4;
+		mcstate_flags |= 2;
+		mcstate_flags &= ~0x10;
+		mcstate_flags &= ~0x4000;
+		if (cmd == 2) mcstate_flags |= 0x4000;
+		break;
+	case 3:
+		init_load_cb = pre_cb;
+		LoadDoneCallback = post_cb;
+		mcState.useslot = 0;
+		mcState.memcards[0].changed = 0;
+		MCSTATE_which_slot = data;
+		do_save_cb = 0;
+		save_done_cb = 0;
+		CreateFailedCallback = 0;
+		mcstate_error = 0;
+		MCSTATE_ClearResponse();
+		mcstate_flags |= 4;
+		mcstate_flags &= ~2;
+		MCSTATE_lastOpLoad = 1;
+		mcstate_flags &= ~0x10;
+		mcstate_flags &= ~0x4000;
+		break;
+	case 4:
+		ret = MCSTATE_SetSaveSlotUponSaveCreationTo(data);
+		if (ret) {
+			CreateFailedCallback = post_cb;
+			mcstate_flags |= 0x10;
+			mcstate_flags &= ~4;
+			mcstate_flags &= ~2;
+			mcState.useslot = 0;
+			mcState.memcards[0].changed = 0;
+			do_save_cb = 0;
+			save_done_cb = 0;
+			init_load_cb = 0;
+			LoadDoneCallback = 0;
+			mcstate_error = 0;
+			MCSTATE_lastOpLoad = 0;
+			MCSTATE_ClearResponse();
+			return ret;
+		}
+		break;
+	case 6:
+		mcState.useslot = 0;
+		mcstate_flags |= 0x800;
+		break;
+	case 5:
+		mcstate_flags |= 8;
+		break;
+	case 7:
+		mcstate_flags |= 0x200;
+		break;
+	}
+	return ret;
+}
 
 GAME_SECTION(MCSTATE_ClearCommand) void MCSTATE_ClearCommand(int cmd)
 {

@@ -91,6 +91,43 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  TransitionMP_DrawTextData: 0x0054D400
+  navg_FindBestIntraClusterPath: 0x0048D228
+  navg_LoadSectors: 0x0048C440
+  navg_LoadClusters: 0x0048B840
+  MCSTATE_SetCommand: 0x00465C10
+  ParseMoby: 0x004631B8
+  LoadCompressedHudBank: 0x004625A0
+  SwizzleTextureInPlace: 0x00461440
+  MVE_GetBoundArea: 0x00483398
+  ParseMobyGifs: 0x00462D68
+  WPN_drawIcon: 0x004ED688
+  WPN_RemoveVelOrientExternal: 0x004EA8B0
+  InitSoundDef: 0x00489EF0
+  Stash_InitOnce: 0x004E28F0
+  wad_GetLevelHeaders: 0x00159AB0
+  SetTfragDists: 0x004E2B40
+  ST_GetNumDifficultyStars: 0x004FC518
+  ST_GetMissionStatistics: 0x004FC160
+  sound_FootstepPlay: 0x004E2288
+  sound_CorePlay: 0x004E21D8
+  PostEffects_Init_new: 0x004F9AC8
+  PostEffects_LocalAlloc: 0x004F6498
+  Bot_GetCurrentHead: 0x0047D4B0
+  Bot_HasHead: 0x0047D488
+  Bot_GetCurrentPaintjob: 0x0047D420
+  Bot_HasPaintjob: 0x0047D3F8
+  MB_SetAmbientLights: 0x00479580
+  CreateMotionBlur: 0x004790C0
+  MB_CheckQueuedUpgradeScene: 0x00472900
+  MB_QueueUpgradeScene: 0x004728B0
+  GetMobyAnimJointOffset: 0x0046F4A8
+  MobyTransitionSequence: 0x0046F2B0
+  MobyDetachAnimLayer: 0x0046F220
+  MCSTATE_SetSaveSlotUponSaveCreationTo: 0x00465AB0
+  csf_nocard: 0x00464E08
+  Cam_InterpValues: 0x0043A760
+  SpawnPart_035: 0x00492D80
   TransitionPostUpdate_ShuttleInterior: 0x004F63A8
   TransitionPostUpdate_Space: 0x004F5C80
   TransitionUpdate_Space: 0x004F5B50
@@ -5399,6 +5436,13 @@ objects:
     text_end: 0x004E4CD4
     slots:
       - {object: game/ubersound, section: .game_Stop___dupe2, start: 0x004E4C50, end: 0x004E4CD4}
+  game/stash:
+    text_start: 0x004E28F0
+    text_end: 0x004E2AF8
+    slots:
+      - {object: game/stash, section: .game_Stash_InitOnce, start: 0x004E28F0, end: 0x004E2990}
+      - {object: game/stash, section: .game_Stash_SendData, start: 0x004E2990, end: 0x004E2A68}
+      - {object: game/stash, section: .game_func_004E2A68, start: 0x004E2A68, end: 0x004E2AF8}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390
@@ -8751,6 +8795,7 @@ objects:
 rodata:
   asm/build/data.data:
     slots:
+      - {object: game/mcstate, function: MCSTATE_SetCommand, section: .game_MCSTATE_SetCommand.rodata, start: 0x003D0980, end: 0x003D099C}
       - {object: game/FXUtil, function: CalcCycleFade, section: .game_CalcCycleFade.rodata, start: 0x003D03A0, end: 0x003D03C4}
       - {object: game/weapons, function: WPN_BangelizeWeapons, section: .game_WPN_BangelizeWeapons.rodata, start: 0x003D2F70, end: 0x003D2FA8}
       - {object: game/mobyutil, function: Bot_HasCommandAbility, section: .game_Bot_HasCommandAbility.rodata, start: 0x003D0DF0, end: 0x003D0E28}

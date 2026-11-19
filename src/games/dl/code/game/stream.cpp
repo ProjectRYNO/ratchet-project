@@ -98,7 +98,21 @@ struct StreamInterfaceAM {
 extern "C" void *memset(void *, int, unsigned int);
 extern "C" int sceGsSyncV(int);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", InitSoundDef);
+/* ===== AJ near misses ===== */
+
+GAME_SECTION(InitSoundDef) void InitSoundDef(SoundDef *p_def)
+{
+	p_def->minRange = 0.0f;
+	p_def->maxRange = 64.0f;
+	p_def->minVolume = 0;
+	p_def->maxVolume = 0x800;
+	p_def->minPitch = 0;
+	p_def->maxPitch = 0;
+	p_def->loop = 0;
+	p_def->flags = 0x1a;
+	p_def->index = 0;
+	p_def->bank_index = -1;
+}
 
 GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
 {

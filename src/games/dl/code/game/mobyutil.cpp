@@ -432,9 +432,35 @@ AK_TriHero *GB_GetHeroFromPlayerIndex(int) __asm__("GB_GetHeroFromPlayerIndex");
 void GUI_PrintPrompt(int, char *) __asm__("GUI_PrintPrompt");
 int FUN_0047b7f8(int iPlayer, int mode, int msg) __asm__("FUN_0047b7f8");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_QueueUpgradeScene);
+struct UQ { };
+extern UQ MB_UQ __asm__("MB_UpgradeSceneQueue");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_CheckQueuedUpgradeScene);
+GAME_SECTION(MB_QueueUpgradeScene) bool MB_QueueUpgradeScene(int rootID)
+{
+	int i;
+	short *q = (short *)&MB_UQ;
+	for (i = 0; i < 8; i++) {
+		if (q[i] == 0) {
+			q[i] = rootID;
+			return true;
+		}
+		if (q[i] == rootID) return false;
+	}
+	return false;
+}
+
+GAME_SECTION(MB_CheckQueuedUpgradeScene) bool MB_CheckQueuedUpgradeScene(int rootID)
+{
+	int i;
+	short *q = (short *)&MB_UQ;
+	for (i = 0; i < 8; i++) {
+		if (q[i] == rootID) {
+			q[i] = 0;
+			return true;
+		}
+	}
+	return false;
+}
 
 GAME_SECTION(MB_AddHoloshieldGadgetXP) bool MB_AddHoloshieldGadgetXP()
 {
@@ -1071,7 +1097,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_MayaFrameT
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004790B0);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", CreateMotionBlur);
+GAME_SECTION(CreateMotionBlur) void CreateMotionBlur(MobyInstance *pMoby, MotionBlur &blur)
+{
+	if (blur.active == 0) {
+		blur.pTrackedMoby = pMoby;
+		blur.active = 1;
+		blur.ringValidSize = 0;
+		blur.blurCnt = 0;
+		blur.ringIndex = 0;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", AddMotionBlurElem);
 
@@ -1093,7 +1128,12 @@ GAME_SECTION(DeleteMotionBlur) void DeleteMotionBlur(MotionBlur &blur)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00479570);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SetAmbientLights);
+GAME_SECTION(MB_SetAmbientLights) void MB_SetAmbientLights(MobyInstance *pMoby, int rgba)
+{
+	int b = rgba >> 16;
+	int g = rgba >> 8;
+	SetMobyAmbientLights(pMoby, rgba & 0xff, g & 0xff, b & 0xff);
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004795B0);
 
@@ -1375,9 +1415,18 @@ GAME_SECTION(Bot_GrantPaintjob) void Bot_GrantPaintjob(unsigned int paintjob, in
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Bot_HasPaintjob);
+GAME_SECTION(Bot_HasPaintjob) bool Bot_HasPaintjob(unsigned int paintjob)
+{
+	if (paintjob < 11) return BotSave.botPaintjobs[paintjob] != 0;
+	return false;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Bot_GetCurrentPaintjob);
+/* ===== AJ near misses ===== */
+GAME_SECTION(Bot_GetCurrentPaintjob) int Bot_GetCurrentPaintjob(unsigned int botNum)
+{
+	if (botNum < 2) return BotSave.curBotPaintJob[botNum];
+	return 0;
+}
 
 GAME_SECTION(Bot_GrantHead) void Bot_GrantHead(unsigned int headNum, int setAsCurrent)
 {
@@ -1388,9 +1437,19 @@ GAME_SECTION(Bot_GrantHead) void Bot_GrantHead(unsigned int headNum, int setAsCu
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Bot_HasHead);
+GAME_SECTION(Bot_HasHead) bool Bot_HasHead(unsigned int headNum)
+{
+	if (headNum < 8) return BotSave.botHeads[headNum] != 0;
+	return false;
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Bot_GetCurrentHead);
+GAME_SECTION(Bot_GetCurrentHead) int Bot_GetCurrentHead(unsigned int botNum)
+{
+	unsigned char c = CheatsActivated[0];
+	if (c) return c + 4;
+	if (botNum < 2) return BotSave.curBotHead[botNum];
+	return 0;
+}
 
 GAME_SECTION(Bot_GetGlobalComm) Bot_Communication *Bot_GetGlobalComm()
 {

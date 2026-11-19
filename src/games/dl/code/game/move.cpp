@@ -184,6 +184,7 @@ typedef GroupSpawnData *(*getSpawnData_t)(moby *);
 
 typedef GroupSpawnData *(*getSpawnData_t)(moby *);
 
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_Move_2);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00480EB8);
@@ -285,7 +286,21 @@ GAME_SECTION(MB_GetMoveReaction) int MB_GetMoveReaction(moby *pMoby)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00483390);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MVE_GetBoundArea);
+/* ===== AJ near misses ===== */
+GAME_SECTION(MVE_GetBoundArea) int MVE_GetBoundArea(moby *pMoby, MoveVars_V2 *pMoveVars)
+{
+	int area = pMoveVars->boundArea;
+	int r;
+	if (area != -1) return area;
+	getSpawnData_t *pIface = MobyGetInterface(pMoby->oClass, 0xe, 0x1c);
+	if (!pIface || !*pIface) return -1;
+	GroupSpawnData *pData = (*pIface)(pMoby);
+	if (pData) {
+		r = pData->boundArea;
+		if (r != area) return r;
+	}
+	return -1;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MVE_DrawImpactEffect);
 

@@ -91,6 +91,24 @@ int mpIsWeaponEnabled(unsigned int weapon) __asm__("mpIsWeaponEnabled");
 char *msg_string(int) __asm__("msg_string");
 char *GetMapName(int nLevel) __asm__("GetMapName");
 
+/* ===== AJ additions ===== */
+typedef struct mpTransitionText {
+	/* 0x000 */ char unk000[0x720];
+	/* 0x720 */ char m_sGameLbls[7][32];
+	/* 0x800 */ char m_sGameValues[7][32];
+	/* 0x8e0 */ int m_numGameSettings;
+	/* 0x8e4 */ char m_sGameTypeLbls[6][32];
+	/* 0x9a4 */ char m_sGameTypeValues[6][32];
+	/* 0xa64 */ int m_numGameTypes;
+} mpTransitionText_t;
+extern mpTransitionText_t g_TransitionData_MultiplayerText __asm__("g_TransitionData_Multiplayer");
+float text_x __asm__("text_x") GAME_GP_DATA = 100.0f;
+float text_x2 __asm__("text_x2") GAME_GP_DATA = 410.0f;
+float text_yStart __asm__("text_yStart") GAME_GP_DATA = 75.0f;
+float text_yOffset __asm__("text_yOffset") GAME_GP_DATA = 18.0f;
+void FontPrintRightSmall(int, int, unsigned long, char *, int) __asm__("FontPrintRightSmall");
+void TransitionMP_DrawTextData() __asm__("TransitionMP_DrawTextData");
+
 GAME_SECTION(TransitionPre_Lobby) int TransitionPre_Lobby(int arg)
 {
 	lobbyTransition_t *t = &g_GameControllerData.lobby;
@@ -230,7 +248,22 @@ GAME_SECTION(TransitionMP_UpdateMoby) void TransitionMP_UpdateMoby()
 	PostUpdateMoby(moby);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", TransitionMP_DrawTextData);
+GAME_SECTION(TransitionMP_DrawTextData) void TransitionMP_DrawTextData()
+{
+	int numPriorSettings;
+	int i;
+	for (i = 0; i < g_TransitionData_MultiplayerText.m_numGameSettings; i++) {
+		float yOffset = (float)i;
+		FontPrintScaled(text_x, text_yStart + yOffset * text_yOffset, (int)0x80808080, g_TransitionData_MultiplayerText.m_sGameLbls[i], -1, 1.0f);
+		FontPrintRightSmall((int)text_x2, (int)(text_yStart + yOffset * text_yOffset), (int)0x80808080, g_TransitionData_MultiplayerText.m_sGameValues[i], -1);
+	}
+	numPriorSettings = g_TransitionData_MultiplayerText.m_numGameSettings;
+	for (i = 0; i < g_TransitionData_MultiplayerText.m_numGameTypes; i++) {
+		float yOffset = text_yStart + (float)(i + numPriorSettings) * text_yOffset;
+		FontPrintScaled(text_x, yOffset, (int)0x80808080, g_TransitionData_MultiplayerText.m_sGameTypeLbls[i], -1, 1.0f);
+		FontPrintRightSmall((int)text_x2, (int)yOffset, (int)0x80808080, g_TransitionData_MultiplayerText.m_sGameTypeValues[i], -1);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", mpIsWeaponEnabled);
 

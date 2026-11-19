@@ -196,6 +196,44 @@ void FastMemCopyReverse16(void *, void *, int) __asm__("FastMemCopyReverse16");
 void PushMobyStack(int, void *, void *, int, bool) __asm__("PushMobyStack");
 void ParseNpcMobys() __asm__("ParseNpcMobys");
 
+void SetUpVisGif(int *, short *, int, int, int, int, int) __asm__("SetUpVisGif");
+void SetUpVisGifViewer(int *, int, int, int, int, int) __asm__("SetUpVisGifViewer");
+void ParseMobyGifs(void *packets, short *tex_defs, char *tex_refs, int total_packet_cnt) __asm__("ParseMobyGifs");
+extern char MobyClassLookup[] __asm__("MobyClassLookup");
+extern int MobyClassNullIndex __asm__("MobyClassNullIndex");
+extern short MobyClassNullRef[] __asm__("MobyClassNullRef");
+extern int MobyClassIndex __asm__("MobyClassIndex");
+extern short MobyClassRef[] __asm__("MobyClassRef");
+extern MobyClass *MobyClasses[] __asm__("MobyClassPtrs");
+extern unsigned int MobyMipDists[] __asm__("MobyMipDists");
+void SetupMobyFunctions(int, int) __asm__("SetupMobyFunctions");
+void ParseMobyClass(MobyClass *, short *, char *, int) __asm__("ParseMobyClass");
+void ParseMoby(char *data, short *tex_defs, char *tex_refs, int oClass) __asm__("ParseMoby");
+
+extern "C" {
+	void FlushCache(int);
+	int sceGsSetDefLoadImage(void *, short, short, short, short, short, short, short);
+	int sceGsExecLoadImage(void *, void *);
+	int sceGsSetDefStoreImage(void *, short, short, short, short, short, short, short);
+	int sceGsExecStoreImage(void *, void *);
+	int sceGsSyncPath(int, unsigned short);
+}
+struct sceGsLoadImageBuf {
+	/* 0x00 */ unsigned long q[12];
+};
+struct sceGsStoreImageBuf {
+	/* 0x00 */ unsigned long q[14];
+};
+void SwizzleTextureInPlace(char *tex_data, int tex_format, int x_size, int y_size) __asm__("SwizzleTextureInPlace");
+extern MobyInstance *MobyInstances __asm__("MobyInstances");
+extern MobyInstance *MobyInstanceEnd __asm__("MobyInstanceEnd");
+extern int GSbase __asm__("GSbase");
+extern int MobyTexCnt __asm__("MobyTexCnt");
+/* ===== AJ near misses ===== */
+/* LevelLoad seen as a 4-byte object here: retail loads level_data with an lw macro (lui/lw same register) */
+struct LevelLoadAJ { char *level_data; };
+extern LevelLoadAJ LevelLoadAJv __asm__("LevelLoad");
+
 GAME_SECTION(IsSceneLevel) bool IsSceneLevel()
 {
 	return false;
@@ -203,7 +241,28 @@ GAME_SECTION(IsSceneLevel) bool IsSceneLevel()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", func_00461438);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", SwizzleTextureInPlace);
+GAME_SECTION(SwizzleTextureInPlace) void SwizzleTextureInPlace(char *tex_data, int tex_format, int x_size, int y_size)
+{
+	int dbp = (0x400000 - x_size * y_size) >> 8;
+	{
+		int tbw = x_size >> 6;
+		sceGsLoadImageBuf image;
+		if (tbw < 1) tbw = 1;
+		sceGsSetDefLoadImage(&image, dbp, tbw, 0x13, 0, 0, x_size, y_size);
+		FlushCache(0);
+		sceGsExecLoadImage(&image, tex_data);
+		sceGsSyncPath(0, 0);
+	}
+	{
+		int tbw = x_size >> 7;
+		sceGsStoreImageBuf image;
+		if (tbw < 1) tbw = 1;
+		sceGsSetDefStoreImage(&image, dbp, tbw, 0, 0, 0, x_size >> 1, y_size >> 1);
+		FlushCache(0);
+		sceGsExecStoreImage(&image, tex_data);
+		sceGsSyncPath(0, 0);
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseParticleTexs);
 
@@ -246,7 +305,14 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", LoadDropshipTe
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", LoadHudBanks);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", LoadCompressedHudBank);
+GAME_SECTION(LoadCompressedHudBank) void LoadCompressedHudBank(int bank, char *decomp)
+{
+	decomp = (char *)(((unsigned int)decomp + 0xf) & ~0xf);
+	if (decomp) {
+		FastDecompress((char *)(((LevelDataHeader *)LevelLoadAJv.level_data)->banks[bank + 1].offset + (int)LevelLoadAJv.level_data), decomp);
+	}
+	Hud.header->bank_load[bank] = 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", SetUpVisGif);
 
@@ -254,11 +320,46 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", SetUpVisGifVie
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParsePermGsRam);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseMobyGifs);
+GAME_SECTION(ParseMobyGifs) void ParseMobyGifs(void *packets, short *tex_defs, char *tex_refs, int total_packet_cnt)
+{
+	int *pi = (int *)packets;
+	int i;
+	for (i = 0; i < total_packet_cnt; i++, pi += 4) {
+		int gif_cnt = pi[1] >> 16;
+		int *pgif;
+		int j;
+		pi[1] &= 0xffff;
+		pgif = (int *)pi[0] + (pi[1] - gif_cnt) * 4;
+		for (j = 0; j < gif_cnt; j += 4) {
+			int index = pgif[8];
+			if (index >= 0) index = (unsigned char)tex_refs[index];
+			if (tex_defs) SetUpVisGif(pgif, tex_defs + index * 8, pgif[0], pgif[1], pgif[4], pgif[5], index);
+			else SetUpVisGifViewer(pgif, pgif[0], pgif[1], pgif[4], pgif[5], index);
+			pgif += 0x10;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseMobyClass);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseMoby);
+GAME_SECTION(ParseMoby) void ParseMoby(char *data, short *tex_defs, char *tex_refs, int oClass)
+{
+	if (!data) {
+		SetupMobyFunctions(oClass, 1);
+		MobyClassLookup[oClass] = MobyClassNullIndex;
+		MobyClassNullRef[MobyClassNullIndex++] = oClass;
+	} else {
+		int index = MobyClassIndex;
+		MobyClassRef[index] = oClass;
+		MobyClassLookup[oClass] = MobyClassIndex;
+		MobyClasses[index] = (MobyClass *)data;
+		MobyMipDists[index] = ((unsigned char *)data)[0x2d] << 10;
+		if (((unsigned char *)data)[0x2d] == 0xff) MobyMipDists[index] = 0x100000;
+		ParseMobyClass((MobyClass *)data, tex_defs, tex_refs, oClass);
+		SetupMobyFunctions(oClass, 0);
+		MobyClassIndex++;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseTfrag);
 

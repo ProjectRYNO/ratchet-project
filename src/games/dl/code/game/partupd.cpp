@@ -59,6 +59,16 @@ struct AK_Part021Vars {
 extern unsigned char *PartClassTexs[128] __asm__("PartClassTexs");
 part *SpawnPart_021(AK_vec4 &pos, AK_vec4 &vel, int beginRGBA, int endRGBA, float maxScale, int numFrames, int master) __asm__("SpawnPart_021");
 
+struct AK_Part035 {
+	/* 0x00 */ AK_s128 vel;
+	/* 0x10 */ int type;
+	/* 0x14 */ int lifespan;
+	/* 0x18 */ float z;
+	/* 0x1c */ float rate;
+};
+float MB_randRange(float, float) __asm__("MB_randRange");
+part *SpawnPart_035(AK_vec4 &pos, AK_vec4 &vel, int type, int lifespan) __asm__("SpawnPart_035");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_002_Main);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_002);
@@ -154,7 +164,29 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_034)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00492D78);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_035);
+GAME_SECTION(SpawnPart_035) part *SpawnPart_035(AK_vec4 &pos, AK_vec4 &vel, int type, int lifespan)
+{
+	AK_Part *pPart = (AK_Part *)CreatePart(0x23);
+	if (pPart) {
+		AK_s128 tmp = pos.m_v;
+		pPart->type = 0;
+		pPart->pos = tmp;
+		pPart->rgba = 0x80808080;
+		pPart->draw_dist = 0x12;
+		pPart->gs_alpha = 0x44;
+		pPart->scale = MB_randRange(10500.0f, 16800.0f);
+		AK_Part035 *pVar = (AK_Part035 *)pPart->update;
+		pPart->tex = *AK_PartClassTexs[0x23];
+		AK_s128 tmp2 = vel.m_v;
+		pVar->vel = tmp2;
+		pVar->lifespan = lifespan;
+		pVar->type = type;
+		pVar->z = ((float *)&pPart->pos)[2];
+		if (type == 2) pVar->z = 0.0f;
+		pVar->rate = MB_randRange(0.0029166667f, 0.005f);
+	}
+	return (part *)pPart;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00492E88);
 

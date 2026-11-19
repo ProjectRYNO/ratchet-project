@@ -112,6 +112,11 @@ void Camera_handleCollWithHero(int, UpdateCam *) __asm__("Camera_handleCollWithH
 float Cam_InterpAngles(float, float, float *, float, float, float) __asm__("Cam_InterpAngles");
 float Cam_InterpValues(float, float, float *, float, float, float) __asm__("Cam_InterpValues");
 
+/* ===== AJ near misses ===== */
+/* g_nwInfo must be > 8 bytes so it is not treated as small data (lui $3 / lw $2 pattern) */
+struct NetInfoAJ { /* 0x00 */ int NumLocalPlayers; /* 0x04 */ int pad[3]; };
+extern NetInfoAJ g_nwInfoAJ __asm__("D_172174");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitFovSystem);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_SetFov);
@@ -136,7 +141,24 @@ GAME_SECTION(Camera_FindCameraOfType) UpdateCam *Camera_FindCameraOfType(int cam
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Cam_InterpVecs);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Cam_InterpValues);
+GAME_SECTION(Cam_InterpValues) float Cam_InterpValues(float current, float target, float *speed, float gain, float damp, float limit)
+{
+	float diff = target - current;
+	if (g_nwInfoAJ.NumLocalPlayers >= 2 && gFrameHz == 1) {
+		gain = gain * 60.0f / 30.0f;
+		if (limit != 0.0f) limit = limit * 60.0f / 30.0f;
+	}
+	{
+		float f = *speed + (gain * diff - damp * *speed);
+		*speed = f;
+		if (limit != 0.0f) *speed = (f <? limit) >? -limit;
+	}
+	{
+		float a = __builtin_fabsf(diff);
+		*speed = (*speed <? a) >? -a;
+	}
+	return current + *speed;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043A818);
 

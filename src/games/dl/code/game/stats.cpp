@@ -69,7 +69,7 @@ struct LevelProgress {
 	/* 0x300 */ int unk300;
 };
 extern ST_MissionData ST_MissionStatistics __asm__("D_MISSIONSTATS");
-extern LevelProgress LevelProgressTable[] __asm__("D_LEVELPROGRESS");
+extern LevelProgress LevelProgressTable[] __asm__("mf_levelStats");
 extern int mf_missionStatus __asm__("mf_missionStatus");
 extern int worldUpdateTime __asm__("worldUpdateTime");
 int FUN_004fce78(int, int *, int *) __asm__("FUN_004fce78");
@@ -83,6 +83,7 @@ void ST_GetSkillPointInfo(int, int, ST_SkillPointInfo &) __asm__("ST_GetSkillPoi
 void ST_GetMissionStatistics(ST_MissionData *) __asm__("ST_GetMissionStatistics");
 
 
+
 GAME_SECTION(ST_GetMissionRewardData) ST_MissionRewardData *ST_GetMissionRewardData(int iReward)
 {
 	return &ST_Rewards[iReward];
@@ -92,7 +93,14 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", ST_GetMissionRew
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", ST_GetMissionRewards);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", ST_GetMissionStatistics);
+GAME_SECTION(ST_GetMissionStatistics) void ST_GetMissionStatistics(ST_MissionData *pData)
+{
+	FastMemSet(pData, 0, 0x74);
+	*pData = ST_MissionStatistics;
+	*(int *)pData = mf_missionStatus == 1;
+	pData->iTime = worldUpdateTime / 0x3c;
+	pData->iSkillPoints = ST_GetNumAcquiredSkillPoints();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", func_004FC288);
 
@@ -144,7 +152,25 @@ GAME_SECTION(ST_AcquiredAllSkillPoints) int ST_AcquiredAllSkillPoints()
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", ST_GetNumDifficultyStars);
+/* ===== AJ near misses ===== */
+GAME_SECTION(ST_GetNumDifficultyStars) int ST_GetNumDifficultyStars()
+{
+	int totalStars = 0;
+	int i, j;
+	for (i = 1; i < 0x10; i++) {
+		for (j = 0; j < 0x40; j++) {
+			if ((&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars - 1 < 0) continue;
+			if (GetMissionDef(ConvertMissionIndex(i, j))->hidden) continue;
+			if ((i == 1 || i == 0x15) && j < 9) continue;
+			{
+				int stars = (&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars;
+				stars += totalStars;
+				totalStars = stars;
+			}
+		}
+	}
+	return totalStars;
+}
 
 GAME_SECTION(ST_GetNumRemainingDifficultyStars) int ST_GetNumRemainingDifficultyStars()
 {

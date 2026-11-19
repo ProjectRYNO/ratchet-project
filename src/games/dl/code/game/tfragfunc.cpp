@@ -114,7 +114,41 @@ struct Path {
 };
 int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPathNode");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/tfragfunc", SetTfragDists);
+;
+
+GAME_SECTION(SetTfragDists) void SetTfragDists()
+{
+	float dist_0;
+	float dist_1;
+	float dist_2;
+	float den_0;
+	float den_1;
+	float b_0;
+	float b_1;
+	float *pf;
+	dist_0 = TfragDists[0] * VC.fogMult;
+	dist_1 = TfragDists[1] * VC.fogMult;
+	dist_2 = TfragDists[2] * VC.fogMult;
+	den_0 = 1.0f / (dist_0 - dist_1);
+	den_1 = 1.0f / (dist_1 - dist_2);
+	TfragIntDists[0] = (int)(TfragDists[0] * 1024.0f);
+	TfragIntDists[1] = (int)(TfragDists[1] * 1024.0f);
+	TfragIntDists[2] = (int)(TfragDists[2] * 1024.0f);
+	b_0 = dist_0 * den_0;
+	b_1 = dist_1 * den_1;
+	pf = tfrag_setup_consts;
+	FastMemZero16(pf, 0x40);
+	pf[0] = den_0 * 0.5f;
+	pf[1] = -den_0;
+	pf[8] = dist_1 * den_0 * -0.5f;
+	pf[9] = b_0;
+	pf[3] = dist_0;
+	pf[4] = den_1 * 0.5f;
+	pf[5] = -den_1;
+	pf[12] = dist_2 * den_1 * -0.5f;
+	pf[13] = b_1;
+	pf[7] = dist_1;
+}
 
 GAME_SECTION(SetTfragDistsByFOV) void SetTfragDistsByFOV(int reset)
 {

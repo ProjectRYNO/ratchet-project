@@ -159,7 +159,14 @@ void PostEffects_AddRemapAlpha_imm(int, int, int, int, int, int, int, int, int) 
 void VU1_addGSregister(unsigned int, unsigned long, bool) __asm__("VU1_addGSregister");
 void PostEffects_DofCreate_new() __asm__("PostEffects_DofCreate_new");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_LocalAlloc);
+/* ===== AJ near misses ===== */
+
+GAME_SECTION(PostEffects_LocalAlloc) int PostEffects_LocalAlloc(int &loc, int size)
+{
+	int ret = (loc + 0x1fff) & -0x2000;
+	loc = ret + size;
+	return ret;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddStrips);
 
@@ -351,7 +358,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F9
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddMulByAlpha);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_Init_new);
+GAME_SECTION(PostEffects_Init_new) void PostEffects_Init_new()
+{
+	g_PostEffectsSrcW = aaBuff.drawW;
+	g_PostEffectsSrcH = aaBuff.drawH;
+	g_PeInfo.m_PrevScreenW = 0;
+	g_PeInfo.m_PrevScreenH = 0;
+	g_PeInfo.m_PrevPane_sx = 0.0f;
+	g_PeInfo.m_PrevPane_sy = 0.0f;
+	PostEffects_FrameInit_new();
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_FrameInit_new);
 

@@ -39,6 +39,35 @@ typedef struct navCluster {
 typedef struct navElem12 {
 	/* 0x00 */ int data[3];
 } navElem12_t;
+typedef struct navSector {
+	/* 0x00 */ short firstCluster;
+	/* 0x02 */ short numClusters;
+	/* 0x04 */ short firstPartition;
+	/* 0x06 */ short numPartitions;
+	/* 0x08 */ short flags;
+	/* 0x0a */ short pad;
+} navSector_t;
+typedef struct navgNodeAJ {
+	/* 0x00 */ char unk00[8];
+	/* 0x08 */ unsigned short cluster;
+	/* 0x0a */ char unk0a[0x16];
+} navgNodeAJ_t;
+typedef struct navgClusterAJ {
+	/* 0x00 */ unsigned short firstNode;
+	/* 0x02 */ unsigned short numNodes;
+	/* 0x04 */ unsigned short firstPath;
+	/* 0x06 */ short unk06[3];
+} navgClusterAJ_t;
+typedef struct navgPathListAJ {
+	/* 0x00 */ unsigned short firstPath;
+	/* 0x02 */ short numPaths;
+} navgPathListAJ_t;
+typedef struct navgPathAJ {
+	/* 0x00 */ unsigned short nextNode;
+	/* 0x02 */ unsigned short nextEdge;
+	/* 0x04 */ unsigned short dist;
+	/* 0x06 */ unsigned short traversalFlags;
+} navgPathAJ_t;
 typedef struct navSys {
 	/* 0x0000 */ char unk00[0x3000];
 	/* 0x3000 */ int version;
@@ -52,7 +81,8 @@ typedef struct navSys {
 	/* 0x3020 */ navElem8_t *neighbors;
 	/* 0x3024 */ int edgeMax;
 	/* 0x3028 */ navEdge_t *edges;
-	/* 0x302c */ int unk302c[2];
+	/* 0x302c */ int numSectors;
+	/* 0x3030 */ navSector_t *sectors;
 	/* 0x3034 */ int numPartitions;
 	/* 0x3038 */ navElem4_t *partitions;
 	/* 0x303c */ int numClusterPaths;
@@ -94,6 +124,11 @@ int navg_LoadClusterPaths(char *, char *&, void *) __asm__("navg_LoadClusterPath
 int navg_LoadPartitions(char *, char *&, void *) __asm__("navg_LoadPartitions");
 int navg_LoadClusters(char *, char *&, void *) __asm__("navg_LoadClusters");
 
+/* ===== AJ additions ===== */
+void navg_FindBestIntraClusterPath(unsigned short, unsigned short, int, unsigned short &, unsigned short &, int &) __asm__("navg_FindBestIntraClusterPath");
+#define NAVG_VSET(type, lvalue, value) (*(type volatile *)&(lvalue) = (value))
+int navg_LoadSectors(char *, char *&, void *) __asm__("navg_LoadSectors");
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentBoxLocalZeroVec);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentSphereLocal);
@@ -123,7 +158,25 @@ GAME_SECTION(navg_AllocMemory) char *navg_AllocMemory(int size, char **ptr, char
 	return mem;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadClusters);
+GAME_SECTION(navg_LoadClusters) int navg_LoadClusters(char *fileData, char *&dataMem, void *endMemory)
+{
+	int i;
+	FastMemCopy(&g_navSys->numClusters, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navCluster_t, clusters) = (navCluster_t *)navg_AllocMemory(g_navSys->numClusters * 12, &dataMem, (char *)endMemory);
+	if (g_navSys->clusters == 0) return 1;
+	for (i = 0; i < g_navSys->numClusters; i++) {
+		if (g_navSys->version >= 2) {
+			FastMemCopy(&g_navSys->clusters[i], fileData, 12);
+			fileData += 12;
+		} else {
+			FastMemCopy(&g_navSys->clusters[i], fileData, 8);
+			fileData += 8;
+			g_navSys->clusters[i].sector = 0;
+		}
+	}
+	return 0;
+}
 
 GAME_SECTION(navg_LoadNodes) int navg_LoadNodes(char *fileData, char *&dataMem, void *endMemory)
 {
@@ -300,7 +353,30 @@ GAME_SECTION(navg_LoadPartitions) int navg_LoadPartitions(char *fileData, char *
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_LoadSectors);
+GAME_SECTION(navg_LoadSectors) int navg_LoadSectors(char *fileData, char *&dataMem, void *endMemory)
+{
+	int i;
+	if (g_navSys->version < 2) {
+		NAVG_STORE(navSector_t, sectors) = (navSector_t *)navg_AllocMemory(0xc, &dataMem, (char *)endMemory);
+		if (g_navSys->sectors == 0) return 1;
+		NAVG_VSET(int, g_navSys->numSectors, 1);
+		NAVG_VSET(short, g_navSys->sectors->firstCluster, 0);
+		NAVG_VSET(short, g_navSys->sectors->numClusters, g_navSys->numClusters);
+		NAVG_VSET(short, g_navSys->sectors->firstPartition, 0);
+		NAVG_VSET(short, g_navSys->sectors->numPartitions, 0);
+		g_navSys->sectors->flags = 0;
+		return 0;
+	}
+	FastMemCopy(&g_navSys->numSectors, fileData, 4);
+	fileData += 4;
+	NAVG_STORE(navSector_t, sectors) = (navSector_t *)navg_AllocMemory(g_navSys->numSectors * 12, &dataMem, (char *)endMemory);
+	if (g_navSys->sectors == 0) return 1;
+	for (i = 0; i < g_navSys->numSectors; i++) {
+		FastMemCopy(&g_navSys->sectors[i], fileData, 12);
+		fileData += 12;
+	}
+	return 0;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_LoadFile);
 
@@ -317,7 +393,28 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_Find
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048D220);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_FindBestIntraClusterPath);
+GAME_SECTION(navg_FindBestIntraClusterPath) void navg_FindBestIntraClusterPath(unsigned short source, unsigned short destination, int traversalFlags, unsigned short &bestPath, unsigned short &bestEdge, int &shortestDist)
+{
+	navgClusterAJ_t *cl;
+	navgPathListAJ_t *pl;
+	navgPathAJ_t *path;
+	navgPathAJ_t *end;
+	bestPath = 0xffff;
+	bestEdge = 0xffff;
+	shortestDist = 0xffffff;
+	navgNodeAJ_t *n = &((navgNodeAJ_t *)g_navSys->nodes)[source];
+	cl = (navgClusterAJ_t *)(n->cluster * 12 + (int)g_navSys->clusters);
+	pl = &((navgPathListAJ_t *)g_navSys->pathLists)[cl->firstPath + (source - cl->firstNode) * cl->numNodes + (destination - cl->firstNode)];
+	path = &((navgPathAJ_t *)g_navSys->paths)[pl->firstPath];
+	end = path + pl->numPaths;
+	for (; path < end; path++) {
+		if (path->dist < shortestDist && path->nextNode != 0xffff && (path->traversalFlags & traversalFlags) == path->traversalFlags) {
+			bestPath = path->nextNode;
+			bestEdge = path->nextEdge;
+			shortestDist = path->dist;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_FindBestInterClusterPath);
 
