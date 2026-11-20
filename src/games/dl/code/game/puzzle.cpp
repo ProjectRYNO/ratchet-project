@@ -1,11 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
-struct moby {
-	/* 0x00 */ char unk00[0x34];
-	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0x100 - 0x36];
-};
 struct ViewContext {
 	/* 0x000 */ char unk000[0x25c];
 	/* 0x25c */ int bgR;
@@ -39,7 +35,7 @@ GAME_SECTION(InitModeGadgetPuzzle) void InitModeGadgetPuzzle(moby *pMaster, int 
 	pMoby = MobyInstances;
 	goto test;
 	do {
-		pMoby->state |= 0x80;
+		pMoby->modeBits |= 0x80;
 		pMoby++;
 test:
 		;
@@ -55,7 +51,7 @@ GAME_SECTION(UnInitModeGadgetPuzzle) void UnInitModeGadgetPuzzle()
 	pMoby = MobyInstances;
 	goto test;
 	do {
-		pMoby->state &= ~0x80;
+		pMoby->modeBits &= ~0x80;
 		pMoby++;
 test:
 		;

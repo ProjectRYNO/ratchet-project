@@ -1,41 +1,9 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
-struct moby {
-	/* 0x00 */ char unk00[0x10];
-	/* 0x10 */ vec4 pos;
-	/* 0x20 */ unsigned char bits;
-	/* 0x21 */ char unk21[3];
-	/* 0x24 */ void *pClass;
-	/* 0x28 */ char unk28[0x31 - 0x28];
-	/* 0x31 */ unsigned char drawn;
-	/* 0x32 */ char unk32[0x34 - 0x32];
-	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0x40 - 0x36];
-	/* 0x40 */ struct MobySeq *animSeq;
-	/* 0x44 */ float animSeqT;
-	/* 0x48 */ float animSpeed;
-	/* 0x4c */ unsigned short animIScale;
-	/* 0x4e */ short poseCacheEntryIndex;
-	/* 0x50 */ struct MobyAnimLayer *pLayers;
-	/* 0x54 */ char unk54;
-	/* 0x55 */ unsigned char animFlags;
-	/* 0x56 */ char unk56;
-	/* 0x57 */ unsigned char jointCnt;
-	/* 0x58 */ char *pJoints;
-	/* 0x5c */ void *pManipulator;
-	/* 0x60 */ char unk60[0x6c - 0x60];
-	/* 0x6c */ unsigned char soundTrigger;
-	/* 0x6d */ unsigned char soundDesired;
-	/* 0x6e */ char unk6e[0xbc - 0x6e];
-	/* 0xbc */ short oClass;
-	/* 0xbe */ char unkbe[0x100 - 0xbe];
-};
+
 struct PoseCacheEntry {
 	/* 0x00 */ short cacheIndex;
 	/* 0x02 */ short jointCnt;
@@ -96,7 +64,7 @@ struct MobyAnimLayer {
 extern unsigned char MobyAnimLayerCacheUsed[] __asm__("D_266F00");
 extern MobyAnimLayer MobyAnimLayerCache[] __asm__("D_266B00");
 void AnimEvaluate(moby *, int) __asm__("AnimEvaluate");
-void AnimResolveMats(char *, int, int) __asm__("AnimResolveMats");
+void AnimResolveMats(mtx4 *, int, int) __asm__("AnimResolveMats");
 void FastMemZero16(void *, int) __asm__("FastMemZero16");
 void AnimEvaluateResolve(moby *) __asm__("AnimEvaluateResolve");
 void CleanupAnimLayers(moby *) __asm__("CleanupAnimLayers");
@@ -231,7 +199,7 @@ GAME_SECTION(AnimEvaluate) void AnimEvaluate(moby *pMoby, int QST)
 		AnimEvaluate_LowLevel(pMoby->animSeq, pMoby->animSeqT);
 	}
 	MobyAnimLayer *pLayer;
-	for (pLayer = pMoby->pLayers; pLayer; pLayer = pLayer->next) {
+	for (pLayer = pMoby->animLayers; pLayer; pLayer = pLayer->next) {
 		unsigned char *pFrameData = pLayer->animSeq->frameData;
 		if ((unsigned char)pLayer->animJointIndexA == 0xff) {
 			AnimPreprocessSubskeleton(pFrameData[6], pFrameData[7], 0, 0);
@@ -256,9 +224,9 @@ GAME_SECTION(AnimEvaluate) void AnimEvaluate(moby *pMoby, int QST)
 
 GAME_SECTION(AnimEvaluateResolve) void AnimEvaluateResolve(moby *pMoby)
 {
-	if (pMoby && pMoby->pJoints) {
+	if (pMoby && pMoby->jointCache) {
 		AnimEvaluate(pMoby, 0x70000000);
-		AnimResolveMats(pMoby->pJoints, pMoby->jointCnt, 0x70000000);
+		AnimResolveMats(pMoby->jointCache, pMoby->jointCnt, 0x70000000);
 		pMoby->animFlags &= 0xdf;
 	}
 }
@@ -268,7 +236,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", ProcessMani
 GAME_SECTION(MobyAllocAnimLayer) MobyAnimLayer *MobyAllocAnimLayer(moby *pMoby)
 {
 	int i;
-	if (!pMoby->drawn || (pMoby->bits & 0x80)) return 0;
+	if (!pMoby->drawn || (pMoby->state & 0x80)) return 0;
 	for (i = 0; i < 0x20; i++) {
 		if (!MobyAnimLayerCacheUsed[i]) {
 			MobyAnimLayerCacheUsed[i] = 1;
@@ -314,7 +282,7 @@ GAME_SECTION(MobyAttachAnimLayer) MobyAnimLayer *MobyAttachAnimLayer(moby *pMoby
 		pNewLayer->blendFade = 0.0f;
 		if (fadeSteps > 0) pNewLayer->blendFade = -1.0f / (float)fadeSteps;
 		pNewLayer->blendWeight = -pNewLayer->blendFade;
-		ppNewLayer = &pMoby->pLayers;
+		ppNewLayer = &pMoby->animLayers;
 		while (*ppNewLayer) ppNewLayer = &(*ppNewLayer)->next;
 		*ppNewLayer = pNewLayer;
 		pNewLayer->next = 0;
@@ -330,7 +298,7 @@ GAME_SECTION(MobyDetachAnimLayer) void MobyDetachAnimLayer(moby *pMoby, MobyAnim
 		pLayer->blendWeight -= pLayer->blendFade;
 		if (!(pLayer->blendWeight <= 0.0f)) return;
 	}
-	ppLayer = &pMoby->pLayers;
+	ppLayer = &pMoby->animLayers;
 	while (*ppLayer) {
 		if (*ppLayer == pLayer) {
 			*ppLayer = pLayer->next;
@@ -348,8 +316,8 @@ GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, Mo
 	if (fadeSteps >= 2) {
 		MobyAnimLayer *pNewLayer = MobyAllocAnimLayer(pMoby);
 		if (pNewLayer) {
-			pNewLayer->next = pMoby->pLayers;
-			pMoby->pLayers = pNewLayer;
+			pNewLayer->next = pMoby->animLayers;
+			pMoby->animLayers = pNewLayer;
 			pNewLayer->animSeq = pMoby->animSeq;
 			float t = pMoby->animSeqT;
 			pNewLayer->animSpeed = 0.0f;
@@ -364,7 +332,7 @@ GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, Mo
 			AllocPoseCacheEntry(pNewLayer, pMoby->pClass);
 		}
 	} else {
-		MobyAnimLayer **ppLayer = &pMoby->pLayers;
+		MobyAnimLayer **ppLayer = &pMoby->animLayers;
 		while (*ppLayer) {
 			MobyAnimLayer *pLayer = *ppLayer;
 			if (pLayer->blendFade > 0.0f) {
@@ -375,7 +343,7 @@ GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, Mo
 			}
 		}
 	}
-	pMoby->unk54 = seqId;
+	pMoby->animSeqId = seqId;
 	pMoby->animSeq = seq;
 	pMoby->animSpeed = 1.0f;
 	pMoby->animSeqT = seqT;
@@ -384,18 +352,18 @@ GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, Mo
 	pMoby->animIScale = fr[(int)seqT].iscale;
 	pMoby->soundTrigger = seq->trigsCnt;
 	pMoby->soundDesired = seq->sound;
-	if (pMoby->pJoints) AnimEvaluateResolve(pMoby);
+	if (pMoby->jointCache) AnimEvaluateResolve(pMoby);
 }
 
 GAME_SECTION(CleanupAnimLayers) void CleanupAnimLayers(moby *pMoby)
 {
-	MobyAnimLayer *pLayer = pMoby->pLayers;
+	MobyAnimLayer *pLayer = pMoby->animLayers;
 	while (pLayer) {
 		MobyAnimLayer *pNext = pLayer->next;
 		MobyFreeAnimLayer(pLayer);
 		pLayer = pNext;
 	}
-	pMoby->pLayers = 0;
+	pMoby->animLayers = 0;
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", func_0046F4A0);
@@ -403,12 +371,12 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", func_0046F4
 GAME_SECTION(GetMobyAnimJointOffset) void *GetMobyAnimJointOffset(moby *pMoby, int joint_index)
 {
 	int joint = *AnimGetSubskeleton((char)joint_index, pMoby->pClass);
-	return (void *)(joint * 0x40 + (int)pMoby->pJoints + 0x30);
+	return (void *)(joint * 0x40 + (int)pMoby->jointCache + 0x30);
 }
 
 GAME_SECTION(GetMobyAnimJointMat) void *GetMobyAnimJointMat(moby *pMoby, int joint_index)
 {
-	return pMoby->pJoints + *AnimGetSubskeleton((char)joint_index, pMoby->pClass) * 0x40;
+	return pMoby->jointCache + *AnimGetSubskeleton((char)joint_index, pMoby->pClass);
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", NewPostUpdateMobyBsphere);

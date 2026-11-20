@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
+#include "gameglobals.h"
 struct FXRegistrySystemInternal;
 
 
@@ -66,10 +68,6 @@ struct MusicGlobals {
 	/* 0x08 */ char unk08[0xdc];
 };
 extern MusicGlobals Music __asm__("Music");
-struct MobyInstance {
-	/* 0x00 */ char unk00[0xac];
-	/* 0xac */ void *pVar;
-};
 struct SceneDef {
 	/* 0x000 */ char unk000[0x74];
 	/* 0x074 */ int iframe;
@@ -93,11 +91,7 @@ struct MemSlotsDef {
 	/* 0x9c */ char *perm_base;
 };
 extern MemSlotsDef MemSlots __asm__("D_0023AB10");
-struct GsMemDef {
-	/* 0x00 */ int unk00[2];
-	/* 0x08 */ int zbuf;
-};
-extern GsMemDef GSmem __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 extern "C" {
 	int snd_FlushSoundCommands();
 	void snd_StartCaching();

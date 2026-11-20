@@ -1,20 +1,11 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyupd.h"
+#include "lights.h"
+#include "tiefunc.h"
+#include "tfragfunc.h"
 
 /* lights */
-struct PointLight {
-	/* 0x00 */ char unk00[0x20];
-};
-struct PL_Data {
-	/* 0x00 */ short tie_offset;
-	/* 0x02 */ short tie_count;
-	/* 0x04 */ short shrub_offset;
-	/* 0x06 */ short shrub_count;
-	/* 0x08 */ short tfrag_offset;
-	/* 0x0a */ short tfrag_count;
-	/* 0x0c */ short *list;
-	/* 0x10 */ char unk10[0x20];
-};
 extern PointLight PointLights[] __asm__("PointLights");
 extern PL_Data PointLightData[] __asm__("PointLightData");
 void FastMemZero16(void *, int) __asm__("FastMemZero16");
@@ -23,14 +14,6 @@ void DeletePointLight(int index) __asm__("DeletePointLight");
 
 
 /* mobyupd */
-struct mobyfuncs {
-	/* 0x00 */ void *funcs[8];
-};
-struct mobyVtblEntry {
-	/* 0x00 */ int oClass;
-	/* 0x04 */ void *update;
-	/* 0x08 */ mobyfuncs *funcs;
-};
 extern mobyVtblEntry mobyupdate_vtbl[] __asm__("D_003F0E80");
 extern mobyfuncs empty_moby_funcs __asm__("D_3D8C70");
 extern mobyfuncs default_moby_funcs[] __asm__("D_3F0E8C");
@@ -40,15 +23,6 @@ extern unsigned char MobyClassFuncsIndex[] __asm__("MobyClassFuncsIndex");
 extern unsigned char MobyClassNullFuncsIndex[] __asm__("MobyClassNullFuncsIndex");
 mobyfuncs *GetMobyFunctions(int oClass) __asm__("GetMobyFunctions___dupe2");
 /* tiefunc */
-struct TieInstance {
-	/* 0x00 */ char unk00[0x14];
-	/* 0x14 */ unsigned short cache_loc;
-	/* 0x16 */ short cache_size;
-	/* 0x18 */ short unk18;
-	/* 0x1a */ unsigned short lights;
-	/* 0x1c */ char unk1c[3];
-	/* 0x1f */ unsigned char cache_lod;
-};
 struct MemSlotsDef {
 	/* 0x00 */ int unk00[1];
 	/* 0x04 */ void *tie_cache;
@@ -79,10 +53,6 @@ struct Path {
 };
 int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPathNode");
 /* tfragfunc */
-struct TfragPatch {
-	/* 0x00 */ int *ptr;
-	/* 0x04 */ int count;
-};
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
 extern short TfragGsLocStash[][2] __asm__("TfragGsLocStash");
 void PatchTfragGifs() __asm__("PatchTfragGifs");

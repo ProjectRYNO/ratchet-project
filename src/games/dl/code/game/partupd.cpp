@@ -1,16 +1,14 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
-struct vec4 { float x, y, z, w; };
 struct part;
 part *CreatePart(int) __asm__("CreatePart");
-void SpawnPart_097_Main(part *, vec4 &, vec4 &, int, int, int, int, int, float, float, float, int) __asm__("SpawnPart_097_Main");
-part *SpawnPart_097(vec4 &pos, vec4 &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID) __asm__("SpawnPart_097");
+void SpawnPart_097_Main(part *, vec4f &, vec4f &, int, int, int, int, int, float, float, float, int) __asm__("SpawnPart_097_Main");
+part *SpawnPart_097(vec4f &pos, vec4f &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID) __asm__("SpawnPart_097");
 
-typedef unsigned int uint128 __attribute__((mode(TI)));
-struct vec4Quad { uint128 m_v; };
-void SpawnPart_002_Main(part *, vec4Quad &, vec4Quad &, vec4Quad &, int, int, int, int, int, int) __asm__("SpawnPart_002_Main");
-part *SpawnPart_002(vec4Quad &pos, vec4Quad &initVel, vec4Quad &finalVel, int initRGBA, int finalRGBA, int shootTimer, int slowTimer, int fadeTimer, int textureType) __asm__("SpawnPart_002");
+void SpawnPart_002_Main(part *, vec4 &, vec4 &, vec4 &, int, int, int, int, int, int) __asm__("SpawnPart_002_Main");
+part *SpawnPart_002(vec4 &pos, vec4 &initVel, vec4 &finalVel, int initRGBA, int finalRGBA, int shootTimer, int slowTimer, int fadeTimer, int textureType) __asm__("SpawnPart_002");
 struct Part {
 	/* 0x00 */ char unk00;
 	/* 0x01 */ unsigned char type;
@@ -21,11 +19,11 @@ struct Part {
 	/* 0x09 */ unsigned char draw_dist;
 	/* 0x0a */ short timer;
 	/* 0x0c */ float scale;
-	/* 0x10 */ uint128 pos;
+	/* 0x10 */ s128 pos;
 	/* 0x20 */ int update[8];
 };
 struct Part004 {
-	/* 0x00 */ uint128 vel;
+	/* 0x00 */ s128 vel;
 	/* 0x10 */ int beginColor;
 	/* 0x14 */ int endColor;
 	/* 0x18 */ short maxScale;
@@ -34,7 +32,7 @@ struct Part004 {
 };
 extern unsigned char *PartClassTexs[128] __asm__("PartClassTexs");
 extern "C" int rand();
-part *SpawnPart_004(vec4Quad &pos, vec4Quad &vel, int beginColor, int endColor, int lifeSpan, int startScale, int maxScale, int additive) __asm__("SpawnPart_004");
+part *SpawnPart_004(vec4 &pos, vec4 &vel, int beginColor, int endColor, int lifeSpan, int startScale, int maxScale, int additive) __asm__("SpawnPart_004");
 struct Part021 {
 	/* 0x00 */ char unk00;
 	/* 0x01 */ unsigned char b1;
@@ -45,28 +43,28 @@ struct Part021 {
 	/* 0x09 */ unsigned char b9;
 	/* 0x0a */ short timer;
 	/* 0x0c */ float scale;
-	/* 0x10 */ uint128 pos;
+	/* 0x10 */ s128 pos;
 	/* 0x20 */ char vars[0x20];
 };
 struct Part021Vars {
-	/* 0x00 */ uint128 vel;
+	/* 0x00 */ s128 vel;
 	/* 0x10 */ int beginRGBA;
 	/* 0x14 */ int endRGBA;
 	/* 0x18 */ short numFrames;
 	/* 0x1a */ short master;
 	/* 0x1c */ float maxScale;
 };
-part *SpawnPart_021(vec4Quad &pos, vec4Quad &vel, int beginRGBA, int endRGBA, float maxScale, int numFrames, int master) __asm__("SpawnPart_021");
+part *SpawnPart_021(vec4 &pos, vec4 &vel, int beginRGBA, int endRGBA, float maxScale, int numFrames, int master) __asm__("SpawnPart_021");
 
 struct Part035 {
-	/* 0x00 */ uint128 vel;
+	/* 0x00 */ s128 vel;
 	/* 0x10 */ int type;
 	/* 0x14 */ int lifespan;
 	/* 0x18 */ float z;
 	/* 0x1c */ float rate;
 };
 float MB_randRange(float, float) __asm__("MB_randRange");
-part *SpawnPart_035(vec4Quad &pos, vec4Quad &vel, int type, int lifespan) __asm__("SpawnPart_035");
+part *SpawnPart_035(vec4 &pos, vec4 &vel, int type, int lifespan) __asm__("SpawnPart_035");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_002_Main);
 
@@ -74,11 +72,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_002)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00491B80);
 
-GAME_SECTION(SpawnPart_004) part *SpawnPart_004(vec4Quad &pos, vec4Quad &vel, int beginColor, int endColor, int lifeSpan, int startScale, int maxScale, int additive)
+GAME_SECTION(SpawnPart_004) part *SpawnPart_004(vec4 &pos, vec4 &vel, int beginColor, int endColor, int lifeSpan, int startScale, int maxScale, int additive)
 {
 	Part *pPart = (Part *)CreatePart(4);
 	if (pPart) {
-		uint128 tmp = pos.m_v;
+		s128 tmp = pos.v;
 		pPart->draw_dist = 0xa4;
 		pPart->pos = tmp;
 		pPart->rgba = beginColor;
@@ -88,9 +86,9 @@ GAME_SECTION(SpawnPart_004) part *SpawnPart_004(vec4Quad &pos, vec4Quad &vel, in
 		pPart->tex = *PartClassTexs[4];
 		pPart->rot = rand();
 		pPart->scale = 0.0f;
-		pPart->pos = pos.m_v;
+		pPart->pos = pos.v;
 		Part004 *pVar = (Part004 *)pPart->update;
-		uint128 tmp2 = vel.m_v;
+		s128 tmp2 = vel.v;
 		pPart->timer = lifeSpan;
 		pVar->vel = tmp2;
 		pVar->lifeSpan = lifeSpan;
@@ -112,13 +110,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_015)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00492130);
 
-GAME_SECTION(SpawnPart_021) part *SpawnPart_021(vec4Quad &pos, vec4Quad &vel, int beginRGBA, int endRGBA, float maxScale, int numFrames, int master)
+GAME_SECTION(SpawnPart_021) part *SpawnPart_021(vec4 &pos, vec4 &vel, int beginRGBA, int endRGBA, float maxScale, int numFrames, int master)
 {
 	Part021 *pPart;
 	if (numFrames == 0) return 0;
 	pPart = (Part021 *)CreatePart(0x15);
 	if (pPart) {
-		uint128 tmp = pos.m_v;
+		s128 tmp = pos.v;
 		pPart->rgba = beginRGBA;
 		pPart->b1 = 0;
 		pPart->scale = maxScale;
@@ -135,7 +133,7 @@ GAME_SECTION(SpawnPart_021) part *SpawnPart_021(vec4Quad &pos, vec4Quad &vel, in
 		pVar->beginRGBA = beginRGBA;
 		pVar->endRGBA = endRGBA;
 		pVar->master = master;
-		uint128 tmp2 = vel.m_v;
+		s128 tmp2 = vel.v;
 		pVar->vel = tmp2;
 	}
 	return (part *)pPart;
@@ -163,11 +161,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_034)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00492D78);
 
-GAME_SECTION(SpawnPart_035) part *SpawnPart_035(vec4Quad &pos, vec4Quad &vel, int type, int lifespan)
+GAME_SECTION(SpawnPart_035) part *SpawnPart_035(vec4 &pos, vec4 &vel, int type, int lifespan)
 {
 	Part *pPart = (Part *)CreatePart(0x23);
 	if (pPart) {
-		uint128 tmp = pos.m_v;
+		s128 tmp = pos.v;
 		pPart->type = 0;
 		pPart->pos = tmp;
 		pPart->rgba = 0x80808080;
@@ -176,7 +174,7 @@ GAME_SECTION(SpawnPart_035) part *SpawnPart_035(vec4Quad &pos, vec4Quad &vel, in
 		pPart->scale = MB_randRange(10500.0f, 16800.0f);
 		Part035 *pVar = (Part035 *)pPart->update;
 		pPart->tex = *PartClassTexs[0x23];
-		uint128 tmp2 = vel.m_v;
+		s128 tmp2 = vel.v;
 		pVar->vel = tmp2;
 		pVar->lifespan = lifespan;
 		pVar->type = type;
@@ -229,7 +227,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", func_00494440)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/partupd", SpawnPart_097_Main);
 
-GAME_SECTION(SpawnPart_097) part *SpawnPart_097(vec4 &pos, vec4 &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID)
+GAME_SECTION(SpawnPart_097) part *SpawnPart_097(vec4f &pos, vec4f &vel, int frames, int rgb, int rotSp, int initAlpha, int endAlpha, float initScale, float endScale, float gravity, int texID)
 {
 	part *pPart = CreatePart(0x61);
 	if (pPart) SpawnPart_097_Main(pPart, pos, vel, frames, rgb, rotSp, initAlpha, endAlpha, initScale, endScale, gravity, texID);

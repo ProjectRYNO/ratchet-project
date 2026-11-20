@@ -1,20 +1,8 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
+#include "stash.h"
 
-struct StashInfo {
-	/* 0x00 */ char *base;
-	/* 0x04 */ int size;
-	/* 0x08 */ int unk08[10];
-	/* 0x30 */ char *free;
-	/* 0x34 */ int block;
-	/* 0x38 */ char *gadgetram;
-};
-struct StashBlock {
-	/* 0x00 */ char *ram;
-	/* 0x04 */ int qwc;
-	/* 0x08 */ const char *comment;
-	/* 0x0c */ int pad;
-};
 extern StashInfo Stash __asm__("Stash");
 extern StashBlock Blocks[64] __asm__("Blocks");
 extern char g_StashEEMemory[] __asm__("g_StashEEMemory");

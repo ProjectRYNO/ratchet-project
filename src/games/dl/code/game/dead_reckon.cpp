@@ -1,11 +1,8 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
 struct tDR_PositionHistory {
 	/* 0x00 */ vec4 pos[2];
 	/* 0x20 */ int time[2];
@@ -57,12 +54,12 @@ GAME_SECTION(DR_InitVars) void DR_InitVars(tDR_Vars *drVars, vec4 *posInit, int 
 	drVars->Pos_History.time[0] = timeInit - 0x20;
 	drVars->Pos_History.time[1] = timeInit - 0x1f;
 	drVars->Pos_History.count = 0;
-	drVars->Velocity_Tracking.q = zero;
-	drVars->Accel_Tracking.q = zero;
-	drVars->Velocity_Converge.q = zero;
-	drVars->Accel_Converge.q = zero;
-	drVars->Velocity_Current.q = zero;
-	drVars->Accel_Current.q = zero;
+	drVars->Velocity_Tracking.v = zero;
+	drVars->Accel_Tracking.v = zero;
+	drVars->Velocity_Converge.v = zero;
+	drVars->Accel_Converge.v = zero;
+	drVars->Velocity_Current.v = zero;
+	drVars->Accel_Current.v = zero;
 	drVars->Pos_Start = *posInit;
 	drVars->Pos_Converge = *posInit;
 	drVars->Pos_Current = *posInit;

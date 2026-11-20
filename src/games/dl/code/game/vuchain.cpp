@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 
 typedef int qwordWords[4];
@@ -69,12 +70,7 @@ int GSRegisterListOpen __asm__("GSRegisterListOpen") GAME_GP_DATA = 0;
 void VU0_loadMicroProgram(unsigned long *) __asm__("VU0_loadMicroProgram");
 void VU1_addGSregister(unsigned int, unsigned long, int) __asm__("VU1_addGSregister");
 void StashGSMem(void *, int, int) __asm__("StashGSMem");
-struct AABuff {
-	/* 0x000 */ char unk000[0x150];
-	/* 0x150 */ short drawW;
-	/* 0x152 */ short drawH;
-};
-extern AABuff aaBuff __asm__("aaBuff");
+extern fsAABuff aaBuff __asm__("aaBuff");
 extern char reset_gs_regs_draw[] __asm__("reset_gs_regs_draw");
 extern char reset_gs_regs_scis[] __asm__("reset_gs_regs_scis");
 extern int vu1_use __asm__("vu1_use");

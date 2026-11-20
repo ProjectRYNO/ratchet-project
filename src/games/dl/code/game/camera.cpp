@@ -1,26 +1,10 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
-struct moby {
-	/* 0x00 */ char unk00[0x10];
-	/* 0x10 */ vec4 pos;
-	/* 0x20 */ unsigned char bits;
-	/* 0x21 */ char unk21[3];
-	/* 0x24 */ void *pClass;
-	/* 0x28 */ char unk28[0x34 - 0x28];
-	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0x58 - 0x36];
-	/* 0x58 */ char *pJoints;
-	/* 0x5c */ char unk5c[0xbc - 0x5c];
-	/* 0xbc */ short oClass;
-	/* 0xbe */ char unkbe[0x100 - 0xbe];
-};
+
 struct UpdateCam {
 	/* 0x00 */ char unk00[0x7d];
 	/* 0x7d */ unsigned char active;
@@ -252,12 +236,12 @@ GAME_SECTION(Camera_CopyLastQuatToPolar) void Camera_CopyLastQuatToPolar(int cam
 {
 	CameraPolar *polar = (CameraPolar *)((char *)GameCamera + 0x2b0 + cameraIndex * 0x470);
 	if (polar->valid == 0) {
-		s128 pos = polar->quat[0].q;
-		polar->lastPolar[0].q = pos;
+		s128 pos = polar->quat[0].v;
+		polar->lastPolar[0].v = pos;
 		if (polar->reqType == 2) {
-			s128 m = GameCamera[cameraIndex].moveActualFromExternal.q;
+			s128 m = GameCamera[cameraIndex].moveActualFromExternal.v;
 			VU0_OP("vadd.xyz %0, %0, %1" : "+j"(m) : "j"(pos));
-			polar->lastPolar[0].q = m;
+			polar->lastPolar[0].v = m;
 		}
 		polar->lastPolar[1] = polar->quat[1];
 	}

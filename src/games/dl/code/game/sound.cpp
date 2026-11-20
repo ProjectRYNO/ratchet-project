@@ -1,13 +1,9 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
 
 
-struct moby {
-	/* 0x00 */ char unk00[0x6e];
-	/* 0x6e */ short soundChannel;
-	/* 0x70 */ char unk70[0x90];
-};
 struct SoundInstance;
 struct SoundDef {
 	/* 0x00 */ float minRange;
@@ -51,7 +47,7 @@ struct SoundGlobals {
 	/* 0x000 */ char unk000[0x48];
 	/* 0x048 */ int cam_history_pos;
 	/* 0x04c */ int unk04c;
-	/* 0x050 */ uint128 cam_history[4];
+	/* 0x050 */ s128 cam_history[4];
 	/* 0x090 */ char unk090[0x2c0 - 0x90];
 	/* 0x2c0 */ SoundData channels[52];
 };
@@ -142,9 +138,6 @@ extern SoundDef *LevelSounds __asm__("LevelSounds");
 extern int CoreSoundCnt __asm__("CoreSoundCnt");
 extern int LevelSoundCnt __asm__("LevelSoundCnt");
 
-struct vec4 {
-	/* 0x00 */ uint128 m_v;
-};
 int sound_SetOffset(short handle, vec4 &offset) __asm__("sound_SetOffset");
 extern "C" {
 	void snd_SendCache();
@@ -156,10 +149,10 @@ void lineEmitterSetAttrib(lineEmitter *pEmitter, unsigned int attrib, void *valu
 
 /* Camera is only reached here for its position quadword */
 struct CameraPosView {
-	/* 0x00 */ uint128 pos;
+	/* 0x00 */ s128 pos;
 };
 extern CameraPosView Camera __asm__("Camera");
-int sound_GetFade(SoundData *, uint128 &, uint128 *, bool) __asm__("sound_GetFade___dupe2");
+int sound_GetFade(SoundData *, s128 &, s128 *, bool) __asm__("sound_GetFade___dupe2");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_CreateHandle);
 
@@ -177,16 +170,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_Occl);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_GetFade);
 
-GAME_SECTION(sound_GetFade___dupe2) int sound_GetFade(SoundData *channel, uint128 &soundPos, uint128 *camPos, bool bForceExp)
+GAME_SECTION(sound_GetFade___dupe2) int sound_GetFade(SoundData *channel, s128 &soundPos, s128 *camPos, bool bForceExp)
 {
-	volatile uint128 tmp;
-	volatile uint128 tmp2;
+	volatile s128 tmp;
+	volatile s128 tmp2;
 	float dist;
 	if (!camPos) camPos = &Camera.pos;
 	{
-		register uint128 c __asm__("vf3") = *camPos;
-		register uint128 one __asm__("vf2");
-		register uint128 d __asm__("vf1");
+		register s128 c __asm__("vf3") = *camPos;
+		register s128 one __asm__("vf2");
+		register s128 d __asm__("vf1");
 		VU0_OP("vmaxw.xyzw %0, vf0, vf0w" : "=j"(one));
 		d = soundPos;
 		VU0_OP("vsub.xyz %0, %0, %1" : "+j"(d) : "j"(c));

@@ -1,30 +1,9 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
-struct moby {
-	/* 0x00 */ char unk00[0x10];
-	/* 0x10 */ vec4 pos;
-	/* 0x20 */ unsigned char bits;
-	/* 0x21 */ char unk21[3];
-	/* 0x24 */ void *pClass;
-	/* 0x28 */ char unk28[0x34 - 0x28];
-	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0x48 - 0x36];
-	/* 0x48 */ float animSpeed;
-	/* 0x4c */ char unk4c[0x54 - 0x4c];
-	/* 0x54 */ unsigned char animSeqId;
-	/* 0x55 */ unsigned char animFlags;
-	/* 0x56 */ char unk56[0x58 - 0x56];
-	/* 0x58 */ char *pJoints;
-	/* 0x5c */ char unk5c[0xbc - 0x5c];
-	/* 0xbc */ short oClass;
-	/* 0xbe */ char unkbe[0x100 - 0xbe];
-};
+
 struct MoveVars_V2 {
 	/* 0x000 */ unsigned int flagsA;
 	/* 0x004 */ unsigned int flags;
@@ -195,7 +174,7 @@ GAME_SECTION(MB_Stand_2) int MB_Stand_2(moby *pMoby)
 {
 	MoveVars_V2 *pVars = MB_GetMoveVars(pMoby);
 	int ret;
-	if (pVars) ret = MB_Move_2(pMoby, pMoby->pos.q, 0.0f, pVars->standSpeed, 0);
+	if (pVars) ret = MB_Move_2(pMoby, pMoby->pos.v, 0.0f, pVars->standSpeed, 0);
 	else ret = 0;
 	return ret;
 }
@@ -361,7 +340,7 @@ GAME_SECTION(MB_SwitchToDeathState) void MB_SwitchToDeathState(moby *pMoby)
 		int deathType = rVars->deathType;
 		if (rVars->effectTimers[0] && deathType != 6) deathType = 3;
 		int state = rVars->deathState;
-		if (state == 0xff) state = pMoby->bits;
+		if (state == 0xff) state = pMoby->state;
 		if ((unsigned int)(deathType - 5) < 2) {
 			if (rVars->deathEffectState != 0xff) state = rVars->deathEffectState;
 		}
@@ -403,7 +382,7 @@ GAME_SECTION(MB_UpdateMoveEffects) void MB_UpdateMoveEffects(moby *pMoby)
 {
 	MoveVars_V2 *pMoveVars = MB_GetMoveVars(pMoby);
 	if (!pMoveVars) return;
-	if (pMoby->state & 1) return;
+	if (pMoby->modeBits & 1) return;
 	if (!MB_GetMoveVars(pMoby)) return;
 	if (MB_GetMoveVars(pMoby)->flags & 0x100) return;
 	if (0.0f < pMoveVars->passThruSurface) {

@@ -1,12 +1,9 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
 struct Cuboid {
 	/* 0x00 */ char unk00[0x80];
 };
@@ -23,15 +20,6 @@ extern char RandSphereTemp __asm__("D_222010");
 s128 GetVectorSphere(vec4 *, float, float, float) __asm__("GetVectorSphere");
 void MB_randSphere(vec4 &, float, float) __asm__("MB_randSphere");
 
-struct moby {
-	/* 0x00 */ char unk00[0x20];
-	/* 0x20 */ unsigned char bits;
-	/* 0x21 */ char unk21[0x34 - 0x21];
-	/* 0x34 */ unsigned short state;
-	/* 0x36 */ char unk36[0xbc - 0x36];
-	/* 0xbc */ short oClass;
-	/* 0xbe */ char unkbe[0x100 - 0xbe];
-};
 struct MobyInterface {
 	/* 0x00 */ int unk00;
 	/* 0x04 */ int (*check)(moby *);
@@ -87,7 +75,7 @@ GAME_SECTION(MB_randSphere) void MB_randSphere(vec4 &v, float minRad, float maxR
 	float a = MB_randRot();
 	float b = MB_randRot();
 	float r = MB_randRange(minRad, maxRad);
-	v.q = GetVectorSphere((vec4 *)&RandSphereTemp, r, a, b);
+	v.v = GetVectorSphere((vec4 *)&RandSphereTemp, r, a, b);
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bootutil", FUN_00472818);

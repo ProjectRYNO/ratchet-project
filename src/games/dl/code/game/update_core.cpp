@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "globals.h"
 struct binblock;
 struct UberSound;
 
@@ -17,11 +18,6 @@ typedef struct soundDataView {
 	/* 0x43 */ unsigned char reverb_changed;
 	/* 0x44 */ char unk44[0x100];
 } soundDataView_t;
-typedef struct movieQueue {
-	/* 0x00 */ char unk00[0x60];
-	/* 0x60 */ int mItemCount;
-	/* 0x64 */ char unk64[0x100];
-} movieQueue_t;
 
 extern restartData_t restartData __asm__("D_171B2C");
 void *mpeg_malloc(unsigned int size, unsigned int align) __asm__("mpeg_malloc");
@@ -42,7 +38,7 @@ unsigned int mpeg_c_allocated __asm__("D_2206E0") GAME_GP_DATA = 0;
 void FastMemZero(void *, int) __asm__("FastMemZero");
 void mpeg_malloc_reset(void *a, unsigned int size_a, void *b, unsigned int size_b, void *c, unsigned int size_c) __asm__("mpeg_malloc_reset");
 extern soundDataView_t Sound __asm__("Sound");
-extern movieQueue_t gMovieQueue __asm__("gMovieQueue");
+extern MovieQueue gMovieQueue __asm__("gMovieQueue");
 extern int gFadeVolumes[6] __asm__("gFadeVolumes");
 extern int pendingGameMode __asm__("pendingGameMode");
 extern void *SceneEndParam __asm__("SceneEndParam");

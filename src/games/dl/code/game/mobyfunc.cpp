@@ -1,11 +1,12 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
+#include "mobyupd.h"
 
 
 
 
-struct Manipulator;
 struct MobyClass {
 	/* 0x00 */ char unk00[0xf];
 	/* 0x0f */ unsigned char shadow;
@@ -13,35 +14,6 @@ struct MobyClass {
 	/* 0x2c */ unsigned char bangles;
 	/* 0x2d */ char mip_dist;
 	/* 0x2e */ short corncob;
-};
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x20];
-	/* 0x20 */ unsigned char state;
-	/* 0x21 */ unsigned char group;
-	/* 0x22 */ char unk22[0x24 - 0x22];
-	/* 0x24 */ MobyClass *pClass;
-	/* 0x28 */ char unk28[0x2d - 0x28];
-	/* 0x2d */ unsigned char deathCnt;
-	/* 0x2e */ char unk2e[0x34 - 0x2e];
-	/* 0x34 */ unsigned short modeBits;
-	/* 0x36 */ unsigned short modeBits2;
-	/* 0x38 */ char unk38[0x40 - 0x38];
-	/* 0x40 */ void *animSeq;
-	/* 0x44 */ float animSeqT;
-	/* 0x48 */ char unk48[0x55 - 0x48];
-	/* 0x55 */ unsigned char animFlags;
-	/* 0x56 */ char unk56[0x5c - 0x56];
-	/* 0x5c */ Manipulator *pManipulator;
-	/* 0x60 */ char unk60[0x6d - 0x60];
-	/* 0x6d */ unsigned char soundDesired;
-	/* 0x6e */ short soundChannel;
-	/* 0x70 */ char unk70[0x74 - 0x70];
-	/* 0x74 */ unsigned short bangles;
-	/* 0x76 */ char unk76[0xa0 - 0x76];
-	/* 0xa0 */ int collCnt;
-	/* 0xa4 */ char unka4[0xac - 0xa4];
-	/* 0xac */ void *pVar;
-	/* 0xb0 */ char unkb0[0x100 - 0xb0];
 };
 struct Moby2dCon {
 	/* 0x00 */ MobyInstance *mobys[8];
@@ -53,10 +25,6 @@ struct Moby2dCon {
 	/* 0x34 */ int scissor_t;
 	/* 0x38 */ int scissor_b;
 	/* 0x3c */ int unk3c;
-};
-struct mobyfuncs {
-	/* 0x00 */ int unk00[4];
-	/* 0x10 */ void *(*getMobyInterface)(int, int, void *);
 };
 extern Moby2dCon g_Moby2dCon __asm__("g_Moby2dCon");
 extern char g_MobyClassDistsStash[] __asm__("g_MobyClassDistsStash");
@@ -76,10 +44,6 @@ void Moby2dDelete(int) __asm__("Moby2dDelete");
 void *MobyGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
 
 
-struct moby {
-	/* 0x00 */ char unk00[0x38];
-	/* 0x38 */ unsigned long lights;
-};
 extern int *MobyVarListTop __asm__("MobyVarListTop");
 extern int *MobyVarList __asm__("MobyVarList");
 extern int *MobyVarListNext __asm__("MobyVarListNext");

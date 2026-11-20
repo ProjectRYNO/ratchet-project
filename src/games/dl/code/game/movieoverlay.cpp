@@ -1,19 +1,16 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
+#include "mobyupd.h"
+#include "gameglobals.h"
+#include "stash.h"
+#include "globals.h"
 
 /* movieoverlay */
-struct fsAABuff {
-	/* 0x00 */ char unk00[0xc0];
-	/* 0xc0 */ char giftagDrawSmall[0x10];
-};
 struct SceneDef {
 	/* 0x00 */ char unk00[0x74];
 	/* 0x74 */ int iframe;
 	/* 0x78 */ char unk78[0x100];
-};
-struct MovieQueue {
-	/* 0x00 */ int intro;
-	/* 0x04 */ int unk04[3];
 };
 typedef int qwordWords[4];
 extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
@@ -26,22 +23,7 @@ void DrawSubtitles() __asm__("DrawSubtitles");
 void UpdateMovieOverlay(unsigned long *vu_ptr, bool init) __asm__("UpdateMovieOverlay");
 
 
-typedef unsigned int qword __attribute__((mode(TI)));
 /* mobyupd */
-struct mobyfuncs {
-	/* 0x00 */ void *funcs[8];
-};
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x22];
-	/* 0x22 */ unsigned char mClass;
-	/* 0x23 */ char unk23[0xbc - 0x23];
-	/* 0xbc */ short oClass;
-};
-struct mobyVtblEntry {
-	/* 0x00 */ int oClass;
-	/* 0x04 */ void *update;
-	/* 0x08 */ mobyfuncs *funcs;
-};
 extern mobyVtblEntry mobyupdate_vtbl[] __asm__("D_003F0E80");
 extern mobyfuncs empty_moby_funcs __asm__("D_3D8C70");
 extern mobyfuncs default_moby_funcs[] __asm__("D_3F0E8C");
@@ -56,20 +38,6 @@ extern int MobyClassNullIndex __asm__("MobyClassNullIndex");
 mobyfuncs *GetMobyFunctions(MobyInstance *pMoby) __asm__("GetMobyFunctions");
 void SetupMobyFunctions(int oClass, int null_moby) __asm__("SetupMobyFunctions");
 /* stash */
-struct StashInfo {
-	/* 0x00 */ char *base;
-	/* 0x04 */ int size;
-	/* 0x08 */ int unk08[10];
-	/* 0x30 */ char *free;
-	/* 0x34 */ int block;
-	/* 0x38 */ char *gadgetram;
-};
-struct StashBlock {
-	/* 0x00 */ char *ram;
-	/* 0x04 */ int qwc;
-	/* 0x08 */ const char *comment;
-	/* 0x0c */ int pad;
-};
 extern StashInfo Stash __asm__("Stash");
 extern StashBlock Blocks[64] __asm__("Blocks");
 extern char g_StashEEMemory[] __asm__("g_StashEEMemory");
@@ -87,15 +55,9 @@ struct wadMisc {
 	/* 0x650 */ int debugfontOffset;
 	/* 0x654 */ int debugfontLength;
 };
-struct GSmemDef {
-	/* 0x00 */ int unk00[5];
-	/* 0x14 */ int perm_debug_font;
-	/* 0x18 */ int unk18[13];
-	/* 0x4c */ int stash_font;
-};
 struct PifHeader;
 extern wadMisc g_wad __asm__("D_001C2040");
-extern GSmemDef GSmem __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern unsigned long DebugFontTex0 __asm__("DebugFontTex0");
 struct Fs {
@@ -109,7 +71,7 @@ GAME_SECTION(UpdateMovieOverlay) void UpdateMovieOverlay(unsigned long *vu_ptr, 
 {
 	vu1_bufPtr = (qwordWords *)vu_ptr;
 	*(int *)vu_ptr = 0x30000009;
-	(*vu1_bufPtr)[1] = (unsigned int)pAAbuff->giftagDrawSmall & 0xfffffff;
+	(*vu1_bufPtr)[1] = (unsigned int)&pAAbuff->giftagDrawSmall & 0xfffffff;
 	(*vu1_bufPtr)[2] = 0;
 	(*vu1_bufPtr)[3] = 0x50000009;
 	vu1_bufPtr[1][0] = 0x30000025;

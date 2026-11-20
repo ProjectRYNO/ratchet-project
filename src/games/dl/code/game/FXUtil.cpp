@@ -1,13 +1,10 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
 
 
 
-typedef int s128 __attribute__((mode(TI)));
-struct vec4 {
-	/* 0x00 */ s128 q;
-};
 struct FXU_CubicPoint {
 	/* 0x00 */ char unk00[9];
 	/* 0x09 */ unsigned char style;
@@ -155,15 +152,15 @@ GAME_SECTION(CubicLine_Update) void CubicLine_Update(void *pThis, FXU_CubicPoint
 		register s128 sqrt2 __asm__("vf4");
 		VU0_OP("qmtc2.ni %1, %0" : "=j"(sqrt2) : "r"(bits));
 		do {
-			register s128 q __asm__("vf1") = pEndPoints->vTangentOccQuat.q;
+			register s128 q __asm__("vf1") = pEndPoints->vTangentOccQuat.v;
 			register s128 v __asm__("vf2");
 			register s128 t __asm__("vf3");
 			iNumEndPoints--;
-			v = pEndPoints->vTangent.q;
+			v = pEndPoints->vTangent.v;
 			VU0_OP("vmulx.xyzw %0, %0, %1x" : "+j"(q) : "j"(sqrt2));
 			VU0_OP("vopmula.xyz ACC, %1, %2\n\tvmaddaw.xyz ACC, %2, %1w\n\tvopmsub.xyz %0, %2, %1" : "=j"(t) : "j"(q), "j"(v));
 			VU0_OP("vopmula.xyz ACC, %1, %2\n\tvmaddaw.xyz ACC, %0, vf0w\n\tvopmsub.xyz %0, %2, %1" : "+j"(v) : "j"(q), "j"(t));
-			pEndPoints->vTangent.q = v;
+			pEndPoints->vTangent.v = v;
 			pEndPoints++;
 		} while (iNumEndPoints != 0);
 	}

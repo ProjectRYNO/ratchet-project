@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 
 struct PAD {
@@ -44,12 +45,7 @@ void UpdatePad(PAD *) __asm__("UpdatePad");
 void UpdatePads() __asm__("UpdatePad___dupe2");
 void Update_HudBitsRepeat() __asm__("Update_HudBitsRepeat");
 
-struct SettingsDef {
-	/* 0x00 */ char unk00[0xa8];
-	/* 0xa8 */ unsigned char FirstPersonModeOn[4];
-};
 extern int g_gameType __asm__("g_gameType");
-extern SettingsDef bootSettings __asm__("bootSettings");
 int PadRingBitsOn(int bits, int frames, int *pFrame, PAD *pIn) __asm__("PadRingBitsOn");
 int Pad_MappedPad(int bits, int index) __asm__("Pad_MappedPad");
 void ClearPadInput(PAD &pad) __asm__("ClearPadInput");

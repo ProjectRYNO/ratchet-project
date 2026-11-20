@@ -182,7 +182,10 @@ def main():
                     pattern = r'^(?:typedef\s+)?(?:struct|union|class)\s+%s\s*\{.*?^\}[^;\n]*;\n' % re.escape(tag[1])
                     new = c if c.endswith('\n') else c + '\n'
                     new = re.sub(r'^(?:/\*[^\n]*\*/\n)+', '', new)
-                    text = re.sub(pattern, lambda m: new, text, count=1, flags=re.S | re.M)
+                    text, n = re.subn(pattern, lambda m: new, text, count=1, flags=re.S | re.M)
+                    if not n:
+                        # Only a forward declaration exists: the test file's definition replaces it.
+                        text = re.sub(r'^(?:struct|union|class)\s+%s\s*;\n' % re.escape(tag[1]), lambda m: new, text, count=1, flags=re.M)
                     continue
                 if 'GAME_GP_DATA' in c and names <= existing:
                     # The function needs $gp access, so its definition replaces a plain extern.

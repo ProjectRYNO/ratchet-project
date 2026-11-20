@@ -1,24 +1,13 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
-struct SettingsDef {
-	/* 0x00 */ int PalMode;
-	/* 0x04 */ char unk04[0xfc];
-};
-extern SettingsDef bootSettings __asm__("bootSettings");
-extern int progressiveScan __asm__("progressiveScan");
 extern "C" {
 	void sceGsResetPath();
 	int sceGsResetGraph(short, short, short, short);
 	int sceGsPutDispEnv(void *);
 }
 void SetVideoMode() __asm__("SetVideoMode");
-struct fsAABuff {
-	/* 0x00 */ char unk00[0x30];
-	/* 0x30 */ char giftagDrawLarge[0x10];
-	/* 0x40 */ char unk40[0x80];
-	/* 0xc0 */ char giftagDrawSmall[0x10];
-};
 extern fsAABuff *pAAbuff __asm__("pAAbuff");
 void PutDispBuffer() __asm__("PutDispBuffer");
 extern long aaClearRegs[] __asm__("aaClearRegs");
@@ -74,12 +63,12 @@ GAME_SECTION(PutDrawBufferLarge) void PutDrawBufferLarge()
 {
 	if (vu1_bufPtr != 0) {
 		(*vu1_bufPtr)[0] = 0x30000009;
-		(*vu1_bufPtr)[1] = (unsigned int)pAAbuff->giftagDrawLarge & 0xfffffff;
+		(*vu1_bufPtr)[1] = (unsigned int)&pAAbuff->giftagDrawLarge & 0xfffffff;
 		(*vu1_bufPtr)[2] = 0;
 		(*vu1_bufPtr)[3] = 0x50000009;
 		vu1_bufPtr = vu1_bufPtr + 1;
 	} else {
-		sceGsPutDrawEnv(pAAbuff->giftagDrawLarge);
+		sceGsPutDrawEnv(&pAAbuff->giftagDrawLarge);
 	}
 }
 
@@ -88,7 +77,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", ClearDrawBuff
 GAME_SECTION(PutDrawBufferSmall) void PutDrawBufferSmall()
 {
 	(*vu1_bufPtr)[0] = 0x30000009;
-	(*vu1_bufPtr)[1] = (unsigned int)pAAbuff->giftagDrawSmall & 0xfffffff;
+	(*vu1_bufPtr)[1] = (unsigned int)&pAAbuff->giftagDrawSmall & 0xfffffff;
 	(*vu1_bufPtr)[2] = 0;
 	(*vu1_bufPtr)[3] = 0x50000009;
 	vu1_bufPtr = vu1_bufPtr + 1;

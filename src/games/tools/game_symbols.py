@@ -19,7 +19,17 @@ SYMS = ROOT + 'config/symbols_core.text.txt'
 def retail_words(fn):
     path = (glob.glob('code/asm/nonmatchings/game/*/%s.s' % fn) or glob.glob('code/asm/matchings/game/*/%s.s' % fn))[0]
     text = open(path).read().split('endlabel')[0]
-    return [int(w[6:8] + w[4:6] + w[2:4] + w[:2], 16) for w in re.findall(r'/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/', text)]
+    words = []
+    # splat writes VU0 macro instructions it cannot disassemble as `.byte` lines; keep them so word
+    # offsets stay aligned with the compiled function.
+    for m in re.finditer(r'/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/|^\s*\.byte\s+(0x[0-9A-Fa-f]+(?:\s*,\s*0x[0-9A-Fa-f]+){3})\s*$', text, re.M):
+        if m[1]:
+            w = m[1]
+            words.append(int(w[6:8] + w[4:6] + w[2:4] + w[:2], 16))
+        else:
+            b = [int(x, 16) for x in m[2].split(',')]
+            words.append(b[0] | b[1] << 8 | b[2] << 16 | b[3] << 24)
+    return words
 
 
 def sext(v):

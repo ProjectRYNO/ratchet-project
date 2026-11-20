@@ -1,12 +1,9 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 
 struct MobyClass;
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x24];
-	/* 0x24 */ MobyClass *pClass;
-};
 struct ArmorLoadDef {
 	/* 0x00 */ int armor_index;
 	/* 0x04 */ MobyClass *armor_ram_base;

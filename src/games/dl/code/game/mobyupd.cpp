@@ -1,21 +1,15 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
+#include "mobyupd.h"
+#include "lights.h"
+#include "tiefunc.h"
+#include "tfragfunc.h"
+#include "gameglobals.h"
+#include "stash.h"
+#include "globals.h"
 
 /* mobyupd */
-struct mobyfuncs {
-	/* 0x00 */ void *funcs[8];
-};
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x22];
-	/* 0x22 */ unsigned char mClass;
-	/* 0x23 */ char unk23[0xbc - 0x23];
-	/* 0xbc */ short oClass;
-};
-struct mobyVtblEntry {
-	/* 0x00 */ int oClass;
-	/* 0x04 */ void *update;
-	/* 0x08 */ mobyfuncs *funcs;
-};
 extern mobyVtblEntry mobyupdate_vtbl[] __asm__("D_003F0E80");
 extern mobyfuncs empty_moby_funcs __asm__("D_3D8C70");
 extern mobyfuncs default_moby_funcs[] __asm__("D_3F0E8C");
@@ -29,20 +23,11 @@ extern unsigned char MobyClassLookup[] __asm__("MobyClassLookup");
 mobyfuncs *GetMobyFunctions(int oClass) __asm__("GetMobyFunctions___dupe2");
 
 
-typedef unsigned int qword __attribute__((mode(TI)));
 /* movieoverlay */
-struct fsAABuff {
-	/* 0x00 */ char unk00[0xc0];
-	/* 0xc0 */ char giftagDrawSmall[0x10];
-};
 struct SceneDef {
 	/* 0x00 */ char unk00[0x74];
 	/* 0x74 */ int iframe;
 	/* 0x78 */ char unk78[0x100];
-};
-struct MovieQueue {
-	/* 0x00 */ int intro;
-	/* 0x04 */ int unk04[3];
 };
 typedef int qwordWords[4];
 extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
@@ -59,20 +44,6 @@ extern int MobyClassIndex __asm__("MobyClassIndex");
 extern int MobyClassNullIndex __asm__("MobyClassNullIndex");
 void SetupMobyFunctions(int oClass, int null_moby) __asm__("SetupMobyFunctions");
 /* stash */
-struct StashInfo {
-	/* 0x00 */ char *base;
-	/* 0x04 */ int size;
-	/* 0x08 */ int unk08[10];
-	/* 0x30 */ char *free;
-	/* 0x34 */ int block;
-	/* 0x38 */ char *gadgetram;
-};
-struct StashBlock {
-	/* 0x00 */ char *ram;
-	/* 0x04 */ int qwc;
-	/* 0x08 */ const char *comment;
-	/* 0x0c */ int pad;
-};
 extern StashInfo Stash __asm__("Stash");
 extern StashBlock Blocks[64] __asm__("Blocks");
 extern char g_StashEEMemory[] __asm__("g_StashEEMemory");
@@ -90,15 +61,9 @@ struct wadMisc {
 	/* 0x650 */ int debugfontOffset;
 	/* 0x654 */ int debugfontLength;
 };
-struct GSmemDef {
-	/* 0x00 */ int unk00[5];
-	/* 0x14 */ int perm_debug_font;
-	/* 0x18 */ int unk18[13];
-	/* 0x4c */ int stash_font;
-};
 struct PifHeader;
 extern wadMisc g_wad __asm__("D_001C2040");
-extern GSmemDef GSmem __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern unsigned long DebugFontTex0 __asm__("DebugFontTex0");
 struct Fs {
@@ -109,15 +74,6 @@ void LoadPifAsPSMT8H(PifHeader *pPif, unsigned long *gsRegs, int tex_loc, int pa
 void LoadDebugFont() __asm__("LoadDebugFont");
 
 /* tiefunc */
-struct TieInstance {
-	/* 0x00 */ char unk00[0x14];
-	/* 0x14 */ unsigned short cache_loc;
-	/* 0x16 */ short cache_size;
-	/* 0x18 */ short unk18;
-	/* 0x1a */ unsigned short lights;
-	/* 0x1c */ char unk1c[3];
-	/* 0x1f */ unsigned char cache_lod;
-};
 struct MemSlotsDef {
 	/* 0x00 */ int unk00[1];
 	/* 0x04 */ void *tie_cache;
@@ -140,19 +96,6 @@ extern int SS_TieCacheListTop[4] __asm__("SS_TieCacheListTop");
 extern int *gNumLocalHeroes __asm__("gNumLocalHeroes");
 void ResetTieLightingCache() __asm__("ResetTieLightingCache");
 /* lights */
-struct PointLight {
-	/* 0x00 */ char unk00[0x20];
-};
-struct PL_Data {
-	/* 0x00 */ short tie_offset;
-	/* 0x02 */ short tie_count;
-	/* 0x04 */ short shrub_offset;
-	/* 0x06 */ short shrub_count;
-	/* 0x08 */ short tfrag_offset;
-	/* 0x0a */ short tfrag_count;
-	/* 0x0c */ short *list;
-	/* 0x10 */ char unk10[0x20];
-};
 extern PointLight PointLights[] __asm__("PointLights");
 extern PL_Data PointLightData[] __asm__("PointLightData");
 void FastMemZero16(void *, int) __asm__("FastMemZero16");
@@ -167,10 +110,6 @@ struct Path {
 };
 int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPathNode");
 /* tfragfunc */
-struct TfragPatch {
-	/* 0x00 */ int *ptr;
-	/* 0x04 */ int count;
-};
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
 extern short TfragGsLocStash[][2] __asm__("TfragGsLocStash");
 void PatchTfragGifs() __asm__("PatchTfragGifs");

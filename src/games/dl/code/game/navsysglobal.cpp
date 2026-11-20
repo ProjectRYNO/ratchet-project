@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
 
 
 typedef struct navgWp {
@@ -11,9 +12,6 @@ typedef struct navgWp {
 void NAVG_WpSetPos(void *, int, int) __asm__("NAVG_WpSetPos");
 int NAVG_WpGetNode(navgWp_t *wp) __asm__("NAVG_WpGetNode");
 void NAVG_ResetNavigationVars(char *vars, int a, int b) __asm__("NAVG_ResetNavigationVars");
-struct vec4 {
-	/* 0x00 */ uint128 m_v;
-};
 struct NavigationVars {
 	/* 0x00 */ char unk00[0x20];
 	/* 0x20 */ vec4 targetLoc;

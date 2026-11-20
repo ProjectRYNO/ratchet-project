@@ -15310,5 +15310,507 @@
         "bitfield": false
       }
     ]
+  },
+  {
+    "name": "vec4",
+    "size": "0x10",
+    "line": 210,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/vector.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "v",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "vec4f",
+    "size": "0x10",
+    "line": 183,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/vector.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "w",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "BSphere",
+    "size": "0x10",
+    "line": 158,
+    "owners": [
+      "game_dl\\draw.h"
+    ],
+    "header": "code/game/vector.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "x",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "y",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "z",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "rad",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "mtx3",
+    "size": "0x30",
+    "line": 492,
+    "owners": [
+      "game_dl\\mathfunc.h"
+    ],
+    "header": "code/game/vector.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "m_v0",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_v1",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "m_v2",
+        "offset": 32,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "mtx4",
+    "size": "0x40",
+    "line": 421,
+    "owners": [
+      "game_dl\\mathfunc.h"
+    ],
+    "header": "code/game/vector.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "m_v0",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "m_v1",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "m_v2",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "m_v3",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MobyInstance",
+    "size": "0x100",
+    "line": 869,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "bSphere",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "group",
+        "offset": 33,
+        "bitfield": false
+      },
+      {
+        "name": "mClass",
+        "offset": 34,
+        "bitfield": false
+      },
+      {
+        "name": "alpha",
+        "offset": 35,
+        "bitfield": false
+      },
+      {
+        "name": "pClass",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "pChain",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "collDamage",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "deathCnt",
+        "offset": 45,
+        "bitfield": false
+      },
+      {
+        "name": "occlIndex",
+        "offset": 46,
+        "bitfield": false
+      },
+      {
+        "name": "updateDist",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "drawn",
+        "offset": 49,
+        "bitfield": false
+      },
+      {
+        "name": "drawDist",
+        "offset": 50,
+        "bitfield": false
+      },
+      {
+        "name": "modeBits",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "modeBits2",
+        "offset": 54,
+        "bitfield": false
+      },
+      {
+        "name": "lights",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "animSeq",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "animSeqT",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "animSpeed",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "animIScale",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "poseCacheEntryIndex",
+        "offset": 78,
+        "bitfield": false
+      },
+      {
+        "name": "animLayers",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "animSeqId",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "animFlags",
+        "offset": 85,
+        "bitfield": false
+      },
+      {
+        "name": "lSeq",
+        "offset": 86,
+        "bitfield": false
+      },
+      {
+        "name": "jointCnt",
+        "offset": 87,
+        "bitfield": false
+      },
+      {
+        "name": "jointCache",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "pManipulator",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "glow_rgba",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "lod_trans",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "lod_trans2",
+        "offset": 101,
+        "bitfield": false
+      },
+      {
+        "name": "metal",
+        "offset": 102,
+        "bitfield": false
+      },
+      {
+        "name": "subState",
+        "offset": 103,
+        "bitfield": false
+      },
+      {
+        "name": "prevState",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "stateType",
+        "offset": 105,
+        "bitfield": false
+      },
+      {
+        "name": "stateTimer",
+        "offset": 106,
+        "bitfield": false
+      },
+      {
+        "name": "soundTrigger",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "soundDesired",
+        "offset": 109,
+        "bitfield": false
+      },
+      {
+        "name": "soundChannel",
+        "offset": 110,
+        "bitfield": false
+      },
+      {
+        "name": "scale",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "bangles",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "shadow",
+        "offset": 118,
+        "bitfield": false
+      },
+      {
+        "name": "shadow_index",
+        "offset": 119,
+        "bitfield": false
+      },
+      {
+        "name": "shadow_plane",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "shadow_range",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "lSphere",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "netObject",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "updateID",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "spad0",
+        "offset": 150,
+        "bitfield": false
+      },
+      {
+        "name": "collData",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "collActive",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "collCnt",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "grid_min_x",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "grid_min_y",
+        "offset": 165,
+        "bitfield": false
+      },
+      {
+        "name": "grid_max_x",
+        "offset": 166,
+        "bitfield": false
+      },
+      {
+        "name": "grid_max_y",
+        "offset": 167,
+        "bitfield": false
+      },
+      {
+        "name": "pUpdate",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "pVar",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "mission",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 177,
+        "bitfield": false
+      },
+      {
+        "name": "UID",
+        "offset": 178,
+        "bitfield": false
+      },
+      {
+        "name": "bolts",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "xp",
+        "offset": 182,
+        "bitfield": false
+      },
+      {
+        "name": "pParent",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "oClass",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "triggers",
+        "offset": 190,
+        "bitfield": false
+      },
+      {
+        "name": "standarddeathcalled",
+        "offset": 191,
+        "bitfield": false
+      },
+      {
+        "name": "rMtx",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 240,
+        "bitfield": false
+      }
+    ]
   }
 ]

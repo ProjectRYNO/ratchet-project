@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 
 extern int *vu1_bufPtr __asm__("vu1_bufPtr");
@@ -47,20 +48,9 @@ extern int g_pSandStormTex __asm__("g_pSandStormTex");
 extern int g_pSandStormPal __asm__("D_21DF10");
 extern int g_pSandStormSrc __asm__("D_21DF14");
 extern int g_PostEffectsFlags __asm__("g_PostEffectsFlags");
-struct GsMemDef {
-	/* 0x00 */ int unk00;
-	/* 0x04 */ int draw;
-	/* 0x08 */ int unk08[6];
-};
-extern GsMemDef GSmem __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 extern unsigned int g_DofPalette[2][256] __asm__("g_DofPalette");
-struct AABuffDef {
-	/* 0x000 */ char unk000[0x150];
-	/* 0x150 */ short drawW;
-	/* 0x152 */ short drawH;
-	/* 0x154 */ int unk154[3];
-};
-extern AABuffDef aaBuff __asm__("aaBuff");
+extern fsAABuff aaBuff __asm__("aaBuff");
 struct PEInfo {
 	/* 0x00 */ int unk00[2];
 	/* 0x08 */ int m_PrevScreenW;

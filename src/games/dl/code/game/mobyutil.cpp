@@ -1,82 +1,10 @@
 #include "common.h"
 #include "game_section.h"
 #include "game_vu0.h"
+#include "mobyutil.h"
 
 
-typedef unsigned int s128 __attribute__((mode(TI)));
 struct MobyClass;
-struct MobyInstance {
-	/* 0x00 */ float bSphere[4];
-	/* 0x10 */ float pos[4];
-	/* 0x20 */ char state;
-	/* 0x21 */ unsigned char group;
-	/* 0x22 */ char mClass;
-	/* 0x23 */ char alpha;
-	/* 0x24 */ MobyClass *pClass;
-	/* 0x28 */ MobyInstance *pChain;
-	/* 0x2c */ unsigned char collDamage;
-	/* 0x2d */ signed char deathCnt;
-	/* 0x2e */ unsigned short occlIndex;
-	/* 0x30 */ char updateDist;
-	/* 0x31 */ char drawn;
-	/* 0x32 */ short drawDist;
-	/* 0x34 */ unsigned short modeBits;
-	/* 0x36 */ unsigned short modeBits2;
-	/* 0x38 */ unsigned long lights;
-	/* 0x40 */ void *animSeq;
-	/* 0x44 */ float animSeqT;
-	/* 0x48 */ float animSpeed;
-	/* 0x4c */ short animIScale;
-	/* 0x4e */ short poseCacheEntryIndex;
-	/* 0x50 */ void *animLayers;
-	/* 0x54 */ char animSeqId;
-	/* 0x55 */ char animFlags;
-	/* 0x56 */ unsigned char lSeq;
-	/* 0x57 */ char jointCnt;
-	/* 0x58 */ void *jointCache;
-	/* 0x5c */ void *pManipulator;
-	/* 0x60 */ int glow_rgba;
-	/* 0x64 */ char lod_trans;
-	/* 0x65 */ unsigned char lod_trans2;
-	/* 0x66 */ char metal;
-	/* 0x67 */ char subState;
-	/* 0x68 */ char prevState;
-	/* 0x69 */ char stateType;
-	/* 0x6a */ unsigned short stateTimer;
-	/* 0x6c */ char soundTrigger;
-	/* 0x6d */ char soundDesired;
-	/* 0x6e */ short soundChannel;
-	/* 0x70 */ float scale;
-	/* 0x74 */ unsigned short bangles;
-	/* 0x76 */ char shadow;
-	/* 0x77 */ char shadow_index;
-	/* 0x78 */ float shadow_plane;
-	/* 0x7c */ float shadow_range;
-	/* 0x80 */ float lSphere[4];
-	/* 0x90 */ void *netObject;
-	/* 0x94 */ short updateID;
-	/* 0x96 */ short spad0;
-	/* 0x98 */ int *collData;
-	/* 0x9c */ int collActive;
-	/* 0xa0 */ unsigned int collCnt;
-	/* 0xa4 */ char grid_min_x;
-	/* 0xa5 */ char grid_min_y;
-	/* 0xa6 */ char grid_max_x;
-	/* 0xa7 */ char grid_max_y;
-	/* 0xa8 */ void *pUpdate;
-	/* 0xac */ void *pVar;
-	/* 0xb0 */ char mission;
-	/* 0xb1 */ char pad;
-	/* 0xb2 */ short UID;
-	/* 0xb4 */ short bolts;
-	/* 0xb6 */ unsigned short xp;
-	/* 0xb8 */ MobyInstance *pParent;
-	/* 0xbc */ short oClass;
-	/* 0xbe */ unsigned char triggers;
-	/* 0xbf */ char standarddeathcalled;
-	/* 0xc0 */ float rMtx[12];
-	/* 0xf0 */ float rot[4];
-};
 struct SubVars {
 	/* 0x00 */ int unk00[2];
 	/* 0x08 */ void *trackVars;
@@ -109,9 +37,6 @@ struct BotSaveDef {
 	/* 0x26 */ unsigned char curBotHead[2];
 	/* 0x28 */ char unk28[0x40];
 };
-struct BotAbility {
-	/* 0x00 */ int unk00[4];
-};
 struct Bot_Communication {
 	/* 0x000 */ unsigned char initialized;
 	/* 0x001 */ char unk001[0x1f3];
@@ -128,13 +53,6 @@ struct MotionBlur {
 	/* 0x144 */ MobyInstance *pTrackedMoby;
 	/* 0x148 */ int blurCnt;
 	/* 0x14c */ int active;
-};
-struct FlashVars {
-	/* 0x0 */ short timer;
-	/* 0x2 */ short type;
-	/* 0x4 */ int destColor;
-	/* 0x8 */ int srcColor;
-	/* 0xc */ int flags;
 };
 extern BotSaveDef BotSave __asm__("BotSave");
 extern BotAbility Bot_AbilityDefinitions[] __asm__("D_3D8B60");
@@ -236,7 +154,7 @@ float FastCos(float) __asm__("FastCos");
 char *msg_string(int) __asm__("msg_string");
 LocalHero *GB_GetLocalHeroFromSlot(int) __asm__("GB_GetLocalHeroFromSlot");
 void SetMobyLights(MobyInstance *, int, int, int, int) __asm__("SetMobyLights");
-void MB_BobMotion___dupe2(float *, float &, float &, float, float, float) __asm__("MB_BobMotion___dupe2");
+void MB_BobMotion___dupe2(vec4 &, float &, float &, float, float, float) __asm__("MB_BobMotion___dupe2");
 float Bias0(float) __asm__("Bias0");
 float Bias1(float) __asm__("Bias1");
 int TweenColor(int, int, float) __asm__("TweenColor");
@@ -341,12 +259,6 @@ struct SoundTrigger {
 	/* 0x0 */ unsigned short sound;
 	/* 0x2 */ unsigned short frame;
 };
-struct vec4f {
-	/* 0x0 */ float x;
-	/* 0x4 */ float y;
-	/* 0x8 */ float z;
-	/* 0xc */ float w;
-};
 extern int worldUpdateTime __asm__("worldUpdateTime");
 bool IsWeaponTemp(LocalHero *, int) __asm__("IsWeaponTemp");
 int sound_MobyPlay(int, int, MobyInstance *) __asm__("sound_MobyPlay");
@@ -391,7 +303,6 @@ extern int NtscPalTimerTicksPerFrame __asm__("NtscPalTimerTicksPerFrame");
 extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFloat");
 void SetNtscPalTiming(int mode) __asm__("SetNtscPalTiming");
 
-struct mtx3 { float m[3][4]; };
 void MatAdjoint(mtx3 &dm, mtx3 &u) __asm__("MatAdjoint");
 int FUN_00472818(MobyInstance *) __asm__("FUN_00472818");
 int GadgetIsModSupported(int, int) __asm__("GadgetIsModSupported___dupe2");
@@ -431,9 +342,6 @@ struct UQ { };
 extern UQ MB_UQ __asm__("MB_UpgradeSceneQueue");
 
 
-struct vec4 {
-	/* 0x00 */ uint128 m_v;
-};
 float MB_getJumpPeak(vec4 pos, vec4 vel, float gravity, int *ticks) __asm__("MB_getJumpPeak");
 struct COLL_DAM_IN {
 	/* 0x00 */ vec4 momentum;
@@ -457,15 +365,15 @@ extern Path *Paths[] __asm__("Paths");
 int MB_IsPntInPath(vec4 pnt, int path, int error) __asm__("MB_IsPntInPath");
 struct MathUtilities {
 	/* 0x00 */ int unk00[4];
-	uint128 VecSlerp(vec4 vFrom, vec4 vTo, float fInterp, float fLimit, bool bNormalized, bool bClamp) __asm__("VecSlerp");
+	s128 VecSlerp(vec4 vFrom, vec4 vTo, float fInterp, float fLimit, bool bNormalized, bool bClamp) __asm__("VecSlerp");
 };
 extern MathUtilities MU __asm__("D_222010");
-uint128 MB_SlerpVectors(vec4 vFrom, vec4 vTo, float fInterp, bool bNormalized) __asm__("MB_SlerpVectors");
+s128 MB_SlerpVectors(vec4 vFrom, vec4 vTo, float fInterp, bool bNormalized) __asm__("MB_SlerpVectors");
 void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent) __asm__("MB_SpawnInit");
 
-uint128 MB_GetWorldSpaceVector(MobyInstance *pMoby) __asm__("MB_GetWorldSpaceVector");
-void MB_AlignWithNormal(mtx3 &, uint128, mtx3 *) __asm__("MB_AlignWithNormal");
-void MB_AlignWithGravity(mtx3 &, uint128, mtx3 *) __asm__("MB_AlignWithGravity");
+s128 MB_GetWorldSpaceVector(MobyInstance *pMoby) __asm__("MB_GetWorldSpaceVector");
+void MB_AlignWithNormal(mtx3 &, s128, mtx3 *) __asm__("MB_AlignWithNormal");
+void MB_AlignWithGravity(mtx3 &, s128, mtx3 *) __asm__("MB_AlignWithGravity");
 
 GAME_SECTION(MB_QueueUpgradeScene) bool MB_QueueUpgradeScene(int rootID)
 {
@@ -615,9 +523,9 @@ GAME_SECTION(MB_getJumpPeak) float MB_getJumpPeak(vec4 pos, vec4 vel, float grav
 	float peak;
 	float t;
 	int peak_time;
-	MMI_ASM("pextuw %0, $0, %1" : "=r"(velZ) : "r"(vel.m_v));
+	MMI_ASM("pextuw %0, $0, %1" : "=r"(velZ) : "r"(vel.v));
 	t = velZ / gravity;
-	MMI_ASM("pextuw %0, $0, %1" : "=r"(posZ) : "r"(pos.m_v));
+	MMI_ASM("pextuw %0, $0, %1" : "=r"(posZ) : "r"(pos.v));
 	peak_time = (int)t;
 	peak = posZ + velZ * (float)peak_time - (float)((peak_time * peak_time + peak_time) >> 1) * gravity;
 	if (ticks) *ticks = peak_time;
@@ -827,18 +735,20 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltSp
 
 GAME_SECTION(MatAdjoint) void MatAdjoint(mtx3 &dm, mtx3 &u)
 {
-	dm.m[0][0] = u.m[2][2] * u.m[1][1] - u.m[1][2] * u.m[2][1];
-	dm.m[0][1] = u.m[0][2] * u.m[2][1] - u.m[2][2] * u.m[0][1];
-	dm.m[0][2] = u.m[1][2] * u.m[0][1] - u.m[0][2] * u.m[1][1];
-	dm.m[0][3] = 0;
-	dm.m[1][0] = u.m[1][2] * u.m[2][0] - u.m[1][0] * u.m[2][2];
-	dm.m[1][1] = u.m[2][2] * u.m[0][0] - u.m[0][2] * u.m[2][0];
-	dm.m[1][2] = u.m[1][0] * u.m[0][2] - u.m[1][2] * u.m[0][0];
-	dm.m[1][3] = 0;
-	dm.m[2][0] = u.m[1][0] * u.m[2][1] - u.m[2][0] * u.m[1][1];
-	dm.m[2][1] = u.m[2][0] * u.m[0][1] - u.m[0][0] * u.m[2][1];
-	dm.m[2][2] = u.m[0][0] * u.m[1][1] - u.m[1][0] * u.m[0][1];
-	dm.m[2][3] = 0;
+	float (*d)[4] = (float (*)[4])&dm;
+	float (*m)[4] = (float (*)[4])&u;
+	d[0][0] = m[2][2] * m[1][1] - m[1][2] * m[2][1];
+	d[0][1] = m[0][2] * m[2][1] - m[2][2] * m[0][1];
+	d[0][2] = m[1][2] * m[0][1] - m[0][2] * m[1][1];
+	d[0][3] = 0;
+	d[1][0] = m[1][2] * m[2][0] - m[1][0] * m[2][2];
+	d[1][1] = m[2][2] * m[0][0] - m[0][2] * m[2][0];
+	d[1][2] = m[1][0] * m[0][2] - m[1][2] * m[0][0];
+	d[1][3] = 0;
+	d[2][0] = m[1][0] * m[2][1] - m[2][0] * m[1][1];
+	d[2][1] = m[2][0] * m[0][1] - m[0][0] * m[2][1];
+	d[2][2] = m[0][0] * m[1][1] - m[1][0] * m[0][1];
+	d[2][3] = 0;
 }
 
 GAME_SECTION(Float_To_RGBA) unsigned int Float_To_RGBA(float r, float g, float b, float alpha)
@@ -1207,8 +1117,8 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004796C0
 
 GAME_SECTION(MB_SwingMotion) void MB_SwingMotion(MobyInstance *pMoby, float &swingAng1, float &swingAng2, float swingAmp, float swingRate1, float swingRate2)
 {
-	pMoby->rot[0] = swingAmp * FastSin(swingAng1) * FastSin(swingAng2);
-	pMoby->rot[1] = swingAmp * FastSin(swingAng1) * FastCos(swingAng2);
+	pMoby->rot.x = swingAmp * FastSin(swingAng1) * FastSin(swingAng2);
+	pMoby->rot.y = swingAmp * FastSin(swingAng1) * FastCos(swingAng2);
 	swingAng1 = FastAddRots(swingAng1, swingRate1);
 	swingAng2 = FastAddRots(swingAng2, swingRate2);
 }
@@ -1231,16 +1141,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AA28
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetLocalSpaceVector);
 
-GAME_SECTION(MB_GetWorldSpaceVector) uint128 MB_GetWorldSpaceVector(MobyInstance *pMoby)
+GAME_SECTION(MB_GetWorldSpaceVector) s128 MB_GetWorldSpaceVector(MobyInstance *pMoby)
 {
-	uint128 *m = (uint128 *)pMoby->rMtx;
-	register uint128 v __asm__("vf3") = ((uint128 *)pMoby->pVar)[2];
-	register uint128 r __asm__("vf1");
-	register uint128 pos __asm__("vf4");
+	s128 *m = (s128 *)&pMoby->rMtx;
+	register s128 v __asm__("vf3") = ((s128 *)pMoby->pVar)[2];
+	register s128 r __asm__("vf1");
+	register s128 pos __asm__("vf4");
 	VU0_ASM("vmulax.xyzw ACC, %0, %1x" : : "j"(m[0]), "j"(v));
 	VU0_ASM("vmadday.xyzw ACC, %0, %1y" : : "j"(m[1]), "j"(v));
 	VU0_ASM("vmaddaz.xyzw ACC, %0, %1z" : : "j"(m[2]), "j"(v));
-	pos = *(uint128 *)pMoby->pos;
+	pos = pMoby->pos.v;
 	VU0_OP("vmaddw.xyzw %0, vf0, %1w\n\tvadd.xyz %0, %0, %2" : "=j"(r) : "j"(v), "j"(pos));
 	return r;
 }
@@ -1265,10 +1175,10 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AEA8
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SphericalHeight);
 
-GAME_SECTION(MB_AlignWithGravity) void MB_AlignWithGravity(mtx3 &rMtx, uint128 gravity, mtx3 *adjMtx)
+GAME_SECTION(MB_AlignWithGravity) void MB_AlignWithGravity(mtx3 &rMtx, s128 gravity, mtx3 *adjMtx)
 {
-	register uint128 g __asm__("vf1") = gravity;
-	register uint128 tmp __asm__("vf2");
+	register s128 g __asm__("vf1") = gravity;
+	register s128 tmp __asm__("vf2");
 	long bits = (int)0xbf800000;
 	VU0_OP("qmtc2.ni %1, %0" : "=j"(tmp) : "r"(bits));
 	VU0_OP("vmulx.xyz %0, %0, %1x" : "+j"(g) : "j"(tmp));
@@ -1331,8 +1241,8 @@ GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *
 		pMoby->pParent = pParent;
 		pMoby->updateDist = pParent->updateDist;
 		pMoby->drawDist = pParent->drawDist;
-		*(vec4 *)pMoby->pos = *(vec4 *)pParent->pos;
-		*(vec4 *)pMoby->rot = *(vec4 *)pParent->rot;
+		pMoby->pos = pParent->pos;
+		*(vec4 *)&pMoby->rot = *(vec4 *)&pParent->rot;
 		pMoby->lights = pParent->lights;
 		PostUpdateMoby(pMoby);
 	} else {

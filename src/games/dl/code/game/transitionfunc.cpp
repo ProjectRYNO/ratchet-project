@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 
 struct TransitionData_Undefined {
 	/* 0x00 */ int m_Timer;
@@ -37,15 +38,7 @@ void UpdatePart_097(void *) __asm__("UpdatePart_097");
 void UpdatePart_127(void *) __asm__("UpdatePart_127");
 void TransitionSpace_ResetParticles() __asm__("TransitionSpace_ResetParticles");
 
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x34];
-	/* 0x34 */ unsigned short modeBits;
-	/* 0x36 */ char unk36[0xa8 - 0x36];
-	/* 0xa8 */ void *pUpdate;
-	/* 0xac */ char unkac[0xbc - 0xac];
-	/* 0xbc */ short oClass;
-	/* 0xbe */ char unkbe[0x100 - 0xbe];
-};
+
 extern void *pRegistered_MobyDraws __asm__("pRegistered_MobyDraws");
 void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
 void TransitionSpace_DrawMobyPlanet(MobyInstance *) __asm__("TransitionSpace_DrawMobyPlanet");

@@ -1,22 +1,14 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
+#include "gameglobals.h"
 
 
-struct MobyInstance {
-	/* 0x00 */ char unk00[0x20];
-	/* 0x20 */ unsigned char state;
-};
 struct RegisteredDrawRoutine_t {
 	/* 0x00 */ void (*drawFunc)(MobyInstance *);
 	/* 0x04 */ MobyInstance *pMoby;
 	/* 0x08 */ RegisteredDrawRoutine_t *pNext;
 	/* 0x0c */ RegisteredDrawRoutine_t *pTail;
-};
-struct FrustumDef {
-	/* 0x00 */ float unk00[4];
-	/* 0x10 */ float size_x;
-	/* 0x14 */ float size_y;
-	/* 0x18 */ char unk18[0x10];
 };
 extern int RegisteredDrawsCount __asm__("RegisteredDrawsCount");
 extern void *pRegistered_PreDraws __asm__("pRegistered_PreDraws");
@@ -106,13 +98,7 @@ void DrawScreenGQuad(long *, int *) __asm__("DrawScreenGQuad");
 void DrawScreenGQuad2(int, int, int, int, int, int *) __asm__("DrawScreenGQuad___dupe2");
 extern unsigned int *OcclGrid __asm__("OcclGrid");
 extern int screenMode __asm__("screenMode");
-struct alAABuffDef {
-	/* 0x000 */ char unk000[0x150];
-	/* 0x150 */ short drawW;
-	/* 0x152 */ short drawH;
-	/* 0x154 */ int unk154[3];
-};
-extern alAABuffDef aaBuff __asm__("aaBuff");
+extern fsAABuff aaBuff __asm__("aaBuff");
 int GetScreenFrustumIndex(int) __asm__("GetScreenFrustumIndex");
 void GetScreenFrustumCoords(int, int &, int &, int &, int &) __asm__("GetScreenFrustumCoords");
 struct ViewContext {
@@ -390,10 +376,10 @@ GAME_SECTION(GetScreenFrustumCoords) void GetScreenFrustumCoords(int index, int 
 {
 	FrustumDef *pfrust = GetFrustumDef(index);
 
-	x0 = (int)((float)aaBuff.drawW * pfrust->unk00[0]);
-	y0 = (int)((float)aaBuff.drawH * pfrust->unk00[2]);
-	x1 = (int)((float)aaBuff.drawW * pfrust->unk00[1]);
-	y1 = (int)((float)aaBuff.drawH * pfrust->unk00[3]);
+	x0 = (int)((float)aaBuff.drawW * pfrust->scis_l);
+	y0 = (int)((float)aaBuff.drawH * pfrust->scis_t);
+	x1 = (int)((float)aaBuff.drawW * pfrust->scis_r);
+	y1 = (int)((float)aaBuff.drawH * pfrust->scis_b);
 }
 
 GAME_SECTION(GetScreenFrustumScales) void GetScreenFrustumScales(int index, float &sx, float &sy)

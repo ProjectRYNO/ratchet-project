@@ -93,6 +93,8 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  CS_AttachPivot: 0x0043F248
+  CS_DoCollision_Sphere: 0x0043F1A8
   sound_GetFade___dupe2: 0x004E0248
   Camera_CopyLastQuatToPolar: 0x0043B648
   CubicLine_Update: 0x004514D0

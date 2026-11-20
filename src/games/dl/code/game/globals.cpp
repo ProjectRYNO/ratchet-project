@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "globals.h"
 
 
 extern unsigned char mSaveErrorSpaceTransition __asm__("mSaveErrorSpaceTransition");
@@ -13,21 +14,6 @@ extern ProgressFlags GameProgress __asm__("D_171B66");
 int GetGameCompleted() __asm__("GetGameCompleted");
 int IsGameInChallengeMode() __asm__("IsGameInChallengeMode");
 
-struct MovieEntry {
-	/* 0x00 */ int id;
-	/* 0x04 */ int type;
-};
-struct MovieQueue {
-	/* 0x00 */ int active;
-	/* 0x04 */ int unk04;
-	/* 0x08 */ MovieEntry entries[10];
-	/* 0x58 */ int head;
-	/* 0x5c */ int tail;
-	/* 0x60 */ int count;
-	/* 0x64 */ unsigned char unk64;
-	/* 0x68 */ int mode;
-	/* 0x6c */ unsigned char playing;
-};
 void Flush(MovieQueue *) __asm__("Flush");
 void Construct(MovieQueue *) __asm__("Construct");
 void Abort(MovieQueue *) __asm__("Abort___dupe2");
@@ -142,39 +128,39 @@ GAME_SECTION(RebootToFrontEnd) void RebootToFrontEnd()
 
 GAME_SECTION(Construct) void Construct(MovieQueue *self)
 {
-	self->head = 0;
-	self->tail = 0;
-	self->count = 0;
-	memset(self->entries, 0xcd, 0x50);
-	self->playing = 0;
-	self->mode = 1;
+	self->mHead = 0;
+	self->mTail = 0;
+	self->mItemCount = 0;
+	memset(self->mItemsToPlay, 0xcd, 0x50);
+	self->mLocked = 0;
+	self->mTypeOfRequest = 1;
 }
 
 GAME_SECTION(DeQueueMovie) int DeQueueMovie(MovieQueue *self, int &movieId, int &movieType)
 {
 	int next;
-	if (!self->count) return 0;
-	if (--self->count == 0) self->playing = 0;
-	movieId = self->entries[self->tail].id;
-	movieType = self->entries[self->tail].type;
-	self->entries[self->tail].id = -1;
-	self->entries[self->tail].type = -1;
-	next = self->tail + 1;
+	if (!self->mItemCount) return 0;
+	if (--self->mItemCount == 0) self->mLocked = 0;
+	movieId = self->mItemsToPlay[self->mTail].movieId;
+	movieType = self->mItemsToPlay[self->mTail].movieType;
+	self->mItemsToPlay[self->mTail].movieId = -1;
+	self->mItemsToPlay[self->mTail].movieType = -1;
+	next = self->mTail + 1;
 	if (next == 10) next = 0;
-	self->tail = next;
+	self->mTail = next;
 	return 1;
 }
 
 GAME_SECTION(QueueMovie) int QueueMovie(MovieQueue *self, int movieId)
 {
 	int next;
-	if (self->count == 10 || self->playing) return 0;
-	self->entries[self->head].id = movieId;
-	self->entries[self->head].type = movieId >= 0x64;
-	next = self->head + 1;
+	if (self->mItemCount == 10 || self->mLocked) return 0;
+	self->mItemsToPlay[self->mHead].movieId = movieId;
+	self->mItemsToPlay[self->mHead].movieType = movieId >= 0x64;
+	next = self->mHead + 1;
 	if (next == 10) next = 0;
-	self->count++;
-	self->head = next;
+	self->mItemCount++;
+	self->mHead = next;
 	return 1;
 }
 
@@ -186,8 +172,8 @@ GAME_SECTION(Flush) void Flush(MovieQueue *self)
 GAME_SECTION(TagMoviesAsPlayed) void TagMoviesAsPlayed(MovieQueue *self)
 {
 	int i;
-	for (i = self->tail; i != self->head; i = i + 1 == 10 ? 0 : i + 1) {
-		int id = self->entries[i].id;
+	for (i = self->mTail; i != self->mHead; i = i + 1 == 10 ? 0 : i + 1) {
+		int id = self->mItemsToPlay[i].movieId;
 		if (id >= 0) MoviesPlayedRecord[(unsigned int)id >> 5] |= 1 << (id & 0x1f);
 	}
 }
@@ -195,23 +181,23 @@ GAME_SECTION(TagMoviesAsPlayed) void TagMoviesAsPlayed(MovieQueue *self)
 GAME_SECTION(Abort___dupe2) void Abort(MovieQueue *self)
 {
 	TagMoviesAsPlayed(self);
-	self->active = 0;
+	self->intro = 0;
 	Flush(self);
 }
 
 GAME_SECTION(PlayNextQueuedMovie) int PlayNextQueuedMovie(MovieQueue *self)
 {
 	int movieId, movieType, ret;
-	if (self->count) {
-		self->unk64 = 0;
-		self->playing = 1;
+	if (self->mItemCount) {
+		self->mAborted = 0;
+		self->mLocked = 1;
 		movieId = 0;
 		movieType = 0;
 		ret = 0;
 		DeQueueMovie(self, movieId, movieType);
-		self->mode = (unsigned int)(gameMode - 1) <= 1 ? 2 : 1;
-		if (movieType == 0) ret = mode_requestChange(1, self->mode, 0, movieId, 0);
-		else if (movieType == 1) ret = mode_requestChange(2, self->mode, movieId, 0, 0);
+		self->mTypeOfRequest = (unsigned int)(gameMode - 1) <= 1 ? 2 : 1;
+		if (movieType == 0) ret = mode_requestChange(1, self->mTypeOfRequest, 0, movieId, 0);
+		else if (movieType == 1) ret = mode_requestChange(2, self->mTypeOfRequest, movieId, 0, 0);
 		if (ret < 0) Flush(self);
 		return ret == 0;
 	}
