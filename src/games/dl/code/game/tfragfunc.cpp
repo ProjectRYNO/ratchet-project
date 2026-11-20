@@ -5,6 +5,7 @@
 #include "lights.h"
 #include "tiefunc.h"
 #include "tfragfunc.h"
+#include "draw.h"
 
 /* tfragfunc */
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
@@ -22,12 +23,6 @@ void DmaTfragTextures() __asm__("DmaTfragTextures");
 
 
 /* tfragfunc: SetTfragDists, SetTfragDistsByFOV */
-struct ViewContext {
-	/* 0x000 */ char unk000[0xb0];
-	/* 0x0b0 */ float xratio;
-	/* 0x0b4 */ char unk0b4[0x230 - 0xb4];
-	/* 0x230 */ float fogMult;
-};
 extern ViewContext VC __asm__("VC");
 extern float TfragRadius __asm__("TfragRadius");
 extern float TfragDists[3] __asm__("TfragDists");

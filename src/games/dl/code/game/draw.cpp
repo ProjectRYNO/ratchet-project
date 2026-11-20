@@ -2,6 +2,7 @@
 #include "game_section.h"
 #include "mobyutil.h"
 #include "gameglobals.h"
+#include "draw.h"
 
 
 struct RegisteredDrawRoutine_t {
@@ -101,21 +102,6 @@ extern int screenMode __asm__("screenMode");
 extern fsAABuff aaBuff __asm__("aaBuff");
 int GetScreenFrustumIndex(int) __asm__("GetScreenFrustumIndex");
 void GetScreenFrustumCoords(int, int &, int &, int &, int &) __asm__("GetScreenFrustumCoords");
-struct ViewContext {
-	/* 0x000 */ char unk000[0x228];
-	/* 0x228 */ float fogNearDist;
-	/* 0x22c */ float fogFarDist;
-	/* 0x230 */ int unk230[2];
-	/* 0x238 */ float fogNearIntensity;
-	/* 0x23c */ float fogFarIntensity;
-	/* 0x240 */ int scis_l;
-	/* 0x244 */ int scis_r;
-	/* 0x248 */ int scis_t;
-	/* 0x24c */ int scis_b;
-	/* 0x250 */ int fogR;
-	/* 0x254 */ int fogG;
-	/* 0x258 */ int fogB;
-};
 extern ViewContext VC __asm__("VC");
 extern unsigned char LevelFogR __asm__("LevelFogR");
 extern unsigned char LevelFogG __asm__("LevelFogG");

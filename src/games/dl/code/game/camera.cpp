@@ -2,6 +2,7 @@
 #include "game_section.h"
 #include "game_vu0.h"
 #include "mobyutil.h"
+#include "draw.h"
 
 
 
@@ -80,10 +81,6 @@ struct RETICULE {
 	/* 0x384 */ int unk384[3];
 };
 extern RETICULE Reticule __asm__("Reticule");
-struct ViewContext {
-	/* 0x00 */ char unk00[0xb0];
-	/* 0xb0 */ float xratio;
-};
 extern ViewContext VC __asm__("VC");
 float FastSin(float) __asm__("FastSin");
 float FastCos(float) __asm__("FastCos");

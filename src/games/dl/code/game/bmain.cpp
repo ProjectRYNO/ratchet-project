@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "draw.h"
 
 int bootTimeOutCounter __asm__("D_21E1E8") GAME_GP_DATA = 0;
 void Boot_ResetTimeOutCounter() __asm__("Boot_ResetTimeOutCounter");
@@ -26,10 +27,6 @@ int bmmRetGuard __asm__("bmmRetGuard") GAME_GP_DATA = 0;
 BootMemoryMap *GetBootMemoryMap() __asm__("GetBootMemoryMap");
 
 struct MobyInstance;
-struct SceneDef {
-	/* 0x000 */ char unk000[0x1f0];
-	/* 0x1f0 */ MobyInstance *actors[4];
-};
 extern SceneDef Scene __asm__("Scene");
 extern void *pRegistered_PostDraws __asm__("pRegistered_PostDraws");
 void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");

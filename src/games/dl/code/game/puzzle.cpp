@@ -1,13 +1,8 @@
 #include "common.h"
 #include "game_section.h"
 #include "mobyutil.h"
+#include "draw.h"
 
-struct ViewContext {
-	/* 0x000 */ char unk000[0x25c];
-	/* 0x25c */ int bgR;
-	/* 0x260 */ int bgG;
-	/* 0x264 */ int bgB;
-};
 
 
 moby *PuzzleMaster __asm__("D_21FC90") GAME_GP_DATA = 0;
@@ -46,7 +41,7 @@ GAME_SECTION(UnInitModeGadgetPuzzle) void UnInitModeGadgetPuzzle()
 {
 	moby *pMoby;
 	mode_pop(0, 0);
-	SetBackgroundColor(VC.bgR, VC.bgG, VC.bgB);
+	SetBackgroundColor(VC.backR, VC.backG, VC.backB);
 	/* Fake match: jumping into the loop stops GCC rotating it or hoisting the end pointer, as retail shows. */
 	pMoby = MobyInstances;
 	goto test;

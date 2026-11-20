@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "mobyutil.h"
+#include "draw.h"
 
 
 struct MobyClass;
@@ -26,22 +27,6 @@ struct ArmorLoadDef {
 	/* 0x78 */ unsigned long dropship_tex0[3];
 };
 extern ArmorLoadDef ArmorLoad __asm__("ArmorLoad");
-struct SceneDef {
-	/* 0x000 */ char unk000[0x70];
-	/* 0x070 */ int scene_id;
-	/* 0x074 */ char unk074[0x8c - 0x74];
-	/* 0x08c */ short moby_cnt;
-	/* 0x08e */ char unk08e[0xa0 - 0x8e];
-	/* 0x0a0 */ char *mem_alloc_base;
-	/* 0x0a4 */ char *mem_alloc_top;
-	/* 0x0a8 */ void *mem_chunk_comp;
-	/* 0x0ac */ char unk0ac[0xb8 - 0xac];
-	/* 0x0b8 */ void *subtitles;
-	/* 0x0bc */ void *mobyload;
-	/* 0x0c0 */ char unk0c0[0xe0 - 0xc0];
-	/* 0x0e0 */ void *chunks[16];
-	/* 0x120 */ char unk120[0x110];
-};
 extern SceneDef Scene __asm__("Scene");
 struct MemSlotsVu1 {
 	/* 0x00 */ char *vu1_chain1;
@@ -408,7 +393,7 @@ GAME_SECTION(LoadNpcMobys) int LoadNpcMobys(int level_id, int scene_id)
 	offset = g_wad.scenes[Scene.scene_id].mobyload_offset;
 	size_bytes = size * 0x800;
 	if (size > 0) {
-		Scene.mobyload = Scene.mem_alloc_top - size_bytes;
+		Scene.mobyload = (char *)Scene.mem_alloc_top - size_bytes;
 		offset += g_wad.sector;
 		Sync(1);
 		Load(0, Scene.mobyload, offset, size, g_fsLoadQueue, 0, 0);
@@ -435,7 +420,7 @@ GAME_SECTION(LoadNpcSubtitles) int LoadNpcSubtitles(int level_id, int scene_id)
 	size = g_wad.scenes[Scene.scene_id].subtitles_length;
 	offset = g_wad.scenes[Scene.scene_id].subtitles_offset;
 	if (size > 0) {
-		Scene.subtitles = Scene.mem_alloc_top - size * 0x800;
+		Scene.subtitles = (Subtitle *)((char *)Scene.mem_alloc_top - size * 0x800);
 		offset += g_wad.sector;
 		Scene.mem_alloc_top = (char *)Scene.subtitles;
 		Sync(1);

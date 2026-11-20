@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "draw.h"
 
 
 /* space: DoSpaceTransition */
@@ -11,18 +12,6 @@ struct MusicDef {
 struct SoundDefs {
 	/* 0x00 */ char unk00[0x90];
 	/* 0x90 */ void *handles[132];
-};
-struct ViewContext {
-	/* 0x000 */ char unk000[0x228];
-	/* 0x228 */ float fogNearDist;
-	/* 0x22c */ float fogFarDist;
-	/* 0x230 */ int unk230[2];
-	/* 0x238 */ float fogNearIntensity;
-	/* 0x23c */ float fogFarIntensity;
-	/* 0x240 */ int unk240[4];
-	/* 0x250 */ int fogR;
-	/* 0x254 */ int fogG;
-	/* 0x258 */ int fogB;
 };
 struct MemcardDef {
 	/* 0x000 */ char unk000[0x1c4];

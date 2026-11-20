@@ -2,6 +2,7 @@
 #include "game_section.h"
 #include "mobyutil.h"
 #include "gameglobals.h"
+#include "draw.h"
 struct FXRegistrySystemInternal;
 
 
@@ -68,21 +69,6 @@ struct MusicGlobals {
 	/* 0x08 */ char unk08[0xdc];
 };
 extern MusicGlobals Music __asm__("Music");
-struct SceneDef {
-	/* 0x000 */ char unk000[0x74];
-	/* 0x074 */ int iframe;
-	/* 0x078 */ int cframe;
-	/* 0x07c */ int ichunk;
-	/* 0x080 */ short frame_cnt;
-	/* 0x082 */ short unk082;
-	/* 0x084 */ short actor_cnt;
-	/* 0x086 */ char unk086[0xa8 - 0x86];
-	/* 0x0a8 */ char *mem_chunk_comp;
-	/* 0x0ac */ char *mem_chunk_uncomp;
-	/* 0x0b0 */ char unk0b0[0xe0 - 0xb0];
-	/* 0x0e0 */ char *chunks[0x44];
-	/* 0x1f0 */ MobyInstance *actors[16];
-};
 extern SceneDef Scene __asm__("Scene");
 struct MemSlotsDef {
 	/* 0x00 */ char unk00[0x10];

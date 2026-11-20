@@ -5,13 +5,9 @@
 #include "gameglobals.h"
 #include "stash.h"
 #include "globals.h"
+#include "draw.h"
 
 /* movieoverlay */
-struct SceneDef {
-	/* 0x00 */ char unk00[0x74];
-	/* 0x74 */ int iframe;
-	/* 0x78 */ char unk78[0x100];
-};
 typedef int qwordWords[4];
 extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
 extern fsAABuff *pAAbuff __asm__("pAAbuff");
