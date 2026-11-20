@@ -42,4 +42,6 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", FUN_00470bf0)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", SetMobyLightCuboid);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyproc", func_00472510);
+JUNK_ASM(func_00472510,
+	"\tlw $2, 0x20($3)\n"
+	"\tnop\n");

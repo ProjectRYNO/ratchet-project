@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "ubersound.h"
+#include "stream.h"
 
 
 
@@ -64,13 +66,7 @@ extern int EngScratchPadSize __asm__("EngScratchPadSize");
 extern int GSbase __asm__("GSbase");
 extern float ScreenFade0 __asm__("ScreenFade");
 extern unsigned int g_credits_stream_handle __asm__("D_21EB28");
-struct StreamInterface {
-	unsigned int Stop(unsigned int, float) __asm__("Stop");
-};
 extern StreamInterface StreamSys __asm__("StreamSys");
-struct UberSound {
-	static void Stop(unsigned int) __asm__("Stop___dupe2");
-};
 extern "C" int sceGsSyncV(int);
 void VU1_syncChain(int) __asm__("VU1_syncChain");
 void VU1_setBufSizeByLevel() __asm__("VU1_setBufSizeByLevel");
@@ -127,7 +123,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/credits", _credits_updat
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/credits", Credit_AddSequence);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/credits", func_00446968);
+JUNK_ASM(func_00446968,
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\tadd.s $f0, $f12, $f0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n");
 
 GAME_SECTION(Credit_InitializeMessagePool) void Credit_InitializeMessagePool()
 {

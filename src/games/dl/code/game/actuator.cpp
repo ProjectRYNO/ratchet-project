@@ -1,13 +1,8 @@
 #include "common.h"
 #include "game_section.h"
+#include "pad.h"
 
 
-struct PAD {
-	/* 0x000 */ char unk000[0x54c];
-	/* 0x54c */ unsigned char port;
-	/* 0x54d */ char unk54d[0x558 - 0x54d];
-	/* 0x558 */ unsigned char slot;
-};
 struct actuatorWave {
 	/* 0x00 */ unsigned char type;
 	/* 0x01 */ unsigned char loop;
@@ -52,7 +47,9 @@ GAME_SECTION(actuator_dbgstopwave) void actuator_dbgstopwave(PAD *pPad)
 	for (i = 7; i >= 0; i--) actuators[padSlot][i].type = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/actuator", func_00438D30);
+JUNK_ASM(func_00438D30,
+	"\tsltu $2, $0, $2\n"
+	"\tnop\n");
 
 /* NOT EXACT */
 GAME_SECTION(actuator_SetWave) int actuator_SetWave(actuatorWave *pAW, PAD *pPad)
@@ -190,4 +187,8 @@ GAME_SECTION(actuator_CalcPower) int actuator_CalcPower(int *power, PAD *pPad)
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/actuator", func_004393C0);
+JUNK_ASM(func_004393C0,
+	"\tsw $4, 0x10($2)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");

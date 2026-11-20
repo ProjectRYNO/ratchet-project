@@ -2,6 +2,7 @@
 #include "game_section.h"
 #include "mobyutil.h"
 #include "draw.h"
+#include "wad.h"
 
 
 struct MobyClass;
@@ -71,31 +72,11 @@ void UnloadNpcMobys() __asm__("UnloadNpcMobys");
 void ParseSpaceSceneChunk(int) __asm__("ParseSpaceSceneChunk");
 void LoadCompressedHudBank(int, char *) __asm__("LoadCompressedHudBank");
 
-struct WadSceneDef {
-	/* 0x000 */ int unk000[2];
-	/* 0x008 */ int subtitles_offset;
-	/* 0x00c */ int subtitles_length;
-	/* 0x010 */ char unk010[0x30 - 0x10];
-	/* 0x030 */ int mobyload_offset;
-	/* 0x034 */ int mobyload_length;
-	/* 0x038 */ int chunks[(0x14c - 0x38) / 4];
-};
 struct WadLoc {
 	/* 0x0 */ int offset;
 	/* 0x4 */ int length;
 };
-struct WadDef {
-	/* 0x0000 */ char unk0000[0x9ac];
-	/* 0x09ac */ int armor_sector;
-	/* 0x09b0 */ char unk09b0[0xaf0 - 0x9b0];
-	/* 0x0af0 */ WadLoc bot_texs[12];
-	/* 0x0b50 */ WadLoc landstalker_texs[8];
-	/* 0x0b90 */ WadLoc dropship_texs[8];
-	/* 0x0bd0 */ char unk0bd0[0xdabc - 0xbd0];
-	/* 0xdabc */ int sector;
-	/* 0xdac0 */ WadSceneDef scenes[1];
-};
-extern WadDef g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern char g_fsLoadQueue[] __asm__("D_001CFAF8");
 void Sync(int) __asm__("Sync");
 void Load(int, void *, int, int, void *, void *, void *) __asm__("Load");
@@ -159,13 +140,7 @@ struct LdMemSlots {
 	/* 0xb0 */ int unkb0[4];
 };
 extern LdMemSlots LdMemSlotsV __asm__("D_0023AB10");
-struct LdWadMisc {
-	/* 0x000 */ char unk000[0x64c];
-	/* 0x64c */ int sector;
-	/* 0x650 */ char unk650[0x18];
-	/* 0x668 */ WadLoc frontbin;
-};
-extern LdWadMisc g_wadMisc __asm__("D_001C2040");
+extern wadinfo g_wadMisc __asm__("D_001C2040");
 extern char LevelDataTop[] __asm__("D_1E99F80");
 extern volatile LevelLoadDef LevelLoadV __asm__("LevelLoad");
 int LoadFrontData() __asm__("LoadFrontData");
@@ -224,7 +199,9 @@ GAME_SECTION(IsSceneLevel) bool IsSceneLevel()
 	return false;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", func_00461438);
+JUNK_ASM(func_00461438,
+	"\taddiu $29, $29, 0x110\n"
+	"\tnop\n");
 
 GAME_SECTION(SwizzleTextureInPlace) void SwizzleTextureInPlace(char *tex_data, int tex_format, int x_size, int y_size)
 {
@@ -379,7 +356,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseTfrag);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", LoadFrontData);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", func_004636B8);
+JUNK_ASM(func_004636B8,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", LoadLevelData);
 
@@ -389,12 +370,12 @@ GAME_SECTION(LoadNpcMobys) int LoadNpcMobys(int level_id, int scene_id)
 	int size;
 	int size_bytes;
 	Scene.mobyload = 0;
-	size = g_wad.scenes[Scene.scene_id].mobyload_length;
-	offset = g_wad.scenes[Scene.scene_id].mobyload_offset;
+	size = g_wad.levelscene.scenes[Scene.scene_id].mobyload.length;
+	offset = g_wad.levelscene.scenes[Scene.scene_id].mobyload.offset;
 	size_bytes = size * 0x800;
 	if (size > 0) {
 		Scene.mobyload = (char *)Scene.mem_alloc_top - size_bytes;
-		offset += g_wad.sector;
+		offset += g_wad.levelscene.sector;
 		Sync(1);
 		Load(0, Scene.mobyload, offset, size, g_fsLoadQueue, 0, 0);
 		return 1;
@@ -417,11 +398,11 @@ GAME_SECTION(LoadNpcSubtitles) int LoadNpcSubtitles(int level_id, int scene_id)
 	int offset;
 	int size;
 	Scene.subtitles = 0;
-	size = g_wad.scenes[Scene.scene_id].subtitles_length;
-	offset = g_wad.scenes[Scene.scene_id].subtitles_offset;
+	size = g_wad.levelscene.scenes[Scene.scene_id].subtitles.length;
+	offset = g_wad.levelscene.scenes[Scene.scene_id].subtitles.offset;
 	if (size > 0) {
 		Scene.subtitles = (Subtitle *)((char *)Scene.mem_alloc_top - size * 0x800);
-		offset += g_wad.sector;
+		offset += g_wad.levelscene.sector;
 		Scene.mem_alloc_top = (char *)Scene.subtitles;
 		Sync(1);
 		Load(0, Scene.subtitles, offset, size, g_fsLoadQueue, 0, 0);
@@ -433,9 +414,9 @@ GAME_SECTION(LoadNpcSubtitles) int LoadNpcSubtitles(int level_id, int scene_id)
 GAME_SECTION(PreLoadNpcChunk) int PreLoadNpcChunk(int chunk_id)
 {
 	void *dest = Scene.mem_chunk_comp;
-	int offset = g_wad.scenes[Scene.scene_id].chunks[chunk_id];
-	int size = g_wad.scenes[Scene.scene_id].chunks[chunk_id + 1] - offset;
-	if (size > 0) LoadAsync(0, dest, offset + g_wad.sector, size, g_fsLoadQueue, 0, 0);
+	int offset = g_wad.levelscene.scenes[Scene.scene_id].chunks[chunk_id].offset;
+	int size = g_wad.levelscene.scenes[Scene.scene_id].chunks[chunk_id + 1].offset - offset;
+	if (size > 0) LoadAsync(0, dest, offset + g_wad.levelscene.sector, size, g_fsLoadQueue, 0, 0);
 	return 1;
 }
 
@@ -452,7 +433,11 @@ GAME_SECTION(ResetGadgetBank) void ResetGadgetBank()
 {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", func_00464090);
+JUNK_ASM(func_00464090,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", PushMobyStack);
 

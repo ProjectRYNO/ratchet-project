@@ -376,14 +376,44 @@ GAME_SECTION(FontLen) int FontLen(const char *s, int len)
 	return FontStringLength(s, len, 1.0f);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457248);
+JUNK_ASM(func_00457248,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(FontLenScaled) int FontLenScaled(const char *s, int len, float scale)
 {
 	return FontStringLength(s, len, scale);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457298);
+JUNK_ASM(func_00457298,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 GAME_SECTION(FontPrintCenter) int FontPrintCenter(int xpos, int ypos, unsigned long rgba, char *s, int len)
 {
@@ -402,7 +432,11 @@ GAME_SECTION(FontPrintCenterSmall) int FontPrintCenterSmall(int xpos, int ypos, 
 	return return_val;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457468);
+JUNK_ASM(func_00457468,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(FontPrintCenterScaledLarge) void FontPrintCenterScaledLarge(int xpos, int ypos, unsigned long rgba, char *s, int len, float scale)
 {
@@ -430,14 +464,32 @@ GAME_SECTION(FontPrintScaled) void FontPrintScaled(float xpos, float ypos, unsig
 	FontPrint(xpos, ypos, color, s, len, scale, scale, 0, false, 0x80000000, 0.0f, 0.0f);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457680);
+JUNK_ASM(func_00457680,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(SetFontWindow) void SetFontWindow(int a, int b, int c, int d, int e, int f, int g, int h, int i)
 {
 	FontSetWindowData((fontWindow_t *)a, b, c, d, e, f, g, h, i);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_004576C0);
+JUNK_ASM(func_004576C0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(FontPrintWindowSmall) void FontPrintWindowSmall(FontWindow *window, unsigned long rgba, char *s, int len)
 {
@@ -447,7 +499,11 @@ GAME_SECTION(FontPrintWindowSmall) void FontPrintWindowSmall(FontWindow *window,
 	FontSet(font_name);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457770);
+JUNK_ASM(func_00457770,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(FontPrintWindowScaledGenericList) void FontPrintWindowScaledGenericList(FontWindow *window, unsigned long rgba, char **ps, int sCnt, unsigned long tex0, void *font_table, short selectedIdx, unsigned long selectedRgba, int &selectedLineX, int &selectedLineY, float user_font_scale)
 {
@@ -459,8 +515,26 @@ GAME_SECTION(LoadFontToGs) void LoadFontToGs()
 	FontLoadToGs();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_004577D0);
+JUNK_ASM(func_004577D0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", FontGetUnicodeCharacter);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fonts", func_00457A28);
+JUNK_ASM(func_00457A28,
+	"\tsra $2, $2, 16\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x1020\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x1020\n"
+	"\tnop\n");

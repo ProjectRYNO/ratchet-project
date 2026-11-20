@@ -85,7 +85,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", SetupSkyGifPag
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", DoSkyGifPaging);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", func_004DF090);
+JUNK_ASM(func_004DF090,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(SkyDrawShell) void SkyDrawShell(int index)
 {

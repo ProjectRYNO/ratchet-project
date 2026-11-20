@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "wad.h"
 
 
 /* Music state at D_00203E2D + 0x2b1b; only the volume fields used here are named. */
@@ -91,13 +92,7 @@ extern int g_gameType __asm__("g_gameType");
 void music_StartHeadCB(unsigned int, unsigned long) __asm__("music_StartHeadCB");
 void music_StartBodyCB(unsigned int, unsigned long) __asm__("music_StartBodyCB");
 
-struct WadDef {
-	/* 0x0000 */ char unk0000[0xcbb4];
-	/* 0xcbb4 */ int sector;
-	/* 0xcbb8 */ char unkcbb8[0xcbd0 - 0xcbb8];
-	/* 0xcbd0 */ int core_bank_offset;
-};
-extern WadDef g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 int gMusicStopping __asm__("gMusicStopping") GAME_GP_DATA = 0;
 void music_PreseekTrack(int, int, int) __asm__("music_PreseekTrack");
 void snd_SRAMGetFreeMem() __asm__("snd_SRAMGetFreeMem");
@@ -117,7 +112,7 @@ GAME_SECTION(music_LoadCoreBank) void music_LoadCoreBank()
 {
 	snd_SRAMGetFreeMem();
 	Sound.handles[3] = 0xffffffff;
-	snd_BankLoadByLoc_CB(g_wad.core_bank_offset + g_wad.sector, 0, music_LoadBankCB, (unsigned long)(unsigned int)&Sound.handles[3]);
+	snd_BankLoadByLoc_CB(g_wad.level.core_bank.offset + g_wad.level.sector, 0, music_LoadBankCB, (unsigned long)(unsigned int)&Sound.handles[3]);
 }
 
 GAME_SECTION(music_LoadBankFromEE) void music_LoadBankFromEE(void *data, int slot)
@@ -127,7 +122,9 @@ GAME_SECTION(music_LoadBankFromEE) void music_LoadBankFromEE(void *data, int slo
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_Init);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", func_00488F28);
+JUNK_ASM(func_00488F28,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_PreseekTrack);
 
@@ -165,7 +162,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_UpdateStre
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_Update);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", func_00489C20);
+JUNK_ASM(func_00489C20,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(music_Sync) int music_Sync(int wait)
 {
@@ -176,7 +175,9 @@ GAME_SECTION(music_Sync) int music_Sync(int wait)
 	return IsLoading();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", func_00489C88);
+JUNK_ASM(func_00489C88,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(music_PreseekCB) void music_PreseekCB(int result, unsigned long user)
 {

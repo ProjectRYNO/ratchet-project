@@ -19,7 +19,9 @@ GAME_SECTION(ResetGameCounters) void ResetGameCounters()
 	Camera_DestroyReticule(0);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update", func_004E55B8);
+JUNK_ASM(func_004E55B8,
+	"\tsw $3, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(HideMobysForScene) void HideMobysForScene(int hide)
 {

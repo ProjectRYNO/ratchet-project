@@ -2,47 +2,12 @@
 #include "game_section.h"
 #include "game_vu0.h"
 #include "mobyutil.h"
+#include "gameglobals.h"
+#include "wad.h"
+#include "sound.h"
 
 
 struct SoundInstance;
-struct SoundDef {
-	/* 0x00 */ float minRange;
-	/* 0x04 */ float maxRange;
-	/* 0x08 */ int minVolume;
-	/* 0x0c */ int maxVolume;
-	/* 0x10 */ int minPitch;
-	/* 0x14 */ int maxPitch;
-	/* 0x18 */ unsigned char loop;
-	/* 0x19 */ unsigned char flags;
-	/* 0x1a */ short index;
-	/* 0x1c */ int bank_index;
-};
-struct SoundData {
-	/* 0x00 */ unsigned int handle;
-	/* 0x04 */ SoundDef *def;
-	/* 0x08 */ short index;
-	/* 0x0a */ short def_index;
-	/* 0x0c */ short volumeMod;
-	/* 0x0e */ unsigned short occlpos;
-	/* 0x10 */ unsigned char status;
-	/* 0x11 */ char loop;
-	/* 0x12 */ char priority;
-	/* 0x13 */ unsigned char unused0;
-	/* 0x14 */ int pitch;
-	/* 0x18 */ int pitchMod;
-	/* 0x1c */ moby *pMoby;
-	/* 0x20 */ float pos[4];
-	/* 0x30 */ float offset[4];
-	/* 0x40 */ SoundInstance *pAmbient;
-	/* 0x44 */ int lineEmitter;
-	/* 0x48 */ int oClass;
-	/* 0x4c */ float pan;
-	/* 0x50 */ int delay;
-	/* 0x54 */ int flags;
-	/* 0x58 */ unsigned short unique_id;
-	/* 0x5a */ unsigned short pad16_0;
-	/* 0x5c */ char occl[36];
-};
 struct SoundGlobals {
 	/* 0x000 */ char unk000[0x48];
 	/* 0x048 */ int cam_history_pos;
@@ -69,17 +34,10 @@ struct lineEmitter {
 extern SoundGlobals Sound __asm__("Sound");
 extern lineEmitter gsLineEmitters[12] __asm__("gsLineEmitters");
 unsigned short sound_unique_id __asm__("D_21FCC4") GAME_GP_DATA = 0;
-struct WadDef {
-	/* 0x0000 */ char unk0000[0xcbbc];
-	/* 0xcbbc */ int reverb_type;
-};
-extern WadDef g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern "C" {
 	void snd_PreAllocReverbWorkArea(int, int);
 }
-struct GadgetCache {
-	static void Reset() __asm__("Reset___dupe2");
-};
 SoundData *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
 short sound_CreateHandle(int) __asm__("sound_CreateHandle");
 void sound_LevelInit() __asm__("sound_LevelInit");
@@ -204,7 +162,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_Init);
 
 GAME_SECTION(sound_LevelInit) void sound_LevelInit()
 {
-	snd_PreAllocReverbWorkArea(2, g_wad.reverb_type);
+	snd_PreAllocReverbWorkArea(2, g_wad.level.reverb.type);
 	GadgetCache::Reset();
 }
 
@@ -220,7 +178,9 @@ GAME_SECTION(IsMobyPlayingSound) int IsMobyPlayingSound(moby *pMoby, short handl
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E19D0);
+JUNK_ASM(func_004E19D0,
+	"\tdaddu $2, $7, $0\n"
+	"\tnop\n");
 
 GAME_SECTION(sound_KillById) void sound_KillById(int sound_id, moby *pMoby)
 {
@@ -312,7 +272,11 @@ GAME_SECTION(sound_CorePlay) short sound_CorePlay(unsigned int sound, unsigned i
 	return sound_CreateHandle(channel);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E2278);
+JUNK_ASM(func_004E2278,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 short sound_FootstepPlay(unsigned int ground_type, unsigned int right_foot, unsigned int magneboots, unsigned int flags, moby *pMoby, int vol_mod) __asm__("sound_FootstepPlay");
 GAME_SECTION(sound_FootstepPlay) short sound_FootstepPlay(unsigned int ground_type, unsigned int right_foot, unsigned int magneboots, unsigned int flags, moby *pMoby, int vol_mod)
@@ -336,12 +300,18 @@ GAME_SECTION(sound_SetOffset) int sound_SetOffset(short handle, vec4 &offset)
 	SoundData *channel = sound_GetChannelFromHandle(handle);
 	if (channel) {
 		channel->flags |= 0x40;
-		*(vec4 *)channel->offset = offset;
+		channel->offset = offset;
 	}
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E2388);
+JUNK_ASM(func_004E2388,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsw $3, 0x4($6)\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", sound_StopAllSounds);
 
@@ -383,7 +353,9 @@ GAME_SECTION(sound_FreshenCB) void sound_FreshenCB(unsigned int ret_val, unsigne
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E24E0);
+JUNK_ASM(func_004E24E0,
+	"\tlh $2, 0x0($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(lineEmitterSetAttrib) void lineEmitterSetAttrib(lineEmitter *pEmitter, unsigned int attrib, void *value)
 {
@@ -429,4 +401,10 @@ GAME_SECTION(sound_initLineEmitters) void sound_initLineEmitters()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/sound", func_004E25D0);
+JUNK_ASM(func_004E25D0,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tsq $3, 0x30($8)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");

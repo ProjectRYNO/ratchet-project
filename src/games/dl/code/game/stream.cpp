@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "sound.h"
+#include "stream.h"
 
 
 struct MobyInstance;
@@ -24,37 +26,6 @@ struct Stream {
 	/* 0x28 */ float m_fade_time_remaining;
 	/* 0x2c */ float m_inv_fade_time;
 	/* 0x30 */ float m_sd[8];
-};
-struct SoundDef {
-	/* 0x00 */ float minRange;
-	/* 0x04 */ float maxRange;
-	/* 0x08 */ int minVolume;
-	/* 0x0c */ int maxVolume;
-	/* 0x10 */ int minPitch;
-	/* 0x14 */ int maxPitch;
-	/* 0x18 */ unsigned char loop;
-	/* 0x19 */ unsigned char flags;
-	/* 0x1a */ short index;
-	/* 0x1c */ int bank_index;
-};
-struct StreamInterface {
-	unsigned int Play(int, int, MobyInstance *, unsigned int) __asm__("Play___dupe2");
-	unsigned int Queue(int, int, MobyInstance *, unsigned int) __asm__("Queue");
-	unsigned int Start(unsigned int) __asm__("Start");
-	unsigned int GetState(unsigned int, int *) __asm__("GetState");
-	unsigned int SetGain(unsigned int, float) __asm__("SetGain");
-	void SetGain(Stream *) __asm__("SetGain___dupe2");
-	unsigned int StopAll(unsigned int, int, void (*)(void *), void *) __asm__("StopAll___dupe2");
-	unsigned int SetMinMaxRange(unsigned int, float, float) __asm__("SetMinMaxRange");
-	unsigned int StreamsStopped(Stream **) __asm__("StreamsStopped");
-	unsigned int CreateHandle(Stream *) __asm__("CreateHandle");
-	void Initialize(Stream *) __asm__("Initialize___dupe3");
-	void Start(Stream *) __asm__("Start___dupe2");
-	static Stream *GetStreamFromHandle(unsigned int) __asm__("GetStreamFromHandle");
-	static void Free(Stream *) __asm__("Free");
-	unsigned int Alloc(Stream **) __asm__("Alloc");
-	void Update(float) __asm__("Update___dupe54");
-	void WaitForStop(Stream **, int, void (*)(void *), void *) __asm__("WaitForStop");
 };
 extern Stream m_streams[3] __asm__("StreamInterface_m_streams");
 int m_num_open_streams __asm__("D_21F358") GAME_GP_DATA = 0;
@@ -119,7 +90,9 @@ GAME_SECTION(Reset___dupe3) void StreamInterface2::Reset()
 	} while ((int)stream < (int)&m_streams[3]);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_00489F98);
+JUNK_ASM(func_00489F98,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 GAME_SECTION(StopAll___dupe2) unsigned int StreamInterface::StopAll(unsigned int synchronous, int timeout_vsyncs, void (*func)(void *), void *arg)
 {
@@ -202,7 +175,11 @@ GAME_SECTION(GetState) unsigned int StreamInterface::GetState(unsigned int strea
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_0048A280);
+JUNK_ASM(func_0048A280,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(Start) unsigned int StreamInterface2::Start(unsigned int stream_handle)
 {
@@ -254,7 +231,11 @@ GAME_SECTION(SetMinMaxRange) unsigned int StreamInterface::SetMinMaxRange(unsign
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", func_0048A488);
+JUNK_ASM(func_0048A488,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stream", Update___dupe54);
 

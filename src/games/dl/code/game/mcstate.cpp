@@ -1,59 +1,18 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
+#include "memcard.h"
 
 
 
 
 
 
-struct memcard_saveinfo {
-	/* 0x00 */ int level;
-	/* 0x04 */ int unk04[7];
-};
-struct memcard_data {
-	/* 0x00 */ int port;
-	/* 0x04 */ int slot;
-	/* 0x08 */ int type;
-	/* 0x0c */ int free;
-	/* 0x10 */ int changed;
-	/* 0x14 */ int format;
-	/* 0x18 */ short saveslot;
-	/* 0x1a */ short curslot;
-	/* 0x1c */ int RC1and2_weapons_checked;
-	/* 0x20 */ int corrupt_size;
-	/* 0x24 */ unsigned int patch_size;
-	/* 0x28 */ int oldsave;
-	/* 0x2c */ int gamesize;
-	/* 0x30 */ int levelsize;
-	/* 0x34 */ memcard_saveinfo info[5];
-};
-struct McState {
-	/* 0x000 */ memcard_data memcards[2];
-	/* 0x1a8 */ int cmd;
-	/* 0x1ac */ int res;
-	/* 0x1b0 */ int useslot;
-	/* 0x1b4 */ int slot;
-	/* 0x1b8 */ int level;
-	/* 0x1bc */ int sync;
-	/* 0x1c0 */ int file;
-	/* 0x1c4 */ int stage;
-	/* 0x1c8 */ int substage;
-	/* 0x1cc */ int nextstage;
-	/* 0x1d0 */ int nextslot;
-	/* 0x1d4 */ int err;
-	/* 0x1d8 */ int errslot;
-	/* 0x1dc */ char *addr;
-	/* 0x1e0 */ int size;
-	/* 0x1e4 */ int autosave;
-	/* 0x1e8 */ int checkslot;
-	/* 0x1ec */ int timer;
-	/* 0x1f0 */ int savesize;
-};
 int SaveSlotUponCreation __asm__("D_21F150") GAME_GP_DATA = 0;
 extern int mcstate_response __asm__("mcstate_response");
 extern int mc_state __asm__("mc_state");
 extern int mcstate_flags __asm__("mcstate_flags");
-extern McState mcState __asm__("D_171948");
+extern memcard_globals mcState __asm__("D_171948");
 void MCSTATE_TransToState(int) __asm__("MCSTATE_TransToState");
 void MCSTATE_ClearCommand(int) __asm__("MCSTATE_ClearCommand");
 void MCSTATE_ClearResponse() __asm__("MCSTATE_ClearResponse");
@@ -117,12 +76,9 @@ void UpdateMCState() __asm__("UpdateMCState");
 
 void csf_newcard() __asm__("csf_newcard");
 
-struct McClock {
-	/* 0x0 */ unsigned char b[8];
-};
-extern "C" int sceCdReadClock(McClock *);
-extern "C" int sceScfGetLocalTimefromRTC(McClock *);
-extern McClock LastSaveTime __asm__("LastSaveTime");
+extern "C" int sceCdReadClock(sceCdCLOCK *);
+extern "C" int sceScfGetLocalTimefromRTC(sceCdCLOCK *);
+extern sceCdCLOCK LastSaveTime __asm__("LastSaveTime");
 extern int Level __asm__("Level");
 void memcard_MakeWholeSave(char *) __asm__("memcard_MakeWholeSave");
 void MCSTATE_SaveGame(char *, int) __asm__("MCSTATE_SaveGame");
@@ -558,7 +514,11 @@ GAME_SECTION(csf_prompt_save_overwrite) void csf_prompt_save_overwrite()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AA0);
+JUNK_ASM(func_00465AA0,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MCSTATE_SetSaveSlotUponSaveCreationTo) int MCSTATE_SetSaveSlotUponSaveCreationTo(int slot)
 {
@@ -568,13 +528,17 @@ GAME_SECTION(MCSTATE_SetSaveSlotUponSaveCreationTo) int MCSTATE_SetSaveSlotUponS
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465AD8);
+JUNK_ASM(func_00465AD8,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", MCSTATE_LoadGame);
 
 GAME_SECTION(MCSTATE_SaveGame) void MCSTATE_SaveGame(char *addr, int which_level)
 {
-	McState *mc = &mcState;
+	memcard_globals *mc = &mcState;
 	sceCdReadClock(&LastSaveTime);
 	sceScfGetLocalTimefromRTC(&LastSaveTime);
 	memcard_MakeWholeSave(addr);
@@ -731,4 +695,10 @@ GAME_SECTION(MCSTATE_ClearResponse) void MCSTATE_ClearResponse()
 	mcstate_response = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", func_00465F20);
+JUNK_ASM(func_00465F20,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsw $4, -0x4000($28)\n"
+	"\tnop\n"
+	"\tsw $4, -0x4000($28)\n"
+	"\tnop\n");

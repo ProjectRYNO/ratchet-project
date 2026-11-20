@@ -159,21 +159,39 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_Coll
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentSphereLocal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048B1C0);
+JUNK_ASM(func_0048B1C0,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentCylinderLocal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048B468);
+JUNK_ASM(func_0048B468,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentPath);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048B560);
+JUNK_ASM(func_0048B560,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tsqc2 $vf1, 0x0($6)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_NodeGetDistSqr);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_TestInside);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048B800);
+JUNK_ASM(func_0048B800,
+	"\tsw $0, 0x3054($3)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(navg_AllocMemory) char *navg_AllocMemory(int size, char **ptr, char *end)
 {
@@ -406,18 +424,26 @@ GAME_SECTION(navg_LoadSectors) int navg_LoadSectors(char *fileData, char *&dataM
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_LoadFile);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048D028);
+JUNK_ASM(func_0048D028,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 GAME_SECTION(NAVG_ResetNavigationVars) void NAVG_ResetNavigationVars(char *vars, int a, int b)
 {
 	NAVG_WpSetPos(vars + 0x10, a, b);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048D058);
+JUNK_ASM(func_0048D058,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_FindClosestNode);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048D220);
+JUNK_ASM(func_0048D220,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(navg_FindBestIntraClusterPath) void navg_FindBestIntraClusterPath(unsigned short source, unsigned short destination, int traversalFlags, unsigned short &bestPath, unsigned short &bestEdge, int &shortestDist)
 {
@@ -460,7 +486,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_Upda
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_UpdateNavigation);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048E650);
+JUNK_ASM(func_0048E650,
+	"\tori $2, $0, 0xffff\n"
+	"\tnop\n"
+	"\tori $2, $0, 0xffff\n"
+	"\tnop\n"
+	"\tori $2, $0, 0xffff\n"
+	"\tnop\n"
+	"\tori $2, $0, 0xffff\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_NodeFindClosestNode);
 
@@ -481,7 +515,11 @@ GAME_SECTION(NAVG_NodeGetCenter) void NAVG_NodeGetCenter(unsigned short node, ve
 	if (g_navSys && node <= g_navSys->nodeMax) oPos = g_navSys->nodes[node].centroid;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048EAB0);
+JUNK_ASM(func_0048EAB0,
+	"\tdaddu $2, $7, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_NodeGet3DSpline);
 
@@ -513,7 +551,9 @@ GAME_SECTION(NAVG_WpSetPos) void NAVG_WpSetPos(vec4 &wp, vec4 &iPos)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", NAVG_WpMovePos);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", func_0048EC58);
+JUNK_ASM(func_0048EC58,
+	"\tsq $2, 0x0($5)\n"
+	"\tnop\n");
 
 GAME_SECTION(NAVG_WpGetNode) unsigned short NAVG_WpGetNode(vec4 &wp)
 {

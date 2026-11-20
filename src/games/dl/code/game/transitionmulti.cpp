@@ -188,7 +188,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", Transi
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", TransitionMP_SetupGameRulesText);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", func_0054C248);
+JUNK_ASM(func_0054C248,
+	"\tsb $2, 0xa($4)\n"
+	"\tnop\n");
 
 GAME_SECTION(TransitionUpdate_Multiplayer) int TransitionUpdate_Multiplayer(int almostDone)
 {
@@ -229,11 +231,19 @@ GAME_SECTION(TransitionUpdate_Multiplayer) int TransitionUpdate_Multiplayer(int 
 	return done;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", func_0054C3B8);
+JUNK_ASM(func_0054C3B8,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", Transition_DrawBootLoadTexture);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", func_0054C8B0);
+JUNK_ASM(func_0054C8B0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionmulti", TransitionDraw_Multiplayer);
 

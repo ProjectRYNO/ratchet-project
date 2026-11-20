@@ -56,4 +56,20 @@ GAME_SECTION(TN_CalculateAmmoFromEnemies) int TN_CalculateAmmoFromEnemies(int ki
 	return ammoToSpawn;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/tuning", func_004FBF38);
+JUNK_ASM(func_004FBF38,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n");

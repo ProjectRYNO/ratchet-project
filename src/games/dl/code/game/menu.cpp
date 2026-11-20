@@ -30,4 +30,8 @@ GAME_SECTION(Gui_DrawRC1_Help_Decorator) void Gui_DrawRC1_Help_Decorator(float l
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/menu", Gui_DrawDecoratedWindow);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/menu", func_00469798);
+JUNK_ASM(func_00469798,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xf0\n"
+	"\tnop\n");

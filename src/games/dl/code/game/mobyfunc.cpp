@@ -3,18 +3,12 @@
 #include "game_vu0.h"
 #include "mobyutil.h"
 #include "mobyupd.h"
+#include "mobyfunc.h"
+#include "sound.h"
 
 
 
 
-struct MobyClass {
-	/* 0x00 */ char unk00[0xf];
-	/* 0x0f */ unsigned char shadow;
-	/* 0x10 */ char unk10[0x2c - 0x10];
-	/* 0x2c */ unsigned char bangles;
-	/* 0x2d */ char mip_dist;
-	/* 0x2e */ short corncob;
-};
 struct Moby2dCon {
 	/* 0x00 */ MobyInstance *mobys[8];
 	/* 0x20 */ int active;
@@ -115,14 +109,6 @@ void UpdateMobyGrids(MobyInstance *, int) __asm__("UpdateMobyGrids");
 void JointCacheMarkDeleted(MobyInstance *) __asm__("JointCacheMarkDeleted");
 void CleanupAnimLayers(MobyInstance *) __asm__("CleanupAnimLayers");
 int MobyDynamicGroup_RemoveMoby(int, MobyInstance *) __asm__("MobyDynamicGroup_RemoveMoby");
-struct SoundData {
-	/* 0x00 */ char unk00[0xa];
-	/* 0x0a */ short id;
-	/* 0x0c */ char unk0c[0x10 - 0xc];
-	/* 0x10 */ unsigned char active;
-	/* 0x11 */ char unk11[0x1c - 0x11];
-	/* 0x1c */ MobyInstance *pMoby;
-};
 extern int g_gameType __asm__("g_gameType");
 int GB_IsMobyAHero(MobyInstance *) __asm__("GB_IsMobyAHero");
 SoundData *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
@@ -132,7 +118,7 @@ static inline int sound_IsMobyPlaying(MobyInstance *pMoby)
 {
 	int ret = 0;
 	SoundData *channel = sound_GetChannelFromHandle(pMoby->soundChannel);
-	if (channel && pMoby == channel->pMoby) ret = channel->active != 0;
+	if (channel && pMoby == channel->pMoby) ret = channel->status != 0;
 	return ret;
 }
 void MobyPlayDesiredSound(MobyInstance *pMoby) __asm__("MobyPlayDesiredSound");
@@ -226,7 +212,7 @@ GAME_SECTION(MobyPlayDesiredSound) void MobyPlayDesiredSound(MobyInstance *pMoby
 	if (sound_IsMobyPlaying(pMoby)) {
 		SoundData *channel = sound_GetChannelFromHandle(pMoby->soundChannel);
 		if (channel->pMoby == pMoby) {
-			if (channel->id == pMoby->soundDesired && !b_no_anim_update && !(pMoby->bangles & 0x8000)) return;
+			if (channel->def_index == pMoby->soundDesired && !b_no_anim_update && !(pMoby->bangles & 0x8000)) return;
 			sound_Kill(pMoby->soundChannel);
 		}
 		pMoby->soundChannel = -1;
@@ -290,11 +276,15 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", GetMobyJointM
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", GetMobyJointWorld);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046CA08);
+JUNK_ASM(func_0046CA08,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", GetMobyJointLocs);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046CAE0);
+JUNK_ASM(func_0046CAE0,
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n");
 
 GAME_SECTION(DmaMobyTextures) void DmaMobyTextures()
 {
@@ -337,7 +327,9 @@ GAME_SECTION(PatchMobyGifs) void PatchMobyGifs()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046CCB0);
+JUNK_ASM(func_0046CCB0,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", ProcessMobyShadows);
 
@@ -416,7 +408,11 @@ GAME_SECTION(MobyGetInterface___dupe2) void *MobyGetInterface(int oClass, int id
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046D488);
+JUNK_ASM(func_0046D488,
+	"\taddiu $2, $0, 0xff\n"
+	"\tnop\n"
+	"\tsw $0, 0x0($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(MobyDynamicGroup_RemoveMoby) int MobyDynamicGroup_RemoveMoby(int iGroup, MobyInstance *pRemoveMoby)
 {
@@ -441,7 +437,9 @@ GAME_SECTION(MobyDynamicGroup_RemoveMoby) int MobyDynamicGroup_RemoveMoby(int iG
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046D588);
+JUNK_ASM(func_0046D588,
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n");
 
 GAME_SECTION(MobyDynamicGroup_IsDynamicGroup) int MobyDynamicGroup_IsDynamicGroup(int iGroup)
 {
@@ -449,7 +447,9 @@ GAME_SECTION(MobyDynamicGroup_IsDynamicGroup) int MobyDynamicGroup_IsDynamicGrou
 	return !(iGroup < MobyGroupFirstDynamic);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyfunc", func_0046D5B0);
+JUNK_ASM(func_0046D5B0,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(CollSphereFail) void CollSphereFail(void *pSkip_)
 {

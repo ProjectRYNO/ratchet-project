@@ -38,7 +38,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vendor", Vendor_CanPurch
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vendor", FUN_004e7000);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vendor", func_004E7378);
+JUNK_ASM(func_004E7378,
+	"\tsb $3, 0x0($4)\n"
+	"\tnop\n"
+	"\tsb $3, 0x0($4)\n"
+	"\tnop\n");
 
 GAME_SECTION(Vendor_IsGadgetAvailableForPurchase) int Vendor_IsGadgetAvailableForPurchase(int gadgetId)
 {
@@ -46,7 +50,9 @@ GAME_SECTION(Vendor_IsGadgetAvailableForPurchase) int Vendor_IsGadgetAvailableFo
 	return (VendorAvail + 0x3b18)[gadgetId] != 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vendor", func_004E73D0);
+JUNK_ASM(func_004E73D0,
+	"\txori $2, $2, 0x1\n"
+	"\tnop\n");
 
 GAME_SECTION(Vendor_IsPostFXModAvailableForPurchase) int Vendor_IsPostFXModAvailableForPurchase(int modId)
 {

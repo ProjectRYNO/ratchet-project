@@ -33,4 +33,6 @@ GAME_SECTION(SetPmMemory) void SetPmMemory(char *p)
 	PmMemory = p;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/gearmenu", func_0045C6E0);
+JUNK_ASM(func_0045C6E0,
+	"\tsh $0, 0x1c($4)\n"
+	"\tnop\n");

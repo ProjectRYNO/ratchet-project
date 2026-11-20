@@ -14,6 +14,11 @@
         "    .set at\n" \
     )
 #endif
+/* Retail bytes that are not a function (dead-stripped stack-adjust/nop debris; DECISIONS.md D21), written inline. */
+#ifndef JUNK_ASM
+#define JUNK_ASM(NAME, BODY) \
+    __asm__(".section .text\n.set noreorder\n.set noat\n" BODY ".set at\n.set reorder\n")
+#endif
 #ifndef INCLUDE_RODATA
 #define INCLUDE_RODATA(FOLDER, NAME) \
     __asm__( \
@@ -33,6 +38,9 @@ __asm__(".include \"/ProjectRYNO/dl/code/include/labels.inc\"\n");
 
 #ifndef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
+#endif
+#ifndef JUNK_ASM
+#define JUNK_ASM(NAME, BODY)
 #endif
 #ifndef INCLUDE_RODATA
 #define INCLUDE_RODATA(FOLDER, NAME)

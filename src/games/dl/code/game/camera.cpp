@@ -158,7 +158,11 @@ GAME_SECTION(Camera_UpdateFov) void Camera_UpdateFov(int cameraIndex)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043A3C8);
+JUNK_ASM(func_0043A3C8,
+	"\tswc1 $f12, 0x0($2)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", BackupCurrentCam);
 
@@ -195,7 +199,9 @@ GAME_SECTION(Cam_InterpValues) float Cam_InterpValues(float current, float targe
 	return current + *speed;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043A818);
+JUNK_ASM(func_0043A818,
+	"\tqmfc2.ni $2, $vf5\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Cam_InterpAngles);
 
@@ -282,14 +288,28 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", UpdateCamera);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_resetToFollow);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043D8E8);
+JUNK_ASM(func_0043D8E8,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tsw $0, 0x4($2)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xf0\n"
+	"\tnop\n");
 
 GAME_SECTION(Camera_DestroyReticule) void Camera_DestroyReticule(moby *pMoby)
 {
 	Reticule.numActive = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043D930);
+JUNK_ASM(func_0043D930,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 GAME_SECTION(Camera_UpdateFog) void Camera_UpdateFog(vec4 &pos)
 {
@@ -297,4 +317,28 @@ GAME_SECTION(Camera_UpdateFog) void Camera_UpdateFog(vec4 &pos)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_StartShake);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", func_0043DA90);
+JUNK_ASM(func_0043DA90,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\tori $2, $2, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");

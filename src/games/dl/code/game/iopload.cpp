@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "fs.h"
+#include "gameglobals.h"
 
 
 extern int iopInitialized __asm__("D_21DD38");
@@ -99,13 +101,6 @@ extern "C" {
 	int lgKbMResumeThread(void *);
 	int lgKbMUnloadIopModule();
 }
-struct Fs {
-	static void Initialize() __asm__("Initialize");
-};
-struct GadgetCache {
-	static void Initialize() __asm__("Initialize___dupe2");
-	static void UnInitialize() __asm__("UnInitialize");
-};
 bool EZNetCnfUnloadCallback(void *) __asm__("EZNetCnfUnloadCallback");
 bool LgKbmUnloadCallback(void *) __asm__("LgKbmUnloadCallback");
 void ClearIOPModuleQueue(IOPMODULELOADQUEUE *) __asm__("ClearIOPModuleQueue");
@@ -231,7 +226,9 @@ GAME_SECTION(UnloadIOPModule) int UnloadIOPModule(int id)
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_00460090);
+JUNK_ASM(func_00460090,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(DefaultIOPModuleUnloadCallback) int DefaultIOPModuleUnloadCallback(int *module)
 {
@@ -349,7 +346,9 @@ GAME_SECTION(EZNetCtlUnloadCallback) bool EZNetCtlUnloadCallback(void *module_in
 	return true;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_004603F0);
+JUNK_ASM(func_004603F0,
+	"\tlbu $2, 0x264($3)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", GetModuleLoadCondition);
 
@@ -357,7 +356,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", GetModuleLoadC
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", GetModuleUnloadCallback);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", func_004604E8);
+JUNK_ASM(func_004604E8,
+	"\tori $2, $2, 0x9fcc\n"
+	"\tnop\n");
 
 GAME_SECTION(ClearIOPModuleQueue) void ClearIOPModuleQueue(IOPMODULELOADQUEUE *queue)
 {

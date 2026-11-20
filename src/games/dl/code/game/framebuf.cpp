@@ -41,7 +41,13 @@ GAME_SECTION(SetVideoMode) void SetVideoMode()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", func_004586E0);
+JUNK_ASM(func_004586E0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", SetMovieDrawSmallVIFChain);
 
@@ -52,7 +58,9 @@ GAME_SECTION(SetBackgroundColor) void SetBackgroundColor(int r, int g, int b)
 	aaClearRegs[7] = (long)r | ((long)g << 8) | ((long)b << 16) | 0x80000000L;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", func_00459400);
+JUNK_ASM(func_00459400,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(PutDispBuffer) void PutDispBuffer()
 {
@@ -83,7 +91,9 @@ GAME_SECTION(PutDrawBufferSmall) void PutDrawBufferSmall()
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", func_00459750);
+JUNK_ASM(func_00459750,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 GAME_SECTION(AA_BlurPass) void AA_BlurPass()
 {
@@ -117,4 +127,6 @@ GAME_SECTION(AA_DisplayPass) void AA_DisplayPass(int opaque)
 	vu1_bufPtr++;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/framebuf", func_004598D8);
+JUNK_ASM(func_004598D8,
+	"\tsw $6, 0x8c($2)\n"
+	"\tnop\n");

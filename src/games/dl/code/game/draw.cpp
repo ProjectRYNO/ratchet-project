@@ -217,7 +217,11 @@ GAME_SECTION(DrawIOPInfo) void DrawIOPInfo()
 {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00446C78);
+JUNK_ASM(func_00446C78,
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", SetupUVMatrix);
 
@@ -290,7 +294,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", InitViewContext);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", UpdateViewContext);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00448340);
+JUNK_ASM(func_00448340,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", SetPalMode);
 
@@ -347,7 +355,25 @@ GAME_SECTION(ResetGsRegistersPr) void ResetGsRegistersPr()
 	GS_REG(0x120000d0) = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_004489D8);
+JUNK_ASM(func_004489D8,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x4f0\n"
+	"\tnop\n"
+	"\tsq $2, 0x10($3)\n"
+	"\tnop\n"
+	"\taddiu $2, $0, -0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(GetFrustumDef) FrustumDef *GetFrustumDef(int frustrumIndex)
 {
@@ -375,7 +401,13 @@ GAME_SECTION(GetScreenFrustumScales) void GetScreenFrustumScales(int index, floa
 	sy = pfrust->size_y;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00448C50);
+JUNK_ASM(func_00448C50,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(SetupGifPaging) void SetupGifPaging(int no_hud)
 {
@@ -421,11 +453,15 @@ GAME_SECTION(DoGifPaging) void DoGifPaging()
 	(*gif_page_markerB)[3] = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00448EA0);
+JUNK_ASM(func_00448EA0,
+	"\tswc1 $f1, 0x0($6)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", CalcWorldSpaceUV);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00448F90);
+JUNK_ASM(func_00448F90,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", GetEffectTex);
 
@@ -517,19 +553,29 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawLogoAndStart)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSubtitles);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_00449BE8);
+JUNK_ASM(func_00449BE8,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawScreenOverlay);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawRectOverlay);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044A070);
+JUNK_ASM(func_0044A070,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xc0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSprite);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSprite___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044A408);
+JUNK_ASM(func_0044A408,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(DrawSpriteFont) bool DrawSpriteFont(float sc_x, float sc_y, float sc_w, float sc_h, int tx_u, int tx_v, int tx_w, int tx_h, unsigned long rgba, unsigned long tex0, int one_to_one)
 {
@@ -570,7 +616,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSpriteFontGou
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawSpriteFontWithShadow);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044AA50);
+JUNK_ASM(func_0044AA50,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", DrawScreenGQuad);
 
@@ -602,10 +650,30 @@ GAME_SECTION(DrawTextShadow) void DrawTextShadow(int top, int bot, int left, int
 	DrawRectOverlay(top + 4, bot - 4, right + 3, right + 4, overlayRgba);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044AD00);
+JUNK_ASM(func_0044AD00,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x190\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xd0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", FastDrawStripInit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", func_0044B058);
+JUNK_ASM(func_0044B058,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsw $0, 0x14($3)\n"
+	"\tnop\n"
+	"\tsw $0, 0x1c($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", Screen_FadeOut);

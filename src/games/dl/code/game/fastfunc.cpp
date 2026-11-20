@@ -46,7 +46,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", FastArcSin);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", FastArcTan);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", func_00453B08);
+JUNK_ASM(func_00453B08,
+	"\tsqc2 $vf15, 0x0($5)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", FastAddRots);
 
@@ -64,7 +66,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", FastBsphereCh
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", FastBsphereCheck___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", func_00453EA8);
+JUNK_ASM(func_00453EA8,
+	"\tsw $0, 0x0($24)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fastfunc", sound_GetChannelFromHandle);
 

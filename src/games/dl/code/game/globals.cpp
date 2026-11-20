@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "globals.h"
+#include "memcard.h"
 
 
 extern unsigned char mSaveErrorSpaceTransition __asm__("mSaveErrorSpaceTransition");
@@ -42,17 +43,11 @@ int mode_requestChange(int, int, int, int, char *) __asm__("mode_requestChange")
 int PlayNextQueuedMovie(MovieQueue *) __asm__("PlayNextQueuedMovie");
 int g_newlevel __asm__("g_newlevel") GAME_GP_DATA = 0;
 int SwitchingLevels() __asm__("SwitchingLevels");
-struct McState {
-	/* 0x000 */ char unk000[0x18];
-	/* 0x018 */ short command;
-	/* 0x01a */ char unk01a[0x1e4 - 0x1a];
-	/* 0x1e4 */ int pending;
-};
 int g_gameType __asm__("g_gameType") GAME_GP_DATA = 0;
 extern int g_newlevelnum __asm__("g_newlevelnum");
 extern int g_newmissionindex __asm__("g_newmissionindex");
 extern int PreviousLevel __asm__("D_21DA78");
-extern McState mcState __asm__("D_171948");
+extern memcard_globals mcState __asm__("D_171948");
 void AbortMissionLoad() __asm__("AbortMissionLoad");
 void MCSTATE_ClearCommand(int) __asm__("MCSTATE_ClearCommand");
 void memcard_Save(int, int) __asm__("memcard_Save");
@@ -81,32 +76,7 @@ struct LobbySettings {
 	/* 0x128 */ unsigned char b[8];
 	/* 0x130 */ int ids[4];
 };
-struct BootSettings {
-	/* 0x00 */ char unk00[0x18];
-	/* 0x18 */ int v0;
-	/* 0x1c */ char unk1c[0xc];
-	/* 0x28 */ int v1;
-	/* 0x2c */ char unk2c[0xc];
-	/* 0x38 */ int v2;
-	/* 0x3c */ char unk3c[0xc];
-	/* 0x48 */ int v3;
-	/* 0x4c */ char unk4c[0xc];
-	/* 0x58 */ int v4;
-	/* 0x5c */ char unk5c[0xc];
-	/* 0x68 */ int v5;
-	/* 0x6c */ char unk6c[0xc];
-	/* 0x78 */ int v6;
-	/* 0x7c */ char unk7c[0xc];
-	/* 0x88 */ int v7;
-	/* 0x8c */ char unk8c[0xc];
-	/* 0x98 */ int v8;
-	/* 0x9c */ char unk9c[0xc];
-	/* 0xa8 */ unsigned char a;
-	/* 0xa9 */ char unka9[0xb];
-	/* 0xb4 */ unsigned char b;
-};
 extern LobbySettings LobbyControllerSettings __asm__("LobbyControllerSettings");
-extern BootSettings bootSettings __asm__("bootSettings");
 void InitializeLobbyControllerSettingsToDefaults() __asm__("InitializeLobbyControllerSettingsToDefaults");
 
 
@@ -217,8 +187,8 @@ GAME_SECTION(SwitchToLevel) void SwitchToLevel(int newLevelNumber, int memCardSa
 	g_newmissionindex = missionIndex;
 	g_newlevelnum = newLevelNumber;
 	if (newLevelNumber == -1) {
-		if (mcState.pending) mcState.pending = 0;
-		if (mcState.command >= 0) mcState.command = -1;
+		if (mcState.autosave) mcState.autosave = 0;
+		if (mcState.memcards[0].saveslot >= 0) mcState.memcards[0].saveslot = -1;
 		MCSTATE_ClearCommand(7);
 	}
 	if (!g_gameType && memCardSave) {
@@ -232,7 +202,15 @@ GAME_SECTION(SwitchingLevels) int SwitchingLevels()
 	return g_newlevel != 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/globals", func_0045CB30);
+JUNK_ASM(func_0045CB30,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsb $4, 0xb4($2)\n"
+	"\tnop\n");
 
 GAME_SECTION(IsGameInChallengeMode) int IsGameInChallengeMode()
 {
@@ -249,23 +227,27 @@ GAME_SECTION(Global_ClearSaveErrorInSpaceTransition) void Global_ClearSaveErrorI
 	mSaveErrorSpaceTransition = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/globals", func_0045CB78);
+JUNK_ASM(func_0045CB78,
+	"\tsb $2, 0x0($28)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(InitializeLobbyControllerSettingsToDefaults) void InitializeLobbyControllerSettingsToDefaults()
 {
 	int i;
 	for (i = 0; i < 8; i++) {
-		LobbyControllerSettings.values[0][i] = bootSettings.v0;
-		LobbyControllerSettings.values[1][i] = bootSettings.v1;
-		LobbyControllerSettings.values[2][i] = bootSettings.v2;
-		LobbyControllerSettings.values[3][i] = bootSettings.v3;
-		LobbyControllerSettings.values[4][i] = bootSettings.v4;
-		LobbyControllerSettings.values[5][i] = bootSettings.v5;
-		LobbyControllerSettings.values[6][i] = bootSettings.v6;
-		LobbyControllerSettings.values[7][i] = bootSettings.v7;
-		LobbyControllerSettings.values[8][i] = bootSettings.v8;
-		LobbyControllerSettings.a[i] = bootSettings.a;
-		LobbyControllerSettings.b[i] = bootSettings.b;
+		LobbyControllerSettings.values[0][i] = bootSettings.CameraElevationDir[0][0];
+		LobbyControllerSettings.values[1][i] = bootSettings.CameraElevationDir[1][0];
+		LobbyControllerSettings.values[2][i] = bootSettings.CameraElevationDir[2][0];
+		LobbyControllerSettings.values[3][i] = bootSettings.CameraAzimuthDir[0][0];
+		LobbyControllerSettings.values[4][i] = bootSettings.CameraAzimuthDir[1][0];
+		LobbyControllerSettings.values[5][i] = bootSettings.CameraAzimuthDir[2][0];
+		LobbyControllerSettings.values[6][i] = bootSettings.CameraRotateSpeed[0][0];
+		LobbyControllerSettings.values[7][i] = bootSettings.CameraRotateSpeed[1][0];
+		LobbyControllerSettings.values[8][i] = bootSettings.CameraRotateSpeed[2][0];
+		LobbyControllerSettings.a[i] = bootSettings.FirstPersonModeOn[0];
+		LobbyControllerSettings.b[i] = bootSettings.ControllerVibrationOn[0];
 	}
 	LobbyControllerSettings.ids[0] = -1;
 	LobbyControllerSettings.ids[1] = -1;
@@ -282,7 +264,11 @@ GAME_SECTION(GetCurrentThreadPriority) int GetCurrentThreadPriority()
 	return info.currentPriority;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/globals", func_0045CEB8);
+JUNK_ASM(func_0045CEB8,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(GetMobySkinBase) int GetMobySkinBase(int oClass)
 {
@@ -301,4 +287,70 @@ GAME_SECTION(GetMobySkinBase) int GetMobySkinBase(int oClass)
 	return oClass;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/globals", func_0045CF88);
+JUNK_ASM(func_0045CF88,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\tdaddu $2, $5, $0\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tlw $2, 0x0($3)\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");

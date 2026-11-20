@@ -9,6 +9,9 @@
 #include "stash.h"
 #include "globals.h"
 #include "draw.h"
+#include "fs.h"
+#include "wad.h"
+#include "path.h"
 
 /* mobyupd */
 extern mobyVtblEntry mobyupdate_vtbl[] __asm__("D_003F0E80");
@@ -51,31 +54,16 @@ void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
 void Stash_InitOnce() __asm__("Stash_InitOnce");
 int Stash_SendData(void *src, int data_qwc, int alloc_qwc, const char *comment) __asm__("Stash_SendData");
 /* bloaders */
-struct wadMisc {
-	/* 0x00 */ char unk00[0x64c];
-	/* 0x64c */ int sector;
-	/* 0x650 */ int debugfontOffset;
-	/* 0x654 */ int debugfontLength;
-};
 struct PifHeader;
-extern wadMisc g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern GSMEM GSmem __asm__("GSmem");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern unsigned long DebugFontTex0 __asm__("DebugFontTex0");
-struct Fs {
-	static void Sync(unsigned int) __asm__("Sync");
-	static int Load(int, unsigned int, unsigned int, unsigned int, unsigned int, void *, void *) __asm__("Load");
-};
 void LoadPifAsPSMT8H(PifHeader *pPif, unsigned long *gsRegs, int tex_loc, int pal_loc) __asm__("LoadPifAsPSMT8H");
 void LoadDebugFont() __asm__("LoadDebugFont");
 
 /* tiefunc */
-struct MemSlotsDef {
-	/* 0x00 */ int unk00[1];
-	/* 0x04 */ void *tie_cache;
-	/* 0x08 */ int unk08[0x40];
-};
-extern MemSlotsDef MemSlots __asm__("D_0023AB10");
+extern MEMSLOTS MemSlots __asm__("D_0023AB00");
 extern char TieCacheListBuf[] __asm__("TieCacheListBuf");
 extern TieInstance *TieInstances __asm__("TieInstances");
 extern TieInstance *TieInstanceEnd __asm__("TieInstanceEnd");
@@ -101,9 +89,6 @@ void TfragDetachPointLight(short *, short *, int) __asm__("TfragDetachPointLight
 void DetachPointLight(int index) __asm__("DetachPointLight");
 void DeletePointLight(int index) __asm__("DeletePointLight");
 /* path */
-struct Path {
-	/* 0x00 */ int nNodes;
-};
 int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPathNode");
 /* tfragfunc */
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");

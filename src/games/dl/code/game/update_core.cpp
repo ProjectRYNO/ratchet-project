@@ -123,7 +123,9 @@ GAME_SECTION(mode_movieUnInit) void mode_movieUnInit()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update_core", UpdateModeMovie);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/update_core", func_004E5548);
+JUNK_ASM(func_004E5548,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(RestartGame) void RestartGame()
 {

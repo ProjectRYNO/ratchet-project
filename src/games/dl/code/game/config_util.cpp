@@ -58,4 +58,12 @@ GAME_SECTION(ConfigUtil_ReadNumber) unsigned char *ConfigUtil_ReadNumber(unsigne
 	return word;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/config_util", func_004FDCF0);
+JUNK_ASM(func_004FDCF0,
+	"\tdaddu $2, $4, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x230\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");

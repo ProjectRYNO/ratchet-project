@@ -2,6 +2,11 @@
 #include "game_section.h"
 #include "game_vu0.h"
 #include "mobyutil.h"
+#include "mathutil.h"
+#include "globals.h"
+#include "mobyfunc.h"
+#include "mobyanim_c.h"
+#include "path.h"
 
 
 struct MobyClass;
@@ -92,35 +97,6 @@ void Bot_GrantHead(unsigned int, int) __asm__("Bot_GrantHead");
 float MB_WrapRot(float) __asm__("MB_WrapRot");
 
 
-struct MobySeq {
-	/* 0x00 */ float bSphere[4];
-	/* 0x10 */ unsigned char frameCnt;
-	/* 0x11 */ signed char sound;
-	/* 0x12 */ unsigned char trigsCnt;
-	/* 0x13 */ char pad;
-	/* 0x14 */ short *trigs;
-	/* 0x18 */ void *animInfo;
-	/* 0x1c */ void *frameData;
-};
-struct MobyClass {
-	/* 0x00 */ char unk00[0x6];
-	/* 0x06 */ unsigned char metal_cnt;
-	/* 0x07 */ char unk07[0xb - 0x7];
-	/* 0x0b */ unsigned char team_texs;
-	/* 0x0c */ unsigned char seq_cnt;
-	/* 0x0d */ char unk0d;
-	/* 0x0e */ char lod_trans;
-	/* 0x0f */ unsigned char shadow;
-	/* 0x10 */ int *collision;
-	/* 0x14 */ char unk14[0x24 - 0x14];
-	/* 0x24 */ float gScale;
-	/* 0x28 */ char unk28[0x40 - 0x28];
-	/* 0x40 */ int glow_rgba;
-	/* 0x44 */ char unk44[0x46 - 0x44];
-	/* 0x46 */ unsigned char type;
-	/* 0x47 */ char mode_bits2;
-	/* 0x48 */ MobySeq *seqs[0];
-};
 struct CollDamOut {
 	/* 0x00 */ char unk00[0x24];
 	/* 0x24 */ int damageFlags;
@@ -317,12 +293,6 @@ extern int g_gameRules __asm__("g_gameRules");
 MobyInstance *CreateMoby(int, int) __asm__("CreateMoby");
 void SwitchMobyToCoOpArmor(MobyInstance *) __asm__("SwitchMobyToCoOpArmor");
 void AddMotionBlurElem(MotionBlur &blur, int alpha, int stepsBehindTarget, float gapReductionFactor) __asm__("AddMotionBlurElem");
-struct TriMode {
-	/* 0x00 */ int mode;
-	/* 0x04 */ int msg;
-	/* 0x08 */ int state;
-	/* 0x0c */ char unk0c[0x1c - 0xc];
-};
 struct HeroVtbl {
 	/* 0x00 */ char unk00[0x4c];
 	/* 0x4c */ int (*getPrompt)(struct TriHero *);
@@ -333,7 +303,7 @@ struct TriHero {
 	/* 0x0018 */ char unk0018[0x266d - 0x18];
 	/* 0x266d */ unsigned char promptOk;
 };
-extern TriMode tri_mode[10] __asm__("tri_mode");
+extern tTriMode tri_mode[10] __asm__("tri_mode");
 TriHero *GB_GetHeroFromPlayerIndex(int) __asm__("GB_GetHeroFromPlayerIndex");
 void GUI_PrintPrompt(int, char *) __asm__("GUI_PrintPrompt");
 int FUN_0047b7f8(int iPlayer, int mode, int msg) __asm__("FUN_0047b7f8");
@@ -357,16 +327,8 @@ struct COLL_DAM_IN {
 	/* 0x2c */ int pad[1];
 };
 void SetCollDamIn(COLL_DAM_IN &cdi, MobyInstance *pDamager, int damageFlags, float damageHp, vec4 momentum) __asm__("SetCollDamIn");
-struct Path {
-	/* 0x00 */ int nNodes;
-	/* 0x04 */ int unk04[3];
-};
 extern Path *Paths[] __asm__("Paths");
 int MB_IsPntInPath(vec4 pnt, int path, int error) __asm__("MB_IsPntInPath");
-struct MathUtilities {
-	/* 0x00 */ int unk00[4];
-	s128 VecSlerp(vec4 vFrom, vec4 vTo, float fInterp, float fLimit, bool bNormalized, bool bClamp) __asm__("VecSlerp");
-};
 extern MathUtilities MU __asm__("D_222010");
 s128 MB_SlerpVectors(vec4 vFrom, vec4 vTo, float fInterp, bool bNormalized) __asm__("MB_SlerpVectors");
 void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent) __asm__("MB_SpawnInit");
@@ -464,7 +426,9 @@ GAME_SECTION(MB_transAnim___dupe2) void MB_transAnim___dupe2(MobyInstance *pMoby
 	else pMoby->modeBits2 &= ~4;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473A80);
+JUNK_ASM(func_00473A80,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_setState) void MB_setState(MobyInstance *pMoby, int state, int stateType)
 {
@@ -478,7 +442,11 @@ GAME_SECTION(MB_setState) void MB_setState(MobyInstance *pMoby, int state, int s
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473AD0);
+JUNK_ASM(func_00473AD0,
+	"\tsb $2, 0xbe($4)\n"
+	"\tnop\n"
+	"\tsb $2, 0xbe($4)\n"
+	"\tnop\n");
 
 GAME_SECTION(Bias0) float Bias0(float in)
 {
@@ -490,7 +458,9 @@ GAME_SECTION(Bias1) float Bias1(float in)
 	return 1.0f - (1.0f - in) * (1.0f - in);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473B08);
+JUNK_ASM(func_00473B08,
+	"\tmul.s $f0, $f0, $f13\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_CubicInterpolate) float MB_CubicInterpolate(float v0, float v1, float v2, float v3, float x)
 {
@@ -514,7 +484,55 @@ GAME_SECTION(MB_CosineInterpolateUnit) float MB_CosineInterpolateUnit(float x)
 	return (1.0f - FastCos(x * 3.1415927f)) * 0.5f;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473CB8);
+JUNK_ASM(func_00473CB8,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tqmfc2.ni $2, $vf1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x120\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x100\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x110\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $2, $0, -0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_getJumpPeak) float MB_getJumpPeak(vec4 pos, vec4 vel, float gravity, int *ticks)
 {
@@ -543,7 +561,7 @@ GAME_SECTION(MB_SetOClass) int MB_SetOClass(MobyInstance *pMoby, int oClass)
 	pMoby->lod_trans = pClass->lod_trans;
 	pMoby->lod_trans2 = 0xff;
 	pMoby->scale = pClass->gScale;
-	if (pMoby->collData) pMoby->collData = pClass->collision;
+	if (pMoby->collData) pMoby->collData = (int *)pClass->collision;
 	pMoby->lSeq = 0xff;
 	if (pMoby->pClass) {
 		if (pMoby->pClass->glow_rgba) {
@@ -565,20 +583,26 @@ GAME_SECTION(MB_SetOClass) int MB_SetOClass(MobyInstance *pMoby, int oClass)
 	return 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00473F20);
+JUNK_ASM(func_00473F20,
+	"\tsqc2 $vf1, 0x0($4)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SolveQuad);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", GetGroundZ);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474088);
+JUNK_ASM(func_00474088,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 GAME_SECTION(GetGroundZNoWater) float GetGroundZNoWater(s128 pos)
 {
 	return GetGroundZ(pos, 0x20, 0.5f, 0, 32.0f);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004740C0);
+JUNK_ASM(func_004740C0,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(PointInsideComplexPoly) int PointInsideComplexPoly(vec4f &point, vec4f *poly, int n)
 {
@@ -597,7 +621,15 @@ GAME_SECTION(PointInsideComplexPoly) int PointInsideComplexPoly(vec4f &point, ve
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SegmentIntersect2D);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474290);
+JUNK_ASM(func_00474290,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tsb $0, 0x19($4)\n"
+	"\tnop\n");
 
 GAME_SECTION(SetCollDamIn) void SetCollDamIn(COLL_DAM_IN &cdi, MobyInstance *pDamager, int damageFlags, float damageHp, vec4 momentum)
 {
@@ -609,17 +641,25 @@ GAME_SECTION(SetCollDamIn) void SetCollDamIn(COLL_DAM_IN &cdi, MobyInstance *pDa
 	cdi.damageStrength = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004742D0);
+JUNK_ASM(func_004742D0,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", DamageSphereAtPos);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474478);
+JUNK_ASM(func_00474478,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", CollDamageMobyDirect);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", CollDamageMobyDirect___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004746C0);
+JUNK_ASM(func_004746C0,
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", CollWaterHeight);
 
@@ -627,7 +667,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", CollMovingSph
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_RegisterLameShadow);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474DA0);
+JUNK_ASM(func_00474DA0,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(TweenColor) int TweenColor(int col0, int col1, float step)
 {
@@ -642,13 +686,25 @@ GAME_SECTION(_MB_damage) CollDamOut *_MB_damage(MobyInstance *pMoby, int damageM
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00474E18);
+JUNK_ASM(func_00474E18,
+	"\taddiu $29, $29, 0xc0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_computeLobVelocity);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_randPrimPoints);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00475680);
+JUNK_ASM(func_00475680,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x220\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 GAME_SECTION(Lerp) int Lerp(int val0, int val1, float alpha)
 {
@@ -662,17 +718,23 @@ GAME_SECTION(Lerp___dupe2) float Lerp___dupe2(float val0, float val1, float alph
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Lerp___dupe3);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00475708);
+JUNK_ASM(func_00475708,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SubLerp);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", GainDampLimit);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00475798);
+JUNK_ASM(func_00475798,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Delt);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004757D8);
+JUNK_ASM(func_004757D8,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(SlideDelt) float SlideDelt(float &fVal, float fTarget, float fRate, float fMinDelt)
 {
@@ -727,7 +789,9 @@ GAME_SECTION(AccelDeltAng) float AccelDeltAng(float &val, float target, float &s
 	return f;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00475EF8);
+JUNK_ASM(func_00475EF8,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", OrganicDeltAng);
 
@@ -794,7 +858,11 @@ GAME_SECTION(ReorderRGB___dupe2) int ReorderRGB___dupe2(int rgba, int order)
 	return (a << 24) | (b << 16) | (g << 8) | r;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004765A0);
+JUNK_ASM(func_004765A0,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_GetSuckVars) void *MB_GetSuckVars(MobyInstance *pMoby)
 {
@@ -804,7 +872,9 @@ GAME_SECTION(MB_GetSuckVars) void *MB_GetSuckVars(MobyInstance *pMoby)
 	return r;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004765E8);
+JUNK_ASM(func_004765E8,
+	"\tlw $2, 0x18($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_GetMoveVars_2) void *MB_GetMoveVars_2(MobyInstance *pMoby)
 {
@@ -843,7 +913,11 @@ out:
 	return *(TargetVars **)pMoby->pVar;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00476700);
+JUNK_ASM(func_00476700,
+	"\tlw $2, 0x24($3)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_MistDeathEffect);
 
@@ -912,18 +986,24 @@ GAME_SECTION(MB_EndColorFlash) void MB_EndColorFlash(MobyInstance *pMoby, FlashV
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_UpdateColorFlash);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477648);
+JUNK_ASM(func_00477648,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_initMobyColorFlash) void MB_initMobyColorFlash(MobyInstance *pMoby, FlashVars &fv)
 {
 	MB_StartColorFlash(pMoby, 1, 0, &fv);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477678);
+JUNK_ASM(func_00477678,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_WrapRot);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004776C0);
+JUNK_ASM(func_004776C0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_isCrateOClass) int MB_isCrateOClass(int oClass)
 {
@@ -941,11 +1021,15 @@ GAME_SECTION(MB_isMorph) int MB_isMorph(MobyInstance *pMoby)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004777C0);
+JUNK_ASM(func_004777C0,
+	"\taddiu $29, $29, 0x230\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_genericExplosion);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477A90);
+JUNK_ASM(func_00477A90,
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_AddMobyToDynamicGroup) void MB_AddMobyToDynamicGroup(MobyInstance *pMoby, short *pGroup, short limit)
 {
@@ -972,7 +1056,9 @@ GAME_SECTION(MB_DeleteMobyFromDynamicGroup) void MB_DeleteMobyFromDynamicGroup(M
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477B88);
+JUNK_ASM(func_00477B88,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_RandomizeVector);
 
@@ -991,11 +1077,41 @@ GAME_SECTION(MB_IsPntInPath) int MB_IsPntInPath(vec4 pnt, int path, int error)
 	return error;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477F30);
+JUNK_ASM(func_00477F30,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SlerpVectors);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00477FB8);
+JUNK_ASM(func_00477FB8,
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\tdaddu $2, $7, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_getTrackVars);
 
@@ -1003,7 +1119,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_TrackMoby_
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_TrackMoby_OneFrame_Vel);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004788E8);
+JUNK_ASM(func_004788E8,
+	"\taddiu $29, $29, 0xd0\n"
+	"\tnop\n"
+	"\tsq $2, 0x0($6)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GadgetDamageIndex);
 
@@ -1054,17 +1176,31 @@ GAME_SECTION(SetNtscPalTiming) void SetNtscPalTiming(int mode)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00478E20);
+JUNK_ASM(func_00478E20,
+	"\taddiu $29, $29, 0x190\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_compressVector);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_decompressVector);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00478FD8);
+JUNK_ASM(func_00478FD8,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tsw $2, 0x0($5)\n"
+	"\tnop\n"
+	"\tqmfc2.ni $2, $vf1\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_MayaFrameTrigger);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004790B0);
+JUNK_ASM(func_004790B0,
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n");
 
 GAME_SECTION(CreateMotionBlur) void CreateMotionBlur(MobyInstance *pMoby, MotionBlur &blur)
 {
@@ -1095,7 +1231,11 @@ GAME_SECTION(DeleteMotionBlur) void DeleteMotionBlur(MotionBlur &blur)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00479570);
+JUNK_ASM(func_00479570,
+	"\tswc1 $f12, 0x14($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x150\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SetAmbientLights) void MB_SetAmbientLights(MobyInstance *pMoby, int rgba)
 {
@@ -1104,7 +1244,11 @@ GAME_SECTION(MB_SetAmbientLights) void MB_SetAmbientLights(MobyInstance *pMoby, 
 	SetMobyAmbientLights(pMoby, rgba & 0xff, g & 0xff, b & 0xff);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004795B0);
+JUNK_ASM(func_004795B0,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_BobMotion) void MB_BobMotion(MobyInstance *pMoby, float &bobt, float &bobz, float bobAmp, float bobSpeed, float centerZ)
 {
@@ -1113,7 +1257,9 @@ GAME_SECTION(MB_BobMotion) void MB_BobMotion(MobyInstance *pMoby, float &bobt, f
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_BobMotion___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_004796C0);
+JUNK_ASM(func_004796C0,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SwingMotion) void MB_SwingMotion(MobyInstance *pMoby, float &swingAng1, float &swingAng2, float swingAmp, float swingRate1, float swingRate2)
 {
@@ -1123,11 +1269,31 @@ GAME_SECTION(MB_SwingMotion) void MB_SwingMotion(MobyInstance *pMoby, float &swi
 	swingAng2 = FastAddRots(swingAng2, swingRate2);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00479790);
+JUNK_ASM(func_00479790,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xf0\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AddVectorSphere);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_00479818);
+JUNK_ASM(func_00479818,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AttachMobyToJoint);
 
@@ -1137,7 +1303,13 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_getTarget)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", FUN_00479d28);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AA28);
+JUNK_ASM(func_0047AA28,
+	"\taddiu $29, $29, 0xc0\n"
+	"\tnop\n"
+	"\tqmfc2.ni $2, $vf1\n"
+	"\tnop\n"
+	"\tqmfc2.ni $2, $vf2\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetLocalSpaceVector);
 
@@ -1155,23 +1327,35 @@ GAME_SECTION(MB_GetWorldSpaceVector) s128 MB_GetWorldSpaceVector(MobyInstance *p
 	return r;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AB20);
+JUNK_ASM(func_0047AB20,
+	"\tqmfc2.ni $2, $vf1\n"
+	"\tnop\n"
+	"\tqmfc2.ni $2, $vf1\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_scaleRelativeXY);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_relativeXYComponent);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AC20);
+JUNK_ASM(func_0047AC20,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_FindGravity_CageMatch);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_FindGravity);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047ADE0);
+JUNK_ASM(func_0047ADE0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AddGravity);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047AEA8);
+JUNK_ASM(func_0047AEA8,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_SphericalHeight);
 
@@ -1187,29 +1371,61 @@ GAME_SECTION(MB_AlignWithGravity) void MB_AlignWithGravity(mtx3 &rMtx, s128 grav
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_AlignWithNormal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B0F0);
+JUNK_ASM(func_0047B0F0,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_DrawGlowFX);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B2D0);
+JUNK_ASM(func_0047B2D0,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x1c0\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_BlowCorn);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_BlowFlamingCorn);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B7E8);
+JUNK_ASM(func_0047B7E8,
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x120\n"
+	"\tnop\n");
 
 GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
 {
-	TriMode *pEntry = &tri_mode[iPlayer];
+	tTriMode *pEntry = &tri_mode[iPlayer];
 	int state = 2;
-	if (pEntry->mode == mode && pEntry->msg == msg) {
+	if (pEntry->mode == mode && pEntry->tag == msg) {
 		if (msg) {
 			TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
 			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
 		}
-		pEntry->state = state;
-		pEntry->msg = msg;
+		pEntry->activeTimer = state;
+		pEntry->tag = msg;
 		return 2;
 	}
 	if (g_gameType == 0) {
@@ -1224,15 +1440,31 @@ GAME_SECTION(FUN_0047b7f8) int FUN_0047b7f8(int iPlayer, int mode, int msg)
 			TriHero *pHero = GB_GetHeroFromPlayerIndex(iPlayer);
 			if (pHero && pHero->promptOk) GUI_PrintPrompt(pHero->vtbl->getPrompt(pHero), msg_string(msg));
 		}
-		pEntry->state = state;
+		pEntry->activeTimer = state;
 		pEntry->mode = mode;
-		pEntry->msg = msg;
+		pEntry->tag = msg;
 		return 1;
 	}
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047B978);
+JUNK_ASM(func_0047B978,
+	"\tsw $0, 0x8($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x1d0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xf0\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent)
 {
@@ -1251,7 +1483,13 @@ GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047BA28);
+JUNK_ASM(func_0047BA28,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IsPntInArea);
 
@@ -1276,7 +1514,13 @@ GAME_SECTION(MB_SetBogeyType) void MB_SetBogeyType(MobyInstance *pMoby, int type
 	if (tVars) tVars->bogeyType = type;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047BC68);
+JUNK_ASM(func_0047BC68,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_UnlockBogey) void MB_UnlockBogey(MobyInstance *pMoby)
 {
@@ -1295,7 +1539,49 @@ GAME_SECTION(MB_UnlockBogey) void MB_UnlockBogey(MobyInstance *pMoby)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047BD18);
+JUNK_ASM(func_0047BD18,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tsltiu $2, $2, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x1c0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x190\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x100\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xc0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xf0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\tsq $3, 0x70($6)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_FastBsphereCheck);
 
@@ -1317,7 +1603,9 @@ GAME_SECTION(MB_PlaySoundsInSeq) void MB_PlaySoundsInSeq(MobyInstance *pMoby, in
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetCommandVars);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047C050);
+JUNK_ASM(func_0047C050,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_InitializeCommandCache) void MB_InitializeCommandCache()
 {
@@ -1349,13 +1637,23 @@ GAME_SECTION(MB_GetCommandName) char *MB_GetCommandName(unsigned int type)
 	return r;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047CE60);
+JUNK_ASM(func_0047CE60,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IssueCommand);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IssueCommand___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047D240);
+JUNK_ASM(func_0047D240,
+	"\tsw $4, 0x10($2)\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");
 
 GAME_SECTION(Bot_GetAbilityDef) BotAbility *Bot_GetAbilityDef(unsigned int a)
 {
@@ -1462,7 +1760,19 @@ GAME_SECTION(Bot_GetGlobalComm) Bot_Communication *Bot_GetGlobalComm()
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", Bot_ResetGlobalComm);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047D6A8);
+JUNK_ASM(func_0047D6A8,
+	"\tsb $4, 0x1($2)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x150\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetShadowSurface);
 
@@ -1472,7 +1782,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetRandomS
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetRandomShadowSurfacePoints);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047EB40);
+JUNK_ASM(func_0047EB40,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(FUN_0047eb50) void FUN_0047eb50()
 {
@@ -1495,7 +1809,11 @@ GAME_SECTION(MB_SetMobyTeamTex) void MB_SetMobyTeamTex(MobyInstance *pMoby, int 
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047EBB0);
+JUNK_ASM(func_0047EBB0,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SelectRespawnNode) void MB_SelectRespawnNode(int iPlayer, MobyInstance *pMobyDest, void *pUserData)
 {
@@ -1560,4 +1878,40 @@ GAME_SECTION(MB_GetXPBundle) int MB_GetXPBundle(MobyInstance *pMoby)
 	return -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", func_0047EEA8);
+JUNK_ASM(func_0047EEA8,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\tsw $3, 0x0($28)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xd0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x860\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");

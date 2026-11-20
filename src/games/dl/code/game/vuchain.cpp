@@ -161,7 +161,9 @@ GAME_SECTION(VU1_addDataRef) void VU1_addDataRef(void *data, int qcnt)
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E78C8);
+JUNK_ASM(func_004E78C8,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(VU1_addDataDirect) void VU1_addDataDirect(int addr, void *data, int qcnt)
 {
@@ -174,7 +176,13 @@ GAME_SECTION(VU1_addDataDirect) void VU1_addDataDirect(int addr, void *data, int
 	vu1_bufPtr = vu1_bufPtr + qcnt;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7978);
+JUNK_ASM(func_004E7978,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\tsw $4, 0x0($28)\n"
+	"\tnop\n"
+	"\tsw $0, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(VU1_addGSregister) void VU1_addGSregister(unsigned int reg, unsigned long rval, int bFXRegTrackingAcknowledged)
 {
@@ -195,7 +203,9 @@ GAME_SECTION(VU1_addGSregister) void VU1_addGSregister(unsigned int reg, unsigne
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7A68);
+JUNK_ASM(func_004E7A68,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_setScissor);
 
@@ -226,7 +236,9 @@ GAME_SECTION(VU1_gsRegsEffects) void VU1_gsRegsEffects()
 	vu1_bufPtr = vu1_bufPtr + 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7CA8);
+JUNK_ASM(func_004E7CA8,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(VU1_resetDrawContexts) void VU1_resetDrawContexts()
 {
@@ -260,7 +272,9 @@ GAME_SECTION(StashGSMem) void StashGSMem(void *ram, int gs_start, int size)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", func_004E7E50);
+JUNK_ASM(func_004E7E50,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", UploadGSMemLinear);
 

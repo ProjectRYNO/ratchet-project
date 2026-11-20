@@ -71,4 +71,22 @@ GAME_SECTION(DR_InitVars) void DR_InitVars(tDR_Vars *drVars, vec4 *posInit, int 
 	drVars->flags = 1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/dead_reckon", func_0054B0A0);
+JUNK_ASM(func_0054B0A0,
+	"\tsw $0, 0x130($4)\n"
+	"\tnop\n"
+	"\tsq $2, 0x90($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsqc2 $vf2, 0x0($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsqc2 $vf1, 0x0($4)\n"
+	"\tnop\n");

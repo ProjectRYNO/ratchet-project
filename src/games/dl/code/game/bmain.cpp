@@ -1,6 +1,8 @@
 #include "common.h"
 #include "game_section.h"
 #include "draw.h"
+#include "globals.h"
+#include "help.h"
 
 int bootTimeOutCounter __asm__("D_21E1E8") GAME_GP_DATA = 0;
 void Boot_ResetTimeOutCounter() __asm__("Boot_ResetTimeOutCounter");
@@ -15,13 +17,8 @@ void _mode_creditsInit() __asm__("_mode_creditsInit");
 void mode_creditsInit() __asm__("mode_creditsInit");
 void _mode_creditsUnInit() __asm__("_mode_creditsUnInit");
 void mode_creditsUnInit() __asm__("mode_creditsUnInit");
-struct MemSlotsDef {
-	/* 0x00 */ int unk00[4];
-	/* 0x10 */ char *level_base;
-	/* 0x14 */ int unk14[0x40];
-};
 struct BootMemoryMap;
-extern MemSlotsDef MemSlots __asm__("D_0023AB10");
+extern MEMSLOTS MemSlots __asm__("D_0023AB00");
 BootMemoryMap *bmmRet __asm__("bmmRet") GAME_GP_DATA = 0;
 int bmmRetGuard __asm__("bmmRetGuard") GAME_GP_DATA = 0;
 BootMemoryMap *GetBootMemoryMap() __asm__("GetBootMemoryMap");
@@ -35,17 +32,6 @@ void Level_TransitionFX(bool) __asm__("Level_TransitionFX");
 void *GetBootPlate(int) __asm__("GetBootPlate");
 
 
-struct HelpMsg {
-	/* 0x00 */ char *text;
-	/* 0x04 */ short id;
-	/* 0x06 */ short shortid;
-	/* 0x08 */ int unk08[2];
-};
-struct HelpDef {
-	/* 0x00 */ int unk00[6];
-	/* 0x18 */ int message_cnt;
-	/* 0x1c */ int unk1c[0x40];
-};
 struct LangOffset {
 	/* 0x00 */ int offset;
 	/* 0x04 */ int size;
@@ -113,8 +99,8 @@ GAME_SECTION(SetLanguage) void SetLanguage(unsigned short language)
 	}
 	FastDecompress(src, helpDecompBuffer);
 	HelpMsgs = (HelpMsg *)helpDecompBuffer;
-	Help.message_cnt = *(unsigned int *)HelpMsgs >> 4;
-	for (i = 0; i < Help.message_cnt; i++) *(int *)&HelpMsgs[i].text += (int)HelpMsgs;
+	Help.num_message = *(unsigned int *)HelpMsgs >> 4;
+	for (i = 0; i < Help.num_message; i++) *(int *)&HelpMsgs[i].text += (int)HelpMsgs;
 }
 
 GAME_SECTION(GetCurrentFrameRate) int GetCurrentFrameRate()
@@ -140,13 +126,21 @@ GAME_SECTION(mode_lobbyInit) void mode_lobbyInit()
 {
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", func_00437E20);
+JUNK_ASM(func_00437E20,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 GAME_SECTION(GetBootMemoryMap) BootMemoryMap *GetBootMemoryMap()
 {
 	if (bmmRetGuard == 0) {
 		bmmRetGuard = 1;
-		bmmRet = (BootMemoryMap *)(MemSlots.level_base + 0x900000);
+		bmmRet = (BootMemoryMap *)((char *)MemSlots.level_base + 0x900000);
 	}
 	return bmmRet;
 }
@@ -156,13 +150,17 @@ GAME_SECTION(GetBootPlate) void *GetBootPlate(int iPlate)
 	return (char *)GetBootMemoryMap() + iPlate * 0xd0800;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", func_00437EA8);
+JUNK_ASM(func_00437EA8,
+	"\tsw $4, -0x4000($28)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", startlevel);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", UpdateBoot);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bmain", func_00438C80);
+JUNK_ASM(func_00438C80,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(Boot_ResetTimeOutCounter) void Boot_ResetTimeOutCounter()
 {

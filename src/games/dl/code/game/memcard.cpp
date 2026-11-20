@@ -1,46 +1,12 @@
 #include "common.h"
 #include "game_section.h"
+#include "fs.h"
+#include "wad.h"
+#include "gameglobals.h"
+#include "memcard.h"
 
 
 
-struct McClock {
-	/* 0x0 */ unsigned char b[8];
-};
-struct MemcardInfo {
-	/* 0x00 */ int level;
-	/* 0x04 */ int bolts;
-	/* 0x08 */ int completes;
-	/* 0x0c */ int elapsedTime;
-	/* 0x10 */ McClock saveTime;
-	/* 0x18 */ int savedDifficultyLevel;
-	/* 0x1c */ int bad;
-};
-struct MemcardSlot {
-	/* 0x00 */ int unk00[6];
-	/* 0x18 */ short saveslot;
-	/* 0x1a */ short unk1a;
-	/* 0x1c */ int unk1c[2];
-	/* 0x24 */ unsigned int patch_size;
-	/* 0x28 */ int oldsave;
-	/* 0x2c */ int unk2c[2];
-	/* 0x34 */ MemcardInfo info[5];
-};
-struct MemcardDef {
-	/* 0x000 */ MemcardSlot memcards[2];
-	/* 0x1a8 */ int unk1a8[2];
-	/* 0x1b0 */ int useslot;
-	/* 0x1b4 */ int curslot;
-	/* 0x1b8 */ int level;
-	/* 0x1bc */ int unk1bc[2];
-	/* 0x1c4 */ int stage;
-	/* 0x1c8 */ int unk1c8;
-	/* 0x1cc */ int nextstage;
-	/* 0x1d0 */ int nextsubstage;
-	/* 0x1d4 */ int unk1d4[2];
-	/* 0x1dc */ unsigned char *addr;
-	/* 0x1e0 */ int unk1e0;
-	/* 0x1e4 */ int autosave;
-};
 struct mc_data {
 	/* 0x00 */ void *addr;
 	/* 0x04 */ int size;
@@ -57,7 +23,7 @@ void memcard_RestoreGame(char *) __asm__("memcard_RestoreGame");
 void memcard_cleanupbeforesession() __asm__("memcard_cleanupbeforesession");
 extern "C" int sceMcInit();
 void memcard_Init() __asm__("memcard_Init");
-extern MemcardDef g_memcard __asm__("D_171948");
+extern memcard_globals g_memcard __asm__("D_171948");
 bool memcard_LoadNet() __asm__("memcard_LoadNet");
 int memcard_GetDataSize(mc_data *p) __asm__("memcard_GetDataSize");
 int memcard_PatchLoaded(int *p) __asm__("memcard_PatchLoaded");
@@ -73,33 +39,18 @@ int _memcard_Checksum(char *addr, int size) __asm__("_memcard_Checksum");
 void FastMemSet(void *, int, int) __asm__("FastMemSet");
 void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
 void memcard_RestoreInfo(char *, int, int) __asm__("memcard_RestoreInfo");
-extern "C" int sceCdReadClock(McClock *);
-extern "C" int sceScfGetLocalTimefromRTC(McClock *);
-extern McClock LastSaveTime __asm__("LastSaveTime");
+extern "C" int sceCdReadClock(sceCdCLOCK *);
+extern "C" int sceScfGetLocalTimefromRTC(sceCdCLOCK *);
+extern sceCdCLOCK LastSaveTime __asm__("LastSaveTime");
 extern unsigned char mc_gameprepbuff[] __asm__("mc_gameprepbuff");
 extern mc_data mc_netdata[] __asm__("mc_netdata");
 int memcard_SaveNet() __asm__("memcard_SaveNet");
-struct MiscWadDef {
-	/* 0x000 */ char unk000[0x64c];
-	/* 0x64c */ int misc_sector;
-	/* 0x650 */ char unk650[0x10];
-	/* 0x660 */ int savegame_offset;
-	/* 0x664 */ int savegame_length;
-};
-extern MiscWadDef g_wadMisc __asm__("D_001C2040");
-struct GameSettingsBlock {
-	/* 0x00 */ int w[0x31];
-};
-extern GameSettingsBlock bootSettings __asm__("bootSettings");
+extern wadinfo g_wadMisc __asm__("D_001C2040");
 extern int g_FirstPersonDesiredMode[10] __asm__("D_1711D0");
 extern int g_gameType __asm__("g_gameType");
 extern int Level __asm__("Level");
 int PM_Malloc(unsigned int, void **) __asm__("PM_Malloc");
 int music_Sync(int) __asm__("music_Sync");
-struct Fs {
-	static void Sync(unsigned int) __asm__("Sync");
-	static int Load(int, unsigned int, unsigned int, unsigned int, unsigned int, void *, void *) __asm__("Load");
-};
 void MCSTATE_ClearCommand(int) __asm__("MCSTATE_ClearCommand");
 void memcard_ResetGame() __asm__("memcard_ResetGame");
 extern "C" int sceDNAS2InstInit_nohdd();
@@ -162,7 +113,13 @@ GAME_SECTION(memcard_GetName) void memcard_GetName(char *buff)
 	strncpy(SAVEGAME_SLOT, SAVEGAME_NAME, 0xd);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/memcard", func_004660E0);
+JUNK_ASM(func_004660E0,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 GAME_SECTION(memcard_RestoreGame) void memcard_RestoreGame(char *addr)
 {
@@ -186,12 +143,12 @@ GAME_SECTION(memcard_ResetGame) void memcard_ResetGame()
 	void *a1;
 	char *addr;
 	int backupFirstPersonDesiredMode[10];
-	GameSettingsBlock preserve_settings;
+	GameSettings preserve_settings;
 	if (g_gameType != 1) {
-		PM_Malloc(g_wadMisc.savegame_length << 11, &a1);
+		PM_Malloc(g_wadMisc.misc.savegame.length << 11, &a1);
 		music_Sync(1);
 		Fs::Sync(1);
-		Fs::Load(0, (unsigned int)a1, g_wadMisc.savegame_offset + g_wadMisc.misc_sector, g_wadMisc.savegame_length, 0, 0, 0);
+		Fs::Load(0, (unsigned int)a1, g_wadMisc.misc.savegame.offset + g_wadMisc.misc.sector, g_wadMisc.misc.savegame.length, 0, 0, 0);
 		addr = (char *)a1 + *(int *)((char *)a1 + 0x10);
 		FastMemCopy(backupFirstPersonDesiredMode, g_FirstPersonDesiredMode, 0x28);
 		FastMemCopy(&preserve_settings, &bootSettings, 0xc4);
@@ -310,7 +267,7 @@ GAME_SECTION(memcard_RestoreInfo) void memcard_RestoreInfo(char *addr, int slot,
 	addr += 0x44;
 	g_memcard.memcards[slot].info[index].elapsedTime = *(int *)addr;
 	addr += 0xc;
-	g_memcard.memcards[slot].info[index].saveTime = *(McClock *)addr;
+	g_memcard.memcards[slot].info[index].saveTime = *(sceCdCLOCK *)addr;
 	g_memcard.memcards[slot].info[index].savedDifficultyLevel = *(int *)(addr + 0x1c);
 }
 
@@ -319,7 +276,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/memcard", memcard_Restor
 GAME_SECTION(memcard_LoadNet) bool memcard_LoadNet()
 {
 	if (g_memcard.nextstage < 0) {
-		g_memcard.nextsubstage = 0;
+		g_memcard.nextslot = 0;
 		g_memcard.nextstage = 0x20;
 	}
 	return g_memcard.nextstage == 0x20;
@@ -333,10 +290,10 @@ GAME_SECTION(memcard_LoadPatch) int memcard_LoadPatch(unsigned char *buffer_star
 	if (g_memcard.useslot == -1) return 0;
 	if (buffer_size < g_memcard.memcards[g_memcard.useslot].patch_size) return 0;
 	if (g_memcard.nextstage < 0) {
-		g_memcard.nextsubstage = g_memcard.useslot;
+		g_memcard.nextslot = g_memcard.useslot;
 		g_memcard.nextstage = 0x26;
 	}
-	g_memcard.addr = buffer_start;
+	g_memcard.addr = (char *)buffer_start;
 	return g_memcard.nextstage == 0x26;
 }
 
@@ -346,7 +303,11 @@ GAME_SECTION(memcard_PatchLoaded) int memcard_PatchLoaded(int *p)
 	return -1;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/memcard", func_004692B8);
+JUNK_ASM(func_004692B8,
+	"\tsltiu $2, $2, 0x1\n"
+	"\tnop\n"
+	"\taddiu $2, $0, -0x1\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/memcard", memcard_Save);
 

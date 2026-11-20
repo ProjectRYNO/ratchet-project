@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "wad.h"
 
 
 int snd_StreamSafeCdBreak() __asm__("snd_StreamSafeCdBreak");
@@ -42,13 +43,7 @@ extern void *soundBank3Addr;
 int snd_StreamSafeCdRead(int lsn, int length, void *buffer, void *mode) __asm__("snd_StreamSafeCdRead");
 unsigned int load_file(fsLoadFile_t *p_load, fsDeviceArgs_t *p_device) __asm__("load_file");
 
-struct WadLevelDef {
-	/* 0x0000 */ char unk0000[0xcbb4];
-	/* 0xcbb4 */ int level_sector;
-	/* 0xcbb8 */ char unkcbb8[0xd410 - 0xcbb8];
-	/* 0xd410 */ struct { int offset; int length; } mission_banks[64];
-};
-extern WadLevelDef g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern "C" void snd_UnloadBank(unsigned int);
 void snd_BankLoadByLoc_CB(int, int, void (*)(unsigned int, unsigned long), unsigned long) __asm__("snd_BankLoadByLoc_CB");
 unsigned int load_mission_bank(fsLoadBank_t *, fsDeviceArgs_t *) __asm__("load_mission_bank");
@@ -72,7 +67,9 @@ GAME_SECTION(abort_file) int abort_file()
 	return snd_StreamSafeCdBreak();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fs_handlers", func_00163A18);
+JUNK_ASM(func_00163A18,
+	"\tsltu $2, $0, $2\n"
+	"\tnop\n");
 
 GAME_SECTION(load_complete_file) int load_complete_file(fsLoadFile_t *p_load)
 {
@@ -85,7 +82,7 @@ GAME_SECTION(load_mission_bank) unsigned int load_mission_bank(fsLoadBank_t *p_a
 	snd_SRAMGetFreeMem();
 	p_args->m_pp_bank_handle = &Sound.handles[3];
 	Sound.handles[3] = 0xffffffff;
-	snd_BankLoadByLoc_CB(g_wad.mission_banks[p_args->mission].offset + g_wad.level_sector, 0, cb_missionBankLoadComplete, (unsigned long)(unsigned int)p_args);
+	snd_BankLoadByLoc_CB(g_wad.level.mission_banks[p_args->mission].offset + g_wad.level.sector, 0, cb_missionBankLoadComplete, (unsigned long)(unsigned int)p_args);
 	return 1;
 }
 

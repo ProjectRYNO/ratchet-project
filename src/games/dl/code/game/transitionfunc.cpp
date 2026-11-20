@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "mobyutil.h"
+#include "gameglobals.h"
 
 struct TransitionData_Undefined {
 	/* 0x00 */ int m_Timer;
@@ -9,14 +10,6 @@ extern TransitionData_Undefined g_TransitionData_Undefined __asm__("g_Transition
 void Transition_LoadWad(bool, bool) __asm__("Transition_LoadWad");
 void FadeToBlack(int, unsigned int) __asm__("FadeToBlack");
 bool TransitionPre_Undefined(unsigned int, unsigned int) __asm__("TransitionPre_Undefined");
-struct SpaceDef {
-	/* 0x00 */ short unk00;
-	/* 0x02 */ short timer;
-	/* 0x04 */ short unk04[3];
-	/* 0x0a */ short draw_monitors;
-	/* 0x0c */ short ship_trans;
-	/* 0x0e */ short unk0e[9];
-};
 extern SpaceDef Space __asm__("Space");
 void Transition_UpdateScreenFade(int, int, int, int) __asm__("Transition_UpdateScreenFade");
 int FastDecTimer(int &) __asm__("FastDecTimer");
@@ -331,9 +324,9 @@ GAME_SECTION(TransitionPostUpdate_ShuttleInterior) void TransitionPostUpdate_Shu
 
 GAME_SECTION(TransitionDraw_ShuttleInterior) void TransitionDraw_ShuttleInterior(bool b)
 {
-	Space.draw_monitors = 1;
+	Space.level_entry = 1;
 	UpdateSceneMonitors();
-	Space.draw_monitors = 0;
+	Space.level_entry = 0;
 	Transition_DefaultDraw(b);
 }
 

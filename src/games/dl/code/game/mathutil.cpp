@@ -1,19 +1,27 @@
 #include "common.h"
 #include "game_section.h"
+#include "mathutil.h"
 
-struct MathUtilities {
-	int WrapValue(int value, int low, int high) __asm__("WrapValue");
-};
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathutil", VecSlerp);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathutil", func_004FE840);
+JUNK_ASM(func_004FE840,
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathutil", GetVectorSphere);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathutil", GetVectorCircle);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathutil", func_004FE930);
+JUNK_ASM(func_004FE930,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\tsub.s $f0, $f1, $f0\n"
+	"\tnop\n");
 
 GAME_SECTION(WrapValue) int MathUtilities::WrapValue(int value, int low, int high)
 {

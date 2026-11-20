@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "wad.h"
 
 
 extern int pendingGameMode __asm__("pendingGameMode");
@@ -46,22 +47,11 @@ typedef struct memSlotsView {
 	/* 0x0c */ char *vu1_chain;
 	/* 0x10 */ char unk10[0x100];
 } memSlotsView_t;
-typedef struct wadScene {
-	/* 0x000 */ int mobyloadOffset;
-	/* 0x004 */ int mobyloadLength;
-	/* 0x008 */ char unk08[0x144];
-} wadScene_t;
-typedef struct wadData {
-	/* 0x0000 */ char unk00[0xdabc];
-	/* 0xdabc */ int sector;
-	/* 0xdac0 */ char unkdac0[0x30];
-	/* 0xdaf0 */ wadScene_t scenes[1];
-} wadData_t;
 extern sceneData_t Scene __asm__("Scene");
 extern vcData_t VC __asm__("VC");
 extern musicData_t Music __asm__("Music");
 extern memSlotsView_t MemSlots __asm__("D_0023AB00");
-extern wadData_t g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 void WPN_KillAllSoundsForPendingScene(void *) __asm__("WPN_KillAllSoundsForPendingScene");
 int MCSTATE_GetState() __asm__("MCSTATE_GetState");
 void Mode_PauseUnInit() __asm__("Mode_PauseUnInit");
@@ -115,4 +105,6 @@ GAME_SECTION(MODELEVEL_HandleOcclusionExceptions) void MODELEVEL_HandleOcclusion
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mode_level", mode_doChange);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mode_level", func_0047F530);
+JUNK_ASM(func_0047F530,
+	"\tslt $2, $0, $2\n"
+	"\tnop\n");

@@ -114,7 +114,15 @@ static inline int *MF_GetMissionBolts(int level, int missionIndex)
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_SetupSwitchMissionIndex);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046A300);
+JUNK_ASM(func_0046A300,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MF_ExitPostMissionScreen) void MF_ExitPostMissionScreen()
 {
@@ -143,7 +151,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_IsMissi
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_GetNextMissionIndex);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B048);
+JUNK_ASM(func_0046B048,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(MF_AllocateXPReward) int MF_AllocateXPReward(RewardMoby *pMoby)
 {
@@ -182,7 +194,9 @@ GAME_SECTION(MF_GetDepreciatedValue) int MF_GetDepreciatedValue(int rewardAmount
 	return (int)reward;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B328);
+JUNK_ASM(func_0046B328,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocatePointReward);
 
@@ -201,7 +215,13 @@ GAME_SECTION(MF_AllocateMissionBoltReward) int MF_AllocateMissionBoltReward(int 
 	return boltReward;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B4A8);
+JUNK_ASM(func_0046B4A8,
+	"\tlw $2, 0x40($3)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MF_ClearMissionSpecificData) void MF_ClearMissionSpecificData()
 {
@@ -227,7 +247,9 @@ GAME_SECTION(MF_GetBestSpawnPoint) SpawnPointData *MF_GetBestSpawnPoint(Hero *pH
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_GetBestSpawnPointByOther);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", func_0046B6D0);
+JUNK_ASM(func_0046B6D0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_CheckSpawnPoint);
 

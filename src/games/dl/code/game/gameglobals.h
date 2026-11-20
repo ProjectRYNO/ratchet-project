@@ -178,6 +178,67 @@ struct GSMEM { // 0x58
 	/* 0x54 */ int pad;
 };
 
+struct SpaceDef { // 0x20
+	/* 0x00 */ short state;
+	/* 0x02 */ short timer;
+	/* 0x04 */ short ship_type;
+	/* 0x06 */ short quick_entry;
+	/* 0x08 */ short first_entry;
+	/* 0x0a */ short level_entry;
+	/* 0x0c */ short ship_trans;
+	/* 0x0e */ short wad_index;
+	/* 0x10 */ int speech_played;
+	/* 0x14 */ int movie_index;
+	/* 0x18 */ int movie_cnt;
+	/* 0x1c */ int movie_abort;
+};
+
+struct sceCdCLOCK { // 0x8
+	/* 0x00 */ unsigned char stat;
+	/* 0x01 */ unsigned char second;
+	/* 0x02 */ unsigned char minute;
+	/* 0x03 */ unsigned char hour;
+	/* 0x04 */ unsigned char pad;
+	/* 0x05 */ unsigned char day;
+	/* 0x06 */ unsigned char month;
+	/* 0x07 */ unsigned char year;
+};
+
+struct HelpDatum { // 0xc
+	/* 0x00 */ unsigned short timesUsed;
+	/* 0x02 */ unsigned short counter;
+	/* 0x04 */ unsigned int lastTime;
+	/* 0x08 */ unsigned int level_die;
+};
+
+struct MISSIONLOAD { // 0x28
+	/* 0x00 */ int ActiveMission;
+	/* 0x04 */ int LoadingMission;
+	/* 0x08 */ int ErrorCode;
+	/* 0x0c */ int QueuedMission;
+	/* 0x10 */ unsigned char Success;
+	/* 0x11 */ unsigned char ResetLevel;
+	/* 0x12 */ unsigned char Loading;
+	/* 0x13 */ unsigned char Parse;
+	/* 0x14 */ unsigned char Switch;
+	/* 0x15 */ unsigned char DoubleBuffer;
+	/* 0x16 */ unsigned char QueuedLoad;
+	/* 0x17 */ unsigned char InstancesActive;
+	/* 0x18 */ unsigned char ClassesActive;
+	/* 0x19 */ unsigned char InstancesLoaded;
+	/* 0x1a */ unsigned char ClassesLoaded;
+	/* 0x1b */ unsigned char SoundLoaded;
+	/* 0x1c */ void *ActiveMissionClasses;
+	/* 0x20 */ void *LoadingMissionClasses;
+	/* 0x24 */ int State;
+};
+
+struct GadgetCache { // 0x1
+	static void Initialize() __asm__("Initialize___dupe2");
+	static void UnInitialize() __asm__("UnInitialize");
+	static void Reset() __asm__("Reset___dupe2");
+};
+
 struct StashInfo { // 0x3c
 	/* 0x00 */ char *base;
 	/* 0x04 */ int size;

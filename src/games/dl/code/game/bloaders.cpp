@@ -6,23 +6,15 @@
 #include "stash.h"
 #include "globals.h"
 #include "draw.h"
+#include "fs.h"
+#include "wad.h"
 
 /* bloaders */
-struct wadMisc {
-	/* 0x00 */ char unk00[0x64c];
-	/* 0x64c */ int sector;
-	/* 0x650 */ int debugfontOffset;
-	/* 0x654 */ int debugfontLength;
-};
 struct PifHeader;
-extern wadMisc g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern GSMEM GSmem __asm__("GSmem");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern unsigned long DebugFontTex0 __asm__("DebugFontTex0");
-struct Fs {
-	static void Sync(unsigned int) __asm__("Sync");
-	static int Load(int, unsigned int, unsigned int, unsigned int, unsigned int, void *, void *) __asm__("Load");
-};
 void LoadPifAsPSMT8H(PifHeader *pPif, unsigned long *gsRegs, int tex_loc, int pal_loc) __asm__("LoadPifAsPSMT8H");
 void LoadDebugFont() __asm__("LoadDebugFont");
 
@@ -70,9 +62,19 @@ GAME_SECTION(LoadDebugFont) void LoadDebugFont()
 	unsigned long regs[3];
 	char *pFile = MobyGrids;
 	Fs::Sync(1);
-	Fs::Load(0, (unsigned int)pFile, g_wad.debugfontOffset + g_wad.sector, g_wad.debugfontLength, 0, 0, 0);
+	Fs::Load(0, (unsigned int)pFile, g_wad.misc.debugfont.offset + g_wad.misc.sector, g_wad.misc.debugfont.length, 0, 0, 0);
 	LoadPifAsPSMT8H((PifHeader *)pFile, regs, GSmem.stash_font, GSmem.perm_debug_font);
 	DebugFontTex0 = regs[0];
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/bloaders", func_0043A040);
+JUNK_ASM(func_0043A040,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsw $4, 0x0($2)\n"
+	"\tnop\n"
+	"\tsw $2, 0x38($5)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");

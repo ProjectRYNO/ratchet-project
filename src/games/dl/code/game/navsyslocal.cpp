@@ -12,11 +12,17 @@ void *MB_GetEffectorVars(moby *pMoby) __asm__("MB_GetEffectorVars");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsyslocal", NAVL_GetEffectorsOfType);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsyslocal", func_0048F000);
+JUNK_ASM(func_0048F000,
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsyslocal", NAVL_ProcessEffectors);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsyslocal", func_0048F430);
+JUNK_ASM(func_0048F430,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_GetEffectorVars) void *MB_GetEffectorVars(moby *pMoby)
 {
@@ -24,4 +30,22 @@ GAME_SECTION(MB_GetEffectorVars) void *MB_GetEffectorVars(moby *pMoby)
 	return ((mobyVars *)pMoby->pVar)->pEffector;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsyslocal", func_0048F478);
+JUNK_ASM(func_0048F478,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x290\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $2, $0, -0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");

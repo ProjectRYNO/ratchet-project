@@ -18,5 +18,11 @@
 
 #undef INCLUDE_ASM
 #define INCLUDE_ASM(FOLDER, NAME)
+/*
+ * Retail bytes that are not a function (DECISIONS.md D21), written inline in their own slot section.
+ */
+#undef JUNK_ASM
+#define JUNK_ASM(NAME, BODY) \
+	__asm__(".section .game_" #NAME ",\"ax\",@progbits\n.set noreorder\n.set noat\n" BODY ".set at\n.set reorder\n.text")
 
 #endif /* GAME_SECTION_H */

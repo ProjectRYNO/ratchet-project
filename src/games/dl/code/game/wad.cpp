@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "wad.h"
 
 
 struct sceCdRMode {
@@ -27,21 +28,7 @@ extern unsigned int LevelHeaderB[] __asm__("D_001CF858");
 extern unsigned int LevelHeaderC[] __asm__("D_001CFAF8");
 extern unsigned int LevelHeaderEnd[] __asm__("D_001D21E8");
 
-struct wadSectors {
-	/* 0x00 */ int offset;
-	/* 0x04 */ int size;
-};
-struct wadLevelEntry {
-	/* 0x00 */ wadSectors levelaudiowad;
-	/* 0x08 */ wadSectors levelwad;
-	/* 0x10 */ wadSectors levelscenewad;
-};
-struct wadDef {
-	/* 0x0000 */ char unk0000[0xc430];
-	/* 0xc430 */ wadLevelEntry levels[0x50];
-	/* 0xc8b0 */ char unkc8b0[0x101a8 - 0xc8b0];
-};
-extern wadDef g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 
 GAME_SECTION(wad_GetSectors) void wad_GetSectors(int lsn, int size, void *buff)
 {
@@ -66,7 +53,9 @@ GAME_SECTION(wad_GetHeaders) void wad_GetHeaders(char *buff)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/wad", func_00159AA8);
+JUNK_ASM(func_00159AA8,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(wad_GetLevelHeaders) void wad_GetLevelHeaders(int level, char *buff)
 {

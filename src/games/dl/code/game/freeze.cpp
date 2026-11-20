@@ -85,7 +85,13 @@ GAME_SECTION(UpdateProgressiveScan) void UpdateProgressiveScan()
 	PostEffects_Init();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/freeze", func_00459960);
+JUNK_ASM(func_00459960,
+	"\tsb $7, -0x4000($28)\n"
+	"\tnop\n"
+	"\tlw $2, 0x40($3)\n"
+	"\tnop\n"
+	"\tlw $2, 0x88($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(mode_freezeUnInit) void mode_freezeUnInit()
 {
@@ -153,14 +159,18 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/freeze", Freeze_SphereMa
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/freeze", Freeze_SphereMap_Strafe);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/freeze", func_0045C578);
+JUNK_ASM(func_0045C578,
+	"\tlh $2, 0x84($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(Freeze_ClearLastUserResponse) void Freeze_ClearLastUserResponse()
 {
 	Freeze.lastUserResponse = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/freeze", func_0045C590);
+JUNK_ASM(func_0045C590,
+	"\tlw $2, 0x40($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(Freeze_DisplayMessage) void Freeze_DisplayMessage(int messageId, int type, void (*messageCallBack)(void *))
 {

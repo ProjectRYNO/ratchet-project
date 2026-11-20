@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "draw.h"
+#include "memcard.h"
 
 
 /* space: DoSpaceTransition */
@@ -13,13 +14,8 @@ struct SoundDefs {
 	/* 0x00 */ char unk00[0x90];
 	/* 0x90 */ void *handles[132];
 };
-struct MemcardDef {
-	/* 0x000 */ char unk000[0x1c4];
-	/* 0x1c4 */ int stage;
-	/* 0x1c8 */ int unk1c8;
-	/* 0x1cc */ int nextstage;
-};
-struct MemSlotsDef {
+/* GeneralScratchBuffer (0x23ac00) has no symbol yet; it is reached at D_0023AB10 + 0xf0 */
+struct ScratchBufferView {
 	/* 0x00 */ char unk00[0xf0];
 	/* 0xf0 */ char GeneralScratchBuffer[0x100];
 };
@@ -31,8 +27,8 @@ extern MusicDef Music __asm__("Music");
 extern SoundDefs Sound __asm__("Sound");
 extern void *LevelSounds __asm__("LevelSounds");
 extern ViewContext VC __asm__("VC");
-extern MemcardDef g_memcard __asm__("D_171948");
-extern MemSlotsDef MemSlots __asm__("D_0023AB10");
+extern memcard_globals g_memcard __asm__("D_171948");
+extern ScratchBufferView ScratchBufferBase __asm__("D_0023AB10");
 extern unsigned char LevelFogR __asm__("LevelFogR");
 extern unsigned char LevelFogG __asm__("LevelFogG");
 extern unsigned char LevelFogB __asm__("LevelFogB");
@@ -107,7 +103,7 @@ GAME_SECTION(DoSpaceTransition) void DoSpaceTransition()
 		LevelFogNearIntensity = VC.fogNearIntensity;
 		LevelFogFarIntensity = VC.fogFarIntensity;
 		SetBackgroundColor(0, 0, 0);
-		wad_GetLevelHeaders(Level, MemSlots.GeneralScratchBuffer);
+		wad_GetLevelHeaders(Level, ScratchBufferBase.GeneralScratchBuffer);
 		Music.off = 1;
 		do {
 			FlushCache(0);

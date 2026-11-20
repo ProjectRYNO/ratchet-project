@@ -172,11 +172,23 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddStrips___dupe2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F6940);
+JUNK_ASM(func_004F6940,
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_Clear);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F6AE0);
+JUNK_ASM(func_004F6AE0,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_AddFilterCopy);
 
@@ -190,14 +202,26 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_BlurOnce);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7A40);
+JUNK_ASM(func_004F7A40,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_Blur256) void PostEffects_Blur256(int a, int b, int c)
 {
 	PostEffects_Blur(a, b, 0x100, 0x100, c);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7A70);
+JUNK_ASM(func_004F7A70,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_BlurOnce256) void PostEffects_BlurOnce256(int a, int b, int c)
 {
@@ -219,11 +243,27 @@ GAME_SECTION(PostEffects_RegisterEngine_Blur64) void PostEffects_RegisterEngine_
 	PostEffects_RegisterEngine_Blur(a, b, c, 0x40, 0x40, d);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7B38);
+JUNK_ASM(func_004F7B38,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddBloomAccum);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7EA0);
+JUNK_ASM(func_004F7EA0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_SandStorm_Init_AlphaMappingPalette) void PostEffects_SandStorm_Init_AlphaMappingPalette()
 {
@@ -243,7 +283,9 @@ GAME_SECTION(PostEffects_SandStorm_Init_AlphaMappingPalette) void PostEffects_Sa
 	FlushCache(0);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F7FD0);
+JUNK_ASM(func_004F7FD0,
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_SandStorm_Init_CreateB) void PostEffects_SandStorm_Init_CreateB()
 {
@@ -280,7 +322,9 @@ GAME_SECTION(PostEffects_SandStorm_Init_CreateB) void PostEffects_SandStorm_Init
 	g_SandStormCreateSize = (char *)pCurrent - (char *)pInitial;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F81D8);
+JUNK_ASM(func_004F81D8,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_SandStorm_Init_Apply) void PostEffects_SandStorm_Init_Apply()
 {
@@ -292,7 +336,11 @@ GAME_SECTION(PostEffects_SandStorm_Init_Apply) void PostEffects_SandStorm_Init_A
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_SandStorm_Init_Globals);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F8600);
+JUNK_ASM(func_004F8600,
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n");
 
 GAME_SECTION(PostEffects_SandStorm_Init) void PostEffects_SandStorm_Init()
 {
@@ -308,7 +356,13 @@ GAME_SECTION(PostEffects_SandStorm_Init) void PostEffects_SandStorm_Init()
 	g_PostEffectsFlags |= 4;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F86A0);
+JUNK_ASM(func_004F86A0,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xb90\n"
+	"\tnop\n");
 
 GAME_SECTION(PE_GetEnvironmentType) int PE_GetEnvironmentType()
 {
@@ -385,7 +439,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffect
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_AddRemapAlpha_imm);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", func_004F9768);
+JUNK_ASM(func_004F9768,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/posteffects", PostEffects_RegisterEngine_AddMulByAlpha);
 

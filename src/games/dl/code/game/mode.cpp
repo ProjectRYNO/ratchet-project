@@ -51,7 +51,9 @@ GAME_SECTION(RefreshPauseModeCoolDown) void RefreshPauseModeCoolDown(int frames)
 	modePauseModeCoolDown = frames;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mode", func_0047F540);
+JUNK_ASM(func_0047F540,
+	"\tsw $2, -0x4000($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(SetModeChangeRequestDelay) void SetModeChangeRequestDelay(int numberOfFrames)
 {

@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "mobyutil.h"
+#include "mobyanim_c.h"
 
 
 
@@ -86,13 +87,9 @@ struct MobySeqFrame {
 	/* 0x00 */ unsigned short iscale;
 	/* 0x02 */ short unk02;
 };
-struct MobySeq {
-	/* 0x00 */ char unk00[0x10];
-	/* 0x10 */ unsigned char frameCnt;
-	/* 0x11 */ unsigned char sound;
-	/* 0x12 */ unsigned char trigsCnt;
-	/* 0x13 */ char unk13[0x1c - 0x13];
-	/* 0x1c */ unsigned char *frameData;
+/* MobySeq followed by its per-frame table; indexing the member keeps retail's address arithmetic */
+struct MobySeqFrames {
+	/* 0x00 */ MobySeq seq;
 	/* 0x20 */ MobySeqFrame frames[1];
 };
 struct AnimMobyClass {
@@ -142,7 +139,7 @@ GAME_SECTION(AnimEvaluate_LowLevel) void AnimEvaluate_LowLevel(MobySeq *pSeq, fl
 	int key0 = (int)T;
 	unsigned int key1 = key0 + 1;
 	float t = T - (float)key0;
-	unsigned char *pHeader = pSeq->frameData;
+	unsigned char *pHeader = (unsigned char *)pSeq->frameData;
 	unsigned char nConst = pHeader[1];
 	unsigned char nKey = pHeader[2];
 	if (key1 == pSeq->frameCnt) key1 = 0;
@@ -166,7 +163,7 @@ GAME_SECTION(AnimEvaluateBlend_LowLevel) void AnimEvaluateBlend_LowLevel(MobySeq
 	int key0 = (int)T;
 	unsigned int key1 = key0 + 1;
 	float t = T - (float)key0;
-	unsigned char *pHeader = pSeq->frameData;
+	unsigned char *pHeader = (unsigned char *)pSeq->frameData;
 	unsigned char nConst = pHeader[1];
 	unsigned char nKey = pHeader[2];
 	if (key1 == pSeq->frameCnt) key1 = 0;
@@ -200,7 +197,7 @@ GAME_SECTION(AnimEvaluate) void AnimEvaluate(moby *pMoby, int QST)
 	}
 	MobyAnimLayer *pLayer;
 	for (pLayer = pMoby->animLayers; pLayer; pLayer = pLayer->next) {
-		unsigned char *pFrameData = pLayer->animSeq->frameData;
+		unsigned char *pFrameData = (unsigned char *)pLayer->animSeq->frameData;
 		if ((unsigned char)pLayer->animJointIndexA == 0xff) {
 			AnimPreprocessSubskeleton(pFrameData[6], pFrameData[7], 0, 0);
 		} else if ((unsigned char)pLayer->animJointIndexB == 0xff) {
@@ -277,7 +274,7 @@ GAME_SECTION(MobyAttachAnimLayer) MobyAnimLayer *MobyAttachAnimLayer(moby *pMoby
 		pNewLayer->animSeq = seq;
 		pNewLayer->animSeqT = seqT;
 		pNewLayer->flags = 0;
-		pNewLayer->animIScale = seq->frames[(int)seqT].iscale;
+		pNewLayer->animIScale = ((MobySeqFrames *)seq)->frames[(int)seqT].iscale;
 		pNewLayer->animSpeed = 1.0f;
 		pNewLayer->blendFade = 0.0f;
 		if (fadeSteps > 0) pNewLayer->blendFade = -1.0f / (float)fadeSteps;
@@ -309,7 +306,9 @@ GAME_SECTION(MobyDetachAnimLayer) void MobyDetachAnimLayer(moby *pMoby, MobyAnim
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", func_0046F2A8);
+JUNK_ASM(func_0046F2A8,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, MobySeq *seq, int seqId, float seqT, int fadeSteps)
 {
@@ -348,7 +347,7 @@ GAME_SECTION(MobyTransitionSequence) void MobyTransitionSequence(moby *pMoby, Mo
 	pMoby->animSpeed = 1.0f;
 	pMoby->animSeqT = seqT;
 	pMoby->animFlags = 0;
-	MobySeqFrame *fr = seq->frames;
+	MobySeqFrame *fr = ((MobySeqFrames *)seq)->frames;
 	pMoby->animIScale = fr[(int)seqT].iscale;
 	pMoby->soundTrigger = seq->trigsCnt;
 	pMoby->soundDesired = seq->sound;
@@ -366,7 +365,9 @@ GAME_SECTION(CleanupAnimLayers) void CleanupAnimLayers(moby *pMoby)
 	pMoby->animLayers = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyanim_c", func_0046F4A0);
+JUNK_ASM(func_0046F4A0,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(GetMobyAnimJointOffset) void *GetMobyAnimJointOffset(moby *pMoby, int joint_index)
 {

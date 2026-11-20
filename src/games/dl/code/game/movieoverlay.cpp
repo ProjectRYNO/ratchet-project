@@ -6,6 +6,8 @@
 #include "stash.h"
 #include "globals.h"
 #include "draw.h"
+#include "fs.h"
+#include "wad.h"
 
 /* movieoverlay */
 typedef int qwordWords[4];
@@ -45,21 +47,11 @@ void FastMemCopy(void *, const void *, int) __asm__("FastMemCopy");
 void Stash_InitOnce() __asm__("Stash_InitOnce");
 int Stash_SendData(void *src, int data_qwc, int alloc_qwc, const char *comment) __asm__("Stash_SendData");
 /* bloaders */
-struct wadMisc {
-	/* 0x00 */ char unk00[0x64c];
-	/* 0x64c */ int sector;
-	/* 0x650 */ int debugfontOffset;
-	/* 0x654 */ int debugfontLength;
-};
 struct PifHeader;
-extern wadMisc g_wad __asm__("D_001C2040");
+extern wadinfo g_wad __asm__("D_001C2040");
 extern GSMEM GSmem __asm__("GSmem");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern unsigned long DebugFontTex0 __asm__("DebugFontTex0");
-struct Fs {
-	static void Sync(unsigned int) __asm__("Sync");
-	static int Load(int, unsigned int, unsigned int, unsigned int, unsigned int, void *, void *) __asm__("Load");
-};
 void LoadPifAsPSMT8H(PifHeader *pPif, unsigned long *gsRegs, int tex_loc, int pal_loc) __asm__("LoadPifAsPSMT8H");
 void LoadDebugFont() __asm__("LoadDebugFont");
 

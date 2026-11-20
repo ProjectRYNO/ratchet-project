@@ -109,7 +109,9 @@ GAME_SECTION(LinkHudBank) void LinkHudBank(int bank, char *ram)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", func_0045E9C0);
+JUNK_ASM(func_0045E9C0,
+	"\tsw $0, 0x74($2)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", Hud_SendResidentBank);
 
@@ -119,11 +121,27 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", GetIconFrame);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", GetFrameTex);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", func_0045EE68);
+JUNK_ASM(func_0045EE68,
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", Hud_DrawRotatedSprite16);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", func_0045F1E8);
+JUNK_ASM(func_0045F1E8,
+	"\taddiu $29, $29, 0xb0\n"
+	"\tnop\n"
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(Hud_sendTexture) void Hud_sendTexture(char *ram, int gsaddr, int psm, int uLog, int vLog, int immediate)
 {
@@ -155,4 +173,44 @@ GAME_SECTION(Hud_sendTexture) void Hud_sendTexture(char *ram, int gsaddr, int ps
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/hud", func_0045F370);
+JUNK_ASM(func_0045F370,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n"
+	"\tsb $3, 0x2a($4)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $2, $0, 0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xc0\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $2, $2, 0x0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");

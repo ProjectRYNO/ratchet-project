@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 
 
@@ -75,11 +76,7 @@ int FastDecTimer(int &) __asm__("FastDecTimer");
 void WPN_UpdateCachedTargets(void *) __asm__("WPN_UpdateCachedTargets");
 void WPN_UpgradeDrawFx(void *) __asm__("WPN_UpgradeDrawFx");
 
-struct HelpDataMessage {
-	/* 0x00 */ unsigned short timesUsed;
-	/* 0x02 */ char unk02[0xa];
-};
-extern HelpDataMessage HelpDataMessages[] __asm__("HelpDataMessages");
+extern HelpDatum HelpDataMessages[] __asm__("HelpDataMessages");
 extern int g_gameType __asm__("g_gameType");
 extern int *WPN_HoloShields[10][4] __asm__("WPN_HoloShields");
 extern "C" {
@@ -156,7 +153,9 @@ void WPN_drawIcon(void *) __asm__("WPN_drawIcon");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_DrawReticule);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004E9490);
+JUNK_ASM(func_004E9490,
+	"\taddiu $29, $29, 0x190\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_MP_CalcProjectileVelocity);
 
@@ -170,7 +169,11 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_MP_AddGrav
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_MP_GetUp);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EA5E0);
+JUNK_ASM(func_004EA5E0,
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_CacheTarget);
 
@@ -187,7 +190,11 @@ GAME_SECTION(WPN_CheckCacheForTargetable) int WPN_CheckCacheForTargetable(MobyIn
 	return targetable;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EA6C0);
+JUNK_ASM(func_004EA6C0,
+	"\taddiu $2, $0, -0x1\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_UpdateCachedTargets);
 
@@ -210,7 +217,9 @@ GAME_SECTION(WPN_RemoveVelOrientExternal) void WPN_RemoveVelOrientExternal(int i
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_VelOrientExternal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EAAD8);
+JUNK_ASM(func_004EAAD8,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(WPN_KillAllSoundsForPendingScene) void WPN_KillAllSoundsForPendingScene(WpnHero *pHero)
 {
@@ -221,7 +230,13 @@ GAME_SECTION(WPN_KillAllSoundsForPendingScene) void WPN_KillAllSoundsForPendingS
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EAB68);
+JUNK_ASM(func_004EAB68,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\tsw $0, 0x0($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(WPN_SetUpgradeGadgetMode) void WPN_SetUpgradeGadgetMode(int gadget, int mode)
 {
@@ -296,7 +311,9 @@ GAME_SECTION(WPN_IsUpgradeMoby) int WPN_IsUpgradeMoby(void *moby)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004ED7F0);
+JUNK_ASM(func_004ED7F0,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_ShowcaseGadget);
 
@@ -316,11 +333,27 @@ GAME_SECTION(WPN_UpgradeDrawFx) void WPN_UpgradeDrawFx(void *pMoby)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EDD80);
+JUNK_ASM(func_004EDD80,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", WPN_AddHeroExternal_Pos);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EDE10);
+JUNK_ASM(func_004EDE10,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(WPN_RC3InitWeaponsOnMovingTrain) int WPN_RC3InitWeaponsOnMovingTrain(WpnHero *pHero)
 {
@@ -340,7 +373,9 @@ GAME_SECTION(WPN_RC3InitWeaponsOnMovingTrain) int WPN_RC3InitWeaponsOnMovingTrai
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EDEA0);
+JUNK_ASM(func_004EDEA0,
+	"\tsw $2, -0x4000($28)\n"
+	"\tnop\n");
 
 GAME_SECTION(WPN_BangelizeWeapons) void WPN_BangelizeWeapons(BangleMoby *pMoby, int rootID, int wpnLvl)
 {
@@ -480,4 +515,10 @@ GAME_SECTION(WPN_TurnOffHoloShields) void WPN_TurnOffHoloShields()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/weapons", func_004EE230);
+JUNK_ASM(func_004EE230,
+	"\tsw $2, 0x0($28)\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n");

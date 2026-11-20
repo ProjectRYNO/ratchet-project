@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "fs.h"
 
 
 
@@ -28,17 +29,6 @@ extern "C" {
 	void snd_StreamSafeCdCallback(void (*)(int));
 }
 void cb_cdComplete(int op) __asm__("cb_cdComplete");
-struct Fs {
-	static void *GetBuffer() __asm__("GetBuffer");
-	static void Reset() __asm__("Reset");
-	static void Initialize() __asm__("Initialize");
-	static unsigned int IsLoading() __asm__("IsLoading");
-	static unsigned int Load(int type, unsigned int, unsigned int, unsigned int, unsigned int, void (*)(void *, int), void *) __asm__("Load");
-	static unsigned int LoadAsync(int type, unsigned int, unsigned int, unsigned int, unsigned int, void (*)(void *, int), void *) __asm__("LoadAsync");
-	static void Abort() __asm__("Abort");
-	static void Sync(unsigned int) __asm__("Sync");
-	static void Update(float) __asm__("Update___dupe53");
-};
 extern FsDeviceFn g_pp_fn_load[] __asm__("D_0021DF40");
 extern FsDeviceFn g_pp_fn_is_complete[] __asm__("D_0021DF48");
 extern FsDeviceFn g_pp_fn_abort[] __asm__("D_0021DF50");

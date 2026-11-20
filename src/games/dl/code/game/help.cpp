@@ -1,34 +1,12 @@
 #include "common.h"
 #include "game_section.h"
+#include "mathutil.h"
+#include "globals.h"
+#include "gameglobals.h"
+#include "help.h"
+#include "stream.h"
 
 
-struct HelpMsg {
-	/* 0x00 */ char *text;
-	/* 0x04 */ short id;
-	/* 0x06 */ short shortid;
-	/* 0x08 */ int unk08[2];
-};
-struct HelpDataMessage {
-	/* 0x00 */ unsigned short timesUsed;
-	/* 0x02 */ short unk02;
-	/* 0x04 */ unsigned int lastTime;
-	/* 0x08 */ unsigned int level_die;
-};
-struct HelpDef {
-	/* 0x00 */ int state;
-	/* 0x04 */ int counter;
-	/* 0x08 */ int message_id;
-	/* 0x0c */ int message_index;
-	/* 0x10 */ int display_index;
-	/* 0x14 */ int message_flg;
-	/* 0x18 */ int num_message;
-	/* 0x1c */ unsigned int streamHandle;
-	/* 0x20 */ short ready_timer;
-	/* 0x22 */ short text_time;
-	/* 0x24 */ short suspend_timer;
-	/* 0x26 */ unsigned char ready;
-	/* 0x27 */ unsigned char suspend;
-};
 struct Help_QueueEntry {
 	/* 0x00 */ int id : 16;
 	/* 0x00 */ int flag : 14;
@@ -42,14 +20,6 @@ struct Help_QueueData {
 	/* 0x06 */ short unk06;
 	/* 0x08 */ Help_QueueEntry queue[16];
 };
-struct StreamInterface {
-	/* 0x00 */ char unk00[0x100];
-	unsigned int Stop(unsigned int, float) __asm__("Stop");
-	unsigned int GetState(unsigned int, int *) __asm__("GetState");
-};
-struct MathUtilities {
-	int WrapValue(int value, int low, int high) __asm__("WrapValue");
-};
 struct PADtap {
 	/* 0x000 */ char unk000[0x550];
 	/* 0x550 */ unsigned char multi_tap_connected;
@@ -57,7 +27,7 @@ struct PADtap {
 extern HelpDef Help __asm__("Help");
 extern Help_QueueData HelpQueue __asm__("HelpQueue");
 extern HelpMsg *HelpMsgs __asm__("HelpMsgs");
-extern HelpDataMessage HelpDataMessages[] __asm__("HelpDataMessages");
+extern HelpDatum HelpDataMessages[] __asm__("HelpDataMessages");
 extern StreamInterface StreamSys __asm__("StreamSys");
 extern unsigned int Menu_voStream __asm__("Menu_voStream");
 extern MathUtilities MU __asm__("D_222010");
@@ -89,12 +59,8 @@ struct Hero {
 	/* 0x2f04 */ int unk2f04[3];
 	/* 0x2f10 */ int mpIndex;
 };
-struct TriMode {
-	/* 0x00 */ int mode;
-	/* 0x04 */ int unk04[6];
-};
 extern Hero *g_Hero[10] __asm__("g_Hero");
-extern TriMode tri_mode[] __asm__("tri_mode");
+extern tTriMode tri_mode[] __asm__("tri_mode");
 extern unsigned int TotalPlayTime __asm__("TotalPlayTime");
 extern int Level __asm__("Level");
 char not_found[12] __asm__("D_21EEE0") GAME_GP_DATA = "Paradox ERR";
@@ -112,10 +78,6 @@ bool Help_MessageCompleted() __asm__("Help_MessageCompleted");
 bool HelpQueue_IsEmpty() __asm__("HelpQueue_IsEmpty");
 int HelpQueue_GetInsertIndex(int, short) __asm__("HelpQueue_GetInsertIndex");
 
-/* data-less view of StreamSys: small enough to be addressed through $gp like retail */
-struct StreamInterfaceSmall {
-	unsigned int Stop(unsigned int, float) __asm__("Stop");
-};
 extern unsigned short HelpLog[] __asm__("HelpLog");
 extern int HelpLogPos __asm__("HelpLogPos");
 bool Help_DontAddToHelpLogException(int) __asm__("FUN_0045df58");
@@ -125,7 +87,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_Reset);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_Update);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", func_0045D7A8);
+JUNK_ASM(func_0045D7A8,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(Help_QueueMessage) bool Help_QueueMessage(short id, short flag, short priority, void *pMoby, float min_vol, float max_vol, float min_range, float max_range)
 {
@@ -161,7 +125,11 @@ GAME_SECTION(Help_QueueMessageOncePerLevel) bool Help_QueueMessageOncePerLevel(s
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", func_0045DA60);
+JUNK_ASM(func_0045DA60,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(Help_QueueMessageDelay) bool Help_QueueMessageDelay(short id, short flag, unsigned int time, int priority)
 {
@@ -175,10 +143,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMessage
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", Help_QueueMenuMessage);
 
-extern StreamInterfaceSmall StreamSysSmall __asm__("StreamSys");
 GAME_SECTION(Help_KillMenuMessage) bool Help_KillMenuMessage()
 {
-	return StreamSysSmall.Stop(Menu_voStream, 0.0f) != 0;
+	return StreamSys.Stop(Menu_voStream, 0.0f) != 0;
 }
 
 GAME_SECTION(Help_ShutDown) void Help_ShutDown()
@@ -201,7 +168,9 @@ GAME_SECTION(Help_Kill) void Help_Kill()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", func_0045DED8);
+JUNK_ASM(func_0045DED8,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(Help_Resume) void Help_Resume()
 {
@@ -265,7 +234,9 @@ GAME_SECTION(msg_string) char *msg_string(int id)
 	return not_found;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/help", func_0045E078);
+JUNK_ASM(func_0045E078,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(msg_string_mtap) char *msg_string_mtap(int tag)
 {
@@ -288,7 +259,7 @@ GAME_SECTION(Help_StopVoice) void Help_StopVoice()
 {
 	unsigned int none = 0xffffffff;
 	if (Help.streamHandle != none) {
-		StreamSysSmall.Stop(Help.streamHandle, 0.0f);
+		StreamSys.Stop(Help.streamHandle, 0.0f);
 		Help.streamHandle = none;
 	}
 }

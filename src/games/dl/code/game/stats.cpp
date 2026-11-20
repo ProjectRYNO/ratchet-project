@@ -102,7 +102,11 @@ GAME_SECTION(ST_GetMissionStatistics) void ST_GetMissionStatistics(ST_MissionDat
 	pData->iSkillPoints = ST_GetNumAcquiredSkillPoints();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/stats", func_004FC288);
+JUNK_ASM(func_004FC288,
+	"\tlwc1 $f0, 0x64($3)\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n");
 
 GAME_SECTION(ST_GetNumAcquiredSkillPoints) int ST_GetNumAcquiredSkillPoints()
 {

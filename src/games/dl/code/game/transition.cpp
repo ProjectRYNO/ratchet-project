@@ -3,20 +3,11 @@
 #include "mobyutil.h"
 #include "gameglobals.h"
 #include "draw.h"
+#include "globals.h"
+#include "fs.h"
 struct FXRegistrySystemInternal;
 
 
-struct SpaceDef {
-	/* 0x00 */ short unk00;
-	/* 0x02 */ short timer;
-	/* 0x04 */ short unk04[3];
-	/* 0x0a */ short draw_monitors;
-	/* 0x0c */ short ship_trans;
-	/* 0x0e */ short unk0e[3];
-	/* 0x14 */ int movie_index;
-	/* 0x18 */ int movie_cnt;
-	/* 0x1c */ int unk1c;
-};
 extern SpaceDef Space __asm__("Space");
 extern unsigned char g_TransitionMoviePlayed[0x10] __asm__("g_TransitionMoviePlayed");
 struct PifHeader;
@@ -70,13 +61,7 @@ struct MusicGlobals {
 };
 extern MusicGlobals Music __asm__("Music");
 extern SceneDef Scene __asm__("Scene");
-struct MemSlotsDef {
-	/* 0x00 */ char unk00[0x10];
-	/* 0x10 */ char *level_base;
-	/* 0x14 */ char unk14[0x9c - 0x14];
-	/* 0x9c */ char *perm_base;
-};
-extern MemSlotsDef MemSlots __asm__("D_0023AB10");
+extern MEMSLOTS MemSlots __asm__("D_0023AB00");
 extern GSMEM GSmem __asm__("GSmem");
 extern "C" {
 	int snd_FlushSoundCommands();
@@ -170,11 +155,6 @@ void UpdateMCState() __asm__("UpdateMCState");
 int LoadLevelData() __asm__("LoadLevelData");
 void DMAC_VIF1_Disable() __asm__("DMAC_VIF1_Disable");
 void ResetDrawGlobals() __asm__("ResetDrawGlobals");
-struct Fs {
-	static unsigned int IsLoading() __asm__("IsLoading");
-	static void Update(float) __asm__("Update___dupe53");
-	static void Sync(unsigned int) __asm__("Sync");
-};
 void Transition_Post() __asm__("Transition_Post");
 struct TrSoundGlobals {
 	/* 0x000 */ char unk000[0x29c];
@@ -445,7 +425,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", Transition_
 
 GAME_SECTION(Transition_LoadPlanetTex) void Transition_LoadPlanetTex(int PlanetId_, int &Size_, void *pPlanetTex_)
 {
-	char *pBase = MemSlots.level_base + ((int *)MemSlots.level_base)[3];
+	char *pBase = (char *)MemSlots.level_base + ((int *)MemSlots.level_base)[3];
 	int nPlanetTextures = ((int *)pBase)[0];
 	unsigned int *PlanetTex_offs = (unsigned int *)(pBase + 0x10);
 	if (PlanetId_ >= 36 || PlanetTexLookup[PlanetId_] == -1 || PlanetTexLookup[PlanetId_] >= nPlanetTextures || PlanetTex_offs[PlanetTexLookup[PlanetId_]] == 0) PlanetId_ = 0;
@@ -807,7 +787,11 @@ GAME_SECTION(Transition_SetupNextMovie) void Transition_SetupNextMovie(int Movie
 	Transition_UpdateMovieMobys();
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transition", func_004F4FF0);
+JUNK_ASM(func_004F4FF0,
+	"\tlw $2, 0x14($3)\n"
+	"\tnop\n"
+	"\tlw $2, 0x74($3)\n"
+	"\tnop\n");
 
 GAME_SECTION(Transition_GetNumMoviesPlayed) int Transition_GetNumMoviesPlayed()
 {
@@ -911,7 +895,7 @@ GAME_SECTION(Transition_DoMovieMpeg) void Transition_DoMovieMpeg()
 {
 	mode_movieInit(g_SpaceScene);
 	JointCacheNumEntries = 0;
-	UpdateModeMovie(0, 0, 0, 0, MemSlots.perm_base - 0x2c0000, 0x2c0000);
+	UpdateModeMovie(0, 0, 0, 0, (char *)MemSlots.perm_base - 0x2c0000, 0x2c0000);
 	mode_movieUnInit();
 }
 

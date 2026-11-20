@@ -119,11 +119,17 @@ GAME_SECTION(CalcCycleFade) float CalcCycleFade(void *self, float fCycleFrac, in
 	return fAlpha;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_0044F930);
+JUNK_ASM(func_0044F930,
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", DrawShellEdgeFaded);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_00450210);
+JUNK_ASM(func_00450210,
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x230\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", DrawAlphaMaskPoly);
 
@@ -166,7 +172,9 @@ GAME_SECTION(CubicLine_Update) void CubicLine_Update(void *pThis, FXU_CubicPoint
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_00451530);
+JUNK_ASM(func_00451530,
+	"\tsqc2 $vf1, 0x0($4)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", FXU_BuildCubicLineGeometry);
 
@@ -238,7 +246,9 @@ GAME_SECTION(CubicLineSet_Draw) void CubicLineSet_Draw(void *self, FXU_CubicLine
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_00452A90);
+JUNK_ASM(func_00452A90,
+	"\tdaddu $2, $0, $0\n"
+	"\tnop\n");
 
 GAME_SECTION(CubicLineSet_InitAsLightning) void CubicLineSet_InitAsLightning(void *self, FXU_CubicLineSet_t &lineSet, int iNumLineEndPoints, int iStartCoreColor, int iStartGlowColor, int iEndCoreColor, int iEndGlowColor)
 {
@@ -275,6 +285,16 @@ GAME_SECTION(CubicLineSet_InitAsLightning) void CubicLineSet_InitAsLightning(voi
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", Contrail_Init);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", func_00452D70);
+JUNK_ASM(func_00452D70,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\tsqc2 $vf2, 0x10($5)\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x120\n"
+	"\tnop\n"
+	"\tswc1 $f0, 0x50($6)\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXUtil", IsDrawOK);

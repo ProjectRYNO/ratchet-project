@@ -166,7 +166,11 @@ typedef GroupSpawnData *(*getSpawnData_t)(moby *);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_Move_2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00480EB8);
+JUNK_ASM(func_00480EB8,
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_Move_2___dupe2);
 
@@ -179,7 +183,17 @@ GAME_SECTION(MB_Stand_2) int MB_Stand_2(moby *pMoby)
 	return ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00480F90);
+JUNK_ASM(func_00480F90,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0xa0\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_Action_2) int MB_Action_2(moby *pMoby, int actionId, ActionCallback pCallback, int doNotInterrupt, int customMoveOverride, float startFrame, int forceImmediate)
 {
@@ -247,7 +261,11 @@ GAME_SECTION(MB_ProcessDamage_2) void MB_ProcessDamage_2(moby *pMoby, float &hpD
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_UpdateReaction_2);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00483330);
+JUNK_ASM(func_00483330,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_GetMoveAction) int MB_GetMoveAction(moby *pMoby)
 {
@@ -263,7 +281,9 @@ GAME_SECTION(MB_GetMoveReaction) int MB_GetMoveReaction(moby *pMoby)
 	return pVars->reaction;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00483390);
+JUNK_ASM(func_00483390,
+	"\taddiu $29, $29, 0xe0\n"
+	"\tnop\n");
 
 GAME_SECTION(MVE_GetBoundArea) int MVE_GetBoundArea(moby *pMoby, MoveVars_V2 *pMoveVars)
 {
@@ -282,7 +302,9 @@ GAME_SECTION(MVE_GetBoundArea) int MVE_GetBoundArea(moby *pMoby, MoveVars_V2 *pM
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MVE_DrawImpactEffect);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00483648);
+JUNK_ASM(func_00483648,
+	"\taddiu $29, $29, 0x170\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MVE_GetGroundInfo2);
 
@@ -354,7 +376,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", FUN_00484710);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_MoveSystemUpdateAction);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00485198);
+JUNK_ASM(func_00485198,
+	"\taddiu $29, $29, 0x150\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_UpdateReactionEffects);
 
@@ -427,7 +451,17 @@ GAME_SECTION(MB_UseLinearAnim) int MB_UseLinearAnim(float desiredSpeed, float co
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", MB_GetBestAnimFast);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_004887B0);
+JUNK_ASM(func_004887B0,
+	"\taddiu $29, $29, 0x50\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SetMoveElevation) int MB_SetMoveElevation(moby *pMoby, int elev)
 {
@@ -449,7 +483,15 @@ GAME_SECTION(MB_GetMoveElevation) int MB_GetMoveElevation(moby *pMoby)
 	return pVars->elevation;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/move", func_00488850);
+JUNK_ASM(func_00488850,
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 GAME_SECTION(MB_SetMoveDistanceThresholds) int MB_SetMoveDistanceThresholds(moby *pMoby, float collDist, float stopDist, float walkDist, float runDist)
 {

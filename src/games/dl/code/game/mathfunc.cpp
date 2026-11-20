@@ -4,4 +4,16 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc", NormalizeColu
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc", SetFromMat3);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc", func_004FDFF8);
+JUNK_ASM(func_004FDFF8,
+	"\tdaddu $2, $5, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $5, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n"
+	"\tdaddu $2, $3, $0\n"
+	"\tnop\n");

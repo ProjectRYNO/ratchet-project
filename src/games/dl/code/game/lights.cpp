@@ -4,6 +4,8 @@
 #include "lights.h"
 #include "tiefunc.h"
 #include "tfragfunc.h"
+#include "globals.h"
+#include "path.h"
 
 /* lights */
 extern PointLight PointLights[] __asm__("PointLights");
@@ -23,12 +25,7 @@ extern unsigned char MobyClassFuncsIndex[] __asm__("MobyClassFuncsIndex");
 extern unsigned char MobyClassNullFuncsIndex[] __asm__("MobyClassNullFuncsIndex");
 mobyfuncs *GetMobyFunctions(int oClass) __asm__("GetMobyFunctions___dupe2");
 /* tiefunc */
-struct MemSlotsDef {
-	/* 0x00 */ int unk00[1];
-	/* 0x04 */ void *tie_cache;
-	/* 0x08 */ int unk08[0x40];
-};
-extern MemSlotsDef MemSlots __asm__("D_0023AB10");
+extern MEMSLOTS MemSlots __asm__("D_0023AB00");
 extern char TieCacheListBuf[] __asm__("TieCacheListBuf");
 extern TieInstance *TieInstances __asm__("TieInstances");
 extern TieInstance *TieInstanceEnd __asm__("TieInstanceEnd");
@@ -48,9 +45,6 @@ void TieDetachPointLight(short *, short *, int) __asm__("TieDetachPointLight");
 void ShrubDetachPointLight(short *, short *, int) __asm__("ShrubDetachPointLight");
 void TfragDetachPointLight(short *, short *, int) __asm__("TfragDetachPointLight");
 /* path */
-struct Path {
-	/* 0x00 */ int nNodes;
-};
 int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPathNode");
 /* tfragfunc */
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
@@ -77,6 +71,10 @@ GAME_SECTION(DeletePointLight) void DeletePointLight(int index)
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lights", func_004612A8);
+JUNK_ASM(func_004612A8,
+	"\taddiu $29, $29, 0x80\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x10\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/lights", DetachPointLight);

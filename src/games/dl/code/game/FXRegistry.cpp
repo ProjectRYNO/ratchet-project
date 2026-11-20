@@ -139,7 +139,9 @@ GAME_SECTION(IsTrackingRegisters) int IsTrackingRegisters(FXRegistrySystemIntern
 	return self->tracking;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", func_0044D1B0);
+JUNK_ASM(func_0044D1B0,
+	"\tsb $0, 0x0($4)\n"
+	"\tnop\n");
 
 GAME_SECTION(ResetRegisterZBuf) void ResetRegisterZBuf(FXRegistrySystemInternal *self)
 {
@@ -260,7 +262,9 @@ GAME_SECTION(SetFogMode) void SetFogMode(FXRegistrySystemInternal *self, int fog
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", func_0044D930);
+JUNK_ASM(func_0044D930,
+	"\taddiu $29, $29, 0x20\n"
+	"\tnop\n");
 
 GAME_SECTION(DrawStrip) void DrawStrip(FXStripData *self, int iNumVerts, int clipped, int textured)
 {
@@ -295,15 +299,25 @@ GAME_SECTION(DrawQuad___dupe3) void DrawQuad(FXStripData *self, int clipped)
 	FasterDrawStrip(4, self->pXYZ, self->pRGBA, self->pST, clipped, 1);
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", func_0044DB48);
+JUNK_ASM(func_0044DB48,
+	"\taddiu $29, $29, 0x30\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x90\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", DrawQuad___dupe4);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", func_0044DD98);
+JUNK_ASM(func_0044DD98,
+	"\taddiu $29, $29, 0x70\n"
+	"\tnop\n");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", STScale);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/FXRegistry", func_0044DE70);
+JUNK_ASM(func_0044DE70,
+	"\taddiu $29, $29, 0x40\n"
+	"\tnop\n"
+	"\taddiu $29, $29, 0x60\n"
+	"\tnop\n");
 
 GAME_SECTION(ZAddGSRegister) void ZAddGSRegister(FXRegistrySystemInternal *self, unsigned int uiRegister, uint64 uiRegisterValue, int bForceSet)
 {
