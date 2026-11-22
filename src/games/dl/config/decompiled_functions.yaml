@@ -1,6 +1,7 @@
 # Compiled replacements have no fallback symbols and retain original entry addresses.
 # Slots also place retained assembly; only registered functions may change loaded bytes.
 functions:
+
   NAVG_SetTargetWp: 0x0048DEB0
   NAVG_WpSet: 0x0048EB98
   DPRINT: 0x0013AE70
@@ -93,6 +94,43 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  DMAC_BEIS_Handler: 0x004E8268
+  DMAC_VIF1_Handler: 0x004E8168
+  _ssp_load_tex: 0x004DF770
+  vsync_callback: 0x001599A8
+  SpawnPart_085: 0x00493888
+  _part_load_tex: 0x00491878
+  FreeMobyGridLists: 0x00470338
+  FreeMobyVar: 0x00470260
+  RestoreRegsAsmOld: 0x004FE3F8
+  PreserveRegsOld: 0x004FE350
+  SetRotZ: 0x004FE1F0
+  SetRotX___dupe2: 0x004FE1B8
+  SetRotX: 0x004FE178
+  FastMemCopy: 0x00453718
+  FastDecTimer___dupe5: 0x004535A0
+  FastDecTimer___dupe3: 0x00453538
+  FasterDrawStrip: 0x0044CE08
+  writeGSHeader: 0x0044C5E8
+  writeSetupBlock: 0x0044C568
+  rand16: 0x00163408
+  CollSoundSurface: 0x004454B8
+  CollHotspot: 0x00445488
+  _lookup_grid_pointer: 0x00440FE8
+  SkyDrawClusterGouraud: 0x004DF9E8
+  MobyAnimProc: 0x00470B38
+  ParseEffectTexs: 0x00461690
+  sound_GetChannelFromHandle: 0x00453EB0
+  FastCountChars: 0x004538F8
+  FastMemOr16: 0x00453838
+  FastMemCopyReverse16: 0x00453808
+  FastMemZero: 0x00453658
+  FastMemZero16: 0x00453630
+  FastMemSet: 0x00453608
+  FastSitAndSpin: 0x004535E0
+  FastDecTimer___dupe4: 0x00453568
+  FastDecTimer___dupe2: 0x00453508
+  FastDecTimer: 0x004534D0
   CS_AttachPivot: 0x0043F248
   CS_DoCollision_Sphere: 0x0043F1A8
   sound_GetFade___dupe2: 0x004E0248
@@ -5477,6 +5515,138 @@ objects:
       - {object: game/stash, section: .game_Stash_InitOnce, start: 0x004E28F0, end: 0x004E2990}
       - {object: game/stash, section: .game_Stash_SendData, start: 0x004E2990, end: 0x004E2A68}
       - {object: game/stash, section: .game_func_004E2A68, start: 0x004E2A68, end: 0x004E2AF8}
+  game/fastfunc:
+    text_start: 0x004534A0
+    text_end: 0x00453F90
+    slots:
+      - {object: game/fastfunc, section: .game_FastMulQuats, start: 0x004534A0, end: 0x004534D0}
+      - {object: game/fastfunc, section: .game_FastDecTimer, start: 0x004534D0, end: 0x00453508}
+      - {object: game/fastfunc, section: .game_FastDecTimer___dupe2, start: 0x00453508, end: 0x00453538}
+      - {object: game/fastfunc, section: .game_FastDecTimer___dupe3, start: 0x00453538, end: 0x00453568}
+      - {object: game/fastfunc, section: .game_FastDecTimer___dupe4, start: 0x00453568, end: 0x004535A0}
+      - {object: game/fastfunc, section: .game_FastDecTimer___dupe5, start: 0x004535A0, end: 0x004535E0}
+      - {object: game/fastfunc, section: .game_FastSitAndSpin, start: 0x004535E0, end: 0x00453608}
+      - {object: game/fastfunc, section: .game_FastMemSet, start: 0x00453608, end: 0x00453630}
+      - {object: game/fastfunc, section: .game_FastMemZero16, start: 0x00453630, end: 0x00453658}
+      - {object: game/fastfunc, section: .game_FastMemZero, start: 0x00453658, end: 0x00453718}
+      - {object: game/fastfunc, section: .game_FastMemCopy, start: 0x00453718, end: 0x004537D0}
+      - {object: game/fastfunc, section: .game_FastMemCopy16, start: 0x004537D0, end: 0x00453808}
+      - {object: game/fastfunc, section: .game_FastMemCopyReverse16, start: 0x00453808, end: 0x00453838}
+      - {object: game/fastfunc, section: .game_FastMemOr16, start: 0x00453838, end: 0x00453868}
+      - {object: game/fastfunc, section: .game_FastFromSpr, start: 0x00453868, end: 0x004538A0}
+      - {object: game/fastfunc, section: .game_FastVectorFromPackedChars, start: 0x004538A0, end: 0x004538B8}
+      - {object: game/fastfunc, section: .game_FastVectorToPackedChars, start: 0x004538B8, end: 0x004538E0}
+      - {object: game/fastfunc, section: .game_FastVectorFromSignedShorts, start: 0x004538E0, end: 0x004538F8}
+      - {object: game/fastfunc, section: .game_FastCountChars, start: 0x004538F8, end: 0x00453928}
+      - {object: game/fastfunc, section: .game_FastCos, start: 0x00453928, end: 0x00453940}
+      - {object: game/fastfunc, section: .game_FastSin, start: 0x00453940, end: 0x00453958}
+      - {object: game/fastfunc, section: .game_FastArcSin, start: 0x00453958, end: 0x004539F0}
+      - {object: game/fastfunc, section: .game_FastArcTan, start: 0x004539F0, end: 0x00453B08}
+      - {object: game/fastfunc, section: .game_func_00453B08, start: 0x00453B08, end: 0x00453B10}
+      - {object: game/fastfunc, section: .game_FastAddRots, start: 0x00453B10, end: 0x00453B58}
+      - {object: game/fastfunc, section: .game_FastSubRots, start: 0x00453B58, end: 0x00453BA0}
+      - {object: game/fastfunc, section: .game_FastWrapRot, start: 0x00453BA0, end: 0x00453BF8}
+      - {object: game/fastfunc, section: .game_FastDiffRots, start: 0x00453BF8, end: 0x00453C30}
+      - {object: game/fastfunc, section: .game_FastMod, start: 0x00453C30, end: 0x00453C68}
+      - {object: game/fastfunc, section: .game_FastTweenColor, start: 0x00453C68, end: 0x00453CB0}
+      - {object: game/fastfunc, section: .game_FastBsphereCheck, start: 0x00453CB0, end: 0x00453DA8}
+      - {object: game/fastfunc, section: .game_FastBsphereCheck___dupe2, start: 0x00453DA8, end: 0x00453EA8}
+      - {object: game/fastfunc, section: .game_func_00453EA8, start: 0x00453EA8, end: 0x00453EB0}
+      - {object: game/fastfunc, section: .game_sound_GetChannelFromHandle, start: 0x00453EB0, end: 0x00453EF0}
+      - {object: game/fastfunc, section: .game_FastPointInCuboid, start: 0x00453EF0, end: 0x00453F90}
+  game/tfragproc:
+    text_start: 0x004E3038
+    text_end: 0x004E49C0
+    slots:
+      - {object: game/tfragproc, section: .game_TfragProc, start: 0x004E3038, end: 0x004E3C40}
+      - {object: game/tfragproc, section: .game_ComputeTfragTextureUsage, start: 0x004E3C40, end: 0x004E3DA8}
+      - {object: game/tfragproc, section: .game_BuildTfragTextureDma, start: 0x004E3DA8, end: 0x004E4000}
+      - {object: game/tfragproc, section: .game_LightTfrags, start: 0x004E4000, end: 0x004E48B8}
+      - {object: game/tfragproc, section: .game_TfragDetachPointLight, start: 0x004E48B8, end: 0x004E49C0}
+  game/skyproc:
+    text_start: 0x004DF770
+    text_end: 0x004DFEC8
+    slots:
+      - {object: game/skyproc, section: .game__ssp_load_tex, start: 0x004DF770, end: 0x004DF848}
+      - {object: game/skyproc, section: .game_SkyShellSetup, start: 0x004DF848, end: 0x004DF8F0}
+      - {object: game/skyproc, section: .game_SkyProcessVerts, start: 0x004DF8F0, end: 0x004DF9E8}
+      - {object: game/skyproc, section: .game_SkyDrawClusterGouraud, start: 0x004DF9E8, end: 0x004DFAE8}
+      - {object: game/skyproc, section: .game_SkyDrawClusterTextured, start: 0x004DFAE8, end: 0x004DFDD8}
+      - {object: game/skyproc, section: .game_SkyBsphereCheck, start: 0x004DFDD8, end: 0x004DFEC8}
+  game/collproc:
+    text_start: 0x00441088
+    text_end: 0x004454E0
+    slots:
+      - {object: game/collproc, section: .game_CollLine_Fix, start: 0x00441088, end: 0x004420A0}
+      - {object: game/collproc, section: .game_CollSphere_Fix, start: 0x004420A0, end: 0x00442EC0}
+      - {object: game/collproc, section: .game_CollMobysLine_Fix, start: 0x00442EC0, end: 0x00443A38}
+      - {object: game/collproc, section: .game_CollMobysSphere_Fix, start: 0x00443A38, end: 0x00444320}
+      - {object: game/collproc, section: .game_CollHeroLine, start: 0x00444320, end: 0x00444328}
+      - {object: game/collproc, section: .game_FUN_00444328, start: 0x00444328, end: 0x00444710}
+      - {object: game/collproc, section: .game_CollHeroSphere, start: 0x00444710, end: 0x00444C98}
+      - {object: game/collproc, section: .game_CollCameraLine, start: 0x00444C98, end: 0x00444CA8}
+      - {object: game/collproc, section: .game_CollCameraSphere, start: 0x00444CA8, end: 0x00444CE8}
+      - {object: game/collproc, section: .game_CollLineList, start: 0x00444CE8, end: 0x00444ED0}
+      - {object: game/collproc, section: .game_CollLineTriListOfs, start: 0x00444ED0, end: 0x004450F0}
+      - {object: game/collproc, section: .game_CollMovingSphereVsTri, start: 0x004450F0, end: 0x00445488}
+      - {object: game/collproc, section: .game_CollHotspot, start: 0x00445488, end: 0x004454B8}
+      - {object: game/collproc, section: .game_CollSoundSurface, start: 0x004454B8, end: 0x004454E0}
+  game/partproc:
+    text_start: 0x00490968
+    text_end: 0x00491918
+    slots:
+      - {object: game/partproc, section: .game_CreatePart, start: 0x00490968, end: 0x00490AC8}
+      - {object: game/partproc, section: .game_DeletePart, start: 0x00490AC8, end: 0x00490BC8}
+      - {object: game/partproc, section: .game_UpdateParts, start: 0x00490BC8, end: 0x00490C50}
+      - {object: game/partproc, section: .game_PartProc, start: 0x00490C50, end: 0x00491878}
+      - {object: game/partproc, section: .game__part_load_tex, start: 0x00491878, end: 0x00491918}
+  game/shrubproc:
+    text_start: 0x004DE778
+    text_end: 0x004DE880
+    slots:
+      - {object: game/shrubproc, section: .game_ShrubDetachPointLight, start: 0x004DE778, end: 0x004DE880}
+  game/tieproc:
+    text_start: 0x004E4B48
+    text_end: 0x004E4C50
+    slots:
+      - {object: game/tieproc, section: .game_TieDetachPointLight, start: 0x004E4B48, end: 0x004E4C50}
+  game/cmecpu:
+    text_start: 0x0043FC30
+    text_end: 0x00441088
+    slots:
+      - {object: game/cmecpu, section: .game_CmeUnpack, start: 0x0043FC30, end: 0x00440FE8}
+      - {object: game/cmecpu, section: .game__lookup_grid_pointer, start: 0x00440FE8, end: 0x00441088}
+  game/corefunc:
+    text_start: 0x001633C0
+    text_end: 0x00163448
+    slots:
+      - {object: game/corefunc, section: .game_srand, start: 0x001633C0, end: 0x001633D0}
+      - {object: game/corefunc, section: .game_rand, start: 0x001633D0, end: 0x00163408}
+      - {object: game/corefunc, section: .game_rand16, start: 0x00163408, end: 0x00163440}
+      - {object: game/corefunc, section: .game_func_00163440, start: 0x00163440, end: 0x00163448}
+  game/mathfunc_asm:
+    text_start: 0x004FE028
+    text_end: 0x004FE4E8
+    slots:
+      - {object: game/mathfunc_asm, section: .game_VecLimitLen2, start: 0x004FE028, end: 0x004FE080}
+      - {object: game/mathfunc_asm, section: .game_VecLimitLen3, start: 0x004FE080, end: 0x004FE0E0}
+      - {object: game/mathfunc_asm, section: .game_VecReflect3, start: 0x004FE0E0, end: 0x004FE148}
+      - {object: game/mathfunc_asm, section: .game_SinCos, start: 0x004FE148, end: 0x004FE178}
+      - {object: game/mathfunc_asm, section: .game_SetRotX, start: 0x004FE178, end: 0x004FE1B8}
+      - {object: game/mathfunc_asm, section: .game_SetRotX___dupe2, start: 0x004FE1B8, end: 0x004FE1F0}
+      - {object: game/mathfunc_asm, section: .game_SetRotZ, start: 0x004FE1F0, end: 0x004FE228}
+      - {object: game/mathfunc_asm, section: .game_QuatSlerp, start: 0x004FE228, end: 0x004FE2B0}
+      - {object: game/mathfunc_asm, section: .game_QuatLerp, start: 0x004FE2B0, end: 0x004FE318}
+      - {object: game/mathfunc_asm, section: .game_FastPointInSphere, start: 0x004FE318, end: 0x004FE350}
+      - {object: game/mathfunc_asm, section: .game_PreserveRegsOld, start: 0x004FE350, end: 0x004FE3F8}
+      - {object: game/mathfunc_asm, section: .game_RestoreRegsAsmOld, start: 0x004FE3F8, end: 0x004FE4A0}
+      - {object: game/mathfunc_asm, section: .game_PreserveRegs, start: 0x004FE4A0, end: 0x004FE4D8}
+      - {object: game/mathfunc_asm, section: .game_RestoreRegs, start: 0x004FE4D8, end: 0x004FE4E8}
+  game/permcb:
+    text_start: 0x001599A8
+    text_end: 0x001599F4
+    slots:
+      - {object: game/permcb, section: .game_vsync_callback, start: 0x001599A8, end: 0x001599F4}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390

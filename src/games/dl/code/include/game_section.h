@@ -25,4 +25,10 @@
 #define JUNK_ASM(NAME, BODY) \
 	__asm__(".section .game_" #NAME ",\"ax\",@progbits\n.set noreorder\n.set noat\n" BODY ".set at\n.set reorder\n.text")
 
+/*
+ * End of a hand-written function body that returns by itself (DECISIONS.md D22): moves the jr $31 / nop
+ * the compiler appends into a section the linker discards. Needs `// GAME_EXTRA_FLAGS: -g0` in the file.
+ */
+#define GAME_ASM_TAIL(NAME) "\t.section .discard_game_" #NAME ",\"ax\",@progbits"
+
 #endif /* GAME_SECTION_H */

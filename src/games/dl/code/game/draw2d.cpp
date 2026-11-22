@@ -1,3 +1,4 @@
+// GAME_EXTRA_FLAGS: -g0
 #include "common.h"
 #include "game_section.h"
 
@@ -96,12 +97,126 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", FastNearestPoin
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", FastDrawQuadReal);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", writeSetupBlock);
+void writeSetupBlock(void) __asm__("writeSetupBlock");
+GAME_SECTION(writeSetupBlock) void writeSetupBlock(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tpexew $31, $31\n"
+		"\tqmfc2.ni $0, $vf0\n"
+		"\tjal writeGSHeader\n"
+		"\taddi $4, $0, 0x5\n"
+		"\tlui $8, (0x24000000 >> 16)\n"
+		"\tld $10, 0x70($18)\n"
+		"\tdsll32 $8, $8, 0\n"
+		"\tld $11, 0x78($18)\n"
+		"\tori $8, $8, 0x1\n"
+		"\tori $9, $0, 0x68\n"
+		"\tpcpyld $10, $11, $10\n"
+		"\tld $12, 0x80($18)\n"
+		"\tpcpyld $8, $9, $8\n"
+		"\tsq $10, 0x10($1)\n"
+		"\tsq $8, 0x0($1)\n"
+		"\tori $11, $0, 0x14\n"
+		"\tpcpyld $12, $11, $12\n"
+		"\tld $10, 0x88($18)\n"
+		"\tlui $8, (0x20000000 >> 16)\n"
+		"\tori $9, $0, 0xee\n"
+		"\tdsll32 $8, $8, 0\n"
+		"\tori $11, $0, 0x42\n"
+		"\tori $8, $8, 0x8001\n"
+		"\tnop\n"
+		"\tpcpyld $8, $9, $8\n"
+		"\tsq $12, 0x30($1)\n"
+		"\tpcpyld $10, $11, $10\n"
+		"\tsq $8, 0x20($1)\n"
+		"\tpexew $31, $31\n"
+		"\tqmfc2.ni $0, $vf0\n"
+		"\tjr $31\n"
+		"\tsq $10, 0x40($1)\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(writeSetupBlock) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", writeGSHeader);
+void writeGSHeader(void) __asm__("writeGSHeader");
+GAME_SECTION(writeGSHeader) void writeGSHeader(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tsll $25, $4, 4\n"
+		"\tnop\n"
+		"\tlw $1, -0x3b5f($28)\n" /* vu1_bufPtr */
+		"\tlui $8, (0x10000000 >> 16)\n"
+		"\taddi $25, $25, 0x10\n"
+		"\tor $8, $8, $4\n"
+		"\tsq $0, 0x0($1)\n"
+		"\tlui $9, (0x40000000 >> 16)\n"
+		"\tsw $8, 0x0($1)\n"
+		"\tor $8, $8, $9\n"
+		"\tsw $8, 0xc($1)\n"
+		"\tadd $10, $1, $25\n"
+		"\taddi $1, $1, 0x10\n"
+		"\tnop\n"
+		"\tjr $31\n"
+		"\tsw $10, -0x3b5f($28)\n" /* vu1_bufPtr */
+		".set at\n.set reorder\n" GAME_ASM_TAIL(writeGSHeader) : : : "memory");
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", ScisAndRender);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", FastDrawStrip);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw2d", FasterDrawStrip);
+void FasterDrawStrip(void) __asm__("FasterDrawStrip");
+GAME_SECTION(FasterDrawStrip) void FasterDrawStrip(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tpcpyld $31, $31, $0\n"
+		"\tlw $10, -0x3b5f($28)\n" /* vu1_bufPtr */
+		"\taddiu $13, $8, 0xd\n"
+		"\tlui $25, (0x15000000 >> 16)\n"
+		"\tdaddu $1, $10, $0\n"
+		"\tsll $24, $9, 3\n"
+		"\tlui $11, %%hi(stripvif_head)\n"
+		"\taddiu $3, $0, 0x50\n"
+		"\tjal FUN_0044cfa8\n"
+		"\taddiu $11, $11, %%lo(stripvif_head)\n"
+		"\tori $2, $24, 0x3036\n"
+		"\tandi $13, $13, 0xe\n"
+		"\tsh $2, -0x3a($1)\n"
+		"\tsh $2, -0x26($1)\n"
+		"\tlq $2, -0x539f($28)\n" /* stripvif_SThead */
+		"\tdaddu $11, $7, $0\n"
+		"\tsb $4, -0x40($1)\n"
+		"\tsll $3, $4, 3\n"
+		"\tsq $2, 0x0($1)\n"
+		"\taddiu $1, $1, 0x10\n"
+		"\tjal FUN_0044cec8\n"
+		"\tsb $4, -0x2($1)\n"
+		"\tlq $2, -0x537f($28)\n" /* stripvif_RGBAhead */
+		"\tor $13, $25, $13\n"
+		"\tdaddu $11, $6, $0\n"
+		"\tsll $3, $4, 2\n"
+		"\tsq $2, 0x0($1)\n"
+		"\taddiu $1, $1, 0x10\n"
+		"\tjal FUN_0044cec8\n"
+		"\tsb $4, -0x2($1)\n"
+		"\tlq $2, -0x533f($28)\n" /* stripvif_XYZWhead */
+		"\tlui $25, (0x11000000 >> 16)\n"
+		"\tdaddu $11, $5, $0\n"
+		"\tsll $3, $4, 4\n"
+		"\tsq $2, 0x0($1)\n"
+		"\taddiu $1, $1, 0x10\n"
+		"\tjal FUN_0044cfa8\n"
+		"\tsb $4, -0x2($1)\n"
+		"\tsw $13, 0x0($1)\n"
+		"\tsub $2, $1, $10\n"
+		"\tsw $25, 0x4($1)\n"
+		"\tsrl $2, $2, 4\n"
+		"\tsd $0, 0x8($1)\n"
+		"\taddiu $1, $1, 0x10\n"
+		"\tpcpyud $31, $31, $0\n"
+		"\tsh $2, 0x0($10)\n"
+		"\tjr $31\n"
+		"\tsw $1, -0x3b5f($28)\n" /* vu1_bufPtr */
+		".set at\n.set reorder\n" GAME_ASM_TAIL(FasterDrawStrip) : : : "memory");
+}

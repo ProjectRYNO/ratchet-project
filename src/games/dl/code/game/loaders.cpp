@@ -228,7 +228,59 @@ GAME_SECTION(SwizzleTextureInPlace) void SwizzleTextureInPlace(char *tex_data, i
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseParticleTexs);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseEffectTexs);
+void ParseEffectTexs(int *, int) __asm__("ParseEffectTexs");
+GAME_SECTION(ParseEffectTexs) void ParseEffectTexs(int *, int)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tlui $2, %%hi(EffectTexs)\n"
+		"\tdaddu $6, $4, $0\n"
+		"\taddiu $8, $2, %%lo(EffectTexs)\n"
+		"\tblez $5, .L00461738\n"
+		"\tsw $0, -0x4777($28)\n" /* EffectTexCnt */
+		"\taddiu $11, $0, 0x13\n"
+		"\taddiu $10, $0, 0x14\n"
+		"\taddiu $9, $0, 0x1e\n"
+		".L004616B0:\n"
+		"\tlw $2, 0x0($6)\n"
+		"\taddiu $6, $6, 0x4\n"
+		"\tlw $3, 0x0($6)\n"
+		"\tsra $2, $2, 6\n"
+		"\taddiu $6, $6, 0x4\n"
+		"\tlw $4, 0x0($6)\n"
+		"\tsra $3, $3, 6\n"
+		"\taddiu $6, $6, 0x4\n"
+		"\tlw $7, 0x0($6)\n"
+		"\tsh $2, 0xa($8)\n"
+		"\taddiu $6, $6, 0x4\n"
+		"\tsh $3, 0x8($8)\n"
+		"\tbgez $4, .L004616FC\n"
+		"\tsh $11, 0xe($8)\n"
+		"\tsh $10, 0xe($8)\n"
+		"\tblezl $4, .L004616F4\n"
+		"\tneg $4, $4\n"
+		".L004616F4:\n"
+		"\tblezl $7, .L004616FC\n"
+		"\tneg $7, $7\n"
+		".L004616FC:\n"
+		"\tplzcw $2, $4\n"
+		"\tplzcw $3, $7\n"
+		"\tlui $4, %%hi(EffectTexCnt)\n"
+		"\tlw $4, %%lo(EffectTexCnt)($4)\n"
+		"\tsubu $2, $9, $2\n"
+		"\tsubu $3, $9, $3\n"
+		"\tsb $2, 0xc($8)\n"
+		"\taddiu $4, $4, 0x1\n"
+		"\tsb $3, 0xd($8)\n"
+		"\tsd $0, 0x0($8)\n"
+		"\tslt $2, $4, $5\n"
+		"\tlui $1, %%hi(EffectTexCnt)\n"
+		"\tsw $4, %%lo(EffectTexCnt)($1)\n"
+		"\tbnez $2, .L004616B0\n"
+		"\taddiu $8, $8, 0x10\n"
+		".L00461738:\n"
+		".set at\n.set reorder" : : : "memory");
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/loaders", ParseSky);
 

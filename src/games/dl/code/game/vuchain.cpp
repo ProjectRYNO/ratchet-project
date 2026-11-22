@@ -1,3 +1,4 @@
+// GAME_EXTRA_FLAGS: -g0
 #include "common.h"
 #include "game_section.h"
 #include "gameglobals.h"
@@ -301,8 +302,102 @@ GAME_SECTION(DMAC_VIF1_Disable) void DMAC_VIF1_Disable()
 	_dmacHandle[1] = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", DMAC_VIF1_Handler);
+GAME_SECTION(DMAC_VIF1_Handler) int DMAC_VIF1_Handler(int)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tlui $2, (0x10009000 >> 16)\n"
+		"\tlui $3, (0x10009030 >> 16)\n"
+		"\tori $2, $2, (0x10009000 & 0xffff)\n"
+		"\tori $3, $3, (0x10009030 & 0xffff)\n"
+		"\tlw $5, 0x0($2)\n"
+		"\tlui $4, (0x3ff0000 >> 16)\n"
+		"\tlw $2, 0x0($3)\n"
+		"\tbeqz $2, .L004E8254\n"
+		"\tand $4, $5, $4\n"
+		"\tandi $2, $5, 0xc\n"
+		"\tbeqz $2, .L004E8254\n"
+		"\tlui $3, (0x70000000 >> 16)\n"
+		"\tand $2, $5, $3\n"
+		"\tbne $2, $3, .L004E81BC\n"
+		"\tlui $2, (0x2000000 >> 16)\n"
+		"\tlw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\taddiu $3, $0, -0x20\n"
+		"\tand $2, $2, $3\n"
+		"\tsw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\tb .L004E8254\n"
+		"\tnop\n"
+		".L004E81BC:\n"
+		"\tand $2, $4, $2\n"
+		"\tbeqz $2, .L004E8248\n"
+		"\tlui $2, (0x10009000 >> 16)\n"
+		"\tlui $2, (0x2020000 >> 16)\n"
+		"\tbeq $4, $2, .L004E821C\n"
+		"\tnop\n"
+		"\tsltu $2, $2, $4\n"
+		"\tbnez $2, .L004E81F4\n"
+		"\tlui $2, (0x2040000 >> 16)\n"
+		"\tlui $2, (0x2010000 >> 16)\n"
+		"\tbeq $4, $2, .L004E8210\n"
+		"\tnop\n"
+		"\tb .L004E8248\n"
+		"\tlui $2, (0x10009000 >> 16)\n"
+		".L004E81F4:\n"
+		"\tbeq $4, $2, .L004E8228\n"
+		"\tnop\n"
+		"\tlui $2, (0x2080000 >> 16)\n"
+		"\tbeq $4, $2, .L004E8234\n"
+		"\tnop\n"
+		"\tb .L004E8248\n"
+		"\tlui $2, (0x10009000 >> 16)\n"
+		".L004E8210:\n"
+		"\tlw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\tb .L004E823C\n"
+		"\taddiu $3, $0, -0x3\n"
+		".L004E821C:\n"
+		"\tlw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\tb .L004E823C\n"
+		"\taddiu $3, $0, -0x5\n"
+		".L004E8228:\n"
+		"\tlw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\tb .L004E823C\n"
+		"\taddiu $3, $0, -0x9\n"
+		".L004E8234:\n"
+		"\tlw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\taddiu $3, $0, -0x11\n"
+		".L004E823C:\n"
+		"\tand $2, $2, $3\n"
+		"\tsw $2, -0x5297($28)\n" /* VifChainFlags */
+		"\tlui $2, (0x10009000 >> 16)\n"
+		".L004E8248:\n"
+		"\tori $3, $5, 0x100\n"
+		"\tori $2, $2, (0x10009000 & 0xffff)\n"
+		"\tsw $3, 0x0($2)\n"
+		".L004E8254:\n"
+		"\tsync\n"
+		"\tei\n"
+		"\tjr $31\n"
+		"\tdaddu $2, $0, $0\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(DMAC_VIF1_Handler) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", DMAC_BEIS_Handler);
+GAME_SECTION(DMAC_BEIS_Handler) int DMAC_BEIS_Handler(int)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tbreak 0, 1\n"
+		"\tnop\n"
+		"\tlui $2, (0x10009000 >> 16)\n"
+		"\tlui $3, (0x10009030 >> 16)\n"
+		"\tori $2, $2, (0x10009000 & 0xffff)\n"
+		"\tori $3, $3, (0x10009030 & 0xffff)\n"
+		"\tlw $4, 0x0($2)\n"
+		"\tlw $5, 0x0($3)\n"
+		"\tsync\n"
+		"\tei\n"
+		"\tjr $31\n"
+		"\tdaddu $2, $0, $0\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(DMAC_BEIS_Handler) : : : "memory");
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", Vif1ChainCmd);

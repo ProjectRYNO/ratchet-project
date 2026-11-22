@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """game_register.py NAME... : convert code/game/NAME.cpp to per-function slots. Run in the container from /ProjectRYNO/dl.
 
-Adds game_section.h, registers one manifest slot per INCLUDE_ASM entry and adds the object to the
+Adds game_section.h, registers one manifest slot per INCLUDE_ASM/JUNK_ASM entry and adds the object to the
 Makefile's SN object list. Addresses come from the split asm in /tmp/ckroot.
 """
 import glob, re, sys, yaml
@@ -25,7 +25,8 @@ for name in sys.argv[1:]:
 	path = root + 'code/game/%s.cpp' % name
 	src = open(path, newline='').read()
 	nl = '\r\n' if '\r\n' in src else '\n'
-	names = re.findall(r'INCLUDE_ASM\("[^"]*", (\w+)\);', src)
+	# Retained functions and inline junk (JUNK_ASM, DECISIONS.md D21) each get a slot, in source order.
+	names = re.findall(r'^(?:INCLUDE_ASM\("[^"]*", |JUNK_ASM\()(\w+)', src, re.M)
 	addrs = []
 	for n in names:
 		t = open('/tmp/ckroot/dl/code/asm/nonmatchings/game/%s/%s.s' % (name, n)).read()
