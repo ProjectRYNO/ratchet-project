@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "vendor.h"
 
 int Vendor_IsCheatOn() __asm__("Vendor_IsCheatOn");
 extern unsigned char VendorAvail[] __asm__("aaClearRegs");
@@ -14,11 +15,6 @@ extern unsigned char WrenchUpgradeLevel __asm__("D_21DAF1");
 int Vendor_GetPurchaseableWrenchUpgradeLevel() __asm__("Vendor_GetPurchaseableWrenchUpgradeLevel");
 
 
-struct VendorItem {
-	/* 0x00 */ int type;
-	/* 0x04 */ int id;
-	/* 0x08 */ int cost;
-};
 struct HeroSaveData {
 	/* 0x00 */ int bolts;
 	/* 0x04 */ char unk04[0x20];

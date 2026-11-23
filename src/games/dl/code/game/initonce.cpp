@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 
 
@@ -42,12 +43,8 @@ typedef struct memSlots {
 	/* 0xdc */ void *profile;
 	/* 0xe0 */ void *debug;
 } memSlots_t;
-typedef struct nwInfo {
-	/* 0x00 */ int onlyLocalPlayers;
-	/* 0x04 */ char unk04[0x100];
-} nwInfo_t;
 extern memSlots_t MemSlots __asm__("D_0023AB00");
-extern nwInfo_t g_nwInfo __asm__("D_1723B8");
+extern tNW_Info g_nwInfo __asm__("g_nwInfo");
 extern int vu1_bufSize __asm__("vu1_bufSize");
 extern char D_5566FF[] __asm__("D_5566FF");
 extern char D_54E6D7[] __asm__("D_54E6D7");

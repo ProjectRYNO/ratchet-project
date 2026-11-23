@@ -3,6 +3,7 @@
 #include "mobyutil.h"
 #include "draw.h"
 #include "wad.h"
+#include "gameglobals.h"
 
 
 struct MobyClass;
@@ -84,21 +85,6 @@ void LoadAsync(int, void *, int, int, void *, void *, void *) __asm__("LoadAsync
 int LoadNpcMobys(int, int) __asm__("LoadNpcMobys");
 int LoadNpcSubtitles(int, int) __asm__("LoadNpcSubtitles");
 int PreLoadNpcChunk(int) __asm__("PreLoadNpcChunk");
-struct GSMEM {
-	/* 0x00 */ int unk00[4];
-	/* 0x10 */ int perm_grey_tex;
-	/* 0x14 */ int unk14[3];
-	/* 0x20 */ int perm_bots;
-	/* 0x24 */ int perm_landstalker;
-	/* 0x28 */ int perm_dropship;
-	/* 0x2c */ int perm_bank;
-	/* 0x30 */ int stash_armor;
-	/* 0x34 */ int stash_armor2;
-	/* 0x38 */ int stash_bots;
-	/* 0x3c */ int stash_landstalker;
-	/* 0x40 */ int stash_dropship;
-	/* 0x44 */ int unk44[5];
-};
 extern GSMEM GSmem __asm__("GSmem");
 extern int vu1_bufId __asm__("vu1_bufId");
 extern void *vu1_DmaBuffers[2] __asm__("vu1_DmaBuffers");
@@ -120,11 +106,6 @@ extern char g_HeroArr[] __asm__("g_Hero");
 extern char ResetLevelBlock_229A80[] __asm__("D_229A80");
 extern char MobyGrids[] __asm__("MobyGrids");
 extern char MobyGridAlloc[] __asm__("MobyGridAlloc");
-struct LdBootSettings {
-	/* 0x00 */ int PalMode;
-	/* 0x04 */ int unk04[0x30];
-};
-extern LdBootSettings bootSettings __asm__("bootSettings");
 extern float NtscPalSpeedAdjuster __asm__("NtscPalSpeedAdjuster");
 extern int g_gameTypeLd __asm__("g_gameType");
 void FastMemSet(void *, int, int) __asm__("FastMemSet");

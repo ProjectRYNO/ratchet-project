@@ -8,14 +8,6 @@
 
 
 struct SoundInstance;
-struct SoundGlobals {
-	/* 0x000 */ char unk000[0x48];
-	/* 0x048 */ int cam_history_pos;
-	/* 0x04c */ int unk04c;
-	/* 0x050 */ s128 cam_history[4];
-	/* 0x090 */ char unk090[0x2c0 - 0x90];
-	/* 0x2c0 */ SoundData channels[52];
-};
 struct lineEmitter {
 	/* 0x00 */ unsigned short uniqueId;
 	/* 0x02 */ short channels[3];

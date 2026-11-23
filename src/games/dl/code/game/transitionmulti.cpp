@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 void Moby2dReset() __asm__("Moby2dReset");
 void TransitionPost_MultiPlayer() __asm__("TransitionPost_MultiPlayer");
@@ -32,11 +33,7 @@ float g_yGameName __asm__("g_yGameName") GAME_GP_DATA = 0;
 float g_xMapName __asm__("g_xMapName") GAME_GP_DATA = 0;
 float g_yMapName __asm__("g_yMapName") GAME_GP_DATA = 0;
 unsigned long g_Map_Color __asm__("g_Map_Color") GAME_GP_DATA = 0;
-typedef struct nwInfo {
-	/* 0x00 */ int onlyLocalPlayers;
-	/* 0x04 */ char unk04[0x100];
-} nwInfo_t;
-extern nwInfo_t g_nwInfo __asm__("D_1723B8");
+extern tNW_Info g_nwInfo __asm__("g_nwInfo");
 void FontPrintScaled(float x, float y, unsigned long color, const char *text, int len, float scale) __asm__("FontPrintScaled");
 void TransitionMP_DrawTitleText() __asm__("TransitionMP_DrawTitleText");
 void *Moby2dGetPtr(int) __asm__("Moby2dGetPtr");

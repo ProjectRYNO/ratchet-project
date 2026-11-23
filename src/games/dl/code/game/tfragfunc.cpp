@@ -1,6 +1,7 @@
 // GAME_EXTRA_FLAGS: -ffast-math
 #include "common.h"
 #include "game_section.h"
+#include "vector.h"
 #include "mobyupd.h"
 #include "lights.h"
 #include "tiefunc.h"
@@ -13,9 +14,8 @@
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
 extern short TfragGsLocStash[][2] __asm__("TfragGsLocStash");
 void PatchTfragGifs() __asm__("PatchTfragGifs");
-typedef int qwordWords[4];
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
-extern qwordWords *TfragVu1Marker __asm__("TfragVu1Marker");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *TfragVu1Marker __asm__("TfragVu1Marker");
 extern int TfragGsMax __asm__("TfragGsMax");
 extern int GSloc __asm__("GSloc");
 void ComputeTfragTextureUsage() __asm__("ComputeTfragTextureUsage");
@@ -121,7 +121,7 @@ GAME_SECTION(SetTfragDistsByFOV) void SetTfragDistsByFOV(int reset)
 
 GAME_SECTION(DmaTfragTextures) void DmaTfragTextures()
 {
-	qwordWords *dma_marker = vu1_bufPtr;
+	qword *dma_marker = vu1_bufPtr;
 	int gs_mem;
 	vu1_bufPtr = vu1_bufPtr + 1;
 	(*TfragVu1Marker)[0] = 0x20000000;
@@ -139,7 +139,7 @@ GAME_SECTION(DmaTfragTextures) void DmaTfragTextures()
 	vu1_bufPtr = vu1_bufPtr + 1;
 	(*dma_marker)[0] = 0x20000000;
 	{
-		qwordWords *end = vu1_bufPtr;
+		qword *end = vu1_bufPtr;
 		(*dma_marker)[2] = 0;
 		(*dma_marker)[1] = (int)end;
 	}

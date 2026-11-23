@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "vector.h"
 #include "mobyupd.h"
 #include "lights.h"
 #include "tiefunc.h"
@@ -50,9 +51,8 @@ int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPath
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
 extern short TfragGsLocStash[][2] __asm__("TfragGsLocStash");
 void PatchTfragGifs() __asm__("PatchTfragGifs");
-typedef int qwordWords[4];
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
-extern qwordWords *TfragVu1Marker __asm__("TfragVu1Marker");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *TfragVu1Marker __asm__("TfragVu1Marker");
 extern int TfragGsMax __asm__("TfragGsMax");
 extern int GSloc __asm__("GSloc");
 void ComputeTfragTextureUsage() __asm__("ComputeTfragTextureUsage");

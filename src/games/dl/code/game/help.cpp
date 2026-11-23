@@ -5,6 +5,7 @@
 #include "gameglobals.h"
 #include "help.h"
 #include "stream.h"
+#include "hero.h"
 
 
 struct Help_QueueEntry {
@@ -49,16 +50,6 @@ void Help_StopVoice() __asm__("Help_StopVoice");
 void Help_Reset() __asm__("Help_Reset");
 
 
-struct HeroPad {
-	/* 0x000 */ char unk000[0x1a4];
-	/* 0x1a4 */ int bitsOn;
-};
-struct Hero {
-	/* 0x0000 */ char unk0000[0x2f00];
-	/* 0x2f00 */ HeroPad *pPad;
-	/* 0x2f04 */ int unk2f04[3];
-	/* 0x2f10 */ int mpIndex;
-};
 extern Hero *g_Hero[10] __asm__("g_Hero");
 extern tTriMode tri_mode[] __asm__("tri_mode");
 extern unsigned int TotalPlayTime __asm__("TotalPlayTime");

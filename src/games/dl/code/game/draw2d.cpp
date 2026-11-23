@@ -1,15 +1,12 @@
 #include "common.h"
 #include "game_section.h"
+#include "vector.h"
 
 
 extern unsigned int Draw2DZ __asm__("D_21EC20");
 void ResetZ() __asm__("ResetZ");
 void SetZ(unsigned int) __asm__("SetZ");
 
-struct vec2 {
-	/* 0x00 */ float x;
-	/* 0x04 */ float y;
-};
 void PackQuadLTRB(vec2 *, float, float, float, float) __asm__("PackQuadLTRB");
 void DrawQuad(vec2 *, unsigned int *) __asm__("DrawQuad");
 void ScalePoints(vec2 *, int, float, float) __asm__("ScalePoints");

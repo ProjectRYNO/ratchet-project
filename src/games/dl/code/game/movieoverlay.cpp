@@ -10,8 +10,7 @@
 #include "wad.h"
 
 /* movieoverlay */
-typedef int qwordWords[4];
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
 extern fsAABuff *pAAbuff __asm__("pAAbuff");
 extern long aaMovieDisplayRegs[37] __asm__("aaMovieDisplayRegs");
 extern SceneDef Scene __asm__("Scene");
@@ -57,7 +56,7 @@ void LoadDebugFont() __asm__("LoadDebugFont");
 
 GAME_SECTION(UpdateMovieOverlay) void UpdateMovieOverlay(unsigned long *vu_ptr, bool init)
 {
-	vu1_bufPtr = (qwordWords *)vu_ptr;
+	vu1_bufPtr = (qword *)vu_ptr;
 	*(int *)vu_ptr = 0x30000009;
 	(*vu1_bufPtr)[1] = (unsigned int)&pAAbuff->giftagDrawSmall & 0xfffffff;
 	(*vu1_bufPtr)[2] = 0;

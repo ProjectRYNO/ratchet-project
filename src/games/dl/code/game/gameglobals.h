@@ -261,4 +261,10 @@ extern unsigned int displayY;
 }
 #endif
 
+struct tNW_Info { // 0x1684
+	/* 0x0000 */ char unk0000[0x258];
+	/* 0x0258 */ int onlyLocalPlayers;
+	/* 0x025c */ char unk025c[0x1684 - 0x25c];
+};
+
 #endif

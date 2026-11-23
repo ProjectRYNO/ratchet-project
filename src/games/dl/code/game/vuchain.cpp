@@ -1,17 +1,17 @@
 #include "common.h"
 #include "game_section.h"
+#include "vector.h"
 #include "gameglobals.h"
 
 
-typedef int qwordWords[4];
 struct MemSlotsVu {
 	/* 0x00 */ int unk00[3];
 	/* 0x0c */ void *vu1_chain[2];
 	/* 0x14 */ int unk14[0x40];
 };
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
 /* vu1_DmaBuffers declared with unknown size so it is not treated as small data (split lui/addiu) */
-extern qwordWords *vu1_DmaBuffers[] __asm__("vu1_DmaBuffers");
+extern qword *vu1_DmaBuffers[] __asm__("vu1_DmaBuffers");
 extern int vu1_maxUseBeforeMobys __asm__("vu1_maxUseBeforeMobys");
 extern int vu1_bufId __asm__("vu1_bufId");
 extern int _dmacHandle[2] __asm__("_dmacHandle");
@@ -110,8 +110,8 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/vuchain", VU1_resetScrat
 
 GAME_SECTION(VU1_initChain) void VU1_initChain()
 {
-	vu1_DmaBuffers[0] = (qwordWords *)MemSlots.vu1_chain[0];
-	vu1_DmaBuffers[1] = (qwordWords *)MemSlots.vu1_chain[1];
+	vu1_DmaBuffers[0] = (qword *)MemSlots.vu1_chain[0];
+	vu1_DmaBuffers[1] = (qword *)MemSlots.vu1_chain[1];
 	vu1_bufPtr = vu1_DmaBuffers[0];
 	vu1_bufId = 0;
 	VU1_resetScratch();

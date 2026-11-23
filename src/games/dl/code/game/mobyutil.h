@@ -116,4 +116,25 @@ struct BotAbility { // 0x10
 	/* 0x0c */ int price;
 };
 
+struct SubVars { // 0x50
+	/* 0x00 */ void *tVars;
+	/* 0x04 */ void *nVars;
+	/* 0x08 */ void *trVars;
+	/* 0x0c */ void *bVars;
+	/* 0x10 */ void *rVars;
+	/* 0x14 */ void *scVars;
+	/* 0x18 */ void *mVars;
+	/* 0x1c */ void *m2Vars;
+	/* 0x20 */ void *aVars;
+	/* 0x24 */ void *transVars;
+	/* 0x28 */ void *eVars;
+	/* 0x2c */ void *cmdVars;
+	/* 0x30 */ void *roleVars;
+	/* 0x34 */ void *flashVars;
+	/* 0x38 */ void *sVars;
+	/* 0x3c */ void *navVars;
+	/* 0x40 */ void *oVars;
+	/* 0x44 */ int pad[3];
+};
+
 #endif

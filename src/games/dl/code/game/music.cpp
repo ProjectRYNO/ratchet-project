@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "wad.h"
+#include "sound.h"
 
 
 /* Music state at D_00203E2D + 0x2b1b; only the volume fields used here are named. */
@@ -66,16 +67,11 @@ typedef struct musicTrack {
 	/* 0x18 */ int remain;
 	/* 0x1c */ char unk1c[0xc];
 } musicTrack_t;
-typedef struct soundData {
-	/* 0x00 */ char unk00[0x90];
-	/* 0x90 */ unsigned int handles[8];
-	/* 0xb0 */ char unkb0[0x100];
-} soundData_t;
 typedef struct musicStart {
 	/* 0x00 */ short value;
 	/* 0x02 */ char unk02[0x100];
 } musicStart_t;
-extern soundData_t Sound __asm__("Sound");
+extern SoundGlobals Sound __asm__("Sound");
 extern musicStart_t musicStart __asm__("musicStart");
 extern int g_stream_handle __asm__("g_stream_handle");
 unsigned int snd_BankLoadFromEE(void *) __asm__("snd_BankLoadFromEE");

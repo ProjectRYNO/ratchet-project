@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "wad.h"
+#include "sound.h"
 
 
 int snd_StreamSafeCdBreak() __asm__("snd_StreamSafeCdBreak");
@@ -26,11 +27,7 @@ typedef struct fsDeviceArgs {
 	/* 0x07 */ unsigned char pad;
 } fsDeviceArgs_t;
 unsigned int is_complete_file(fsLoadFile_t *p_load, fsDeviceArgs_t *p_device) __asm__("is_complete_file");
-typedef struct soundData {
-	/* 0x00 */ char unk00[0x90];
-	/* 0x90 */ unsigned int handles[8];
-} soundData_t;
-extern soundData_t Sound __asm__("Sound");
+extern SoundGlobals Sound __asm__("Sound");
 unsigned int is_complete_mission_bank(fsLoadBank_t *p_args, fsDeviceArgs_t *p_device) __asm__("is_complete_mission_bank");
 int load_complete_file(fsLoadFile_t *p_load) __asm__("load_complete_file");
 int snd_SRAMGetFreeMem() __asm__("snd_SRAMGetFreeMem");

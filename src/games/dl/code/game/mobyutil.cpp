@@ -10,20 +10,6 @@
 
 
 struct MobyClass;
-struct SubVars {
-	/* 0x00 */ int unk00[2];
-	/* 0x08 */ void *trackVars;
-	/* 0x0c */ void *bogeyVars;
-	/* 0x10 */ void *reactVars;
-	/* 0x14 */ int unk14[2];
-	/* 0x1c */ void *moveVars;
-	/* 0x20 */ int unk20[3];
-	/* 0x2c */ void *commandVars;
-	/* 0x30 */ int unk30;
-	/* 0x34 */ void *flashVars;
-	/* 0x38 */ void *suckVars;
-	/* 0x3c */ void *navigationVars;
-};
 struct TargetVars {
 	/* 0x00 */ char unk00[0x2c];
 	/* 0x2c */ short bogeyType;
@@ -915,7 +901,7 @@ GAME_SECTION(MB_GetSuckVars) void *MB_GetSuckVars(MobyInstance *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
-	else r = ((SubVars *)pMoby->pVar)->suckVars;
+	else r = ((SubVars *)pMoby->pVar)->sVars;
 	return r;
 }
 
@@ -927,7 +913,7 @@ GAME_SECTION(MB_GetMoveVars_2) void *MB_GetMoveVars_2(MobyInstance *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
-	else r = ((SubVars *)pMoby->pVar)->moveVars;
+	else r = ((SubVars *)pMoby->pVar)->m2Vars;
 	return r;
 }
 
@@ -935,7 +921,7 @@ GAME_SECTION(MB_GetNavigationVars) void *MB_GetNavigationVars(MobyInstance *pMob
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
-	else r = ((SubVars *)pMoby->pVar)->navigationVars;
+	else r = ((SubVars *)pMoby->pVar)->navVars;
 	return r;
 }
 
@@ -1544,7 +1530,7 @@ GAME_SECTION(MB_GetBogeyVars) void *MB_GetBogeyVars(MobyInstance *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
-	else r = ((SubVars *)pMoby->pVar)->bogeyVars;
+	else r = ((SubVars *)pMoby->pVar)->bVars;
 	return r;
 }
 

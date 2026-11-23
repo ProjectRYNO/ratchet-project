@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "hero.h"
 
 
 
@@ -21,16 +22,10 @@ extern int pendingGameMode __asm__("pendingGameMode");
 extern int gameMode __asm__("gameMode");
 bool IsThisGameModePending(int gameMode) __asm__("IsThisGameModePending");
 
-typedef struct hero {
-	/* 0x0000 */ char unk00[0x2e20];
-	/* 0x2e20 */ float hitPoints;
-	/* 0x2e24 */ char unk2e24[0x100];
-	/* 0x2f24 */ float maxHP;
-} hero_t;
 extern int g_gameType __asm__("g_gameType");
 extern int g_gameRules __asm__("g_gameRules");
 extern int InTheEndOfGameSequence __asm__("InTheEndOfGameSequence");
-extern hero_t *g_Hero[10] __asm__("g_Hero");
+extern Hero *g_Hero[10] __asm__("g_Hero");
 extern unsigned char gModePauseDisabledFlags[] __asm__("D_3D7D70");
 int rmc_arg0 __asm__("rmc_arg0") GAME_GP_DATA = 0;
 int rmc_arg1 __asm__("rmc_arg1") GAME_GP_DATA = 0;

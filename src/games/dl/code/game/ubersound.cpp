@@ -1,10 +1,8 @@
 #include "common.h"
 #include "game_section.h"
+#include "stream.h"
 
 
-struct StreamInterface { // 0x1 (empty class, per dltypes)
-	void StopAll(unsigned int, int, void (*)(void *), void *) __asm__("StopAll___dupe2");
-};
 extern StreamInterface StreamSys __asm__("StreamSys");
 void StopAll(int) __asm__("StopAll");
 void sound_StopAllSounds() __asm__("sound_StopAllSounds");

@@ -160,6 +160,7 @@ float navg_CollideLineSegmentBoxLocalZeroVec(vec4f &start) __asm__("navg_Collide
 
 
 
+
 GAME_SECTION(navg_CollideLineSegmentBoxLocalZeroVec) float navg_CollideLineSegmentBoxLocalZeroVec(vec4f &start)
 {
 	float fst = 0.0f;

@@ -122,7 +122,6 @@ static inline int sound_IsMobyPlaying(MobyInstance *pMoby)
 	return ret;
 }
 void MobyPlayDesiredSound(MobyInstance *pMoby) __asm__("MobyPlayDesiredSound");
-typedef int qword[4];
 extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
 extern qword *MobyVu1Marker __asm__("MobyVu1Marker");
 extern int GSloc __asm__("GSloc");
@@ -150,6 +149,7 @@ extern short MobyGroupDynamicDataChunk[][24] __asm__("MobyGroupDynamicDataChunk"
 extern int MobyGrids[0x1000] __asm__("MobyGrids");
 
 void GetMobyBangleStats(MobyInstance *pMoby, int &bangle_bits, int &bangle_cnt) __asm__("GetMobyBangleStats");
+
 
 
 

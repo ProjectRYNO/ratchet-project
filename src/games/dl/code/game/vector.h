@@ -7,6 +7,23 @@ struct vec4 { // 0x10
 	/* 0x00 */ s128 v;
 };
 
+typedef int qword[4];
+
+struct vec2 { // 0x8
+	/* 0x00 */ float x;
+	/* 0x04 */ float y;
+};
+
+struct vec3 { // 0xc
+	/* 0x00 */ float x;
+	/* 0x04 */ float y;
+	/* 0x08 */ float z;
+};
+
+struct quat { // 0x10
+	/* 0x00 */ s128 q;
+};
+
 struct vec4f { // 0x10
 	/* 0x00 */ float x;
 	/* 0x04 */ float y;

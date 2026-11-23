@@ -11,7 +11,7 @@ typedef struct { // 0x18
 	/* 0x08 */ int difficulty;
 	/* 0x0c */ int bolts;
 	/* 0x10 */ int xp;
-	/* 0x14 */ bool completed;
+	/* 0x14 */ unsigned char completed;
 } ST_SkillPointInfo;
 
 #endif

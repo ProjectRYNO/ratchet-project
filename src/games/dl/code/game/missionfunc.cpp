@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "missionfunc.h"
+#include "hero.h"
 
 int mf_NewLevels __asm__("mf_NewLevels") GAME_GP_DATA = 0;
 int MF_GetNewLevelMask() __asm__("MF_GetNewLevelMask");
@@ -25,12 +27,6 @@ void MF_ExitPostMissionScreen() __asm__("MF_ExitPostMissionScreen");
 struct LevelChunkDef {
 	/* 0x00 */ int active_id;
 	/* 0x04 */ int unk04[4];
-};
-struct MissionDef {
-	/* 0x00 */ char unk00[0x18];
-	/* 0x18 */ int visibility_type;
-	/* 0x1c */ int points;
-	/* 0x20 */ int bolt_reward;
 };
 struct MissionStat {
 	/* 0x00 */ int xp;
@@ -63,10 +59,6 @@ struct SpawnPointList {
 	/* 0x100 */ int index;
 	/* 0x104 */ int size;
 	/* 0x108 */ int unk108[2];
-};
-struct Hero {
-	/* 0x0000 */ char unk0000[0x2f10];
-	/* 0x2f10 */ int mpIndex;
 };
 extern SpawnPointList mf_spawnPointList[] __asm__("mf_spawnPointList");
 extern int g_gameType __asm__("g_gameType");

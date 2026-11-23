@@ -18,3 +18,5 @@ python3 /ProjectRYNO/tools/compare_elf.py /ProjectRYNO/assets/dl/boot.elf build/
 # Worker/test-file tags must never reach the sources (.agents/INSTRUCTIONS.md invariant 11).
 grep -nE '\bA[B-Z][0-9]?_[A-Za-z]\w*|\b[A-Za-z_][A-Za-z0-9_]*[a-z0-9]A[J-Z][0-9]?v?\b|===== A[A-Z]' /ProjectRYNO/dl/code/game/*.cpp \
 	| grep -vE '\bAA_|\bA[HI]_RSA|\bAI_(PKCS|Feedback)' | sed 's/^/WORKER TAG: /' | cut -c1-150 | head -20
+# Shared structs live in one header each (dl/DOCS/types/GAME_HEADERS.md); flag local copies.
+python3 /ProjectRYNO/tools/game_headers_index.py --check | head -20

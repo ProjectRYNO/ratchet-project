@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "stats.h"
+#include "missionfunc.h"
 
 
 struct ST_EnemyKill {
@@ -40,24 +42,12 @@ struct SkillPointDef {
 	/* 0x20 */ int reward;
 	/* 0x24 */ int percent;
 };
-struct ST_SkillPointInfo {
-	/* 0x00 */ int textId;
-	/* 0x04 */ int descId;
-	/* 0x08 */ int type;
-	/* 0x0c */ int percent;
-	/* 0x10 */ int reward;
-	/* 0x14 */ unsigned char acquired;
-};
 struct ST_MissionData {
 	/* 0x00 */ int bSuccess;
 	/* 0x04 */ int iTime;
 	/* 0x08 */ int unk08[5];
 	/* 0x1c */ int iSkillPoints;
 	/* 0x20 */ int unk20[21];
-};
-struct MissionDef {
-	/* 0x00 */ int unk00[6];
-	/* 0x18 */ int hidden;
 };
 struct MissionProgress {
 	/* 0x00 */ char unk00[0xa];
@@ -126,12 +116,12 @@ GAME_SECTION(ST_GetSkillPointInfo) void ST_GetSkillPointInfo(int level, int skil
 	SkillPointDef *pSkillDef;
 	if (skillPoint < 0x1e) skillPoint += (level - 1) % 0x14 * 0x1e;
 	pSkillDef = GetSkillPointDef(ConvertSkillPointIndex(level, skillPoint));
-	info.textId = pSkillDef->textId;
-	info.descId = pSkillDef->descId;
-	info.type = pSkillDef->type;
-	info.percent = (int)((float)pSkillDef->percent * 0.01f) * 100;
-	info.reward = pSkillDef->reward;
-	info.acquired = (SkillPoints[(level - 1) % 0x14] >> (skillPoint - (level - 1) % 0x14 * 0x1e)) & 1;
+	info.name = pSkillDef->textId;
+	info.desc = pSkillDef->descId;
+	info.difficulty = pSkillDef->type;
+	info.bolts = (int)((float)pSkillDef->percent * 0.01f) * 100;
+	info.xp = pSkillDef->reward;
+	info.completed = (SkillPoints[(level - 1) % 0x14] >> (skillPoint - (level - 1) % 0x14 * 0x1e)) & 1;
 }
 
 GAME_SECTION(ST_GetTotalNumAcquiredSkillPoints) int ST_GetTotalNumAcquiredSkillPoints()
@@ -163,7 +153,7 @@ GAME_SECTION(ST_GetNumDifficultyStars) int ST_GetNumDifficultyStars()
 	for (i = 1; i < 0x10; i++) {
 		for (j = 0; j < 0x40; j++) {
 			if ((&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars - 1 < 0) continue;
-			if (GetMissionDef(ConvertMissionIndex(i, j))->hidden) continue;
+			if (GetMissionDef(ConvertMissionIndex(i, j))->visibility_type) continue;
 			if ((i == 1 || i == 0x15) && j < 9) continue;
 			{
 				int stars = (&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars;

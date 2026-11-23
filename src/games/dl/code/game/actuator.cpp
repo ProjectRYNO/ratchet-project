@@ -1,21 +1,9 @@
 #include "common.h"
 #include "game_section.h"
 #include "pad.h"
+#include "actuator.h"
 
 
-struct actuatorWave {
-	/* 0x00 */ unsigned char type;
-	/* 0x01 */ unsigned char loop;
-	/* 0x02 */ unsigned char side;
-	/* 0x03 */ unsigned char scale;
-	/* 0x04 */ short delay;
-	/* 0x06 */ short lifeSpan;
-	/* 0x08 */ short timer;
-	/* 0x0a */ short on;
-	/* 0x0c */ short off;
-	/* 0x0e */ unsigned char power;
-	/* 0x0f */ unsigned char minpower;
-};
 extern actuatorWave *actuatorWaves[] __asm__("D_3D6398");
 int actuator_SetWave(actuatorWave *, PAD *) __asm__("actuator_SetWave");
 int actuator_dbgplaywave(unsigned int, PAD *) __asm__("actuator_dbgplaywave");

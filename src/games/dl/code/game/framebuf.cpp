@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "vector.h"
 #include "gameglobals.h"
 
 extern "C" {
@@ -13,8 +14,7 @@ void PutDispBuffer() __asm__("PutDispBuffer");
 extern long aaClearRegs[] __asm__("aaClearRegs");
 void SetBackgroundColor(int r, int g, int b) __asm__("SetBackgroundColor");
 
-typedef int qwordWords[4];
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
 extern long aaBlurRegs[] __asm__("aaBlurRegs");
 void AA_BlurPass() __asm__("AA_BlurPass");
 void PutDrawBufferSmall() __asm__("PutDrawBufferSmall");

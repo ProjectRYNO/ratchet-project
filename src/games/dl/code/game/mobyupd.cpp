@@ -28,8 +28,7 @@ mobyfuncs *GetMobyFunctions(int oClass) __asm__("GetMobyFunctions___dupe2");
 
 
 /* movieoverlay */
-typedef int qwordWords[4];
-extern qwordWords *vu1_bufPtr __asm__("vu1_bufPtr");
+extern qword *vu1_bufPtr __asm__("vu1_bufPtr");
 extern fsAABuff *pAAbuff __asm__("pAAbuff");
 extern long aaMovieDisplayRegs[37] __asm__("aaMovieDisplayRegs");
 extern SceneDef Scene __asm__("Scene");
@@ -94,7 +93,7 @@ int StepPathNode(Path *pPath, int curNode, int step, int wrap) __asm__("StepPath
 extern TfragPatch TfragGifRectify[] __asm__("TfragGifRectify");
 extern short TfragGsLocStash[][2] __asm__("TfragGsLocStash");
 void PatchTfragGifs() __asm__("PatchTfragGifs");
-extern qwordWords *TfragVu1Marker __asm__("TfragVu1Marker");
+extern qword *TfragVu1Marker __asm__("TfragVu1Marker");
 extern int TfragGsMax __asm__("TfragGsMax");
 extern int GSloc __asm__("GSloc");
 void ComputeTfragTextureUsage() __asm__("ComputeTfragTextureUsage");
