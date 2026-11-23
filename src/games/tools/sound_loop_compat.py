@@ -93,6 +93,18 @@ def adapt(source, likely=False):
         if 0 < int(size) <= 8}
     lines = source.splitlines()
     parsed = []
+    # Inline asm (#APP ... #NO_APP) is hand-written code that retail never compiled: it gets no
+    # legacy padding, but its short backward loops are emitted as fixed branch words so the
+    # assembler's short-loop fix cannot insert nops either.
+    in_app = []
+    app = False
+    for line in lines:
+        t = line.strip()
+        if t == '#APP':
+            app = True
+        elif t == '#NO_APP':
+            app = False
+        in_app.append(app)
     reorder = True
     section = 0
     labels = {}
@@ -112,6 +124,18 @@ def adapt(source, likely=False):
     diagnostics = []
     for i, (s, op, args, reorder, section) in enumerate(parsed):
         if op not in BRANCHES and not (likely and op in LIKELY_BRANCHES):
+            continue
+        if in_app[i]:
+            encoded = branch_word(op, args) if op in BRANCHES or op in LIKELY_BRANCHES else None
+            if encoded is None:
+                continue
+            word, target = encoded
+            start = labels.get((section, target))
+            if start is None or start >= i or not in_app[start]:
+                continue
+            branch = f'\t.word 0x{word:08x} | ((({target} - . - 4) / 4) & 0xffff)'
+            edits[i] = ['\t.set noreorder', branch, '\tnop', '\t.set reorder'] if reorder else [branch]
+            diagnostics.append(f'line {i+1}: {target}: inline asm loop kept as written')
             continue
         encoded = branch_word(op, args)
         if encoded is None:
@@ -162,6 +186,36 @@ def adapt(source, likely=False):
     output = '\n'.join('\n'.join(edits.get(i, [line])) for i, line in enumerate(lines)) + '\n'
     return output, diagnostics
 
+def repair_discard_stabs(source):
+    """GAME_ASM_TAIL moves the compiler's unreachable epilogue into a discarded
+    `.discard_game_*` section. With -g the compiler still closes the function with
+    stabs such as `.stabs "",36,0,0,$LscopeN-func`, whose label difference now spans
+    two sections and cannot be assembled. End such expressions at a label placed where
+    the function's real code ends instead. Only debug records change; code does not."""
+    lines = source.split('\n')
+    out = []
+    discard = None
+    moved = {}
+    for line in lines:
+        s = line.split('#', 1)[0].strip()
+        m = re.match(r'\.section\s+\.discard_game_(\w+)', s)
+        if m:
+            discard = '$Lgame_end_' + m[1]
+            out.append(discard + ':')
+        elif s.startswith(('.section', '.text', '.data', '.bss', '.rdata')):
+            discard = None
+        label = re.fullmatch(r'(\$?[A-Za-z_.][\w.$]*):', s)
+        if label and discard:
+            moved[label[1]] = discard
+        out.append(line)
+    if not moved:
+        return source
+    pattern = re.compile(r'(?<![\w.$])(' + '|'.join(re.escape(k) for k in moved) + r')(?=\s*-)')
+    for i, line in enumerate(out):
+        if line.lstrip().startswith(('.stabs', '.stabn')):
+            out[i] = pattern.sub(lambda m: moved[m[1]], line)
+    return '\n'.join(out)
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path)
@@ -172,6 +226,7 @@ def main():
     global GAME_MODE
     GAME_MODE = args.likely
     output, diagnostics = adapt(args.input.read_text(), args.likely)
+    output = repair_discard_stabs(output)
     args.output.write_text(output)
     print('Legacy loop profile: %d short loops normalized' %
           sum('normalized ' in item for item in diagnostics))

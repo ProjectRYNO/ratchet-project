@@ -27,7 +27,7 @@
 
 /*
  * End of a hand-written function body that returns by itself (DECISIONS.md D22): moves the jr $31 / nop
- * the compiler appends into a section the linker discards. Needs `// GAME_EXTRA_FLAGS: -g0` in the file.
+ * the compiler appends into a section the linker discards (sound_loop_compat.py repairs the debug records).
  */
 #define GAME_ASM_TAIL(NAME) "\t.section .discard_game_" #NAME ",\"ax\",@progbits"
 

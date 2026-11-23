@@ -1,14 +1,126 @@
-// GAME_EXTRA_FLAGS: -g0
 #include "common.h"
 #include "game_section.h"
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", VecLimitLen2);
+void VecLimitLen2(void) __asm__("VecLimitLen2");
+GAME_SECTION(VecLimitLen2) void VecLimitLen2(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tqmtc2.ni $4, $vf20\n"
+		"\tmul.s $f4, $f12, $f12\n"
+		"\tvmul.xyzw $vf21, $vf20, $vf20\n"
+		"\tmfc1 $8, $f12\n"
+		"\tqmtc2.ni $8, $vf22\n"
+		"\tmfc1 $8, $f4\n"
+		"\tvaddy.x $vf21, $vf21, $vf21y\n"
+		"\tvrsqrt Q, $vf22x, $vf21x\n"
+		"\tqmfc2.ni $9, $vf21\n"
+		"\tpextlw $9, $0, $9\n"
+		"\tslt $10, $8, $9\n"
+		"\tnop\n"
+		"\tbeqz $10, .L004FE070\n"
+		"\tnop\n"
+		"\tbeqz $9, .L004FE078\n"
+		"\tnop\n"
+		"\tvwaitq\n"
+		"\tvmulq.xy $vf20, $vf20, Q\n"
+		".L004FE070:\n"
+		"\tjr $31\n"
+		"\tqmfc2.ni $2, $vf20\n"
+		".L004FE078:\n"
+		"\tjr $31\n"
+		"\tpcpyud $2, $0, $4\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(VecLimitLen2) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", VecLimitLen3);
+void VecLimitLen3(void) __asm__("VecLimitLen3");
+GAME_SECTION(VecLimitLen3) void VecLimitLen3(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tqmtc2.ni $4, $vf20\n"
+		"\tvmaxw.xyzw $vf23, $vf0, $vf0w\n"
+		"\tvmul.xyzw $vf21, $vf20, $vf20\n"
+		"\tmul.s $f4, $f12, $f12\n"
+		"\tvadday.x ACC, $vf21, $vf21y\n"
+		"\tmfc1 $8, $f12\n"
+		"\tqmtc2.ni $8, $vf22\n"
+		"\tnop\n"
+		"\tvmaddz.x $vf21, $vf23, $vf21z\n"
+		"\tmfc1 $8, $f4\n"
+		"\tvrsqrt Q, $vf22x, $vf21x\n"
+		"\tqmfc2.ni $9, $vf21\n"
+		"\tpextlw $9, $0, $9\n"
+		"\tslt $10, $8, $9\n"
+		"\tbeqz $10, .L004FE0D0\n"
+		"\tpcpyud $4, $0, $4\n"
+		"\tbeqz $9, .L004FE0D8\n"
+		"\tprot3w $4, $4\n"
+		"\tvwaitq\n"
+		"\tvmulq.xyz $vf20, $vf20, Q\n"
+		".L004FE0D0:\n"
+		"\tjr $31\n"
+		"\tqmfc2.ni $2, $vf20\n"
+		".L004FE0D8:\n"
+		"\tjr $31\n"
+		"\tpcpyud $2, $0, $4\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(VecLimitLen3) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", VecReflect3);
+void VecReflect3(void) __asm__("VecReflect3");
+GAME_SECTION(VecReflect3) void VecReflect3(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tqmtc2.ni $4, $vf15\n"
+		"\tqmtc2.ni $5, $vf16\n"
+		"\tvsub.xyz $vf15, $vf0, $vf15\n"
+		"\tvaddw.xyz $vf17, $vf0, $vf0w\n"
+		"\tvmul.xyz $vf18, $vf16, $vf16\n"
+		"\tvadday.x ACC, $vf18, $vf18y\n"
+		"\tvmaddz.x $vf18, $vf17, $vf18z\n"
+		"\tvrsqrt Q, $vf0w, $vf18x\n"
+		"\tvwaitq\n"
+		"\tvmulq.xyz $vf16, $vf16, Q\n"
+		"\tvmul.xyz $vf18, $vf15, $vf16\n"
+		"\tvadday.x ACC, $vf18, $vf18y\n"
+		"\tvmaddz.x $vf18, $vf17, $vf18z\n"
+		"\tqmfc2.ni $1, $vf18\n"
+		"\tdsll32 $1, $1, 0\n"
+		"\tvmulx.xyz $vf16, $vf16, $vf18x\n"
+		"\tbltz $1, .L004FE140\n"
+		"\tnop\n"
+		"\tvsub.xyz $vf16, $vf16, $vf15\n"
+		"\tvadd.xyz $vf16, $vf16, $vf16\n"
+		"\tvadd.xyz $vf15, $vf15, $vf16\n"
+		"\tqmfc2.ni $2, $vf15\n"
+		"\tjr $31\n"
+		"\tnop\n"
+		".L004FE140:\n"
+		"\tjr $31\n"
+		"\tpor $2, $0, $4\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(VecReflect3) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", SinCos);
+void SinCos(void) __asm__("SinCos");
+GAME_SECTION(SinCos) void SinCos(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tmfc1 $8, $f12\n"
+		"\tqmtc2.ni $8, $vf15\n"
+		"\tvcallms 0xc60\n"
+		"\tnop\n"
+		"\tvnop\n"
+		"\tnop\n"
+		"\tqmfc2.ni $8, $vf15\n"
+		"\tnop\n"
+		"\tmtc1 $8, $f1\n"
+		"\tprot3w $9, $8\n"
+		"\tjr $31\n"
+		"\tmtc1 $9, $f2\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(SinCos) : : : "memory");
+}
 
 void SetRotX(void) __asm__("SetRotX");
 GAME_SECTION(SetRotX) void SetRotX(void)
@@ -78,11 +190,102 @@ GAME_SECTION(SetRotZ) void SetRotZ(void)
 		".set at\n.set reorder\n" GAME_ASM_TAIL(SetRotZ) : : : "memory");
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", QuatSlerp);
+void QuatSlerp(void) __asm__("QuatSlerp");
+GAME_SECTION(QuatSlerp) void QuatSlerp(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tmfc1 $8, $f12\n"
+		"\tqmtc2.ni $8, $vf23\n"
+		"\tqmtc2.ni $4, $vf15\n"
+		"\tqmtc2.ni $5, $vf16\n"
+		"\tvsubx.w $vf23, $vf0, $vf23x\n"
+		"\tvaddw.xyz $vf27, $vf0, $vf0w\n"
+		"\tvmulw.xyzw $vf15, $vf15, $vf23w\n"
+		"\tvmulx.xyzw $vf16, $vf16, $vf23x\n"
+		"\tvadd.xyzw $vf24, $vf15, $vf16\n"
+		"\tvmul.xyzw $vf26, $vf15, $vf16\n"
+		"\tvmul.xyzw $vf25, $vf24, $vf24\n"
+		"\tvaddax.y ACC, $vf26, $vf26x\n"
+		"\tvmaddaz.y ACC, $vf27, $vf26z\n"
+		"\tvmaddw.y $vf26, $vf27, $vf26w\n"
+		"\tvadday.x ACC, $vf25, $vf25y\n"
+		"\tvmaddaz.x ACC, $vf27, $vf25z\n"
+		"\tvmaddw.x $vf25, $vf27, $vf25w\n"
+		"\tqmfc2.ni $9, $vf26\n"
+		"\tbgez $9, .L004FE290\n"
+		"\tnop\n"
+		"\tvsub.xyzw $vf24, $vf15, $vf16\n"
+		"\tvmul.xyzw $vf25, $vf24, $vf24\n"
+		"\tvadday.x ACC, $vf25, $vf25y\n"
+		"\tvmaddaz.x ACC, $vf27, $vf25z\n"
+		"\tvmaddw.x $vf25, $vf27, $vf25w\n"
+		"\tnop\n"
+		".L004FE290:\n"
+		"\tnop\n"
+		"\tnop\n"
+		"\tvrsqrt Q, $vf0w, $vf25x\n"
+		"\tvwaitq\n"
+		"\tvmulq.xyzw $vf15, $vf24, Q\n"
+		"\tqmfc2.ni $2, $vf15\n"
+		".set at\n.set reorder" : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", QuatLerp);
+void QuatLerp(void) __asm__("QuatLerp");
+GAME_SECTION(QuatLerp) void QuatLerp(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tvmaxw.xyzw $vf23, $vf0, $vf0w\n"
+		"\tmfc1 $8, $f12\n"
+		"\tqmtc2.ni $4, $vf15\n"
+		"\tqmtc2.ni $5, $vf16\n"
+		"\tvmul.xyzw $vf17, $vf15, $vf16\n"
+		"\tvadday.x ACC, $vf17, $vf17y\n"
+		"\tvmaddaz.x ACC, $vf23, $vf17z\n"
+		"\tvmaddw.x $vf17, $vf23, $vf17w\n"
+		"\tctc2.ni $8, $vi21\n"
+		"\tvaddax.xyzw ACC, $vf15, $vf0x\n"
+		"\tvmsubai.xyzw ACC, $vf15, I\n"
+		"\tqmfc2.ni $9, $vf17\n"
+		"\tsrl $9, $9, 31\n"
+		"\tandi $9, $9, 0x1\n"
+		"\tbeql $9, $0, .L004FE2F4\n"
+		"\tvmaddi.xyzw $vf16, $vf16, I\n"
+		"\tvmsubi.xyzw $vf16, $vf16, I\n"
+		".L004FE2F4:\n"
+		"\tvmul.xyzw $vf17, $vf16, $vf16\n"
+		"\tvadday.x ACC, $vf17, $vf17y\n"
+		"\tvmaddaz.x ACC, $vf23, $vf17z\n"
+		"\tvmaddw.x $vf17, $vf23, $vf17w\n"
+		"\tvrsqrt Q, $vf0w, $vf17x\n"
+		"\tvwaitq\n"
+		"\tvmulq.xyzw $vf16, $vf16, Q\n"
+		"\tjr $31\n"
+		"\tqmfc2.ni $2, $vf16\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(QuatLerp) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", FastPointInSphere);
+unsigned int FastPointInSphere(void) __asm__("FastPointInSphere");
+GAME_SECTION(FastPointInSphere) unsigned int FastPointInSphere(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tqmtc2.ni $4, $vf20\n"
+		"\tlqc2 $vf21, 0x0($5)\n"
+		"\tvmaxw.xyzw $vf23, $vf0, $vf0w\n"
+		"\tvmul.w $vf21, $vf21, $vf21\n"
+		"\tvsub.xyz $vf22, $vf20, $vf21\n"
+		"\tvmul.xyz $vf22, $vf22, $vf22\n"
+		"\tvadday.xyzw ACC, $vf22, $vf22y\n"
+		"\tvmaddz.xyzw $vf22, $vf23, $vf22z\n"
+		"\tvsubw.x $vf21, $vf22, $vf21w\n"
+		"\tqmfc2.ni $2, $vf21\n"
+		"\tsra $2, $2, 31\n"
+		"\tjr $31\n"
+		"\tandi $2, $2, 0x1\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(FastPointInSphere) : : : "memory");
+}
 
 void PreserveRegsOld(void) __asm__("PreserveRegsOld");
 GAME_SECTION(PreserveRegsOld) void PreserveRegsOld(void)
@@ -186,6 +389,36 @@ GAME_SECTION(RestoreRegsAsmOld) void RestoreRegsAsmOld(void)
 		".set at\n.set reorder\n" GAME_ASM_TAIL(RestoreRegsAsmOld) : : : "memory");
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", PreserveRegs);
+void PreserveRegs(void) __asm__("PreserveRegs");
+GAME_SECTION(PreserveRegs) void PreserveRegs(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tvcallms 0xe90\n"
+		"\tnop\n"
+		"\tqmtc2.ni $16, $vf16\n"
+		"\tqmtc2.ni $17, $vf17\n"
+		"\tqmtc2.ni $18, $vf18\n"
+		"\tqmtc2.ni $19, $vf19\n"
+		"\tqmtc2.ni $20, $vf20\n"
+		"\tqmtc2.ni $21, $vf21\n"
+		"\tqmtc2.ni $22, $vf22\n"
+		"\tqmtc2.ni $23, $vf23\n"
+		"\tvcallms 0xe10\n"
+		"\tnop\n"
+		"\tjr $31\n"
+		"\tvnop\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(PreserveRegs) : : : "memory");
+}
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mathfunc_asm", RestoreRegs);
+void RestoreRegs(void) __asm__("RestoreRegs");
+GAME_SECTION(RestoreRegs) void RestoreRegs(void)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tvcallms 0xf40\n"
+		"\tnop\n"
+		"\tjr $31\n"
+		"\tvnop\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(RestoreRegs) : : : "memory");
+}

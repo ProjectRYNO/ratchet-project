@@ -151,6 +151,9 @@ extern int MobyGrids[0x1000] __asm__("MobyGrids");
 
 void GetMobyBangleStats(MobyInstance *pMoby, int &bangle_bits, int &bangle_cnt) __asm__("GetMobyBangleStats");
 
+
+
+
 GAME_SECTION(CreateMoby) MobyInstance *CreateMoby(int mClass, int var_size)
 {
 	MobyInstance *pMoby = MobyInstancePermEnd;

@@ -1,4 +1,3 @@
-// GAME_EXTRA_FLAGS: -g0
 #include "common.h"
 #include "game_section.h"
 #include "mobyutil.h"

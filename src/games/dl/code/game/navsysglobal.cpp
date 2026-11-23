@@ -155,7 +155,32 @@ unsigned short NAVG_FindClosestNode(vec4 &pos, float *dist) __asm__("NAVG_FindCl
 unsigned short NAVG_NodeFindClosestNode(unsigned short node, vec4 &pos, float *dist) __asm__("NAVG_NodeFindClosestNode");
 void NAVG_NodeGetCenter(unsigned short node, vec4 &oPos) __asm__("NAVG_NodeGetCenter");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentBoxLocalZeroVec);
+float navg_CollideLineSegmentBoxLocalZeroVec(vec4f &start) __asm__("navg_CollideLineSegmentBoxLocalZeroVec");
+
+
+
+
+GAME_SECTION(navg_CollideLineSegmentBoxLocalZeroVec) float navg_CollideLineSegmentBoxLocalZeroVec(vec4f &start)
+{
+	float fst = 0.0f;
+	float *ps = &start.x;
+	int i;
+	for (i = 2; i >= 0; i--) {
+		float si = *ps;
+		float di = -si;
+		float st;
+		if (si < 0.0f) {
+			if (si < -1.0f) st = (-1.0f - si) / di;
+			else st = 0.0f;
+		} else {
+			if (1.0f < si) st = (1.0f - si) / di;
+			else st = 0.0f;
+		}
+		if (fst < st) fst = st;
+		ps++;
+	}
+	return fst;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/navsysglobal", navg_CollideLineSegmentSphereLocal);
 

@@ -749,7 +749,54 @@ GAME_SECTION(SlideDelt) float SlideDelt(float &fVal, float fTarget, float fRate,
 	return fDelt;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", SlideDelt___dupe2);
+GAME_SECTION(SlideDelt___dupe2) int SlideDelt___dupe2(int &, int, float, int)
+{
+	__asm__ volatile(
+		".set noreorder\n.set noat\n"
+		"\tlui $1, (0x3f800000 >> 16)\n"
+		"\tmtc1 $1, $f1\n"
+		"\tabs.s $f0, $f12\n"
+		"\tlw $7, 0x0($4)\n"
+		"\tdaddu $3, $5, $0\n"
+		"\tc.le.s $f1, $f0\n"
+		"\tnop\n"
+		"\tbc1t .L00475894\n"
+		"\tsubu $5, $3, $7\n"
+		"\tdaddu $2, $5, $0\n"
+		"\tblezl $2, .L00475888\n"
+		"\tneg $2, $2\n"
+		".L00475888:\n"
+		"\tslt $2, $2, $6\n"
+		"\tbeqz $2, .L0047589C\n"
+		"\tnop\n"
+		".L00475894:\n"
+		"\tb .L004758E0\n"
+		"\tsw $3, 0x0($4)\n"
+		".L0047589C:\n"
+		"\tmtc1 $5, $f0\n"
+		"\tnop\n"
+		"\tcvt.s.w $f0, $f0\n"
+		"\tmul.s $f0, $f0, $f12\n"
+		"\tcvt.w.s $f1, $f0\n"
+		"\tmfc1 $5, $f1\n"
+		"\tdaddu $2, $5, $0\n"
+		"\tblezl $2, .L004758C0\n"
+		"\tneg $2, $2\n"
+		".L004758C0:\n"
+		"\tslt $2, $2, $6\n"
+		"\tbeqz $2, .L004758D8\n"
+		"\tslt $3, $7, $3\n"
+		"\tnegu $2, $6\n"
+		"\tdaddu $5, $6, $0\n"
+		"\tmovz $5, $2, $3\n"
+		".L004758D8:\n"
+		"\taddu $2, $7, $5\n"
+		"\tsw $2, 0x0($4)\n"
+		".L004758E0:\n"
+		"\tjr $31\n"
+		"\tdaddu $2, $5, $0\n"
+		".set at\n.set reorder\n" GAME_ASM_TAIL(SlideDelt___dupe2) : : : "memory");
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", AccelDelt);
 
