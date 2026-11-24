@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 #include "draw.h"
 #include "globals.h"
 #include "help.h"
@@ -23,11 +24,10 @@ BootMemoryMap *bmmRet __asm__("bmmRet") GAME_GP_DATA = 0;
 int bmmRetGuard __asm__("bmmRetGuard") GAME_GP_DATA = 0;
 BootMemoryMap *GetBootMemoryMap() __asm__("GetBootMemoryMap");
 
-struct MobyInstance;
 extern SceneDef Scene __asm__("Scene");
 extern void *pRegistered_PostDraws __asm__("pRegistered_PostDraws");
-void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
-void Level_PostTransitionFX(MobyInstance *) __asm__("Level_PostTransitionFX");
+void RegisterDrawFunction(void *&, void (*)(moby *), MobyInstance *) __asm__("RegisterDrawFunction");
+void Level_PostTransitionFX(moby *) __asm__("Level_PostTransitionFX");
 void Level_TransitionFX(bool) __asm__("Level_TransitionFX");
 void *GetBootPlate(int) __asm__("GetBootPlate");
 

@@ -33,11 +33,11 @@ void TransitionSpace_ResetParticles() __asm__("TransitionSpace_ResetParticles");
 
 
 extern void *pRegistered_MobyDraws __asm__("pRegistered_MobyDraws");
-void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
-void TransitionSpace_DrawMobyPlanet(MobyInstance *) __asm__("TransitionSpace_DrawMobyPlanet");
-void TransitionSpace_UpdateMobySpace(MobyInstance *) __asm__("TransitionSpace_UpdateMobySpace");
+void RegisterDrawFunction(void *&, void (*)(moby *), MobyInstance *) __asm__("RegisterDrawFunction");
+void TransitionSpace_DrawMobyPlanet(moby *) __asm__("TransitionSpace_DrawMobyPlanet");
+void TransitionSpace_UpdateMobySpace(moby *) __asm__("TransitionSpace_UpdateMobySpace");
 void Level_TransitionFX(bool) __asm__("Level_TransitionFX");
-void TransitionSpace_DrawMobyShip(MobyInstance *) __asm__("TransitionSpace_DrawMobyShip");
+void TransitionSpace_DrawMobyShip(moby *) __asm__("TransitionSpace_DrawMobyShip");
 void Transition_ResetParticles() __asm__("Transition_ResetParticles");
 void Transition_CleanupMovie() __asm__("Transition_CleanupMovie");
 void TransitionPost_Space() __asm__("TransitionPost_Space");
@@ -47,10 +47,10 @@ struct TransitionData_ShuttleInterior {
 };
 extern TransitionData_ShuttleInterior g_TransitionData_ShuttleInterior __asm__("g_TransitionData_ShuttleInterior");
 void Transition_SetupFirstMovie(int) __asm__("Transition_SetupFirstMovie");
-void Transition_InitMobys(void (*)(MobyInstance *)) __asm__("Transition_InitMobys");
+void Transition_InitMobys(void (*)(moby *)) __asm__("Transition_InitMobys");
 void Transition_LoadSounds(int, int *) __asm__("Transition_LoadSounds");
 bool TransitionPre_ShuttleInterior(unsigned int, unsigned int) __asm__("TransitionPre_ShuttleInterior");
-void TransitionShuttleInterior_InitMoby(MobyInstance *) __asm__("TransitionShuttleInterior_InitMoby");
+void TransitionShuttleInterior_InitMoby(moby *) __asm__("TransitionShuttleInterior_InitMoby");
 void Transition_DefaultDraw(bool) __asm__("Transition_DefaultDraw");
 void UpdateSceneMonitors() __asm__("UpdateSceneMonitors");
 void TransitionDraw_ShuttleInterior(bool) __asm__("TransitionDraw_ShuttleInterior");
@@ -66,19 +66,19 @@ struct SceneActors {
 	/* 0x082 */ short unk082;
 	/* 0x084 */ short actor_cnt;
 	/* 0x086 */ char unk086[0x16a];
-	/* 0x1f0 */ MobyInstance *actors[16];
+	/* 0x1f0 */ moby *actors[16];
 	/* 0x230 */ char unk230[0x10];
 };
 extern SceneActors Scene __asm__("Scene");
 extern MobyInstance *MobyInstances __asm__("MobyInstances");
 extern MobyInstance *MobyInstancePermEnd __asm__("MobyInstancePermEnd");
 extern int g_TransitionSpace_Amb __asm__("g_TransitionSpace_Amb");
-void SetMobyLights(MobyInstance *, int, int, int, int) __asm__("SetMobyLights");
-void PostUpdateMobyBsphere(MobyInstance *) __asm__("PostUpdateMobyBsphere");
+void SetMobyLights(moby *, int, int, int, int) __asm__("SetMobyLights");
+void PostUpdateMobyBsphere(moby *) __asm__("PostUpdateMobyBsphere");
 bool Transition_UpdateMovie() __asm__("Transition_UpdateMovie");
 void LevelTScene_VoxShuttle_UpdateMonitors() __asm__("LevelTScene_VoxShuttle_UpdateMonitors");
 void LevelTScene_VoxShuttle_UpdateFX() __asm__("LevelTScene_VoxShuttle_UpdateFX");
-void TransitionSpace_InitMoby(MobyInstance *) __asm__("TransitionSpace_InitMoby");
+void TransitionSpace_InitMoby(moby *) __asm__("TransitionSpace_InitMoby");
 bool TransitionUpdate_ShuttleInterior(bool) __asm__("TransitionUpdate_ShuttleInterior");
 
 int Transition_GetNumMoviesPlayed() __asm__("Transition_GetNumMoviesPlayed");
@@ -133,9 +133,9 @@ void VU1_addGSregister(unsigned int, unsigned long, int) __asm__("VU1_addGSregis
 void DrawTextShadow(int, int, int, int, int, int) __asm__("DrawTextShadow");
 void TransitionDraw_Space(bool) __asm__("TransitionDraw_Space");
 
-GAME_SECTION(Transition_InitMobys) void Transition_InitMobys(void (*fnInit_)(MobyInstance *))
+GAME_SECTION(Transition_InitMobys) void Transition_InitMobys(void (*fnInit_)(moby *))
 {
-	MobyInstance *pMoby;
+	moby *pMoby;
 	int cActor;
 	for (pMoby = MobyInstances; pMoby != MobyInstancePermEnd; pMoby++) {
 		fnInit_(pMoby);
@@ -195,7 +195,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", Transit
 GAME_SECTION(TransitionUpdate_Space) bool TransitionUpdate_Space(bool bLevelLoadAlmostDone_)
 {
 	bool bDone = false;
-	MobyInstance *pMoby;
+	moby *pMoby;
 	float scale;
 	SpaceShip *ship;
 	for (pMoby = MobyInstances; pMoby < MobyInstancePermEnd; pMoby++) {
@@ -259,14 +259,14 @@ GAME_SECTION(TransitionPostUpdate_Space) void TransitionPostUpdate_Space(bool bL
 	}
 }
 
-GAME_SECTION(TransitionSpace_UpdateMobySpace) void TransitionSpace_UpdateMobySpace(MobyInstance *pMoby_)
+GAME_SECTION(TransitionSpace_UpdateMobySpace) void TransitionSpace_UpdateMobySpace(moby *pMoby_)
 {
 	RegisterDrawFunction(pRegistered_MobyDraws, TransitionSpace_DrawMobyPlanet, pMoby_);
 }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/transitionfunc", TransitionSpace_DrawMobyPlanet);
 
-GAME_SECTION(TransitionSpace_DrawMobyShip) void TransitionSpace_DrawMobyShip(MobyInstance *pMoby_)
+GAME_SECTION(TransitionSpace_DrawMobyShip) void TransitionSpace_DrawMobyShip(moby *pMoby_)
 {
 	Level_TransitionFX(true);
 }
@@ -292,7 +292,7 @@ GAME_SECTION(TransitionPre_ShuttleInterior) bool TransitionPre_ShuttleInterior(u
 	return true;
 }
 
-GAME_SECTION(TransitionShuttleInterior_InitMoby) void TransitionShuttleInterior_InitMoby(MobyInstance *pMoby_)
+GAME_SECTION(TransitionShuttleInterior_InitMoby) void TransitionShuttleInterior_InitMoby(moby *pMoby_)
 {
 	int bUpdate = 0;
 	if (pMoby_->oClass == 0x216a || pMoby_->oClass == 0x2567) {

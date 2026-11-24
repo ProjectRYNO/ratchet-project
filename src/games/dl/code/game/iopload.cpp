@@ -206,6 +206,7 @@ extern char g_irxname_eznetctl[] __asm__("D_21EFF8");
 extern char g_multiplayer_iop_message[] __asm__("D_3D0888");
 void LoadMultiPlayerIOPModules(irxwad *irx_data) __asm__("LoadMultiPlayerIOPModules");
 
+
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/iopload", DmaToIop);
 
 GAME_SECTION(DisplayIOPInfo) void DisplayIOPInfo()

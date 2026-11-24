@@ -5,6 +5,7 @@
 #include "draw.h"
 #include "globals.h"
 #include "fs.h"
+#include "memcard.h"
 struct FXRegistrySystemInternal;
 
 
@@ -133,18 +134,7 @@ bool Transition_UpdateMovie() __asm__("Transition_UpdateMovie");
 int MB_rand(int) __asm__("MB_rand");
 int Transition_GetMovieId() __asm__("Transition_GetMovieId");
 
-struct TrMemcardDef {
-	/* 0x000 */ char unk000[0x18];
-	/* 0x018 */ short saveslot;
-	/* 0x01a */ char unk01a[0x1c4 - 0x1a];
-	/* 0x1c4 */ int stage;
-	/* 0x1c8 */ int substage;
-	/* 0x1cc */ int nextstage;
-	/* 0x1d0 */ int unk1d0[5];
-	/* 0x1e4 */ int autosave;
-	/* 0x1e8 */ int unk1e8[3];
-};
-extern TrMemcardDef g_memcard __asm__("D_171948");
+extern memcard_globals g_memcard __asm__("D_171948");
 unsigned char g_bLevelLoadAlmostDone __asm__("D_220950") GAME_GP_DATA = 0;
 unsigned char g_bLevelLoadComplete __asm__("D_220951") GAME_GP_DATA = 0;
 typedef void (*fnTransition_Post)();
@@ -443,7 +433,7 @@ GAME_SECTION(Transition_CleanupMovie) void Transition_CleanupMovie()
 {
 	int cActor;
 	for (cActor = 0; cActor < Scene.actor_cnt; cActor++) {
-		MobyInstance *pMoby = Scene.actors[cActor];
+		moby *pMoby = Scene.actors[cActor];
 		if (pMoby) {
 			pMoby->pVar = 0;
 			DeleteMoby(pMoby);
@@ -605,8 +595,8 @@ GAME_SECTION(Transition_SetupForFrontend) void Transition_SetupForFrontend()
 	if (g_memcard.autosave) {
 		g_memcard.autosave = 0;
 	}
-	if (g_memcard.saveslot >= 0) {
-		g_memcard.saveslot = -1;
+	if (g_memcard.memcards[0].saveslot >= 0) {
+		g_memcard.memcards[0].saveslot = -1;
 	}
 	MCSTATE_ClearCommand(0);
 	Music.off = 0;

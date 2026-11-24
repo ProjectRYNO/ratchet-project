@@ -7,6 +7,7 @@ function in the manifest. Register the object's slots first with game_register.p
 """
 import collections
 import glob
+import os
 import re
 import sys
 
@@ -56,7 +57,8 @@ def chunks(text):
             if depth == 0:
                 head = re.sub(r'/\*.*?\*/|//[^\n]*', '', text[start:i], flags=re.S).lstrip()
                 aggregate = re.match(r'(typedef|struct|union|enum|class)\b', head) and '(' not in head.split('{')[0]
-                if not aggregate and '=' not in head.split('{')[0] and not head.startswith('extern "C"'):
+                block = re.match(r'extern\s+"C"\s*\{', head)
+                if block or (not aggregate and '=' not in head.split('{')[0] and not head.startswith('extern "C"')):
                     out.append(text[start:i + 1] + '\n')
                     i += 1
                     while i < n and text[i] in ' \t\r\n':
@@ -117,6 +119,60 @@ def declared(chunk):
     return names
 
 
+def header_names(text, base, seen):
+    """Names declared by the code/game (and code/include) headers TEXT includes, followed transitively."""
+    names = set()
+    for inc in re.findall(r'^\s*#include\s+"([^"]+)"', text, re.M):
+        for d in (base, ROOT + 'code/game/', ROOT + 'code/include/'):
+            path = os.path.normpath(os.path.join(d, inc))
+            if os.path.exists(path):
+                break
+        else:
+            continue
+        if path in seen or not path.endswith('.h'):
+            continue
+        seen.add(path)
+        h = open(path, errors='replace').read().replace('\r\n', '\n')
+        for c in chunks(h):
+            names |= declared(c)
+        names |= header_names(h, os.path.dirname(path) + '/', seen)
+    return names
+
+
+FILLER = re.compile(r'(unk|pad|spad|unused)[0-9a-fA-F_]*$')
+
+
+def struct_fields(chunk):
+    """Named fields of a struct chunk: {name: (offset or None, declaration)}; fillers are ignored."""
+    body = strip(chunk)
+    if '{' not in body:
+        return {}
+    body = chunk[chunk.index('{') + 1:chunk.rindex('}')]
+    fields = {}
+    for line in body.split('\n'):
+        m = re.match(r'\s*(?:/\*\s*(0x[0-9a-fA-F]+)\s*\*/)?\s*([^;()]+?)\s*;\s*(?://.*)?$', line)
+        if not m:
+            continue
+        decl = re.sub(r'\s+', ' ', m[2]).strip()
+        name = re.search(r'(\w+)\s*(?:\[[^\]]*\])*\s*$', decl)
+        if not name or FILLER.match(name[1]):
+            continue
+        fields[name[1]] = (int(m[1], 16) if m[1] else None, decl)
+    return fields
+
+
+def extern_types(text):
+    """{asm label: declared type text} for extern variable declarations in TEXT."""
+    out = {}
+    for m in re.finditer(r'^\s*extern\s+(?!"C")([^;()]*?)\b(\w+)\s*((?:\[[^\]]*\])*)\s*__asm__\s*\(\s*"(\w+)"\s*\)\s*;', strip_comments(text), re.M):
+        out[m[4]] = (re.sub(r'\s+', '', m[1] + m[3]), m[2])
+    return out
+
+
+def strip_comments(code):
+    return re.sub(r'/\*.*?\*/|//[^\n]*', ' ', code, flags=re.S)
+
+
 def main():
     want = collections.defaultdict(list)
     for line in open(sys.argv[1]):
@@ -151,9 +207,22 @@ def main():
         existing = set()
         for c in chunks(text):
             existing |= declared(c)
+        # Declarations the object already gets from its headers are never copied from a test file.
+        seen_headers = set()
+        from_headers = header_names(text, ROOT + 'code/game/', seen_headers)
+        target_externs = extern_types(text)
+        for path in seen_headers:
+            for label, decl in extern_types(open(path, errors='replace').read()).items():
+                target_externs.setdefault(label, decl)
+        target_includes = set(re.findall(r'^#include\s+"([^"]+)"', text, re.M))
         for fn, files in fns.items():
             f = sorted(files, key=lambda x: (rank(x)[0], -counts[x], x))[0]
-            all_chunks = chunks(open(WORK + f).read().replace('\r\n', '\n'))
+            test_text = open(WORK + f).read().replace('\r\n', '\n')
+            missing = sorted(target_includes - set(re.findall(r'^#include\s+"([^"]+)"', test_text, re.M)))
+            if missing:
+                print('WARN %s: stale base for %s? it lacks %s that %s.cpp includes; only the function body is trusted'
+                      % (f, fn, ', '.join(missing), obj))
+            all_chunks = chunks(test_text)
             body = [c for c in all_chunks if re.search(r'GAME_SECTION\(%s\)' % re.escape(fn), strip(c)) and '{' in strip(c)]
             if not body:
                 print('no body', fn, f)
@@ -172,14 +241,54 @@ def main():
                     for inc in re.findall(r'^#include\s+"[^"]+"', c, re.M):
                         if inc not in includes:
                             includes.append(inc)
+                    from_headers |= header_names(c, ROOT + 'code/game/', seen_headers)
                     continue
                 if 'GAME_SECTION' in strip(c) or '#define KERNEL' in c:
                     continue
+                if re.search(r'=====\s*A', c):
+                    # Worker section markers never reach the module; the declaration after one still can.
+                    print('WARN %s: dropped a worker marker: %s' % (f, re.search(r'[^\n]*=====\s*A[^\n]*', c).group(0).strip()[:80]))
+                    c = re.sub(r'^[^\n]*=====\s*A[^\n]*\n?', '', c, flags=re.M)
+                    if not strip(c).strip():
+                        continue
+                ext = extern_types(c)
+                # The same variable under the same name with another type is an old view: skip it.
+                # (A differently named view of the same label can be a deliberate matching view.)
+                stale = [l for l, d in ext.items() if l in target_externs and target_externs[l][0] != d[0]]
+                if stale:
+                    l = stale[0]
+                    if target_externs[l][1] == ext[l][1]:
+                        print('WARN STALE %s: %s is already `%s %s`; skipped the `%s` view'
+                              % (f, l, target_externs[l][0], target_externs[l][1], ext[l][0]))
+                        continue
+                    print('WARN %s: second view `%s %s` of %s (the object has `%s %s`); check it is needed'
+                          % (f, ext[l][0], ext[l][1], l, target_externs[l][0], target_externs[l][1]))
+                if re.match(r'\s*extern\s+"C"\s*\{', strip(c)):
+                    # Keep only the C declarations the object does not already have (here or in a header).
+                    inner = c[c.index('{') + 1:c.rindex('}')]
+                    lines = [l for l in inner.split('\n') if l.strip() and not (
+                        re.search(r'(\w+)\s*\(', strip(l)) and re.search(r'(\w+)\s*\(', strip(l))[1] in existing | from_headers)]
+                    if not any(re.search(r'\w+\s*\(', strip(l)) for l in lines):
+                        continue
+                    c = 'extern "C" {\n' + '\n'.join(lines) + '\n}\n'
                 names = declared(c)
+                core = {n for n in names if not n.startswith('params:')}
+                if core and core <= from_headers | existing and core & from_headers:
+                    continue
                 tag = re.match(r'\s*(?:typedef\s+)?(?:struct|union|class)\s+(\w+)\s*\{', strip(c))
                 if tag and tag[1] in existing and c not in text:
                     # A test file's newer view of a struct replaces the old one; game_verify.sh checks it.
                     pattern = r'^(?:typedef\s+)?(?:struct|union|class)\s+%s\s*\{.*?^\}[^;\n]*;\n' % re.escape(tag[1])
+                    old = re.search(pattern, text, re.S | re.M)
+                    if old:
+                        # Only a superset: every named field of the current definition must survive, at
+                        # the same offset and with the same declaration (and so the same size).
+                        mine, theirs = struct_fields(old.group(0)), struct_fields(c)
+                        lost = [n for n, v in mine.items() if theirs.get(n) != v]
+                        if lost:
+                            print('WARN %s: kept %s.cpp\'s %s; the test file\'s version drops or changes %s'
+                                  % (f, obj, tag[1], ', '.join(lost[:6])))
+                            continue
                     new = c if c.endswith('\n') else c + '\n'
                     new = re.sub(r'^(?:/\*[^\n]*\*/\n)+', '', new)
                     text, n = re.subn(pattern, lambda m: new, text, count=1, flags=re.S | re.M)
@@ -198,6 +307,21 @@ def main():
                     continue
                 kept.append(c)
                 existing |= names
+        # A copied type that nothing uses any more (an old view of data the object now declares with
+        # another type) is stale: leave it out.
+        changed = True
+        while changed:
+            changed = False
+            for c in list(kept):
+                agg = re.match(r'\s*(?:typedef\s+)?(?:struct|union|class)\s+(\w+)?\s*\{', strip(c))
+                if not agg:
+                    continue
+                names = {n for n in declared(c) if not n.startswith(('label:', 'params:'))}
+                others = strip(text) + ''.join(strip(o) for o in kept if o is not c)
+                if names and not any(re.search(r'\b%s\b' % re.escape(n), others) for n in names):
+                    print('WARN STALE %s: dropped unused type %s' % (obj, ', '.join(sorted(names))))
+                    kept.remove(c)
+                    changed = True
         k = '#include "game_section.h"\n'
         if k not in text:
             print('not registered, skipped', obj)

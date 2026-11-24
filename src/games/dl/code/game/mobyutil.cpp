@@ -7,19 +7,11 @@
 #include "mobyfunc.h"
 #include "mobyanim_c.h"
 #include "path.h"
+#include "gameglobals.h"
+#include "guber/LocalHero.h"
 
 
 struct MobyClass;
-struct TargetVars {
-	/* 0x00 */ char unk00[0x2c];
-	/* 0x2c */ short bogeyType;
-	/* 0x2e */ short team;
-	/* 0x30 */ char unk30[0x48 - 0x30];
-	/* 0x48 */ int maxDifficultySlotted;
-	/* 0x4c */ int curDifficultySlotted;
-	/* 0x50 */ MobyInstance *pTargettedByBogeys[8];
-	/* 0x70 */ char unk70[0x90 - 0x70];
-};
 struct BotSaveDef {
 	/* 0x00 */ unsigned char botUpgrades[0x11];
 	/* 0x11 */ unsigned char botPaintjobs[0xb];
@@ -33,49 +25,37 @@ struct Bot_Communication {
 	/* 0x001 */ char unk001[0x1f3];
 	/* 0x1f4 */ unsigned char botAbilities[0x11];
 };
-struct MotionBlur {
-	/* 0x000 */ char unk000[0x100];
-	/* 0x100 */ int blurAlphas[4];
-	/* 0x110 */ int blurSteps[4];
-	/* 0x120 */ MobyInstance *blurMobys[4];
-	/* 0x130 */ float gapReduction[4];
-	/* 0x140 */ short ringIndex;
-	/* 0x142 */ short ringValidSize;
-	/* 0x144 */ MobyInstance *pTrackedMoby;
-	/* 0x148 */ int blurCnt;
-	/* 0x14c */ int active;
-};
 extern BotSaveDef BotSave __asm__("BotSave");
 extern BotAbility Bot_AbilityDefinitions[] __asm__("D_3D8B60");
 extern Bot_Communication Bot_Comm_Instance __asm__("Bot_Comm_Instance");
 extern unsigned char CheatsActivated[] __asm__("CheatsActivated");
 TargetVars *MB_getTargetVars(MobyInstance *) __asm__("MB_getTargetVars");
-void MB_StartColorFlash(MobyInstance *, int, int, FlashVars *) __asm__("MB_StartColorFlash");
-void SetMobyAmbientLights(MobyInstance *, int, int, int) __asm__("SetMobyAmbientLights");
-float GetGroundZ(s128, int, float, MobyInstance *, float) __asm__("GetGroundZ");
+void MB_StartColorFlash(moby *, int, int, FlashVars *) __asm__("MB_StartColorFlash");
+void SetMobyAmbientLights(moby *, int, int, int) __asm__("SetMobyAmbientLights");
+float GetGroundZ(s128, int, float, moby *, float) __asm__("GetGroundZ");
 void Bot_ResetGlobalComm() __asm__("Bot_ResetGlobalComm");
 BotAbility *Bot_GetAbilityDef(unsigned int) __asm__("Bot_GetAbilityDef");
 int Bot_GetCurrentPaintjob(unsigned int) __asm__("Bot_GetCurrentPaintjob");
 bool Bot_HasHead(unsigned int) __asm__("Bot_HasHead");
 bool Bot_HasPaintjob(unsigned int) __asm__("Bot_HasPaintjob");
-void CreateMotionBlur(MobyInstance *, MotionBlur &) __asm__("CreateMotionBlur");
+void CreateMotionBlur(moby *, MotionBlur &) __asm__("CreateMotionBlur");
 int Lerp(int, int, float) __asm__("Lerp");
-int MB_GetBogeyType(MobyInstance *) __asm__("MB_GetBogeyType");
-void MB_initMobyColorFlash(MobyInstance *, FlashVars &) __asm__("MB_initMobyColorFlash");
+int MB_GetBogeyType(moby *) __asm__("MB_GetBogeyType");
+void MB_initMobyColorFlash(moby *, FlashVars &) __asm__("MB_initMobyColorFlash");
 unsigned char Bot_HasAbility(int) __asm__("Bot_HasAbility");
 float GetGroundZNoWater(s128) __asm__("GetGroundZNoWater");
-void MB_SetAmbientLights(MobyInstance *, int) __asm__("MB_SetAmbientLights");
-void MB_SetBogeyType(MobyInstance *, int) __asm__("MB_SetBogeyType");
+void MB_SetAmbientLights(moby *, int) __asm__("MB_SetAmbientLights");
+void MB_SetBogeyType(moby *, int) __asm__("MB_SetBogeyType");
 void *MB_getReactVars(MobyInstance *) __asm__("MB_getReactVars");
 float SubLerp(float, float, float) __asm__("SubLerp");
 int Bot_GetCurrentHead(unsigned int) __asm__("Bot_GetCurrentHead");
 Bot_Communication *Bot_GetGlobalComm() __asm__("Bot_GetGlobalComm");
 float Delt(float &, float, float) __asm__("Delt");
-void *MB_GetBogeyVars(MobyInstance *) __asm__("MB_GetBogeyVars");
-void *MB_GetCommandVars(MobyInstance *) __asm__("MB_GetCommandVars");
-void *MB_GetFlashVars(MobyInstance *) __asm__("MB_GetFlashVars");
-void *MB_GetMoveVars_2(MobyInstance *) __asm__("MB_GetMoveVars_2");
-void *MB_GetNavigationVars(MobyInstance *) __asm__("MB_GetNavigationVars");
+void *MB_GetBogeyVars(moby *) __asm__("MB_GetBogeyVars");
+void *MB_GetCommandVars(moby *) __asm__("MB_GetCommandVars");
+void *MB_GetFlashVars(moby *) __asm__("MB_GetFlashVars");
+void *MB_GetMoveVars_2(moby *) __asm__("MB_GetMoveVars_2");
+void *MB_GetNavigationVars(moby *) __asm__("MB_GetNavigationVars");
 void *MB_GetSuckVars(MobyInstance *) __asm__("MB_GetSuckVars");
 void *MB_getTrackVars(MobyInstance *) __asm__("MB_getTrackVars");
 void Bot_GrantAbility(int) __asm__("Bot_GrantAbility");
@@ -93,21 +73,6 @@ struct CommandData {
 	/* 0x14 */ int msgTag;
 	/* 0x18 */ char unk18[8];
 };
-struct LocalHero {
-	/* 0x0000 */ char unk0000[0x1f9c];
-	/* 0x1f9c */ char target[0x2318 - 0x1f9c];
-	/* 0x2318 */ int gadgetIndex;
-	/* 0x231c */ char unk231c[0x25cc - 0x231c];
-	/* 0x25cc */ int state;
-	/* 0x25d0 */ char unk25d0[0x26e4 - 0x25d0];
-	/* 0x26e4 */ void *pGadgetBox;
-	/* 0x26e8 */ char unk26e8[0x2ef0 - 0x26e8];
-	/* 0x2ef0 */ MobyInstance *pMoby;
-	/* 0x2ef4 */ char unk2ef4[0x2f14 - 0x2ef4];
-	/* 0x2f14 */ int mpTeam;
-	/* 0x2f18 */ char unk2f18[0x31e0 - 0x2f18];
-	/* 0x31e0 */ MobyInstance *pRespawnDest;
-};
 extern short MB_UpgradeSceneQueue[8] __asm__("MB_UpgradeSceneQueue");
 extern CollDamOut CollDamage[] __asm__("CollDamage");
 extern CommandData CMD_CommandData[] __asm__("CMD_CommandData");
@@ -115,29 +80,29 @@ int FastTweenColor(int, int, float) __asm__("FastTweenColor");
 float FastCos(float) __asm__("FastCos");
 char *msg_string(int) __asm__("msg_string");
 LocalHero *GB_GetLocalHeroFromSlot(int) __asm__("GB_GetLocalHeroFromSlot");
-void SetMobyLights(MobyInstance *, int, int, int, int) __asm__("SetMobyLights");
+void SetMobyLights(moby *, int, int, int, int) __asm__("SetMobyLights");
 void MB_BobMotion___dupe2(vec4 &, float &, float &, float, float, float) __asm__("MB_BobMotion___dupe2");
 float Bias0(float) __asm__("Bias0");
 float Bias1(float) __asm__("Bias1");
 int TweenColor(int, int, float) __asm__("TweenColor");
 float Lerp___dupe2(float, float, float) __asm__("Lerp___dupe2");
 int MB_isCrateOClass(int) __asm__("MB_isCrateOClass");
-int MB_MP_GadgetDamageIndex(MobyInstance *) __asm__("MB_MP_GadgetDamageIndex");
-void MB_BobMotion(MobyInstance *, float &, float &, float, float, float) __asm__("MB_BobMotion");
+int MB_MP_GadgetDamageIndex(moby *) __asm__("MB_MP_GadgetDamageIndex");
+void MB_BobMotion(moby *, float &, float &, float, float, float) __asm__("MB_BobMotion");
 void FUN_0047eb50() __asm__("FUN_0047eb50");
 void FUN_0047eb58() __asm__("FUN_0047eb58");
 float MB_CubicInterpolate(float, float, float, float, float) __asm__("MB_CubicInterpolate");
 float MB_CosineInterpolateUnit(float) __asm__("MB_CosineInterpolateUnit");
-void MB_setState(MobyInstance *, int, int) __asm__("MB_setState");
+void MB_setState(moby *, int, int) __asm__("MB_setState");
 bool MB_QueueUpgradeScene(int) __asm__("MB_QueueUpgradeScene");
 bool MB_CheckQueuedUpgradeScene(int) __asm__("MB_CheckQueuedUpgradeScene");
 CollDamOut *_MB_damage(MobyInstance *, int, int) __asm__("_MB_damage");
-void MB_SetDefaultLights(MobyInstance *) __asm__("MB_SetDefaultLights");
+void MB_SetDefaultLights(moby *) __asm__("MB_SetDefaultLights");
 int MB_isMorph(MobyInstance *) __asm__("MB_isMorph");
 char *MB_GetCommandName(unsigned int) __asm__("MB_GetCommandName");
-void MB_SetMobyTeamTex(MobyInstance *, int) __asm__("MB_SetMobyTeamTex");
+void MB_SetMobyTeamTex(moby *, int) __asm__("MB_SetMobyTeamTex");
 void MB_SelectRespawnNode(int, MobyInstance *, void *) __asm__("MB_SelectRespawnNode");
-void MB_GhostMe(MobyInstance *) __asm__("MB_GhostMe");
+void MB_GhostMe(moby *) __asm__("MB_GhostMe");
 
 
 struct HeroSaveDef {
@@ -168,7 +133,7 @@ static inline void agClamp(float &f, float lim) { float n = -lim; f = f <? lim; 
 
 struct BogeyVars {
 	/* 0x00 */ float targetPos[4];
-	/* 0x10 */ MobyInstance *pTarget;
+	/* 0x10 */ moby *pTarget;
 	/* 0x14 */ short targetType;
 	/* 0x16 */ short targetStatus;
 	/* 0x18 */ char unk18[0x40 - 0x18];
@@ -184,19 +149,19 @@ void MB_snapAnim(MobyInstance *, int, float) __asm__("MB_snapAnim");
 float SlideDelt(float &, float, float, float) __asm__("SlideDelt");
 float DeltAng(float &, float, float, int) __asm__("DeltAng");
 int ReorderRGB___dupe2(int, int) __asm__("ReorderRGB___dupe2");
-void MB_EndColorFlash(MobyInstance *, FlashVars *) __asm__("MB_EndColorFlash");
+void MB_EndColorFlash(moby *, FlashVars *) __asm__("MB_EndColorFlash");
 void MB_AddMobyToDynamicGroup(MobyInstance *, short *, short) __asm__("MB_AddMobyToDynamicGroup");
 void MB_DeleteMobyFromDynamicGroup(MobyInstance *, short *) __asm__("MB_DeleteMobyFromDynamicGroup");
 void DeleteMotionBlur(MotionBlur &) __asm__("DeleteMotionBlur");
 struct XPBundle {
-	/* 0x00 */ MobyInstance *pMoby;
+	/* 0x00 */ moby *pMoby;
 	/* 0x04 */ float gadgetXp[20];
 };
 extern XPBundle MB_xpBundle[3] __asm__("MB_xpBundle");
 extern MobyInstance *MobyInstanceEnd __asm__("MobyInstanceEnd");
 extern int g_gameType __asm__("g_gameType");
 extern LocalHero *MyHero __asm__("MyHero");
-extern MobyInstance *_CMD_CommandCache[0x100] __asm__("_CMD_CommandCache");
+extern moby *_CMD_CommandCache[0x100] __asm__("_CMD_CommandCache");
 unsigned char _CMD_CommandCacheInited __asm__("_CMD_CommandCacheInited") GAME_GP_DATA = 0;
 int _CMD_CommandCacheSize __asm__("_CMD_CommandCacheSize") GAME_GP_DATA = 0;
 void FastMemSet(void *, int, int) __asm__("FastMemSet");
@@ -207,15 +172,15 @@ static inline int agIAbs(int x) { return x < 0 ? -x : x; }
 int SlideDelt___dupe2(int &, int, float, int) __asm__("SlideDelt___dupe2");
 bool MB_AddHoloshieldGadgetXP() __asm__("MB_AddHoloshieldGadgetXP");
 int MB_isCrate(MobyInstance *) __asm__("MB_isCrate");
-void MB_UnlockBogey(MobyInstance *) __asm__("MB_UnlockBogey");
+void MB_UnlockBogey(moby *) __asm__("MB_UnlockBogey");
 void MB_InitializeCommandCache() __asm__("MB_InitializeCommandCache");
-int MB_GetXPBundle(MobyInstance *) __asm__("MB_GetXPBundle");
+int MB_GetXPBundle(moby *) __asm__("MB_GetXPBundle");
 float AccelDelt(float &, float, float &, float, float, float) __asm__("AccelDelt");
 float FastSubRots(float, float) __asm__("FastSubRots");
 float FastSin(float) __asm__("FastSin");
 float MobyMayaFrame(MobyInstance *) __asm__("MobyMayaFrame");
-int MB_MayaFrameTrigger(MobyInstance *, float) __asm__("MB_MayaFrameTrigger");
-void MB_SwingMotion(MobyInstance *, float &, float &, float, float, float) __asm__("MB_SwingMotion");
+int MB_MayaFrameTrigger(moby *, float) __asm__("MB_MayaFrameTrigger");
+void MB_SwingMotion(moby *, float &, float &, float, float, float) __asm__("MB_SwingMotion");
 unsigned char Bot_HasCommandAbility(unsigned int) __asm__("Bot_HasCommandAbility");
 struct SoundTrigger {
 	/* 0x0 */ unsigned short sound;
@@ -223,14 +188,14 @@ struct SoundTrigger {
 };
 extern int worldUpdateTime __asm__("worldUpdateTime");
 bool IsWeaponTemp(LocalHero *, int) __asm__("IsWeaponTemp");
-int sound_MobyPlay(int, int, MobyInstance *) __asm__("sound_MobyPlay");
+int sound_MobyPlay(int, int, moby *) __asm__("sound_MobyPlay");
 void MB_AllocateXPBundle(XPBundle *, int) __asm__("MB_AllocateXPBundle");
-void MB_PlaySoundsInSeq(MobyInstance *, int, unsigned short) __asm__("MB_PlaySoundsInSeq");
-void MB_transAnim___dupe2(MobyInstance *, int, float, int, int) __asm__("MB_transAnim___dupe2");
+void MB_PlaySoundsInSeq(moby *, int, unsigned short) __asm__("MB_PlaySoundsInSeq");
+void MB_transAnim___dupe2(moby *, int, float, int, int) __asm__("MB_transAnim___dupe2");
 int PointInsideComplexPoly(vec4f &, vec4f *, int) __asm__("PointInsideComplexPoly");
 int MB_Level99ColorTimeBased(int) __asm__("MB_Level99ColorTimeBased");
 
-static inline int GetXPBundle(MobyInstance *pMoby)
+static inline int GetXPBundle(moby *pMoby)
 {
 	int empty = -1;
 	int i;
@@ -245,16 +210,15 @@ static inline int GetXPBundle(MobyInstance *pMoby)
 	}
 	return -1;
 }
-int MB_BundleDamage(MobyInstance *pMoby, unsigned int gadgetId, float damage, int index) __asm__("MB_BundleDamage");
+int MB_BundleDamage(moby *pMoby, unsigned int gadgetId, float damage, int index) __asm__("MB_BundleDamage");
 void MB_transAnim(MobyInstance *pMoby, int seq, float frm, int steps) __asm__("MB_transAnim");
 extern unsigned char MobyClassLookup[] __asm__("MobyClassLookup");
 extern MobyClass *MobyClasses[] __asm__("MobyClassPtrs");
-void PostUpdateMoby(MobyInstance *) __asm__("PostUpdateMoby");
-int MB_SetOClass(MobyInstance *pMoby, int oClass) __asm__("MB_SetOClass");
+void PostUpdateMoby(moby *) __asm__("PostUpdateMoby");
+int MB_SetOClass(moby *pMoby, int oClass) __asm__("MB_SetOClass");
 int SolveQuad(float a, float b, float c, float &r1, float &r2) __asm__("SolveQuad");
 float AccelDeltAng(float &val, float target, float &speed, float gain, float damp, float limit, int turnDir) __asm__("AccelDeltAng");
-void GetMobyAmbientLights(MobyInstance *, int *, int *, int *) __asm__("GetMobyAmbientLights");
-extern int bootSettings[16] __asm__("bootSettings");
+void GetMobyAmbientLights(moby *, int *, int *, int *) __asm__("GetMobyAmbientLights");
 extern float NtscPalSpeedAdjuster __asm__("NtscPalSpeedAdjuster");
 extern float NtscPalAccelAdjuster __asm__("NtscPalAccelAdjuster");
 extern float NtscPalFrameAdjuster __asm__("NtscPalFrameAdjuster");
@@ -266,15 +230,15 @@ extern float NtscPalFrameTimeInSecondsFloat __asm__("NtscPalFrameTimeInSecondsFl
 void SetNtscPalTiming(int mode) __asm__("SetNtscPalTiming");
 
 void MatAdjoint(mtx3 &dm, mtx3 &u) __asm__("MatAdjoint");
-int FUN_00472818(MobyInstance *) __asm__("FUN_00472818");
+int FUN_00472818(moby *) __asm__("FUN_00472818");
 int GadgetIsModSupported(int, int) __asm__("GadgetIsModSupported___dupe2");
 int GetActivePostFXMod(void *, int) __asm__("GetActivePostFXMod");
-static inline MobyInstance *RootParent(MobyInstance *p)
+static inline moby *RootParent(moby *p)
 {
 	if (p->pParent) return RootParent(p->pParent);
 	return p;
 }
-int MB_GadgetDamageIndex(MobyInstance *pMoby, int hero_index) __asm__("MB_GadgetDamageIndex");
+int MB_GadgetDamageIndex(moby *pMoby, int hero_index) __asm__("MB_GadgetDamageIndex");
 extern int g_gameRules __asm__("g_gameRules");
 MobyInstance *CreateMoby(int, int) __asm__("CreateMoby");
 void SwitchMobyToCoOpArmor(MobyInstance *) __asm__("SwitchMobyToCoOpArmor");
@@ -317,9 +281,9 @@ extern Path *Paths[] __asm__("Paths");
 int MB_IsPntInPath(vec4 pnt, int path, int error) __asm__("MB_IsPntInPath");
 extern MathUtilities MU __asm__("D_222010");
 s128 MB_SlerpVectors(vec4 vFrom, vec4 vTo, float fInterp, bool bNormalized) __asm__("MB_SlerpVectors");
-void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent) __asm__("MB_SpawnInit");
+void MB_SpawnInit(moby *pMoby, moby *pParent) __asm__("MB_SpawnInit");
 
-s128 MB_GetWorldSpaceVector(MobyInstance *pMoby) __asm__("MB_GetWorldSpaceVector");
+s128 MB_GetWorldSpaceVector(moby *pMoby) __asm__("MB_GetWorldSpaceVector");
 void MB_AlignWithNormal(mtx3 &, s128, mtx3 *) __asm__("MB_AlignWithNormal");
 void MB_AlignWithGravity(mtx3 &, s128, mtx3 *) __asm__("MB_AlignWithGravity");
 
@@ -399,7 +363,7 @@ GAME_SECTION(MB_transAnim) void MB_transAnim(MobyInstance *pMoby, int seq, float
 	}
 }
 
-GAME_SECTION(MB_transAnim___dupe2) void MB_transAnim___dupe2(MobyInstance *pMoby, int seq, float frm, int steps, int flags)
+GAME_SECTION(MB_transAnim___dupe2) void MB_transAnim___dupe2(moby *pMoby, int seq, float frm, int steps, int flags)
 {
 	if (frm > 0.0f && frm <= 10.0f && !(flags & 8)) MB_PlaySoundsInSeq(pMoby, seq, (int)frm - 1);
 	if (steps <= 0) {
@@ -416,7 +380,7 @@ JUNK_ASM(func_00473A80,
 	"\taddiu $29, $29, 0x60\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_setState) void MB_setState(MobyInstance *pMoby, int state, int stateType)
+GAME_SECTION(MB_setState) void MB_setState(moby *pMoby, int state, int stateType)
 {
 	pMoby->prevState = pMoby->state;
 	pMoby->state = state;
@@ -536,7 +500,7 @@ GAME_SECTION(MB_getJumpPeak) float MB_getJumpPeak(vec4 pos, vec4 vel, float grav
 	return peak;
 }
 
-GAME_SECTION(MB_SetOClass) int MB_SetOClass(MobyInstance *pMoby, int oClass)
+GAME_SECTION(MB_SetOClass) int MB_SetOClass(moby *pMoby, int oClass)
 {
 	if (pMoby->oClass == oClass) return 0;
 	pMoby->oClass = oClass;
@@ -909,7 +873,7 @@ JUNK_ASM(func_004765E8,
 	"\tlw $2, 0x18($3)\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_GetMoveVars_2) void *MB_GetMoveVars_2(MobyInstance *pMoby)
+GAME_SECTION(MB_GetMoveVars_2) void *MB_GetMoveVars_2(moby *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
@@ -917,7 +881,7 @@ GAME_SECTION(MB_GetMoveVars_2) void *MB_GetMoveVars_2(MobyInstance *pMoby)
 	return r;
 }
 
-GAME_SECTION(MB_GetNavigationVars) void *MB_GetNavigationVars(MobyInstance *pMoby)
+GAME_SECTION(MB_GetNavigationVars) void *MB_GetNavigationVars(moby *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
@@ -935,7 +899,7 @@ GAME_SECTION(MB_getTargetVars) TargetVars *MB_getTargetVars(MobyInstance *pMoby)
 		LocalHero *pHero = g_Hero[0];
 		do {
 			pp++;
-			if (pHero && pMoby == pHero->pMoby) return (TargetVars *)pHero->target;
+			if (pHero && pMoby == pHero->pMoby) return &pHero->target;
 			i++;
 			pHero = *pp;
 		} while (i < 10);
@@ -954,7 +918,7 @@ JUNK_ASM(func_00476700,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_MistDeathEffect);
 
-GAME_SECTION(MB_SetDefaultLights) void MB_SetDefaultLights(MobyInstance *pMoby)
+GAME_SECTION(MB_SetDefaultLights) void MB_SetDefaultLights(moby *pMoby)
 {
 	LocalHero *pHero = GB_GetLocalHeroFromSlot(0);
 	if (pHero && pHero->pMoby) pMoby->lights = pHero->pMoby->lights;
@@ -966,7 +930,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", DecomposeMtx4
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetFlashVars);
 
-GAME_SECTION(MB_StartColorFlash) void MB_StartColorFlash(MobyInstance *pMoby, int ft, int color, FlashVars *fVars)
+GAME_SECTION(MB_StartColorFlash) void MB_StartColorFlash(moby *pMoby, int ft, int color, FlashVars *fVars)
 {
 	int r;
 	int g;
@@ -1002,7 +966,7 @@ GAME_SECTION(MB_StartColorFlash) void MB_StartColorFlash(MobyInstance *pMoby, in
 	fVars->timer = 0;
 }
 
-GAME_SECTION(MB_EndColorFlash) void MB_EndColorFlash(MobyInstance *pMoby, FlashVars *fVars)
+GAME_SECTION(MB_EndColorFlash) void MB_EndColorFlash(moby *pMoby, FlashVars *fVars)
 {
 	if (fVars || (fVars = (FlashVars *)MB_GetFlashVars(pMoby))) {
 		if (fVars->type) {
@@ -1023,7 +987,7 @@ JUNK_ASM(func_00477648,
 	"\taddiu $29, $29, 0x10\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_initMobyColorFlash) void MB_initMobyColorFlash(MobyInstance *pMoby, FlashVars &fv)
+GAME_SECTION(MB_initMobyColorFlash) void MB_initMobyColorFlash(moby *pMoby, FlashVars &fv)
 {
 	MB_StartColorFlash(pMoby, 1, 0, &fv);
 }
@@ -1162,14 +1126,14 @@ JUNK_ASM(func_004788E8,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GadgetDamageIndex);
 
-GAME_SECTION(MB_MP_GadgetDamageIndex) int MB_MP_GadgetDamageIndex(MobyInstance *pMoby)
+GAME_SECTION(MB_MP_GadgetDamageIndex) int MB_MP_GadgetDamageIndex(moby *pMoby)
 {
 	return 0xff;
 }
 
 GAME_SECTION(SetNtscPalTiming) void SetNtscPalTiming(int mode)
 {
-	bootSettings[0] = mode;
+	bootSettings.PalMode = mode;
 	if (mode == 0) {
 		NtscPalSpeedAdjuster = 1.0f;
 		NtscPalAccelAdjuster = 1.0f;
@@ -1235,7 +1199,7 @@ JUNK_ASM(func_004790B0,
 	"\taddiu $29, $29, 0xb0\n"
 	"\tnop\n");
 
-GAME_SECTION(CreateMotionBlur) void CreateMotionBlur(MobyInstance *pMoby, MotionBlur &blur)
+GAME_SECTION(CreateMotionBlur) void CreateMotionBlur(moby *pMoby, MotionBlur &blur)
 {
 	if (blur.active == 0) {
 		blur.pTrackedMoby = pMoby;
@@ -1270,7 +1234,7 @@ JUNK_ASM(func_00479570,
 	"\taddiu $29, $29, 0x150\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_SetAmbientLights) void MB_SetAmbientLights(MobyInstance *pMoby, int rgba)
+GAME_SECTION(MB_SetAmbientLights) void MB_SetAmbientLights(moby *pMoby, int rgba)
 {
 	int b = rgba >> 16;
 	int g = rgba >> 8;
@@ -1283,7 +1247,7 @@ JUNK_ASM(func_004795B0,
 	"\taddiu $29, $29, 0x10\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_BobMotion) void MB_BobMotion(MobyInstance *pMoby, float &bobt, float &bobz, float bobAmp, float bobSpeed, float centerZ)
+GAME_SECTION(MB_BobMotion) void MB_BobMotion(moby *pMoby, float &bobt, float &bobz, float bobAmp, float bobSpeed, float centerZ)
 {
 	MB_BobMotion___dupe2(pMoby->pos, bobt, bobz, bobAmp, bobSpeed, centerZ);
 }
@@ -1294,7 +1258,7 @@ JUNK_ASM(func_004796C0,
 	"\taddiu $29, $29, 0x40\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_SwingMotion) void MB_SwingMotion(MobyInstance *pMoby, float &swingAng1, float &swingAng2, float swingAmp, float swingRate1, float swingRate2)
+GAME_SECTION(MB_SwingMotion) void MB_SwingMotion(moby *pMoby, float &swingAng1, float &swingAng2, float swingAmp, float swingRate1, float swingRate2)
 {
 	pMoby->rot.x = swingAmp * FastSin(swingAng1) * FastSin(swingAng2);
 	pMoby->rot.y = swingAmp * FastSin(swingAng1) * FastCos(swingAng2);
@@ -1346,7 +1310,7 @@ JUNK_ASM(func_0047AA28,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_GetLocalSpaceVector);
 
-GAME_SECTION(MB_GetWorldSpaceVector) s128 MB_GetWorldSpaceVector(MobyInstance *pMoby)
+GAME_SECTION(MB_GetWorldSpaceVector) s128 MB_GetWorldSpaceVector(moby *pMoby)
 {
 	s128 *m = (s128 *)&pMoby->rMtx;
 	register s128 v __asm__("vf3") = ((s128 *)pMoby->pVar)[2];
@@ -1499,7 +1463,7 @@ JUNK_ASM(func_0047B978,
 	"\taddiu $29, $29, 0xf0\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(MobyInstance *pMoby, MobyInstance *pParent)
+GAME_SECTION(MB_SpawnInit) void MB_SpawnInit(moby *pMoby, moby *pParent)
 {
 	pMoby->drawn = 1;
 	if (pParent) {
@@ -1526,7 +1490,7 @@ JUNK_ASM(func_0047BA28,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_IsPntInArea);
 
-GAME_SECTION(MB_GetBogeyVars) void *MB_GetBogeyVars(MobyInstance *pMoby)
+GAME_SECTION(MB_GetBogeyVars) void *MB_GetBogeyVars(moby *pMoby)
 {
 	void *r;
 	if (!pMoby || !pMoby->pVar || !(pMoby->modeBits & 0x20)) r = 0;
@@ -1534,14 +1498,14 @@ GAME_SECTION(MB_GetBogeyVars) void *MB_GetBogeyVars(MobyInstance *pMoby)
 	return r;
 }
 
-GAME_SECTION(MB_GetBogeyType) int MB_GetBogeyType(MobyInstance *pMoby)
+GAME_SECTION(MB_GetBogeyType) int MB_GetBogeyType(moby *pMoby)
 {
 	TargetVars *tVars = MB_getTargetVars(pMoby);
 	if (tVars == 0) return 0;
 	return tVars->bogeyType;
 }
 
-GAME_SECTION(MB_SetBogeyType) void MB_SetBogeyType(MobyInstance *pMoby, int type)
+GAME_SECTION(MB_SetBogeyType) void MB_SetBogeyType(moby *pMoby, int type)
 {
 	TargetVars *tVars = MB_getTargetVars(pMoby);
 	if (tVars) tVars->bogeyType = type;
@@ -1555,7 +1519,7 @@ JUNK_ASM(func_0047BC68,
 	"\taddiu $29, $29, 0x20\n"
 	"\tnop\n");
 
-GAME_SECTION(MB_UnlockBogey) void MB_UnlockBogey(MobyInstance *pMoby)
+GAME_SECTION(MB_UnlockBogey) void MB_UnlockBogey(moby *pMoby)
 {
 	BogeyVars *bVars = (BogeyVars *)MB_GetBogeyVars(pMoby);
 	if (bVars && bVars->pTarget && bVars->targetStatus == 2) {
@@ -1618,7 +1582,7 @@ JUNK_ASM(func_0047BD18,
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mobyutil", MB_FastBsphereCheck);
 
-GAME_SECTION(MB_PlaySoundsInSeq) void MB_PlaySoundsInSeq(MobyInstance *pMoby, int seq, unsigned short end_frame)
+GAME_SECTION(MB_PlaySoundsInSeq) void MB_PlaySoundsInSeq(moby *pMoby, int seq, unsigned short end_frame)
 {
 	MobyClass *pClass = pMoby->pClass;
 	if (pClass && seq < pClass->seq_cnt) {
@@ -1643,9 +1607,9 @@ JUNK_ASM(func_0047C050,
 GAME_SECTION(MB_InitializeCommandCache) void MB_InitializeCommandCache()
 {
 	if (!_CMD_CommandCacheInited) {
-		MobyInstance **pp = _CMD_CommandCache;
+		moby **pp = _CMD_CommandCache;
 		int index = 0;
-		MobyInstance *pMoby;
+		moby *pMoby;
 		for (pMoby = MobyInstances; pMoby < MobyInstanceEnd; pMoby++) {
 			if (MB_GetCommandVars(pMoby)) {
 				*pp++ = pMoby;
@@ -1829,7 +1793,7 @@ GAME_SECTION(FUN_0047eb58) void FUN_0047eb58()
 {
 }
 
-GAME_SECTION(MB_SetMobyTeamTex) void MB_SetMobyTeamTex(MobyInstance *pMoby, int iTeam)
+GAME_SECTION(MB_SetMobyTeamTex) void MB_SetMobyTeamTex(moby *pMoby, int iTeam)
 {
 	if (pMoby->pClass && pMoby->pClass->team_texs) {
 		unsigned short b = (pMoby->modeBits2 | 0x8000) & 0x87ff;
@@ -1877,7 +1841,7 @@ GAME_SECTION(MB_NumValidRespawnNodes) int MB_NumValidRespawnNodes(int iPlayer)
 	return n;
 }
 
-GAME_SECTION(MB_GhostMe) void MB_GhostMe(MobyInstance *pMoby)
+GAME_SECTION(MB_GhostMe) void MB_GhostMe(moby *pMoby)
 {
 	pMoby->alpha = 0x40;
 	pMoby->modeBits2 |= 8;
@@ -1895,7 +1859,7 @@ GAME_SECTION(MB_Level99ColorTimeBased) int MB_Level99ColorTimeBased(int alpha)
 	return color | (alpha << 24);
 }
 
-GAME_SECTION(MB_GetXPBundle) int MB_GetXPBundle(MobyInstance *pMoby)
+GAME_SECTION(MB_GetXPBundle) int MB_GetXPBundle(moby *pMoby)
 {
 	int empty = -1;
 	int i;

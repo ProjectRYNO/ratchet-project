@@ -90,6 +90,29 @@ void csf_good_save() __asm__("csf_good_save");
 extern unsigned char MCSTATE_lastOpLoad __asm__("MCSTATE_lastOpLoad");
 int MCSTATE_SetCommand(int cmd, int data, void (*pre_cb)(), void (*post_cb)()) __asm__("MCSTATE_SetCommand");
 
+struct McState {
+	/* 0x000 */ memcard_data memcards[2];
+	/* 0x1a8 */ int cmd;
+	/* 0x1ac */ int res;
+	/* 0x1b0 */ int useslot;
+	/* 0x1b4 */ int slot;
+	/* 0x1b8 */ int level;
+	/* 0x1bc */ int sync;
+	/* 0x1c0 */ int file;
+	/* 0x1c4 */ int stage;
+	/* 0x1c8 */ int substage;
+	/* 0x1cc */ int nextstage;
+	/* 0x1d0 */ int nextslot;
+	/* 0x1d4 */ int err;
+	/* 0x1d8 */ int errslot;
+	/* 0x1dc */ char *addr;
+	/* 0x1e0 */ int size;
+	/* 0x1e4 */ int autosave;
+	/* 0x1e8 */ int checkslot;
+	/* 0x1ec */ int timer;
+	/* 0x1f0 */ int savesize;
+};
+
 GAME_SECTION(csf_prompt_create_save_overwrite) void csf_prompt_create_save_overwrite()
 {
 }
@@ -284,7 +307,30 @@ GAME_SECTION(csf_check_save) void csf_check_save()
 	}
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/mcstate", csf_checking_save);
+GAME_SECTION(csf_checking_save) void csf_checking_save()
+{
+	if (mcState.stage != 2) return;
+	if (mcState.nextstage >= 0) return;
+	if (mcState.err != 0) {
+		MCSTATE_ClearCommand(0);
+		goto done;
+	}
+	if (mcState.memcards[0].type != 2) {
+		MCSTATE_TransToState(4);
+		return;
+	}
+	if (mcState.memcards[0].saveslot != -2) goto slot;
+	if (mcState.memcards[0].free + mcState.memcards[0].corrupt_size < 400) {
+		MCSTATE_TransToState(0x15);
+		return;
+	}
+done:
+	MCSTATE_TransToState(0xe);
+	return;
+slot:
+	if (mcState.memcards[0].saveslot < -1) return;
+	MCSTATE_TransToState(0x12);
+}
 
 GAME_SECTION(csf_nosave) void csf_nosave()
 {

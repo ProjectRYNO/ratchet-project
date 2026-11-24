@@ -135,7 +135,20 @@ GAME_SECTION(Load) unsigned int Fs::Load(int type, unsigned int arg0, unsigned i
 	return b_ret;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/fs", LoadAsync);
+GAME_SECTION(LoadAsync) unsigned int Fs::LoadAsync(int type, unsigned int arg0, unsigned int arg1, unsigned int arg2, unsigned int arg3, void (*p_fn_load_complete)(void *, int), void *p_load_complete_args)
+{
+	IsLoading();
+	g_fs_desc.command |= 1;
+	g_fs_desc.load_type = type;
+	g_fs_desc.load_args.arg0 = arg0;
+	g_fs_desc.load_args.arg1 = arg1;
+	g_fs_desc.load_args.arg2 = arg2;
+	g_fs_desc.load_args.arg3 = arg3;
+	g_fs_desc.p_fn_load_complete = p_fn_load_complete;
+	g_fs_desc.p_load_complete_args = p_load_complete_args;
+	Update(0.0f);
+	return 1;
+}
 
 GAME_SECTION(Abort) void Fs::Abort()
 {

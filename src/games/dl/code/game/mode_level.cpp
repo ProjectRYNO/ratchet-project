@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "wad.h"
+#include "draw.h"
 
 
 extern int pendingGameMode __asm__("pendingGameMode");
@@ -27,16 +28,6 @@ extern float ScreenFade[2] __asm__("ScreenFade");
 extern int gFadeVolumes[6] __asm__("gFadeVolumes");
 extern void *pPuzzleMaster __asm__("D_21FC90");
 extern int vu1_bufSize __asm__("vu1_bufSize");
-typedef struct sceneData {
-	/* 0x00 */ char unk00[0x8e];
-	/* 0x8e */ short pre_init;
-	/* 0x90 */ char unk90[0x100];
-} sceneData_t;
-typedef struct vcData {
-	/* 0x00 */ char unk00[0xb0];
-	/* 0xb0 */ float fovRatio;
-	/* 0xb4 */ char unkb4[0x100];
-} vcData_t;
 typedef struct musicData {
 	/* 0x00 */ char unk00[4];
 	/* 0x04 */ short loading;
@@ -47,8 +38,8 @@ typedef struct memSlotsView {
 	/* 0x0c */ char *vu1_chain;
 	/* 0x10 */ char unk10[0x100];
 } memSlotsView_t;
-extern sceneData_t Scene __asm__("Scene");
-extern vcData_t VC __asm__("VC");
+extern SceneDef Scene __asm__("Scene");
+extern ViewContext VC __asm__("VC");
 extern musicData_t Music __asm__("Music");
 extern memSlotsView_t MemSlots __asm__("D_0023AB00");
 extern wadinfo g_wad __asm__("D_001C2040");

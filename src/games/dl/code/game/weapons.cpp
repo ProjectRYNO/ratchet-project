@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "mobyutil.h"
 #include "vector.h"
 #include "gameglobals.h"
 
@@ -32,10 +33,9 @@ extern int WPN_UpdateCountDown __asm__("WPN_UpdateCountDown");
 int WPN_IsUpgradeMoby(void *moby) __asm__("WPN_IsUpgradeMoby");
 void WPN_SetUpgradeGadgetMode(int gadget, int mode) __asm__("WPN_SetUpgradeGadgetMode");
 
-struct MobyInstance;
 struct WPN_VelOrientCache {
 	/* 0x00 */ int unk00[7];
-	/* 0x1c */ MobyInstance *pParent;
+	/* 0x1c */ moby *pParent;
 };
 struct WpnMoby {
 	/* 0x00 */ char unk00[0x34];

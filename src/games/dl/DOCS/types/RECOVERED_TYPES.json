@@ -1034,7 +1034,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "speed",
@@ -1165,7 +1165,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "state",
@@ -1542,7 +1542,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "speed",
@@ -1594,7 +1594,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "anim",
@@ -1626,7 +1626,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "slope",
@@ -1668,7 +1668,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "ideal",
@@ -1762,7 +1762,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "index",
@@ -1834,7 +1834,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "vel",
@@ -1871,7 +1871,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "gravity",
@@ -1923,7 +1923,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "timesFallen",
@@ -1945,7 +1945,7 @@
       "game_dl\\guber\\RemoteHero.h"
     ],
     "header": "code/game/guber/RemoteHero.h",
-    "evidence": "ghidra-layout",
+    "evidence": "prototype-layout",
     "fields": [
       {
         "name": "active",
@@ -15809,6 +15809,5763 @@
       {
         "name": "rot",
         "offset": 240,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Gadget",
+    "size": "0x50",
+    "line": 4354,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "jointPos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "jointRot",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby2",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "padButtonDown",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "alignPad",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "padButton",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "gsSpawnFrame",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "noAmmoTime",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "unEquipTimer",
+        "offset": 57,
+        "bitfield": false
+      },
+      {
+        "name": "detached",
+        "offset": 58,
+        "bitfield": false
+      },
+      {
+        "name": "unequipTime",
+        "offset": 59,
+        "bitfield": false
+      },
+      {
+        "name": "unEquipStatus",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "unEquipDelay",
+        "offset": 61,
+        "bitfield": false
+      },
+      {
+        "name": "equippedTime",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "id",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "lightAng",
+        "offset": 76,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Gid",
+    "size": "0x4",
+    "line": 4393,
+    "owners": [
+      "game_dl\\guber\\GuberMoby.h"
+    ],
+    "header": "code/game/guber/GuberMoby.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "ObjectIndex",
+        "offset": 0,
+        "bitfield": true
+      },
+      {
+        "name": "ObjectCount",
+        "offset": 1,
+        "bitfield": true
+      },
+      {
+        "name": "ObjectType",
+        "offset": 3,
+        "bitfield": true
+      },
+      {
+        "name": "HostId",
+        "offset": 3,
+        "bitfield": true
+      }
+    ]
+  },
+  {
+    "name": "Guber",
+    "size": "0x18",
+    "line": 4400,
+    "owners": [
+      "game_dl\\guber\\GuberMoby.h"
+    ],
+    "header": "code/game/guber/GuberMoby.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "MasterHostId",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "State",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "pNext",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pPrev",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "__vtable",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroAnimLayers",
+    "size": "0x34",
+    "line": 4622,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pArmBlenders",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pFiringBlenders",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "pHeadBlender",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "detachingFiring",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "armBlenderSharesIdle",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetAttachedId",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "usingRunAnim",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "headAnim",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroAttack",
+    "size": "0xb0",
+    "line": 4948,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "near",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "far",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "oldNear",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "oldFar",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "wrenchHandle",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "wrenchTip",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "idealVec",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "bounceVec",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "pTarget",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "rotSet",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "bounceAng",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "speedFactor",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "pGunPointMoby",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "id",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "soundPlayed",
+        "offset": 158,
+        "bitfield": false
+      },
+      {
+        "name": "descend",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "aimAngz",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "aimAngy",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "throwAttackDamageID",
+        "offset": 172,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroCharge",
+    "size": "0x20",
+    "line": 4992,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "padWindUp",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "groundSpeed",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "hitEdge",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 24,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroColl",
+    "size": "0x80",
+    "line": 4536,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "normal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ip",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "top",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "bot",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "ideal_top",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "ideal_bot",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "idealRadius",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "radius",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "radiusSpeed",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "pContactMoby",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "pBumpMoby",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "bumpPushSpeed",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "distToWall",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "wallAng",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "wallSlope",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "wallIsCrate",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "wallIsMoby",
+        "offset": 85,
+        "bitfield": false
+      },
+      {
+        "name": "contact",
+        "offset": 86,
+        "bitfield": false
+      },
+      {
+        "name": "cpad",
+        "offset": 87,
+        "bitfield": false
+      },
+      {
+        "name": "ledgeHeight",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "ledgeDist",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "atLedge",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "pWallJumpMoby",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "radiusSqd",
+        "offset": 112,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroCommand",
+    "size": "0xc",
+    "line": 5140,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pCurTarget",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroDynamo",
+    "size": "0x30",
+    "line": 5084,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pTarget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "targetScore",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "trigger",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "last_pTarget",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 20,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Manipulator",
+    "size": "0x40",
+    "line": 826,
+    "owners": [
+      "game_dl\\mobyfunc.h"
+    ],
+    "header": "code/game/mobyfunc.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "animJoint",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "scaleOn",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "absolute",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "jointId",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pChain",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "interp",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "q",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "scale",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "trans",
+        "offset": 48,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroEyes",
+    "size": "0x2d0",
+    "line": 4794,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "manips",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "clankpackManips",
+        "offset": 448,
+        "bitfield": false
+      },
+      {
+        "name": "blink_timer",
+        "offset": 704,
+        "bitfield": false
+      },
+      {
+        "name": "blink_next",
+        "offset": 708,
+        "bitfield": false
+      },
+      {
+        "name": "blink_frequency",
+        "offset": 712,
+        "bitfield": false
+      },
+      {
+        "name": "clankBlinkCountdown",
+        "offset": 716,
+        "bitfield": false
+      },
+      {
+        "name": "clankBlinkTime",
+        "offset": 718,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroFireDir",
+    "size": "0x50",
+    "line": 4898,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "m",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "v",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 64,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "FpsCamVars",
+    "size": "0x160",
+    "line": 3925,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "mtx",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "z_rot",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "z_speed_current",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "z_speed_max_quick",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "z_speed_max_aim",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "z_accel_quick",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "z_accel_aim",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "z_target_slowness_factor_quick",
+        "offset": 88,
+        "bitfield": false
+      },
+      {
+        "name": "z_target_slowness_factor_aim",
+        "offset": 92,
+        "bitfield": false
+      },
+      {
+        "name": "y_rot",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "y_speed_current",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "y_speed_max",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "y_accel",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "y_target_slowness_factor",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "strafe_turn_factor",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "strafe_tilt_factor",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "max_target_angle",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "quick_turn_input_time",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "snap_hold_time",
+        "offset": 134,
+        "bitfield": false
+      },
+      {
+        "name": "snap_input",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "pTarget",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "target_last_pos",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "target_vel",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "target_blend_fac",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "max_y_rot",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "min_y_rot",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "pExcludeMoby",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "ext_pos_ofs",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "ext_rot_ofs",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "allegiance",
+        "offset": 226,
+        "bitfield": false
+      },
+      {
+        "name": "special_target_func",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "pWorldMtx",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "pWorldInvMtx",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "facing_dir",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "internal_facing_dir",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "aim_pos",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "range",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "ext_extension",
+        "offset": 292,
+        "bitfield": false
+      },
+      {
+        "name": "ext_entension_speed",
+        "offset": 296,
+        "bitfield": false
+      },
+      {
+        "name": "cam_slot",
+        "offset": 300,
+        "bitfield": false
+      },
+      {
+        "name": "pHero",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "camRadius",
+        "offset": 308,
+        "bitfield": false
+      },
+      {
+        "name": "camSettingsIndex",
+        "offset": 312,
+        "bitfield": false
+      },
+      {
+        "name": "karma_pad",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "prevCamPos",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "karma_pad2",
+        "offset": 336,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroFps",
+    "size": "0x240",
+    "line": 4648,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "worldMtx",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "worldInvMtx",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "gunFPSQuat",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "camEffVel",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "camPos",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "camDir",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "fVars",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "camYSpeed",
+        "offset": 512,
+        "bitfield": false
+      },
+      {
+        "name": "camZSpeed",
+        "offset": 516,
+        "bitfield": false
+      },
+      {
+        "name": "gunInterp",
+        "offset": 520,
+        "bitfield": false
+      },
+      {
+        "name": "gunInterpSpeed",
+        "offset": 524,
+        "bitfield": false
+      },
+      {
+        "name": "active",
+        "offset": 528,
+        "bitfield": false
+      },
+      {
+        "name": "gunWithdrawSpeed",
+        "offset": 532,
+        "bitfield": false
+      },
+      {
+        "name": "gunWithdrawDist",
+        "offset": 536,
+        "bitfield": false
+      },
+      {
+        "name": "gunWithdrawIdeal",
+        "offset": 540,
+        "bitfield": false
+      },
+      {
+        "name": "bobRot",
+        "offset": 544,
+        "bitfield": false
+      },
+      {
+        "name": "bobRotSpeed",
+        "offset": 548,
+        "bitfield": false
+      },
+      {
+        "name": "bobAmp",
+        "offset": 552,
+        "bitfield": false
+      },
+      {
+        "name": "camHeroOfs",
+        "offset": 556,
+        "bitfield": false
+      },
+      {
+        "name": "camHeroOfsSpeed",
+        "offset": 560,
+        "bitfield": false
+      },
+      {
+        "name": "ignoreGroundHeight",
+        "offset": 564,
+        "bitfield": false
+      },
+      {
+        "name": "reticulePulseAng",
+        "offset": 568,
+        "bitfield": false
+      },
+      {
+        "name": "reticuleFadeInTimer",
+        "offset": 572,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroGrapple",
+    "size": "0x30",
+    "line": 5061,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "speed",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pTarget",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "timeToTarget",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "distToTarget",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "straightenOut",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "vehicle",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "cableLen",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "idealCableLen",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "targetScore",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "earlyAbort",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroGrind",
+    "size": "0x100",
+    "line": 4733,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "closestPoint",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rootPos",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "lHandPos",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "rHandPos",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "closestPointSwitch",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "rampTarget",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "pPath",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "curNode",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "curSegLen",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "EOPtime",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "pathDir",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "ang",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "slope",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "wrap",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "heroAngOfs",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "animDir",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "switching",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "pSwitchPath",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "switchCurNode",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "switchCurSegLen",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "switchWrap",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "slopeSpeed",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "switchTime",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "leanDir",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "userSpeed",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "grappleTrigger",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "onRamp",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "rampTrigger",
+        "offset": 188,
+        "bitfield": false
+      },
+      {
+        "name": "damage",
+        "offset": 190,
+        "bitfield": false
+      },
+      {
+        "name": "rampJumpQueued",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "useRampJumpTarget",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "rampJumpGravity",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "getHitSpeed",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "aimDirOfs",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "aimDirSpeed",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "pTarget",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "centeringSpeed",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "twirlRot",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "twirlRotSpeed",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "twirlCamRotz",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "twirlTimer",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "twirlCamOn",
+        "offset": 238,
+        "bitfield": false
+      },
+      {
+        "name": "twirlCamRotZspeed",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "cdo",
+        "offset": 244,
+        "bitfield": false
+      },
+      {
+        "name": "noGroundTime",
+        "offset": 248,
+        "bitfield": false
+      },
+      {
+        "name": "turnDir",
+        "offset": 252,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 254,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroGround",
+    "size": "0xc0",
+    "line": 4564,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "normal",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "waterNormal",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "gravity",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "point",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "lastGoodPos",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "externalBootGrav",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "feetHeights",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "pitchSlopes",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "rollSlopes",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "height",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "dist",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "slope",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "pitchSlope",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "rollSlope",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "angz",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "waterHeight",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "quicksandHeight",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "underWater",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "onGood",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "magnetic",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "stickLanding",
+        "offset": 170,
+        "bitfield": false
+      },
+      {
+        "name": "offAny",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "offGood",
+        "offset": 174,
+        "bitfield": false
+      },
+      {
+        "name": "oscillating",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "oscPos1",
+        "offset": 180,
+        "bitfield": false
+      },
+      {
+        "name": "oscPos2",
+        "offset": 184,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 188,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroHeadIdle",
+    "size": "0x20",
+    "line": 5120,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "rotOffset",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "timer",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "gain",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "damp",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroJoints",
+    "size": "0x180",
+    "line": 4618,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "gadgetMtxs",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroJumpNonParab",
+    "size": "0x30",
+    "line": 4811,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "startThrustTime",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "endThrustTime",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "thrustStartFrm",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "peakFrm",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "timeToPeakFrm",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "thrustTable",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "thrustStageIndex",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "thrustStageTimer",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "thrust",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "chargeJumpThrust",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "descendGravity",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroJump",
+    "size": "0x100",
+    "line": 4826,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "nonParab",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "takeoffPos",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpThrustVec",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpForwardVec",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "camHeight",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "turnSpeed",
+        "offset": 100,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpXySpeed",
+        "offset": 104,
+        "bitfield": false
+      },
+      {
+        "name": "land_timer",
+        "offset": 108,
+        "bitfield": false
+      },
+      {
+        "name": "useNonParabAscent",
+        "offset": 109,
+        "bitfield": false
+      },
+      {
+        "name": "descend",
+        "offset": 110,
+        "bitfield": false
+      },
+      {
+        "name": "noGlide",
+        "offset": 111,
+        "bitfield": false
+      },
+      {
+        "name": "maxFallSpeed",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "maxXySpeed",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "ideal_height",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "pushOffTime",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "framesToLand",
+        "offset": 126,
+        "bitfield": false
+      },
+      {
+        "name": "up_thrust",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "up_thrust_total",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "coll_bot",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "ledgeJumpSpeed",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpThrustAng",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpForwardAng",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "peakFrm",
+        "offset": 152,
+        "bitfield": false
+      },
+      {
+        "name": "landFrm",
+        "offset": 156,
+        "bitfield": false
+      },
+      {
+        "name": "gameLandFrm",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpDir",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpRunThrust",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "snapJumpSpeed",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpDir",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpDirCur",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "accel",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "decel",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "minHeight",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "maxHeight",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "fallThresh",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "animMayaScale",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "maxUpTime",
+        "offset": 232,
+        "bitfield": false
+      },
+      {
+        "name": "bailoutSafetyTime",
+        "offset": 234,
+        "bitfield": false
+      },
+      {
+        "name": "particleTimer",
+        "offset": 236,
+        "bitfield": false
+      },
+      {
+        "name": "particleTimer2",
+        "offset": 238,
+        "bitfield": false
+      },
+      {
+        "name": "gravity",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "minForwardThrust",
+        "offset": 244,
+        "bitfield": false
+      },
+      {
+        "name": "minTimeToGlide",
+        "offset": 246,
+        "bitfield": false
+      },
+      {
+        "name": "onIce",
+        "offset": 248,
+        "bitfield": false
+      },
+      {
+        "name": "minTimeToFall",
+        "offset": 250,
+        "bitfield": false
+      },
+      {
+        "name": "gloveAttackOk",
+        "offset": 252,
+        "bitfield": false
+      },
+      {
+        "name": "strafingFlip",
+        "offset": 253,
+        "bitfield": false
+      },
+      {
+        "name": "flipJumpOk",
+        "offset": 254,
+        "bitfield": false
+      },
+      {
+        "name": "doubleJumpOk",
+        "offset": 255,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroLedge",
+    "size": "0x40",
+    "line": 5041,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "idealWallPos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "idealGrabPos",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "groundHeight",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "wallAngZ",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "gravity",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "camHeight",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 60,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroLockOn",
+    "size": "0x50",
+    "line": 4878,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "strafeIdealVec",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "strafing",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "strafingBack",
+        "offset": 22,
+        "bitfield": false
+      },
+      {
+        "name": "strafingDir",
+        "offset": 23,
+        "bitfield": false
+      },
+      {
+        "name": "strafeRot",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "strafeRotSpeed",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "backSpeed",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "strafeRotTimer",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "strafeLeftDampTimer",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "strafeRightDampTimer",
+        "offset": 42,
+        "bitfield": false
+      },
+      {
+        "name": "strafeTurnDiffZero",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "curRetPos",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "curRetMoby",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "fadeInterp",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "retRot",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "strafeTurnDiff",
+        "offset": 76,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroMobys",
+    "size": "0x10",
+    "line": 4986,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "ground",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "hero",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 8,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroMove",
+    "size": "0xa0",
+    "line": 4442,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "behavior",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "external",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "actual",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "actualFromBehavior",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "actualFromBehaviorGrav",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "actualFromBehavior2D",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "actualFromExternal",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "taper",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "speed2D",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "forwardSpeed",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "ascent",
+        "offset": 140,
+        "bitfield": false
+      },
+      {
+        "name": "zSpeed",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "externalSpeed",
+        "offset": 148,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 152,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroPullShot",
+    "size": "0x30",
+    "line": 5076,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pTarget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "targetScore",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "connected",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroSurf",
+    "size": "0x30",
+    "line": 4695,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "sinkDepth",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "sinkRate",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "minSwimTimer",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "surfHeight",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "surfHeightSpeed",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pIceCube",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "bobt",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "bobz",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "swingAng1",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "swingAng2",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 40,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroSwim",
+    "size": "0x50",
+    "line": 4709,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "padWindUp",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "diveTime",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "bankSpeed",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "pitchSpeed",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "yawSpeed",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "bubbleTimer",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "minSwimTimer",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "chargeBubbleTimer",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "soundTimer",
+        "offset": 42,
+        "bitfield": false
+      },
+      {
+        "name": "buoyancySpeed",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "padUpTime",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "padDownTime",
+        "offset": 50,
+        "bitfield": false
+      },
+      {
+        "name": "ring_timer",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "drop_timer",
+        "offset": 54,
+        "bitfield": false
+      },
+      {
+        "name": "wake_timer",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "plunge_bubbles",
+        "offset": 58,
+        "bitfield": false
+      },
+      {
+        "name": "solidRiseTimer",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "riseTimer",
+        "offset": 62,
+        "bitfield": false
+      },
+      {
+        "name": "riseTapCnt",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "timeRiseLastPressed",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 72,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroSwing",
+    "size": "0x40",
+    "line": 5093,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pNextTarget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pTarget",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "targetScore",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "connected",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "qSwitchMe",
+        "offset": 15,
+        "bitfield": false
+      },
+      {
+        "name": "idealRadius",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "curCableLen",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "radialSpeed",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "forwardAng",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "gravity",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "firstSwingSpeed",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "alignRotSpeed",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "animScaleQueued",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "firstSwing",
+        "offset": 46,
+        "bitfield": false
+      },
+      {
+        "name": "swingElv",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "radialGain",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "radialDamp",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "radialLimit",
+        "offset": 60,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTailIdle",
+    "size": "0x50",
+    "line": 5128,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "rotOffsets",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "timers",
+        "offset": 64,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTrack",
+    "size": "0x60",
+    "line": 4596,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "idealPos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "idealRot",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "idealWallPos",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "idealWallRot",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "prevVel",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 88,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTractorBeam",
+    "size": "0x10",
+    "line": 5054,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pTarget",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "zRotOfs",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "zRotSpeed",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "xySpeed",
+        "offset": 12,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTurn",
+    "size": "0x20",
+    "line": 4927,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "idealVec",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "ideal",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "diff",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroTweaker",
+    "size": "0xb0",
+    "line": 4633,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "manip",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "target",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "trans",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "transSpeed",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "transTarget",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "joint",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "whichMoby",
+        "offset": 162,
+        "bitfield": false
+      },
+      {
+        "name": "gain",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "damp",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "scale",
+        "offset": 172,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroWalk",
+    "size": "0x30",
+    "line": 4935,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "idealTurnVec",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "iceMotionDotProduct",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "lastGroundSlope",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "idealTurnAng",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "ideal_motion",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "skateThrust",
+        "offset": 29,
+        "bitfield": false
+      },
+      {
+        "name": "long_trans",
+        "offset": 30,
+        "bitfield": false
+      },
+      {
+        "name": "qturning",
+        "offset": 31,
+        "bitfield": false
+      },
+      {
+        "name": "idealAngSet",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 36,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroWalkToPos",
+    "size": "0x30",
+    "line": 4679,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "idealPos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "idealRot",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "abortOnArrival",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "walkToTeleport",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "teleportWaitTime",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "pTeleTarget",
+        "offset": 44,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroWeaponPosRec",
+    "size": "0x100",
+    "line": 4674,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "fpGunMtx",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "tpGunMtx",
+        "offset": 128,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroWind",
+    "size": "0x20",
+    "line": 5014,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "vel",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "angy",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "angz",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 28,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "HeroZip",
+    "size": "0x50",
+    "line": 4904,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "closestPoint",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "idealVec",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "pPath",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "curNode",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "curSegLen",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "valid",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "EOPtime",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "speed",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "pathDir",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "wrap",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "ang",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "slope",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "centeringSpeed",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 76,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "MotionBlur",
+    "size": "0x150",
+    "line": 5175,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "posRing",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rotRing",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "blurAlphas",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "blurSteps",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "blurMobys",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "gapReduction",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "ringIndex",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "ringValidSize",
+        "offset": 322,
+        "bitfield": false
+      },
+      {
+        "name": "pTrackedMoby",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "blurCnt",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "active",
+        "offset": 332,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "TargetVars",
+    "size": "0x90",
+    "line": 1886,
+    "owners": [
+      "game_dl\\mobyutil.h"
+    ],
+    "header": "code/game/mobyutil.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "hitPoints",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "maxHitPoints",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "attackDamage",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "hitCount",
+        "offset": 14,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "targetHeight",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "mobyThatHurtMeLast",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "camPushDist",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "camPushHeight",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "damageCounter",
+        "offset": 36,
+        "bitfield": false
+      },
+      {
+        "name": "empTimer",
+        "offset": 38,
+        "bitfield": false
+      },
+      {
+        "name": "infectedTimer",
+        "offset": 40,
+        "bitfield": false
+      },
+      {
+        "name": "invincTimer",
+        "offset": 42,
+        "bitfield": false
+      },
+      {
+        "name": "bogeyType",
+        "offset": 44,
+        "bitfield": false
+      },
+      {
+        "name": "team",
+        "offset": 46,
+        "bitfield": false
+      },
+      {
+        "name": "lookAtMeDist",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "lookAtMePriority",
+        "offset": 49,
+        "bitfield": false
+      },
+      {
+        "name": "lookAtMeZOfsIn8ths",
+        "offset": 50,
+        "bitfield": false
+      },
+      {
+        "name": "lookAtMeJoint",
+        "offset": 51,
+        "bitfield": false
+      },
+      {
+        "name": "lookAtMeExpression",
+        "offset": 52,
+        "bitfield": false
+      },
+      {
+        "name": "lockOnPriority",
+        "offset": 53,
+        "bitfield": false
+      },
+      {
+        "name": "soundType",
+        "offset": 54,
+        "bitfield": false
+      },
+      {
+        "name": "targetRadiusIn8ths",
+        "offset": 55,
+        "bitfield": false
+      },
+      {
+        "name": "noAutoTrack",
+        "offset": 56,
+        "bitfield": false
+      },
+      {
+        "name": "trackSpeedInMps",
+        "offset": 57,
+        "bitfield": false
+      },
+      {
+        "name": "camModOverride",
+        "offset": 58,
+        "bitfield": false
+      },
+      {
+        "name": "destroyMe",
+        "offset": 59,
+        "bitfield": false
+      },
+      {
+        "name": "morphoraySpecial",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "headJoint",
+        "offset": 61,
+        "bitfield": false
+      },
+      {
+        "name": "hitByContinuous",
+        "offset": 62,
+        "bitfield": false
+      },
+      {
+        "name": "infected",
+        "offset": 63,
+        "bitfield": false
+      },
+      {
+        "name": "empFxTimer",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "weaponTargetedOnMe",
+        "offset": 65,
+        "bitfield": false
+      },
+      {
+        "name": "isOrganic",
+        "offset": 66,
+        "bitfield": false
+      },
+      {
+        "name": "bundleIndex",
+        "offset": 67,
+        "bitfield": false
+      },
+      {
+        "name": "bundleDamage",
+        "offset": 68,
+        "bitfield": false
+      },
+      {
+        "name": "firedAt",
+        "offset": 69,
+        "bitfield": false
+      },
+      {
+        "name": "weaponThatHurtMeLast",
+        "offset": 70,
+        "bitfield": false
+      },
+      {
+        "name": "invalidTarget",
+        "offset": 71,
+        "bitfield": false
+      },
+      {
+        "name": "maxDifficultySlotted",
+        "offset": 72,
+        "bitfield": false
+      },
+      {
+        "name": "curDifficultySlotted",
+        "offset": 76,
+        "bitfield": false
+      },
+      {
+        "name": "pTargettedByBogeys",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "mobyThatFiredAtMe",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "targetShadowMask",
+        "offset": 116,
+        "bitfield": false
+      },
+      {
+        "name": "damageTypes",
+        "offset": 120,
+        "bitfield": false
+      },
+      {
+        "name": "padA",
+        "offset": 124,
+        "bitfield": false
+      },
+      {
+        "name": "morphDamage",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "freezeDamage",
+        "offset": 132,
+        "bitfield": false
+      },
+      {
+        "name": "infectDamage",
+        "offset": 136,
+        "bitfield": false
+      },
+      {
+        "name": "lastDamage",
+        "offset": 140,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_GetHitMessage",
+    "size": "0x10",
+    "line": 4386,
+    "owners": [
+      "game_dl\\guber\\Hero.h"
+    ],
+    "header": "code/game/guber/Hero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "momentum",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "sequenceNum",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "hitPlayerIndex",
+        "offset": 13,
+        "bitfield": false
+      },
+      {
+        "name": "frame",
+        "offset": 14,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "tNW_PlayerStateMessage",
+    "size": "0x1c",
+    "line": 4377,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "netPlayerIndex",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "newState",
+        "offset": 1,
+        "bitfield": false
+      },
+      {
+        "name": "seqNum",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "frame",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "Hero",
+    "size": "0x2fe0",
+    "line": 5189,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "mtx",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "invMtx",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "rotSpeed",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "sphereCenter",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "missileTarget",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "cg",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "mtxFxScale",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "lastPos",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "stickInput",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "move",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "coll",
+        "offset": 464,
+        "bitfield": false
+      },
+      {
+        "name": "ground",
+        "offset": 592,
+        "bitfield": false
+      },
+      {
+        "name": "track",
+        "offset": 784,
+        "bitfield": false
+      },
+      {
+        "name": "timers",
+        "offset": 880,
+        "bitfield": false
+      },
+      {
+        "name": "hotspots",
+        "offset": 1072,
+        "bitfield": false
+      },
+      {
+        "name": "grind",
+        "offset": 1088,
+        "bitfield": false
+      },
+      {
+        "name": "zip",
+        "offset": 1344,
+        "bitfield": false
+      },
+      {
+        "name": "fireDir",
+        "offset": 1424,
+        "bitfield": false
+      },
+      {
+        "name": "lockOn",
+        "offset": 1504,
+        "bitfield": false
+      },
+      {
+        "name": "mobys",
+        "offset": 1584,
+        "bitfield": false
+      },
+      {
+        "name": "anim",
+        "offset": 1600,
+        "bitfield": false
+      },
+      {
+        "name": "joints",
+        "offset": 1632,
+        "bitfield": false
+      },
+      {
+        "name": "animLayers",
+        "offset": 2016,
+        "bitfield": false
+      },
+      {
+        "name": "tweaker",
+        "offset": 2080,
+        "bitfield": false
+      },
+      {
+        "name": "shadow",
+        "offset": 5248,
+        "bitfield": false
+      },
+      {
+        "name": "eyes",
+        "offset": 5296,
+        "bitfield": false
+      },
+      {
+        "name": "thrust",
+        "offset": 6016,
+        "bitfield": false
+      },
+      {
+        "name": "turn",
+        "offset": 6032,
+        "bitfield": false
+      },
+      {
+        "name": "attack",
+        "offset": 6064,
+        "bitfield": false
+      },
+      {
+        "name": "headIdle",
+        "offset": 6240,
+        "bitfield": false
+      },
+      {
+        "name": "tailIdle",
+        "offset": 6272,
+        "bitfield": false
+      },
+      {
+        "name": "fps",
+        "offset": 6352,
+        "bitfield": false
+      },
+      {
+        "name": "weaponPosRec",
+        "offset": 6928,
+        "bitfield": false
+      },
+      {
+        "name": "walkToPos",
+        "offset": 7184,
+        "bitfield": false
+      },
+      {
+        "name": "surf",
+        "offset": 7232,
+        "bitfield": false
+      },
+      {
+        "name": "walk",
+        "offset": 7280,
+        "bitfield": false
+      },
+      {
+        "name": "jump",
+        "offset": 7328,
+        "bitfield": false
+      },
+      {
+        "name": "ledge",
+        "offset": 7584,
+        "bitfield": false
+      },
+      {
+        "name": "tractorBeam",
+        "offset": 7648,
+        "bitfield": false
+      },
+      {
+        "name": "charge",
+        "offset": 7664,
+        "bitfield": false
+      },
+      {
+        "name": "swim",
+        "offset": 7696,
+        "bitfield": false
+      },
+      {
+        "name": "wind",
+        "offset": 7776,
+        "bitfield": false
+      },
+      {
+        "name": "fall",
+        "offset": 7808,
+        "bitfield": false
+      },
+      {
+        "name": "grapple",
+        "offset": 7840,
+        "bitfield": false
+      },
+      {
+        "name": "swing",
+        "offset": 7888,
+        "bitfield": false
+      },
+      {
+        "name": "pullShot",
+        "offset": 7952,
+        "bitfield": false
+      },
+      {
+        "name": "dynamo",
+        "offset": 8000,
+        "bitfield": false
+      },
+      {
+        "name": "quicksand",
+        "offset": 8048,
+        "bitfield": false
+      },
+      {
+        "name": "dust",
+        "offset": 8064,
+        "bitfield": false
+      },
+      {
+        "name": "command",
+        "offset": 8080,
+        "bitfield": false
+      },
+      {
+        "name": "target",
+        "offset": 8092,
+        "bitfield": false
+      },
+      {
+        "name": "motionBlur",
+        "offset": 8240,
+        "bitfield": false
+      },
+      {
+        "name": "wrenchMotionBlur",
+        "offset": 8576,
+        "bitfield": false
+      },
+      {
+        "name": "gadgets",
+        "offset": 8912,
+        "bitfield": false
+      },
+      {
+        "name": "assGadgets",
+        "offset": 9392,
+        "bitfield": false
+      },
+      {
+        "name": "prevHandPos",
+        "offset": 9424,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetGlowPos",
+        "offset": 9440,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetGlowRGBA",
+        "offset": 9568,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetGlowSize",
+        "offset": 9600,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetGlowOfs",
+        "offset": 9632,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetGlowCnt",
+        "offset": 9664,
+        "bitfield": false
+      },
+      {
+        "name": "heroSpeedAdjuster",
+        "offset": 9668,
+        "bitfield": false
+      },
+      {
+        "name": "playerPostDrawFxRegistered",
+        "offset": 9672,
+        "bitfield": false
+      },
+      {
+        "name": "playerPostPreDrawFxRegistered",
+        "offset": 9673,
+        "bitfield": false
+      },
+      {
+        "name": "playerFontDrawRegistered",
+        "offset": 9674,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 9676,
+        "bitfield": false
+      },
+      {
+        "name": "subState",
+        "offset": 9680,
+        "bitfield": false
+      },
+      {
+        "name": "stateType",
+        "offset": 9684,
+        "bitfield": false
+      },
+      {
+        "name": "previousState",
+        "offset": 9688,
+        "bitfield": false
+      },
+      {
+        "name": "previousType",
+        "offset": 9692,
+        "bitfield": false
+      },
+      {
+        "name": "previousStateTimer",
+        "offset": 9696,
+        "bitfield": false
+      },
+      {
+        "name": "prePreviousState",
+        "offset": 9700,
+        "bitfield": false
+      },
+      {
+        "name": "prePreviousType",
+        "offset": 9704,
+        "bitfield": false
+      },
+      {
+        "name": "stateHistory",
+        "offset": 9708,
+        "bitfield": false
+      },
+      {
+        "name": "stateTypeHistory",
+        "offset": 9740,
+        "bitfield": false
+      },
+      {
+        "name": "stateTimerHistory",
+        "offset": 9772,
+        "bitfield": false
+      },
+      {
+        "name": "stateHistoryLen",
+        "offset": 9804,
+        "bitfield": false
+      },
+      {
+        "name": "effectsLevel",
+        "offset": 9808,
+        "bitfield": false
+      },
+      {
+        "name": "minDistToLocalCamera",
+        "offset": 9812,
+        "bitfield": false
+      },
+      {
+        "name": "cycleFiring",
+        "offset": 9816,
+        "bitfield": false
+      },
+      {
+        "name": "gravityType",
+        "offset": 9817,
+        "bitfield": false
+      },
+      {
+        "name": "firing",
+        "offset": 9818,
+        "bitfield": false
+      },
+      {
+        "name": "clankIdleTimer",
+        "offset": 9820,
+        "bitfield": false
+      },
+      {
+        "name": "raisedGunArm",
+        "offset": 9824,
+        "bitfield": false
+      },
+      {
+        "name": "inShallowWater",
+        "offset": 9825,
+        "bitfield": false
+      },
+      {
+        "name": "invisible",
+        "offset": 9826,
+        "bitfield": false
+      },
+      {
+        "name": "hideWeapon",
+        "offset": 9827,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetsOff",
+        "offset": 9828,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetNotReady",
+        "offset": 9829,
+        "bitfield": false
+      },
+      {
+        "name": "wrenchOnly",
+        "offset": 9830,
+        "bitfield": false
+      },
+      {
+        "name": "holdingDeathAnim",
+        "offset": 9831,
+        "bitfield": false
+      },
+      {
+        "name": "hideWrench",
+        "offset": 9832,
+        "bitfield": false
+      },
+      {
+        "name": "spawnBoltsToMe",
+        "offset": 9833,
+        "bitfield": false
+      },
+      {
+        "name": "aiFollowingMe",
+        "offset": 9834,
+        "bitfield": false
+      },
+      {
+        "name": "forceWrenchSwitch",
+        "offset": 9835,
+        "bitfield": false
+      },
+      {
+        "name": "forceSwingSwitch",
+        "offset": 9836,
+        "bitfield": false
+      },
+      {
+        "name": "isLocal",
+        "offset": 9837,
+        "bitfield": false
+      },
+      {
+        "name": "inBaseHack",
+        "offset": 9838,
+        "bitfield": false
+      },
+      {
+        "name": "shieldTrigger",
+        "offset": 9839,
+        "bitfield": false
+      },
+      {
+        "name": "curSeg",
+        "offset": 9840,
+        "bitfield": false
+      },
+      {
+        "name": "handGadgetType",
+        "offset": 9841,
+        "bitfield": false
+      },
+      {
+        "name": "externalUpdate",
+        "offset": 9842,
+        "bitfield": false
+      },
+      {
+        "name": "hudGadgets",
+        "offset": 9844,
+        "bitfield": false
+      },
+      {
+        "name": "desiredGadgets",
+        "offset": 9868,
+        "bitfield": false
+      },
+      {
+        "name": "preemptedGadgets",
+        "offset": 9892,
+        "bitfield": false
+      },
+      {
+        "name": "restoreGadgetFlags",
+        "offset": 9916,
+        "bitfield": false
+      },
+      {
+        "name": "loadingGadget",
+        "offset": 9940,
+        "bitfield": false
+      },
+      {
+        "name": "hackerRemovedGadget",
+        "offset": 9944,
+        "bitfield": false
+      },
+      {
+        "name": "currIdleAnim",
+        "offset": 9948,
+        "bitfield": false
+      },
+      {
+        "name": "machineGunFire",
+        "offset": 9949,
+        "bitfield": false
+      },
+      {
+        "name": "lastHackTime",
+        "offset": 9952,
+        "bitfield": false
+      },
+      {
+        "name": "pGadgetBox",
+        "offset": 9956,
+        "bitfield": false
+      },
+      {
+        "name": "minesPendingExplode",
+        "offset": 9960,
+        "bitfield": false
+      },
+      {
+        "name": "failsafePosRing",
+        "offset": 9968,
+        "bitfield": false
+      },
+      {
+        "name": "rotZRing",
+        "offset": 10480,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetRotRing",
+        "offset": 10608,
+        "bitfield": false
+      },
+      {
+        "name": "rotZringIndex",
+        "offset": 11376,
+        "bitfield": false
+      },
+      {
+        "name": "rotZringValidSize",
+        "offset": 11380,
+        "bitfield": false
+      },
+      {
+        "name": "failsafeRingIndex",
+        "offset": 11384,
+        "bitfield": false
+      },
+      {
+        "name": "failsafeRingValidSize",
+        "offset": 11388,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetRotRingIndex",
+        "offset": 11392,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetRotRingValidSize",
+        "offset": 11396,
+        "bitfield": false
+      },
+      {
+        "name": "cameraPosRing",
+        "offset": 11400,
+        "bitfield": false
+      },
+      {
+        "name": "cameraRotRing",
+        "offset": 11432,
+        "bitfield": false
+      },
+      {
+        "name": "camRingIndex",
+        "offset": 11464,
+        "bitfield": false
+      },
+      {
+        "name": "camRingValidSize",
+        "offset": 11468,
+        "bitfield": false
+      },
+      {
+        "name": "camPos",
+        "offset": 11472,
+        "bitfield": false
+      },
+      {
+        "name": "camRot",
+        "offset": 11488,
+        "bitfield": false
+      },
+      {
+        "name": "camUMtx",
+        "offset": 11504,
+        "bitfield": false
+      },
+      {
+        "name": "queuedSounds",
+        "offset": 11552,
+        "bitfield": false
+      },
+      {
+        "name": "loopingSounds",
+        "offset": 11568,
+        "bitfield": false
+      },
+      {
+        "name": "loopingSoundMobys",
+        "offset": 11604,
+        "bitfield": false
+      },
+      {
+        "name": "SpecialIdles",
+        "offset": 11640,
+        "bitfield": false
+      },
+      {
+        "name": "specialIdleHistory",
+        "offset": 11704,
+        "bitfield": false
+      },
+      {
+        "name": "specialIdleHistoryIndex",
+        "offset": 11720,
+        "bitfield": false
+      },
+      {
+        "name": "specialIdleHistorySize",
+        "offset": 11724,
+        "bitfield": false
+      },
+      {
+        "name": "specialIdleID",
+        "offset": 11728,
+        "bitfield": false
+      },
+      {
+        "name": "firingAnim",
+        "offset": 11732,
+        "bitfield": false
+      },
+      {
+        "name": "firingGadget",
+        "offset": 11736,
+        "bitfield": false
+      },
+      {
+        "name": "desiredCam",
+        "offset": 11740,
+        "bitfield": false
+      },
+      {
+        "name": "savedLights",
+        "offset": 11744,
+        "bitfield": false
+      },
+      {
+        "name": "lightFxOn",
+        "offset": 11752,
+        "bitfield": false
+      },
+      {
+        "name": "pHeadTargetMoby",
+        "offset": 11756,
+        "bitfield": false
+      },
+      {
+        "name": "pSheepMoby",
+        "offset": 11760,
+        "bitfield": false
+      },
+      {
+        "name": "pWhoHitMe",
+        "offset": 11764,
+        "bitfield": false
+      },
+      {
+        "name": "pWhoSheepedMe",
+        "offset": 11768,
+        "bitfield": false
+      },
+      {
+        "name": "pAcidDamager",
+        "offset": 11772,
+        "bitfield": false
+      },
+      {
+        "name": "acidDamagerGadgetId",
+        "offset": 11776,
+        "bitfield": false
+      },
+      {
+        "name": "useAcidDamagerGadgetId",
+        "offset": 11780,
+        "bitfield": false
+      },
+      {
+        "name": "sheepMeLongTime",
+        "offset": 11781,
+        "bitfield": false
+      },
+      {
+        "name": "stickStrength",
+        "offset": 11784,
+        "bitfield": false
+      },
+      {
+        "name": "stickRawAngle",
+        "offset": 11788,
+        "bitfield": false
+      },
+      {
+        "name": "targetModeDelay",
+        "offset": 11792,
+        "bitfield": false
+      },
+      {
+        "name": "waterDepth",
+        "offset": 11796,
+        "bitfield": false
+      },
+      {
+        "name": "edgePath",
+        "offset": 11800,
+        "bitfield": false
+      },
+      {
+        "name": "glideDescentRate",
+        "offset": 11804,
+        "bitfield": false
+      },
+      {
+        "name": "hitPoints",
+        "offset": 11808,
+        "bitfield": false
+      },
+      {
+        "name": "boltPickupRadiusXY",
+        "offset": 11812,
+        "bitfield": false
+      },
+      {
+        "name": "boltPickupZthresh",
+        "offset": 11816,
+        "bitfield": false
+      },
+      {
+        "name": "noClank",
+        "offset": 11820,
+        "bitfield": false
+      },
+      {
+        "name": "skidDecel",
+        "offset": 11824,
+        "bitfield": false
+      },
+      {
+        "name": "mtxFxActive",
+        "offset": 11828,
+        "bitfield": false
+      },
+      {
+        "name": "analogStickStrength",
+        "offset": 11832,
+        "bitfield": false
+      },
+      {
+        "name": "deathFallChannel",
+        "offset": 11836,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpAngLimiter",
+        "offset": 11838,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpHeightFactor",
+        "offset": 11840,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpChainCnt",
+        "offset": 11841,
+        "bitfield": false
+      },
+      {
+        "name": "wallJumpDist",
+        "offset": 11844,
+        "bitfield": false
+      },
+      {
+        "name": "moonJumpIdealHeight",
+        "offset": 11848,
+        "bitfield": false
+      },
+      {
+        "name": "moonJumpGravity",
+        "offset": 11852,
+        "bitfield": false
+      },
+      {
+        "name": "chargeDoubleTapTimer",
+        "offset": 11856,
+        "bitfield": false
+      },
+      {
+        "name": "chargeDownTimer",
+        "offset": 11858,
+        "bitfield": false
+      },
+      {
+        "name": "chargeDelayTimer",
+        "offset": 11860,
+        "bitfield": false
+      },
+      {
+        "name": "tweakersReset",
+        "offset": 11862,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetFilter",
+        "offset": 11864,
+        "bitfield": false
+      },
+      {
+        "name": "gadgetFilterSize",
+        "offset": 11868,
+        "bitfield": false
+      },
+      {
+        "name": "targetGadgetFilterSize",
+        "offset": 11872,
+        "bitfield": false
+      },
+      {
+        "name": "FPS_InterpSpeed",
+        "offset": 11876,
+        "bitfield": false
+      },
+      {
+        "name": "FPS_InterpAccel",
+        "offset": 11880,
+        "bitfield": false
+      },
+      {
+        "name": "FPS_StartTime",
+        "offset": 11884,
+        "bitfield": false
+      },
+      {
+        "name": "FPSTapTimer",
+        "offset": 11888,
+        "bitfield": false
+      },
+      {
+        "name": "FPSTapCount",
+        "offset": 11889,
+        "bitfield": false
+      },
+      {
+        "name": "strafeTapTimer",
+        "offset": 11890,
+        "bitfield": false
+      },
+      {
+        "name": "strafeTapCount",
+        "offset": 11891,
+        "bitfield": false
+      },
+      {
+        "name": "lockedStrafeModeOn",
+        "offset": 11892,
+        "bitfield": false
+      },
+      {
+        "name": "lastDamagedMeOwnerUID",
+        "offset": 11896,
+        "bitfield": false
+      },
+      {
+        "name": "lastDamagedMeGadgetId",
+        "offset": 11900,
+        "bitfield": false
+      },
+      {
+        "name": "lastDamagedMeHp",
+        "offset": 11904,
+        "bitfield": false
+      },
+      {
+        "name": "restoreCamAzDir",
+        "offset": 11908,
+        "bitfield": false
+      },
+      {
+        "name": "restoreCamRotSpd",
+        "offset": 11909,
+        "bitfield": false
+      },
+      {
+        "name": "rAmb",
+        "offset": 11912,
+        "bitfield": false
+      },
+      {
+        "name": "gAmb",
+        "offset": 11916,
+        "bitfield": false
+      },
+      {
+        "name": "bAmb",
+        "offset": 11920,
+        "bitfield": false
+      },
+      {
+        "name": "lastWeaponTarget",
+        "offset": 11924,
+        "bitfield": false
+      },
+      {
+        "name": "recentTargets",
+        "offset": 11928,
+        "bitfield": false
+      },
+      {
+        "name": "lastWeaponTargetTime",
+        "offset": 11944,
+        "bitfield": false
+      },
+      {
+        "name": "getHitMessage",
+        "offset": 11948,
+        "bitfield": false
+      },
+      {
+        "name": "flashVars",
+        "offset": 11964,
+        "bitfield": false
+      },
+      {
+        "name": "isGetHitMsgPending",
+        "offset": 11980,
+        "bitfield": false
+      },
+      {
+        "name": "lookAndCrouch",
+        "offset": 11981,
+        "bitfield": false
+      },
+      {
+        "name": "lookAndThrowWrench",
+        "offset": 11982,
+        "bitfield": false
+      },
+      {
+        "name": "earlyThrowAbort",
+        "offset": 11983,
+        "bitfield": false
+      },
+      {
+        "name": "lookAndGetHit",
+        "offset": 11984,
+        "bitfield": false
+      },
+      {
+        "name": "lastDeathWasSuicide",
+        "offset": 11985,
+        "bitfield": false
+      },
+      {
+        "name": "noWeaponSwitching",
+        "offset": 11986,
+        "bitfield": false
+      },
+      {
+        "name": "noWrenchEquip",
+        "offset": 11987,
+        "bitfield": false
+      },
+      {
+        "name": "jackpotMult",
+        "offset": 11988,
+        "bitfield": false
+      },
+      {
+        "name": "rocketHitMe",
+        "offset": 11989,
+        "bitfield": false
+      },
+      {
+        "name": "explode",
+        "offset": 11990,
+        "bitfield": false
+      },
+      {
+        "name": "deathWasCalled",
+        "offset": 11991,
+        "bitfield": false
+      },
+      {
+        "name": "hudHealthTimer",
+        "offset": 11992,
+        "bitfield": false
+      },
+      {
+        "name": "pauseOn",
+        "offset": 11996,
+        "bitfield": false
+      },
+      {
+        "name": "pauseTimer",
+        "offset": 11997,
+        "bitfield": false
+      },
+      {
+        "name": "tauntOverrideTimer",
+        "offset": 12000,
+        "bitfield": false
+      },
+      {
+        "name": "playerType",
+        "offset": 12004,
+        "bitfield": false
+      },
+      {
+        "name": "flagMoby",
+        "offset": 12008,
+        "bitfield": false
+      },
+      {
+        "name": "playerConst",
+        "offset": 12012,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 12016,
+        "bitfield": false
+      },
+      {
+        "name": "pVehicle",
+        "offset": 12020,
+        "bitfield": false
+      },
+      {
+        "name": "pVehiclePending",
+        "offset": 12024,
+        "bitfield": false
+      },
+      {
+        "name": "camera",
+        "offset": 12028,
+        "bitfield": false
+      },
+      {
+        "name": "pPad",
+        "offset": 12032,
+        "bitfield": false
+      },
+      {
+        "name": "cheatX",
+        "offset": 12036,
+        "bitfield": false
+      },
+      {
+        "name": "cheatY",
+        "offset": 12040,
+        "bitfield": false
+      },
+      {
+        "name": "cheatZ",
+        "offset": 12044,
+        "bitfield": false
+      },
+      {
+        "name": "mpIndex",
+        "offset": 12048,
+        "bitfield": false
+      },
+      {
+        "name": "mpTeam",
+        "offset": 12052,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleState",
+        "offset": 12056,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleStateTimer",
+        "offset": 12060,
+        "bitfield": false
+      },
+      {
+        "name": "pointsLastKill",
+        "offset": 12064,
+        "bitfield": false
+      },
+      {
+        "name": "maxHP",
+        "offset": 12068,
+        "bitfield": false
+      },
+      {
+        "name": "pNetPlayer",
+        "offset": 12072,
+        "bitfield": false
+      },
+      {
+        "name": "newStateMessage",
+        "offset": 12076,
+        "bitfield": false
+      },
+      {
+        "name": "timeOfReceivedStateMsg",
+        "offset": 12104,
+        "bitfield": false
+      },
+      {
+        "name": "lastVehicleMoby",
+        "offset": 12108,
+        "bitfield": false
+      },
+      {
+        "name": "iLastVehicleOffTime",
+        "offset": 12112,
+        "bitfield": false
+      },
+      {
+        "name": "pLastGrindRail",
+        "offset": 12116,
+        "bitfield": false
+      },
+      {
+        "name": "closestCamDistSqr",
+        "offset": 12120,
+        "bitfield": false
+      },
+      {
+        "name": "bSphereVis",
+        "offset": 12124,
+        "bitfield": false
+      },
+      {
+        "name": "m_shortTermLinkDirtyTime",
+        "offset": 12128,
+        "bitfield": false
+      },
+      {
+        "name": "m_accumLinkDirtyTime",
+        "offset": 12132,
+        "bitfield": false
+      },
+      {
+        "name": "initialPos",
+        "offset": 12144,
+        "bitfield": false
+      },
+      {
+        "name": "initialRot",
+        "offset": 12160,
+        "bitfield": false
+      },
+      {
+        "name": "stashedWallCheckHeight",
+        "offset": 12176,
+        "bitfield": false
+      },
+      {
+        "name": "stashedWallCheckDist",
+        "offset": 12180,
+        "bitfield": false
+      },
+      {
+        "name": "stashedWallDist",
+        "offset": 12184,
+        "bitfield": false
+      },
+      {
+        "name": "lookModeTimeout",
+        "offset": 12188,
+        "bitfield": false
+      },
+      {
+        "name": "lookModeDelay",
+        "offset": 12192,
+        "bitfield": false
+      },
+      {
+        "name": "baseExperience",
+        "offset": 12196,
+        "bitfield": false
+      },
+      {
+        "name": "Experience",
+        "offset": 12200,
+        "bitfield": false
+      },
+      {
+        "name": "currentAcumXp",
+        "offset": 12204,
+        "bitfield": false
+      },
+      {
+        "name": "damageMultipler",
+        "offset": 12208,
+        "bitfield": false
+      },
+      {
+        "name": "armorLevel",
+        "offset": 12212,
+        "bitfield": false
+      },
+      {
+        "name": "limitBreakFull",
+        "offset": 12216,
+        "bitfield": false
+      },
+      {
+        "name": "limitBreakPercentage",
+        "offset": 12220,
+        "bitfield": false
+      },
+      {
+        "name": "movementSpeedModifier",
+        "offset": 12224,
+        "bitfield": false
+      },
+      {
+        "name": "grindRailWeaponLock",
+        "offset": 12228,
+        "bitfield": false
+      },
+      {
+        "name": "currArmAnim",
+        "offset": 12229,
+        "bitfield": false
+      },
+      {
+        "name": "activePadFrame",
+        "offset": 12230,
+        "bitfield": false
+      },
+      {
+        "name": "alreadyPlayedNoAmmoClick",
+        "offset": 12232,
+        "bitfield": false
+      },
+      {
+        "name": "sceneInvis",
+        "offset": 12233,
+        "bitfield": false
+      },
+      {
+        "name": "ninjaCheatActive",
+        "offset": 12234,
+        "bitfield": false
+      },
+      {
+        "name": "hadWind",
+        "offset": 12235,
+        "bitfield": false
+      },
+      {
+        "name": "pWrenchReplacement",
+        "offset": 12236,
+        "bitfield": false
+      },
+      {
+        "name": "startLimitBreakDiff",
+        "offset": 12240,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "PadStream",
+    "size": "0x1e0",
+    "line": 7203,
+    "owners": [
+      "game_dl\\guber\\PadStream.h"
+    ],
+    "header": "code/game/guber/PadStream.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "button_bits",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "analog_stick",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "right_analog_stick",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "frames_with_btn_diffs",
+        "offset": 24,
+        "bitfield": true
+      },
+      {
+        "name": "btn_bit_diffs",
+        "offset": 25,
+        "bitfield": false
+      },
+      {
+        "name": "cur_btn_bit_offset",
+        "offset": 60,
+        "bitfield": false
+      },
+      {
+        "name": "prev_frame",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "pad_stream_buf",
+        "offset": 66,
+        "bitfield": false
+      },
+      {
+        "name": "totalPadStreamBytes",
+        "offset": 468,
+        "bitfield": false
+      },
+      {
+        "name": "curFrame",
+        "offset": 472,
+        "bitfield": false
+      },
+      {
+        "name": "padStreamReady",
+        "offset": 476,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "LocalHero",
+    "size": "0x31f0",
+    "line": 7225,
+    "owners": [
+      "game_dl\\guber\\LocalHero.h"
+    ],
+    "header": "code/game/guber/LocalHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "frameSentStick",
+        "offset": 12256,
+        "bitfield": false
+      },
+      {
+        "name": "damageDone",
+        "offset": 12260,
+        "bitfield": false
+      },
+      {
+        "name": "numKills",
+        "offset": 12264,
+        "bitfield": false
+      },
+      {
+        "name": "slot",
+        "offset": 12266,
+        "bitfield": false
+      },
+      {
+        "name": "padStream",
+        "offset": 12268,
+        "bitfield": false
+      },
+      {
+        "name": "startGameButtonOffFrames",
+        "offset": 12748,
+        "bitfield": false
+      },
+      {
+        "name": "curPadMsgSequenceNum",
+        "offset": 12749,
+        "bitfield": false
+      },
+      {
+        "name": "curPadMsgFrame",
+        "offset": 12750,
+        "bitfield": false
+      },
+      {
+        "name": "framesUntilStateRot",
+        "offset": 12751,
+        "bitfield": false
+      },
+      {
+        "name": "mapTimer",
+        "offset": 12752,
+        "bitfield": false
+      },
+      {
+        "name": "lastMineId",
+        "offset": 12754,
+        "bitfield": false
+      },
+      {
+        "name": "command",
+        "offset": 12756,
+        "bitfield": false
+      },
+      {
+        "name": "pRespawnDest",
+        "offset": 12768,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CamBlenderPolarQuat",
+    "size": "0x70",
+    "line": 4131,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "orgPol",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "interpFrames",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "interpMaxInv",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "reqInterpFrames",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "fwd",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "up",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "orgQuat",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "q",
+        "offset": 96,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CamBlenderPosQuat",
+    "size": "0x60",
+    "line": 4116,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "quatInterpFac",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "quatInterpAdd",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "reqQuatInterpAdd",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "reqQuatInterpInit",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "posInterpFac",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "posInterpAdd",
+        "offset": 20,
+        "bitfield": false
+      },
+      {
+        "name": "reqPosInterpAdd",
+        "offset": 24,
+        "bitfield": false
+      },
+      {
+        "name": "reqPosInterpInit",
+        "offset": 28,
+        "bitfield": false
+      },
+      {
+        "name": "orgQuat",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "orgPos",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "q",
+        "offset": 80,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CamBlenderData",
+    "size": "0xd0",
+    "line": 4143,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "posData",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "polarData",
+        "offset": 96,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CamBlender",
+    "size": "0xe0",
+    "line": 4148,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "state",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "type",
+        "offset": 2,
+        "bitfield": false
+      },
+      {
+        "name": "reqType",
+        "offset": 3,
+        "bitfield": false
+      },
+      {
+        "name": "blendData",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraExternal",
+    "size": "0x10",
+    "line": 4170,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "move",
+        "offset": 0,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraHeroData",
+    "size": "0x160",
+    "line": 2335,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "mtx",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "pos",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "cg",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "moveActualFromExternal",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "groundGravity",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "jumpGravity",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "sphereCenter",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "fpsCamMtx",
+        "offset": 176,
+        "bitfield": false
+      },
+      {
+        "name": "fpsCamPos",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "pMoby",
+        "offset": 240,
+        "bitfield": false
+      },
+      {
+        "name": "vehicleMoby",
+        "offset": 244,
+        "bitfield": false
+      },
+      {
+        "name": "groundMoby",
+        "offset": 248,
+        "bitfield": false
+      },
+      {
+        "name": "desiredCam",
+        "offset": 252,
+        "bitfield": false
+      },
+      {
+        "name": "state",
+        "offset": 256,
+        "bitfield": false
+      },
+      {
+        "name": "stateType",
+        "offset": 260,
+        "bitfield": false
+      },
+      {
+        "name": "previousState",
+        "offset": 264,
+        "bitfield": false
+      },
+      {
+        "name": "moveSpeed",
+        "offset": 268,
+        "bitfield": false
+      },
+      {
+        "name": "moveSpeed2D",
+        "offset": 272,
+        "bitfield": false
+      },
+      {
+        "name": "groundDist",
+        "offset": 276,
+        "bitfield": false
+      },
+      {
+        "name": "groundWaterHeight",
+        "offset": 280,
+        "bitfield": false
+      },
+      {
+        "name": "groundOnGood",
+        "offset": 284,
+        "bitfield": false
+      },
+      {
+        "name": "groundOffAny",
+        "offset": 288,
+        "bitfield": false
+      },
+      {
+        "name": "groundOffGood",
+        "offset": 290,
+        "bitfield": false
+      },
+      {
+        "name": "groundMagnetic",
+        "offset": 292,
+        "bitfield": false
+      },
+      {
+        "name": "lockOnStrafing",
+        "offset": 294,
+        "bitfield": false
+      },
+      {
+        "name": "jumpFramesToLand",
+        "offset": 296,
+        "bitfield": false
+      },
+      {
+        "name": "jumpDescend",
+        "offset": 298,
+        "bitfield": false
+      },
+      {
+        "name": "critterMode",
+        "offset": 299,
+        "bitfield": false
+      },
+      {
+        "name": "multiplayer",
+        "offset": 300,
+        "bitfield": false
+      },
+      {
+        "name": "fpsActive",
+        "offset": 301,
+        "bitfield": false
+      },
+      {
+        "name": "hotSpotLava",
+        "offset": 302,
+        "bitfield": false
+      },
+      {
+        "name": "hotSpotDeathSand",
+        "offset": 303,
+        "bitfield": false
+      },
+      {
+        "name": "hotSpotQuickSand",
+        "offset": 304,
+        "bitfield": false
+      },
+      {
+        "name": "hotSpotIceWater",
+        "offset": 305,
+        "bitfield": false
+      },
+      {
+        "name": "hotSpotWater",
+        "offset": 306,
+        "bitfield": false
+      },
+      {
+        "name": "aiFollowingMe",
+        "offset": 307,
+        "bitfield": false
+      },
+      {
+        "name": "pPad",
+        "offset": 308,
+        "bitfield": false
+      },
+      {
+        "name": "pSwingTargetMoby",
+        "offset": 312,
+        "bitfield": false
+      },
+      {
+        "name": "swingForwardAng",
+        "offset": 316,
+        "bitfield": false
+      },
+      {
+        "name": "swingIdealRadius",
+        "offset": 320,
+        "bitfield": false
+      },
+      {
+        "name": "timersLedgeCamAdj",
+        "offset": 324,
+        "bitfield": false
+      },
+      {
+        "name": "ledgeWallAngZ",
+        "offset": 328,
+        "bitfield": false
+      },
+      {
+        "name": "EOPtime",
+        "offset": 332,
+        "bitfield": false
+      },
+      {
+        "name": "pPath",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "pad",
+        "offset": 340,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraStatics",
+    "size": "0xf0",
+    "line": 4087,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "heroNoJump",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "heroLastZ",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "heroLastZSpeed",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "heroUp",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "heroUpActual",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "heroUpLast",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "heroUpSpeed",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "heroLastPos",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "heroMoveVec",
+        "offset": 112,
+        "bitfield": false
+      },
+      {
+        "name": "heroMoveVec2D",
+        "offset": 128,
+        "bitfield": false
+      },
+      {
+        "name": "heroMoveVecUp",
+        "offset": 144,
+        "bitfield": false
+      },
+      {
+        "name": "heroSpeed",
+        "offset": 160,
+        "bitfield": false
+      },
+      {
+        "name": "heroSpeed2D",
+        "offset": 164,
+        "bitfield": false
+      },
+      {
+        "name": "heroSpeedUp",
+        "offset": 168,
+        "bitfield": false
+      },
+      {
+        "name": "heroLastRotZ",
+        "offset": 172,
+        "bitfield": false
+      },
+      {
+        "name": "hotspot",
+        "offset": 192,
+        "bitfield": false
+      },
+      {
+        "name": "pCamColl",
+        "offset": 196,
+        "bitfield": false
+      },
+      {
+        "name": "fadeSpeed",
+        "offset": 200,
+        "bitfield": false
+      },
+      {
+        "name": "fadeIdeal",
+        "offset": 204,
+        "bitfield": false
+      },
+      {
+        "name": "fadeTimer",
+        "offset": 208,
+        "bitfield": false
+      },
+      {
+        "name": "flashInSpeed",
+        "offset": 212,
+        "bitfield": false
+      },
+      {
+        "name": "flashOutSpeed",
+        "offset": 216,
+        "bitfield": false
+      },
+      {
+        "name": "flashIdeal",
+        "offset": 220,
+        "bitfield": false
+      },
+      {
+        "name": "flashTimer",
+        "offset": 224,
+        "bitfield": false
+      },
+      {
+        "name": "boss",
+        "offset": 228,
+        "bitfield": false
+      },
+      {
+        "name": "bossTimer",
+        "offset": 232,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "CameraWidget",
+    "size": "0x14",
+    "line": 4155,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pCam",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "semaphore",
+        "offset": 4,
+        "bitfield": false
+      },
+      {
+        "name": "closest",
+        "offset": 8,
+        "bitfield": false
+      },
+      {
+        "name": "interp",
+        "offset": 12,
+        "bitfield": false
+      },
+      {
+        "name": "preFunc",
+        "offset": 16,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "GAMECAMERA",
+    "size": "0x470",
+    "line": 4174,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "pos",
+        "offset": 0,
+        "bitfield": false
+      },
+      {
+        "name": "rot",
+        "offset": 16,
+        "bitfield": false
+      },
+      {
+        "name": "shake",
+        "offset": 32,
+        "bitfield": false
+      },
+      {
+        "name": "shakeFwd",
+        "offset": 48,
+        "bitfield": false
+      },
+      {
+        "name": "shakeTilt",
+        "offset": 64,
+        "bitfield": false
+      },
+      {
+        "name": "pCurrentUpdCam",
+        "offset": 80,
+        "bitfield": false
+      },
+      {
+        "name": "pLastUpdCam",
+        "offset": 84,
+        "bitfield": false
+      },
+      {
+        "name": "camStatics",
+        "offset": 96,
+        "bitfield": false
+      },
+      {
+        "name": "camHeroData",
+        "offset": 336,
+        "bitfield": false
+      },
+      {
+        "name": "blender",
+        "offset": 688,
+        "bitfield": false
+      },
+      {
+        "name": "uMtx",
+        "offset": 912,
+        "bitfield": false
+      },
+      {
+        "name": "bsMtx",
+        "offset": 960,
+        "bitfield": false
+      },
+      {
+        "name": "widget",
+        "offset": 1024,
+        "bitfield": false
+      },
+      {
+        "name": "external",
+        "offset": 1056,
+        "bitfield": false
+      },
+      {
+        "name": "fov",
+        "offset": 1072,
+        "bitfield": false
+      },
+      {
+        "name": "CamUnderWater",
+        "offset": 1120,
+        "bitfield": false
+      },
+      {
+        "name": "camTimer",
+        "offset": 1124,
+        "bitfield": false
+      },
+      {
+        "name": "disableBlendTimer",
+        "offset": 1128,
+        "bitfield": false
+      }
+    ]
+  },
+  {
+    "name": "RemoteHero",
+    "size": "0x3ab0",
+    "line": 21021,
+    "owners": [
+      "game_dl\\guber\\RemoteHero.h"
+    ],
+    "header": "code/game/guber/RemoteHero.h",
+    "evidence": "prototype-layout",
+    "fields": [
+      {
+        "name": "DummyCamera",
+        "offset": 12256,
+        "bitfield": false
+      },
+      {
+        "name": "RemotePad",
+        "offset": 13392,
+        "bitfield": false
+      },
+      {
+        "name": "completedEnoughUpdates",
+        "offset": 14864,
+        "bitfield": false
+      },
+      {
+        "name": "rotOutOfSyncLastUpdate",
+        "offset": 14865,
+        "bitfield": false
+      },
+      {
+        "name": "padFrameChunksReceived",
+        "offset": 14866,
+        "bitfield": false
+      },
+      {
+        "name": "posOutOfSyncLastUpdate",
+        "offset": 14867,
+        "bitfield": false
+      },
+      {
+        "name": "stateAtSyncFrame",
+        "offset": 14868,
+        "bitfield": false
+      },
+      {
+        "name": "receivedSyncPos",
+        "offset": 14880,
+        "bitfield": false
+      },
+      {
+        "name": "posAtSyncFrame",
+        "offset": 14896,
+        "bitfield": false
+      },
+      {
+        "name": "syncPosDifference",
+        "offset": 14912,
+        "bitfield": false
+      },
+      {
+        "name": "receivedSyncRot",
+        "offset": 14928,
+        "bitfield": false
+      },
+      {
+        "name": "rotAtSyncFrame",
+        "offset": 14944,
+        "bitfield": false
+      },
+      {
+        "name": "interpVel",
+        "offset": 14960,
+        "bitfield": false
+      },
+      {
+        "name": "syncRotDifference",
+        "offset": 14964,
+        "bitfield": false
+      },
+      {
+        "name": "flags",
+        "offset": 14968,
+        "bitfield": false
+      },
+      {
+        "name": "sequenceIdOfSyncData",
+        "offset": 14972,
+        "bitfield": false
+      },
+      {
+        "name": "receivedState",
+        "offset": 14976,
+        "bitfield": false
+      },
+      {
+        "name": "remoteCorrectionVel",
+        "offset": 14992,
+        "bitfield": false
+      },
+      {
+        "name": "remoteCorrectionRotVel",
+        "offset": 15008,
+        "bitfield": false
+      },
+      {
+        "name": "syncFrameOffset",
+        "offset": 15012,
         "bitfield": false
       }
     ]

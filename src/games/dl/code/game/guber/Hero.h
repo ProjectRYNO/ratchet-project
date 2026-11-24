@@ -1,8 +1,7 @@
 #ifndef GUBER_HERO_H
 #define GUBER_HERO_H
 
-// Recovered data layouts from dltypes.txt and the prototype sources.
-// Sizes/offsets use the PS2 ABI. See DOCS/types/RECOVERED_TYPES.md.
+#include "../vector.h"
 
 // dltypes.txt:4972; prototype-layout.
 typedef struct { // 0x2c
@@ -62,5 +61,12 @@ typedef struct { // 0x18
     /* 0x12 */ short int iTagFlg;
     /* 0x14 */ int netFrameTime;
 } tNW_KillDeathMessage;
+
+struct tNW_GetHitMessage { // 0x10
+	/* 0x0 */ vec3 momentum;
+	/* 0xc */ unsigned char sequenceNum;
+	/* 0xd */ signed char hitPlayerIndex;
+	/* 0xe */ signed char frame;
+};
 
 #endif

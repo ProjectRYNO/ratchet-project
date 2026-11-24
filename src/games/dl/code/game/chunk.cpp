@@ -4,8 +4,8 @@
 #include "mobyutil.h"
 
 
-int CS_RodType_Move(MobyInstance *pMoby) __asm__("CS_RodType_Move");
-int CS_BallsType_Move(MobyInstance *pMoby) __asm__("CS_BallsType_Move");
+int CS_RodType_Move(moby *pMoby) __asm__("CS_RodType_Move");
+int CS_BallsType_Move(moby *pMoby) __asm__("CS_BallsType_Move");
 
 struct ChunkVars {
 	/* 0x00 */ char unk00[0x10];
@@ -27,10 +27,10 @@ extern CollOutputDef CollOutput __asm__("CollOutput");
 /* CollOutput.push, addressed directly (lui/addiu of CollOutput + 0x30). */
 extern s128 CollOutputPush __asm__("CollOutputPush");
 int CollSphere_Fix(s128 *pos, int type, int flags, float radius) __asm__("CollSphere_Fix");
-int CS_DoCollision_Sphere(MobyInstance *pMoby) __asm__("CS_DoCollision_Sphere");
-void CS_RemoveUnusedPivots(MobyInstance *pMoby, int pivot, s128 &grav) __asm__("CS_RemoveUnusedPivots");
-void CS_RemoveRotationAroundAxis(MobyInstance *pMoby, s128 *rotVel, s128 *axis) __asm__("CS_RemoveRotationAroundAxis");
-int CS_AttachPivot(MobyInstance *pMoby, int pivot, s128 &grav) __asm__("CS_AttachPivot");
+int CS_DoCollision_Sphere(moby *pMoby) __asm__("CS_DoCollision_Sphere");
+void CS_RemoveUnusedPivots(moby *pMoby, int pivot, s128 &grav) __asm__("CS_RemoveUnusedPivots");
+void CS_RemoveRotationAroundAxis(moby *pMoby, s128 *rotVel, s128 *axis) __asm__("CS_RemoveRotationAroundAxis");
+int CS_AttachPivot(moby *pMoby, int pivot, s128 &grav) __asm__("CS_AttachPivot");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_SpawnChunk);
 
@@ -42,9 +42,9 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_BlockType_Mov
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_SphereType_Move);
 
-GAME_SECTION(CS_RodType_Move) int CS_RodType_Move(MobyInstance *pMoby) { return 1; }
+GAME_SECTION(CS_RodType_Move) int CS_RodType_Move(moby *pMoby) { return 1; }
 
-GAME_SECTION(CS_BallsType_Move) int CS_BallsType_Move(MobyInstance *pMoby) { return 1; }
+GAME_SECTION(CS_BallsType_Move) int CS_BallsType_Move(moby *pMoby) { return 1; }
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_MoveFree);
 
@@ -54,7 +54,7 @@ INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_MovePivot);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/chunk", CS_DoCollision);
 
-GAME_SECTION(CS_DoCollision_Sphere) int CS_DoCollision_Sphere(MobyInstance *pMoby)
+GAME_SECTION(CS_DoCollision_Sphere) int CS_DoCollision_Sphere(moby *pMoby)
 {
 	ChunkVars *pVar = (ChunkVars *)pMoby->pVar;
 	s128 mobyCG;
@@ -89,7 +89,7 @@ GAME_SECTION(CS_DoCollision_Sphere) int CS_DoCollision_Sphere(MobyInstance *pMob
 	return 0;
 }
 
-GAME_SECTION(CS_AttachPivot) int CS_AttachPivot(MobyInstance *pMoby, int pivot, s128 &grav)
+GAME_SECTION(CS_AttachPivot) int CS_AttachPivot(moby *pMoby, int pivot, s128 &grav)
 {
 	ChunkVars *pVar = (ChunkVars *)pMoby->pVar;
 	pVar->pivots[pVar->numPivots] = pivot;

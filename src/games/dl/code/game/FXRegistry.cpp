@@ -1,5 +1,7 @@
 #include "common.h"
 #include "game_section.h"
+#include "draw.h"
+#include "gameglobals.h"
 
 
 
@@ -67,18 +69,8 @@ extern uint64 FXRG_fogModeRegisterSettings[][4] __asm__("FXRG_fogModeRegisterSet
 void SetFogMode(FXRegistrySystemInternal *, int) __asm__("SetFogMode");
 extern uint64 FXRG_clampModeRegisterSettings[][4] __asm__("FXRG_clampModeRegisterSettings");
 extern uint64 FXRG_prepEffectsRegisterSettings[] __asm__("FXRG_prepEffectsRegisterSettings");
-struct alGsMemDef {
-	/* 0x00 */ int unk00[2];
-	/* 0x08 */ int zbuf;
-};
-extern alGsMemDef GSmem __asm__("GSmem");
-struct alViewContext {
-	/* 0x000 */ char unk000[0x250];
-	/* 0x250 */ int fogR;
-	/* 0x254 */ int fogG;
-	/* 0x258 */ int fogB;
-};
-extern alViewContext VC __asm__("VC");
+extern GSMEM GSmem __asm__("GSmem");
+extern ViewContext VC __asm__("VC");
 void SetTextureClamp(FXRegistrySystemInternal *, int) __asm__("SetTextureClamp");
 void PrepForEffectsRendering(FXRegistrySystemInternal *) __asm__("PrepForEffectsRendering");
 extern uint64 FXRG_blendModeRegisterSettings[][6] __asm__("FXRG_blendModeRegisterSettings");

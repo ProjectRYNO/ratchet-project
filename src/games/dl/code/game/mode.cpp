@@ -1,6 +1,6 @@
 #include "common.h"
 #include "game_section.h"
-#include "hero.h"
+#include "guber/LocalHero.h"
 
 
 

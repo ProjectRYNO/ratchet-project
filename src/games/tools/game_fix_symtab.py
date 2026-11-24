@@ -14,6 +14,9 @@ stay in the retained data segment. So here each .sdata definition becomes an ext
 relocations against the section move to the named symbol, the symbol becomes undefined, and the
 section is emptied. The final link then resolves it to the retail address.
 """
+import glob
+import os
+import re
 import struct
 import sys
 
@@ -69,9 +72,119 @@ def externalize_sdata(data, headers, shoff, shentsize, symtab, shstr):
     struct.pack_into('<I', data, shoff + sdata * shentsize + 20, 0)
 
 
+R_MIPS_HI16, R_MIPS_LO16 = 5, 6
+
+
+def retail_words(fn):
+    """Retail words of split function FN (as game_symbols.py reads them, .byte lines included)."""
+    paths = glob.glob('code/asm/nonmatchings/game/*/%s.s' % fn) or glob.glob('code/asm/matchings/game/*/%s.s' % fn)
+    if not paths:
+        return None
+    text = open(paths[0]).read().split('endlabel')[0]
+    words = []
+    for m in re.finditer(r'/\* [0-9A-F]+ [0-9A-F]{8} ([0-9A-F]{8}) \*/|^\s*\.byte\s+(0x[0-9A-Fa-f]+(?:\s*,\s*0x[0-9A-Fa-f]+){3})\s*$', text, re.M):
+        if m[1]:
+            w = m[1]
+            words.append(int(w[6:8] + w[4:6] + w[2:4] + w[:2], 16))
+        else:
+            b = [int(x, 16) for x in m[2].split(',')]
+            words.append(b[0] | b[1] << 8 | b[2] << 16 | b[3] << 24)
+    return words
+
+
+def label_at(address):
+    for path in sorted(glob.glob('config/symbols*.txt')) + ['build/undefined_syms_auto.txt']:
+        if os.path.exists(path):
+            for name, value in re.findall(r'^\s*(\w+)\s*=\s*(0x[0-9A-Fa-f]+)\s*;', open(path, errors='replace').read(), re.M):
+                if int(value, 16) == address:
+                    return name
+    return 'D_%X' % address
+
+
+def sext16(v):
+    return v - 0x10000 if v & 0x8000 else v
+
+
+def externalize_sdata_constants(data):
+    """Point %hi/%lo pairs at an anonymous .sdata constant to the retail label instead.
+
+    GCC puts a small initialized local array (e.g. `unsigned char v[4] = {2, 3, 4, 5};`) in .sdata as an
+    unnamed $LC and reaches it with lui/addiu against the section symbol. Retail's copy of those bytes is
+    already in the retained data at a labelled address. The address is read from the retail instructions
+    at the same word offsets, the relocations are moved to that label (a new undefined symbol the final
+    link resolves) and the instruction addends are cleared. The .sdata contents are then dropped with the
+    rest of .sdata by externalize_sdata."""
+    shoff = struct.unpack_from('<I', data, 32)[0]
+    shentsize, shnum, shstrndx = struct.unpack_from('<HHH', data, 46)
+    headers = [list(struct.unpack_from('<10I', data, shoff + i * shentsize)) for i in range(shnum)]
+    shstr = headers[shstrndx]
+
+    def name_of(h):
+        return bytes(data[shstr[4] + h[0]:data.index(0, shstr[4] + h[0])])
+    sdata = next((i for i, h in enumerate(headers) if name_of(h) == b'.sdata'), None)
+    if sdata is None:
+        return data
+    symtab = next(i for i, h in enumerate(headers) if h[1] == SHT_SYMTAB)
+    offset, size, entsize = headers[symtab][4], headers[symtab][5], headers[symtab][9]
+    section_syms = set()
+    for at in range(offset, offset + size, entsize):
+        _, _, _, info, _, shndx = struct.unpack_from('<IIIBBH', data, at)
+        if shndx == sdata and info & 0xf == 3:
+            section_syms.add((at - offset) // entsize)
+    edits = []
+    for h in headers:
+        if h[1] != SHT_REL or h[6] != symtab:
+            continue
+        target = headers[h[7]]
+        tname = name_of(target)
+        relocs = [struct.unpack_from('<II', data, at) + (at,) for at in range(h[4], h[4] + h[5], h[9])]
+        hi = None
+        for where, info, at in relocs:
+            if info >> 8 not in section_syms or info & 0xff not in (R_MIPS_HI16, R_MIPS_LO16):
+                continue
+            if not tname.startswith(b'.game_'):
+                raise SystemExit('unsupported relocation against .sdata outside a .game_ section')
+            words = retail_words(tname[6:].decode())
+            if words is None or where // 4 >= len(words):
+                raise SystemExit('no retail instruction for .sdata relocation in %s' % tname.decode())
+            if info & 0xff == R_MIPS_HI16:
+                hi = (where, at, words[where // 4] & 0xffff)
+                continue
+            if hi is None:
+                raise SystemExit('.sdata %lo without %hi in ' + tname.decode())
+            address = (hi[2] << 16) + sext16(words[where // 4] & 0xffff)
+            edits.append((label_at(address), target[4], hi[0], hi[1], where, at))
+    if not edits:
+        return data
+    # append the new undefined global symbols (after every existing one) and their names
+    strtab = headers[symtab][6]
+    names = sorted(set(e[0] for e in edits))
+    strings = bytearray(data[headers[strtab][4]:headers[strtab][4] + headers[strtab][5]])
+    symbols = bytearray(data[offset:offset + size])
+    index = {}
+    for name in names:
+        index[name] = len(symbols) // entsize
+        symbols += struct.pack('<IIIBBH', len(strings), 0, 0, 0x10, 0, 0)
+        strings += name.encode() + b'\0'
+    for name, base, hi_where, hi_at, lo_where, lo_at in edits:
+        for where, at, kind in ((hi_where, hi_at, R_MIPS_HI16), (lo_where, lo_at, R_MIPS_LO16)):
+            word = struct.unpack_from('<I', data, base + where)[0]
+            struct.pack_into('<I', data, base + where, word & 0xffff0000)
+            struct.pack_into('<I', data, at + 4, (index[name] << 8) | kind)
+    for sec, blob in ((strtab, strings), (symtab, symbols)):
+        while len(data) % 16:
+            data.append(0)
+        headers[sec][4], headers[sec][5] = len(data), len(blob)
+        data += blob
+    for i, h in enumerate(headers):
+        struct.pack_into('<10I', data, shoff + i * shentsize, *h)
+    return data
+
+
 def main():
     path = sys.argv[1]
     data = bytearray(open(path, 'rb').read())
+    data = externalize_sdata_constants(data)
     shoff = struct.unpack_from('<I', data, 32)[0]
     shentsize, shnum = struct.unpack_from('<HH', data, 46)
     headers = [list(struct.unpack_from('<10I', data, shoff + i * shentsize)) for i in range(shnum)]

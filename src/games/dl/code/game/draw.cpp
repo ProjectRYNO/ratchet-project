@@ -6,8 +6,8 @@
 
 
 struct RegisteredDrawRoutine_t {
-	/* 0x00 */ void (*drawFunc)(MobyInstance *);
-	/* 0x04 */ MobyInstance *pMoby;
+	/* 0x00 */ void (*drawFunc)(moby *);
+	/* 0x04 */ moby *pMoby;
 	/* 0x08 */ RegisteredDrawRoutine_t *pNext;
 	/* 0x0c */ RegisteredDrawRoutine_t *pTail;
 };
@@ -25,7 +25,7 @@ extern unsigned char SettingsWide[] __asm__("D_171DEB");
 unsigned char EffectDrawInProgress __asm__("EffectDrawInProgress") GAME_GP_DATA = 0;
 void CleanRegisteredDraws() __asm__("CleanRegisteredDraws");
 FrustumDef *GetFrustumDef(int) __asm__("GetFrustumDef");
-void RegisterDrawFunction(void *&, void (*)(MobyInstance *), MobyInstance *) __asm__("RegisterDrawFunction");
+void RegisterDrawFunction(void *&, void (*)(moby *), MobyInstance *) __asm__("RegisterDrawFunction");
 void ExecuteDrawFunctions(void *&) __asm__("ExecuteDrawFunctions");
 
 
@@ -158,12 +158,7 @@ struct alHudDef {
 	/* 0x1c */ alHudTex *pals;
 };
 extern alHudDef alHud __asm__("Hud");
-struct alGSmem {
-	/* 0x00 */ int unk00;
-	/* 0x04 */ int draw;
-	/* 0x08 */ int zbuf;
-};
-extern alGSmem alGSmemVar __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 void FontForceInitialize() __asm__("FontForceInitialize");
 void BuildGifTextureDma() __asm__("BuildGifTextureDma");
 void SetupGifPaging(int) __asm__("SetupGifPaging");
@@ -193,11 +188,7 @@ extern char reset_gs_regs_draw[] __asm__("reset_gs_regs_draw");
 extern unsigned long reset_gs_regs_scis[] __asm__("reset_gs_regs_scis");
 void VU1_addGSregister(unsigned int, unsigned long, bool) __asm__("VU1_addGSregister");
 void ResetGsRegisters() __asm__("ResetGsRegisters");
-struct alSceneDef {
-	/* 0x00 */ char unk00[0x74];
-	/* 0x74 */ int iframe;
-};
-extern alSceneDef Scene __asm__("Scene");
+extern SceneDef Scene __asm__("Scene");
 extern int g_easyAbort __asm__("g_easyAbort");
 extern int g_CurrentFontName __asm__("g_CurrentFontName");
 float FastCos(float) __asm__("FastCos");
@@ -212,6 +203,7 @@ struct FXRegistryDraw {
 };
 extern FXRegistryDraw FXRegDraw __asm__("FXReg");
 bool DrawSpriteFont(float, float, float, float, int, int, int, int, unsigned long, unsigned long, int) __asm__("DrawSpriteFont");
+
 
 GAME_SECTION(DrawIOPInfo) void DrawIOPInfo()
 {
@@ -422,7 +414,7 @@ GAME_SECTION(SetupGifPaging) void SetupGifPaging(int no_hud)
 	AlphaPalAdr = 0;
 	if (no_hud == 0) {
 		for (int i = 0; i < alHud.header->tex_count4; i++) {
-			if (alHud.texs[i].gsram >= alGSmemVar.draw >> 8) {
+			if (alHud.texs[i].gsram >= GSmem.draw >> 8) {
 				alHud.texs[i].gsram = 0;
 			}
 		}
@@ -543,7 +535,20 @@ GAME_SECTION(CleanRegisteredDraws) void CleanRegisteredDraws()
 	pRegistered_ScreenEffectDraws = 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", RegisterDrawFunction);
+/* NOT EXACT */
+GAME_SECTION(RegisterDrawFunction) void RegisterDrawFunction(void *&pVoidHeader, void (*drawFunc)(moby *), MobyInstance *pMoby)
+{
+	RegisteredDrawRoutine_t *&header = (RegisteredDrawRoutine_t *&)pVoidHeader;
+	if (RegisteredDrawsCount < 0x100) {
+		RegisteredDrawRoutine_t *pNewRoutine = &RegisteredDrawRoutines[RegisteredDrawsCount];
+		RegisteredDrawsCount++;
+		pNewRoutine->drawFunc = drawFunc;
+		pNewRoutine->pMoby = pMoby;
+		if (header != 0) header->pTail->pNext = pNewRoutine;
+		else header = pNewRoutine;
+		header->pTail = pNewRoutine;
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/draw", ExecuteDrawFunctions);
 

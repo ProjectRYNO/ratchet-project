@@ -30,7 +30,11 @@ typedef struct musicVolume {
 	/* 0x4e */ short playStatus;
 	/* 0x50 */ short vol0;
 	/* 0x52 */ short vol0Rate;
-	/* 0x54 */ char unk54[0x6c - 0x54];
+	/* 0x54 */ short playTransition;
+	/* 0x56 */ char unk56[2];
+	/* 0x58 */ int playQueuelen;
+	/* 0x5c */ int playRemain;
+	/* 0x60 */ char unk60[0x6c - 0x60];
 	/* 0x6c */ unsigned int speechHandle;
 	/* 0x70 */ char unk70[6];
 	/* 0x76 */ short speechStatus;
@@ -122,7 +126,29 @@ JUNK_ASM(func_00488F28,
 	"\taddiu $29, $29, 0x10\n"
 	"\tnop\n");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_PreseekTrack);
+extern "C" void snd_PlayVAGStreamByLocEx_CB(int, int, int, int, int, int, int, int, int, int, void (*)(unsigned int, unsigned long), unsigned long);
+GAME_SECTION(music_PreseekTrack) void music_PreseekTrack(int track, int flags, int vol)
+{
+	unsigned long sector_l;
+	unsigned long sector_r;
+	int offset;
+	if (musicVolume.playHandle == 0) {
+		offset = g_wad.levelaudio.bindata[track].offset;
+		if (offset) {
+			musicVolume.playHandle = 0xffffffff;
+			musicVolume.playStatus = 1;
+			musicVolume.playQueuelen = 10;
+			musicVolume.playRemain = 48000;
+			musicVolume.playFlags = flags;
+			musicVolume.playTrack = track;
+			musicVolume.playVolume = vol;
+			musicVolume.playTransition = 0;
+			sector_l = offset + g_wad.levelaudio.sector;
+			sector_r = g_wad.levelaudio.bindata[track + 1].offset + g_wad.levelaudio.sector;
+			snd_PlayVAGStreamByLocEx_CB(sector_l, sector_r, 0, 0, musicVolume.playVolume, 0, 1, 0, 0, 1, music_PreseekTrackCB, (unsigned long)(unsigned int)&musicVolume.playHandle);
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/music", music_StartTrack);
 

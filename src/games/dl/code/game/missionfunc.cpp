@@ -1,7 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "missionfunc.h"
-#include "hero.h"
+#include "guber/LocalHero.h"
 
 int mf_NewLevels __asm__("mf_NewLevels") GAME_GP_DATA = 0;
 int MF_GetNewLevelMask() __asm__("MF_GetNewLevelMask");
@@ -28,22 +28,11 @@ struct LevelChunkDef {
 	/* 0x00 */ int active_id;
 	/* 0x04 */ int unk04[4];
 };
-struct MissionStat {
-	/* 0x00 */ int xp;
-	/* 0x04 */ int bolts;
-	/* 0x08 */ unsigned char status;
-	/* 0x09 */ unsigned char rewards;
-	/* 0x0a */ char unk0a[2];
-};
-struct LevelStat {
-	/* 0x000 */ MissionStat missions[64];
-	/* 0x300 */ int unk300;
-};
 int mf_activeMissionIndex __asm__("mf_activeMissionIndex") GAME_GP_DATA = 0;
 unsigned char mf_switchMissionsInLevel1WithMenu __asm__("mf_switchMissionsInLevel1WithMenu") GAME_GP_DATA = 0;
 extern int Level __asm__("Level");
 extern LevelChunkDef LevelChunk __asm__("LevelChunk");
-extern LevelStat mf_levelStats[] __asm__("mf_levelStats");
+extern MF_LevelSave mf_levelStats[] __asm__("mf_levelStats");
 int ConvertMissionIndex(int, int) __asm__("ConvertMissionIndex");
 MissionDef *GetMissionDef(int) __asm__("GetMissionDef");
 void MF_SetupSwitchMissionIndex(int) __asm__("MF_SetupSwitchMissionIndex");
@@ -71,38 +60,61 @@ extern float boltMultiplierPerLevel[] __asm__("boltMultiplierPerLevel");
 int IsGameInChallengeMode() __asm__("IsGameInChallengeMode");
 int MF_AllocateMissionBoltReward(int, int) __asm__("MF_AllocateMissionBoltReward");
 int MF_GetDepreciatedValue(int, float, float, float, float) __asm__("MF_GetDepreciatedValue");
-static inline MissionStat *MF_GetMissionStat(int level, int missionIndex)
+static inline MF_MissionSave *MF_GetMissionStat(int level, int missionIndex)
 {
 	int l = (level - 1) % 20;
-	return (MissionStat *)((missionIndex * sizeof(MissionStat) + l * sizeof(LevelStat)) + (char *)mf_levelStats);
+	return (MF_MissionSave *)((missionIndex * sizeof(MF_MissionSave) + l * sizeof(MF_LevelSave)) + (char *)mf_levelStats);
 }
-struct MissionReward {
-	/* 0x00 */ int xp;
-	/* 0x04 */ int bolts;
-	/* 0x08 */ int unk08[2];
-};
-struct RewardDecay {
-	/* 0x00 */ int rate;
-	/* 0x04 */ int min;
-};
-struct RewardData {
-	/* 0x000 */ MissionReward mission[64];
-	/* 0x400 */ RewardDecay xpDecay;
-	/* 0x408 */ RewardDecay boltDecay;
-};
 struct RewardMoby {
 	/* 0x00 */ char unk00[0xb4];
 	/* 0xb4 */ short bolts;
 	/* 0xb6 */ unsigned short xp;
 };
-extern RewardData mf_rewardData __asm__("mf_rewardData");
+extern MF_MissionRewards mf_rewardData __asm__("mf_rewardData");
 int MF_AllocateXPReward(RewardMoby *) __asm__("MF_AllocateXPReward");
 int MF_AllocateBoltReward(RewardMoby *) __asm__("MF_AllocateBoltReward");
 static inline int *MF_GetMissionBolts(int level, int missionIndex)
 {
 	int l = (level - 1) % 20;
-	return (int *)((missionIndex * sizeof(MissionStat) + l * sizeof(LevelStat)) + (char *)&mf_levelStats[0].missions[0].bolts);
+	return (int *)((missionIndex * sizeof(MF_MissionSave) + l * sizeof(MF_LevelSave)) + (char *)&mf_levelStats[0].mission[0].bolts);
 }
+
+static inline bool MF_TestBit(int flags, int bit)
+{
+	return (flags >> bit) & 1;
+}
+static inline MF_LevelSave *MF_GetLevelStat(int level)
+{
+	return &mf_levelStats[(level - 1) % 20];
+}
+static inline bool MF_IsLevelUnlocked(int level)
+{
+	return MF_TestBit(MF_GetLevelStat(level)->status, 1);
+}
+static inline bool MF_IsLevelComplete(int level)
+{
+	return MF_TestBit(MF_GetLevelStat(level)->status, 3);
+}
+static inline bool MF_IsMissionUnlocked(int level, int missionIndex)
+{
+	return MF_TestBit(MF_GetMissionStat(level, missionIndex)->status, 0);
+}
+static inline bool MF_IsMissionComplete(int level, int missionIndex)
+{
+	return MF_TestBit(MF_GetMissionStat(level, missionIndex)->status, 1);
+}
+static inline MissionDef *MF_GetMissionDef(int level, int missionIndex)
+{
+	return GetMissionDef(ConvertMissionIndex(level, missionIndex));
+}
+void MF_UpdateLevelProgress(int) __asm__("MF_UpdateLevelProgress");
+void MF_UpdateProgress() __asm__("MF_UpdateProgress");
+bool MF_IsMissionIndexVisibleToMenu(int, int) __asm__("MF_IsMissionIndexVisibleToMenu");
+
+
+
+
+
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_SetupSwitchMissionIndex);
 
@@ -133,13 +145,74 @@ GAME_SECTION(MF_GetNewTournamentMask) int MF_GetNewTournamentMask()
 	return mf_NewTournaments;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_UpdateProgress);
+GAME_SECTION(MF_UpdateProgress) void MF_UpdateProgress()
+{
+	unsigned char vTourneyMissions[4] = { 2, 3, 4, 5 };
+	int iCurrentTournaments = 0;
+	int i;
+	int level;
+
+	for (i = 0; i < 4; i++) {
+		if (MF_IsMissionComplete(1, vTourneyMissions[i])) {
+			iCurrentTournaments |= 1 << i;
+		}
+	}
+	mf_NewLevels = 0;
+	for (level = 1; level < 16; level++) {
+		bool wasUnlocked = MF_IsLevelUnlocked(level);
+		MF_UpdateLevelProgress(level);
+		if (!wasUnlocked && MF_IsLevelUnlocked(level)) {
+			mf_NewLevels |= 1 << level;
+		}
+	}
+	MF_UpdateLevelProgress(1);
+	mf_NewTournaments = 0;
+	for (i = 0; i < 4; i++) {
+		if (!((iCurrentTournaments >> i) & 1) && MF_IsMissionComplete(1, vTourneyMissions[i])) {
+			mf_NewTournaments |= 1 << i;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_UpdateLevelProgress);
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_UpdateMissionProgress);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_IsMissionIndexVisibleToMenu);
+GAME_SECTION(MF_IsMissionIndexVisibleToMenu) bool MF_IsMissionIndexVisibleToMenu(int level, int missionIndex)
+{
+	int i;
+
+	if (!MF_IsMissionUnlocked(level, missionIndex)) {
+		return false;
+	}
+	if (level == 1 || level == 21) {
+		if (missionIndex >= 8) {
+			return false;
+		}
+		if (!MF_IsMissionComplete(level, missionIndex) && missionIndex != 0) {
+			return false;
+		}
+		if (MF_GetMissionDef(level, missionIndex)->mission_type != 0) {
+			return false;
+		}
+		for (i = 0; i < 8; i++) {
+			if (MF_IsMissionComplete(level, i) && MF_GetMissionDef(level, i)->mission_type == 0 && missionIndex < i) {
+				return false;
+			}
+		}
+		return true;
+	}
+	if (MF_IsLevelComplete(level)) {
+		return true;
+	}
+	if (MF_GetMissionDef(level, missionIndex)->mission_type != 0) {
+		return true;
+	}
+	if (MF_GetMissionStat(level, missionIndex)->completes != 0) {
+		return false;
+	}
+	return true;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_GetNextMissionIndex);
 
@@ -190,7 +263,18 @@ JUNK_ASM(func_0046B328,
 	"\taddiu $29, $29, 0x10\n"
 	"\tnop\n");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/missionfunc", MF_AllocatePointReward);
+GAME_SECTION(MF_AllocatePointReward) int MF_AllocatePointReward(int level, int missionIndex)
+{
+	int points;
+	int rewards = MF_GetMissionStat(level, missionIndex)->completes;
+	if (rewards < 3) {
+		points = MF_GetMissionDef(level, missionIndex)->point_reward;
+		points >>= rewards;
+	} else {
+		points = 0;
+	}
+	return points;
+}
 
 GAME_SECTION(MF_AllocateMissionBoltReward) int MF_AllocateMissionBoltReward(int level, int missionIndex)
 {
@@ -200,7 +284,7 @@ GAME_SECTION(MF_AllocateMissionBoltReward) int MF_AllocateMissionBoltReward(int 
 		boltReward /= 1000;
 		boltReward *= 1000;
 	} else {
-		int completes = MF_GetMissionStat(level, missionIndex)->rewards;
+		int completes = MF_GetMissionStat(level, missionIndex)->completes;
 		if (completes >= 3) boltReward = 0;
 		else if (completes) boltReward >>= completes;
 	}

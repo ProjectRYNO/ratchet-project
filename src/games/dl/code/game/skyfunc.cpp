@@ -54,7 +54,18 @@ void SkyUpdateNightSprites() __asm__("SkyUpdateNightSprites");
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", SkyInitNightSprites);
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", SkyUpdateNightSprites);
+GAME_SECTION(SkyUpdateNightSprites) void SkyUpdateNightSprites()
+{
+	int is;
+	for (is = 0; is < Sky->sprite_cnt; is++) {
+		skySprite_t *pspr = &Sky->sprites[is];
+		if (pspr->type) {
+			int v = rand() >> 16;
+			int r = (v & 0x1f00) * 0x400 - 0x202020;
+			pspr->rgba = pspr->user + r + (v & 0x1f0) * 0x40 + (v & 0x1f) * 4;
+		}
+	}
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/skyfunc", UpdateSkyShellMatrix);
 

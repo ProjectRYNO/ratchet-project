@@ -84,6 +84,73 @@ struct MobyInstance { // 0x100
 };
 typedef MobyInstance moby;
 
+struct MotionBlur { // 0x150
+	/* 0x000 */ vec4 posRing[8];
+	/* 0x080 */ vec4 rotRing[8];
+	/* 0x100 */ int blurAlphas[4];
+	/* 0x110 */ int blurSteps[4];
+	/* 0x120 */ moby *blurMobys[4];
+	/* 0x130 */ float gapReduction[4];
+	/* 0x140 */ short ringIndex;
+	/* 0x142 */ short ringValidSize;
+	/* 0x144 */ moby *pTrackedMoby;
+	/* 0x148 */ int blurCnt;
+	/* 0x14c */ int active;
+};
+
+struct TargetVars { // 0x90
+	/* 0x00 */ float hitPoints;
+	/* 0x04 */ int maxHitPoints;
+	/* 0x08 */ unsigned char attackDamage[6];
+	/* 0x0e */ short hitCount;
+	/* 0x10 */ int flags;
+	/* 0x14 */ float targetHeight;
+	/* 0x18 */ moby *mobyThatHurtMeLast;
+	/* 0x1c */ float camPushDist;
+	/* 0x20 */ float camPushHeight;
+	/* 0x24 */ short damageCounter;
+	/* 0x26 */ short empTimer;
+	/* 0x28 */ short infectedTimer;
+	/* 0x2a */ short invincTimer;
+	/* 0x2c */ short bogeyType;
+	/* 0x2e */ short team;
+	/* 0x30 */ unsigned char lookAtMeDist;
+	/* 0x31 */ unsigned char lookAtMePriority;
+	/* 0x32 */ unsigned char lookAtMeZOfsIn8ths;
+	/* 0x33 */ unsigned char lookAtMeJoint;
+	/* 0x34 */ unsigned char lookAtMeExpression;
+	/* 0x35 */ unsigned char lockOnPriority;
+	/* 0x36 */ unsigned char soundType;
+	/* 0x37 */ unsigned char targetRadiusIn8ths;
+	/* 0x38 */ unsigned char noAutoTrack;
+	/* 0x39 */ unsigned char trackSpeedInMps;
+	/* 0x3a */ unsigned char camModOverride;
+	/* 0x3b */ unsigned char destroyMe;
+	/* 0x3c */ unsigned char morphoraySpecial;
+	/* 0x3d */ unsigned char headJoint;
+	/* 0x3e */ unsigned char hitByContinuous;
+	/* 0x3f */ unsigned char infected;
+	/* 0x40 */ unsigned char empFxTimer;
+	/* 0x41 */ unsigned char weaponTargetedOnMe;
+	/* 0x42 */ unsigned char isOrganic;
+	/* 0x43 */ signed char bundleIndex;
+	/* 0x44 */ unsigned char bundleDamage;
+	/* 0x45 */ unsigned char firedAt;
+	/* 0x46 */ unsigned char weaponThatHurtMeLast;
+	/* 0x47 */ unsigned char invalidTarget;
+	/* 0x48 */ int maxDifficultySlotted;
+	/* 0x4c */ int curDifficultySlotted;
+	/* 0x50 */ moby *pTargettedByBogeys[8];
+	/* 0x70 */ moby *mobyThatFiredAtMe;
+	/* 0x74 */ int targetShadowMask;
+	/* 0x78 */ int damageTypes;
+	/* 0x7c */ int padA;
+	/* 0x80 */ float morphDamage;
+	/* 0x84 */ float freezeDamage;
+	/* 0x88 */ float infectDamage;
+	/* 0x8c */ float lastDamage;
+};
+
 struct FlashVars { // 0x10
 	/* 0x00 */ short timer;
 	/* 0x02 */ short type;

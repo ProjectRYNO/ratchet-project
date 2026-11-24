@@ -64,6 +64,12 @@ extern "C" void *memset(void *, int, unsigned int);
 extern "C" int sceGsSyncV(int);
 
 
+
+
+
+
+
+
 GAME_SECTION(InitSoundDef) void InitSoundDef(SoundDef *p_def)
 {
 	p_def->minRange = 0.0f;

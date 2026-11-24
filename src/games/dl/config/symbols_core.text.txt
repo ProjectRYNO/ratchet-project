@@ -3454,6 +3454,7 @@ sdkRpcBindSemaName = 0x00192FF8;
 sdkRpcDataSemaName = 0x00192FE8;
 sdkRpcCallSemaName = 0x00193008;
 sdkHeapEnd = 0x0016468C;
+RegisteredDrawRoutines = 0x00238540;
 CollOutputPush = 0x00239770;
 g_SandStormCreate = 0x0020C6C0;
 g_core_iop_module_queue = 0x00206DD8;

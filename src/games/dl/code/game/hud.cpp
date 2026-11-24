@@ -1,5 +1,6 @@
 #include "common.h"
 #include "game_section.h"
+#include "gameglobals.h"
 
 /* Recovered from the retail boot instructions, using names from the prototype's debug data. */
 typedef struct hudIcon {
@@ -48,12 +49,7 @@ typedef struct hudHeader {
 	/* 0x34 */ int tex_count[16];
 	/* 0x74 */ int bank_load[8];
 } hudHeader_t;
-typedef struct gsMem {
-	/* 0x00 */ char unk00[0x48];
-	/* 0x48 */ int stash_hud;
-	/* 0x4c */ char unk4c[0x100];
-} gsMem_t;
-extern gsMem_t GSmem __asm__("GSmem");
+extern GSMEM GSmem __asm__("GSmem");
 extern int *vu1_bufPtr __asm__("vu1_bufPtr");
 extern "C" void FlushCache(int);
 extern "C" int sceGsSetDefLoadImage(void *, short, short, short, short, short, short, short);

@@ -1,8 +1,8 @@
 #ifndef GUBER_LOCALHERO_H
 #define GUBER_LOCALHERO_H
 
-// Recovered data layouts from dltypes.txt and the prototype sources.
-// Sizes/offsets use the PS2 ABI. See DOCS/types/RECOVERED_TYPES.md.
+#include "RemoteHero.h"
+#include "PadStream.h"
 
 // dltypes.txt:6275; ghidra-layout.
 typedef struct { // 0x28
@@ -17,5 +17,21 @@ typedef struct { // 0x28
     /* 0x20 */ float Accel;
     /* 0x24 */ float Decel;
 } tDR_Profile;
+
+struct LocalHero : Hero { // 0x31f0
+	/* 0x2fe0 */ int frameSentStick __attribute__((aligned(16)));
+	/* 0x2fe4 */ float damageDone;
+	/* 0x2fe8 */ short numKills;
+	/* 0x2fea */ unsigned char slot;
+	/* 0x2fec */ PadStream padStream;
+	/* 0x31cc */ unsigned char startGameButtonOffFrames;
+	/* 0x31cd */ unsigned char curPadMsgSequenceNum;
+	/* 0x31ce */ unsigned char curPadMsgFrame;
+	/* 0x31cf */ unsigned char framesUntilStateRot;
+	/* 0x31d0 */ unsigned char mapTimer;
+	/* 0x31d2 */ short lastMineId;
+	/* 0x31d4 */ HeroCommand command;
+	/* 0x31e0 */ MobyInstance *pRespawnDest;
+};
 
 #endif

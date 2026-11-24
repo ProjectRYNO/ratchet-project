@@ -3,7 +3,8 @@
 
 Run in the container from anywhere. Uses a private temp dir, so parallel runs are safe. Relocated
 fields are masked, so global addresses are only proven by the full checkpoint. Retail asm is read
-from /tmp/ckroot, or GASM=<dl tree> to use a private copy.
+from /tmp/ckroot, or GASM=<dl tree> to use a private copy. A manifest slot that covers several split functions
+(a merged group of hand-written functions) is compared against their concatenated retail words, gaps as nop.
 """
 import glob, os, re, subprocess, sys, tempfile
 
@@ -19,6 +20,46 @@ def sh(cmd):
 	return subprocess.run(cmd, shell=True, capture_output=True, text=True)
 
 def retail(fn):
+	one = retail_one(fn)
+	if one is None:
+		return None
+	slot = merged_slot(fn)
+	if slot is None:
+		return one
+	start, end, members = slot
+	words = []
+	pos = start
+	for addr, name in members:
+		w, _ = retail_one(name)
+		while pos < addr:
+			words.append((0, '(gap) nop'))
+			pos += 4
+		words += w
+		pos += len(w) * 4
+	return words, one[1]
+
+_slots = None
+
+def merged_slot(fn):
+	global _slots
+	if _slots is None:
+		_slots = {}
+		text = open(ROOT + '/config/decompiled_functions.yaml').read()
+		for m in re.finditer(r'object: (game/[\w/]+), section: \.game_(\w+), start: (0x[0-9A-Fa-f]+), end: (0x[0-9A-Fa-f]+)', text):
+			_slots[m[2]] = (m[1], int(m[3], 16), int(m[4], 16))
+	if fn not in _slots:
+		return None
+	obj, start, end = _slots[fn]
+	members = []
+	for p in glob.glob(ROOT + '/code/asm/nonmatchings/' + obj + '/*.s'):
+		m = re.search(r'/\* [0-9A-F]+ ([0-9A-F]{8}) [0-9A-F]{8} \*/', open(p).read())
+		if m and start <= int(m[1], 16) < end:
+			members.append((int(m[1], 16), os.path.basename(p)[:-2]))
+	if len(members) < 2:
+		return None
+	return start, end, sorted(members)
+
+def retail_one(fn):
 	paths = glob.glob(ROOT + '/code/asm/nonmatchings/game/**/%s.s' % fn, recursive=True) or glob.glob(ROOT + '/code/asm/matchings/game/**/%s.s' % fn, recursive=True)
 	if not paths:
 		return None

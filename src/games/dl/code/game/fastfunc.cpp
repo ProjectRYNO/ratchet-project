@@ -7,6 +7,14 @@ void FastMulQuats(void) __asm__("FastMulQuats");
 
 
 
+
+
+
+
+
+
+
+
 GAME_SECTION(FastMulQuats) void FastMulQuats(void)
 {
 	__asm__ volatile(

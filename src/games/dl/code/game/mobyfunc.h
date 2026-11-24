@@ -38,4 +38,17 @@ struct MobyClass { // 0x50
 	/* 0x48 */ MobySeq *seqs[0];
 };
 
+struct Manipulator { // 0x40
+	/* 0x00 */ unsigned char animJoint;
+	/* 0x01 */ unsigned char state;
+	/* 0x02 */ signed char scaleOn;
+	/* 0x03 */ unsigned char absolute;
+	/* 0x04 */ int jointId;
+	/* 0x08 */ Manipulator *pChain;
+	/* 0x0c */ float interp;
+	/* 0x10 */ quat q;
+	/* 0x20 */ vec4 scale;
+	/* 0x30 */ vec4 trans;
+};
+
 #endif

@@ -20,23 +20,37 @@ are in `vector.h`. Layouts come from `dltypes.txt`. `game_round.sh` prints `DUPL
 | `gameglobals.h` | `fsAABuff`, `GSMEM`, `SpaceDef`, `sceCdCLOCK`, `HelpDatum`, `MISSIONLOAD`, `GadgetCache`, `StashInfo`, `tNW_Info`, `_HeroSave`, `FontKerning`, `FontFileHeader`, `GameSettings`, `generalStatStruct`, `siegeMatchStatStruct`, `deadMatchStatStruct`, `cameraMode`, `tTeamStats`, `LobbyControllerSetup` |
 | `globals.h` | `QueueNode`, `MovieQueue`, `tTriMode`, `MEMSLOTS` |
 | `group_control.h` | `GC_EnemyAttackInformation` |
+| `guber/Gadget.h` | `GadgetPrice`, `GadgetLevelDef`, `GadgetMegaLevelInfo` |
+| `guber/GadgetBox.h` | `ModPrices` |
+| `guber/GameController.h` | `DeathMatchGameData`, `tNW_GameStateMessage` |
+| `guber/GuberMoby.h` | `Gid`, `Guber` |
+| `guber/Hero.h` | `tNW_GetHitMessage`, `HeroAttackDef`, `HeroPlayerConstants`, `tNW_KillDeathMessage` |
+| `guber/LevelBox.h` | `UnlockData`, `RewardData`, `VendorData` |
+| `guber/LocalHero.h` | `tDR_Profile` |
+| `guber/PadStream.h` | `PadStream`, `pad_frame` |
+| `guber/RemoteHero.h` | `Gadget`, `HeroAnim`, `HeroAnimLayers`, `HeroAttack`, `HeroCharge`, `HeroColl`, `HeroCommand`, `HeroDust`, `HeroDynamo`, `HeroEyes`, `HeroFall`, `HeroFireDir`, `FpsCamVars`, `HeroFps`, `HeroGrapple`, `HeroGrind`, `HeroGround`, `HeroHeadIdle`, `HeroHotspots`, `HeroJoints`, `HeroJumpNonParab`, `HeroJump`, `HeroLedge`, `HeroLockOn`, `HeroMobys`, `HeroMove`, `HeroPullShot`, `HeroQueuedSound`, `HeroQuickSand`, `HeroShadow`, `HeroSpecialIdleDef`, `HeroSurf`, `HeroSwim`, `HeroSwing`, `HeroTailIdle`, `HeroThrust`, `HeroTimers`, `HeroTrack`, `HeroTractorBeam`, `HeroTurn`, `HeroTweaker`, `HeroWalk`, `HeroWalkToPos`, `HeroWeaponPosRec`, `HeroWind`, `HeroZip`, `tNW_PlayerStateMessage`, `CamBlenderPolarQuat`, `CamBlenderPosQuat`, `CamBlenderData`, `CamBlender`, `CameraExternal`, `CameraFov`, `CameraHeroData`, `CameraStatics`, `CameraWidget`, `GAMECAMERA` |
+| `guber/Vehicle.h` | `tNW_VehiclePosRotUpdateMessage` |
+| `gui/graphicObjects.h` | `Channel4f` |
 | `help.h` | `HelpMsg`, `HelpDef` |
-| `hero.h` | `Hero` |
 | `influence.h` | `IM_LoadBalancer`, `IM_PointList`, `IM_SectorCover` |
 | `iopload.h` | `datablock` |
 | `lights.h` | `PointLight`, `PL_Data` |
 | `loaders.h` | `PifHeader` |
 | `mathutil.h` | `MathUtilities` |
 | `memcard.h` | `memcard_saveinfo`, `memcard_data`, `memcard_globals` |
-| `missionfunc.h` | `MissionDef` |
+| `missionfunc.h` | `MF_MissionSave`, `MF_LevelSave`, `MissionDef`, `MF_MissionRewardData`, `MF_MissionDepreciationData`, `MF_MissionRewards` |
 | `mobyanim_c.h` | `MobySeq` |
-| `mobyfunc.h` | `MobyClass` |
+| `mobyfunc.h` | `MobyClass`, `Manipulator` |
 | `mobyupd.h` | `mobyfuncs`, `mobyVtblEntry` |
-| `mobyutil.h` | `MobyInstance`, `FlashVars`, `_2legAnim`, `BotAbility`, `SubVars`, `moby` |
+| `mobyutil.h` | `MobyInstance`, `MotionBlur`, `TargetVars`, `FlashVars`, `_2legAnim`, `BotAbility`, `SubVars`, `moby` |
 | `navsyslocal.h` | `EffectorVars` |
+| `network/nw.h` | `tNW_DownloadedTweaks`, `tNW_PlayerInfoStats`, `tReservations` |
+| `network/nwObjects.h` | `tGadgetConstants`, `tChecksumConstants` |
 | `npc.h` | `npcStep` |
 | `pad.h` | `PAD` |
 | `path.h` | `Path` |
+| `projectgui/guimain.h` | `MPTeamData_s` |
+| `projectgui/projectgui.h` | `HudState_State` |
 | `sound.h` | `SoundDef`, `SoundData`, `SoundGlobals` |
 | `stash.h` | `StashBlock` |
 | `stats.h` | `ST_SkillPointInfo` |
@@ -45,6 +59,11 @@ are in `vector.h`. Layouts come from `dltypes.txt`. `game_round.sh` prints `DUPL
 | `tfragfunc.h` | `TfragPatch` |
 | `tiefunc.h` | `TieInstance`, `TieLod` |
 | `ubersound.h` | `UberSound` |
+| `update/moby167.h` | `Part074_fixed` |
+| `update/moby4244.h` | `Weapon_ThirdPerson` |
+| `update/moby4249.h` | `tNW_ShotSpawnMessage` |
+| `update/moby8454.h` | `M8454_WhipParameters` |
+| `update/moby9738.h` | `FXU_DistortionShellStyle_t` |
 | `update_core.h` | `binblock` |
 | `vector.h` | `vec4`, `vec2`, `vec3`, `quat`, `vec4f`, `mtx4`, `mtx3`, `BSphere`, `qword` |
 | `vendor.h` | `VendorItem` |

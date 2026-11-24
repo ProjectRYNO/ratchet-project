@@ -114,7 +114,20 @@ void Camera_UpdateFov(int) __asm__("Camera_UpdateFov");
 
 void Camera_CopyLastQuatToPolar(int) __asm__("Camera_CopyLastQuatToPolar");
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_InitFovSystem);
+GAME_SECTION(Camera_InitFovSystem) void Camera_InitFovSystem(int cameraIndex)
+{
+	GameCameraData *gameCam = &GameCamera[cameraIndex];
+	gameCam->polar.fovState = 0;
+	gameCam->polar.fovIdeal = 1.1100293f;
+	gameCam->polar.fovActual = 1.1100293f;
+	float hTheta = 0.55501467f;
+	VC.xratio = FastSin(hTheta) / FastCos(hTheta);
+	UpdateViewContext();
+	gameCam->polar.fovGain = 0.005f;
+	gameCam->polar.fovDamp = 0.2f;
+	gameCam->polar.fovSpeed = 0.0f;
+	gameCam->polar.fovLimit = 0.0f;
+}
 
 INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/camera", Camera_SetFov);
 

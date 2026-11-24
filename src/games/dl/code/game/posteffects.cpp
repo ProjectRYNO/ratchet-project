@@ -159,6 +159,14 @@ extern int g_SandStormCreateSize __asm__("g_SandStormCreateSize");
 extern int g_pSandStormTexOrTemp1 __asm__("g_pSandStormTexOrTemp1");
 void PostEffects_BlurOnce256(unsigned long **, int, int) __asm__("PostEffects_BlurOnce256");
 
+
+
+
+
+
+
+
+
 GAME_SECTION(PostEffects_LocalAlloc) int PostEffects_LocalAlloc(int &loc, int size)
 {
 	int ret = (loc + 0x1fff) & -0x2000;

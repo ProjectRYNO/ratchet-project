@@ -49,17 +49,8 @@ struct ST_MissionData {
 	/* 0x1c */ int iSkillPoints;
 	/* 0x20 */ int unk20[21];
 };
-struct MissionProgress {
-	/* 0x00 */ char unk00[0xa];
-	/* 0x0a */ unsigned char stars;
-	/* 0x0b */ char unk0b;
-};
-struct LevelProgress {
-	/* 0x000 */ MissionProgress missions[0x40];
-	/* 0x300 */ int unk300;
-};
 extern ST_MissionData ST_MissionStatistics __asm__("D_MISSIONSTATS");
-extern LevelProgress LevelProgressTable[] __asm__("mf_levelStats");
+extern MF_LevelSave mf_levelStats[] __asm__("mf_levelStats");
 extern int mf_missionStatus __asm__("mf_missionStatus");
 extern int worldUpdateTime __asm__("worldUpdateTime");
 int FUN_004fce78(int, int *, int *) __asm__("FUN_004fce78");
@@ -152,11 +143,11 @@ GAME_SECTION(ST_GetNumDifficultyStars) int ST_GetNumDifficultyStars()
 	int i, j;
 	for (i = 1; i < 0x10; i++) {
 		for (j = 0; j < 0x40; j++) {
-			if ((&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars - 1 < 0) continue;
+			if ((&mf_levelStats[(i - 1) % 0x14].mission[j])->difficulty - 1 < 0) continue;
 			if (GetMissionDef(ConvertMissionIndex(i, j))->visibility_type) continue;
 			if ((i == 1 || i == 0x15) && j < 9) continue;
 			{
-				int stars = (&LevelProgressTable[(i - 1) % 0x14].missions[j])->stars;
+				int stars = (&mf_levelStats[(i - 1) % 0x14].mission[j])->difficulty;
 				stars += totalStars;
 				totalStars = stars;
 			}

@@ -10,7 +10,7 @@
 
 
 struct Moby2dCon {
-	/* 0x00 */ MobyInstance *mobys[8];
+	/* 0x00 */ moby *mobys[8];
 	/* 0x20 */ int active;
 	/* 0x24 */ int screen_ofs_x;
 	/* 0x28 */ int screen_ofs_y;
@@ -32,7 +32,7 @@ void InitMobyClassDists() __asm__("InitMobyClassDists");
 int MobyCornExists(MobyInstance *, int) __asm__("MobyCornExists");
 void StashMobyClassDists() __asm__("StashMobyClassDists");
 void RestoreMobyClassDists() __asm__("RestoreMobyClassDists");
-MobyInstance *Moby2dGetPtr(int) __asm__("Moby2dGetPtr");
+moby *Moby2dGetPtr(int) __asm__("Moby2dGetPtr");
 void Moby2dReset() __asm__("Moby2dReset");
 void Moby2dDelete(int) __asm__("Moby2dDelete");
 void *MobyGetInterface(int, int, int) __asm__("MobyGetInterface___dupe2");
@@ -66,7 +66,7 @@ void DmaMobyTextures() __asm__("DmaMobyTextures");
 void ProcessMobyShadows() __asm__("ProcessMobyShadows");
 void ProcessMobyTeamTexs() __asm__("ProcessMobyTeamTexs");
 void DrawMobysSetup() __asm__("DrawMobysSetup");
-void *MobyProc(MobyInstance *, void *, long, int) __asm__("FUN_00470bf0");
+void *MobyProc(moby *, void *, long, int) __asm__("FUN_00470bf0");
 void SetMobyLights(moby *, int, int, int, int) __asm__("SetMobyLights");
 void *SetupMobyVars(int, void *) __asm__("SetupMobyVars");
 void ProcessMobyAnimData() __asm__("ProcessMobyAnimData");
@@ -78,11 +78,6 @@ void CollSphereFail(void *) __asm__("CollSphereFail");
 void Moby2dSetWindow(int, int, int, int) __asm__("Moby2dSetWindow");
 void SetMobyLightDefault(moby *) __asm__("SetMobyLightDefault");
 
-struct Manipulator {
-	/* 0x00 */ char unk00[8];
-	/* 0x08 */ Manipulator *pChain;
-	/* 0x0c */ char unk0c[0x34];
-};
 extern int MobyShadowList[2] __asm__("MobyShadowList");
 extern int MobyShadowCnt __asm__("MobyShadowCnt");
 void ShadowBuildPrimList(void *, int) __asm__("ShadowBuildPrimList");
@@ -105,16 +100,16 @@ MobyInstance *CreateMoby(int mClass, int var_size) __asm__("CreateMoby");
 extern char *MobyVars __asm__("MobyVars");
 extern int MobyVarsBlockCnt __asm__("MobyVarsBlockCnt");
 void FreeMobyVar(void *) __asm__("FreeMobyVar");
-void UpdateMobyGrids(MobyInstance *, int) __asm__("UpdateMobyGrids");
+void UpdateMobyGrids(moby *, int) __asm__("UpdateMobyGrids");
 void JointCacheMarkDeleted(MobyInstance *) __asm__("JointCacheMarkDeleted");
 void CleanupAnimLayers(MobyInstance *) __asm__("CleanupAnimLayers");
-int MobyDynamicGroup_RemoveMoby(int, MobyInstance *) __asm__("MobyDynamicGroup_RemoveMoby");
+int MobyDynamicGroup_RemoveMoby(int, moby *) __asm__("MobyDynamicGroup_RemoveMoby");
 extern int g_gameType __asm__("g_gameType");
-int GB_IsMobyAHero(MobyInstance *) __asm__("GB_IsMobyAHero");
+int GB_IsMobyAHero(moby *) __asm__("GB_IsMobyAHero");
 SoundData *sound_GetChannelFromHandle(short) __asm__("sound_GetChannelFromHandle");
 void sound_Kill(int) __asm__("sound_Kill");
-short sound_MobyPlay(unsigned int, unsigned int, MobyInstance *) __asm__("sound_MobyPlay");
-static inline int sound_IsMobyPlaying(MobyInstance *pMoby)
+short sound_MobyPlay(unsigned int, unsigned int, moby *) __asm__("sound_MobyPlay");
+static inline int sound_IsMobyPlaying(moby *pMoby)
 {
 	int ret = 0;
 	SoundData *channel = sound_GetChannelFromHandle(pMoby->soundChannel);
@@ -154,9 +149,16 @@ void GetMobyBangleStats(MobyInstance *pMoby, int &bangle_bits, int &bangle_cnt) 
 
 
 
+
+
+
+
+
+
+
 GAME_SECTION(CreateMoby) MobyInstance *CreateMoby(int mClass, int var_size)
 {
-	MobyInstance *pMoby = MobyInstancePermEnd;
+	moby *pMoby = MobyInstancePermEnd;
 	if (pMoby < MobyInstanceEnd) {
 		do {
 			if (pMoby->state >= 0xfe && (unsigned int)worldUpdateTime >= (unsigned int)pMoby->collCnt) {
@@ -417,7 +419,7 @@ JUNK_ASM(func_0046D488,
 	"\tsw $0, 0x0($3)\n"
 	"\tnop\n");
 
-GAME_SECTION(MobyDynamicGroup_RemoveMoby) int MobyDynamicGroup_RemoveMoby(int iGroup, MobyInstance *pRemoveMoby)
+GAME_SECTION(MobyDynamicGroup_RemoveMoby) int MobyDynamicGroup_RemoveMoby(int iGroup, moby *pRemoveMoby)
 {
 	int iMemberIndex;
 	short *pDynamicGroup;
@@ -493,7 +495,7 @@ GAME_SECTION(Moby2dDelete) void Moby2dDelete(int id)
 	}
 }
 
-GAME_SECTION(Moby2dGetPtr) MobyInstance *Moby2dGetPtr(int id)
+GAME_SECTION(Moby2dGetPtr) moby *Moby2dGetPtr(int id)
 {
 	VU0_loadMicroProgram(_dma_1);
 	return g_Moby2dCon.mobys[id];

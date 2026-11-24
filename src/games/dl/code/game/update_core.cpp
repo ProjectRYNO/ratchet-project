@@ -1,6 +1,7 @@
 #include "common.h"
 #include "game_section.h"
 #include "globals.h"
+#include "gameglobals.h"
 struct binblock;
 struct UberSound;
 
@@ -8,11 +9,6 @@ typedef struct restartData {
 	/* 0x00 */ int flag;
 	/* 0x04 */ char unk04[0x100];
 } restartData_t;
-typedef struct spaceData {
-	/* 0x00 */ char unk00[8];
-	/* 0x08 */ short restart;
-	/* 0x0a */ char unk0a[0x100];
-} spaceData_t;
 typedef struct soundDataView {
 	/* 0x00 */ char unk00[0x43];
 	/* 0x43 */ unsigned char reverb_changed;
@@ -21,7 +17,7 @@ typedef struct soundDataView {
 
 extern restartData_t restartData __asm__("D_171B2C");
 void *mpeg_malloc(unsigned int size, unsigned int align) __asm__("mpeg_malloc");
-extern spaceData_t Space __asm__("Space");
+extern SpaceDef Space __asm__("Space");
 extern int g_easyAbort __asm__("g_easyAbort");
 void SwitchToLevel(int, int, int) __asm__("SwitchToLevel");
 extern void (*SceneEndFunc)(void *) __asm__("SceneEndFunc");
@@ -130,7 +126,7 @@ JUNK_ASM(func_004E5548,
 GAME_SECTION(RestartGame) void RestartGame()
 {
 	int one = 1;
-	Space.restart = one;
+	Space.first_entry = one;
 	restartData.flag = one;
 	g_easyAbort = one;
 	SwitchToLevel(1, 1, -1);

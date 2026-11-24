@@ -79,6 +79,29 @@ def inventory(game, original, rebuilt):
                          slot_match='nonmatching' if changed else 'matching', differing_bytes=changed,
                          test_scope=scope, question='Match compiler output and slot padding.' if changed else
                          'Slot bytes match; retain ABI checks and test in-game.'))
+    # A slot covering several split functions holds one merged group of hand-written functions (they branch
+    # into each other); its later members are entered by label inside the first member's section.
+    by_name = {(row['source'], row['name']): row for row in rows if row['implementation'] == 'compiled'}
+    for obj, entry in manifest['objects'].items():
+        asm = game / 'code/asm/nonmatchings' / obj
+        if not asm.is_dir():
+            continue
+        split = []
+        for path in asm.glob('*.s'):
+            m = re.search(r'/\* [0-9A-F]+ ([0-9A-F]{8}) [0-9A-F]{8} \*/', path.read_text(errors='replace'))
+            if m:
+                split.append((int(m[1], 16), path.stem))
+        for slot in entry.get('slots', []):
+            members = sorted(x for x in split if slot['start'] <= x[0] < slot['end'])
+            if len(members) < 2:
+                continue
+            first = next((r for (src, name), r in by_name.items() if name == members[0][1] and int(r['address'], 16) == slot['start']), None)
+            if first is None:
+                continue
+            for address, name in members[1:]:
+                rows.append(dict(first, name=name, address='0x%08X' % address, implementation='compiled (merged slot)',
+                                 compiled_size='', differing_bytes=first['differing_bytes'],
+                                 test_scope='in merged slot of ' + first['name'] + '; ' + first['test_scope']))
     keys = set()
     for row in rows:
         key = row['source'] + ':' + row['name']
@@ -109,7 +132,7 @@ def main():
     summary = dict(generated_utc=datetime.now(timezone.utc).isoformat(), game=args.game,
                    original_sha256=sha256(original), rebuilt_sha256=sha256(rebuilt),
                    source_functions=len(rows), assembly=sum(r['implementation']=='assembly' for r in rows),
-                   compiled=sum(r['implementation']=='compiled' for r in rows),
+                   compiled=sum(r['implementation'].startswith('compiled') for r in rows),
                    matching_slots=sum(r['slot_match']=='matching' for r in rows),
                    nonmatching_slots=sum(r['slot_match']=='nonmatching' for r in rows),
                    scope='Source INCLUDE_ASM entries and manifest replacements only; not a complete retail symbol inventory. Test scope names suites, not proof of a new run.')

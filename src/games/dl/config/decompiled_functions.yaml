@@ -94,6 +94,16 @@ functions:
   sbrk: 0x00127298
   sceGsExecStoreImage: 0x001392B0
   sceGsSyncPath: 0x00131A08
+  SkyUpdateNightSprites: 0x004DEAE0
+  music_PreseekTrack: 0x00488F30
+  MF_AllocatePointReward: 0x0046B330
+  LoadAsync: 0x00163840
+  Camera_InitFovSystem: 0x0043A068
+  csf_checking_save: 0x00465178
+  RegisterDrawFunction: 0x004493E8
+  BootElf: 0x0045F498
+  MF_IsMissionIndexVisibleToMenu: 0x0046AAC0
+  MF_UpdateProgress: 0x0046A360
   TransitionPre_Multiplayer: 0x0054B378
   MB_GetBestAnimSlow: 0x00487B00
   SlideDelt___dupe2: 0x00475858
@@ -3145,6 +3155,51 @@ functions:
   cbFormatPhoneNumber: 0x01E9AE30
 
   ezNetCtlRecreateIfstat: 0x01E9AE48
+  DmaToSpr: 0x004697C0
+  DmaToSprSync: 0x00469800
+  DmaFromSpr: 0x00469840
+  InitDma: 0x004698D8
+  BuildGifTextureDma: 0x00469968
+  FastDecompress: 0x00469C40
+  func_0046A0F8: 0x0046A0F8
+  func_0046A110: 0x0046A110
+  func_0046A138: 0x0046A138
+  func_0046A168: 0x0046A168
+  func_0046A178: 0x0046A178
+  func_0046A188: 0x0046A188
+  func_0046A198: 0x0046A198
+  func_0046A1C0: 0x0046A1C0
+  func_0046A200: 0x0046A200
+  func_0046A228: 0x0046A228
+  func_0046A248: 0x0046A248
+  func_0046A268: 0x0046A268
+  InitQSTBuffer: 0x0046DAF8
+  AnimGetSubskeleton: 0x0046DB50
+  AnimPreprocessSubskeleton: 0x0046DB80
+  AnimDecompInterp: 0x0046DC80
+  AnimResolveMats: 0x0046E0E0
+  AnimPrepareBindMats: 0x0046E2F0
+  ProcessAnimLayers: 0x0046E470
+  UpdateMobyAnim: 0x0046E728
+  AnimCachePose: 0x0046E810
+  AnimDecompCached: 0x0046E8A0
+  AnimDecompBlendCached: 0x0046E8A8
+  ShadowBuildPrimList: 0x004DD548
+  ShadowCreatePillVolume: 0x004DD820
+  ShadowProjectPoints: 0x004DD9F0
+  ShadowProjectPointsClipped: 0x004DDA50
+  ShadowSetupMatrices: 0x004DDAF8
+  ShadowSetupVectors: 0x004DDBB8
+  ShadowTransformPointsWorldToScreenWithBFC: 0x004DDC68
+  ShadowTransformPointsWorldToFrustum: 0x004DDD70
+  ShadowTransformPointsFrustumToScreenWithBFC: 0x004DDE28
+  ShadowTransformPointsFrustumToScreen: 0x004DDF18
+  ShadowBackfaceCullingTB: 0x004DDF90
+  ShadowBackfaceCullingClipped: 0x004DDFE8
+  ShadowDrawVolume: 0x004DE0D0
+  ShadowDrawVolumeClipped: 0x004DE210
+  ShadowCapVolume: 0x004DE3B0
+  ShadowClipPolyNoNear: 0x004DE628
 
 objects:
   sdk/mtap/libmtap:
@@ -5722,6 +5777,63 @@ objects:
     text_end: 0x001599F4
     slots:
       - {object: game/permcb, section: .game_vsync_callback, start: 0x001599A8, end: 0x001599F4}
+  game/miscproc:
+    text_start: 0x004697C0
+    text_end: 0x0046A274
+    slots:
+      - {object: game/miscproc, section: .game_DmaToSpr, start: 0x004697C0, end: 0x00469800}
+      - {object: game/miscproc, section: .game_DmaToSprSync, start: 0x00469800, end: 0x00469840}
+      - {object: game/miscproc, section: .game_DmaFromSpr, start: 0x00469840, end: 0x004698D8}
+      - {object: game/miscproc, section: .game_InitDma, start: 0x004698D8, end: 0x00469968}
+      - {object: game/miscproc, section: .game_BuildGifTextureDma, start: 0x00469968, end: 0x00469C40}
+      - {object: game/miscproc, section: .game_FastDecompress, start: 0x00469C40, end: 0x0046A0F8}
+      - {object: game/miscproc, section: .game_func_0046A0F8, start: 0x0046A0F8, end: 0x0046A110}
+      - {object: game/miscproc, section: .game_func_0046A110, start: 0x0046A110, end: 0x0046A138}
+      - {object: game/miscproc, section: .game_func_0046A138, start: 0x0046A138, end: 0x0046A168}
+      - {object: game/miscproc, section: .game_func_0046A168, start: 0x0046A168, end: 0x0046A178}
+      - {object: game/miscproc, section: .game_func_0046A178, start: 0x0046A178, end: 0x0046A188}
+      - {object: game/miscproc, section: .game_func_0046A188, start: 0x0046A188, end: 0x0046A198}
+      - {object: game/miscproc, section: .game_func_0046A198, start: 0x0046A198, end: 0x0046A1C0}
+      - {object: game/miscproc, section: .game_func_0046A1C0, start: 0x0046A1C0, end: 0x0046A200}
+      - {object: game/miscproc, section: .game_func_0046A200, start: 0x0046A200, end: 0x0046A228}
+      - {object: game/miscproc, section: .game_func_0046A228, start: 0x0046A228, end: 0x0046A248}
+      - {object: game/miscproc, section: .game_func_0046A248, start: 0x0046A248, end: 0x0046A268}
+      - {object: game/miscproc, section: .game_func_0046A268, start: 0x0046A268, end: 0x0046A274}
+  game/mobyanim:
+    text_start: 0x0046DAF8
+    text_end: 0x0046E9E8
+    slots:
+      - {object: game/mobyanim, section: .game_InitQSTBuffer, start: 0x0046DAF8, end: 0x0046DB50}
+      - {object: game/mobyanim, section: .game_AnimGetSubskeleton, start: 0x0046DB50, end: 0x0046DB80}
+      - {object: game/mobyanim, section: .game_AnimPreprocessSubskeleton, start: 0x0046DB80, end: 0x0046DC80}
+      - {object: game/mobyanim, section: .game_AnimDecompInterp, start: 0x0046DC80, end: 0x0046E0E0}
+      - {object: game/mobyanim, section: .game_AnimResolveMats, start: 0x0046E0E0, end: 0x0046E2F0}
+      - {object: game/mobyanim, section: .game_AnimPrepareBindMats, start: 0x0046E2F0, end: 0x0046E470}
+      - {object: game/mobyanim, section: .game_ProcessAnimLayers, start: 0x0046E470, end: 0x0046E728}
+      - {object: game/mobyanim, section: .game_UpdateMobyAnim, start: 0x0046E728, end: 0x0046E810}
+      - {object: game/mobyanim, section: .game_AnimCachePose, start: 0x0046E810, end: 0x0046E8A0}
+      - {object: game/mobyanim, section: .game_AnimDecompCached, start: 0x0046E8A0, end: 0x0046E8A8}
+      - {object: game/mobyanim, section: .game_AnimDecompBlendCached, start: 0x0046E8A8, end: 0x0046E9E8}
+  game/shadowproc:
+    text_start: 0x004DD548
+    text_end: 0x004DE768
+    slots:
+      - {object: game/shadowproc, section: .game_ShadowBuildPrimList, start: 0x004DD548, end: 0x004DD820}
+      - {object: game/shadowproc, section: .game_ShadowCreatePillVolume, start: 0x004DD820, end: 0x004DD9F0}
+      - {object: game/shadowproc, section: .game_ShadowProjectPoints, start: 0x004DD9F0, end: 0x004DDA50}
+      - {object: game/shadowproc, section: .game_ShadowProjectPointsClipped, start: 0x004DDA50, end: 0x004DDAF8}
+      - {object: game/shadowproc, section: .game_ShadowSetupMatrices, start: 0x004DDAF8, end: 0x004DDBB8}
+      - {object: game/shadowproc, section: .game_ShadowSetupVectors, start: 0x004DDBB8, end: 0x004DDC68}
+      - {object: game/shadowproc, section: .game_ShadowTransformPointsWorldToScreenWithBFC, start: 0x004DDC68, end: 0x004DDD70}
+      - {object: game/shadowproc, section: .game_ShadowTransformPointsWorldToFrustum, start: 0x004DDD70, end: 0x004DDE28}
+      - {object: game/shadowproc, section: .game_ShadowTransformPointsFrustumToScreenWithBFC, start: 0x004DDE28, end: 0x004DDF18}
+      - {object: game/shadowproc, section: .game_ShadowTransformPointsFrustumToScreen, start: 0x004DDF18, end: 0x004DDF90}
+      - {object: game/shadowproc, section: .game_ShadowBackfaceCullingTB, start: 0x004DDF90, end: 0x004DDFE8}
+      - {object: game/shadowproc, section: .game_ShadowBackfaceCullingClipped, start: 0x004DDFE8, end: 0x004DE0D0}
+      - {object: game/shadowproc, section: .game_ShadowDrawVolume, start: 0x004DE0D0, end: 0x004DE210}
+      - {object: game/shadowproc, section: .game_ShadowDrawVolumeClipped, start: 0x004DE210, end: 0x004DE3B0}
+      - {object: game/shadowproc, section: .game_ShadowCapVolume, start: 0x004DE3B0, end: 0x004DE628}
+      - {object: game/shadowproc, section: .game_ShadowClipPolyNoNear, start: 0x004DE628, end: 0x004DE768}
   sdk/mrpc/libmrpc:
     text_start: 0x00155AE0
     text_end: 0x00156390

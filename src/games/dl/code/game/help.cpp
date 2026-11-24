@@ -5,7 +5,7 @@
 #include "gameglobals.h"
 #include "help.h"
 #include "stream.h"
-#include "hero.h"
+#include "guber/LocalHero.h"
 
 
 struct Help_QueueEntry {

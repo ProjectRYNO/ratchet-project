@@ -34,6 +34,41 @@ void AbortMissionLoad() __asm__("AbortMissionLoad");
 void EndLoadData_CB(void *ud, int status) __asm__("EndLoadData_CB");
 void EndLoadSound_CB(void *ud, int status) __asm__("EndLoadSound_CB");
 
+
+/* init: BootElf */
+struct ezNetCtlStatus_t {
+	/* 0x00 */ int unk00[12];
+	/* 0x30 */ int state;
+	/* 0x34 */ int unk34[3];
+};
+extern int g_gameType __asm__("g_gameType");
+extern unsigned char bNetInitialized[] __asm__("D_1723C4");
+extern const char sdkModuleName[] __asm__("D_21EF00");
+extern "C" {
+	int ezNetCtlGetStatus(ezNetCtlStatus_t *, char *, int);
+	int ezNetCtlDownInterface();
+	int ezNetCtlExit(int);
+	int ezNetCnfExit();
+	int DelayThread(int);
+	int sceGsSyncPath(int, int);
+	int sceGsSyncVCallback(void *);
+	int DisableIntc(int);
+	int scePadPortClose(int, int);
+	int sceMtapPortClose(int);
+	int scePadEnd();
+	int sceMtapEnd();
+	int sceMcSync(int, int *, int *);
+	int sceMcEnd();
+	int sceCdInit(int);
+	int sceSifMExitRpc();
+	int sceSifExitCmd();
+	int LoadExecPS2(const char *, int, char **);
+}
+void FadeToBlack(int, unsigned int) __asm__("FadeToBlack");
+void nwGuiRefreshCallback() __asm__("nwGuiRefreshCallback");
+void UndoPowerOff() __asm__("UndoPowerOff");
+void BootElf(char *elf, int argc, char **argv) __asm__("BootElf");
+
 GAME_SECTION(UnloadModule) int UnloadModule(int id)
 {
 	int result;
@@ -54,4 +89,59 @@ GAME_SECTION(UnloadModuleByName) int UnloadModuleByName(const char *name)
 	return 0;
 }
 
-INCLUDE_ASM("/ProjectRYNO/dl/code/asm/nonmatchings/game/init", BootElf);
+GAME_SECTION(BootElf) void BootElf(char *elf, int argc, char **argv)
+{
+	int Delay;
+	ezNetCtlStatus_t status;
+	char status_message[64];
+	int i;
+
+	FadeToBlack(5, 0);
+	Fs::Abort();
+	UberSound::Stop(1);
+	Fs::Abort();
+	Fs::Sync(1);
+	if (g_gameType == 1 && bNetInitialized[0]) {
+		ezNetCtlGetStatus(&status, status_message, 0x40);
+		Delay = 5000;
+		if (status.state != 5 && status.state != 0) {
+			ezNetCtlDownInterface();
+		}
+		do {
+			nwGuiRefreshCallback();
+			ezNetCtlGetStatus(&status, status_message, 0x40);
+			DelayThread(500);
+			if (status.state == 5 || status.state == 0) break;
+			Delay--;
+		} while (Delay != -1);
+		ezNetCtlExit(0);
+		ezNetCnfExit();
+	}
+	sceGsSyncPath(0, 0);
+	sceGsSyncVCallback(0);
+	DisableIntc(2);
+	for (i = 0; i < 8; i++) {
+		scePadPortClose(i >= 4, i % 4);
+	}
+	sceMtapPortClose(0);
+	sceMtapPortClose(1);
+	scePadEnd();
+	sceMtapEnd();
+	sceMcSync(0, 0, 0);
+	sceMcEnd();
+	if (g_gameType == 1) {
+		UndoPowerOff();
+	}
+	sceCdInit(5);
+	if (g_gameType == 1) {
+		UnloadModuleByName(sdkModuleName);
+		sceSifMExitRpc();
+	}
+	sceSifExitCmd();
+	i = 0x78;
+	do {
+		i--;
+		sceGsSyncV(0);
+	} while (i > 0);
+	LoadExecPS2(elf, argc, argv);
+}

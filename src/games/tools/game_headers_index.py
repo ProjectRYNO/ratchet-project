@@ -20,14 +20,14 @@ TYPEDEF = re.compile(r'^typedef\s+[^;{}]*?\b([A-Za-z_]\w*)\s*(?:\[[^\]]*\])?\s*;
 
 def header_types():
 	owners = collections.OrderedDict()
-	for path in sorted(glob.glob(os.path.join(DL, 'code', 'game', '*.h'))):
+	for path in sorted(glob.glob(os.path.join(DL, 'code', 'game', '**', '*.h'), recursive=True)):
 		text = open(path, errors='replace').read()
 		names = STRUCT.findall(text) + ANON.findall(text) + TYPEDEF.findall(text)
 		seen = []
 		for n in names:
 			if n not in seen:
 				seen.append(n)
-		owners[os.path.basename(path)] = seen
+		owners[os.path.relpath(path, os.path.join(DL, 'code', 'game')).replace(os.sep, '/')] = seen
 	return owners
 
 
